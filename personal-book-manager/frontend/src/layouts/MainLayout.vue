@@ -1,41 +1,34 @@
 <script setup lang="ts">
-import AppMenu from '@/components/AppMenu.vue'
-import UserInfoWidget from '@/components/UserInfoWidget.vue'
+import AppSidebar from '@/components/AppSidebar.vue'
 </script>
 
 <template>
-  <el-container class="main-layout">
-    <el-header class="main-layout__header">
-      <span class="main-layout__title">個人圖書管理系統</span>
-      <AppMenu />
-      <UserInfoWidget />
-    </el-header>
-    <el-main class="main-layout__main">
+  <div class="main-layout">
+    <AppSidebar />
+    <main class="main-layout__content">
       <RouterView />
-    </el-main>
-  </el-container>
+    </main>
+    <!-- 詳細資訊面板的實際掛載點：與側邊欄一樣固定滿版高度，不隨主內容區捲動；
+         各頁面（如 BookListView）透過 <Teleport to="#detail-panel-outlet"> 將面板內容傳送至此。 -->
+    <div id="detail-panel-outlet" class="main-layout__detail-outlet"></div>
+  </div>
 </template>
 
 <style scoped>
 .main-layout {
-  min-height: 100vh;
-}
-
-.main-layout__header {
   display: flex;
-  align-items: center;
-  gap: 24px;
-  border-bottom: 1px solid var(--el-border-color);
-  padding: 0 20px;
+  height: 100vh;
 }
 
-.main-layout__title {
-  font-size: 18px;
-  font-weight: 600;
-  white-space: nowrap;
+.main-layout__content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  background-color: #f5f5f7;
+  padding: 24px 32px;
 }
 
-.main-layout__main {
-  background-color: var(--el-fill-color-blank);
+.main-layout__detail-outlet:empty {
+  display: none;
 }
 </style>
