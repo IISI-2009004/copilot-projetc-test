@@ -148,6 +148,19 @@ public final class CurrentUser {
 
 ---
 
+## 模組 D：frontend（負責人：前端 PG，分支 `feature/PG1-project-scaffold`，**mock 資料先行，待後端 API 完成後串接**）
+
+- [x] **D1** 引入 Element Plus（`element-plus` + `@element-plus/icons-vue`），於 `main.ts` 全域註冊
+- [x] **D2** `MainLayout.vue`（Header：標題 + `AppMenu` + `UserInfoWidget`；Main：`RouterView`）
+- [x] **D3** `AppMenu.vue` 頂部導覽選單（首頁／藏書管理／閱讀記錄，`el-menu` + `router` 模式自動切換路由）
+- [x] **D4** `UserInfoWidget.vue` 使用者資訊下拉選單（顯示使用者名稱、登出）+ `stores/user.ts`（Pinia，`currentUser`/`logout()`）
+- [x] **D5** `HomeView.vue` 首頁儀表板（藏書總數／累計閱讀時長／已完成書籍／本月閱讀時長統計卡片，對應 US-R05 統計資料形狀）
+- [x] **D6** `BookListView.vue`／`ReadingView.vue` 佔位頁（`el-empty` 開發中提示），供 Menu 連結導向
+- [ ] **D7**（待後端 API 完成）新增 `src/services/` API 呼叫層，移除 `src/mocks/mockData.ts` 假資料依賴，
+      改接 `POST /api/auth/login`、`GET /api/users/me`、`GET /api/reading/stats` 等真實端點
+
+---
+
 ## 里程碑
 
 | 時間點 | 目標 |
