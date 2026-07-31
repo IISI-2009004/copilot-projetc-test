@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "./scripts/block-force-push.sh",
+        "timeout": 10
+      }
+    ]
+  }
+}

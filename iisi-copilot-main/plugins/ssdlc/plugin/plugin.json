@@ -1,0 +1,93 @@
+{
+  "name": "ssdlc",
+  "version": "1.0.0",
+  "description": "SSDLC Agent Team 外掛，整合安全審查、程式碼品質、架構驗證與自動化護欄，涵蓋軟體安全開發生命週期全流程",
+  "keywords": [
+    "ssdlc",
+    "security",
+    "owasp",
+    "code-review",
+    "testing",
+    "architecture"
+  ],
+  "agents": [
+    "agents/ssdlc/orchestrator.agent.md",
+    "agents/ssdlc/architect.agent.md",
+    "agents/ssdlc/backend.agent.md",
+    "agents/ssdlc/frontend.agent.md",
+    "agents/ssdlc/code-reviewer.agent.md",
+    "agents/ssdlc/security-reviewer.agent.md",
+    "agents/ssdlc/test-generator.agent.md",
+    "agents/ssdlc/doc-writer.agent.md",
+    "agents/ssdlc/devops.agent.md",
+    "agents/ssdlc/planner.agent.md",
+    "agents/ssdlc/project-manager.agent.md",
+    "agents/ssdlc/release.agent.md",
+    "agents/ssdlc/reverse-eng.agent.md",
+    "agents/ssdlc/incident-response.agent.md"
+  ],
+  "skills": [
+    "skills/ssdlc/security-review",
+    "skills/ssdlc/api-reviewer",
+    "skills/ssdlc/doc-generator",
+    "skills/ssdlc/junit-generator",
+    "skills/ssdlc/pr-checker",
+    "skills/ssdlc/reverse-analysis"
+  ],
+  "tools": [
+    {
+      "name": "sonarqube-report",
+      "description": "取得 SonarQube 程式碼品質指標（bugs、vulnerabilities、code smells、coverage）",
+      "type": "http",
+      "endpoint": "${SONAR_URL}/api/measures/component",
+      "auth": "bearer",
+      "input_schema": {
+        "component": { "type": "string", "description": "SonarQube 專案 Key" },
+        "metricKeys": { "type": "string", "description": "指標名稱，逗號分隔（如 bugs,vulnerabilities,coverage）" }
+      }
+    },
+    {
+      "name": "dependency-check",
+      "description": "執行 OWASP Dependency Check，掃描第三方套件已知 CVE 漏洞",
+      "type": "script",
+      "command": "scripts/owasp-check.sh",
+      "input_schema": {
+        "project": { "type": "string", "description": "專案根目錄路徑" }
+      },
+      "output_format": "json"
+    },
+    {
+      "name": "secret-scanner",
+      "description": "掃描程式碼中的硬編碼密鑰、Token 與敏感資訊",
+      "type": "script",
+      "command": "scripts/secret-scan.sh",
+      "input_schema": {
+        "path": { "type": "string", "description": "要掃描的檔案或目錄路徑" }
+      },
+      "output_format": "json"
+    }
+  ],
+  "mcpServers": [
+    {
+      "name": "project-context",
+      "description": "提供專案架構、資料庫 Schema 與 API 規格的 MCP Server",
+      "transport": "stdio",
+      "command": "node",
+      "args": [".github/mcp/project-context-server.js"],
+      "env": {
+        "DB_SCHEMA_PATH": "./docs/schema.sql",
+        "API_SPEC_PATH": "./docs/openapi.yaml"
+      }
+    }
+  ],
+  "context": {
+    "methodology": "SSDLC",
+    "securityStandards": ["OWASP Top 10", "STRIDE", "CWE/SANS Top 25"],
+    "qualityGates": {
+      "testCoverage": ">=80%",
+      "branchCoverage": ">=70%",
+      "criticalVulnerabilities": 0,
+      "highVulnerabilities": 0
+    }
+  }
+}

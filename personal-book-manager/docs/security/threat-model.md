@@ -1,0 +1,59 @@
+# Threat Model — 個人圖書管理系統（STRIDE）
+> 產出者：Alice（架構師 / Architect Agent）
+> 版本：v1.0　|　日期：2026-07-31
+> 對應 design.md §6 摘要之完整版本
+
+---
+
+## 1. 系統邊界與資產
+
+- **資產**：使用者帳號（User，含密碼雜湊）、書本資料（Book/Tag/Category）、閱讀記錄（ReadingRecord）。
+- **信任邊界**：
+  1. 用戶端 ↔ REST API（`/api/auth`, `/api/users`, `/api/books`, `/api/tags`, `/api/categories`, `/api/reading`）
+  2. book 模組 ↔ reading 模組（模組間邊界；僅透過 `BookQueryPort` 單向查詢，書本刪除為狀態變更，不跨模組通知）
+  3. user 模組 ↔ book／reading 模組（僅透過 Spring Security `SecurityContext` 傳遞 `userId`，非直接 Repository 存取；`user` 為最底層模組，不依賴其他兩者）
+  4. 應用程式 ↔ 資料庫（H2 / PostgreSQL）
+
+---
+
+## 2. STRIDE 分析
+
+| 威脅類型 | 攻擊面 | 情境 | 緩解措施 | 殘餘風險 |
+|---------|--------|------|---------|---------|
+| **S**poofing | REST API；登入 API | 冒充他人身分呼叫 API，或暴力猜測帳密 | 已加入 Spring Security + JWT（`user` 模組）：除 `/api/auth/**` 外一律需有效 JWT；密碼 bcrypt 雜湊比對；登入失敗訊息統一（不分帳號不存在/密碼錯誤）避免帳號列舉 | 中（尚無登入失敗次數限制/Rate Limiting，暴力破解仍有風險，見待辦技術債）|
+| **T**ampering | Book / ReadingRecord 更新 API；借閱書籍的 `externalTitle`/`externalAuthor`（自由文字，無來源驗證）| 惡意或錯誤輸入竄改資料；借閱書籍名稱可任意輸入，無法比對真實書目 | Bean Validation（@NotBlank/@Pattern/@Min/@Max，`externalTitle` 加長度上限如 200 字）；JPA 參數化查詢/JPQL，禁止字串拼接 SQL | 低（借閱書名真實性本就無法驗證，屬於功能設計上的可接受風險，非系統漏洞）|
+| **R**epudiation | 書本被刪除後，過去的閱讀行為紀錄真實性遭質疑 | 書本刪除僅為軟刪除狀態變更，不影響、不刪除任何 `ReadingRecord`；歷史資料完整保留可供追溯 | 低 |
+| **I**nformation Disclosure | 例外訊息回傳前端；密碼欄位外洩 | Stack trace 或 SQL 錯誤細節外洩，暴露內部結構；`passwordHash` 意外出現在 API 回應或 log | `GlobalExceptionHandler` 統一轉換為 `ErrorResponse`（code, message, timestamp），不含 stack trace；SLF4J 記錄詳細錯誤僅於伺服器端 log；`UserResponse`/`LoginResponse` DTO 明確排除密碼相關欄位（白名單式序列化，非黑名單排除）| 低 |
+| **D**enial of Service | 搜尋 API 無上限查詢 / 大量分頁請求；封面上傳大檔案 | 惡意大量請求造成資料庫負載；大量/超大檔案上傳耗盡磁碟 | 分頁預設 20 筆並限制 `size` 上限（建議 ≤ 100）；封面上傳大小上限 5MB；後續可加 Rate Limiting（本 Sprint 未實作）| 中（Rate Limiting 為技術債，見 tasks.md 待辦）|
+| **E**levation of Privilege | 多用戶情境下操作他人書本/閱讀記錄/帳號資料 | 使用者 A 嘗試存取或竄改使用者 B 的 `bookId`/`readingRecordId` | `Book`/`Tag`/`Category`/`ReadingRecord` 皆帶 `userId` 欄位，Service 層所有查詢/更新/刪除一律以 `userId = CurrentUser.id()` 過濾；跨用戶存取一律回 **404**（而非 403，避免洩漏資源是否存在）；`userId` 僅能由 JWT 解析取得，Request Body 無法指定他人 `userId` | 低（架構已落實隔離，殘餘風險為實作疏漏，需靠 A5/B5/C6 測試把關）|
+| **Injection** | ISBN / 關鍵字搜尋參數 | SQL Injection / JPQL Injection | 一律使用 Spring Data JPA 衍生查詢或 `@Query` 具名參數（`:param`），禁止字串拼接 | 低 |
+| **惡意 URL（Malicious URL）** | 線上內容類藏書的 `url` 欄位（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）、`purchaseUrl`、`authorUrl`、封面 `coverImageUrl`（EXTERNAL_URL）| 用戶輸入 `javascript:` 偽協議或惡意連結，若前端未跳脫直接渲染成可點擊連結／圖片，可能導致 Stored XSS 或誘導點擊釣魚網址；或利用「外部圖片網址」誘導系統對內網位址發出請求（SSRF）| Bean Validation 限制所有 URL 欄位 scheme 僅允許 `http`/`https`；系統對**任一**外部 URL（含封面）**皆不主動抓取內容**（無伺服器端 fetch，徹底杜絕 SSRF）；前端渲染時需 HTML escape 並以 `rel="noopener noreferrer"` 開啟外部連結／載入圖片 | 低（惡意連結目的地本身的內容安全性不在本系統控管範圍內）|
+| **惡意檔案上傳（Malicious File Upload）** | 封面圖片上傳 API（`POST /api/books/{id}/cover`）| 攻擊者上傳偽裝成圖片的可執行檔／webshell（改副檔名或竄改 Content-Type）；或上傳超大檔案造成磁碟耗盡（DoS）；或利用使用者提供的檔名進行路徑穿越（Path Traversal）寫入任意路徑 | 以檔案**實際內容（magic bytes）**驗證格式，僅接受 `image/jpeg`/`image/png`/`image/webp`/`image/gif`，不信任副檔名或 Content-Type 標頭；檔案大小上限 **5MB**；儲存檔名一律以 **UUID** 產生，完全不使用使用者輸入的檔名／路徑；取代封面時舊檔由系統以已知路徑刪除（非使用者輸入路徑）| 低（仍建議未來導入病毒掃描/雲端物件儲存以進一步降低風險，見待辦技術債）|
+| **JWT 相關風險** | JWT 簽發/驗證（`user` 模組）| 密鑰洩漏導致偽造 token；token 被竊取後長期有效；密鑰硬編碼於程式碼被提交至版控 | 密鑰一律由環境變數/設定檔外部注入，**不硬編碼**；`exp` 預設 24 小時限制有效期；使用 HS256（或以上）簽章演算法；`.gitignore` 排除含密鑰的本機設定檔 | 中（本 Sprint 未實作 Refresh Token／登出黑名單機制，token 於有效期內遭竊取仍可被冒用，見待辦技術債）|
+
+---
+
+## 3. 待辦技術債（安全相關）
+
+| 項目 | 優先級 | 說明 |
+|------|--------|------|
+| 登入失敗次數限制（Account Lockout / Rate Limiting） | 高 | 目前登入 API 無失敗次數限制，理論上可被暴力破解密碼 |
+| Refresh Token / 登出黑名單機制 | 中 | 目前 JWT 為無狀態設計，一旦簽發在有效期內無法主動撤銷（登出僅為前端捨棄 token）|
+| API Rate Limiting | 中 | 防止搜尋 API 被濫用造成 DoS |
+| 分頁 `size` 上限校驗 | 中 | Bean Validation 加 `@Max(100)` 於 `size` 參數 |
+| 封面上傳病毒掃描 | 低 | 目前僅做 magic bytes 格式驗證，未來可整合 ClamAV 等掃描服務進一步防範惡意檔案 |
+| 遷移雲端物件儲存（S3） | 低 | 目前為本機磁碟儲存（MVP），多機部署前需遷移，`CoverStorageService` 介面已預留擴充點 |
+| 密碼複雜度規則強化 | 低 | 目前僅要求最少 8 碼，未來可視需求加入大小寫/數字/符號組合要求 |
+
+---
+
+## 4. 審查紀錄
+
+| 日期 | 審查者 | 結論 |
+|------|--------|------|
+| 2026-07-31 | Alice（架構師） | 初版威脅模型建立 |
+| 2026-07-31 | Alice（架構師） | 依用戶決策修正：書本刪除改為純狀態變更，不刪除閱讀記錄，移除跨模組事件相關威脅項；詳見 ADR-0001（已標記 Superseded）|
+| 2026-07-31 | Alice（架構師） | 依用戶決策擴充：閱讀記錄支援借閱來源（朋友/圖書館），新增 `externalTitle`/`externalAuthor` 自由文字欄位之 Tampering 風險說明；詳見 ADR-0003 |
+| 2026-07-31 | Alice（架構師） | 依用戶決策擴充：藏書類型新增同人誌/網路小說/Blog文章/AO3等，新增 `url` 欄位之惡意連結風險評估；詳見 ADR-0004 |
+| 2026-07-31 | Alice（架構師） | 依用戶決策擴充：新增 `purchaseUrl`/`authorUrl`/封面圖片欄位，擴充惡意 URL 風險範圍並新增「惡意檔案上傳」威脅項；詳見 ADR-0005 |
+| 2026-07-31 | Alice（架構師） | 依用戶決策新增：使用者管理模組（`user`，帳號+密碼+JWT），Spoofing/Elevation of Privilege 由「高風險/待補」轉為「已緩解」，新增 JWT 相關風險評估；詳見 ADR-0006 |

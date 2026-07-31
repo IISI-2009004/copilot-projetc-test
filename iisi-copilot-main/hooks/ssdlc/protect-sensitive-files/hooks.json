@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "./scripts/protect-sensitive-files.sh",
+        "timeout": 10
+      }
+    ]
+  }
+}
