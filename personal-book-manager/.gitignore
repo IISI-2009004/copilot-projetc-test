@@ -4,3 +4,8 @@ target/
 *.iml
 .vscode/*.log
 !/.vscode/settings.json
+
+# Maven / Spring Boot
+.mvn/wrapper/maven-wrapper.jar
+data/covers/
+*.log
