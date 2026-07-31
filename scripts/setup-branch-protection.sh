@@ -13,20 +13,23 @@
 #   export GH_OWNER="your-org-or-username"
 #   export GH_REPO="personal-book-manager"
 #   bash scripts/setup-branch-protection.sh
-
-set -euo pipefail
+#
+# 注意：本腳本執行完畢會正常結束並回到 shell 提示字元，不會卡住、
+#       不需要按 Ctrl+C 或任何額外按鍵。
 
 : "${GH_TOKEN:?請先 export GH_TOKEN}"
 : "${GH_OWNER:?請先 export GH_OWNER}"
 : "${GH_REPO:?請先 export GH_REPO}"
 
 API="https://api.github.com/repos/${GH_OWNER}/${GH_REPO}"
+EXIT_CODE=0
 
 protect_branch() {
   local branch="$1"
   echo "== 設定分支保護：${branch} =="
 
-  curl -sS -X PUT \
+  local response
+  response="$(curl -sS -X PUT \
     -H "Authorization: Bearer ${GH_TOKEN}" \
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -41,13 +44,21 @@ protect_branch() {
       "restrictions": null,
       "allow_force_pushes": false,
       "allow_deletions": false
-    }' | grep -E '"url"|"message"' || true
+    }')"
 
+  if echo "${response}" | grep -q '"message"'; then
+    echo "  失敗：${response}"
+    EXIT_CODE=1
+  else
+    echo "  成功：分支 ${branch} 保護規則已套用"
+  fi
   echo
 }
 
 protect_branch "main"
 protect_branch "develop"
 
-echo "完成。可用以下指令驗證："
-echo "  curl -sS -H \"Authorization: Bearer \$GH_TOKEN\" ${API}/branches/main/protection | head -40"
+echo "全部執行完畢，可用以下指令驗證："
+echo "  curl -sS -H \"Authorization: Bearer \${GH_TOKEN}\" \"${API}/branches/main/protection\" | head -40"
+
+exit "${EXIT_CODE}"
