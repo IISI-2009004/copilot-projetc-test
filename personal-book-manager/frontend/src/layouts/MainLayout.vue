@@ -8,6 +8,9 @@ import AppSidebar from '@/components/AppSidebar.vue'
     <main class="main-layout__content">
       <RouterView />
     </main>
+    <!-- 詳細資訊面板的實際掛載點：與側邊欄一樣固定滿版高度，不隨主內容區捲動；
+         各頁面（如 BookListView）透過 <Teleport to="#detail-panel-outlet"> 將面板內容傳送至此。 -->
+    <div id="detail-panel-outlet" class="main-layout__detail-outlet"></div>
   </div>
 </template>
 
@@ -23,5 +26,9 @@ import AppSidebar from '@/components/AppSidebar.vue'
   overflow-y: auto;
   background-color: #f5f5f7;
   padding: 24px 32px;
+}
+
+.main-layout__detail-outlet:empty {
+  display: none;
 }
 </style>

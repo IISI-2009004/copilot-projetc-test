@@ -1,24 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 import type { Book } from '@/types/book'
 import { BOOK_STATUS_LABEL } from '@/types/book'
+import { useBookCoverGradient } from '@/composables/useBookCoverGradient'
+import { useTagColor } from '@/modules/taxonomy'
 
-const props = defineProps<{ book: Book }>()
+const props = defineProps<{ book: Book; selected?: boolean }>()
+defineEmits<{ select: [book: Book] }>()
 
-/** 尚無真實封面圖時，以標題首字 + 依 id 循環的漸層色塊做縮圖佔位（模仿 Eagle 縮圖網格畫廊風格）。 */
-const palettes: Array<[string, string]> = [
-  ['#667eea', '#764ba2'],
-  ['#f093fb', '#f5576c'],
-  ['#4facfe', '#00f2fe'],
-  ['#43e97b', '#38f9d7'],
-  ['#fa709a', '#fee140'],
-  ['#30cfd0', '#330867'],
-]
-
-const gradient = computed(() => {
-  const [from, to] = palettes[props.book.id % palettes.length] ?? palettes[0]!
-  return `linear-gradient(135deg, ${from}, ${to})`
-})
+const gradient = useBookCoverGradient(toRef(props, 'book'))
+const { tagColor } = useTagColor()
 
 const statusType = computed(() => {
   if (props.book.status === 'done') return 'success'
@@ -28,7 +19,7 @@ const statusType = computed(() => {
 </script>
 
 <template>
-  <div class="book-card">
+  <div class="book-card" :class="{ 'book-card--selected': selected }" @click="$emit('select', book)">
     <div class="book-card__cover" :style="{ background: gradient }">
       <span class="book-card__initial">{{ book.title.charAt(0) }}</span>
       <el-tag class="book-card__status" size="small" :type="statusType" effect="dark">
@@ -39,7 +30,14 @@ const statusType = computed(() => {
       <div class="book-card__title" :title="book.title">{{ book.title }}</div>
       <div class="book-card__author">{{ book.author }}</div>
       <div class="book-card__tags">
-        <el-tag v-for="tag in book.tags" :key="tag" size="small" round>{{ tag }}</el-tag>
+        <el-tag
+          v-for="tag in book.tags"
+          :key="tag"
+          size="small"
+          round
+          :color="tagColor(tag)"
+          :style="tagColor(tag) ? { color: '#ffffff', border: 'none' } : undefined"
+        >{{ tag }}</el-tag>
       </div>
     </div>
   </div>
@@ -53,11 +51,16 @@ const statusType = computed(() => {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: 2px solid transparent;
 }
 
 .book-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.book-card--selected {
+  border-color: var(--el-color-primary);
 }
 
 .book-card__cover {
@@ -69,23 +72,23 @@ const statusType = computed(() => {
 }
 
 .book-card__initial {
-  font-size: 40px;
+  font-size: 28px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.85);
 }
 
 .book-card__status {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
 }
 
 .book-card__info {
-  padding: 10px 12px 12px;
+  padding: 8px 10px 10px;
 }
 
 .book-card__title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -93,9 +96,9 @@ const statusType = computed(() => {
 }
 
 .book-card__author {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--el-text-color-secondary);
-  margin: 2px 0 8px;
+  margin: 2px 0 6px;
 }
 
 .book-card__tags {
