@@ -7,33 +7,74 @@
 ## 1. 系統概述
 
 個人圖書管理系統（Personal Book Manager）供個人用戶管理藏書與閱讀記錄，  
-防止重複購買、協助整理分類、並提供閱讀進度可視化。
+防止重複購買、協助整理分類、並提供閱讀進度可視化。閱讀記錄不限於個人藏書，  
+亦可記錄向朋友或圖書館借閱的書籍。系統支援多用戶註冊/登入，每位用戶的藏書與  
+閱讀記錄彼此隔離，僅能存取自己的資料。
 
 ---
 
 ## 2. 用戶故事（EARS 格式）
 
-### 模組 A — 書本管理（book）
+### 模組 C — 使用者管理（user）
+
+> **帳號機制**：採帳號（`username`）+ 密碼登入，不需 email。密碼一律以 **bcrypt** 雜湊後儲存，
+> 資料庫與任何 API 回應皆不會出現明文或雜湊值。登入成功後核發 **JWT**（無狀態），
+> 後續所有 book／reading 模組的 API 皆須於 `Authorization: Bearer <token>` 標頭攜帶此 JWT，
+> 由 Spring Security Filter 解析出 `userId` 並注入至 `SecurityContext`，book／reading 模組
+> 的 Service 層一律以此 `userId` 過濾資料，不再是無驗證的單用戶系統。
 
 | ID | 用戶故事 | EARS 需求 | 驗收標準 |
 |----|----------|-----------|---------|
-| US-B01 | 作為用戶，我想新增書本（含 ISBN、書名、作者、類型），以便建立我的書庫 | WHEN 用戶提交新增書本表單 THE SYSTEM SHALL 儲存書本資訊並回傳 201 | ISBN 格式驗證（10/13碼）；書名、作者為必填 |
-| US-B02 | 作為用戶，我想防止重複購買，系統應於新增前檢查 ISBN 是否已存在 | WHEN 用戶新增相同 ISBN 的實體書 THE SYSTEM SHALL 回傳 409 Conflict | 僅對 PHYSICAL 類型執行去重；EBOOK 允許多筆 |
-| US-B03 | 作為用戶，我想編輯書本資訊（書名、作者、類型、Tag、分類） | WHEN 用戶更新書本資訊 THE SYSTEM SHALL 驗證並持久化更新後內容 | 更新不存在的書本回傳 404 |
-| US-B04 | 作為用戶，我想刪除書本 | WHEN 用戶刪除書本 THE SYSTEM SHALL 同步刪除關聯的 Tag 映射與閱讀記錄 | 軟刪除；刪除後查詢回 404 |
-| US-B05 | 作為用戶，我想用關鍵字（書名/作者）、Tag、分類搜尋書本 | WHEN 用戶送出搜尋條件 THE SYSTEM SHALL 回傳符合條件的書本列表（分頁） | 支援空條件（回傳全部）；分頁預設 20 筆 |
-| US-B06 | 作為用戶，我想建立自訂 Tag 並套用到書本 | THE SYSTEM SHALL 提供 Tag CRUD；WHEN Tag 套用到書本 THE SYSTEM SHALL 建立多對多映射 | Tag 名稱全域唯一（同一用戶） |
-| US-B07 | 作為用戶，我想建立分類目錄並將書本歸類 | THE SYSTEM SHALL 提供 Category CRUD；書本可屬於一個 Category | Category 名稱唯一；Category 刪除前需移除書本關聯 |
+| US-U01 | 作為訪客，我想註冊帳號 | WHEN 訪客提交 `username`+`password` THE SYSTEM SHALL 建立帳號並回傳 201 | `username` 全域唯一（3-30字元，僅英數字/底線/連字號）；`password` 最少 8 碼；密碼以 bcrypt 雜湊儲存（cost factor ≥ 10）；`username` 已存在回 409；不回傳密碼欄位 |
+| US-U02 | 作為已註冊用戶，我想登入取得存取權杖 | WHEN 用戶提交正確的 `username`+`password` THE SYSTEM SHALL 回傳 JWT（含 `userId`、`username`、過期時間） | 帳密錯誤一律回 401（不區分「帳號不存在」或「密碼錯誤」，避免帳號列舉）；JWT 預設有效期 24 小時；使用 HS256 或以上簽章演算法，密鑰由環境變數注入（不寫死於程式碼）|
+| US-U03 | 作為已登入用戶，我想查詢自己的帳號資料 | WHEN 用戶帶有效 JWT 查詢 `GET /api/users/me` THE SYSTEM SHALL 回傳其 `id`、`username`、`createdAt` | 未帶 JWT 或 JWT 無效/過期回 401；不回傳密碼相關欄位 |
+| US-U04 | 作為系統，我想確保每位用戶只能存取自己的書本與閱讀記錄 | WHEN 任何 book／reading API 被呼叫 THE SYSTEM SHALL 以 JWT 解析出的 `userId` 過濾/綁定資料 | 存取他人 `bookId`／閱讀記錄一律回 404（而非 403，避免洩漏資源是否存在）；`Book`／`ReadingRecord` 新增/查詢/更新/刪除皆自動帶入目前登入者的 `userId`，無法由 Request Body 指定他人 `userId` |
+
+### 模組 A — 書本管理（book）
+
+> **書本類型（BookType）**：藏書不限於有 ISBN 的實體出版品，涵蓋以下六種類型：
+> - `PHYSICAL_BOOK`　實體書籍（一般出版品，通常有 ISBN）
+> - `PHYSICAL_DOUJINSHI`　實體同人誌（紙本二創作品，通常**無** ISBN）
+> - `EBOOK`　電子書（可能有 ISBN）
+> - `WEB_NOVEL`　網路小說（連載平台文章，如巴哈姆特、Wattpad）
+> - `BLOG_POST`　Blog 文章
+> - `ONLINE_FANFIC`　同人文網站作品（如 AO3）
+>
+> 前三者（`PHYSICAL_BOOK`/`PHYSICAL_DOUJINSHI`/`EBOOK`）為「實體／電子書」類，`isbn` 為**選填**
+> （非所有實體書皆有 ISBN，例如同人誌）；後三者（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）為
+> 「線上內容」類，改以 `url`（來源網址，必填）與 `sourcePlatform`（來源平台名稱，選填，如
+> "AO3"、"Wattpad"、"巴哈姆特"）記錄；`isbn` 與 `url` 為互斥欄位，不可同時提供。
+
+| ID | 用戶故事 | EARS 需求 | 驗收標準 |
+|----|----------|-----------|---------|
+| US-B01 | 作為用戶，我想新增各種類型的藏書（實體書、同人誌、電子書、網路小說、Blog文章、AO3同人文等），並附加購買網址、作者網址、封面圖片，以便建立我的書庫 | WHEN 用戶提交新增書本表單 THE SYSTEM SHALL 依 `bookType` 儲存對應欄位並回傳 201 | 書名、作者、`bookType` 為必填；`bookType` 屬「實體／電子書」類時 `isbn` 選填（格式驗證 10/13碼，若有提供）且 `url` 必為空；`bookType` 屬「線上內容」類時 `url` 必填（合法 URL 格式）且 `isbn` 必為空；`purchaseUrl`（購買網址）、`authorUrl`（作者網址）均為選填，格式須為合法 `http`/`https` URL |
+| US-B02 | 作為用戶，我想避免重複建立同一本實體書或同一個線上連結 | WHEN 新增 `bookType ∈ {PHYSICAL_BOOK, PHYSICAL_DOUJINSHI}` 且 `isbn` 已存在於相同類型的未刪除書本 THE SYSTEM SHALL 回傳 409；WHEN 新增 `bookType ∈ {WEB_NOVEL, BLOG_POST, ONLINE_FANFIC}` 且 `url` 已存在於未刪除書本 THE SYSTEM SHALL 回傳 409 | `EBOOK` 不做去重（可能從不同平台購買同一本電子書）；未提供 `isbn` 的實體書/同人誌不觸發去重檢查（無法比對）|
+| US-B03 | 作為用戶，我想編輯書本資訊（書名、作者、類型、Tag、分類、ISBN/URL、購買網址、作者網址） | WHEN 用戶更新書本資訊 THE SYSTEM SHALL 驗證並持久化更新後內容 | 僅限更新自己名下（`userId` 相符）的書本，否則回 404；更新不存在的書本回傳 404；`isbn`/`url` 互斥規則與 US-B01 相同；WHEN 更新後 `isbn` 與其他未刪除同類型書本重複（限 PHYSICAL_BOOK/PHYSICAL_DOUJINSHI，同一用戶內比對）THE SYSTEM SHALL 回傳 409；WHEN 更新後 `url` 與其他未刪除書本重複（線上內容類，同一用戶內比對）THE SYSTEM SHALL 回傳 409；WHEN `categoryId` 不存在或不屬於自己 THE SYSTEM SHALL 回傳 400 |
+| US-B04 | 作為用戶，我想刪除書本 | WHEN 用戶刪除書本 THE SYSTEM SHALL 僅將該書本狀態標記為已刪除（`deleted = true`）並移除其 Tag 映射，**不刪除**任何關聯的閱讀記錄 | 軟刪除；僅限刪除自己名下（`userId` 相符）的書本，否則回 404；刪除後查詢該書本回 404；既有閱讀記錄不受影響、仍完整保留於資料庫（歷史資料），可繼續被查詢（US-R03/US-R04/US-R05）；書本被刪除後 `BookQueryPort.existsBook(bookId, userId)` 回傳 false，故**新增**閱讀記錄會被拒絕（404，見 US-R01），但**既有**記錄不受此限制 |
+| US-B05 | 作為用戶，我想用關鍵字（書名/作者）、Tag、分類、書本類型搜尋書本 | WHEN 用戶送出搜尋條件 THE SYSTEM SHALL 回傳**屬於目前登入用戶**且符合條件的書本列表（分頁） | 支援空條件（回傳全部，僅限自己藏書）；分頁預設 20 筆；支援 `bookType` 篩選（例如只看網路小說或同人誌）；不同用戶之間的搜尋結果彼此隔離 |
+| US-B06 | 作為用戶，我想建立自訂 Tag 並套用到書本 | THE SYSTEM SHALL 提供 Tag CRUD；WHEN Tag 套用到書本 THE SYSTEM SHALL 建立多對多映射 | Tag 名稱全域唯一（同一用戶）；WHEN Tag 被刪除 THE SYSTEM SHALL 一併移除其與所有書本的映射 |
+| US-B07 | 作為用戶，我想建立分類目錄並將書本歸類 | THE SYSTEM SHALL 提供 Category CRUD；書本可屬於一個 Category | Category 名稱同一用戶內唯一；WHEN 分類仍有書本歸類時嘗試刪除 THE SYSTEM SHALL 回傳 409（阻擋刪除，需用戶先將書本移出或改分類，不自動級聯刪除書本）|
+| US-B08 | 作為用戶，我想設定書本封面圖片，可以是「上傳圖片檔案」、「貼上圖片（剪貼簿）」或「貼上圖片網址」三種方式之一 | WHEN 用戶上傳圖片檔案或貼上剪貼簿圖片 THE SYSTEM SHALL 驗證檔案格式與大小後儲存並回傳可存取的 `coverImageUrl`；WHEN 用戶貼上外部圖片網址 THE SYSTEM SHALL 直接儲存該網址為 `coverImageUrl`，不下載或代管圖片內容 | 僅接受 `image/jpeg`、`image/png`、`image/webp`、`image/gif`（以實際檔案內容判斷，非僅副檔名）；檔案大小上限 5MB，超過回 400；外部圖片網址須為合法 `http`/`https` URL；「上傳圖片檔案」與「貼上圖片」在前端皆會產生一個圖片檔案，故共用同一組上傳 API，後端不需分別處理；更換封面時，若舊封面為系統代管上傳檔案，THE SYSTEM SHALL 刪除舊檔案，避免孤兒檔案堆積 |
 
 ### 模組 B — 閱讀記錄（reading）
 
+> **書本來源（ReadingSource）**：閱讀記錄不限於個人藏書。每筆閱讀記錄需標記來源：
+> - `OWNED`　自己的藏書（對應 book 模組的 `bookId`）
+> - `BORROWED_FRIEND`　向朋友借閱（無 `bookId`，僅記錄書名/作者文字）
+> - `BORROWED_LIBRARY`　向圖書館借閱（無 `bookId`，僅記錄書名/作者文字）
+>
+> `source = OWNED` 時必須提供 `bookId`（且不可同時提供 `externalTitle`）；
+> `source = BORROWED_FRIEND` 或 `BORROWED_LIBRARY` 時必須提供 `externalTitle`（書名，必填）、
+> `externalAuthor`（作者，選填），且不可提供 `bookId`。此為互斥規則，本 Sprint 暫不做借閱對象、
+> 應歸還日期、歸還狀態等借閱管理功能。
+
 | ID | 用戶故事 | EARS 需求 | 驗收標準 |
 |----|----------|-----------|---------|
-| US-R01 | 作為用戶，我想新增某本書的閱讀記錄（開始日期、閱讀時長、進度%） | WHEN 用戶新增閱讀記錄 THE SYSTEM SHALL 先確認書本存在（BookQueryPort），再儲存 | 書本不存在回 404；時長必須 > 0 |
-| US-R02 | 作為用戶，我想更新閱讀記錄（繼續計時、更新進度） | WHEN 用戶更新閱讀記錄 THE SYSTEM SHALL 累加時長並更新進度百分比 | 進度 0-100；時長累計不可負數 |
-| US-R03 | 作為用戶，我想查看某本書的完整閱讀歷史 | WHEN 用戶查詢某 bookId 的閱讀記錄 THE SYSTEM SHALL 按日期回傳所有閱讀紀錄 | 支援分頁；無記錄回空陣列 |
-| US-R04 | 作為用戶，我想查看閱讀日曆（每天閱讀幾分鐘） | WHEN 用戶查詢月份閱讀日曆 THE SYSTEM SHALL 以每日彙整閱讀時長（分鐘）回傳 | 無記錄的日期不出現；跨日閱讀分別計入對應日期 |
-| US-R05 | 作為用戶，我想看整體閱讀統計（總時長、已完成書籍數） | THE SYSTEM SHALL 計算所有書本累計閱讀時長與進度 = 100% 的書籍數 | 即時計算；效能 < 500ms |
+| US-R01 | 作為用戶，我想新增閱讀記錄（自己的藏書、或向朋友/圖書館借閱的書），記錄開始日期、閱讀時長、進度% | WHEN 用戶新增閱讀記錄且 `source = OWNED` THE SYSTEM SHALL 先呼叫 `BookQueryPort.existsBook(bookId, userId)` 確認**該書本屬於目前登入用戶且**存在，再儲存；WHEN `source` 為 `BORROWED_FRIEND` 或 `BORROWED_LIBRARY` THE SYSTEM SHALL 直接儲存 `externalTitle`/`externalAuthor`，不查詢 book 模組 | `source=OWNED` 但書本不存在或不屬於目前用戶回 404；`source≠OWNED` 但缺少 `externalTitle` 回 400；`bookId` 與 `externalTitle` 同時提供或同時缺漏回 400（互斥驗證失敗）；時長必須 > 0；新增的閱讀記錄自動綁定目前登入者 `userId` |
+| US-R02 | 作為用戶，我想更新閱讀記錄（繼續計時、更新進度） | WHEN 用戶更新閱讀記錄 THE SYSTEM SHALL 累加時長並更新進度百分比 | 進度 0-100；時長累計不可負數；`source`/`bookId`/`externalTitle` 等來源資訊建立後不可修改（如需修正應刪除重建）；僅限更新屬於自己（`userId` 相符）的記錄，否則回 404 |
+| US-R03 | 作為用戶，我想查看某本書（含借閱的書）的完整閱讀歷史 | WHEN 用戶查詢某 `bookId`（自己藏書）或以 `source`+關鍵字（借閱書）查詢 THE SYSTEM SHALL 按日期回傳所有符合條件、且屬於目前登入用戶的閱讀紀錄 | 支援分頁；無記錄回空陣列；可依 `source` 篩選；查詢範圍自動限定於目前登入者 `userId` |
+| US-R04 | 作為用戶，我想查看閱讀日曆（每天閱讀幾分鐘） | WHEN 用戶查詢月份閱讀日曆 THE SYSTEM SHALL 以每日彙整**目前登入用戶**閱讀時長（分鐘）回傳，**不分來源、涵蓋自己藏書與借閱書籍** | 無記錄的日期不出現；跨日閱讀分別計入對應日期 |
+| US-R05 | 作為用戶，我想看整體閱讀統計（總時長、已完成書籍數） | THE SYSTEM SHALL 計算**目前登入用戶**所有閱讀記錄（不分來源）之累計閱讀時長，以及進度 = 100% 的相異書本數 | 即時計算；效能 < 500ms；統計計算**不排除**已被軟刪除書本的歷史閱讀記錄（保留完整歷史）；「相異書本」之判斷：`source=OWNED` 以 `bookId` 為身分識別，`source≠OWNED` 以 `(source, externalTitle, externalAuthor)` 為身分識別；統計範圍限定於目前登入者 `userId` |
 
 ---
 
@@ -41,10 +82,10 @@
 
 | 類別 | 需求 |
 |------|------|
-| 效能 | API 回應 p95 < 500ms（本機 H2 環境） |
-| 安全 | 所有輸入 Bean Validation；JPA 參數化查詢；錯誤訊息不洩漏 stack trace |
+| 效能 | API 回應 p95 < 500ms（本機 H2 環境）；封面圖片上傳 API 不受此限制，但檔案大小上限 5MB |
+| 安全 | 所有輸入 Bean Validation；JPA 參數化查詢；錯誤訊息不洩漏 stack trace；上傳圖片以實際檔案內容（magic bytes）驗證格式，不信任副檔名/Content-Type 標頭；密碼一律 bcrypt 雜湊儲存；除註冊/登入外所有 API 皆需有效 JWT；book／reading 資料一律以 `userId` 隔離 |
 | 可測試性 | 單元測試覆蓋率 ≥ 80%；Service 層以 Mockito 隔離 Repository |
-| 可維護性 | 分層架構 Controller→Service→Repository；模組邊界由 BookQueryPort 介面隔離 |
+| 可維護性 | 分層架構 Controller→Service→Repository；模組邊界由 BookQueryPort 介面隔離；封面儲存以 `CoverStorageService` 介面隔離，未來可替換為雲端物件儲存而不影響 Service 層邏輯 |
 | 相容性 | 開發環境 H2（in-memory）；正式環境 PostgreSQL（Spring profile 切換） |
 
 ---
@@ -52,9 +93,33 @@
 ## 4. 模組邊界契約
 
 ```
-book 模組 → 對外介面：BookQueryPort
-  boolean existsBook(Long bookId)
+user → （不依賴其他模組，最底層）
+  提供對外介面：CurrentUserProvider（自 SecurityContext 取得目前登入者 userId）
 
-reading 模組 → 依賴 BookQueryPort（透過 Spring Bean 注入）
+reading → book（查詢，同步呼叫）
+  book 模組 → 對外介面：BookQueryPort
+    boolean existsBook(Long bookId, Long userId)
+  reading 模組 → 依賴 BookQueryPort（透過 Spring Bean 注入）
   禁止直接存取 BookRepository
+
+book → user（間接，透過 Spring Security，非模組間 Repository 存取）
+reading → user（間接，透過 Spring Security，非模組間 Repository 存取）
+  book／reading 模組不得直接注入 UserRepository；一律透過 Spring Security
+  `SecurityContextHolder`／`@AuthenticationPrincipal` 取得目前登入者 `userId`，
+  僅將 `userId` 當作一般過濾條件使用（等同於現有的 categoryId 等外部 ID 用法）。
 ```
+
+> 書本刪除採軟刪除（僅變更 `deleted` 狀態），不物理刪除資料、也不觸發任何跨模組刪除動作，
+> 因此 book 與 reading 之間**僅存在單一方向**的耦合（reading 依賴 book 的 `BookQueryPort` 查詢書本是否存在／未刪除），
+> 不需要事件通知或反向依賴，模組邊界維持單純的單向依賴關係。閱讀記錄一旦建立即為獨立的歷史資料，
+> 其生命週期不與書本的刪除狀態綁定。
+>
+> **借閱書籍（`source ≠ OWNED`）完全不呼叫 `BookQueryPort`**：向朋友或圖書館借閱的書不屬於個人藏書，
+> book 模組對其毫無所知，reading 模組僅在本地儲存 `externalTitle`/`externalAuthor` 文字欄位，
+> 不建立、不查詢 book 模組的任何資料。僅當 `source = OWNED` 時才需驗證 `bookId` 是否存在。
+>
+> **多用戶資料隔離**：`user` 模組為最底層模組，不依賴 `book`/`reading`；`book`/`reading` 皆透過
+> Spring Security（而非直接呼叫 `user` 模組的 Repository/Service）取得目前登入者 `userId`。
+> `Book`/`Tag`/`Category`/`ReadingRecord` 皆新增 `userId` 欄位，所有查詢、新增、更新、刪除
+> 皆自動依 `userId` 過濾/綁定，`BookQueryPort.existsBook(bookId, userId)` 亦需同時比對
+> `userId` 才視為存在，避免用 `bookId` 越權存取他人書本、跨用戶借用書本 ID 建立閱讀記錄。
