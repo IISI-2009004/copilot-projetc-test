@@ -30,27 +30,24 @@ API="https://api.github.com/repos/${GH_OWNER}/${GH_REPO}"
 TMP_JSON="$(mktemp)"
 trap 'rm -f "${TMP_JSON}"' EXIT
 
-# 用 python3（多數 git bash/Windows 環境已內建或可用）或簡易跳脫方式產生合法 JSON。
-# 若沒有 python3，退回用基本的字串取代跳脫雙引號，避免依賴額外工具。
-if command -v python3 >/dev/null 2>&1; then
-  python3 - "$HEAD_BRANCH" "$BASE_BRANCH" "$TITLE" "$BODY" > "${TMP_JSON}" << 'PYEOF'
-import json, sys
-head, base, title, body = sys.argv[1:5]
-print(json.dumps({"title": title, "head": head, "base": base, "body": body}))
-PYEOF
-else
-  esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
-  {
-    printf '{'
-    printf '"title": "%s", ' "$(esc "$TITLE")"
-    printf '"head": "%s", ' "$(esc "$HEAD_BRANCH")"
-    printf '"base": "%s", ' "$(esc "$BASE_BRANCH")"
-    printf '"body": "%s"' "$(esc "$BODY")"
-    printf '}'
-  } > "${TMP_JSON}"
-fi
+# 用純 bash/sed 產生合法 JSON 字串（跳脫反斜線、雙引號），避免依賴 python3。
+# （某些 Windows Git Bash 環境的 python3 與 heredoc/路徑轉譯不相容，會靜默失敗，
+#   因此改用純 shell 內建工具，確保跨環境一致可靠。）
+esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
+{
+  printf '{'
+  printf '"title": "%s", ' "$(esc "$TITLE")"
+  printf '"head": "%s", ' "$(esc "$HEAD_BRANCH")"
+  printf '"base": "%s", ' "$(esc "$BASE_BRANCH")"
+  printf '"body": "%s"' "$(esc "$BODY")"
+  printf '}'
+} > "${TMP_JSON}"
 
 echo "== 建立 PR：${HEAD_BRANCH} -> ${BASE_BRANCH} =="
+echo "-- 送出的 JSON 內容（除錯用）--"
+cat "${TMP_JSON}"
+echo
+echo "-------------------------------"
 
 RESPONSE="$(curl -sS -X POST \
   -H "Authorization: Bearer ${GH_TOKEN}" \
