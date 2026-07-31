@@ -7,7 +7,8 @@
 ## 1. 系統概述
 
 個人圖書管理系統（Personal Book Manager）供個人用戶管理藏書與閱讀記錄，  
-防止重複購買、協助整理分類、並提供閱讀進度可視化。
+防止重複購買、協助整理分類、並提供閱讀進度可視化。閱讀記錄不限於個人藏書，  
+亦可記錄向朋友或圖書館借閱的書籍。
 
 ---
 
@@ -27,13 +28,23 @@
 
 ### 模組 B — 閱讀記錄（reading）
 
+> **書本來源（ReadingSource）**：閱讀記錄不限於個人藏書。每筆閱讀記錄需標記來源：
+> - `OWNED`　自己的藏書（對應 book 模組的 `bookId`）
+> - `BORROWED_FRIEND`　向朋友借閱（無 `bookId`，僅記錄書名/作者文字）
+> - `BORROWED_LIBRARY`　向圖書館借閱（無 `bookId`，僅記錄書名/作者文字）
+>
+> `source = OWNED` 時必須提供 `bookId`（且不可同時提供 `externalTitle`）；
+> `source = BORROWED_FRIEND` 或 `BORROWED_LIBRARY` 時必須提供 `externalTitle`（書名，必填）、
+> `externalAuthor`（作者，選填），且不可提供 `bookId`。此為互斥規則，本 Sprint 暫不做借閱對象、
+> 應歸還日期、歸還狀態等借閱管理功能。
+
 | ID | 用戶故事 | EARS 需求 | 驗收標準 |
 |----|----------|-----------|---------|
-| US-R01 | 作為用戶，我想新增某本書的閱讀記錄（開始日期、閱讀時長、進度%） | WHEN 用戶新增閱讀記錄 THE SYSTEM SHALL 先確認書本存在（BookQueryPort），再儲存 | 書本不存在回 404；時長必須 > 0 |
-| US-R02 | 作為用戶，我想更新閱讀記錄（繼續計時、更新進度） | WHEN 用戶更新閱讀記錄 THE SYSTEM SHALL 累加時長並更新進度百分比 | 進度 0-100；時長累計不可負數 |
-| US-R03 | 作為用戶，我想查看某本書的完整閱讀歷史 | WHEN 用戶查詢某 bookId 的閱讀記錄 THE SYSTEM SHALL 按日期回傳所有閱讀紀錄 | 支援分頁；無記錄回空陣列 |
-| US-R04 | 作為用戶，我想查看閱讀日曆（每天閱讀幾分鐘） | WHEN 用戶查詢月份閱讀日曆 THE SYSTEM SHALL 以每日彙整閱讀時長（分鐘）回傳 | 無記錄的日期不出現；跨日閱讀分別計入對應日期 |
-| US-R05 | 作為用戶，我想看整體閱讀統計（總時長、已完成書籍數） | THE SYSTEM SHALL 計算所有書本累計閱讀時長與進度 = 100% 的書籍數 | 即時計算；效能 < 500ms；統計計算**不排除**已被軟刪除書本的歷史閱讀記錄（保留完整歷史）|
+| US-R01 | 作為用戶，我想新增閱讀記錄（自己的藏書、或向朋友/圖書館借閱的書），記錄開始日期、閱讀時長、進度% | WHEN 用戶新增閱讀記錄且 `source = OWNED` THE SYSTEM SHALL 先呼叫 BookQueryPort 確認 `bookId` 存在，再儲存；WHEN `source` 為 `BORROWED_FRIEND` 或 `BORROWED_LIBRARY` THE SYSTEM SHALL 直接儲存 `externalTitle`/`externalAuthor`，不查詢 book 模組 | `source=OWNED` 但書本不存在回 404；`source≠OWNED` 但缺少 `externalTitle` 回 400；`bookId` 與 `externalTitle` 同時提供或同時缺漏回 400（互斥驗證失敗）；時長必須 > 0 |
+| US-R02 | 作為用戶，我想更新閱讀記錄（繼續計時、更新進度） | WHEN 用戶更新閱讀記錄 THE SYSTEM SHALL 累加時長並更新進度百分比 | 進度 0-100；時長累計不可負數；`source`/`bookId`/`externalTitle` 等來源資訊建立後不可修改（如需修正應刪除重建）|
+| US-R03 | 作為用戶，我想查看某本書（含借閱的書）的完整閱讀歷史 | WHEN 用戶查詢某 `bookId`（自己藏書）或以 `source`+關鍵字（借閱書）查詢 THE SYSTEM SHALL 按日期回傳所有符合條件的閱讀紀錄 | 支援分頁；無記錄回空陣列；可依 `source` 篩選 |
+| US-R04 | 作為用戶，我想查看閱讀日曆（每天閱讀幾分鐘） | WHEN 用戶查詢月份閱讀日曆 THE SYSTEM SHALL 以每日彙整閱讀時長（分鐘）回傳，**不分來源、涵蓋自己藏書與借閱書籍** | 無記錄的日期不出現；跨日閱讀分別計入對應日期 |
+| US-R05 | 作為用戶，我想看整體閱讀統計（總時長、已完成書籍數） | THE SYSTEM SHALL 計算所有閱讀記錄（不分來源）之累計閱讀時長，以及進度 = 100% 的相異書本數 | 即時計算；效能 < 500ms；統計計算**不排除**已被軟刪除書本的歷史閱讀記錄（保留完整歷史）；「相異書本」之判斷：`source=OWNED` 以 `bookId` 為身分識別，`source≠OWNED` 以 `(source, externalTitle, externalAuthor)` 為身分識別 |
 
 ---
 
@@ -63,3 +74,7 @@ reading → book（查詢，同步呼叫）
 > 因此 book 與 reading 之間**僅存在單一方向**的耦合（reading 依賴 book 的 `BookQueryPort` 查詢書本是否存在／未刪除），
 > 不需要事件通知或反向依賴，模組邊界維持單純的單向依賴關係。閱讀記錄一旦建立即為獨立的歷史資料，
 > 其生命週期不與書本的刪除狀態綁定。
+>
+> **借閱書籍（`source ≠ OWNED`）完全不呼叫 `BookQueryPort`**：向朋友或圖書館借閱的書不屬於個人藏書，
+> book 模組對其毫無所知，reading 模組僅在本地儲存 `externalTitle`/`externalAuthor` 文字欄位，
+> 不建立、不查詢 book 模組的任何資料。僅當 `source = OWNED` 時才需驗證 `bookId` 是否存在。

@@ -55,8 +55,9 @@ src/main/java/com/iisi/bookmanager/
 │   ├── controller/    ReadingController.java
 │   ├── service/       ReadingService.java, ReadingCalendarService.java
 │   ├── repository/    ReadingRecordRepository.java
-│   ├── domain/        ReadingRecord.java
+│   ├── domain/        ReadingRecord.java, ReadingSource.java (ENUM)
 │   ├── dto/           ReadingRequest.java, ReadingResponse.java, CalendarResponse.java
+│   ├── validation/    ValidReadingSource.java（自訂 class-level 驗證註解 + Validator）
 │   └── exception/     ReadingRecordNotFoundException.java
 └── common/
     ├── exception/     GlobalExceptionHandler.java, ErrorResponse.java
@@ -93,14 +94,25 @@ src/main/java/com/iisi/bookmanager/
 | name | VARCHAR(100) UNIQUE | 分類名稱 |
 
 ### ReadingRecord
+
+> 決策紀錄：[`ADR-0003`](../architecture/adr/0003-reading-record-supports-borrowed-books.md)（閱讀記錄支援借閱來源）
+
 | 欄位 | 型別 | 說明 |
 |------|------|------|
 | id | Long (PK, auto) | 主鍵 |
-| bookId | Long (FK → book.id) | 書本 ID |
+| bookId | Long (FK → book.id, **nullable**) | 書本 ID；僅 `source = OWNED` 時提供 |
+| source | ENUM(OWNED, BORROWED_FRIEND, BORROWED_LIBRARY) NOT NULL | 書本來源：自己藏書 / 向朋友借 / 向圖書館借 |
+| externalTitle | VARCHAR(200) (**nullable**) | 借閱書籍的書名；`source ≠ OWNED` 時必填，`source = OWNED` 時必為 null |
+| externalAuthor | VARCHAR(100) (**nullable**) | 借閱書籍的作者；`source ≠ OWNED` 時選填 |
 | readDate | DATE NOT NULL | 閱讀日期 |
 | durationMinutes | INT NOT NULL (≥ 1) | 本次閱讀時長（分鐘）|
 | progressPercent | INT (0-100) | 進度百分比 |
 | createdAt | TIMESTAMP | 建立時間 |
+
+> **互斥約束**（由 DB CHECK 約束 + Service 層雙重驗證）：
+> `(source = 'OWNED' AND bookId IS NOT NULL AND externalTitle IS NULL)`
+> **OR**
+> `(source <> 'OWNED' AND bookId IS NULL AND externalTitle IS NOT NULL)`
 
 ---
 
@@ -138,11 +150,16 @@ src/main/java/com/iisi/bookmanager/
 
 | Method | Path | 說明 | Request Body | Response |
 |--------|------|------|-------------|---------|
-| POST | `/api/reading` | 新增閱讀記錄 | ReadingRequest | 201 ReadingResponse |
-| PUT | `/api/reading/{id}` | 更新閱讀記錄 | ReadingRequest | 200 ReadingResponse / 404 |
-| GET | `/api/reading?bookId=&page=&size=` | 查詢閱讀歷史 | — | 200 Page\<ReadingResponse\> |
-| GET | `/api/reading/calendar?year=&month=` | 閱讀日曆 | — | 200 List\<CalendarResponse\> |
-| GET | `/api/reading/stats` | 閱讀統計 | — | 200 StatsResponse |
+| POST | `/api/reading` | 新增閱讀記錄（自己藏書或借閱書皆可）| ReadingRequest | 201 ReadingResponse / 400(互斥驗證失敗或缺必填欄位) / 404(`source=OWNED` 但書本不存在) |
+| PUT | `/api/reading/{id}` | 更新閱讀記錄（僅可更新 readDate/durationMinutes/progressPercent，來源相關欄位建立後不可變更）| ReadingRequest | 200 ReadingResponse / 404 |
+| GET | `/api/reading?bookId=&source=&page=&size=` | 查詢閱讀歷史（`bookId` 僅適用於 `source=OWNED`；`source` 可單獨篩選借閱記錄）| — | 200 Page\<ReadingResponse\> |
+| GET | `/api/reading/calendar?year=&month=` | 閱讀日曆（彙整所有來源）| — | 200 List\<CalendarResponse\> |
+| GET | `/api/reading/stats` | 閱讀統計（彙整所有來源）| — | 200 StatsResponse |
+
+**ReadingRequest 欄位**：`source`（enum，必填，預設 `OWNED`）、`bookId`（`source=OWNED` 時必填）、
+`externalTitle`（`source≠OWNED` 時必填）、`externalAuthor`（選填）、`readDate`、`durationMinutes`、`progressPercent`。
+
+**ReadingResponse 欄位**：新增 `source`、`externalTitle`、`externalAuthor`；`bookId` 於借閱記錄時為 `null`。
 
 ---
 
@@ -166,10 +183,14 @@ public interface BookQueryPort {
 
 BookService 實作此介面，並以 `@Service` 注入供 reading 模組使用。
 
+> **`BookQueryPort` 僅適用於 `source = OWNED` 的閱讀記錄**：向朋友或圖書館借閱的書
+>（`source = BORROWED_FRIEND` / `BORROWED_LIBRARY`）不在個人藏書系統內，reading 模組
+> 新增此類記錄時**完全不呼叫** `BookQueryPort`，僅在本地驗證 `externalTitle` 必填即可儲存。
+
 > **書本刪除與閱讀記錄的關係**：書本刪除為軟刪除（僅變更 `deleted` 狀態），不涉及任何跨模組事件或
 > 對 reading 模組的呼叫。既有閱讀記錄不會被刪除或修改，永久保留作為歷史資料；僅影響
-> `BookQueryPort.existsBook()` 回傳 false，導致該書本**無法再新增**閱讀記錄（US-R01），
-> 但既有記錄的查詢（歷史、日曆、統計）不受影響。
+> `BookQueryPort.existsBook()` 回傳 false，導致該書本**無法再新增** `source=OWNED` 的閱讀記錄（US-R01），
+> 但既有記錄的查詢（歷史、日曆、統計）不受影響；借閱書籍的記錄本就不受此限制。
 
 ---
 
@@ -187,23 +208,25 @@ BookService 實作此介面，並以 `@Service` 注入供 reading 模組使用�
 
 ---
 
-## 7. 序列圖（新增閱讀記錄）
+## 7. 序列圖（新增閱讀記錄，含來源分支）
 
 ```
-用戶         ReadingController    ReadingService    BookQueryPort    ReadingRepository
- │                │                    │                 │                 │
- │─POST /reading─►│                    │                 │                 │
- │                │─validateInput()    │                 │                 │
- │                │──────────────────►│                 │                 │
- │                │                   │─existsBook(id)─►│                 │
- │                │                   │                 │─BookService     │
- │                │                   │◄────true/false──│                 │
- │                │                   │                 │                 │
- │                │  [false] throw BookNotFoundException                   │
- │                │                   │─────────────────────────────────►│
- │                │                   │                                   │─save()
- │                │◄──ReadingResponse─│                                   │
- │◄──201──────────│                    │                 │                 │
+用戶         ReadingController    ReadingService       BookQueryPort    ReadingRepository
+ │                │                    │                    │                 │
+ │─POST /reading─►│                    │                    │                 │
+ │                │─validateInput()    │                    │                 │
+ │                │  (互斥驗證: source=OWNED⇔bookId有值 / source≠OWNED⇔externalTitle有值)
+ │                │──────────────────►│                    │                 │
+ │                │                   │─[source=OWNED]─────►│                 │
+ │                │                   │   existsBook(id)    │                 │
+ │                │                   │◄────true/false──────│                 │
+ │                │                   │  [false] throw BookNotFoundException  │
+ │                │                   │                                       │
+ │                │                   │─[source≠OWNED] 略過 BookQueryPort，直接使用 externalTitle/externalAuthor
+ │                │                   │──────────────────────────────────────►│
+ │                │                   │                                       │─save()
+ │                │◄──ReadingResponse─│                                       │
+ │◄──201──────────│                    │                    │                 │
 ```
 
 ---

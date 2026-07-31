@@ -20,7 +20,7 @@
 | 威脅類型 | 攻擊面 | 情境 | 緩解措施 | 殘餘風險 |
 |---------|--------|------|---------|---------|
 | **S**poofing | REST API | 目前無身分驗證，任何呼叫端可視為合法用戶 | 本 Sprint 為單用戶個人系統，暫不做驗證；**後續 Sprint** 需加入 Spring Security + JWT | 高（部署到多用戶/公網環境前必須補上）|
-| **T**ampering | Book / ReadingRecord 更新 API | 惡意或錯誤輸入竄改資料 | Bean Validation（@NotBlank/@Pattern/@Min/@Max）；JPA 參數化查詢/JPQL，禁止字串拼接 SQL | 低 |
+| **T**ampering | Book / ReadingRecord 更新 API；借閱書籍的 `externalTitle`/`externalAuthor`（自由文字，無來源驗證）| 惡意或錯誤輸入竄改資料；借閱書籍名稱可任意輸入，無法比對真實書目 | Bean Validation（@NotBlank/@Pattern/@Min/@Max，`externalTitle` 加長度上限如 200 字）；JPA 參數化查詢/JPQL，禁止字串拼接 SQL | 低（借閱書名真實性本就無法驗證，屬於功能設計上的可接受風險，非系統漏洞）|
 | **R**epudiation | 書本被刪除後，過去的閱讀行為紀錄真實性遭質疑 | 書本刪除僅為軟刪除狀態變更，不影響、不刪除任何 `ReadingRecord`；歷史資料完整保留可供追溯 | 低 |
 | **I**nformation Disclosure | 例外訊息回傳前端 | Stack trace 或 SQL 錯誤細節外洩，暴露內部結構 | `GlobalExceptionHandler` 統一轉換為 `ErrorResponse`（code, message, timestamp），不含 stack trace；SLF4J 記錄詳細錯誤僅於伺服器端 log | 低 |
 | **D**enial of Service | 搜尋 API 無上限查詢 / 大量分頁請求 | 惡意大量請求造成資料庫負載 | 分頁預設 20 筆並限制 `size` 上限（建議 ≤ 100）；後續可加 Rate Limiting（本 Sprint 未實作）| 中（Rate Limiting 為技術債，見 tasks.md 待辦）|
@@ -46,3 +46,4 @@
 |------|--------|------|
 | 2026-07-31 | Alice（架構師） | 初版威脅模型建立 |
 | 2026-07-31 | Alice（架構師） | 依用戶決策修正：書本刪除改為純狀態變更，不刪除閱讀記錄，移除跨模組事件相關威脅項；詳見 ADR-0001（已標記 Superseded）|
+| 2026-07-31 | Alice（架構師） | 依用戶決策擴充：閱讀記錄支援借閱來源（朋友/圖書館），新增 `externalTitle`/`externalAuthor` 自由文字欄位之 Tampering 風險說明；詳見 ADR-0003 |

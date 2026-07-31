@@ -37,26 +37,33 @@
 ## 模組 B：reading（負責人 Carol，分支 `feature/reading-record`）
 
 - [ ] **B1** `ReadingRecord` Entity + `ReadingRecordRepository`  
-  - 欄位：bookId(FK), readDate, durationMinutes(≥1), progressPercent(0-100), createdAt  
-  - 自訂查詢：`findByBookId`（分頁）、`findByReadDateBetween`（日曆用）
+  - 欄位：bookId(FK, **nullable**), source(ENUM: OWNED/BORROWED_FRIEND/BORROWED_LIBRARY), externalTitle(**nullable**), externalAuthor(**nullable**), readDate, durationMinutes(≥1), progressPercent(0-100), createdAt  
+  - DB CHECK 約束：`(source='OWNED' AND bookId IS NOT NULL AND externalTitle IS NULL) OR (source<>'OWNED' AND bookId IS NULL AND externalTitle IS NOT NULL)`  
+  - 自訂查詢：`findByBookId`（分頁，僅 OWNED）、`findBySource`（分頁，借閱記錄）、`findByReadDateBetween`（日曆用，不分來源）
 
 - [ ] **B2** `ReadingService`（新增/更新閱讀記錄 + 閱讀時長累計）  
-  - `addRecord`：先呼叫 `BookQueryPort.existsBook(bookId)`；書本不存在拋 404  
-  - `updateRecord`：累加 durationMinutes、更新 progressPercent  
-  - `getRecordsByBook`：分頁查詢  
-  - `getStats`：總時長（SUM）、已完成書籍數（progressPercent = 100）
+  - `addRecord`：`source=OWNED` 時先呼叫 `BookQueryPort.existsBook(bookId)`（不存在拋 404）；`source≠OWNED` 時**不呼叫** BookQueryPort，直接驗證 `externalTitle` 必填後儲存  
+  - `updateRecord`：累加 durationMinutes、更新 progressPercent；`source`/`bookId`/`externalTitle`/`externalAuthor` 建立後不可修改  
+  - `getRecordsByBook`：分頁查詢（僅 OWNED，依 bookId）  
+  - `getRecordsBySource`：分頁查詢借閱記錄（依 source 篩選）  
+  - `getStats`：總時長（SUM，不分來源）、已完成相異書籍數（`source=OWNED` 以 bookId 去重，`source≠OWNED` 以 `(source, externalTitle, externalAuthor)` 去重）
 
 - [ ] **B3** `ReadingCalendarService`（依日期彙整閱讀時長）  
-  - `getMonthlyCalendar(year, month)`：以 `readDate` group by，彙整每日總分鐘  
+  - `getMonthlyCalendar(year, month)`：以 `readDate` group by（不分來源），彙整每日總分鐘  
   - 回傳 `List<CalendarResponse>`（date, totalMinutes）
 
+- [ ] **B7** `ValidReadingSource` 自訂 Bean Validation（class-level）  
+  - 驗證 `ReadingRequest` 互斥規則：`source=OWNED` ⇔ `bookId` 有值且 `externalTitle` 為 null；`source≠OWNED` ⇔ `bookId` 為 null 且 `externalTitle` 有值  
+  - 驗證失敗回 400，錯誤訊息需清楚指出違反互斥規則（不洩漏內部細節）
+
 - [ ] **B4** `ReadingController` + Bean Validation  
-  - `ReadingRequest`（@NotNull bookId/readDate、@Min(1) durationMinutes、@Min(0)@Max(100) progressPercent）  
-  - `ReadingResponse`、`CalendarResponse`、`StatsResponse`  
-  - 端點：POST /reading、PUT /reading/{id}、GET /reading、GET /reading/calendar、GET /reading/stats
+  - `ReadingRequest`（@NotNull source/readDate、@Min(1) durationMinutes、@Min(0)@Max(100) progressPercent、`@ValidReadingSource` class-level 驗證）  
+  - `ReadingResponse`（新增 source/externalTitle/externalAuthor 欄位，bookId 於借閱記錄為 null）、`CalendarResponse`、`StatsResponse`  
+  - 端點：POST /reading、PUT /reading/{id}、GET /reading?bookId=&source=&page=&size=、GET /reading/calendar、GET /reading/stats
 
 - [ ] **B5** 閱讀時長計算、日期邊界測試 ≥ 80%  
   - 必含：跨日閱讀累計、時長為零邊界、書本不存在、progressPercent 邊界(0/100)、書本被軟刪除後既有閱讀記錄仍可查詢（不被刪除）  
+  - 新增案例：`source=OWNED` 缺 bookId（400）、`source≠OWNED` 缺 externalTitle（400）、`source≠OWNED` 誤帶 bookId（400）、借閱記錄新增時不呼叫 BookQueryPort（Mockito verify 0 次呼叫）、統計功能正確去重借閱書籍  
   - Mock `BookQueryPort`（測試不依賴 book 模組實作）
 
 ---
@@ -69,9 +76,10 @@ public interface BookQueryPort {
     boolean existsBook(Long bookId);
 }
 // BookService implements BookQueryPort（book 模組提供實作）
-// ReadingService 注入 BookQueryPort（reading 模組消費）
+// ReadingService 注入 BookQueryPort（reading 模組消費，僅 source=OWNED 時呼叫）
 // 書本刪除僅為狀態變更（軟刪除），不觸發任何跨模組呼叫或事件；
 // 閱讀記錄為獨立歷史資料，禁止任一模組直接注入或呼叫對方的 Repository / Entity
+// 借閱書籍（source≠OWNED）完全不進入 book 模組，reading 僅本地儲存 externalTitle/externalAuthor
 ```
 
 ---
