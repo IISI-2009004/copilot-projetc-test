@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "./scripts/session-report.sh",
+        "timeout": 15
+      }
+    ]
+  }
+}

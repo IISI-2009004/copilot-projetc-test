@@ -1,0 +1,10688 @@
++++
+date = '2025-10-31T00:00:00+08:00'
+draft = false
+title = 'spec-kit使用教學'
+tags = ['教學', 'AI開發']
+categories = ['教學']
+lastmod = '2026-07-15T00:00:00+08:00'
++++
+
+## Spec-Kit 使用教學手冊
+
+> **版本**: 14.0  
+> **最後更新**: 2026年7月15日  
+> **適用於**: Spec-Kit v0.12.15+ / Spec Kit Templates - 0.12.15  
+> **Created by**: Eric Cheng
+
+---
+
+## 📚 目錄
+
+**[前言](#前言)**
+
+- [目的與適用對象](#目的與適用對象)
+- [背景說明:為何採用 SDD + Spec-Kit → AI 助手流程](#背景說明為何採用-sdd--spec-kit--ai-助手流程)
+- [本手冊使用假設](#本手冊使用假設)
+
+**[第一章:概念理解](#第一章概念理解)**
+
+- [1.1 SDD 是什麼?](#11-sdd-是什麼)
+- [1.2 Spec-Kit 概覽](#12-spec-kit-概覽)
+- [1.3 SDD 中的關鍵 artefacts(工件)](#13-sdd-中的關鍵-artefacts工件)
+- [1.4 流程概覽:SDD 的階段/步驟](#14-流程概覽sdd-的階段步驟)
+- [1.5 為什麼這對我們團隊/共用平台開發特別有價值](#15-為什麼這對我們團隊共用平台開發特別有價值)
+
+**[第二章:環境準備](#第二章環境準備)**
+
+- [2.1 前置條件](#21-前置條件)
+- [2.2 安裝 Spec-Kit CLI](#22-安裝-spec-kit-cli)
+- [2.3 建立專案與初始化](#23-建立專案與初始化)
+- [2.4 建立團隊守則 (Constitution)](#24-建立團隊守則-constitution)
+- [2.5 模板與提示文件說明](#25-模板與提示文件說明)
+- [2.6 GitHub 倉庫分支與版本控制建議](#26-github-倉庫分支與版本控制建議)
+- [2.7 擴充系統 (Extension System)](#27-擴充系統-extension-system)
+- [2.8 預設系統 (Presets System)](#28-預設系統-presets-system)
+- [2.9 CLI 診斷指令 (doctor / status)](#29-cli-診斷指令-doctor--status)
+- [2.10 Plugin Architecture（v0.4.4-0.4.5 重大架構變革）](#210-plugin-architecturev044-045-重大架構變革)
+- [2.11 整合管理指令 (specify integration)](#211-整合管理指令-specify-integration)
+- [2.12 Git 擴充 (Bundled Git Extension)](#212-git-擴充-bundled-git-extension)
+- [2.13 工作流引擎 (Workflow Engine, v0.7.0)](#213-工作流引擎-workflow-engine-v070)
+- [2.14 --integration 旗標（v0.7.1 取代 --ai）](#214---integration-旗標v071-取代---ai)
+- [2.15 Self Management 指令（v0.7.5 新增，v0.9.3 正式實作完成）](#215-self-management-指令v075-新增v093-正式實作完成)
+- [2.16 預設組合策略 (Composition Strategies, v0.8.0)](#216-預設組合策略-composition-strategies-v080)
+- [2.17 Skills-Based Scaffolding（v0.8.0 新增）](#217-skills-based-scaffoldingv080-新增)
+- [2.18 feature.json 自訂分支支援（v0.8.1 新增）](#218-featurejson-自訂分支支援v081-新增)
+- [2.19 --no-git 旗標棄用與 GITHUB_TOKEN 認證（v0.8.2 新增）](#219---no-git-旗標棄用與-github_token-認證v082-新增)
+- [2.20 目錄探索 CLI 與 Devin 整合（v0.8.3 新增）](#220-目錄探索-cli-與-devin-整合v083-新增)
+- [2.21 Constitution 上下文載入與治理擴充（v0.8.4-v0.8.6 新增）](#221-constitution-上下文載入與治理擴充v084v086-新增)
+- [2.22 Lingma 整合與 Agent Orchestrator（v0.8.7 新增）](#222-lingma-整合與-agent-orchestratorv087-新增)
+- [2.23 Config-Driven 認證與排程擴充（v0.8.8 新增）](#223-config-driven-認證與排程擴充v088-新增)
+- [2.24 治理生態系擴充與 BrownKit（v0.8.9 新增）](#224-治理生態系擴充與-brownkitv089-新增)
+- [2.25 社群治理擴充與文件站遷移（v0.8.10 新增）](#225-社群治理擴充與文件站遷移v0810-新增)
+- [2.26 高保證規格工作流與版本特徵報告（v0.8.11 新增）](#226-高保證規格工作流與版本特徵報告v0811-新增)
+- [2.27 Integration Auto 與社群擴充更新（v0.8.12 新增）](#227-integration-auto-與社群擴充更新v0812-新增)
+- [2.28 工作流迴圈修正與代理工作流自動化（v0.8.13 新增）](#228-工作流迴圈修正與代理工作流自動化v0813-新增)
+- [2.29 CLI 重構與分支命名規範（v0.8.14 新增）](#229-cli-重構與分支命名規範v0814-新增)
+- [2.30 後執行 Hook 與 Token Budget（v0.8.15 新增）](#230-後執行-hook-與-token-budgetv0815-新增)
+- [2.31 Workflow Preset 與規格品質重驗證（v0.8.16 新增）](#231-workflow-preset-與規格品質重驗證v0816-新增)
+- [2.32 Hermes Agent 整合與社群文件整合（v0.8.17 新增）](#232-hermes-agent-整合與社群文件整合v0817-新增)
+- [2.33 Self Upgrade 正式實作與 SPECKIT_WORKFLOW_RUN_ID（v0.8.18-v0.9.0 新增）](#233-self-upgrade-正式實作與-speckit_workflow_run_idv0818-v090-新增)
+- [2.34 Cline 原生整合與相容性修正（v0.9.1 新增）](#234-cline-原生整合與相容性修正v091-新增)
+- [2.35 Workflow Continue-On-Error 與 Self Upgrade 正式實作（v0.9.2-v0.9.3 新增）](#235-workflow-continue-on-error-與-self-upgrade-正式實作v092-v093-新增)
+- [2.36 Resume/Status JSON 輸出與 Rovodev 整合（v0.9.4-v0.9.5 新增）](#236-resumestatus-json-輸出與-rovodev-整合v094-v095-新增)
+- [2.37 Git 擴充改為 Opt-in 與 Legacy 旗標全面移除（v0.10.0 重大變更）](#237-git-擴充改為-opt-in-與-legacy-旗標全面移除v0100-重大變更)
+- [2.38 整合狀態回報強化與 Extension Schema 新欄位（v0.10.1-v0.10.2 新增）](#238-整合狀態回報強化與-extension-schema-新欄位v0101-v0102-新增)
+- [2.39 Data Model Diagram 擴充與 Preset 指令重構（v0.10.3-v0.10.4 新增）](#239-data-model-diagram-擴充與-preset-指令重構v0103-v0104-新增)
+- [2.40 Workflow Step Catalog 與 Zed 整合（v0.11.0 新增）](#240-workflow-step-catalog-與-zed-整合v0110-新增)
+- [2.41 Workflow JSON 輸出強化與 Analyze Subagent 化（v0.11.1-v0.11.3 新增）](#241-workflow-json-輸出強化與-analyze-subagent-化v0111-v0113-新增)
+- [2.42 Bundle 系統 (Bundle System)（v0.11.4 新增）](#242-bundle-系統-bundle-systemv0114-新增)
+- [2.43 ZCode 整合、PyPI 發布籌備與 Firebender 整合（v0.11.5-v0.11.6 新增）](#243-zcode-整合pypi-發布籌備與-firebender-整合v0115-v0116-新增)
+- [2.44 OMP 整合與 Catalog SHA256 驗證（v0.11.7 新增）](#244-omp-整合與-catalog-sha256-驗證v0117-新增)
+- [2.45 Jira 整合進階與 Spec Roadmap 擴充（v0.11.8 新增）](#245-jira-整合進階與-spec-roadmap-擴充v0118-新增)
+- [2.46 多安裝安全與 GHES 認證修正（v0.11.9-v0.11.10 新增）](#246-多安裝安全與-ghes-認證修正v0119-v01110-新增)
+- [2.47 Community Bundle Submission 與 Monorepo 指南（v0.11.7-v0.11.10 新增）](#247-community-bundle-submission-與-monorepo-指南v0117-v01110-新增)
+- [2.48 Agent-Context 全面 Opt-in 與 Workflow Validation 強化（v0.12.0 重大變更）](#248-agent-context-全面-opt-in-與-workflow-validation-強化v0120-重大變更)
+- [2.49 Workflow 平行處理與 Python 腳本類型支援（v0.12.1-v0.12.4 新增）](#249-workflow-平行處理與-python-腳本類型支援v0121-v0124-新增)
+- [2.50 生態系轉型:整合退場、Copilot Skills 棄用與 Catalog 安全性強化（v0.12.2-v0.12.6, v0.12.12 新增）](#250-生態系轉型整合退場copilot-skills-棄用與-catalog-安全性強化v0122-v0126-v01212-新增)
+- [2.51 Bundle 版本管理強化與工作流引擎穩健性（v0.12.7-v0.12.11 新增）](#251-bundle-版本管理強化與工作流引擎穩健性v0127-v01211-新增)
+- [2.52 治理與品質保證預設集擴充、社群目錄成長（v0.12.11-v0.12.15 新增）](#252-治理與品質保證預設集擴充社群目錄成長v01211-v01215-新增)
+
+**[第三章:使用流程詳細說明](#第三章使用流程詳細說明)**
+
+- [3.1 Step 1:撰寫 Spec (/speckit.specify)](#31-step-1撰寫-spec-speckitspecify)
+- [3.2 Step 1a:澄清模糊需求 (/speckit.clarify)](#32-step-1a澄清模糊需求-speckitclarify)
+- [3.3 Step 2:撰寫 Plan (/speckit.plan)](#33-step-2撰寫-plan-speckitplan)
+- [3.3a Step 2a:驗證 Plan (Plan Validation)](#33a-step-2a驗證-plan-plan-validation)
+- [3.4 Step 3:拆分 Tasks (/speckit.tasks)](#34-step-3拆分-tasks-speckittasks)
+- [3.5 Step 4:預實作檢查 (/speckit.analyze + /speckit.checklist)](#35-step-4預實作檢查-speckitanalyze--speckitchecklist)
+- [3.6 Step 5:實作 (/speckit.implement)](#36-step-5實作-speckitimplement)
+- [3.7 Step 6:迭代維護](#37-step-6迭代維護)
+- [3.8 Step 7:既有程式碼評估 (/speckit.converge)](#38-step-7既有程式碼評估-speckitconverge)
+- [第三章小結](#第三章小結)
+
+**[第四章:實務案例與應用指引](#第四章實務案例與應用指引)**
+
+- [4.1 案例一:Greenfield 開發 - 新建交易記錄微服務](#41-案例一greenfield-開發---新建交易記錄微服務)
+- [4.2 案例二:Brownfield 整合 - 為既有系統新增功能](#42-案例二brownfield-整合---為既有系統新增功能)
+- [4.3 團隊協作:多人開發](#43-團隊協作多人開發)
+- [4.4 AI 助手最佳實踐](#44-ai-助手最佳實踐)
+- [4.5 平台導入建議](#45-平台導入建議)
+- [第四章小結](#第四章小結)
+
+**[第五章:常見問題與陷阱](#第五章常見問題與陷阱)**
+
+- [5.1 常見問題（FAQ）](#51-常見問題faq)
+- [5.2 常見陷阱與避免方法](#52-常見陷阱與避免方法)
+- [第五章小結](#第五章小結)
+
+**[第六章:附錄](#第六章附錄)**
+
+- [6.1 完整模板範例](#61-完整模板範例)
+- [6.2 檢查清單](#62-檢查清單)
+- [6.3 參考資源](#63-參考資源)
+- [6.4 社群實作範例 (Community Walkthroughs)](#64-社群實作範例-community-walkthroughs)
+- [6.5 社群工具生態系 (Community Friends)](#65-社群工具生態系-community-friends)
+- [6.6 術語表](#66-術語表)
+- [6.7 快速指令參考](#67-快速指令參考)
+- [6.8 版本異動紀錄 (Changelog 摘要)](#68-版本異動紀錄-changelog-摘要)
+
+**[結語](#結語)**
+
+- [核心要點回顧](#核心要點回顧)
+- [下一步行動](#下一步行動)
+- [保持聯繫](#保持聯繫)
+
+---
+
+## 前言
+
+### 目的與適用對象
+
+本手冊旨在幫助開發團隊快速掌握 **Spec-Driven Development (SDD)** 方法論,並透過 **Spec-Kit** 工具組與 AI 助手協作,建立高品質、可維護的軟體系統。
+
+**適用對象:**
+
+- **新進開發人員** - 希望了解現代化規格驅動開發流程
+- **專案經理/產品負責人** - 需要建立清晰的需求與技術溝通橋樑
+- **架構師/技術領導** - 希望建立團隊統一的開發規範與最佳實務
+- **DevOps/測試工程師** - 需要理解從規格到實作的完整流程
+- **AI 輔助開發推廣者** - 希望讓 AI 工具發揮更大價值的團隊
+
+### 背景說明:為何採用 SDD + Spec-Kit → AI 助手流程
+
+#### 傳統開發的痛點
+
+在傳統軟體開發中,**程式碼一直是王道**。我們撰寫需求文件(PRD)、設計文件、架構圖來「指導」開發,但這些文件往往:
+
+- ❌ **很快過時** - 程式碼改了,文件沒更新
+- ❌ **規格與實作脫節** - 開發人員按自己理解實作,與原始意圖偏離
+- ❌ **溝通成本高** - PM、架構師、開發者之間需要大量會議對齊
+- ❌ **難以追蹤決策** - 為什麼當初這樣設計?沒人記得清楚
+- ❌ **AI 助手效果不佳** - 給 AI 模糊指令,產出品質不穩定
+
+#### SDD 的核心改變:規格即真相
+
+**Spec-Driven Development 反轉了這個權力結構**:
+
+```text
+傳統:需求文件 → 設計文件 → 程式碼(真相)
+SDD: 規格(真相)→ 實作計畫 → 程式碼(生成產物)
+```
+
+核心理念:
+
+- ✅ **規格是可執行的** - 不只是文件,而是可以產生程式碼的「藍圖」
+- ✅ **規格與程式碼同步** - 改規格就重新產生,沒有脫節問題
+- ✅ **AI 助手更有效** - 有結構化規格,AI 產出品質更穩定
+- ✅ **決策可追溯** - 每個技術選擇都關聯回需求
+- ✅ **團隊協作更順暢** - 用自然語言描述「意圖」,而非直接寫程式碼
+
+#### 為什麼現在是導入的最佳時機
+
+三大趨勢讓 SDD 變得不僅可行,而且必要:
+
+1. **AI 能力突破**  
+   現代 AI(如 GitHub Copilot、Claude、Gemini)已能理解複雜規格並產生高品質程式碼。這不是取代開發者,而是將機械性翻譯自動化,讓開發者專注創造力與關鍵思考。
+
+2. **系統複雜度爆炸**  
+   現代應用整合數十個服務、框架、依賴項(如你管理的共用平台:多資料庫、微服務、微前端、批次工作、SFTP/FTPS...)。透過手動流程保持對齊越來越困難。SDD 提供系統化的對齊機制。
+
+3. **變更速度加快**  
+   需求變更不再是例外,而是常態。SDD 讓需求變更從「破壞性重寫」變成「系統化重新生成」:
+   - 改變核心需求 → 實作計畫自動更新
+   - 修改 User Story → 對應 API 自動重新產生
+   - 支援「What-if」實驗:「如果業務要轉型賣 T-shirt,技術怎麼調整?」
+
+#### Spec-Kit 的角色
+
+**Spec-Kit** 是 GitHub 開源的工具組,提供:
+
+- 📝 **結構化模板** - 確保規格完整、無歧義
+- 🤖 **AI 整合指令** - `/speckit.*` 指令與 AI 助手無縫協作
+- 🎯 **品質把關機制** - 透過 Constitution(守則)、Checklist 確保輸出品質
+- 🔄 **完整工作流程** - 從規格 → 計畫 → 任務 → 實作的端對端流程
+
+### 本手冊使用假設
+
+閱讀本手冊前,假設你已具備:
+
+#### 基礎能力
+
+- ✅ 基本軟體開發流程(需求分析、設計、開發、測試)
+- ✅ 版本控制系統使用經驗(Git、GitHub)
+- ✅ 命令列介面(CLI)基本操作
+- ✅ 至少一種程式語言開發經驗
+
+#### 團隊準備度
+
+- ✅ 團隊有意願導入 AI 輔助開發
+- ✅ 可存取 AI 編碼助手(GitHub Copilot / Claude / Gemini / Cursor 等)
+- ✅ 有基本的 CI/CD 流程(或準備建立)
+- ✅ 願意調整既有工作流程
+
+#### 技術環境
+
+- ✅ Windows / macOS / Linux 作業系統
+- ✅ 已安裝或可安裝:Python 3.11+、Git、uv 或 pipx 套件管理工具
+- ✅ 網路可連接 GitHub 與 AI 服務
+
+#### 不需要具備(但有會更好)
+
+- ⚪ 深入的 AI/ML 知識
+- ⚪ 特定框架專家(SDD 與技術棧無關)
+- ⚪ 大型企業開發經驗
+
+---
+
+**✨ 提示**:本手冊採用漸進式教學,從概念→環境→實作→案例→進階,建議依序閱讀。每章結尾都有實務建議與注意事項,可作為快速參考。
+
+---
+
+## 第一章:概念理解
+
+### 1.1 SDD 是什麼?
+
+#### 傳統開發 vs Spec-Driven 開發的差異
+
+**傳統開發流程 (Code-First)**
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+graph LR
+    A[需求討論] --> B[撰寫文件]
+    B --> C[設計會議]
+    C --> D[開始寫程式]
+    D --> E[程式碼=真相]
+    E --> F[文件過時]
+    F --> G[技術債累積]
+```
+
+在傳統開發中:
+
+- 📄 **文件服務於程式碼** - PRD、設計文件是「指南」,程式碼才是「真相」
+- ⚠️ **規格與實作分離** - 開發者按自己理解實作,容易偏離原意
+- 🔄 **變更成本高** - 需求改變時,需手動更新文件→設計→程式碼
+- 📉 **文件衰退** - 程式碼持續演進,文件很少同步更新
+
+**Spec-Driven 開發流程 (Spec-First)**
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+graph LR
+    A[規格 Spec] --> B[實作計畫 Plan]
+    B --> C[任務 Tasks]
+    C --> D[程式碼生成]
+    D --> E[規格=真相]
+    E --> F[程式碼=產物]
+    F --> G[始終同步]
+```
+
+在 SDD 中:
+
+- 🎯 **程式碼服務於規格** - 規格是「真相」,程式碼是「表達」
+- ✅ **規格即可執行** - 規格精確到可以直接產生工作程式碼
+- 🚀 **變更成本低** - 改規格→重新產生,幾分鐘完成
+- 📈 **持續同步** - 規格與程式碼永遠對齊,因為程式碼「來自」規格
+
+#### 核心差異對照表
+
+| 層面 | 傳統開發 | Spec-Driven 開發 |
+|------|---------|------------------|
+| **主要工件** | 程式碼 | 規格文件 |
+| **文件角色** | 指南(常過時) | 可執行的藍圖 |
+| **維護焦點** | 修改程式碼 | 演化規格 |
+| **除錯方式** | 找程式碼 bug | 修正規格中的錯誤定義 |
+| **重構定義** | 改善程式結構 | 重組規格以更清晰 |
+| **變更流程** | 文件→設計→程式碼(手動) | 規格→重新產生(自動) |
+| **AI 角色** | 程式碼補全助手 | 規格理解與實作引擎 |
+| **真相來源** | Git 中的程式碼 | 版本控制的規格 |
+
+#### 為何在 AI 助手輔助開發中更重要
+
+**問題:傳統 AI 輔助的困境**
+
+當你對 AI 說:「幫我做一個使用者登入功能」
+
+❌ AI 可能產生:
+
+- 使用 email/password(你想要的是 SSO)
+- 沒有 MFA 雙因子驗證
+- 存明文密碼(安全災難!)
+- 不符合公司的身份驗證標準
+
+**原因**:AI 在「猜測」你的意圖,而非基於明確規格。
+
+**解決:SDD + AI 的協同效應**
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+graph TD
+    A[明確規格] --> B[AI 理解上下文]
+    B --> C[遵循 Constitution]
+    C --> D[產生符合標準的程式碼]
+    D --> E[可預測的高品質輸出]
+    
+    F[模糊指令] --> G[AI 自由發揮]
+    G --> H[不一致的輸出]
+    H --> I[需要大量修改]
+    
+    style A fill:#2d5016,stroke:#4a7c23,color:#fff
+    style E fill:#2d5016,stroke:#4a7c23,color:#fff
+    style F fill:#6b1f2d,stroke:#a02f45,color:#fff
+    style I fill:#6b1f2d,stroke:#a02f45,color:#fff
+```
+
+**SDD 讓 AI 助手發揮的關鍵**:
+
+1. **結構化輸入** → AI 有清晰上下文,不需猜測
+2. **守則約束** → 透過 Constitution 確保架構一致性
+3. **模板引導** → 強制 AI 考慮所有必要面向(安全、效能、測試...)
+4. **可驗證產出** → 規格定義驗收標準,AI 產出可自動驗證
+
+**實例對比**
+
+| 傳統 AI 互動 | SDD + AI 互動 |
+|-------------|--------------|
+| 「做一個聊天功能」 | `/speckit.specify` 定義:即時訊息、歷史記錄、已讀狀態、離線訊息 |
+| AI 自由發揮技術選擇 | `/speckit.plan` 明確:WebSocket、PostgreSQL、Redis |
+| 結果:可能不符預期 | 結果:可預測、可重現、符合團隊標準 |
+
+---
+
+### 1.2 Spec-Kit 概覽
+
+#### Spec-Kit 的定位
+
+**Spec-Kit** 是 GitHub 開源的工具組,旨在:
+
+- 🎯 **標準化 SDD 流程** - 提供從規格到實作的端對端工作流程
+- 🤖 **與 AI 助手無縫整合** - 透過 `/speckit.*` 指令與多種 AI 工具協作
+- 📋 **確保品質一致性** - 透過模板、守則、檢查清單強制最佳實務
+- 🔄 **支援迭代演進** - 從 Greenfield(全新開發)到 Brownfield(既有系統)
+
+> 📽️ **影片概覽**:想快速了解 Spec-Kit 的運作方式?觀看官方 [影片介紹](https://www.youtube.com/watch?v=a9eR1xsfvHg)。
+>
+> 📖 **官方文件**: https://github.github.io/spec-kit/
+>
+> 📦 **GitHub 倉庫**: https://github.com/github/spec-kit （107K+ 星標、217+ 貢獻者、152 個 Release）
+
+#### 工具組成
+
+**1. Specify CLI (命令列工具)**
+
+```bash
+# 安裝 Spec-Kit CLI
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+
+# 初始化專案
+specify init my-project --integration copilot
+
+# 檢查環境
+specify check
+```
+
+**功能**:
+
+- 專案初始化與目錄結構生成
+- 檢查系統前置條件(Git、AI 工具)
+- 整合多種 AI 助手的設定
+
+**2. 結構化模板**
+
+Spec-Kit 提供五大核心模板:
+
+| 模板 | 檔案 | 用途 |
+|------|-----|------|
+| **規格模板** | `spec-template.md` | 定義「什麼」和「為什麼」 |
+| **計畫模板** | `plan-template.md` | 定義「如何」做(技術選擇) |
+| **任務模板** | `tasks-template.md` | 拆分可執行工作單元 |
+| **檢查清單模板** | `checklist-template.md` | 品質檢查與一致性驗證 |
+| **Agent 檔案模板** | `agent-file-template.md` | AI 代理配置與指引 |
+
+**3. AI 整合指令 (Slash Commands)**
+
+核心指令:
+
+```bash
+/speckit.constitution  # 建立專案守則
+/speckit.specify       # 創建功能規格
+/speckit.plan          # 產生實作計畫
+/speckit.tasks         # 拆分任務清單
+/speckit.taskstoissues # 將任務轉為 GitHub Issues
+/speckit.implement     # 執行實作
+```
+
+輔助指令:
+
+```bash
+/speckit.clarify       # 澄清模糊需求
+/speckit.analyze       # 一致性分析
+/speckit.checklist     # 產生品質檢查清單
+```
+
+**4. 品質把關機制**
+
+- **Constitution(守則)** - 定義不可違反的開發原則
+- **Pre-Implementation Gates** - 實作前的檢查點
+- **Checklist 驗證** - 確保規格完整性
+
+#### 支援的 AI 助手 / 智能代理
+
+Spec-Kit 支援 **30+ 種** 主流 AI 編碼助手，且持續快速成長（下表列出截至 v0.12.15 已知的主要代理，確切完整清單請以實際安裝版本查詢結果或 [官方整合清單](https://github.github.io/spec-kit/reference/integrations.html) 為準）。隨生態系演進，部分整合也會因對應產品終止或被其他方案取代而**退場**（見表末說明），這是採用第三方 AI 助手整合時必須納入的正常維運考量：
+
+執行 `specify integration list` 可查看已安裝版本支援的所有整合。
+
+| AI 助手 | CLI Key | 支援狀態 | 類型 | 說明 |
+|---------|---------|---------|------|------|
+| **GitHub Copilot** | `copilot` | ✅ 完整支援 | IDE | VS Code 整合，企業級支援 |
+| **Claude Code** | `claude` | ✅ 完整支援 | CLI | Anthropic Claude，推理能力強；安裝為 native skills（`.claude/skills/`），指令格式 `/speckit-constitution`、`/speckit-plan` 等 |
+| **Cursor** | `cursor-agent` | ✅ 完整支援 | IDE | AI-first 編輯器 |
+| **Forge** | `forge` | ✅ 完整支援 | CLI | Forge CLI 工具（v0.4.4 新增） |
+| **Forgecode** | `forgecode` | ✅ 完整支援 | CLI | Forgecode CLI 工具（v0.5.1 新增） |
+| **Gemini CLI** | `gemini` | ✅ 完整支援 | CLI | Google Gemini 命令列版 |
+| **Qwen Code** | `qwen` | ✅ 完整支援 | CLI | 阿里雲通義千問 |
+| **opencode** | `opencode` | ✅ 完整支援 | CLI | opencode CLI |
+| **Codex CLI** | `codex` | ✅ 完整支援 | CLI | OpenAI Codex CLI，建議搭配 `--integration-options="--skills"`（⚠️ 舊版 `--ai-skills` 簡寫已於 v0.10.0 移除） |
+| **Windsurf** | `windsurf` | ⛔ 已退場（v0.12.2） | IDE | Windsurf 產品線已併入 Cognition 旗下 Devin，整合隨之停止維護；既有專案建議改用 `devin` 或其他 IDE 整合 |
+| **Kilo Code** | `kilocode` | ✅ 完整支援 | IDE | Kilo Code IDE |
+| **Auggie CLI** | `auggie` | ✅ 完整支援 | CLI | Augment Code CLI |
+| **Roo Code** | `roo` | ⛔ 已退場（v0.12.3） | IDE | 官方 Roo Code 擴充已停止維護並下架；建議改用 Cline 或 Kilo Code 等其他 VS Code 衍生整合 |
+| **CodeBuddy** | `codebuddy` | ✅ 完整支援 | CLI | CodeBuddy CLI |
+| **Qoder CLI** | `qodercli` | ✅ 完整支援 | CLI | Qoder CLI |
+| **Kiro CLI** | `kiro-cli` | ✅ 完整支援 | CLI | AWS Kiro CLI（別名：`kiro`） |
+| **Amp** | `amp` | ✅ 完整支援 | CLI | Amp CLI |
+| **SHAI** | `shai` | ✅ 完整支援 | CLI | OVHcloud SHAI |
+| **IBM Bob** | `bob` | ✅ 完整支援 | IDE | IBM Bob IDE，支援 slash command |
+| **Jules** | `jules` | ✅ 完整支援 | Agent | Google Jules 非同步 AI 代理 |
+| **Antigravity (agy)** | `agy` | ✅ 完整支援 | CLI | Antigravity AI CLI，建議搭配 `--integration-options="--skills"`（⚠️ 舊版 `--ai-skills` 簡寫已於 v0.10.0 移除） |
+| **Tabnine CLI** | `tabnine` | ✅ 完整支援 | CLI | Tabnine AI CLI |
+| **Kimi Code** | `kimi` | ✅ 完整支援 | CLI | Kimi Code CLI（月之暗面） |
+| **Mistral Vibe** | `vibe` | ✅ 完整支援 | CLI | Mistral Vibe CLI |
+| **Pi Coding Agent** | `pi` | ✅ 完整支援 | CLI | Pi Coding Agent（MCP 需透過擴充支援） |
+| **Junie** | `junie` | ✅ 完整支援 | IDE | JetBrains Junie AI 代理 |
+| **Trae** | `trae` | ✅ 完整支援 | IDE | Trae IDE |
+| **iFlow CLI** | `iflow` | ⛔ 已退場（v0.12.2） | CLI | 原廠產品已終止維運，spec-kit 隨之移除官方支援；請改用其他 CLI 型代理（如 opencode、Qwen Code） |
+| **Devin** | `devin` | ✅ 完整支援 | Terminal | Devin for Terminal，skills-based 整合（v0.8.3 新增） |
+| **Lingma** | `lingma` | ✅ 完整支援 | IDE | 阿里巴巴 Tongyi Lingma 智慧編碼助手（v0.8.7 新增） |
+| **Goose** | `goose` | ✅ 完整支援 | CLI | Goose AI agent，使用 YAML recipe 格式（`.goose/recipes/`），支援 slash command（v0.6.2 新增） |
+| **Hermes** | `hermes` | ✅ 完整支援 | Agent | Hermes Agent，支援標準 SDD 工作流（v0.8.17 新增） |
+| **Cline** | `cline` | ✅ 完整支援 | IDE | Cline 原生整合（v0.9.1 新增） |
+| **rovodev** | `rovodev` | ✅ 完整支援 | CLI | Atlassian rovodev（v0.9.5 新增） |
+| **Zed** | `zed` | ✅ 完整支援 | IDE | Zed 編輯器整合（v0.11.0 新增） |
+| **ZCode** | `zcode` | ✅ 完整支援 | CLI | Z.AI ZCode（v0.11.5 新增） |
+| **Firebender** | `firebender` | ✅ 完整支援 | IDE | Android Studio / IntelliJ 整合（v0.11.6 新增） |
+| **OMP** | `omp` | ✅ 完整支援 | CLI | Oh My Pi（v0.11.7 新增） |
+| **Generic** | `generic` | ✅ 完整支援 | - | 自帶代理，⚠️ `--ai-commands-dir` 已於 v0.10.0 移除，請執行 `specify init --help` 確認當前自訂命令目錄語法 |
+
+> 💡 **Codex CLI 特殊說明**：Codex 建議使用 skills 模式，搭配 `--integration-options="--skills"`（⚠️ 舊版 `--ai-skills` 簡寫已於 v0.10.0 移除）。安裝後 skills 位於 `.agents/skills/`，指令格式為 `$speckit-<command>` 而非 `/speckit.*`。
+>
+> 💡 **Claude Code 特殊說明**：Claude Code 預設安裝為 native skills（`.claude/skills/`），指令格式為 `/speckit-constitution`、`/speckit-specify`、`/speckit-plan`、`/speckit-tasks`、`/speckit-implement`。
+>
+> 💡 **Devin 特殊說明**：Devin 使用 skills-based 整合模式，安裝至 `.devin/skills/` 目錄。
+>
+> ⛔ **整合退場說明**：Windsurf、Roo Code、iFlow CLI 三項整合已於 v0.12.2-v0.12.3 陸續退場，原因分別為「產品併購後終止獨立維運」「擴充停止維護」「原廠產品終止」。這反映 Spec-Kit 作為連接 30+ 種第三方 AI 助手的中介層，其支援清單會隨上游生態系變化而增減；規劃團隊標準工具鏈時，建議優先選擇有明確企業支援或活躍社群維運的整合，並定期以 `specify integration list` 核對目前仍受支援的清單。
+
+**選擇建議**：
+- 🏢 **企業環境** → GitHub Copilot（已整合至企業工具鏈）
+- 🧠 **複雜推理** → Claude Code（理解力最強，原生 skills 整合）
+- 🚀 **快速開發** → Cursor（專為 AI 設計的編輯器）
+- 🌐 **開源偏好** → opencode、Qwen Code
+- 📋 **規劃導向** → Kiro CLI（搭配 `--integration kiro-cli`）
+- 🌙 **Kimi 生態系** → Kimi Code（搭配 `--integration kimi`）
+- 🎨 **Mistral 生態系** → Mistral Vibe（搭配 `--integration vibe`）
+- ☕ **JetBrains 生態系** → Junie（搭配 `--integration junie`）
+- 🔨 **Forge 生態系** → Forge CLI（搭配 `--integration forge`）
+- 🪿 **Goose 生態系** → Goose AI（搭配 `--integration goose`，使用 YAML recipe 格式）
+- 🤖 **Devin 生態系** → Devin for Terminal（搭配 `--integration devin`，skills-based 整合，v0.8.3 新增）
+- 🧠 **阿里巴巴生態系** → Lingma（搭配 `--integration lingma`，v0.8.7 新增）
+- 🏛️ **Hermes 生態系** → Hermes Agent（搭配 `--integration hermes`，v0.8.17 新增）
+- 🧩 **VS Code 衍生編輯器** → Cline（搭配 `--integration cline`，v0.9.1 新增）
+- 🅰️ **Atlassian 生態系** → rovodev（搭配 `--integration rovodev`，v0.9.5 新增）
+- ⚡ **高效能編輯器** → Zed（搭配 `--integration zed`，v0.11.0 新增）
+- 🇨🇳 **Z.AI 生態系** → ZCode（搭配 `--integration zcode`，v0.11.5 新增）
+- 📱 **行動開發 / JetBrains** → Firebender（搭配 `--integration firebender`，v0.11.6 新增）
+- 🔧 **自訂代理** → Generic 模式（搭配 `--integration generic`，自訂命令目錄語法請見 `specify init --help`）
+
+> ⚠️ **v0.7.1 起 `--ai` 旗標已棄用，v0.10.0 起已完全移除**，請統一使用 `--integration`。同時移除的還有 `--no-git`、`--ai-commands-dir`、`--ai-skills`，詳見 [2.37 節](#237-git-擴充改為-opt-in-與-legacy-旗標全面移除v0100-重大變更)。
+
+---
+
+### 1.3 SDD 中的關鍵 artefacts(工件)
+
+在 SDD 流程中,有五個核心工件,每個工件都有明確角色:
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+graph TD
+    A[Constitution 守則] --> B[Spec 規格]
+    B --> C[Plan 計畫]
+    C --> D[Tasks 任務]
+    D --> E[Implementation 實作]
+    
+    A -.約束.-> C
+    A -.約束.-> D
+    A -.約束.-> E
+    
+    style A fill:#6b5419,stroke:#ffd966,stroke-width:3px,color:#fff
+    style B fill:#1a4d5c,stroke:#66b3ff,stroke-width:3px,color:#fff
+    style C fill:#2d5016,stroke:#7fff00,stroke-width:3px,color:#fff
+    style D fill:#4a2d5c,stroke:#da70d6,stroke-width:3px,color:#fff
+    style E fill:#6b5d19,stroke:#ffed4e,stroke-width:3px,color:#fff
+```
+
+#### 1. Constitution (項目守則)
+
+**定義**:專案的「憲法」,定義不可違反的開發原則與架構約束。
+
+**內容包含**:
+- 🏗️ **架構原則** - Library-First、CLI 介面強制要求
+- 🧪 **測試策略** - TDD 強制、測試優先順序
+- 📦 **技術約束** - 允許的技術棧、框架選擇
+- 🔒 **安全要求** - 身份驗證、授權、資料保護標準
+- 📏 **程式碼品質** - 風格指南、複雜度限制
+
+**範例片段**:
+
+```markdown
+## Article I: Library-First Principle
+每個功能必須先實作為獨立函式庫,禁止直接在應用程式碼中實作。
+
+## Article III: Test-First Imperative  
+非協商條款:所有實作必須遵循嚴格的 TDD
+1. 先寫單元測試
+2. 測試經用戶批准
+3. 確認測試失敗(Red Phase)
+4. 才能寫實作程式碼
+```
+
+**為何重要**:
+- 確保不同 AI 產出的程式碼遵循相同架構原則
+- 防止過度工程化(over-engineering)
+- 建立團隊共同語言
+
+#### 2. Spec (規格:什麼要做 & 為什麼)
+
+**定義**:描述「要建立什麼」以及「為什麼需要」,專注於業務需求與使用者場景。
+
+**核心原則**:
+- ✅ 描述 **WHAT**(做什麼)和 **WHY**(為何做)
+- ❌ 不描述 **HOW**(怎麼做,那是 Plan 的職責)
+
+**內容結構**:
+
+```markdown
+# Feature Specification
+
+## 1. Overview
+簡短摘要與目標
+
+## 2. User Stories  
+- 作為[角色],我希望[功能],以便[價值]
+
+## 3. Acceptance Criteria
+- [ ] 使用者可以...
+- [ ] 系統應該...
+
+## 4. Success Metrics
+如何衡量成功?(KPI、性能指標)
+
+## 5. Out of Scope
+明確排除的項目
+
+## 6. [NEEDS CLARIFICATION]
+標記模糊或未定義的部分
+```
+
+**實例**:
+
+```markdown
+# User Story: 照片相簿管理
+
+## Overview
+使用者需要組織照片到相簿中,相簿按日期分組,可拖放重新排序。
+
+## Acceptance Criteria
+- [ ] 使用者可在主頁面看到所有相簿(預覽圖+日期)
+- [ ] 使用者可拖放相簿改變順序
+- [ ] 相簿內照片以瓷磚介面顯示
+- [ ] 相簿不能巢狀(扁平結構)
+
+## Out of Scope
+- ❌ 照片上傳到雲端(僅本機)
+- ❌ 相簿分享功能
+```
+
+**注意事項**:
+- 🚫 **不要提前決定技術** - 不要寫「使用 React 實作」
+- 🔍 **使用 `[NEEDS CLARIFICATION]`** - 遇到模糊處必須標記
+- 📏 **可測試** - 每個需求都應可驗證
+
+#### 3. Plan (如何做/技術規劃)
+
+**定義**:將 Spec 翻譯成技術實作方案,定義「如何」實現需求。
+
+**內容包含**:
+- 🛠️ **技術棧選擇** - 語言、框架、函式庫
+- 🏛️ **架構設計** - 系統結構、模組劃分
+- 💾 **資料模型** - 資料庫 schema、實體關係
+- 🔌 **介面契約** - API 規格、事件定義
+- 🚦 **非功能需求** - 效能、安全、可擴展性
+
+**Plan 的階段劃分**:
+
+```markdown
+## Phase -1: Pre-Implementation Gates
+實作前檢查點:
+- [ ] Simplicity Gate: 使用 ≤3 個專案?
+- [ ] Anti-Abstraction Gate: 直接使用框架?
+- [ ] Integration-First Gate: 契約已定義?
+
+## Phase 0: Environment Setup
+環境準備
+
+## Phase 1: Core Implementation  
+核心功能實作
+
+## Phase 2: Integration
+整合與測試
+
+## Phase 3: Production Readiness
+上線準備
+```
+
+**實例**:
+
+````markdown
+# Implementation Plan: 照片相簿管理
+
+## Technology Stack
+- **Frontend**: Vite + Vanilla JS(最小化依賴)
+- **Database**: SQLite(本機存儲)
+- **File System**: 直接存取,無上傳
+
+## Data Model
+```sql
+CREATE TABLE albums (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  date TEXT NOT NULL,
+  sort_order INTEGER
+);
+
+CREATE TABLE photos (
+  id INTEGER PRIMARY KEY,
+  album_id INTEGER,
+  file_path TEXT NOT NULL,
+  FOREIGN KEY (album_id) REFERENCES albums(id)
+);
+```
+
+## Architecture
+- 單頁應用(SPA)
+- IndexedDB 快取 metadata
+- 拖放使用 HTML5 Drag & Drop API
+````
+
+**與 Spec 的對應**:
+- Spec 說「相簿可拖放排序」 → Plan 說「使用 HTML5 Drag & Drop API」
+- Spec 說「按日期分組」 → Plan 說「albums.date 欄位 + ORDER BY」
+
+#### 4. Tasks (可執行工作單元)
+
+**定義**:將 Plan 拆解成開發者可逐項執行的具體任務。
+
+**任務特性**:
+- 🎯 **原子性** - 每個任務獨立完成一個小目標
+- ⏱️ **可估時** - 通常 2-8 小時可完成
+- ✅ **可驗證** - 有明確的完成標準
+- 🔗 **依賴明確** - 標示哪些任務必須先完成
+
+**任務結構**:
+
+```markdown
+## Task 1: [P] 建立資料庫 Schema
+**Depends on**: 無  
+**Parallel Safe**: 是
+
+**Description**:
+建立 SQLite 資料庫與 tables
+
+**Acceptance**:
+- [ ] albums 與 photos tables 創建成功
+- [ ] 可執行基本 CRUD 操作
+- [ ] Schema 版本控制已建立
+
+**Estimated**: 3 hours
+```
+
+**並行標記 `[P]`**:
+- `[P]` = 可與其他 `[P]` 任務並行
+- 無標記 = 必須依序執行
+
+**實例任務清單**:
+
+```markdown
+# Tasks: 照片相簿管理
+
+## Phase 0: Setup
+- [P] Task 1: 初始化 Vite 專案
+- [P] Task 2: 建立資料庫 Schema
+- Task 3: 設定開發環境
+
+## Phase 1: Core Features  
+- Task 4: 實作相簿列表顯示
+- [P] Task 5: 實作拖放排序
+- [P] Task 6: 實作照片瓷磚顯示
+
+## Phase 2: Integration
+- Task 7: 整合測試
+- Task 8: 效能優化
+```
+
+#### 5. Implementation (實作)
+
+**定義**:根據 Tasks 產生的實際程式碼、測試、配置檔。
+
+**遵循原則**:
+- 📝 **Test-First** - 先寫測試,後寫實作
+- 🔍 **Contract-First** - API 契約優先定義
+- 🧩 **Incremental** - 逐任務完成,持續整合
+
+**實作產出**:
+- ✅ 原始碼檔案
+- ✅ 單元測試與整合測試
+- ✅ API 文件
+- ✅ 配置檔(database、build、deploy)
+- ✅ README 與 Quickstart 指南
+
+**品質檢查**:
+
+```markdown
+## Implementation Checklist
+- [ ] 所有測試通過(Green Phase)
+- [ ] 符合 Constitution 守則
+- [ ] API 契約已驗證
+- [ ] 無安全漏洞(依賴掃描)
+- [ ] 效能符合 Plan 定義的指標
+```
+
+---
+
+### 1.4 流程概覽:SDD 的階段/步驟
+
+完整的 SDD 流程包含七個主要步驟:
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+graph TB
+    Start[開始:有一個想法] --> Step0[Step 0: Constitution<br/>建立專案守則]
+    Step0 --> Step1[Step 1: Specify<br/>定義規格]
+    Step1 --> Step1a{需要澄清?}
+    Step1a -->|是| Clarify[Clarify<br/>澄清需求]
+    Clarify --> Step1
+    Step1a -->|否| Step2[Step 2: Plan<br/>技術規劃]
+    Step2 --> Step2a[Step 2a: Validate<br/>驗證計畫]
+    Step2a --> Step2b{計畫OK?}
+    Step2b -->|需修正| Step2
+    Step2b -->|通過| Step3[Step 3: Tasks<br/>拆分任務]
+    Step3 --> Step4[Step 4: Analyze<br/>一致性檢查]
+    Step4 --> Step4a{發現問題?}
+    Step4a -->|是| Fix[修正 Spec/Plan]
+    Fix --> Step3
+    Step4a -->|否| Step5[Step 5: Implement<br/>執行實作]
+    Step5 --> Step6[Step 6: Iterate<br/>迭代優化]
+    Step6 --> Step6a{需要新功能?}
+    Step6a -->|是| Step1
+    Step6a -->|否| End[完成]
+    
+    style Start fill:#2d5016,stroke:#4a7c23,color:#fff
+    style Step0 fill:#6b5419,stroke:#a08028,color:#fff
+    style Step1 fill:#1a4d5c,stroke:#2d7a8f,color:#fff
+    style Step2 fill:#2d5016,stroke:#4a7c23,color:#fff
+    style Step2a fill:#3d5c1a,stroke:#5a8c2d,color:#fff
+    style Step3 fill:#4a2d5c,stroke:#6f4389,color:#fff
+    style Step5 fill:#6b5d19,stroke:#a08f28,color:#fff
+    style End fill:#2d5016,stroke:#4a7c23,color:#fff
+```
+
+#### 各階段詳細說明
+
+| 階段 | 指令 | 主要產出 | 參與角色 | 時間估計 |
+|------|------|---------|---------|---------|
+| **Step 0: Constitution** | `/speckit.constitution` | `constitution.md` | 架構師、技術領導 | 2-4 小時(首次) |
+| **Step 1: Specify** | `/speckit.specify` | `spec.md` | PM、產品負責人 | 30 分鐘-2 小時 |
+| **Step 1a: Clarify** | `/speckit.clarify` | 補充的 `spec.md` | PM + AI 對話 | 15-30 分鐘 |
+| **Step 2: Plan** | `/speckit.plan` | `plan.md`、`data-model.md`、`contracts/` | 架構師、資深開發 | 1-3 小時 |
+| **Step 2a: Validate** | (AI 審核) | 修正後的 `plan.md`、`research.md` | 架構師 + AI 對話 | 15-30 分鐘 |
+| **Step 3: Tasks** | `/speckit.tasks` | `tasks.md` | 開發領導 | 30 分鐘-1 小時 |
+| **Step 4: Analyze** | `/speckit.analyze` | 分析報告 | 品質保證 | 15 分鐘 |
+| **Step 5: Implement** | `/speckit.implement` | 程式碼、測試 | 開發團隊 + AI | 依任務量 |
+| **Step 6: Iterate** | 回到 Step 1 | 更新的工件 | 全團隊 | 持續進行 |
+
+#### 人員與 AI 角色互動
+
+**人員角色**:
+- 🎯 **定義意圖** - 明確表達「要做什麼」和「為什麼」
+- 🔍 **審查品質** - 確保 AI 產出符合需求與標準
+- 💡 **關鍵決策** - 架構選擇、技術取捨、優先順序
+- 🧪 **驗證結果** - 測試、代碼審查、使用者驗收
+
+**AI 角色**:
+- 📝 **結構化產出** - 根據模板生成完整文件
+- 🤖 **程式碼生成** - 將規格翻譯成可執行程式碼
+- 🔍 **一致性檢查** - 分析 Spec ↔ Plan ↔ Tasks 是否對齊
+- 💡 **建議與補充** - 提出技術選項、識別遺漏項目
+
+**協作模式**:
+
+```text
+人員:「我要做照片相簿功能」
+    ↓
+AI: 產生結構化 Spec(包含 User Stories、Acceptance Criteria)
+    ↓
+人員:審查、補充、澄清模糊處
+    ↓
+AI: 根據 Spec 產生 Plan(技術選擇、架構設計)
+    ↓
+人員:確認技術選擇符合團隊標準
+    ↓
+AI: 拆分 Tasks、生成程式碼
+    ↓
+人員:代碼審查、測試驗證
+```
+
+#### 1.4.1 spec-kit workflow v4
+
+```mermaid
+flowchart LR
+    %% 樣式定義
+    classDef humanAction fill:#c8d8f0,stroke:#5a7ab5,color:#000
+    classDef aiAction fill:#f5c97a,stroke:#c8922a,color:#000
+    classDef coreFile fill:#fff,stroke:#333,color:#000
+    classDef condFile fill:#e8d5f5,stroke:#9b6bb5,color:#000
+    classDef decision fill:#1a1a2e,stroke:#333,color:#fff
+
+    %% ══════════════════════════════
+    %% 第一階段：初始化憲法
+    %% ══════════════════════════════
+    subgraph 第一階段["📋 第一階段：建立專案憲法"]
+        direction TB
+        H1["👤 人工審查\n初始化 /constitution\n指定非協商原則\n這是專案層級檔案\n整個功能週期都會參考"]
+        AI1["🤖 AI 行動\n建立 constitution.md\n包含專案治理原則\n與開發指南\n儲存於 _specify/memory 資料夾"]
+        CF1[("📄 核心檔案\nconstitution.md")]
+
+        H1 --> AI1
+        AI1 --> CF1
+    end
+
+    %% ══════════════════════════════
+    %% 第二階段：定義功能想法
+    %% ══════════════════════════════
+    subgraph 第二階段["💡 第二階段：定義功能想法"]
+        direction TB
+        H2["👤 審查與驗證\n批評 spec.md\n評估規格是否\n符合要建構的內容"]
+        R2{{"🔄 精煉?"}}
+        H3["👤 定義功能想法\n驗證規格\n指定要建構什麼\n使用 PRD 作為輸入"]
+        AI2["🤖 AI 行動\n建立 spec.md\n包含需求與\n使用者故事"]
+        CF2[("📄 核心檔案\nspec.md")]
+
+        H2 --> R2
+        R2 -->|"是"| H3
+        R2 -->|"否"| CF2
+        H3 --> AI2
+        AI2 --> CF2
+        CF2 -->|"更新 .md"| H2
+    end
+
+    %% ══════════════════════════════
+    %% 第三階段：生成技術規格
+    %% ══════════════════════════════
+    subgraph 第三階段["⚙️ 第三階段：生成技術規格"]
+        direction TB
+        H4["👤 審查與驗證\n批評生成的 plan.md\n包含技術需求\n可使用條件式輸入"]
+        R3{{"🔄 精煉?"}}
+        C1{{"❓ 澄清?"}}
+        H5["👤 澄清規格\n透過 /clarify 精煉"]
+        AI3["🤖 執行澄清\n使用 /clarify 改善\n模糊項目的清晰度"]
+        AI4["🤖 建立 plan.md\n包含實作計畫\n與技術堆疊"]
+        CF3[("📄 核心檔案\nplan.md")]
+        COND1[("🟣 條件式檔案\nresearch.md\ndata-model.md\nproxy-model.md (array)\nconstants (schema, API)")]
+
+        H4 --> R3
+        R3 -->|"是"| C1
+        R3 -->|"否"| CF3
+        C1 -->|"是"| H5
+        C1 -->|"否"| AI4
+        H5 --> AI3
+        AI3 --> AI4
+        AI4 --> CF3
+        AI4 -->|"條件式"| COND1
+        CF3 -->|"更新 .md"| H4
+    end
+
+    %% ══════════════════════════════
+    %% 第四階段：生成任務
+    %% ══════════════════════════════
+    subgraph 第四階段["✅ 第四階段：生成任務清單"]
+        direction TB
+        H6["👤 審查與驗證\n批評生成的 tasks.md\n保留任務\n根據 plan.md 主題"]
+        R4{{"🔄 精煉?"}}
+        AI5["🤖 建立 tasks.md\n包含可執行任務清單\n供實作使用"]
+        CF4[("📄 核心檔案\ntasks.md")]
+        COND2[("🟣 條件式檔案\ndata-model.md\nrefined-model.md\nquickstart.md (視需要)")]
+
+        H6 --> R4
+        R4 -->|"是"| AI5
+        R4 -->|"否"| CF4
+        AI5 --> CF4
+        AI5 -->|"條件式"| COND2
+        CF4 -->|"更新 .md"| H6
+    end
+
+    %% ══════════════════════════════
+    %% 第五階段：分析
+    %% ══════════════════════════════
+    subgraph 第五階段["🔍 第五階段：分析與驗證"]
+        direction TB
+        H7["👤 檢查\n審查並驗證任務\n必要時新增任務"]
+        C2{{"❓ 檢查?"}}
+        RA{{"🔄 重新分析?"}}
+        AI6["🤖 執行分析\n使用 /analyze 檢查\n不一致與合規違規"]
+        CF5[("📄 核心檔案\n已更新 .md 檔案")]
+
+        H7 --> C2
+        C2 -->|"是"| AI6
+        C2 -->|"否"| CF5
+        AI6 --> RA
+        RA -->|"是"| AI6
+        RA -->|"否"| CF5
+    end
+
+    %% ══════════════════════════════
+    %% 第六階段：建立檢查清單
+    %% ══════════════════════════════
+    subgraph 第六階段["📝 第六階段：建立實作檢查清單"]
+        direction TB
+        AI7["🤖 建立 checklist.md\n驗證需求\n完整性、清晰度\n與一致性"]
+        CF6[("📄 核心檔案\nchecklist.md")]
+
+        AI7 --> CF6
+    end
+
+    %% ══════════════════════════════
+    %% 第七階段：實作功能
+    %% ══════════════════════════════
+    subgraph 第七階段["🚀 第七階段：實作功能"]
+        direction TB
+        H8["👤 實作功能\n批評已實作功能\n起始使用 /implement\n如果 checklist.md 存在\n透過 checklist 執行"]
+        AI8["🤖 執行實作\n執行所有任務\n建構功能\n根據計畫"]
+        FF[("🟢 功能檔案\nFeature file(s)")]
+
+        H8 --> AI8
+        AI8 --> FF
+        AI8 -->|"更新功能檔案"| FF
+    end
+
+    %% ══════════════════════════════
+    %% 第八階段：審查與改進
+    %% ══════════════════════════════
+    subgraph 第八階段["✨ 第八階段：最終審查與改進"]
+        direction TB
+        H9["👤 審查與驗證\n批評已實作功能\n執行 CI、lint、\nAI 測試並更新\n功能檔案"]
+        P{{"✅ 通過?"}}
+        AI9["🤖 改進\n執行程式碼、測試\n和評論的改進"]
+
+        H9 --> P
+        P -->|"是"| DONE(["🎉 完成！\n進入下一個功能"])
+        P -->|"否"| AI9
+        AI9 -->|"回饋"| H9
+    end
+
+    %% ══════════════════════════════
+    %% 階段連接
+    %% ══════════════════════════════
+    第一階段 --> 第二階段
+    第二階段 --> 第三階段
+    第三階段 --> 第四階段
+    第四階段 --> 第五階段
+    第五階段 --> 第六階段
+    第六階段 --> 第七階段
+    第七階段 --> 第八階段
+    DONE -->|"建立下一個功能\n(循環)"| 第二階段
+
+    %% 套用樣式
+    class H1,H2,H3,H4,H5,H6,H7,H8,H9 humanAction
+    class AI1,AI2,AI3,AI4,AI5,AI6,AI7,AI8,AI9 aiAction
+    class CF1,CF2,CF3,CF4,CF5,CF6 coreFile
+    class COND1,COND2,FF condFile
+    class R2,R3,R4,C1,C2,RA,P decision
+```
+---
+
+### 1.5 為什麼這對我們團隊/共用平台開發特別有價值
+
+根據您的背景(多系統、多資料庫、多模組、微前端+後端、AI 輔助開發),SDD 特別適合解決以下挑戰:
+
+#### 挑戰 1:多系統、多資料庫的複雜性
+
+**問題**:
+- 共用平台需支援多個資料庫(Oracle、SQL Server、PostgreSQL...)
+- 不同子系統有各自的資料模型與整合點
+- 開發者難以掌握全貌,容易做出不一致的設計
+
+**SDD 解決方案**:
+
+```markdown
+## Constitution(守則)中定義
+### 資料存取標準
+- 所有資料庫存取必須透過統一的 Repository 層
+- 多資料庫切換透過策略模式
+- 禁止在業務邏輯中直接寫 SQL
+
+## Plan 中明確
+### Data Model
+- 定義跨資料庫的統一介面
+- 標註各資料庫的特殊處理(如 Oracle 的分頁)
+```
+
+**價值**:
+- ✅ 新進開發者透過 Spec 快速理解資料存取規範
+- ✅ AI 產生的程式碼自動遵循統一標準
+- ✅ 架構演進時,更新 Constitution 即可影響所有新功能
+
+#### 挑戰 2:微前端 + 微服務架構維護
+
+**問題**:
+- 前端模組獨立開發,容易出現 UI/UX 不一致
+- 微服務間的 API 契約容易偏離
+- 整合測試成本高
+
+**SDD 解決方案**:
+
+```markdown
+## Constitution 定義
+### UI 一致性原則
+- 所有微前端必須使用共用設計系統
+- 路由命名規範:/{module}/{feature}/{action}
+
+### API 契約優先
+- 微服務間通訊必須先定義 OpenAPI 規格
+- 契約變更需版本化(v1、v2...)
+
+## Plan 產生
+### contracts/ 目錄
+- api-gateway.yaml (API Gateway 契約)
+- event-schema.json (事件訊息格式)
+- service-dependencies.md (服務依賴圖)
+```
+
+**價值**:
+- ✅ 契約先行,前後端並行開發不阻塞
+- ✅ 微前端自動遵循設計系統(透過 Constitution 強制)
+- ✅ 整合測試基於契約自動產生
+
+#### 挑戰 3:批次工作、SFTP/FTPS 等複雜整合
+
+**問題**:
+- 批次作業邏輯散落各處,難以維護
+- SFTP/FTPS 連線設定不一致
+- 錯誤處理與重試機制各自實作
+
+**SDD 解決方案**:
+
+```markdown
+## Spec 明確定義
+### Batch Job: 日終對帳
+**Trigger**: 每日 23:00  
+**Input**: SFTP 下載 /reconciliation/*.csv  
+**Processing**: 比對交易記錄  
+**Output**: 產生差異報告至資料庫  
+**Error Handling**: 失敗重試 3 次,間隔 5 分鐘
+
+## Plan 技術實作
+### Batch Framework
+- 使用 Spring Batch
+- SFTP 設定統一管理於 application.yml
+- 重試策略:ExponentialBackoffRetryPolicy
+
+### 監控
+- 每個 Job 必須記錄執行時間、成功/失敗狀態
+- 失敗時觸發告警(Email + Slack)
+```
+
+**價值**:
+- ✅ 批次作業規格化,新增作業有標準範本
+- ✅ SFTP 連線設定集中管理
+- ✅ 錯誤處理統一,可靠性提升
+
+#### 挑戰 4:團隊協作與知識傳承
+
+**問題**:
+- 新進成員需要數週才能上手
+- 資深成員離職,知識流失
+- 不同開發者風格差異大
+
+**SDD 解決方案**:
+
+**透過 Constitution 建立團隊共同語言**:
+
+```markdown
+## 專案守則(constitution.md)
+
+### Article: 程式碼品質標準
+- 每個 public method 必須有 Javadoc
+- 複雜度(Cyclomatic Complexity)不得超過 10
+- 測試覆蓋率最低 80%
+
+### Article: 技術棧約束
+- 後端:Spring Boot 3.x + Java 17
+- 前端:Vue 3 + TypeScript
+- 資料庫:優先使用 JPA,複雜查詢用 MyBatis
+```
+
+**透過 Spec/Plan 記錄決策脈絡**:
+
+```markdown
+## Plan: 為何選擇 Redis 作為 Session Store
+
+### 決策理由
+1. 需支援分散式部署(多個應用伺服器)
+2. Session 資料量小(< 1KB),適合記憶體存儲
+3. 團隊已有 Redis 維運經驗
+
+### 替代方案
+- ❌ Database: 效能不足(每個請求都查 DB)
+- ❌ Sticky Session: 不利於擴展與容錯
+```
+
+**價值**:
+- ✅ 新進成員讀 Constitution 即了解團隊標準
+- ✅ 讀 Spec/Plan 就能理解「為什麼這樣設計」
+- ✅ AI 助手基於相同守則,產出風格一致
+
+#### 挑戰 5:AI 輔助開發的可信度提升
+
+**問題**:
+- AI 產生的程式碼品質不穩定
+- 難以確保 AI 遵循公司安全政策
+- 審查 AI 程式碼耗時
+
+**SDD 解決方案**:
+
+**1. 透過 Constitution 約束 AI 行為**:
+
+```markdown
+## Article: 安全開發生命週期(SSDLC)
+
+### 強制要求
+- 所有用戶輸入必須驗證與消毒(防 SQL Injection、XSS)
+- 敏感資料(密碼、身份證號)必須加密
+- API 必須有身份驗證與授權檢查
+
+### AI 產出檢查點
+- [ ] 是否有用戶輸入驗證?
+- [ ] 是否有 SQL Injection 防護?
+- [ ] 敏感資料是否加密?
+```
+
+**2. 透過 Checklist 系統化審查**:
+
+```bash
+/speckit.checklist
+```
+
+產生:
+
+```markdown
+## Security Checklist
+- [ ] 所有 API endpoint 有授權檢查
+- [ ] 密碼使用 bcrypt 加密(成本因子 ≥ 12)
+- [ ] 無硬編碼的憑證
+- [ ] HTTPS 強制啟用
+
+## Performance Checklist  
+- [ ] 資料庫查詢有索引
+- [ ] 大型列表有分頁(max 100 筆)
+- [ ] 快取策略已定義
+```
+
+**價值**:
+- ✅ AI 產出自動遵循安全標準
+- ✅ 審查時按 Checklist 逐項驗證,效率提升
+- ✅ 可追溯:若出現安全問題,檢討 Constitution 是否完善
+
+#### 總結:SDD 為共用平台帶來的價值
+
+| 維度 | 傳統方式 | 使用 SDD |
+|------|---------|---------|
+| **架構一致性** | 依賴 Code Review | Constitution 自動約束 |
+| **知識傳承** | 文件 + 口頭傳授 | Spec/Plan 完整記錄脈絡 |
+| **整合複雜度** | 手動維護契約 | Contract-First,自動驗證 |
+| **AI 輔助品質** | 不穩定,需大量審查 | 結構化輸入,可預測產出 |
+| **變更速度** | 慢(手動更新多處) | 快(改 Spec 重新產生) |
+| **新人上手** | 2-4 週 | 1 週(讀 Constitution + Specs) |
+
+---
+
+**🎯 第一章重點回顧**
+
+1. **SDD 反轉權力結構** - 規格是真相,程式碼是產物
+2. **Spec-Kit 提供工具組** - CLI、模板、AI 指令、品質把關
+3. **五大核心工件** - Constitution → Spec → Plan → Tasks → Implementation
+4. **七步驟流程** - Constitution → Specify → Clarify → Plan → Validate → Tasks → Analyze → Implement → Iterate
+5. **特別適合複雜系統** - 多資料庫、微服務、批次作業、團隊協作、AI 輔助
+
+**📌 實務建議**
+
+- ✅ **先建立 Constitution** - 這是所有品質的基礎
+- ✅ **Spec 保持技術無關** - 不要在 Spec 階段決定技術細節
+- ✅ **充分利用 AI 對話** - 用 `/speckit.clarify` 澄清模糊需求
+- ✅ **Plan 要可執行** - 技術選擇必須具體,不要「待評估」
+- ✅ **持續迭代** - SDD 不是瀑布式,而是迭代演進
+
+**⚠️ 常見陷阱**
+
+- ❌ 跳過 Constitution,直接開始寫 Spec(缺乏約束基礎)
+- ❌ Spec 寫得太技術化(那應該在 Plan 階段)
+- ❌ 沒有用 `[NEEDS CLARIFICATION]` 標記模糊處
+- ❌ Plan 太抽象,無法直接產生 Tasks
+- ❌ 把 AI 產出當「真理」,沒有審查
+
+---
+
+**下一章預告**:第二章將帶你完成環境準備,包括安裝 Spec-Kit CLI、建立首個 Constitution、理解模板結構。
+
+---
+
+## 第二章:環境準備
+
+### 2.1 前置條件
+
+在開始使用 Spec-Kit 之前,請確認您的開發環境符合以下要求:
+
+#### 作業系統需求
+
+支援的作業系統:
+
+| 作業系統 | 版本要求 | Shell 支援 |
+|---------|---------|-----------|
+| **Windows** | Windows 10/11 | PowerShell 5.1+ 或 PowerShell Core 7+ |
+| **macOS** | macOS 10.15+ | bash、zsh |
+| **Linux** | Ubuntu 20.04+、Debian、RHEL、CentOS | bash、zsh |
+
+#### 必要軟體清單
+
+**1. Python 3.11 或更高版本**
+
+檢查 Python 版本:
+
+```bash
+python --version
+# 或
+python3 --version
+```
+
+如未安裝,請至 [Python 官網](https://www.python.org/downloads/) 下載安裝。
+
+**2. Git 版本控制**
+
+檢查 Git 版本:
+
+```bash
+git --version
+```
+
+需要 Git 2.30+ 版本。下載:[Git 官網](https://git-scm.com/downloads)
+
+**3. uv 套件管理工具**
+
+uv 是現代化的 Python 套件管理工具,比 pip 快 10-100 倍。
+
+**安裝 uv (Windows - PowerShell)**:
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**安裝 uv (macOS/Linux)**:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+驗證安裝:
+
+```bash
+uv --version
+```
+
+#### AI 編碼助手需求
+
+至少需要以下其中一種 AI 工具:
+
+**推薦選項**:
+
+| AI 工具 | 取得方式 | 適合場景 |
+|---------|---------|---------|
+| **GitHub Copilot** | VS Code 擴充套件 | 企業環境、團隊協作 |
+| **Claude Code** | [Anthropic CLI](https://docs.anthropic.com/en/docs/claude-code/setup) | 複雜邏輯推理 |
+| **Cursor** | [下載 Cursor IDE](https://cursor.sh/) | AI-first 開發體驗 |
+| **Gemini CLI** | [Google Gemini CLI](https://github.com/google-gemini/gemini-cli) | Google 生態系 |
+| **Devin** | [Devin for Terminal](https://devin.ai/) | 終端機 skills-based 整合（⚠️ Windsurf 整合已於 v0.12.2 退場並併入 Devin，原 Windsurf 使用者可由此銜接） |
+| **opencode** | [opencode CLI](https://opencode.ai/) | 開源偏好 |
+| **Codex CLI** | [OpenAI Codex](https://github.com/openai/codex) | OpenAI 生態系 |
+| **CodeBuddy** | [CodeBuddy CLI](https://www.codebuddy.ai/cli) | 多功能 AI 助手 |
+
+> 💡 完整的 AI 助手清單與 CLI Key 請參考 [1.2 Spec-Kit 概覽](#12-spec-kit-概覽) 中的支援表格。
+
+**企業環境建議**:
+- 若公司已有 GitHub Copilot 授權 → 優先使用
+- 若需要獨立部署 → 考慮 Claude Code CLI
+- 若有 GitHub Token 需求 → 使用 `--github-token` 參數
+
+#### 網路需求
+
+需要存取以下服務:
+
+- ✅ GitHub.com (下載 Spec-Kit 模板)
+- ✅ AI 服務 API (GitHub Copilot / Claude / Gemini 等)
+- ✅ Python 套件倉庫 (PyPI)
+
+**企業防火牆注意事項**:
+- 若公司有 Proxy,需設定環境變數:`HTTP_PROXY`、`HTTPS_PROXY`
+- 若有 SSL 憑證問題,可使用 `--skip-tls` 參數(不建議)
+
+#### 快速檢查腳本
+
+使用以下腳本快速檢查環境:
+
+**Windows (PowerShell)**:
+
+```powershell
+Write-Host "=== Spec-Kit 環境檢查 ===" -ForegroundColor Cyan
+
+# 檢查 Python
+if (Get-Command python -ErrorAction SilentlyContinue) {
+    $pythonVer = python --version
+    Write-Host "✅ Python: $pythonVer" -ForegroundColor Green
+} else {
+    Write-Host "❌ Python 未安裝" -ForegroundColor Red
+}
+
+# 檢查 Git
+if (Get-Command git -ErrorAction SilentlyContinue) {
+    $gitVer = git --version
+    Write-Host "✅ Git: $gitVer" -ForegroundColor Green
+} else {
+    Write-Host "❌ Git 未安裝" -ForegroundColor Red
+}
+
+# 檢查 uv
+if (Get-Command uv -ErrorAction SilentlyContinue) {
+    $uvVer = uv --version
+    Write-Host "✅ uv: $uvVer" -ForegroundColor Green
+} else {
+    Write-Host "❌ uv 未安裝" -ForegroundColor Red
+}
+```
+
+**macOS/Linux (bash)**:
+
+```bash
+#!/bin/bash
+echo "=== Spec-Kit 環境檢查 ==="
+
+# 檢查 Python
+if command -v python3 &> /dev/null; then
+    echo "✅ Python: $(python3 --version)"
+else
+    echo "❌ Python 未安裝"
+fi
+
+# 檢查 Git
+if command -v git &> /dev/null; then
+    echo "✅ Git: $(git --version)"
+else
+    echo "❌ Git 未安裝"
+fi
+
+# 檢查 uv
+if command -v uv &> /dev/null; then
+    echo "✅ uv: $(uv --version)"
+else
+    echo "❌ uv 未安裝"
+fi
+```
+
+---
+
+### 2.2 安裝 Spec-Kit CLI
+
+Spec-Kit CLI 提供專案初始化與環境檢查功能。
+
+#### 安裝方式選擇
+
+**方式一：持久安裝（推薦）**
+
+適合：經常使用 Spec-Kit 的團隊
+
+```bash
+# 推薦：釘選特定穩定版本（將 vX.Y.Z 替換為最新 tag，參考 Releases 頁面）
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@vX.Y.Z
+
+# 或安裝 main 分支最新版（可能包含未發布的變更）
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+
+# 替代方案：使用 pipx（v0.8.0+ 支援）
+pipx install git+https://github.com/github/spec-kit.git@vX.Y.Z
+pipx install git+https://github.com/github/spec-kit.git
+```
+
+**優點**：
+- ✅ 一次安裝，全域可用
+- ✅ `specify` 指令加入 PATH
+- ✅ 使用 `uv tool list`、`uv tool upgrade`、`uv tool uninstall` 管理
+- ✅ 釘選版本確保環境穩定
+
+**方式二：一次性執行**
+
+適合：試用或偶爾使用
+
+```bash
+# 釘選特定版本
+uvx --from git+https://github.com/github/spec-kit.git@vX.Y.Z specify init my-project
+
+# 或使用最新版
+uvx --from git+https://github.com/github/spec-kit.git specify init my-project
+```
+
+**優點**：
+- ✅ 不需安裝，直接執行
+- ✅ 每次使用最新版本
+- ✅ 不佔用系統空間
+
+**方式三：企業 / Air-Gapped 離線安裝（v0.3.2+ 支援，v0.4.0 增強）**
+
+適合：無法連接 PyPI 或 GitHub 的隔離環境
+
+如果您的環境封鎖了 PyPI 或 GitHub 存取，可使用 `pip download` 在連網機器上建立可攜式的 OS 特定 wheel 套件包，再攜帶至隔離環境安裝。v0.4.0 起 CLI 內嵌核心模板包（Core Pack），離線環境無需額外下載模板。
+
+詳細步驟請參考：[Enterprise / Air-Gapped Installation](https://github.com/github/spec-kit/blob/main/docs/installation.md#enterprise--air-gapped-installation)
+
+#### 安裝步驟（持久安裝）
+
+**Step 1: 執行安裝指令**
+
+```bash
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.12.0
+```
+
+預期輸出：
+
+```text
+Installed 1 executable: specify
+```
+
+**Step 2: 驗證安裝**
+
+```bash
+specify --help
+```
+
+應該看到：
+
+```text
+Usage: specify [OPTIONS] COMMAND [ARGS]...
+
+Commands:
+  init          Initialize a new Specify project
+  check         Check for installed tools
+  version       Display version and system information
+  extension     Manage spec-kit extensions
+  preset        Manage spec-kit presets
+  integration   Manage post-init integrations
+  doctor        Run project health diagnostics
+  status        Show project status
+  self          Self-management commands (check, upgrade)
+```
+
+**Step 3: 檢查系統工具**
+
+```bash
+specify check
+```
+
+這會檢查：
+- ✅ Git 是否安裝
+- ✅ AI 工具是否可用（`claude`、`gemini`、`code`/`code-insiders`、`cursor-agent`、`windsurf`、`junie`、`qwen`、`opencode`、`codex`、`kiro-cli`、`shai`、`qodercli`、`vibe`、`kimi`、`iflow`、`pi`、`tabnine`、`forge`、`goose`、`devin`、`lingma` 等）
+- ✅ Shell 環境
+
+**Step 4: 檢查版本資訊**
+
+```bash
+specify version
+```
+
+顯示當前安裝的 Spec-Kit 版本與系統資訊。
+
+#### 更新 Spec-Kit
+
+定期更新以獲得最新功能與修復：
+
+```bash
+# 升級到特定版本（推薦）
+uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git@vX.Y.Z
+
+# 或升級到最新 main
+uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git
+
+# pipx 用戶
+pipx install --force git+https://github.com/github/spec-kit.git@vX.Y.Z
+```
+
+`--force` 參數會覆蓋現有安裝。
+
+> ⚠️ **升級前請備份 Constitution**：升級時 `--force` 會覆蓋 CLI 本身，但不會影響專案中的 `.specify/` 目錄。不過仍建議先備份 `.specify/memory/constitution.md`，以防模板更新時發生意外。
+
+##### 升級分兩階段（v0.3.0+ 建議流程）
+
+升級包含兩個獨立步驟，可視需求執行一個或兩個：
+
+| 升級類型 | 指令 | 說明 |
+|---------|------|------|
+| **僅升級 CLI** | `uv tool install specify-cli --force --from git+...@vX.Y.Z` | 取得最新 CLI 功能，不影響專案檔 |
+| **更新專案檔** | `specify init --here --force --integration <your-agent>` | 更新 slash commands、模板、腳本 |
+| **兩者都做** | 先執行 CLI 升級，再執行專案更新 | 大版本更新時建議 |
+
+##### 升級重點注意事項
+
+**什麼會被更新**：
+- CLI 執行檔與核心邏輯
+- 內建模板（僅影響新專案的 `specify init`）
+- 支援的 AI 代理清單與指令
+
+**什麼不會被覆蓋**（安全保留）：
+- ✅ 現有專案的 `specs/` 目錄（規格、計畫、任務）— **已確認安全**
+- ✅ 您的原始碼
+- ✅ Git 歷史紀錄
+- ✅ 專案級擴充設定
+
+**更新專案檔時會被覆蓋的內容**：
+- ⚠️ Slash command 檔案（`.claude/commands/`、`.github/prompts/` 等）
+- ⚠️ 腳本檔（`.specify/scripts/`）
+- ⚠️ 模板檔（`.specify/templates/`）
+- ⚠️ 記憶體檔（`.specify/memory/`）— 包含 `constitution.md`
+
+**備份與還原流程**：
+
+```bash
+# 1. 備份 Constitution
+cp .specify/memory/constitution.md .specify/memory/constitution-backup.md
+
+# 2. 執行升級
+specify init --here --force --integration copilot
+
+# 3. 還原自訂 Constitution
+mv .specify/memory/constitution-backup.md .specify/memory/constitution.md
+
+# 或使用 Git 還原
+git restore .specify/memory/constitution.md
+```
+
+**常見升級情境**：
+
+| 情境 | 建議做法 |
+|------|----------|
+| 小版本升級（如 v0.4.0 → v0.4.1） | 直接執行升級指令即可 |
+| 想要取得新模板 | 升級後執行 `specify init --here --force --integration <agent>` |
+| 想要新的 slash commands | 同上，執行專案更新 |
+| IDE 代理出現重複斜線指令 | 手動刪除代理資料夾中的舊指令檔，重啟 IDE |
+| 升級後 `specify check` 失敗 | 確認 Python 與 uv 版本符合需求 |
+| 自訂模板被覆蓋 | 備份 `.specify/templates/` 後升級，再手動合併 |
+
+> 📖 完整升級指南請參考：[upgrade.md](https://github.com/github/spec-kit/blob/main/docs/upgrade.md)
+
+#### 卸載(如需要)
+
+```bash
+uv tool uninstall specify-cli
+```
+
+---
+
+### 2.3 建立專案與初始化
+
+#### 初始化新專案
+
+**基本用法**:
+
+```bash
+specify init my-project --integration copilot
+```
+
+**參數說明**：
+
+| 參數 | 說明 | 範例 |
+|------|-----|------|
+| `<project-name>` | 專案名稱 | `my-project` 或 `.`（當前目錄）|
+| `--integration <tool>` | 指定 AI 整合（v0.7.1+ 建議，取代 `--ai`） | `copilot`、`claude`、`cursor-agent`、`gemini`、`qwen`、`opencode`、`codex`、`windsurf`、`junie`、`kilocode`、`auggie`、`roo`、`codebuddy`、`amp`、`shai`、`kiro-cli`（別名：`kiro`）、`bob`、`qodercli`、`agy`、`tabnine`、`vibe`、`kimi`、`iflow`、`pi`、`trae`、`forge`、`goose`、`devin`、`lingma`、`hermes`、`generic` |
+| `--ai <tool>` | 已棄用，等同 `--integration`，仍可用但會顯示警告 | 同上 |
+| `--ai-commands-dir <path>` | 代理命令檔案目錄 | 搭配 `--integration generic` 使用，例如 `.myagent/commands/` |
+| `--integration-options <opts>` | 整合選項（v0.8.0 新增） | `"--skills"` — 使用 skills-based 鷹架 |
+| `--ai-skills` | 安裝 Prompt.MD 模板為代理技能 | 在代理專屬 `skills/` 目錄安裝（Codex、agy 需此參數） |
+| `--branch-numbering <mode>` | 分支編號策略（v0.3.1 新增） | `sequential`（預設：001、002、003）或 `timestamp`（YYYYMMDD-HHMMSS），分散式團隊可用 timestamp 避免編號衝突 |
+| `--script <type>` | 腳本類型 | `sh`（bash/zsh）、`ps`（PowerShell） |
+| `--here` | 在當前目錄初始化 | - |
+| `--force` | 強制覆蓋（非空目錄） | - |
+| `--no-git` | 跳過 Git 初始化（⚠️ v0.8.2 起已棄用，預計 v0.10.0 移除） | - |
+| `--ignore-agent-tools` | 跳過 AI 工具檢查 | 當 AI CLI 工具未安裝時使用 |
+| `--debug` | 顯示詳細診斷輸出 | 網路或解壓縮失敗時使用 |
+| `--github-token <token>` | GitHub Token | 企業環境 API 請求認證，或設定 `GH_TOKEN`/`GITHUB_TOKEN` 環境變數 |
+| `--skip-tls` | 跳過 SSL/TLS 驗證 | 不建議於生產環境使用 |
+
+**常見使用場景**:
+
+**場景 1:全新專案(預設)**
+
+```bash
+specify init photo-album-app --integration copilot
+cd photo-album-app
+```
+
+**場景 2:在現有專案中加入 Spec-Kit**
+
+```bash
+cd existing-project
+specify init . --integration copilot --force
+```
+
+**場景 3:企業環境(使用 PowerShell)**
+
+```bash
+specify init enterprise-app --integration copilot --script ps
+```
+
+**場景 4:無 Git 環境**
+
+> ⚠️ `--no-git` 自 v0.8.2 起已棄用，預計 v0.10.0 移除。
+
+```bash
+specify init temp-project --integration claude --no-git
+```
+
+**場景 5:使用自訂代理(Generic 模式)**
+
+```bash
+specify init my-project --integration generic --ai-commands-dir .myagent/commands/
+```
+
+**場景 6:安裝 AI 代理技能模板**
+
+```bash
+specify init my-project --integration claude --ai-skills
+```
+
+**場景 7：使用 Antigravity (agy)**
+
+```bash
+specify init my-project --integration agy --ai-skills
+```
+
+**場景 8：使用 Kiro CLI**
+
+```bash
+specify init my-project --integration kiro-cli
+# 或使用別名
+specify init my-project --integration kiro
+```
+
+**場景 9：使用 Tabnine CLI**
+
+```bash
+specify init my-project --integration tabnine
+```
+
+**場景 10：使用 Mistral Vibe**
+
+```bash
+specify init my-project --integration vibe
+```
+
+**場景 11：使用 Kimi Code**
+
+```bash
+specify init my-project --integration kimi
+```
+
+**場景 12：使用 Junie（JetBrains）**
+
+```bash
+specify init my-project --integration junie
+```
+
+**場景 13：使用 Pi Coding Agent**
+
+```bash
+specify init my-project --integration pi
+```
+
+**場景 14：使用 Trae IDE**
+
+```bash
+specify init my-project --integration trae
+```
+
+**場景 15：（⛔ iFlow CLI 整合已於 v0.12.2 隨原廠產品終止而退場，請改用 opencode 或 Qwen Code）**
+
+```bash
+specify init my-project --integration opencode
+```
+
+**場景 16：使用 Forge CLI（v0.4.4 新增）**
+
+```bash
+specify init my-project --integration forge
+```
+
+**場景 17：使用 Goose AI（v0.6.2 新增）**
+
+```bash
+specify init my-project --integration goose
+```
+
+**場景 18：使用 timestamp 分支編號（分散式團隊，v0.3.1 新增）**
+
+```bash
+specify init my-project --integration claude --branch-numbering timestamp
+```
+
+使用 `timestamp` 模式時，功能分支以 `YYYYMMDD-HHMMSS` 格式命名（如 `feature/20260323-143022-user-login`），避免多人同時建立分支時的編號衝突。
+
+**場景 19：使用 Devin for Terminal（v0.8.3 新增）**
+
+```bash
+specify init my-project --integration devin
+```
+
+Devin 使用 skills-based 整合模式，初始化後會在 `.devin/skills/` 目錄安裝 Spec-Kit skills。
+
+#### 環境變數
+
+| 變數 | 說明 |
+|------|------|
+| `SPECIFY_FEATURE` | 覆蓋功能偵測，用於非 Git 儲存庫。設定為功能目錄名稱（例如 `001-photo-albums`），以便在未使用 Git 分支時指定特定功能。**必須在使用 `/speckit.plan` 或後續指令之前，在代理上下文中設定。** |
+| `GH_TOKEN` / `GITHUB_TOKEN` | GitHub Token，可替代 `--github-token` 參數 |
+
+#### 產生的目錄結構
+
+初始化後會生成以下結構:
+
+```text
+my-project/
+├── .specify/                    # Spec-Kit 配置目錄
+│   ├── memory/                 # 專案記憶體(Context)
+│   │   └── constitution.md    # 專案守則(待建立)
+│   ├── templates/              # 模板檔案
+│   │   ├── spec-template.md   # 規格模板
+│   │   ├── plan-template.md   # 計畫模板
+│   │   └── tasks-template.md  # 任務模板
+│   └── scripts/                # 腳本工具
+│       ├── init.sh             # bash 初始化腳本
+│       └── init.ps1            # PowerShell 初始化腳本
+├── .github/                     # GitHub 整合(可選)
+│   └── copilot-instructions.md # Copilot 指令說明
+├── specs/                       # 規格文件目錄
+│   └── .gitkeep
+├── .gitignore
+└── README.md
+```
+
+**關鍵目錄說明**:
+
+- **`.specify/templates/`** - 所有模板存放處,可自訂
+- **`memory/`** - AI 助手的「長期記憶」,存放 Constitution 等
+- **`specs/`** - 所有功能規格、計畫、任務文件
+- **`.github/`** - GitHub 相關整合(如 Copilot 設定)
+
+#### 驗證初始化
+
+檢查是否成功初始化:
+
+```bash
+# 確認目錄結構
+ls -la
+
+# 確認 Git 倉庫
+git status
+
+# 查看 AI 指令說明
+cat .github/copilot-instructions.md  # (如使用 GitHub Copilot)
+```
+
+---
+
+### 2.4 建立團隊守則 (Constitution)
+
+Constitution 是 Spec-Kit 最重要的工件,定義專案的「不可違反」原則。
+
+#### 為什麼需要 Constitution?
+
+**沒有 Constitution 的問題**:
+- ❌ AI 助手自由發揮,產出不一致
+- ❌ 開發者各自解讀需求,風格混亂
+- ❌ 架構決策沒有記錄,重複犯錯
+- ❌ 新人不知道團隊標準
+
+**有 Constitution 的好處**:
+- ✅ AI 產出自動遵循團隊標準
+- ✅ 所有決策可追溯、有依據
+- ✅ 新人讀 Constitution 即了解規範
+- ✅ 架構一致性自動維護
+
+#### 使用 AI 助手建立 Constitution
+
+在專案根目錄,啟動 AI 助手(如 VS Code 中的 GitHub Copilot Chat),執行:
+
+```text
+/speckit.constitution Create principles focused on code quality, testing standards, user experience consistency, and performance requirements
+```
+
+**或用中文描述**:
+
+```text
+/speckit.constitution 建立專案守則,重點包含:
+- 程式碼品質標準(測試覆蓋率、複雜度限制)
+- 技術棧約束(後端 Spring Boot、前端 Vue 3)
+- 安全要求(身份驗證、資料加密)
+- 效能指標(API 回應時間 < 200ms)
+```
+
+AI 會產生 `.specify/memory/constitution.md` 檔案。
+
+#### Constitution 範本結構
+
+一個完整的 Constitution 應包含以下章節:
+
+```markdown
+# Project Constitution
+
+## Preamble (前言)
+本守則定義專案的核心原則與開發約束,所有開發活動必須遵循。
+
+---
+
+## Article I: Architecture Principles (架構原則)
+
+### Section 1.1: Modularity (模組化)
+- 每個功能必須實作為獨立模組
+- 模組間透過明確介面溝通
+- 禁止循環依賴
+
+### Section 1.2: Technology Stack (技術棧)
+- **Backend**: Spring Boot 3.x + Java 17
+- **Frontend**: Vue 3 + TypeScript + Vite
+- **Database**: PostgreSQL 14+ (主要)、Redis(快取)
+- **Message Queue**: RabbitMQ
+
+---
+
+## Article II: Code Quality Standards (程式碼品質)
+
+### Section 2.1: Testing Requirements (測試要求)
+- 單元測試覆蓋率最低 80%
+- 所有 public API 必須有整合測試
+- 關鍵業務邏輯必須有 E2E 測試
+
+### Section 2.2: Code Complexity (複雜度限制)
+- 單一方法 Cyclomatic Complexity ≤ 10
+- 單一類別行數 ≤ 300 行
+- 方法參數個數 ≤ 5 個
+
+### Section 2.3: Documentation (文件要求)
+- 所有 public method 必須有 Javadoc/JSDoc
+- 複雜演算法必須有註解說明
+- README 必須包含:安裝、配置、使用範例
+
+---
+
+## Article III: Security Requirements (安全要求)
+
+### Section 3.1: Authentication & Authorization (身份驗證)
+- 所有 API 必須有身份驗證(除公開端點)
+- 使用 JWT token,有效期 1 小時
+- 敏感操作需二次驗證
+
+### Section 3.2: Data Protection (資料保護)
+- 密碼使用 bcrypt 加密(cost factor ≥ 12)
+- 敏感資料(身份證號、信用卡)傳輸必須加密
+- 資料庫連線字串不得硬編碼
+
+### Section 3.3: Input Validation (輸入驗證)
+- 所有用戶輸入必須驗證
+- 使用白名單(允許清單)而非黑名單
+- 防止 SQL Injection、XSS、CSRF
+
+---
+
+## Article IV: Performance Standards (效能標準)
+
+### Section 4.1: Response Time (回應時間)
+- API 回應時間 P95 < 200ms
+- 頁面首次載入 < 2 秒
+- 資料庫查詢 < 100ms
+
+### Section 4.2: Scalability (可擴展性)
+- 系統必須支援水平擴展
+- 無狀態設計(Session 存 Redis)
+- 資料庫讀寫分離
+
+---
+
+## Article V: Development Workflow (開發流程)
+
+### Section 5.1: Test-Driven Development (TDD)
+- 非協商條款:實作前必須先寫測試
+- 測試必須先失敗(Red Phase)
+- 實作使測試通過(Green Phase)
+- 重構優化(Refactor Phase)
+
+### Section 5.2: Code Review (代碼審查)
+- 所有程式碼必須經過至少一人 Review
+- Review 檢查:功能正確性、測試完整性、安全性
+- 使用 Pull Request 工作流程
+
+### Section 5.3: Version Control (版本控制)
+- 使用 Git Flow 分支策略
+- Commit message 遵循 Conventional Commits
+- 禁止直接 push 到 main/master
+
+---
+
+## Article VI: Database Standards (資料庫標準)
+
+### Section 6.1: Schema Design (Schema 設計)
+- 所有資料表必須有主鍵(Primary Key)
+- 外鍵關係必須明確定義
+- 敏感資料欄位必須加密
+
+### Section 6.2: Query Optimization (查詢優化)
+- 所有查詢欄位必須有適當索引
+- 避免 N+1 查詢問題
+- 大量資料必須分頁(max 100 筆)
+
+---
+
+## Article VII: Error Handling (錯誤處理)
+
+### Section 7.1: Exception Management (例外管理)
+- 使用統一的例外處理機制
+- 錯誤訊息不得暴露系統資訊
+- 關鍵錯誤必須記錄日誌
+
+### Section 7.2: Logging Standards (日誌標準)
+- 使用結構化日誌(JSON 格式)
+- 日誌等級:ERROR、WARN、INFO、DEBUG
+- 生產環境預設 INFO 等級
+
+---
+
+## Article VIII: API Design (API 設計)
+
+### Section 8.1: RESTful Standards (RESTful 標準)
+- 使用標準 HTTP 方法(GET、POST、PUT、DELETE)
+- URL 使用名詞複數(如 /users、/orders)
+- 狀態碼正確使用(200、201、400、404、500)
+
+### Section 8.2: Versioning (版本控制)
+- API 必須版本化(如 /api/v1/users)
+- 向下相容至少保留兩個版本
+- 廢棄 API 提前 3 個月通知
+
+---
+
+## Article IX: Deployment & Operations (部署與維運)
+
+### Section 9.1: Continuous Integration (持續整合)
+- 每次 push 自動執行測試
+- 測試失敗禁止合併
+- 自動化程式碼品質檢查(SonarQube)
+
+### Section 9.2: Monitoring (監控)
+- 所有服務必須有健康檢查端點(/health)
+- 關鍵指標必須監控(CPU、記憶體、回應時間)
+- 異常告警透過 Email + Slack
+
+---
+
+## Amendment Process (修訂流程)
+
+本守則的修改需經過:
+1. 提出修改提案(Pull Request)
+2. 團隊討論與評審
+3. 至少 2/3 成員同意
+4. 記錄修改理由與日期
+```
+
+#### 針對共用平台的 Constitution 範例
+
+根據您的背景(多資料庫、微服務、批次作業),可加入:
+
+```markdown
+## Article X: Multi-Database Support (多資料庫支援)
+
+### Section 10.1: Database Abstraction (資料庫抽象)
+- 所有資料存取透過 Repository 介面
+- 使用策略模式支援多種資料庫(Oracle、PostgreSQL、SQL Server)
+- 禁止在業務邏輯中直接寫 SQL
+
+### Section 10.2: Connection Management (連線管理)
+- 使用連線池(HikariCP)
+- 連線逾時設定:30 秒
+- 最大連線數:依資料庫調整(Oracle=20、PostgreSQL=50)
+
+---
+
+## Article XI: Batch Job Standards (批次作業標準)
+
+### Section 11.1: Job Design (作業設計)
+- 使用 Spring Batch 框架
+- 所有 Job 必須可重新執行(Idempotent)
+- 失敗必須記錄詳細錯誤資訊
+
+### Section 11.2: Scheduling (排程)
+- 使用 Quartz 或 Spring Scheduler
+- 排程時間避開高峰時段(12:00-13:00、18:00-19:00)
+- Job 執行狀態必須可查詢
+
+### Section 11.3: SFTP/FTPS Integration (檔案傳輸)
+- 連線資訊統一管理於 application.yml
+- 失敗重試 3 次,間隔 5 分鐘
+- 傳輸檔案必須驗證完整性(Checksum)
+
+---
+
+## Article XII: Microservices Standards (微服務標準)
+
+### Section 12.1: Service Communication (服務通訊)
+- 同步通訊使用 REST API
+- 非同步通訊使用 Message Queue(RabbitMQ)
+- 服務間呼叫必須有逾時設定(5 秒)
+
+### Section 12.2: Contract-First (契約優先)
+- 服務介面先定義 OpenAPI 規格
+- 契約變更必須版本化
+- 使用 Pact 進行契約測試
+
+### Section 12.3: Resilience (韌性)
+- 實作 Circuit Breaker(Resilience4j)
+- 關鍵服務降級方案
+- 分散式追蹤(Zipkin/Jaeger)
+```
+
+#### 實務建議
+
+**1. 先從簡單開始**
+- 初期不要寫太複雜,先涵蓋 5-7 個核心原則
+- 隨團隊成熟度逐步補充
+
+**2. 定期審視更新**
+- 每季度檢視一次 Constitution
+- 記錄修改歷史與原因
+
+**3. 讓團隊參與制定**
+- Constitution 不應由一人決定
+- 透過工作坊或會議共同制定
+
+**4. 連結到工具**
+- 結合 SonarQube、ESLint 等工具自動檢查
+- Constitution 違反應在 CI/CD 中被攔截
+
+---
+
+### 2.5 模板與提示文件說明
+
+Spec-Kit 的模板是 AI 助手產生高品質文件的關鍵。
+
+#### 模板目錄結構
+
+```text
+.specify/templates/
+├── spec-template.md          # 功能規格模板
+├── plan-template.md          # 實作計畫模板
+├── tasks-template.md         # 任務清單模板
+├── data-model-template.md    # 資料模型模板
+├── api-contract-template.md  # API 契約模板
+└── quickstart-template.md    # 快速開始模板
+```
+
+#### 核心模板詳解
+
+**1. spec-template.md (規格模板)**
+
+**用途**:定義「做什麼」和「為什麼」
+
+**關鍵章節**:
+
+```markdown
+# Feature Specification: [Feature Name]
+
+## Overview
+簡短摘要(2-3 句話)
+
+## User Stories
+- As a [role], I want [feature], so that [value]
+
+## Acceptance Criteria
+- [ ] 可測試的驗收標準
+
+## Success Metrics
+如何衡量成功
+
+## Out of Scope
+明確不做的項目
+
+## [NEEDS CLARIFICATION]
+標記模糊處
+```
+
+**模板約束 AI 行為的方式**:
+
+- ✅ 強制標記模糊處(`[NEEDS CLARIFICATION]`)
+- ❌ 禁止描述技術實作(那是 Plan 的職責)
+- ✅ 必須有可測試的驗收標準
+- ✅ 必須明確排除項目(Out of Scope)
+
+**2. plan-template.md (計畫模板)**
+
+**用途**:定義「怎麼做」
+
+**關鍵章節**:
+
+```markdown
+# Implementation Plan: [Feature Name]
+
+## Phase -1: Pre-Implementation Gates
+### Simplicity Gate
+- [ ] 使用 ≤ 3 個專案?
+- [ ] 無過度設計?
+
+### Anti-Abstraction Gate
+- [ ] 直接使用框架特性?
+- [ ] 單一模型表示?
+
+## Technology Stack
+語言、框架、函式庫選擇
+
+## Architecture Overview
+系統結構、模組劃分
+
+## Data Model
+資料庫 Schema
+
+## API Contracts
+介面定義
+
+## Non-Functional Requirements
+效能、安全、可擴展性
+
+## Phase 0-N: Implementation Phases
+分階段實作計畫
+```
+
+**模板的品質把關機制**:
+
+**Pre-Implementation Gates(實作前檢查點)**:
+
+- **Simplicity Gate** - 防止過度複雜化
+- **Anti-Abstraction Gate** - 避免過早抽象
+- **Integration-First Gate** - 確保契約先定義
+
+**3. tasks-template.md (任務模板)**
+
+**用途**:將 Plan 拆成可執行單元
+
+**關鍵結構**:
+
+```markdown
+# Tasks: [Feature Name]
+
+## Task 1: [P] Task Name
+**Depends on**: Task ID or None  
+**Parallel Safe**: Yes/No  
+**Estimated**: X hours
+
+**Description**:
+具體描述
+
+**Acceptance Criteria**:
+- [ ] 完成標準
+
+**Implementation Notes**:
+實作注意事項
+```
+
+**並行標記 `[P]`**:
+
+- `[P]` = 可與其他 `[P]` 任務並行執行
+- 幫助團隊識別可平行開發的工作
+
+#### 自訂模板
+
+**為何需要自訂?**
+
+- 不同專案類型有不同需求(Web App vs 批次系統 vs API 服務)
+- 團隊有特殊流程或工具
+- 需要整合公司既有文件格式
+
+**如何自訂模板?**
+
+**Step 1: 複製原始模板**
+
+```bash
+cd .specify/templates
+cp spec-template.md spec-template-custom.md
+```
+
+**Step 2: 修改模板內容**
+
+針對共用平台加入特定章節:
+
+```markdown
+# Feature Specification: [Feature Name]
+
+<!-- 原有章節 ... -->
+
+## Integration Points (整合點)
+### Upstream Systems
+列出此功能依賴的上游系統
+
+### Downstream Systems
+列出會使用此功能的下游系統
+
+## Database Impact (資料庫影響)
+### Tables to Create
+新增的資料表
+
+### Tables to Modify
+需修改的現有資料表
+
+### Migration Plan
+資料遷移計畫
+
+## Batch Job Configuration (批次作業配置)
+### Schedule
+執行時間與頻率
+
+### Dependencies
+依賴的其他 Job
+
+### Retry Policy
+失敗重試策略
+
+## SFTP/FTPS Requirements (檔案傳輸需求)
+### File Format
+檔案格式規範
+
+### Transfer Schedule
+傳輸時間
+
+### Error Handling
+錯誤處理方式
+```
+
+**Step 3: 更新 AI 指令**
+
+在 `.github/copilot-instructions.md` 中告知 AI 使用自訂模板:
+
+```markdown
+## Custom Templates
+
+When using /speckit.specify, use the custom template:
+- Template file: .specify/templates/spec-template-custom.md
+- Include sections: Integration Points, Database Impact, Batch Job Configuration
+```
+
+#### 模板的版本控制
+
+**建議做法**:
+
+1. **將模板納入 Git 版本控制**
+
+```bash
+git add .specify/templates/
+git commit -m "Add custom spec template for batch jobs"
+```
+
+2. **建立模板變更日誌**
+
+在 `.specify/templates/CHANGELOG.md` 記錄:
+
+```markdown
+# Template Changelog
+
+## 2025-10-29
+- Added "Integration Points" section to spec-template.md
+- Added "Batch Job Configuration" section for batch system features
+
+## 2025-10-15
+- Initial templates from Spec-Kit v0.0.79
+```
+
+3. **團隊共享模板**
+
+- 將自訂模板推送到共用倉庫
+- 新專案從模板倉庫複製
+
+#### 模板驅動的品質保證（Template-Driven Quality）
+
+Spec-Kit 模板不只是格式範本，更是一套**約束 LLM 行為**的品質保證機制。以下是七種關鍵的品質約束方式（參考 [spec-driven.md](https://github.com/github/spec-kit/blob/main/spec-driven.md)）：
+
+**1. 防止過早決定實作細節**
+
+模板明確指示：
+
+```text
+- ✅ 聚焦於使用者需要什麼（WHAT）和為什麼（WHY）
+- ❌ 避免描述如何實作（不提技術棧、API、程式碼結構）
+```
+
+這確保規格在技術選擇變更時仍然穩定。
+
+**2. 強制標記不確定性**
+
+模板要求使用 `[NEEDS CLARIFICATION]` 標記：
+
+```text
+1. 標記所有模糊處：使用 [NEEDS CLARIFICATION: 具體問題]
+2. 不要猜測：若需求未說明，必須標記
+```
+
+防止 AI 自行做出「看似合理但可能錯誤」的假設。
+
+**3. 透過檢查清單進行結構化思考**
+
+模板內建品質檢查清單（如「規格的單元測試」）：
+
+```markdown
+### Requirement Completeness
+- [ ] 無 [NEEDS CLARIFICATION] 殘留
+- [ ] 需求可測試且無歧義
+- [ ] 成功標準可量化
+```
+
+**4. 透過 Gates 強制 Constitution 合規**
+
+```markdown
+### Phase -1: Pre-Implementation Gates
+#### Simplicity Gate (Article VII)
+- [ ] 使用 ≤ 3 個專案？
+- [ ] 無過度設計？
+
+#### Anti-Abstraction Gate (Article VIII)
+- [ ] 直接使用框架特性？
+- [ ] 單一模型表示？
+```
+
+**5. 分層資訊管理**
+
+模板強制適當的抽象層級：
+
+```text
+**重要**: 實作計畫應保持高層次且可讀。
+任何程式碼範例、詳細演算法或大量技術規格
+必須放在 implementation-details/ 目錄中。
+```
+
+**6. 測試優先思維**
+
+實作模板強制 Test-First 開發：
+
+```text
+### 檔案建立順序
+1. 建立 contracts/ 目錄（API 規格）
+2. 依序建立測試：contract → integration → e2e → unit
+3. 建立原始碼使測試通過
+```
+
+**7. 防止推測性功能**
+
+模板明確阻止推測：
+
+```text
+- [ ] 無推測性或「可能需要」的功能
+- [ ] 所有階段有明確的先決條件與交付物
+```
+
+> 💡 **複合效果**：這七種約束共同作用，使 AI 從「創意寫手」轉變為「紀律嚴明的規格工程師」，產出一致、完整、可執行的規格文件。
+
+---
+
+### 2.6 GitHub 倉庫分支與版本控制建議
+
+SDD 與 Git 工作流程深度整合,合理的分支策略能提升效率。
+
+#### 推薦的分支策略
+
+**基於 Git Flow 的 SDD 改良版**:
+
+```mermaid
+%%{init: {'theme':'dark', 'gitGraph': {'showCommitLabel':true}}}%%
+gitGraph
+    commit id: "Initial"
+    branch develop
+    checkout develop
+    commit id: "Constitution"
+    
+    branch feature/001-user-login
+    checkout feature/001-user-login
+    commit id: "Spec"
+    commit id: "Plan"
+    commit id: "Tasks"
+    commit id: "Implementation"
+    
+    checkout develop
+    merge feature/001-user-login
+    
+    branch feature/002-photo-album
+    checkout feature/002-photo-album
+    commit id: "Spec2"
+    commit id: "Plan2"
+    
+    checkout develop
+    merge feature/002-photo-album
+    
+    checkout main
+    merge develop tag: "v1.0.0"
+```
+
+**分支類型**:
+
+| 分支類型 | 命名規範 | 生命週期 | 用途 |
+|---------|---------|---------|------|
+| `main` | main | 永久 | 生產環境程式碼 |
+| `develop` | develop | 永久 | 開發整合分支 |
+| `feature/*` | feature/NNN-feature-name | 臨時 | 單一功能開發 |
+| `hotfix/*` | hotfix/issue-description | 臨時 | 緊急修復 |
+| `release/*` | release/v1.2.0 | 臨時 | 發布準備 |
+
+#### Spec-Kit 自動分支管理
+
+當使用 `/speckit.specify` 時,Spec-Kit 會自動:
+
+1. **掃描現有規格** - 確定下一個功能編號(如 001、002、003)
+2. **生成分支名稱** - 從描述產生語義化名稱
+3. **建立分支** - 自動 checkout 到新分支
+4. **建立目錄** - 在 `specs/NNN-feature-name/` 建立結構
+
+**範例**:
+
+```bash
+# 在 develop 分支執行
+/speckit.specify Build a photo album management system
+```
+
+自動產生:
+
+```bash
+git checkout -b feature/001-photo-album-management
+mkdir -p specs/001-photo-album-management
+# 產生 spec.md 於該目錄
+```
+
+#### 規格文件的目錄對應
+
+每個功能分支對應一個規格目錄:
+
+```text
+specs/
+├── 001-user-authentication/
+│   ├── spec.md
+│   ├── plan.md
+│   ├── tasks.md
+│   ├── data-model.md
+│   ├── contracts/
+│   │   ├── auth-api.yaml
+│   │   └── user-events.json
+│   ├── research.md
+│   └── quickstart.md
+├── 002-photo-album/
+│   ├── spec.md
+│   ├── plan.md
+│   └── ...
+└── 003-batch-reconciliation/
+    └── ...
+```
+
+**命名規範**:
+
+- `NNN-` 前綴:三位數編號,確保排序
+- `feature-name`:使用 kebab-case(小寫,連字符分隔)
+- 對應分支名稱:`feature/NNN-feature-name`
+
+#### 工作流程範例
+
+**完整的功能開發流程**:
+
+```bash
+# Step 1: 確保在 develop 分支
+git checkout develop
+git pull origin develop
+
+# Step 2: 建立規格(自動建立分支)
+# 在 AI 助手中執行
+/speckit.specify User authentication with email and password
+
+# 此時自動建立 feature/001-user-authentication 分支
+
+# Step 3: 審查並完善規格
+# 編輯 specs/001-user-authentication/spec.md
+# 若有模糊處,使用 /speckit.clarify
+
+# Step 4: 提交規格
+git add specs/001-user-authentication/spec.md
+git commit -m "spec: add user authentication specification"
+
+# Step 5: 建立計畫
+/speckit.plan Use Spring Security with JWT tokens, PostgreSQL for user storage
+
+# Step 6: 提交計畫
+git add specs/001-user-authentication/plan.md
+git add specs/001-user-authentication/data-model.md
+git add specs/001-user-authentication/contracts/
+git commit -m "plan: add implementation plan for user auth"
+
+# Step 7: 拆分任務
+/speckit.tasks
+
+git add specs/001-user-authentication/tasks.md
+git commit -m "tasks: break down user auth into executable tasks"
+
+# Step 8: 實作
+/speckit.implement
+
+# 實作過程中持續提交
+git add src/
+git add tests/
+git commit -m "feat: implement user registration endpoint"
+git commit -m "test: add unit tests for user service"
+git commit -m "feat: implement login endpoint"
+
+# Step 9: 完成後推送
+git push origin feature/001-user-authentication
+
+# Step 10: 建立 Pull Request
+# 在 GitHub 網頁介面建立 PR: feature/001-user-authentication → develop
+
+# Step 11: Code Review 與合併
+# 經審查通過後合併到 develop
+```
+
+#### Commit Message 規範
+
+遵循 **Conventional Commits** 規範:
+
+**格式**:
+
+```text
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Type 類型**:
+
+| Type | 說明 | 範例 |
+|------|-----|------|
+| `spec` | 規格相關 | `spec: add photo album specification` |
+| `plan` | 計畫相關 | `plan: define database schema for albums` |
+| `feat` | 新功能 | `feat: implement drag-and-drop for albums` |
+| `fix` | 錯誤修復 | `fix: resolve album sorting issue` |
+| `test` | 測試 | `test: add integration tests for album API` |
+| `docs` | 文件 | `docs: update API documentation` |
+| `refactor` | 重構 | `refactor: extract album service logic` |
+| `chore` | 雜項 | `chore: update dependencies` |
+
+**範例**:
+
+```bash
+# 規格提交
+git commit -m "spec: add batch reconciliation job specification
+
+- Define job schedule: daily at 23:00
+- Add SFTP integration requirements
+- Specify error handling and retry policy"
+
+# 計畫提交
+git commit -m "plan: design batch job architecture
+
+- Use Spring Batch framework
+- SFTP client: Apache Commons VFS
+- Error notifications via Slack webhook"
+
+# 實作提交
+git commit -m "feat: implement reconciliation job reader
+
+- Read CSV files from SFTP server
+- Parse transaction records
+- Validate data format
+
+Closes #123"
+```
+
+#### CI/CD 整合
+
+**在每個 PR 觸發檢查**:
+
+```yaml
+# .github/workflows/pr-check.yml
+name: PR Check
+
+on:
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  spec-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check Spec Completeness
+        run: |
+          # 檢查規格是否有 [NEEDS CLARIFICATION] 標記
+          if grep -r "\[NEEDS CLARIFICATION\]" specs/; then
+            echo "❌ Specification has unresolved clarifications"
+            exit 1
+          fi
+      
+      - name: Check Constitution Compliance
+        run: |
+          # 使用 /speckit.analyze 檢查一致性
+          # (需整合 AI CLI 工具)
+          echo "Checking constitution compliance..."
+  
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run Tests
+        run: |
+          ./mvnw test
+      
+      - name: Check Coverage
+        run: |
+          # 確保測試覆蓋率達標(根據 Constitution)
+          ./mvnw jacoco:check
+```
+
+---
+
+**🎯 第二章重點回顧**
+
+1. **前置條件** - Python 3.11+、Git、uv、AI 工具
+2. **安裝 Spec-Kit** - `uv tool install specify-cli`
+3. **初始化專案** - `specify init project-name --integration copilot`
+4. **建立 Constitution** - 定義不可違反的開發原則
+5. **自訂模板** - 針對團隊需求調整模板
+6. **分支策略** - 基於 Git Flow,每個功能對應一個規格目錄
+
+**📌 實務建議**
+
+- ✅ **Constitution 是基礎** - 第一時間建立,所有開發遵循
+- ✅ **模板持續優化** - 根據團隊實際使用調整
+- ✅ **規格與代碼分離** - 規格文件獨立於源碼目錄
+- ✅ **充分利用自動化** - 讓 Spec-Kit 自動建立分支與目錄
+- ✅ **CI/CD 檢查** - 在 PR 階段驗證規格完整性
+
+**⚠️ 常見陷阱**
+
+- ❌ 跳過環境檢查,導致後續問題
+- ❌ Constitution 寫得太複雜,團隊無法遵循
+- ❌ 模板過度客製化,失去標準化優勢
+- ❌ 規格與代碼混在同一目錄,難以管理
+- ❌ 沒有建立 Git workflow,團隊協作混亂
+
+
+### 2.7 擴充系統 (Extension System)
+
+Spec-Kit v0.1.0 引入了**擴充系統 (Extension System)**,允許透過獨立套件新增指令與功能,而不需修改核心。
+
+#### 擴充系統概覽
+
+擴充系統的設計原則:
+
+- 🧩 **模組化** — 擴充是獨立封裝的套件,包含指令、設定與 Hook
+- 🔍 **可發現** — 透過中央目錄(Catalog)搜尋、瀏覽擴充
+- 🔧 **易管理** — 安裝、移除、啟用、停用、更新一行指令搞定
+- 🤖 **多 Agent 支援** — 擴充指令自動註冊到您使用的 AI 助手
+
+#### 擴充 CLI 指令
+
+```bash
+# 搜尋可用擴充
+specify extension search
+specify extension search jira
+specify extension search --tag issue-tracking
+
+# 查看擴充詳細資訊
+specify extension info jira
+
+# 安裝擴充
+specify extension add jira
+specify extension add my-ext --dev    # 從本機目錄安裝（開發模式）
+specify extension add my-ext --from <URL>  # 從自訂 URL 安裝
+
+# 列出已安裝擴充
+specify extension list
+specify extension list --available    # 顯示目錄中可用的擴充
+specify extension list --all          # 同時顯示已安裝與可用
+
+# 更新擴充
+specify extension update              # 更新所有擴充
+specify extension update jira         # 更新指定擴充
+
+# 啟用 / 停用
+specify extension enable jira
+specify extension disable jira
+
+# 移除擴充
+specify extension remove jira
+specify extension remove jira --keep-config  # 保留設定檔
+```
+
+#### 擴充 Manifest (extension.yml)
+
+每個擴充根目錄包含 `extension.yml` 描述檔:
+
+```yaml
+schema_version: "1.0"
+
+extension:
+  id: "jira"
+  name: "Jira Integration"
+  version: "1.0.0"
+  description: "Create Jira Epics, Stories, and Issues from spec-kit artifacts"
+  author: "Stats Perform"
+  repository: "https://github.com/statsperform/spec-kit-jira"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.1.0,<2.0.0"
+  tools:
+    - name: "jira-mcp-server"
+      required: true
+
+provides:
+  commands:
+    - name: "speckit.jira.specstoissues"
+      file: "commands/specstoissues.md"
+      description: "Create Jira hierarchy from spec and tasks"
+```
+
+#### 擴充目錄結構
+
+安裝後,擴充存放於 `.specify/extensions/` 下:
+
+```text
+.specify/
+├── extensions/
+│   ├── .registry           # 已安裝擴充的註冊檔
+│   ├── .cache/             # 目錄快取
+│   └── jira/               # 已安裝的擴充
+│       ├── extension.yml   # Manifest
+│       ├── commands/        # 擴充指令
+│       └── jira-config.yml # 擴充設定
+```
+
+#### 官方擴充範例:Jira Integration
+
+目前官方提供 **Jira Integration** 擴充,安裝後可直接使用:
+
+```bash
+# 安裝 Jira 擴充
+specify extension add jira
+
+# 設定 Jira 連線
+vim .specify/extensions/jira/jira-config.yml
+
+# 使用擴充指令
+/speckit.jira.specstoissues     # 從 Spec + Tasks 建立 Jira Issue 階層
+/speckit.jira.discover-fields   # 發現 Jira 自訂欄位
+/speckit.jira.sync-status       # 同步任務完成狀態
+```
+
+#### 版本控制建議
+
+```gitignore
+# .gitignore — 擴充相關
+.specify/extensions/.cache/
+.specify/extensions/.backup/
+.specify/extensions/*/*.local.yml
+.specify/extensions/.registry
+```
+
+**應提交的檔案**:
+- `.specify/extensions.yml`(專案擴充設定)
+- `.specify/extensions/*/jira-config.yml`(專案級設定)
+- `.specify/extension-catalogs.yml`(目錄堆疊設定)
+
+#### 多目錄支援 (Multi-Catalog, v0.2.0 新增)
+
+v0.2.0 引入了**多目錄堆疊 (Catalog Stack)** 機制，擴充目錄不再限於單一來源：
+
+**預設目錄堆疊**：
+
+| 目錄 | 類型 | 可安裝 | 說明 |
+|------|------|--------|------|
+| `catalog.json` | 預設 | ✅ 是 | 官方維護的擴充目錄 |
+| `catalog.community.json` | 社群 | ❌ 否（僅瀏覽） | 社群貢獻的擴充，搜尋時自動顯示 |
+
+**目錄管理指令**：
+
+```bash
+# 列出所有啟用的目錄
+specify extension catalog list
+
+# 新增專案級目錄
+specify extension catalog add <URL>
+
+# 移除目錄
+specify extension catalog remove <URL>
+```
+
+**目錄設定檔**：
+
+- **專案級**：`.specify/extension-catalogs.yml`
+- **使用者級**：`~/.specify/extension-catalogs.yml`
+- 專案級設定優先於使用者級
+- 環境變數 `SPECKIT_CATALOG_URL` 仍可向後相容（替換整個堆疊為單一目錄）
+
+**搜尋行為**：
+- `specify extension search` 現在會聚合所有啟用目錄的結果
+- 每個結果標註來源目錄
+- 社群目錄（`install_allowed: false`）的擴充無法直接安裝
+
+**優先順序**：
+- 高優先度目錄在合併衝突時勝出（同一擴充 ID 出現在多個目錄）
+- 所有目錄 URL 必須使用 HTTPS（localhost 開發時允許 HTTP）
+
+#### `.extensionignore` 支援 (v0.2.0 新增)
+
+擴充開發者可在擴充根目錄放置 `.extensionignore` 檔案，排除不需要的檔案/資料夾在 `specify extension add` 時被複製：
+
+```text
+# .extensionignore 範例
+tests/
+*.test.js
+docs/
+.github/
+```
+
+#### 社群擴充 (Community Extensions)
+
+截至 v0.12.0，社群目錄中已有 **105+ 個擴充**（由 60+ 位作者貢獻）與 **22 個預設**，持續快速成長。確切最新數字請執行 `specify extension search` 查詢。v0.10.2 起每個擴充均可標註 `category`／`effect` 一級欄位以利篩選。完整社群目錄可於 [官方文件站](https://github.github.io/spec-kit/community/extensions.html) 瀏覽：
+
+| 擴充名稱 | 說明 | 分類 | 效果 |
+|---------|------|------|------|
+| **AI-Driven Engineering (AIDE)** | 結構化 7 步驟工作流程，從願景到實作的完整 AI 開發流程（v0.4.1 新增） | process | Read+Write |
+| **Jira Integration** | 從 Spec + Tasks 建立 Jira Issue 階層，支援自訂欄位 | integration | Read+Write |
+| **Azure DevOps Integration** | Azure DevOps 工作項目整合，OAuth 認證 | integration | Read+Write |
+| **Verify** | 驗證規格一致性，後實作品質閘門 | code | Read-only |
+| **Verify Tasks** | 偵測幽靈完成：tasks.md 中標記 [X] 但無實際實作的任務 | code | Read-only |
+| **Checkpoint** | 實作過程中提交變更，避免最終只有一個大 commit（v0.4.1 新增） | code | Read+Write |
+| **Sync** | 偵測並解決規格與實作之間的漂移 | docs | Read+Write |
+| **Retrospective** | 後實作回顧，規格遵循評分與漂移分析 | docs | Read+Write |
+| **Review** | 後實作綜合程式碼審查，含多專業代理 | code | Read-only |
+| **Fleet** | 完整功能生命週期編排，含人工審查閘門 | process | Read+Write |
+| **Ralph** | 使用 AI 代理 CLI 的自主實作迴圈 | code | Read+Write |
+| **Understanding** | 自動化需求品質分析，31 個確定性指標（IEEE/ISO 標準） | docs | Read-only |
+| **Cleanup** | 後實作品質閘門，自動修復與分級任務建立 | code | Read+Write |
+| **DocGuard** | CDD 強制執行擴充（合規性文件守護），自動化檢查與追蹤 | docs | Read+Write |
+| **Archive** | 歸檔已合併功能至主專案記憶體 | docs | Read+Write |
+| **Reconcile** | 精確更新功能工件以調和實作漂移 | docs | Read+Write |
+| **Cognitive Squad** | 三元模型多代理認知系統，含品質閘門與自我修復（v0.3.1 新增） | docs | Read+Write |
+| **spec-kit-iterate** | 兩階段定義與應用工作流程，實作中精煉規格 | docs | Read+Write |
+| **spec-kit-learn** | 從實作生成教育指南，搭配導師式澄清 | docs | Read+Write |
+| **speckit-utils** | 恢復中斷的工作流程、驗證專案健康、Spec-to-Task 追蹤 | process | Read+Write |
+| **Conduct** | 透過子代理委派編排 spec-kit 階段，減少上下文污染 | process | Read+Write |
+| **V-Model Extension Pack** | 強制 V-Model 配對生成開發規格與測試規格，含完整追蹤（v0.4.1 新增） | docs | Read+Write |
+| **Project Health Check** | 診斷 Spec Kit 專案健康狀態（結構、代理、功能、腳本、擴充）（v0.4.1 新增） | visibility | Read-only |
+| **Project Status** | 顯示當前 SDD 工作流程進度（功能、工件、任務完成度）（v0.4.1 新增） | visibility | Read-only |
+| **Extensify** | 建立與驗證擴充及擴充目錄（v0.4.1 新增） | process | Read+Write |
+| **Presetify** | 建立與驗證預設及預設目錄（v0.4.1 新增） | process | Read+Write |
+| **Fix Findings** | 自動化 analyze-fix-reanalyze 循環，持續修正規格發現問題直到乾淨（v0.4.5 新增） | code | Read+Write |
+| **FixIt** | 規格感知的 Bug 修正 — 將 Bug 映射至規格工件，提出修正計畫，施加最小變更（v0.4.5 新增） | code | Read+Write |
+| **Onboard** | 上下文導向的新人引導與漸進式成長，說明規格、映射依賴、驗證理解並指導下一步（v0.4.4 新增） | process | Read+Write |
+| **Plan Review Gate** | 要求 spec.md 與 plan.md 先透過 MR/PR 合併，才允許產生任務（v0.4.4 新增） | process | Read-only |
+| **Product Forge** | 完整產品生命週期：研究 → 產品規格 → SpecKit → 實作 → 驗證 → 測試（v0.4.4 新增） | process | Read+Write |
+| **QA Testing** | 系統化 QA 測試：以瀏覽器驅動或 CLI 方式驗證規格中的驗收標準（v0.4.5 新增） | code | Read-only |
+| **Staff Review** | Staff Engineer 等級的程式碼審查：驗證實作是否符合規格、安全性、效能與測試覆蓋（v0.4.5 新增） | code | Read-only |
+| **Superpowers Bridge** | 在 spec-kit SDD 工作流程中編排 obra/superpowers 技能（澄清、TDD、審查、驗證、批判、除錯）（v0.4.4 新增） | process | Read+Write |
+| **Ship Release** | 自動化釋出流水線：預檢、分支同步、Changelog 生成、CI 驗證與 PR 建立（v0.4.5 新增） | process | Read+Write |
+| **Spec Critique** | 雙鏡頭批判性審查：從產品策略與工程風險角度審視 Spec 與 Plan（v0.4.5 新增） | docs | Read-only |
+| **Spec Sync** | 偵測並解決規格與實作之間的漂移，AI 輔助解決方案需人工批准（v0.4.5 新增） | docs | Read+Write |
+| **selftest.extension** | 核心擴充，用於測試其他擴充（v0.3.0 新增） | process | Read+Write |
+| **Bugfix Workflow** | 結構化 bugfix 工作流程 — 捕獲 Bug、追溯至規格工件、精準修補規格（v0.6.0 新增） | process | Read+Write |
+| **Worktree Isolation** | 為平行功能開發生成隔離的 Git worktree，無需切換 checkout（v0.6.0 新增） | process | Read+Write |
+| **Branch Convention** | 可配置的分支與資料夾命名慣例，搭配預設與自訂模式（v0.5.1 新增） | process | Read+Write |
+| **Spec Diagram** | 自動生成 Mermaid 圖表：SDD 工作流程狀態、功能進度、任務依賴（v0.5.1 新增） | visibility | Read-only |
+| **Spec Refine** | 原地更新規格、傳播變更至計畫與任務、差異影響分析（v0.5.1 新增） | process | Read+Write |
+| **Canon** | 加入 canon-driven（baseline-driven）工作流程：spec-first、code-first、spec-drift。需搭配 Canon Core preset（v0.5.1 新增） | process | Read+Write |
+| **MemoryLint** | 代理記憶管理治理工具：自動稽核並修正 AGENTS.md 與 constitution 的邊界衝突（v0.6.0 新增） | process | Read+Write |
+| **Confluence** | 從規格與規劃文件建立 Confluence 文件摘要（v0.5.1 新增） | integration | Read+Write |
+| **Brownfield Bootstrap** | 為既有程式碼庫引導 spec-kit — 自動發現架構並漸進式採用 SDD（v0.6.1 新增） | process | Read+Write |
+| **CI Guard** | CI/CD 的規格合規閘門 — 驗證規格存在、檢查漂移、阻止合併時的差距（v0.6.1 新增） | process | Read-only |
+| **SpecTest** | 從規格標準自動產生測試鷹架、映射覆蓋率、找出未測試的需求（v0.6.1 新增） | code | Read+Write |
+| **PR Bridge** | 從規格工件自動產生 Pull Request 描述、檢查清單與摘要（v0.6.1 新增） | process | Read-only |
+| **TinySpec** | 輕量級單檔工作流程，適用於小型任務 — 跳過重量級多步驟 SDD 流程（v0.6.1 新增） | process | Read+Write |
+| **What-if Analysis** | 在承諾變更前預覽需求變更的下游影響（複雜度、工作量、任務、風險）（v0.6.2 新增） | visibility | Read-only |
+| **GitHub Issues Integration** | 從 GitHub Issues 產生規格工件 — 匯入 issues、同步更新、維持雙向追蹤（v0.6.2 新增） | integration | Read+Write |
+| **SFSpeckit** | 企業級 Salesforce SDLC，含 18 個指令覆蓋完整 SDD 生命週期（v0.7.0 新增） | process | Read+Write |
+| **Architect Impact Previewer** | 預測架構影響、複雜度與風險，在實作前預覽（v0.7.0 新增） | visibility | Read-only |
+| **Agent Assign** | 將專業化 Claude Code agents 指派給 spec-kit 任務以進行針對性執行（v0.7.1 新增） | process | Read+Write |
+| **Worktrees** | 預設啟用的 worktree 隔離，支援平行代理 — sibling 或 nested 佈局（v0.7.0 新增） | process | Read+Write |
+| **Red Team** | 對抗性規格審查 — 在 `/speckit.plan` 前由平行鏡頭代理發掘結構性無法捕捉的風險（prompt injection、完整性缺口、跨規格漂移、靜默失敗），產出結構化發現報告（v0.7.4 新增） | docs | Read+Write |
+| **Spec Validate** | 理解力驗證、審查閘門與批准狀態 — 分階段測驗、同儕審查 SLA、在 `/speckit.implement` 前的硬性閘門（v0.7.4 新增） | process | Read+Write |
+| **Ripple** | 偵測測試無法捕捉的實作副作用 — 跨 9 個領域無關類別的差量錨定分析（v0.7.4 新增） | code | Read+Write |
+| **Version Guard** | 在規劃與實作前驗證技術棧版本是否符合 npm registry 最新版（v0.7.4 新增） | process | Read-only |
+| **Spec Reference Loader** | 讀取功能規格中的 ## References 區段並僅載入列出的文件至上下文（v0.7.4 新增） | docs | Read-only |
+| **Memory Loader** | 在生命週期命令前載入 .specify/memory/ 檔案，使 LLM 代理具備專案治理上下文（v0.7.4 新增） | docs | Read-only |
+| **Catalog CI** | 自動化驗證 spec-kit 社群目錄條目 — 結構、URL、差異與 linting（v0.7.2 新增） | process | Read-only |
+| **Spec Scope** | 工作量估算與範圍追蹤 — 估計工作、偵測範圍蠕變、按階段預算時間（v0.7.3 新增） | process | Read-only |
+| **Blueprint** | 在 AI 驅動開發中保持代碼素養：在 /speckit.implement 執行前審查完整代碼藍圖（v0.7.3 新增） | docs | Read+Write |
+| **Wireframe** | SVG 線框圖生成、審查與簽核 — 批准的線框圖成為 plan/tasks/implement 的規格約束（v0.7.5 新增） | visibility | Read+Write |
+| **Memory MD** | 為 Spec Kit 專案提供原生持久記憶體（v0.8.0 新增） | docs | Read+Write |
+| **Spec Orchestrator** | 在代理上下文中自動化 SDD 工作流程編排，減少手動指令切換（v0.8.2 新增） | process | Read+Write |
+| **MarkItDown Document Converter** | 將辦公室文件（Word、Excel、PDF 等）轉換為 Markdown 格式，整合至 SDD 工作流程（v0.8.2 新增） | docs | Read+Write |
+| **M365 Integration** | Microsoft 365 整合，將組織內部文件與知識連結至 SDD 規格（v0.8.2 新增） | integration | Read+Write |
+| **Work IQ** | Microsoft 365 組織知識整合至 SDD 工作流程（v0.8.3 新增） | integration | Read+Write |
+| **Squad Bridge** | 從 Speckit spec 與 tasks 引導並同步 Squad 代理團隊（v0.8.3 新增） | process | Read+Write |
+| **OWASP LLM Threat Model** | OWASP LLM 應用程式 Top 10 威脅分析擴充（v0.8.3 新增） | docs | Read-only |
+| **isaqb Architecture Governance** | iSAQB 架構治理社群擴充，檢查架構決策是否符合 iSAQB 標準（v0.8.3 新增） | docs | Read-only |
+| **Security Governance** | 安全治理框架與合規性檢查（v0.8.4 新增） | docs | Read+Write |
+| **Cross-Platform Governance** | 跨平台開發治理標準（v0.8.4 新增） | docs | Read+Write |
+| **Architecture Governance** | 架構治理與一致性驗證（v0.8.4 新增） | docs | Read+Write |
+| **A11y Governance** | 無障礙（Accessibility）治理標準（v0.8.4 新增） | docs | Read+Write |
+| **Agent Parity Governance** | AI 代理間輸出一致性治理（v0.8.4 新增） | docs | Read+Write |
+| **Spec2Cloud** | 從 SDD 規格到 Azure 雲端部署的完整工作流程（v0.8.4 新增） | integration | Read+Write |
+| **Token Analyzer** | Token 使用量分析與最佳化建議（v0.8.5 新增） | process | Read-only |
+| **Architecture Guard** | 持續架構治理 — 審查 specs、plans、code 的架構偏移（v0.8.6 新增） | docs | Read+Write |
+| **Multi-Model Review** | 跨模型 Spec Kit handoffs — spec 撰寫、實作路由與審查（v0.8.6 新增） | process | Read+Write |
+| **Agent Orchestrator** | 跨目錄的代理發現與智慧 prompt-to-command 路由（v0.8.7 新增） | process | Read+Write |
+| **Cost Tracker** | 追蹤 SDD 工作流程中的 LLM 成本 — 逐功能預算、財務報表（v0.8.7 新增） | process | Read-only |
+| **fx-to-dotnet** | .NET Framework 到現代 .NET 的端對端遷移（7 階段，SDD 整合）（v0.8.7 新增） | process | Read+Write |
+| **Schedule** | CP-SAT 最佳多代理任務排程 — DAG 約束、幻覺感知容量限制（v0.8.8 新增） | process | Read+Write |
+| **API Evolve** | 管理式 API 契約演進 — 破壞性變更偵測、SemVer 強制（v0.8.8 新增） | process | Read+Write |
+| **MDE** | 最小模型驅動工程工作流程（setup / next / status）（v0.8.8 新增） | process | Read+Write |
+| **BrownKit** | 既有程式碼庫的證據驅動能力發現與風險評估（v0.8.9 新增） | process | Read-only |
+| **Spec Changelog** | 從 spec git 歷史與需求差異產生變更日誌與發行說明（v0.8.9 新增） | docs | Read+Write |
+
+> 🔍 **社群擴充網站**：瀏覽並搜尋所有社群擴充於 [Community Extensions 網站](https://speckit-community.github.io/extensions/)。
+
+```bash
+# 搜尋社群擴充
+specify extension search --tag issue-tracking
+
+# 查看擴充資訊（即使無法直接安裝）
+specify extension info azure-devops
+```
+
+> 💡 更多擴充開發資訊請參考官方文件：[Extension Development Guide](https://github.com/github/spec-kit/tree/main/extensions)
+
+---
+
+### 2.8 預設系統 (Presets System)
+
+Spec-Kit v0.3.0 引入了**預設系統 (Presets System)**，允許您自訂 Spec-Kit 的既有工作流程，而不需新增功能。預設系統是擴充系統的互補概念。
+
+#### 預設 vs 擴充：何時使用何者
+
+| 需求 | 使用 |
+|------|------|
+| 新增全新命令或工作流程 | **擴充 (Extension)** |
+| 自訂規格、計畫、任務的格式 | **預設 (Preset)** |
+| 整合外部工具或服務 | **擴充 (Extension)** |
+| 強制組織或法規標準 | **預設 (Preset)** |
+| 打包可重複使用的領域特定模板 | **兩者皆可** — 模板覆寫用預設，模板搭配新命令用擴充 |
+
+#### 預設的核心概念
+
+預設覆寫 Spec-Kit 核心和已安裝擴充附帶的**模板與命令**。例如：
+
+- 🔒 強制合規性導向的 Spec 格式（如 FDA、SOX 合規）
+- 📋 使用領域特定術語（如敏捷、看板、瀑布、JTBD、DDD）
+- 🛡️ 在 Plan 中加入強制安全審查關卡
+- 🧪 強制測試優先的任務排序
+- 🌍 將整個工作流程本地化為不同語言
+
+#### 預設 CLI 指令
+
+```bash
+# 搜尋可用的預設
+specify preset search
+
+# 安裝預設
+specify preset add <preset-name>
+
+# 列出已安裝的預設
+specify preset list
+
+# 啟用 / 停用預設（v0.3.0+ 支援）
+specify preset enable <preset-name>
+specify preset disable <preset-name>
+
+# 移除預設
+specify preset remove <preset-name>
+```
+
+#### 模板解析優先順序
+
+Spec-Kit 在執行時會依以下順序由上而下查找模板，使用第一個匹配的結果：
+
+```text
+1. 專案本地覆寫  .specify/templates/overrides/   ← 最高優先
+2. 已安裝的預設  （按優先順序堆疊）
+3. 已安裝的擴充  
+4. Spec-Kit 核心預設                              ← 最低優先
+```
+
+- **模板**在執行時動態解析（walk the stack top-down）
+- **命令**在安裝時寫入代理目錄，若多個預設/擴充提供相同命令，最高優先版本勝出
+- 移除時，自動還原為下一優先順序的版本
+
+#### 多預設堆疊
+
+多個預設可以堆疊使用，並設定優先順序：
+
+```bash
+# 安裝多個預設
+specify preset add compliance-first
+specify preset add agile-workflow
+
+# 預設按安裝順序或設定的優先權排列
+specify preset list
+```
+
+#### 專案本地覆寫
+
+若只需針對單一專案做微調，不需要建立完整預設，可使用**專案本地覆寫**：
+
+在 `.specify/templates/overrides/` 目錄下放置覆寫版模板即可。這些覆寫檔案擁有最高優先順序，但不會影響其他專案。
+
+```text
+.specify/
+├── templates/
+│   ├── overrides/           # 專案本地覆寫（最高優先）
+│   │   └── spec-template.md # 自訂 Spec 模板
+│   ├── spec-template.md     # 核心模板（被覆寫時不生效）
+│   ├── plan-template.md
+│   └── tasks-template.md
+```
+
+#### 預設範例：pirate-speak
+
+官方提供了一個有趣的 [pirate-speak 範例](https://github.com/mnriem/spec-kit-pirate-speak-preset-demo)，展示預設系統的深度自訂能力：
+
+- Spec 變成「Voyage Manifests」（航行宣言）
+- Plan 變成「Battle Plans」（戰鬥計畫）
+- Tasks 變成「Crew Assignments」（船員任務分配）
+- 所有產出使用完整的海盜口語 — 無需修改任何工具程式碼
+
+這證明了預設系統可以**完全重塑** Spec-Kit 的使用體驗。
+
+#### 社群預設 (Community Presets)
+
+截至 v0.12.0，社群提供 **22+ 個預設**（社群預設仍持續新增，確切清單請執行 `specify preset search` 查詢或瀏覽 [官方預設目錄](https://github.github.io/spec-kit/community/presets.html)）：
+
+| 預設名稱 | 說明 | 範圍 | 依賴 |
+|---------|------|------|------|
+| **Pirate Speak (Full)** | 將所有 Spec Kit 輸出轉換為海盜語，完整示範深度自訂 | 6 模板、9 命令 | 無 |
+| **AIDE In-Place Migration** | 改編 AIDE 擴充工作流程用於原地技術遷移（X → Y 模式），加入遷移目標、驗證閘門、知識文件與行為等價標準 | 2 模板、8 命令 | AIDE 擴充 |
+| **Canon Core** | 改編原始 Spec Kit 工作流程以搭配 Canon 擴充使用（v0.5.1 新增） | 2 模板、8 命令 | 無 |
+| **Explicit Task Dependencies** | 為 tasks.md 加入明確的 `(depends on T###)` 依賴宣告與 Execution Wave DAG，支援平行排程（v0.5.1 新增） | 1 模板、1 命令 | 無 |
+| **Multi-Repo Branching** | 在 plan 和 tasks 階段協調跨多個 Git 儲存庫（獨立 repo 與 submodules）的功能分支建立（v0.6.0 新增） | 2 命令 | 無 |
+| **Table of Contents Navigation** | 為 spec.md、plan.md、tasks.md 加入可導航的目錄（v0.5.1 新增） | 3 模板、3 命令 | 無 |
+| **VS Code Ask Questions** | 增強 clarify 命令，使用 vscode/askQuestions 進行批次互動式提問（v0.5.1 新增） | 1 命令 | 無 |
+| **Claude Ask Questions** | 增強 clarify 命令，使用 Claude 的批次提問功能（v0.7.0 新增） | 1 命令 | 無 |
+| **Fiction Book Writing** | 改編 SDD 工作流程用於敘事寫作：功能→故事元素、規格→故事簡報、計畫→故事結構、任務→逐場景寫作，支援多 POV、所有主要情節框架（v0.7.0 新增） | 21 模板、17 命令 | 無 |
+| **Lean** | 內建精簡預設，僅含最小工作流命令（v0.6.1 新增） | 最小化命令集 | 無 |
+| **Jira** | 為 Jira 整合工作流程自訂模板與指令（v0.8.1 新增） | 模板、命令 | 無 |
+| **Screenwriting** | 改編 SDD 工作流程用於劇本寫作（v0.8.1 新增） | 模板、命令 | 無 |
+| **Spec2Cloud** | 從 SDD 規格到 Azure 雲端部署的完整預設（v0.8.5 新增） | 模板、命令 | Spec2Cloud 擴充 |
+| **MDE** | 最小模型驅動工程工作流程預設（v0.8.8 新增） | 模板、命令 | MDE 擴充 |
+| **Game Narrative Writing** | 改編 SDD 工作流程用於遊戲敘事寫作（v0.8.9 新增） | 模板、命令 | 無 |
+| **Workflow** | 預建工作流模板，快速啟用常見 CI/CD 與自動化流程（v0.8.16 新增） | 工作流模板 | 無 |
+| **Security Governance** | 安全治理預設，整合 OWASP/STRIDE 檢查清單與自動化安全審查（v0.4.0，v0.8.17 更新） | 模板、命令 | Security Governance 擴充 |
+
+> 📖 完整社群預設清單已遷移至官方文件站：[Community Presets](https://github.github.io/spec-kit/community/presets.html)。
+>
+> 📖 如需建立與發佈自己的預設，請參考 [Presets Publishing Guide](https://github.com/github/spec-kit/blob/main/presets/PUBLISHING.md)。
+
+#### 版本控制建議
+
+```gitignore
+# .gitignore — 預設相關
+.specify/presets/.cache/
+```
+
+**應提交的檔案**：
+- `.specify/templates/overrides/`（專案覆寫模板）
+- 預設設定檔
+
+> 📖 完整預設指南請參考：[Presets README](https://github.com/github/spec-kit/blob/main/presets/README.md)
+
+---
+
+### 2.9 CLI 診斷指令 (doctor / status)
+
+Spec-Kit v0.3.0+ 新增了兩個實用的診斷命令，幫助您快速了解專案狀態與排查問題。
+
+#### `specify doctor`（v0.3.0 新增）
+
+專案健康診斷工具，檢查專案配置的完整性與一致性。
+
+```bash
+specify doctor
+```
+
+**檢查項目**：
+- ✅ 專案結構是否完整（`.specify/` 目錄、模板、腳本）
+- ✅ Constitution 是否已建立
+- ✅ AI 代理設定是否正確
+- ✅ 擴充是否正常安裝
+- ✅ 預設是否正確載入
+- ✅ 模板解析順序是否正確
+
+**使用時機**：
+- 升級後確認一切正常
+- 排查 slash commands 不生效的問題
+- 新團隊成員加入時驗證環境
+
+#### `specify status`（v0.3.1 新增）
+
+顯示當前專案的 Spec-Kit 狀態總覽。
+
+```bash
+specify status
+```
+
+**顯示資訊**：
+- 當前專案的 Spec-Kit 版本
+- 使用的 AI 代理
+- 已安裝的擴充列表
+- 已安裝的預設列表
+- 當前功能分支（如適用）
+
+---
+
+### 2.10 Plugin Architecture（v0.4.4-0.4.5 重大架構變革）
+
+v0.4.4 至 v0.4.5 版本完成了一次**六階段的 Plugin Architecture 遷移**，這是 Spec-Kit 內部架構的重大重構，將所有 AI 代理整合從硬編碼轉為外掛式架構。
+
+#### 遷移過程
+
+| 階段 | 版本 | 說明 |
+|------|------|------|
+| **Stage 1** | v0.4.4 | Integration foundation — base classes、manifest system、registry |
+| **Stage 2** | v0.4.4 | Copilot integration — 概念驗證，建立共享模板基元（shared template primitives） |
+| **Stage 3** | v0.4.5 | Standard markdown integrations — 19 個代理遷移至 plugin 架構 |
+| **Stage 4** | v0.4.5 | TOML integrations — Gemini 與 Tabnine 遷移至 plugin 架構 |
+| **Stage 5** | v0.4.5 | Skills, Generic & Option-Driven integrations |
+| **Stage 6** | v0.4.5 | Complete migration — 移除 legacy scaffold 路徑 |
+
+#### 對使用者的影響
+
+- **正面影響**：新代理的加入變得更容易，社群可更快擴展支援的 AI 工具
+- **向後相容**：現有指令與工作流程不受影響，`/speckit.*` 指令格式保持一致
+- **Claude Code 變更**：v0.4.5 起 Claude Code 安裝為 native skills，並對齊 preset/integration 流程
+
+#### 注意事項
+
+若從 v0.4.3 以前的版本升級至 v0.4.5+，建議執行完整的專案檔更新：
+
+```bash
+# 備份後升級
+cp .specify/memory/constitution.md .specify/memory/constitution-backup.md
+specify init --here --force --integration <your-agent>
+mv .specify/memory/constitution-backup.md .specify/memory/constitution.md
+```
+
+---
+
+### 2.11 整合管理指令 (specify integration)
+
+Spec-Kit v0.5.1 新增了 `specify integration` 子命令，提供**後初始化（post-init）**的整合管理功能。此指令讓您在初始化專案後，仍可新增或管理 AI 代理整合，而無需重新執行 `specify init`。
+
+#### 使用場景
+
+- 🔄 專案初始化後，需要新增其他 AI 代理的支援
+- 🛠️ 切換團隊使用的 AI 工具而不影響現有規格文件
+- 📋 查看當前專案已配置的整合清單
+
+#### 指令格式
+
+```bash
+# 管理整合
+specify integration
+
+# 列出所有可用的整合（v0.7.2+ 新增）
+specify integration list
+
+# 查看整合管理說明
+specify integration --help
+```
+
+> 💡 此指令與 `specify init` 的差異在於：`integration` 僅操作代理整合設定，不會觸及模板、腳本或記憶體檔案。
+
+---
+
+### 2.12 Git 擴充 (Bundled Git Extension)
+
+Spec-Kit v0.5.1 引入了**內建 Git 擴充 (Bundled Git Extension)**，分為兩個階段交付，為 SDD 工作流程提供深度的 Git 整合：
+
+#### Stage 1（v0.5.1）
+
+- 在所有核心命令（constitution、specify、plan、tasks、implement 等）上掛載 Git hooks
+- 自動化功能分支管理與提交流程
+- 擴充安裝於 `extensions/git` 目錄
+
+#### Stage 2（v0.5.1）
+
+- `GIT_BRANCH_NAME` 覆寫支援 — 允許自訂分支命名
+- `--force` 旗標支援既有目錄
+- 自動安裝測試涵蓋
+
+#### 啟用方式
+
+> ⚠️ **v0.10.0 起已變更**：以下描述的「自動內建」行為僅適用於 **v0.5.1 至 v0.9.x**。**v0.10.0 起 Git 擴充改為 opt-in**，需顯式安裝才會啟用，且 `--no-git` 旗標已被移除。詳細變更內容與升級注意事項請見 [2.37 Git 擴充改為 Opt-in 與 Legacy 旗標全面移除](#237-git-擴充改為-opt-in-與-legacy-旗標全面移除v0100-重大變更)。
+
+Git 擴充在 v0.5.1-v0.9.x 版本中自動內建，無需額外安裝。升級後執行專案更新即可啟用：
+
+```bash
+specify init --here --force --integration <your-agent>
+```
+
+#### 注意事項
+
+- Git 擴充的 hooks 會在每個核心指令執行前後自動觸發
+- 可透過 `.specify/extensions/git/` 目錄自訂 hook 行為
+- （v0.5.1-v0.9.x 適用）若專案使用 `--no-git` 初始化，Git 擴充不會生效；v0.10.0 起此旗標已移除，行為改為 opt-in，見 2.37 節
+
+---
+
+### 2.13 工作流引擎 (Workflow Engine, v0.7.0)
+
+Spec-Kit v0.7.0 引入了全新的**工作流引擎 (Workflow Engine)** 與**工作流目錄系統 (Catalog System)**，為 SDD 工作流程帶來了更高層次的編排能力。
+
+#### 核心概念
+
+工作流引擎將原本的「指令序列式」工作流程升級為**可定義、可組合、可分享**的工作流模型：
+
+- 🔄 **宣告式工作流** — 以 YAML/Markdown 定義工作流階段、步驟與條件
+- 📦 **工作流目錄** — 類似擴充與預設的目錄機制，支援搜尋、安裝、分享工作流
+- 🧩 **可組合串接** — 工作流步驟可引用擴充指令、預設模板與核心指令
+- 🤖 **AI 代理感知** — 工作流可根據使用中的 AI 代理自動調整行為
+
+#### 與擴充 / 預設的關係
+
+| 系統 | 定義「做什麼」 | 定義「怎麼做」 | 定義「何時做」 |
+|------|-------------|-------------|-------------|
+| **擴充 (Extension)** | ✅ 新增指令 | — | — |
+| **預設 (Preset)** | — | ✅ 自訂模板/格式 | — |
+| **工作流 (Workflow)** | — | — | ✅ 編排步驟順序與條件 |
+
+三者結合使用可實現完全自訂的 SDD 體驗：工作流決定流程順序，擴充提供功能指令，預設定義輸出格式。
+
+#### 工作流目錄位置
+
+工作流定義存放於專案根目錄的 `workflows/` 目錄：
+
+```text
+workflows/
+├── catalog.json              # 內建工作流目錄
+├── catalog.community.json    # 社群工作流目錄
+└── custom-workflow.yml        # 自訂工作流定義
+```
+
+#### 使用時機
+
+- 🏢 **企業標準化** — 定義組織層級的統一開發流程
+- 🔄 **重複性流程** — 自動化常見的 SDD 步驟序列
+- 🧪 **品質閘門** — 在工作流的關鍵節點嵌入自動檢查
+- 📋 **合規性追蹤** — 記錄每個步驟的執行狀態
+
+> 💡 工作流引擎為 v0.7.0 新增功能，持續演進中。建議先使用內建工作流熟悉概念，再嘗試自訂。
+
+---
+
+### 2.14 --integration 旗標（v0.7.1 取代 --ai）
+
+Spec-Kit v0.7.1 正式**棄用 (deprecate)** `specify init` 的 `--ai` 旗標，改為使用 `--integration` 旗標。
+
+#### 變更原因
+
+隨著 Plugin Architecture 的成熟，AI 代理整合的概念已從「選擇 AI 工具」擴展為「選擇整合方式」。`--integration` 更精確地反映了這個設計意圖。
+
+#### 用法對照
+
+| 舊寫法（仍可用，但已棄用） | 新寫法（v0.7.1+ 建議） |
+|-------------------------|----------------------|
+| `specify init my-project --ai copilot` | `specify init my-project --integration copilot` |
+| `specify init --here --force --ai claude` | `specify init --here --force --integration claude` |
+| `specify init my-project --ai generic --ai-commands-dir .myagent/` | `specify init my-project --integration generic --ai-commands-dir .myagent/` |
+
+#### 向後相容
+
+- `--ai` 旗標仍可正常使用，但會顯示棄用警告
+- 建議在新專案中一律使用 `--integration`
+- 團隊既有的腳本與文件可逐步遷移
+
+```bash
+# v0.7.1+ 建議寫法
+specify init my-project --integration copilot
+
+# 升級時也使用新旗標
+specify init --here --force --integration copilot
+```
+
+> ⚠️ **遷移建議**：此為非破壞性變更，`--ai` 仍可使用。但建議在 CI/CD 腳本、團隊文件中逐步替換為 `--integration`，以避免未來版本移除時造成問題。
+>
+> ⚠️ **後續更新（v0.10.0）**：`--ai` 旗標已於 v0.10.0 正式**移除**（不再只是棄用警告），上表中標示「仍可用但已棄用」的寫法目前已**失效**。請統一使用 `--integration`，並參考 [2.37 節](#237-git-擴充改為-opt-in-與-legacy-旗標全面移除v0100-重大變更) 了解完整的旗標移除清單。
+
+---
+
+### 2.15 Self Management 指令（v0.7.5 新增，v0.9.3 正式實作完成）
+
+Spec-Kit v0.7.5 新增了 `specify self` 子命令，提供 CLI 自我管理功能：
+
+```bash
+# 檢查當前 CLI 是否有新版本可用
+specify self check
+
+# 升級 CLI 至最新版
+specify self upgrade
+```
+
+> ⚠️ **v0.9.3 起已更新**：`self upgrade` 在 v0.7.5 推出時僅為初步 stub，**v0.9.3 起已正式實作完成**，可直接執行 CLI 自我升級。詳見 [2.35 Workflow Continue-On-Error 與 Self Upgrade 正式實作](#235-workflow-continue-on-error-與-self-upgrade-正式實作v092-v093-新增)。若需更精細的版本控管（例如釘選特定 tag），仍可搭配 `uv tool install --force` 或 `pipx install --force` 手動指定版本。
+
+---
+
+### 2.16 預設組合策略 (Composition Strategies, v0.8.0)
+
+Spec-Kit v0.8.0 引入了**組合策略 (Composition Strategies)**，為預設系統帶來更細粒度的自訂能力。
+
+#### 三種組合策略
+
+在 v0.8.0 之前，預設只能**完全覆寫**核心模板或命令。v0.8.0 新增三種組合策略，讓預設可以**部分修改**而非完全替換：
+
+| 策略 | 說明 | 適用場景 |
+|------|------|----------|
+| **`prepend`** | 在核心模板/命令/腳本的**前面**插入內容 | 加入前置檢查、disclaimer、header |
+| **`append`** | 在核心模板/命令/腳本的**後面**追加內容 | 加入額外章節、後處理步驟、footer |
+| **`wrap`** | 完整**包裹**核心內容，可在前後都加入內容 | 完整自訂框架，同時保留核心邏輯 |
+
+#### 適用範圍
+
+組合策略可應用於預設的三種檔案類型：
+
+- **模板 (Templates)** — 如 `spec-template.md`、`plan-template.md`
+- **命令 (Commands)** — 如 `/speckit.specify`、`/speckit.plan`
+- **腳本 (Scripts)** — 如 `create-new-feature.sh`
+
+#### 使用範例
+
+```yaml
+# 預設定義中使用組合策略
+composition:
+  templates:
+    spec-template.md:
+      strategy: append
+      content: |
+        ## 合規性追蹤
+        - [ ] 資安審查已完成
+        - [ ] 隱私影響評估已填寫
+  commands:
+    specify.md:
+      strategy: prepend
+      content: |
+        > ⚠️ 請確認已取得產品負責人核准後再繼續
+```
+
+> 💡 組合策略是預設系統的重大增強。在此之前，自訂模板需要複製整個核心模板並修改，導致升級時容易衝突。現在可以只定義**差異部分**，核心更新時自動繼承。
+
+---
+
+### 2.17 Skills-Based Scaffolding（v0.8.0 新增）
+
+v0.8.0 為 Copilot 整合新增了 `--integration-options="--skills"` 選項，支援基於 skills 的專案鷹架：
+
+```bash
+# 使用 skills 模式初始化（適用於支援 skills 的代理）
+specify init my-project --integration copilot --integration-options="--skills"
+
+# 在既有專案中啟用 skills 模式
+specify init --here --force --integration codex --integration-options="--skills"
+```
+
+#### 與傳統 Slash Commands 的差異
+
+| 模式 | 檔案位置 | 指令格式 | 適用代理 |
+|------|---------|---------|---------|
+| **Slash Commands** | `.github/prompts/`、`.claude/commands/` 等 | `/speckit.*` | 大部分代理 |
+| **Skills** | `.agents/skills/`、`.claude/skills/` 等 | `$speckit-*` 或 agent 特定格式 | Codex、Claude Code、Copilot |
+
+> 💡 Skills 模式提供更豐富的代理互動能力，適合需要深度 AI 整合的進階場景。
+>
+> ⚠️ **請注意旗標名稱差異**：本節的 `--integration-options="--skills"` 是官方 v0.8.0 起的正式語法，與另一個較舊的簡寫旗標 `--ai-skills` 不同——後者已於 **v0.10.0 隨 legacy 旗標一併移除**（見 [2.37 節](#237-git-擴充改為-opt-in-與-legacy-旗標全面移除v0100-重大變更)）。若在舊文件或腳本中看到 `--ai-skills`，請改用本節的 `--integration-options="--skills"` 寫法。
+
+---
+
+### 2.18 feature.json 自訂分支支援（v0.8.1 新增）
+
+v0.8.1 修正了 `/speckit.plan` 在自訂 Git 分支上的限制。透過在 `.specify/` 目錄下放置 `feature.json`，可以讓 Spec-Kit 在非標準命名的功能分支上正常運作：
+
+```json
+// .specify/feature.json
+{
+  "branch": "custom-branch-name",
+  "feature_number": "042",
+  "short_name": "my-feature"
+}
+```
+
+這解決了當團隊使用自訂分支命名策略時，`/speckit.plan` 無法正確識別功能分支的問題。
+
+---
+
+### 2.19 --no-git 旗標棄用與 GITHUB_TOKEN 認證（v0.8.2 新增）
+
+v0.8.2 引入了幾項重要的 CLI 變更：
+
+#### `--no-git` 旗標棄用
+
+`--no-git` 旗標已被標記為棄用，預計在 v0.10.0 完全移除。如果您的工作流程需要在無 Git 環境下使用 Spec-Kit，請改用 `SPECIFY_FEATURE` 環境變數搭配手動目錄管理。
+
+> ⚠️ **後續確認（v0.10.0）**：此預告已成真，`--no-git` 已於 v0.10.0 正式移除，同時 Git 擴充本身也從「自動內建」改為「opt-in」。詳見 [2.37 節](#237-git-擴充改為-opt-in-與-legacy-旗標全面移除v0100-重大變更)。
+
+```bash
+# 舊寫法（已棄用，仍可用但會顯示警告）
+specify init my-project --integration claude --no-git
+
+# 建議做法：使用環境變數
+export SPECIFY_FEATURE="001-my-feature"
+```
+
+#### GITHUB_TOKEN 認證下載
+
+v0.8.2 起，擴充與預設的下載操作會自動使用 `GITHUB_TOKEN` 或 `GH_TOKEN` 環境變數進行 GitHub API 認證。這對於以下場景特別重要：
+
+- **企業環境**：避免 GitHub API Rate Limit 限制
+- **私有目錄**：存取需要認證的社群擴充
+- **CI/CD 管線**：自動化安裝擴充時提供認證
+
+```bash
+# 設定環境變數
+export GITHUB_TOKEN="ghp_xxxxxxxxxxxx"
+
+# 擴充與預設操作會自動使用認證
+specify extension add spec-kit-review
+specify preset add lean
+```
+
+#### `--ai` 旗標全面替換
+
+v0.8.2 已將所有官方文件中的 `--ai` 旗標替換為 `--integration`。當時 `--ai` 仍可使用（向下相容），但強烈建議遷移至 `--integration`：
+
+```bash
+# 舊寫法（⚠️ v0.10.0 起已完全移除，僅供歷史對照）
+specify init my-project --ai copilot
+
+# 新寫法（唯一可用語法）
+specify init my-project --integration copilot
+```
+
+#### UTF-8 編碼修正
+
+v0.8.2 修正了擴充 manifest YAML 讀取時的 UTF-8 編碼問題，確保包含非 ASCII 字元的擴充能正確載入。
+
+---
+
+### 2.20 目錄探索 CLI 與 Devin 整合（v0.8.3 新增）
+
+v0.8.3（2026-04-29）帶來目錄探索指令與新的 AI 代理整合。
+
+#### 目錄探索 CLI 指令
+
+v0.8.3 新增了 `catalog` 相關的探索指令，讓使用者可以直接從 CLI 搜尋與瀏覽社群擴充和預設：
+
+```bash
+# 搜尋社群擴充
+specify extension search <keyword>
+
+# 搜尋社群預設
+specify preset search <keyword>
+
+# 查看擴充詳細資訊
+specify extension info <extension-name>
+```
+
+這些指令從社群目錄（`catalog.community.json`）讀取資料，無需手動瀏覽 GitHub 頁面。
+
+#### Devin for Terminal 整合
+
+v0.8.3 新增了 **Devin for Terminal** 的 skills-based 整合。Devin 是一個終端機導向的 AI 代理，透過技能（skills）模式整合：
+
+```bash
+# 初始化 Devin 整合
+specify init my-project --integration devin
+
+# Devin 的 skills 安裝路徑
+# .devin/skills/
+```
+
+**Devin 整合特點**：
+- 使用 `SkillsIntegration` 基底類別
+- Skills 安裝至 `.devin/skills/` 目錄
+- 指令格式遵循 skills 模式
+
+#### 其他 v0.8.3 變更
+
+| 變更 | 說明 |
+|------|------|
+| **Work IQ 擴充** | Microsoft 365 組織知識整合至 SDD 工作流程 |
+| **Squad Bridge 擴充** | 從 Speckit spec 與 tasks 引導並同步 Squad 代理團隊 |
+| **OWASP LLM Threat Model** | OWASP LLM 應用程式 Top 10 威脅分析擴充 |
+| **isaqb 架構治理** | iSAQB 架構治理社群擴充 |
+| **opencode 指令修正** | 透過 `run` 分派 opencode 指令 |
+| **安全性修正** | 升級提示中加入 `--from git+...` 避免 PyPI squat 套件 |
+
+---
+
+### 2.21 Constitution 上下文載入與治理擴充（v0.8.4-v0.8.6 新增）
+
+v0.8.4 至 v0.8.6 連續三個版本聚焦於**治理（Governance）能力增強**，為企業級採用奠定基礎。
+
+#### `/speckit.implement` 載入 Constitution 上下文（v0.8.6）
+
+v0.8.6 的核心改進：`/speckit.implement` 指令現在會**自動載入 constitution 上下文**，確保實作階段嚴格遵循專案治理原則。在此之前，AI 助手在實作階段可能忽略 constitution 中定義的架構約束——此修正確保端對端治理一致性。
+
+```bash
+# 實作時自動載入 constitution
+/speckit.implement
+# → AI 會自動讀取並遵循 constitution.md 中的所有約束
+```
+
+#### 治理相關社群擴充（v0.8.4）
+
+v0.8.4 引入了一系列企業治理擴充：
+
+| 擴充 | 說明 |
+|------|------|
+| **Security Governance** | 安全治理框架與合規性檢查 |
+| **Cross-Platform Governance** | 跨平台開發治理標準 |
+| **Architecture Governance** | 架構治理與一致性驗證 |
+| **A11y Governance** | 無障礙（Accessibility）治理標準 |
+| **Agent Parity Governance** | AI 代理間輸出一致性治理 |
+
+```bash
+# 安裝治理擴充
+specify extension add spec-kit-security-governance
+specify extension add spec-kit-architecture-guard
+```
+
+#### Spec2Cloud 擴充與預設（v0.8.4–v0.8.5）
+
+**Spec2Cloud** 提供了從規格到 Azure 雲端部署的完整工作流程：
+
+```bash
+# 安裝 Spec2Cloud 擴充
+specify extension add spec2cloud
+
+# 安裝 Spec2Cloud 預設
+specify preset add spec2cloud
+```
+
+**功能**：
+- ✅ 將 SDD 工件直接映射至 Azure 資源
+- ✅ 自動產生部署配置
+- ✅ 整合 Azure DevOps 管線
+
+#### Multi-Install 支援（v0.8.5）
+
+v0.8.5 引入了**安全的多重安裝（Controlled Multi-Install）**，允許在單一專案中同時安裝多個 AI 代理的整合：
+
+```bash
+# 同時安裝 Copilot 與 Claude 整合
+specify init --here --force --integration copilot
+specify init --here --force --integration claude
+```
+
+#### `--force` 行為改進（v0.8.6）
+
+v0.8.6 修正了 `--force` 旗標的行為：擴充指令在 `integration switch` 時會正確遷移，確保切換 AI 代理時不會遺失擴充的 slash commands。
+
+#### 其他重要變更
+
+| 版本 | 變更 | 說明 |
+|------|------|------|
+| v0.8.4 | 自引用步驟編號修正 | 修正驗證流程中的自引用步驟編號 |
+| v0.8.5 | Git 擴充預設變更通知 | 初始化時顯示 git extension 預設行為變更的提示 |
+| v0.8.5 | Tasks 模板覆寫修正 | 正確套用 `tasks-template` 的覆寫設定 |
+| v0.8.6 | URL scheme 驗證 | `build_github_request` 中驗證 URL scheme 防止注入 |
+| v0.8.6 | Architecture Guard 擴充 | 持續架構治理——審查 specs、plans、code 的架構偏移 |
+| v0.8.6 | Multi-Model Review 擴充 | 跨模型 Spec Kit handoffs — spec 撰寫、實作路由與審查 |
+
+---
+
+### 2.22 Lingma 整合與 Agent Orchestrator（v0.8.7 新增）
+
+v0.8.7 帶來新的 AI 代理整合與社群擴充。
+
+#### Lingma 整合
+
+v0.8.7 新增 **Lingma**（阿里巴巴 Tongyi Lingma）AI 代理支援：
+
+```bash
+# 初始化 Lingma 整合
+specify init my-project --integration lingma
+```
+
+Lingma 是阿里巴巴推出的智慧編碼助手，適合使用阿里雲生態系的團隊。
+
+#### Agent Orchestrator 社群擴充
+
+**Intelligent Agent Orchestrator** — 跨目錄的代理發現與智慧 prompt-to-command 路由：
+
+```bash
+specify extension add spec-kit-orchestrator
+```
+
+功能：
+- ✅ 自動發現已安裝的代理
+- ✅ 根據 prompt 內容智慧路由至適合的指令
+- ✅ 跨 catalog 搜尋
+
+#### 其他 v0.8.7 變更
+
+| 變更 | 說明 |
+|------|------|
+| **Cost Tracker 擴充** | 追蹤 SDD 工作流程中的真實 LLM 成本——逐功能預算、逐整合比較、財務報表匯出 |
+| **fx-to-dotnet 擴充** | .NET Framework 到現代 .NET 的端對端遷移擴充（7 個階段，SDD 生命週期整合） |
+| **Goose recipe 修正** | 修正 Goose 生成 recipe 中的 `$ARGUMENTS` 參數宣告 |
+| **Forge 整合修正** | Forge integration 改用 hyphen notation 的命令參考 |
+| **非互動式 init 預設** | 非互動式模式的 `specify init` 現在預設使用 copilot 整合 |
+| **uv 安裝指南** | 新增 uv 安裝指南與行內說明 |
+
+---
+
+### 2.23 Config-Driven 認證與排程擴充（v0.8.8 新增）
+
+v0.8.8（2026-05-11）引入了平台層級的認證架構改進與多項生產力擴充。
+
+#### Config-Driven Opt-in 認證註冊表
+
+v0.8.8 的核心架構變更：引入**設定驅動的可選認證註冊表（Config-Driven Opt-in Authentication Registry）**，支援多平台認證：
+
+- ✅ 透過設定檔定義認證提供者
+- ✅ 支援 GitHub、Azure DevOps、GitLab 等多平台
+- ✅ 認證為可選（opt-in），不影響無認證環境
+
+此功能對**企業環境**特別重要——團隊可以統一設定認證方式，避免每個開發者各自管理 Token。認證設定集中存放於 `~/.specify/auth.json`（建議權限設為僅擁有者可讀寫），依主機名稱比對應套用哪一組憑證，且僅在明確設定時才會送出認證標頭。Azure DevOps 場景額外支援四種認證方案：`basic-pat`（個人存取權杖）、`bearer`（預先取得的 OAuth/Azure AD Token）、`azure-cli`（透過 `az account get-access-token` 取得的 Token）、`azure-ad`（適用 CI/自動化的 OAuth2 client credentials）；GitHub Enterprise Server（GHES）則沿用與 GitHub.com 相同的 Bearer Token 機制，並自動辨識 GHES 主機以正確路由至 `/api/v3` 下載端點（詳見 2.46 節）。跨主機重新導向時，系統會主動移除認證標頭，避免憑證外洩至非預期的目標主機。
+
+#### Spec Kit Schedule 擴充
+
+**Schedule** 擴充提供了基於 CP-SAT（約束規劃滿足性測試）的最佳多代理任務排程：
+
+```bash
+specify extension add spec-kit-schedule
+```
+
+功能：
+- ✅ DAG 優先順序約束
+- ✅ 幻覺感知容量限制（Hallucination-aware caps）
+- ✅ 檔案衝突迴避
+- ✅ 隨機工期與重新規劃
+- ✅ 互動式 HTML 輸出
+
+#### API Evolve 擴充
+
+**API Evolve** — 管理式 API 契約演進：
+
+```bash
+specify extension add spec-kit-api-evolve
+```
+
+功能：
+- ✅ 破壞性變更偵測
+- ✅ SemVer 強制
+- ✅ 棄用編排
+- ✅ 生命週期 gates 適用於 REST、GraphQL、gRPC
+
+#### MDE 擴充與預設
+
+**MDE（Minimal Model-Driven Engineering）** — 最小模型驅動工程工作流程：
+
+```bash
+specify extension add spec-kit-mde
+```
+
+提供 `setup`、`next`、`status` 三個指令的精簡 MDE 工作流程。
+
+#### 其他 v0.8.8 變更
+
+| 變更 | 說明 |
+|------|------|
+| **`integration switch` 修正** | 切換整合時正確重新整理共用基礎設施 |
+| **社群目錄更新** | 更新社群目錄中的擴充版本至最新 |
+| **GitHub Actions 依賴更新** | `actions/checkout` 升級至 6.0.2、`actions/setup-dotnet` 升級至 5.2.0 |
+
+---
+
+### 2.24 治理生態系擴充與 BrownKit（v0.8.9 新增）
+
+v0.8.9（2026-05-12）聚焦於治理生態系與社群擴充。
+
+#### BrownKit 社群擴充
+
+**BrownKit** — 針對既有程式碼庫的證據驅動能力發現、安全與品質風險評估：
+
+```bash
+specify extension add BrownKit
+```
+
+功能：
+- ✅ 證據驅動的架構能力發現
+- ✅ 安全風險掃描
+- ✅ QA 風險評估
+- ✅ 適合 Brownfield 專案的現代化評估
+
+#### Changelog 擴充
+
+新增 **Spec Changelog** 擴充，自動從 spec git 歷史與需求差異產生變更日誌與發行說明：
+
+```bash
+specify extension add spec-kit-changelog
+```
+
+#### 治理生態系擴充更新
+
+v0.8.9 將治理生態系擴充統一更新至最新版本，確保跨擴充的一致性。
+
+#### Game Narrative Writing 預設
+
+新增 **Game Narrative Writing** 預設，適用於遊戲敘事寫作的 SDD 工作流程：
+
+```bash
+specify preset add game-narrative-writing
+```
+
+#### Landing Page 改版
+
+官方文件站（`github.github.io/spec-kit/`）採用全新的**四柱卡片佈局（Four-Pillar Card Layout）**，提升文件瀏覽體驗。
+
+#### 模板 metadata 修正
+
+v0.8.9 修正模板 metadata 的換行符號，使其符合 markdownlint 規範。
+
+#### 其他 v0.8.9 變更
+
+| 變更 | 說明 |
+|------|------|
+| **Integration catalog 重構** | 抽離整合目錄設定載入邏輯 |
+| **Kiro CLI 修正** | 替換命令中的 literal `$ARGUMENTS` 為 prose fallback |
+| **CLI 升級提示改進** | 升級探索提示更清晰 |
+
+---
+
+### 2.25 社群治理擴充與文件站遷移（v0.8.10 新增）
+
+v0.8.10（2026-05-14）將社群擴充管理進一步標準化，並引入多項治理導向的社群擴充。
+
+#### 社群擴充表遷移至文件站
+
+v0.8.10 將 README 中的社群擴充表格**完整遷移**至官方文件站（`github.github.io/spec-kit/community/extensions.html`），使 README 更為簡潔，同時讓社群擴充列表在文件站上更易瀏覽與搜尋。
+
+#### 新增社群擴充
+
+| 擴充 | 說明 |
+|------|------|
+| **Agent Governance** | AI 代理治理框架，定義代理行為邊界與合規性檢查 |
+| **Reqnroll BDD** | 行為驅動開發（BDD）擴充，整合 Reqnroll 測試框架 |
+
+#### CLI 改進
+
+- **擴充註冊與發現工作流強化** — 更穩健的擴充註冊機制
+- **opencode 修正** — 使用 `commands/` 目錄（複數）以符合 OpenCode 官方文件
+- **Constitution 參考修正** — README 中的 Constitution 路徑引用修正
+- **安裝文件精簡** — 安裝章節重新整理並新增社群概覽
+
+#### CLI 重構系列（1/8 ~ 2/8）
+
+v0.8.10 啟動了為期多版本的 CLI 重構系列，旨在提升程式碼可維護性：
+
+```text
+PR-1/8: 抽離 _console.py（控制台輸出邏輯）
+PR-2/8: 抽離 _assets.py 與 _utils.py（資產管理與工具函式）
+```
+
+---
+
+### 2.26 高保證規格工作流與版本特徵報告（v0.8.11 新增）
+
+v0.8.11（2026-05-15）引入了生產品質的工作流文件與多項穩定性改進。
+
+#### 高保證規格工作流（High-Assurance Spec Workflow）
+
+v0.8.11 正式記錄了**高保證規格工作流**，適用於對品質與合規性有嚴格要求的企業場景。此工作流在標準 SDD 流程上加入額外的驗證閘門與審計追蹤：
+
+- ✅ 強制雙人審查（Dual Review）
+- ✅ 規格品質指標量化
+- ✅ 合規性自動檢查
+- ✅ 變更影響評估
+
+#### 版本特徵報告（Version Feature Reporting）
+
+新增版本特徵報告功能，讓使用者可以快速了解當前安裝版本支援的功能集合：
+
+```bash
+specify version --features
+```
+
+#### 新增社群擴充
+
+| 擴充 | 說明 |
+|------|------|
+| **Time Machine** | 規格時間旅行——瀏覽與比較規格的歷史版本 |
+| **Architecture Workflow** | 架構工作流擴充——在 SDD 流程中嵌入架構決策記錄 |
+
+#### 其他改進
+
+| 變更 | 說明 |
+|------|------|
+| **UTF-8 模板無 BOM** | PowerShell 模板寫入時確保 UTF-8 編碼不含 BOM |
+| **多重安裝指引改進** | 多 AI 代理安裝的指引文件更清晰 |
+| **Preset skill 優先順序修正** | 預設 skill description 的優先順序邏輯修正 |
+| **CLI 重構 (3/8)** | 抽離 `_version.py`，獨立版本管理 |
+
+---
+
+### 2.27 Integration Auto 與社群擴充更新（v0.8.12 新增）
+
+v0.8.12（2026-05-20）帶來工作流自動化改進與大量社群擴充更新。
+
+#### `integration: auto` 支援
+
+工作流定義中新增 `integration: auto` 選項，自動偵測專案已初始化的 AI 代理並使用對應整合：
+
+```yaml
+# 在工作流定義中使用 auto
+steps:
+  - name: Implement
+    integration: auto  # 自動偵測已安裝的代理
+```
+
+這消除了在工作流定義中硬編碼 AI 代理名稱的需求。
+
+#### Codex 點轉連字號 Hook
+
+修正 Codex skills 中的 dot-to-hyphen hook 命令注入說明，確保 Codex 使用者的指令名稱轉換正確。
+
+#### 新增社群擴充
+
+| 擴充 | 說明 |
+|------|------|
+| **Team Assign** | 團隊任務指派——根據技能與負載自動分配任務 |
+| **Interactive HTML Preview** | 互動式 HTML 預覽——即時預覽 SDD 工件的 HTML 渲染結果 |
+| **Superpowers Implementation Bridge v0.5.0** | 強化的實作橋接——連接規格與實作的自動化管線 |
+| **Squad Bridge v1.3.0** | Squad 代理團隊同步更新 |
+
+#### 擴充目錄堆疊解析重構
+
+將擴充目錄堆疊解析邏輯遷移至共享基底類別，提升程式碼可維護性並減少重複。
+
+---
+
+### 2.28 工作流迴圈修正與代理工作流自動化（v0.8.13 新增）
+
+v0.8.13（2026-05-21）修正了工作流引擎的關鍵缺陷並引入自動化的社群目錄提交流程。
+
+#### 工作流迴圈條件修正
+
+修正了工作流引擎中 `while` / `do-while` 迴圈的條件判斷缺陷——舊版本中迴圈條件會讀取過期的 iteration-0 步驟輸出，導致迴圈無法正確終止或提前結束。此修正確保每次迭代都讀取最新的步驟輸出。
+
+#### 代理工作流自動化
+
+新增**代理工作流**（Agentic Workflows）用於社群目錄提交的自動化審核。這意味著社群擴充與預設的提交流程將由 AI 代理輔助審核格式、完整性與合規性，大幅縮短審核時間。
+
+#### `specify self check` 改進
+
+`specify check` 輸出末尾新增提示，建議使用者執行 `specify self check` 以檢查 CLI 版本是否為最新：
+
+```bash
+specify check
+# → ...
+# → 💡 Tip: Run `specify self check` to see if a newer version is available.
+```
+
+#### 其他改進
+
+| 變更 | 說明 |
+|------|------|
+| **Agent Governance v1.2.0** | 代理治理擴充更新，增強治理規則集 |
+| **目錄層級修正** | 修正擴充與預設目錄讀取器中的布林優先權驗證 |
+| **異常診斷改進** | CLI 異常訊息更清晰，便於問題排查 |
+| **差異空白檢查** | CI 新增 diff 空白字元檢查 |
+
+---
+
+### 2.29 CLI 重構與分支命名規範（v0.8.14 新增）
+
+v0.8.14（2026-05-26）繼續 CLI 重構系列並強化開發者文件。
+
+#### CLI commands/ 套件重構（PR-4/8）
+
+將 CLI 的 init handler 遷移至獨立的 `commands/` 套件，為後續指令模組化奠定基礎：
+
+```text
+src/specify_cli/
+├── commands/        # 新建：指令處理套件
+│   ├── __init__.py
+│   └── init.py     # init 指令邏輯遷移至此
+├── _console.py      # PR-1/8
+├── _assets.py       # PR-2/8
+├── _version.py      # PR-3/8
+└── ...
+```
+
+#### 分支命名規範文件化
+
+在 `AGENTS.md` 與 `CONTRIBUTING.md` 中新增分支命名規範，標準化社群貢獻的分支管理：
+
+```text
+# 分支命名規範
+feature/<短描述>     # 功能分支
+fix/<短描述>         # 修正分支
+docs/<短描述>        # 文件分支
+refactor/<短描述>    # 重構分支
+```
+
+#### Windows 子程序工具
+
+新增 Windows 平台的子程序管理工具函式，提升 Windows 環境下的 CLI 穩定性。
+
+#### 新增社群擴充
+
+| 擴充 | 說明 |
+|------|------|
+| **Product Spec** | 產品規格擴充——強化 SDD 的產品管理維度 |
+
+#### 其他改進
+
+| 變更 | 說明 |
+|------|------|
+| **init-options 版本刷新** | 修正 `specify init` 選項中的版本資訊刷新邏輯 |
+| **GitHub Actions 更新** | `github/gh-aw-actions` 升級至 0.74.9、`actions/stale` 升級至 10.3.0、`codeql-action` 升級至 4.35.5 |
+
+---
+
+### 2.30 後執行 Hook 與 Token Budget（v0.8.15 新增）
+
+v0.8.15（2026-05-27）修正了 Hook 系統並新增預算管理擴充。
+
+#### 後執行 Hook 修正
+
+修正後執行 hook（post-execution hook）的分派邏輯——將其提升至 H2 層級並使用指令式語言（directive language），確保 hook 在所有代理中可靠觸發。
+
+#### 新增社群擴充
+
+| 擴充 | 說明 |
+|------|------|
+| **Token Budget** | Token 預算管理——追蹤與控制 SDD 工作流程中的 token 使用量，設定預算上限與告警閾值 |
+
+#### 預設與工具更新
+
+| 變更 | 說明 |
+|------|------|
+| **Fiction Book Writing v1.8.1** | 敘事寫作預設更新至 v1.8.1 |
+| **memorylint 與 superb 1.4.0** | 記憶體檢查與 superb 工具更新至 1.4.0 |
+| **Skills 目錄按需建立** | 擴充/預設安裝時自動建立 skills 目錄（若不存在） |
+| **PowerShell 5.1 相容性** | 替換 shipped PowerShell 腳本中的非 ASCII 字元，確保 PS 5.1 相容 |
+| **Security Governance v0.3.0** | 安全治理預設更新至 v0.3.0 |
+
+---
+
+### 2.31 Workflow Preset 與規格品質重驗證（v0.8.16 新增）
+
+v0.8.16（2026-05-27）引入工作流預設系統與規格品質閉環驗證。
+
+#### 規格品質檢查清單重驗證
+
+v0.8.16 的核心改進：當 `/speckit.clarify` 更新規格後，系統會**自動重新驗證規格品質檢查清單（Spec Quality Checklist）**。這形成了一個閉環的品質保證機制：
+
+```text
+/speckit.specify → 產生 spec + 品質檢查清單
+    ↓
+/speckit.clarify → 更新 spec 中的模糊處
+    ↓
+自動重新驗證品質檢查清單 ← v0.8.16 新增
+    ↓
+確保更新後的 spec 仍符合品質標準
+```
+
+#### `{{ context.run_id }}` 模板變數
+
+工作流引擎新增 `{{ context.run_id }}` 模板變數，讓工作流步驟可以存取當前執行的唯一識別碼：
+
+```yaml
+# 在工作流步驟中使用 run_id
+steps:
+  - name: Generate Report
+    template: |
+      Report ID: {{ context.run_id }}
+      Generated at: {{ context.timestamp }}
+```
+
+此功能對**執行追蹤**與**審計日誌**特別有用，確保每次工作流執行都可唯一識別。
+
+#### Workflow Preset
+
+v0.8.16 新增 **Workflow Preset** 至社群目錄，提供預建的工作流定義模板，讓團隊可以快速採用標準化的 SDD 工作流程。
+
+#### SPECKIT_COMMAND 引用修正
+
+修正預設 skill 渲染中的 `SPECKIT_COMMAND*_` 引用邏輯，確保預設中的命令參考在所有代理中正確解析。
+
+#### 其他改進
+
+| 變更 | 說明 |
+|------|------|
+| **Architecture Guard v1.8.9** | 架構守衛擴充更新至 v1.8.9，持續強化架構偏移偵測 |
+| **pipx URL 修正** | 修正 pipx 首頁連結，指向正確的 `pipx.pypa.io` |
+| **`paths-only` 修正** | `paths-only` 模式跳過分支驗證，`setup-plan` 保留既有計畫 |
+| **Landing page 更新** | 文件站首頁統計數據與分支命名規範更新 |
+
+---
+
+### 2.32 Hermes Agent 整合與社群文件整合（v0.8.17 新增）
+
+v0.8.17（2026-05-28）重點包含新代理整合、社群文件整合，以及多項擴充更新。Spec-Kit 之後持續快速演進，後續版本（v0.8.18-v0.12.0）的重大變更請見 2.33-2.48 節。
+
+#### Hermes Agent 整合
+
+v0.8.17 新增 **Hermes Agent** 整合，這是一個新的 AI 代理，支援標準的 Spec-Kit 工作流程。安裝方式：
+
+```bash
+specify init my-project --integration hermes
+```
+
+#### 社群文件整合 (Community Consolidation)
+
+本版本將 README 中的社群相關章節（Extensions、Presets、Walkthroughs、Friends）整合至 **[官方文件站](https://github.github.io/spec-kit/)**，提供更結構化的瀏覽體驗：
+
+| 社群資源 | 文件站路徑 |
+|---------|-----------|
+| **社群擴充** | [github.github.io/spec-kit/community/extensions.html](https://github.github.io/spec-kit/community/extensions.html) |
+| **社群 Preset** | [github.github.io/spec-kit/community/presets.html](https://github.github.io/spec-kit/community/presets.html) |
+| **Walkthroughs** | [github.github.io/spec-kit/community/walkthroughs.html](https://github.github.io/spec-kit/community/walkthroughs.html) |
+| **Friends 專案** | [github.github.io/spec-kit/community/friends.html](https://github.github.io/spec-kit/community/friends.html) |
+
+#### Google Antigravity (agy) 增強
+
+`agy`（Google Antigravity CLI）整合經過全面增強，改進了命令執行效率與穩定性。
+
+#### Superpowers Implementation Bridge v0.7.0
+
+Superpowers Implementation Bridge 社群擴充更新至 v0.7.0，持續強化跨代理實作橋接能力。
+
+#### Security Governance Preset v0.4.0
+
+安全治理預設更新至 v0.4.0，新增更嚴格的安全閘門與合規檢查項目，適合金融業或有高度安全需求的組織。
+
+#### 其他改進
+
+| 變更 | 說明 |
+|------|------|
+| **共享腳本命令提示修正** | 修正整合分隔符號的共享腳本命令提示 |
+| **`--dev` 擴充 agent symlinks 修正** | 修正開發模式下的擴充代理符號連結問題 |
+| **Skills hook note 後處理** | 改進 skills 安裝後的 hook 備註處理 |
+
+#### 版本里程碑統計（v0.8.17）
+
+截至 v0.8.17，Spec-Kit 已達成以下里程碑：
+
+| 指標 | 數據 |
+|------|------|
+| **GitHub Stars** | 117K+ |
+| **貢獻者** | 248+ |
+| **Release 次數** | 176 |
+| **支援代理** | 30+ |
+| **社群擴充** | 105+ |
+| **社群 Preset** | 22+ |
+| **Friends 專案** | 4 |
+
+---
+
+### 2.33 Self Upgrade 正式實作與 SPECKIT_WORKFLOW_RUN_ID（v0.8.18-v0.9.0 新增）
+
+#### SPECKIT_WORKFLOW_RUN_ID 環境變數覆寫
+
+v0.8.18 新增 `SPECKIT_WORKFLOW_RUN_ID` 環境變數，允許在執行工作流程前手動指定 run id（搭配 2.31 節提到的 `{{ context.run_id }}` 模板變數），方便 CI/CD 管線將外部建置編號帶入工作流程紀錄：
+
+```bash
+SPECKIT_WORKFLOW_RUN_ID=ci-build-4821 specify workflow run iterate-feature
+```
+
+同版本也新增 `SPECKIT_INTEGRATION_<KEY>_EXECUTABLE`（自訂整合執行檔路徑）與 `SPECIFY_<KEY>_EXTRA_ARGS`（傳遞額外旗標給代理子程序）兩個環境變數，並為「透過 URL 安裝擴充」新增確認提示，降低意外安裝未經驗證來源套件的風險。
+
+#### Agent-Context 擴充化
+
+v0.9.0 將原本內嵌於核心 CLI 的「agent context 檔案更新邏輯」（即各代理用來感知專案技術棧的上下文檔案，例如 `CLAUDE.md`、`AGENTS.md`）抽取為獨立的**內建 bundled extension**。對使用者而言，行為不變，但日後新增代理上下文格式時可獨立於 CLI 主版本發布與更新。
+
+---
+
+### 2.34 Cline 原生整合與相容性修正（v0.9.1 新增）
+
+v0.9.1 新增**Cline 原生整合**，安裝方式與其他原生代理一致：
+
+```bash
+specify init my-project --integration cline
+```
+
+同版本同步修正 init-options 與 `.extensionignore` 檔案的 UTF-8 編碼處理，避免在非英語系統環境下讀寫設定檔出現亂碼。
+
+---
+
+### 2.35 Workflow Continue-On-Error 與 Self Upgrade 正式實作（v0.9.2-v0.9.3 新增）
+
+#### continue_on_error 步驟欄位
+
+v0.9.2 為工作流程步驟新增 `continue_on_error` 欄位，允許定義「非阻斷式失敗」的步驟——即使該步驟執行失敗，工作流程仍會繼續往下執行，而非立即中止：
+
+```yaml
+steps:
+  - action: speckit.analyze
+    description: 一致性分析(非必要關卡)
+    continue_on_error: true
+  - action: speckit.implement
+    description: 實作變更
+```
+
+這對於「分析/報告類」步驟特別實用：即使分析步驟本身出錯，也不應阻擋後續實作流程。同版本也將略過的檔案記錄於 `speckit.manifest.json`，方便追蹤升級時哪些自訂檔案被保留。
+
+#### specify self upgrade 正式實作完成
+
+> ⚠️ **取代 2.15 節描述**：2.15 節介紹的 `specify self upgrade` 在 v0.7.5 推出時僅為**初步 stub**。**v0.9.3 起已正式實作完成**，可直接執行 CLI 自我升級，不再需要手動呼叫 `uv tool install --force` 或 `pipx install --force`（兩種方式目前仍可作為備援）：
+
+```bash
+# 檢查是否有新版本
+specify self check
+
+# 直接升級至最新版（v0.9.3+ 正式功能）
+specify self upgrade
+```
+
+同版本也修正 Windows 終端機的 UTF-8 輸出問題，並將社群擴充 `superpowers-bridge` 更名為 `superspec`（v1.0.1）。
+
+---
+
+### 2.36 Resume/Status JSON 輸出與 Rovodev 整合（v0.9.4-v0.9.5 新增）
+
+#### Workflow JSON 輸出與 Headless 派遣
+
+v0.9.4 為 `specify workflow run resume` 與 `specify workflow run status` 新增 JSON 輸出選項，便於 CI/CD 或外部工具解析工作流程執行狀態。同版本也讓 `specify workflow run` 可在不依賴既有專案的情況下，直接執行任意 YAML 工作流程檔，並支援 headless 全流程派遣（例如 `-p --trust --approve-mcps --force` 組合，適合無人值守的自動化情境）。
+
+#### Rovodev 支援與內建 Bug Triage 工作流程
+
+v0.9.5 新增 **rovodev** 整合：
+
+```bash
+specify init my-project --integration rovodev
+```
+
+同版本也新增內建 **bug-triage workflow 擴充**，提供標準化的問題分級流程；互動式提示同時改進，可直接顯示工作流程 gate 的 `show_file` 內容，方便審核者在不離開終端機的情況下確認檔案異動。
+
+---
+
+### 2.37 Git 擴充改為 Opt-in 與 Legacy 旗標全面移除（v0.10.0 重大變更）
+
+v0.10.0 是繼 Plugin Architecture（2.10 節）之後另一次影響既有專案的重大變更，務必在升級前詳閱本節。
+
+#### Git 擴充改為 Opt-in
+
+> ⚠️ **取代 2.12 節描述**：2.12 節介紹的內建 Git 擴充在 v0.5.1-v0.9.x 期間為**自動內建**（init 時預設啟用）。**v0.10.0 起改為 opt-in**，新專案初始化後預設**不會**自動掛載 Git hooks，需顯式啟用：
+
+```bash
+# v0.10.0+ 需顯式安裝 / 啟用 Git 擴充
+specify extension add git
+```
+
+對於從舊版升級的既有專案，若先前依賴 Git 擴充的自動分支管理或 commit hook，升級後請務必確認擴充仍處於啟用狀態，避免工作流程中斷。
+
+#### Legacy 旗標全面移除
+
+v0.10.0 正式**移除**（而非僅棄用）以下 `specify init` 旗標：
+
+| 已移除旗標 | 原用途 | 對照 |
+|---|---|---|
+| `--no-git` | 初始化時跳過 Git 倉庫建立 | 2.19 節曾於 v0.8.2 標註「預計 v0.10.0 移除」，已成真 |
+| `--ai` | 指定 AI 代理（v0.7.1 起已棄用） | 2.14 節曾說明此旗標的棄用過程 |
+| `--ai-commands-dir` | Generic 代理指定自訂指令目錄 | 1.2 節 Generic 代理列原引用此旗標 |
+| `--ai-skills` | 啟用 skills-based 鷹架 | 2.17 節 Skills-Based Scaffolding 原引用此旗標 |
+
+> ⚠️ **重要提醒**：本文撰寫時尚無法查證官方為這些旗標提供的確切替代語法，請在升級前執行 `specify init --help` 或查閱[官方文件站](https://github.github.io/spec-kit/)確認當前可用選項，不可直接沿用本手冊 2.14/2.17/2.19 節中標示為歷史用法的範例指令。
+
+同版本也將 Git 擴充的 hook 機制改為支援**逐事件優先順序清單**，允許多個 hook 依序掛載於同一事件，並新增 README 中對 GitHub Copilot CLI 的使用說明。
+
+---
+
+### 2.38 整合狀態回報強化與 Extension Schema 新欄位（v0.10.1-v0.10.2 新增）
+
+v0.10.1 強化了 `specify integration` 的**狀態回報（status reporting）**能力，並補強 extension/preset catalog payload 的結構驗證，避免格式錯誤的目錄定義造成安裝失敗。
+
+v0.10.2 為 extension schema 新增 **`category`** 與 **`effect`** 兩個一級欄位，讓擴充作者可明確標註擴充的分類（例如治理、整合、文件產生）與作用範圍（例如新增指令、修改範本、掛載 hook），有助於 `specify extension search` 提供更精準的篩選結果。同版本也強化 preset URL 安裝的重新導向驗證，防止惡意重新導向至非預期來源。
+
+---
+
+### 2.39 Data Model Diagram 擴充與 Preset 指令重構（v0.10.3-v0.10.4 新增）
+
+v0.10.3 主要為既有社群擴充（如 Superpowers Bridge、Product Forge、Linear Integration 等）的例行版本更新。
+
+v0.10.4 新增 **Data Model Diagram** 社群擴充，可由 Plan 中的 Data Model 章節自動產生視覺化圖表，並將 preset 指令處理器重構至獨立模組以利維護。同版本也修正工作流程的 fan-out 步驟：當 `items` 表達式無法解析為清單時，會明確報錯而非靜默失敗。
+
+---
+
+### 2.40 Workflow Step Catalog 與 Zed 整合（v0.11.0 新增）
+
+#### Workflow Step Catalog
+
+v0.11.0 為 Workflow Engine（2.13 節）新增**步驟目錄（Step Catalog）**機制，允許社群發佈與安裝**自訂步驟類型**，不再侷限於呼叫既有的 `speckit.*` 核心指令：
+
+```bash
+# 搜尋可用的自訂工作流步驟類型
+specify workflow step search
+
+# 安裝自訂步驟類型
+specify workflow step add <step-name>
+```
+
+這讓工作流程的擴充性從「組合既有指令」進一步擴展到「定義全新的步驟邏輯」，例如串接外部 API 呼叫、執行自訂驗證腳本等。
+
+#### Zed 整合
+
+v0.11.0 同時新增 **Zed** 編輯器整合：
+
+```bash
+specify init my-project --integration zed
+```
+
+同版本也新增整合鷹架產生器（integration scaffolder），協助社群開發者更快建立新代理整合的基礎程式碼骨架。
+
+---
+
+### 2.41 Workflow JSON 輸出強化與 Analyze Subagent 化（v0.11.1-v0.11.3 新增）
+
+v0.11.1 為工作流程新增 `output_format: json` 選項，可取得已解析的 shell 標準輸出（而非原始文字），並讓工作流程執行失敗或中止時回傳非零 exit code，方便 CI/CD 正確判斷管線成敗。
+
+v0.11.2 的重點是新增 `/speckit.converge` 指令（詳見新增的 [3.8 節](#38-step-7既有程式碼評估-speckitconverge)），同時搭配社群提交流程新增 **bug-assess** 標籤工作流程，並新增 `init` 工作流步驟可直接從工作流程定義中啟動專案。
+
+v0.11.3 強化了擴充失敗隔離機制——單一擴充發生錯誤時不會連帶導致其他擴充失效；同時將 `/speckit.analyze` 改為於獨立的 **forked subagent** 中執行，避免一致性分析過程中產生的大量中間內容污染主對話的上下文視窗。
+
+---
+
+### 2.42 Bundle 系統 (Bundle System)（v0.11.4 新增）
+
+#### Bundle 系統概覽
+
+v0.11.4 新增了 **Bundle 系統**，這是繼 Extension（2.7 節）與 Preset（2.8 節）之後第三個主要的可分發元件機制。如果說 Extension 解決「新增什麼指令」、Preset 解決「輸出格式長什麼樣子」，**Bundle 解決的是「一個角色或情境需要哪一整組元件」**——將多個 Extension、Preset 甚至 Workflow 打包成單一可安裝單元。
+
+| 系統 | 打包內容 | 適用情境 |
+|---|---|---|
+| **Extension（擴充）** | 單一新指令或功能 | 「我需要一個 Jira 整合指令」 |
+| **Preset（預設）** | 單一範本/格式風格 | 「我需要海盜風格的輸出文字」 |
+| **Bundle（套組）** | 多個 Extension + Preset + Workflow 的組合 | 「我需要一整套符合金融業合規要求的元件」 |
+
+#### Bundle CLI 指令
+
+```bash
+# 搜尋可用 Bundle
+specify bundle search
+specify bundle search compliance
+
+# 查看 Bundle 詳細資訊（內含哪些 extension/preset/workflow）
+specify bundle info security-baseline
+
+# 安裝 Bundle（會一併安裝其內部宣告的所有元件）
+specify bundle install security-baseline
+
+# 列出已安裝 Bundle
+specify bundle list
+
+# 更新 / 移除 Bundle
+specify bundle update security-baseline
+specify bundle remove security-baseline
+
+# 驗證自訂 Bundle 定義是否合法
+specify bundle validate --path ./my-bundle/
+
+# 建置自訂 Bundle 供發布
+specify bundle build --path ./my-bundle/
+```
+
+#### Bundle 目錄結構
+
+自訂 Bundle 的專案結構大致如下：
+
+```text
+my-bundle/
+├── bundle.yml              # Bundle manifest：宣告包含的 extension/preset/workflow 與版本
+├── extensions/              # 內嵌或參照的 extension 定義
+├── presets/                 # 內嵌或參照的 preset 定義
+└── workflows/                # 內嵌或參照的 workflow 定義
+```
+
+#### 使用情境
+
+- 🏢 **企業標準化套組**：將公司強制要求的治理擴充（Security Governance、Architecture Guard）、輸出格式（公司文件範本）與標準工作流程（CI 整合）打包成單一 Bundle，新專案一行指令即可套用完整合規基礎設施
+- 🧩 **角色導向套組**：例如「後端工程師套組」「QA 套組」各自打包該角色常用的元件組合，降低新成員上手時逐一安裝多個擴充的摩擦
+- 📦 **版本鎖定發行**：Bundle 可整體鎖定版本號發行，確保團隊內所有成員使用同一組相容的擴充/預設/工作流程版本，避免元件版本互相打架
+
+> 💡 與 [2.7 擴充系統](#27-擴充系統-extension-system)、[2.8 預設系統](#28-預設系統-presets-system) 搭配使用時，建議先以 Bundle 做整體規劃，再針對個別專案需求用 Extension/Preset 微調，避免重複定義。
+
+---
+
+### 2.43 ZCode 整合、PyPI 發布籌備與 Firebender 整合（v0.11.5-v0.11.6 新增）
+
+#### ZCode (Z.AI) 整合
+
+v0.11.5 新增 **ZCode**（Z.AI）整合：
+
+```bash
+specify init my-project --integration zcode
+```
+
+#### PyPI 發布工作流程籌備
+
+同版本新增 **PyPI 發布工作流程**與套件中繼資料，為 CLI 未來透過標準 `pip install` 安裝鋪路。截至本文撰寫時，官方仍建議使用 `uv tool install --from git+https://github.com/github/spec-kit.git@vX.Y.Z` 釘選版本安裝（詳見 2.2 節），尚未正式宣布切換至 PyPI 為預設安裝方式，請留意官方公告再調整安裝腳本。同版本也讓整合啟用/升級時自動註冊該整合已啟用的擴充，減少手動步驟。
+
+#### Firebender 整合（Android Studio / IntelliJ）
+
+v0.11.6 新增 **Firebender** 整合，支援 JetBrains 系列 IDE（Android Studio / IntelliJ）內的 AI 編碼助手：
+
+```bash
+specify init my-project --integration firebender
+```
+
+同版本也澄清了文件用語：constitution 的 **Article IV-VI 為「專案自定義」條款**（如 1.3 節所述，Article I/II/III/VII/VIII/IX 為核心固定原則，IV-VI 保留給各專案依自身需求定義），避免使用者誤以為所有九條 Article 內容皆為官方強制規範。
+
+---
+
+### 2.44 OMP 整合與 Catalog SHA256 驗證（v0.11.7 新增）
+
+#### OMP (Oh My Pi) 整合
+
+v0.11.7 新增 **OMP**（Oh My Pi）作為正式支援的 AI 編碼代理整合：
+
+```bash
+specify init my-project --integration omp
+```
+
+OMP 的命令檔案會安裝至 `.omp/commands/` 目錄。此整合擴展了 Spec-Kit 對 Pi 生態系的覆蓋範圍（與 Pi Coding Agent 並列）。
+
+#### Catalog Archive SHA256 驗證
+
+同版本強化了目錄系統的**供應鏈安全性**：
+
+- **SHA256 雜湊驗證**：從目錄安裝擴充時，CLI 會驗證下載的壓縮包 SHA256 雜湊值是否與目錄中登記的值一致
+- 若驗證失敗，安裝將中止並顯示明確錯誤訊息
+- 此機制防止中間人攻擊或目錄內容遭篡改的情境
+
+```bash
+# 安裝擴充時自動執行 SHA256 驗證
+specify extension add <extension-name>
+# 若雜湊不匹配：ERROR: SHA256 mismatch for archive...
+```
+
+#### shell=True Hardening
+
+安全強化措施：CLI 內部的 `run_command` 函式**拒絕使用 `shell=True`** 呼叫子程序，杜絕潛在的 shell 注入風險。此為防禦性設計，符合 OWASP 安全開發最佳實踐。
+
+#### Monorepo 指南
+
+同版本新增 [Monorepo 操作指南](https://github.com/github/spec-kit/blob/main/docs/guides/monorepo.md)，涵蓋：
+
+- 在 monorepo 中初始化 Spec-Kit 的建議目錄結構
+- `SPECIFY_INIT_DIR` 環境變數搭配多專案目標的使用方式
+- 分支命名與規格目錄的多成員專案慣例
+
+#### Workflow Validation 強化
+
+工作流引擎驗證邏輯增強：
+
+- `requires` 鍵值必須存在，否則驗證失敗
+- 偵測並拒絕「幻影權限閘門」（phantom permissions gate）— 防止工作流宣告不存在的權限
+
+---
+
+### 2.45 Jira 整合進階與 Spec Roadmap 擴充（v0.11.8 新增）
+
+#### Jira Integration v0.4.0
+
+社群擴充 **Jira Integration (Sync Engine)** 更新至 v0.4.0，提供：
+
+- 雙向規格同步：Jira Issue ↔ Spec-Kit specs
+- 子任務拆分映射：`tasks.md` 任務自動對應至 Jira 子任務
+- 自訂欄位映射配置
+- 狀態轉換自動化
+
+#### Golden Demo 擴充
+
+新增 **Golden Demo** 社群擴充：
+
+- 自動從規格產生展示流程腳本
+- 產出互動式 demo 檔案，可作為產品驗收依據
+- 支援 screenshot 附件與步驟標註
+
+#### Spec Roadmap 擴充
+
+新增 **Spec Roadmap** 社群擴充：
+
+- 從多個規格中自動彙整產品路線圖
+- 依據規格優先順序與相依性排列時程
+- 產出 Mermaid Gantt 圖格式的路線圖視覺化
+
+#### Quickstart 流程順序調整
+
+官方建議在 Quickstart 中，將 `/speckit.checklist` 前移至 `/speckit.plan` 之後立即執行：
+
+```text
+specify → clarify → plan → checklist → tasks → implement
+```
+
+此調整確保在進入任務拆分前，計畫已通過品質檢查清單驗證。
+
+---
+
+### 2.46 多安裝安全與 GHES 認證修正（v0.11.9-v0.11.10 新增）
+
+#### Multi-Install-Safe 代理清單
+
+v0.11.9 文件正式列出可安全同時安裝的代理組合，明確標註 **Cline** 與 **ZCode** 為 multi-install-safe：
+
+| 代理 | Multi-Install-Safe | 說明 |
+|------|-------------------|------|
+| Copilot | ✅ | 使用 `.github/prompts/` |
+| Claude | ✅ | 使用 `.claude/commands/` |
+| Cline | ✅ | 使用 `.cline/commands/` |
+| ZCode | ✅ | 使用 `.zcode/commands/` |
+| Cursor | ⚠️ | 與部分代理衝突 |
+
+> **多代理共存提示**：可透過 `specify init --here --integration <agent1> --integration <agent2>` 同時初始化多個代理的命令檔。
+
+#### GHES (GitHub Enterprise Server) 認證修正
+
+v0.11.9-v0.11.10 修正了多個與 GitHub Enterprise Server 相關的認證問題：
+
+- **Private GHES release asset 下載**：透過 `/api/v3` 路由正確解析私有倉庫的 release asset URL
+- **Extension `add --from` 修正**：對 GHES 來源執行認證與 asset 解析
+- **Catalog URL 驗證**：拒絕缺少主機名稱的目錄 URL（base 與 preset validator 均適用）
+
+```bash
+# GHES 環境下安裝擴充（需設定 GITHUB_TOKEN）
+export GITHUB_TOKEN=ghp_xxx
+specify extension add --from https://ghes.company.com/org/my-extension
+```
+
+#### SicarioSpec Core Preset v0.5.1
+
+社群預設 **SicarioSpec Core** 更新至 v0.5.1，為企業級工作流提供更嚴格的規格品質閘門。
+
+---
+
+### 2.47 Community Bundle Submission 與 Monorepo 指南（v0.11.7-v0.11.10 新增）
+
+#### Bundle 社群提交流程
+
+v0.11.10 引入正式的 **社群 Bundle 提交路徑**：
+
+1. **驗證與打包**：
+
+```bash
+# 結構檢查 + 參考完整性驗證
+specify bundle validate --path ./my-bundle
+
+# 產生版本化 .zip 發布物
+specify bundle build --path ./my-bundle
+```
+
+2. **提交審核**：使用 [Bundle Submission issue template](https://github.com/github/spec-kit/issues/new?template=bundle_submission.yml) 提交，審核人員會檢查元件目錄相容性與安裝證據
+
+3. **Catalog 管理**：
+
+```bash
+# 查看目錄堆疊（優先順序：project > user > built-in）
+specify bundle catalog list
+
+# 新增自訂目錄來源
+specify bundle catalog add <source-url>
+```
+
+每個目錄來源帶有安裝政策：`install-allowed`（可安裝）或 `discovery-only`（僅可瀏覽）。
+
+#### Agentic Workflow 自動化審核
+
+社群目錄提交現在使用 **AI 輔助的自動化審核工作流**：
+
+- 標籤觸發的 GitHub Actions 工作流自動評估提交品質
+- 結構驗證、版本一致性檢查、README 完整性驗證
+- 減少維護者審核負擔，加速社群貢獻上線
+
+#### 文件缺漏修正旗標
+
+v0.11.9 補充了先前未文件化的 CLI 旗標說明：
+
+- `--force`：覆寫現有檔案
+- `--refresh-shared-infra`：強制重新整理共用基礎設施檔案
+
+---
+
+### 2.48 Agent-Context 全面 Opt-in 與 Workflow Validation 強化（v0.12.0 重大變更）
+
+> ⚠️ **Breaking Change**: v0.12.0 包含行為變更，升級前請詳閱本節。
+
+#### Agent-Context Extension 改為完整 Opt-in
+
+在 v0.12.0 中，**agent-context extension 已改為完整的 opt-in 模式**：
+
+- **之前（v0.9.0-v0.11.x）**：agent-context 作為 bundled extension 預設啟用，自動維護代理上下文檔案
+- **之後（v0.12.0+）**：必須明確啟用才會生效
+
+```bash
+# 升級至 v0.12.0 後，若需要 agent-context 功能需手動啟用
+specify extension add agent-context
+```
+
+**影響範圍**：
+
+- 若您的工作流依賴自動更新的代理上下文檔案（如 `.claude/agent-context.md`），升級後需手動啟用此擴充
+- 若您未使用此功能，則無需任何操作
+
+**升級建議**：
+
+```bash
+# 1. 升級 CLI
+specify self upgrade
+
+# 2. 檢查是否需要 agent-context
+specify extension list  # 查看已安裝擴充
+
+# 3. 若需要，明確啟用
+specify extension add agent-context
+
+# 4. 更新專案檔
+specify init --here --force --integration <your-agent>
+```
+
+#### Workflow Validation 強化
+
+v0.12.0 顯著強化了工作流驗證引擎：
+
+| 改進項目 | 說明 |
+|---------|------|
+| **Gate validate() 修正** | 不再因非字串選項而崩潰 |
+| **Pipe-filter 偵測 quote-aware** | 表達式中的引號內管線符號不再被誤判 |
+| **Fan-in wait_for 驗證** | 拒絕引用不存在步驟的等待宣告 |
+| **Number-input 預設值** | 拒絕無限值預設，避免 OverflowError |
+| **List-literal 逗號** | 引號內的逗號正確保留，不再被切割 |
+
+#### 其他重要變更
+
+- **Product Spec Extension v1.0.1** 更新
+- **PowerShell 腳本一致性修正**：
+  - `create-new-feature.ps1` 在規格模板遺失時發出警告（與 bash 同步）
+  - 子目錄計算邏輯修正（與 bash 同步）
+  - Git extension 輸出移除 `HAS_GIT` 變數（與 bash 同步）
+- **Workflow `init` 步驟類型** 正式文件化
+
+#### 版本升級操作
+
+```bash
+# 從 v0.11.x 升級至 v0.12.0
+specify self upgrade --tag v0.12.0
+
+# 或使用 uv 手動安裝
+uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git@v0.12.0
+
+# 更新專案檔（注意備份 constitution）
+cp .specify/memory/constitution.md .specify/memory/constitution-backup.md
+specify init --here --force --integration <your-agent>
+mv .specify/memory/constitution-backup.md .specify/memory/constitution.md
+```
+
+---
+
+### 2.49 Workflow 平行處理與 Python 腳本類型支援（v0.12.1-v0.12.4 新增）
+
+v0.12.0 之後的四個修訂版（2026-06-30 ~ 2026-07-02）聚焦於工作流引擎的**執行效能**與**腳本語言涵蓋範圍**，同時補齊了先前版本累積的跨平台相容性缺口。
+
+#### Fan-out 平行處理:Bounded Thread Pool（v0.12.2）
+
+在此之前，`fan-out` 步驟會依序展開所有子任務，任務量大時整體工作流耗時明顯增加。v0.12.2 引入 `max_concurrency` 參數，讓 fan-out 步驟改以**有界執行緒池（bounded thread pool）**平行處理子任務，同時避免無限制併發拖垮系統資源：
+
+```yaml
+steps:
+  - type: fan-out
+    items: "{{ context.spec_list }}"
+    max_concurrency: 4   # 同時最多 4 個子任務平行執行
+    steps:
+      - type: agent
+        prompt: "為 {{ item }} 執行 /speckit.analyze"
+```
+
+對於需要一次盤點多個 Spec 或跨多個既有模組執行 `/speckit.converge` 的團隊，這項改進可大幅縮短批次分析的等待時間。
+
+#### 新增 `py` 腳本步驟類型（v0.12.4）
+
+工作流步驟原本僅支援 `bash` / `powershell` 腳本類型。v0.12.4 新增 **`py` 腳本類型**，並內建 Python 直譯器自動解析邏輯（依序嘗試 `python3`、`python`、Windows Store stub 偵測等），讓團隊可以用 Python 撰寫更複雜的資料處理或驗證邏輯，而不必受限於 shell 語法：
+
+```yaml
+steps:
+  - type: script
+    script: py
+    run: |
+      import json, sys
+      data = json.load(open("spec.json"))
+      sys.exit(0 if data.get("status") == "ready" else 1)
+```
+
+#### Label-Driven 代理工作流程:bug-fix 與 bug-test（v0.12.4）
+
+延續 v0.11.2 引入的 `/speckit.converge` 與 bug-assess 標籤工作流程慣例，v0.12.4 新增兩個內建的 label-driven 代理工作流程範本：**bug-fix**（依 Issue 標籤自動觸發修復流程）與 **bug-test**（自動產生對應的迴歸測試）。這使得團隊可以在既有 Issue 追蹤流程中，直接以標籤驅動 AI 代理介入,無需另外撰寫客製化工作流。
+
+#### 其他 v0.12.1-v0.12.4 改進
+
+| 項目 | 說明 |
+|------|------|
+| 跨平台腳本相容性 | 修正 bash 3.2（macOS 內建版本）分支名稱大小寫轉換相容性問題；`initialize-repo.sh` 改用 ASCII `[OK]` 標記，與 PowerShell 版本行為一致 |
+| Catalog / Integration 子命令文件化 | 補齊 `specify integration search` / `info` / `scaffold` 等子命令的官方說明文件 |
+| `check-prerequisites --paths-only` 修正 | 不再誤寫入 `feature.json`,避免唯讀查詢意外產生副作用 |
+| Goose 整合安裝連結修正 | `install_url` 改指向 `goose-docs.ai` |
+| Bundle 錯誤輸出隔離 | 指令錯誤訊息一律導向 stderr，確保 `--json` 模式下 stdout 維持可解析的純 JSON |
+
+---
+
+### 2.50 生態系轉型:整合退場、Copilot Skills 棄用與 Catalog 安全性強化（v0.12.2-v0.12.6, v0.12.12 新增）
+
+> ⚠️ **重要提醒**：本節涉及既有專案可能仍在使用的整合退場,以及會直接影響 Extension / Preset 安裝行為的安全性限制,建議所有既有專案在升級前詳閱本節。
+
+#### 三項 AI 助手整合正式退場
+
+隨著上游產品線的併購、重組與停產，Spec-Kit 於此區間移除了三項整合的官方支援：
+
+| 整合 | 退場版本 | 退場原因 | 建議遷移方向 |
+|------|---------|---------|-------------|
+| **Windsurf** (`windsurf`) | v0.12.2 | 產品併入 Cognition 旗下 Devin，不再獨立維運 | 改用 `devin`（Devin for Terminal，skills-based）或其他 IDE 整合 |
+| **iFlow CLI** (`iflow`) | v0.12.2 | 原廠產品終止 | 改用 `opencode`、`qwen` 等開源 CLI 型整合 |
+| **Roo Code** (`roo`) | v0.12.3 | 官方擴充停止維護並下架 | 改用 `cline`、`kilocode` 等 VS Code 衍生整合 |
+
+這類整合退場並非 Spec-Kit 本身的缺陷，而是其作為「連接 30+ 種第三方 AI 助手的中介層」必然要面對的生態系波動；已安裝上述整合的專案在執行 `specify self upgrade` 或 `specify init --here --force` 後，對應的指令檔與腳本將不再更新，建議儘早規劃遷移。
+
+#### GitHub Copilot Skills 模式棄用預告（v0.12.3）
+
+Copilot 整合原本以傳統 slash command 檔案運作，Spec-Kit 團隊計畫將其預設遷移至 skills 模式（`--integration-options="--skills"`）。v0.12.3 起，在此項變更**正式預設啟用前**，CLI 會先對仍使用傳統模式的使用者顯示棄用警告，讓團隊有充分時間評估與測試 skills 模式的相容性，避免無預警的行為變更。
+
+#### Catalog URL 驗證強化:HTTPS-Only（v0.12.5、v0.12.6、v0.12.12）
+
+延續 v0.11.7 導入的 Catalog Archive SHA256 驗證與 v0.11.10 的 host-less URL 拒絕機制，此區間進一步將 catalog／extension／preset／bundler 的 URL 驗證邏輯統一收斂為：
+
+- ✅ **僅接受 HTTPS**：拒絕 `file://` 等本機協定來源，防止透過偽造本機路徑注入未經驗證的內容
+- ✅ **必須具備明確 host**：拒絕 host-less 或格式不完整的 URL
+- ✅ **統一於 bundler／extension／preset 三個 adapter 套用相同規則**，避免驗證邏輯各自為政產生安全性死角
+
+```bash
+# 以下操作在 v0.12.6+ 會被拒絕（不具 host 或非 HTTPS）
+specify catalog add file:///local/path/catalog.yml   # ❌ 拒絕:非 HTTPS
+specify catalog add https:///malformed                # ❌ 拒絕:缺少 host
+
+# 正確用法
+specify catalog add https://example.com/catalog.yml   # ✅ 通過驗證
+```
+
+對企業內部自建 catalog 的團隊而言，這代表**內部 catalog 伺服器必須提供有效 HTTPS 憑證**，透過 SMB 共享路徑或內部檔案伺服器分發 catalog 的作法將不再相容,需改以 HTTPS 服務對外提供。
+
+#### Namespaced Git Feature Branch 範本支援（v0.12.5）
+
+新增對具命名空間的 Git feature branch 範本支援（例如 `team-a/001-feature-name` 這類具前綴的分支命名慣例），讓採用多團隊命名空間分支策略的組織也能與 `/speckit.plan` 的自動分支建立機制相容。
+
+---
+
+### 2.51 Bundle 版本管理強化與工作流引擎穩健性（v0.12.7-v0.12.11 新增）
+
+#### `bundle update` 版本驅動的元件生命週期管理（v0.12.7）
+
+v0.11.4 引入的 Bundle 系統，先前的 `bundle update` 僅會將已安裝元件更新至新版本所釘選的版號，但若新版 Bundle **移除**了某個元件（例如某擴充改為選用），舊元件並不會被自動清除。v0.12.7 修正此行為：`bundle update` 現在會**解除安裝新版清單中已不存在的元件**，讓 Bundle 的版本狀態與其宣告的元件組合維持完全一致，避免專案內殘留「已被 Bundle 棄用但實體檔案仍在」的元件。
+
+```bash
+# 更新前:Bundle v1.0 含 extension-a、extension-b
+# 更新後:Bundle v1.1 僅宣告 extension-a
+specify bundle update my-team-bundle
+# v0.12.7+ 行為:extension-b 會被自動解除安裝
+```
+
+#### 工作流引擎邊界條件強化
+
+此區間持續針對工作流引擎的各類步驟驗證邏輯進行強化，目的是讓格式錯誤的 `workflow.yml` 在**設計期就失敗並給出明確錯誤訊息**，而非在執行期產生難以追蹤的例外：
+
+| 步驟類型 | 強化內容 |
+|---------|---------|
+| `fan-in` | `wait_for` 若非清單型別，明確報錯而非執行期崩潰 |
+| `shell` | `run` 欄位非字串時明確拒絕；新增可設定的逾時（timeout）參數 |
+| `if` / `switch` | 條件為非映射（mapping）或 `cases` 格式錯誤時明確拒絕，`else` 分支容許 falsy 的非清單值 |
+| 表達式引擎 | 鏈式過濾器改為**由左至右**依序套用；比較運算子對非數字字串改採字典序比較；樣板插值改為 quote-aware，避免引號內的 `}}` 誤判為插值結尾 |
+
+#### `update-agent-context` 移植為 Python 實作（v0.12.8）
+
+v0.9.0 已將 agent-context 檔案更新邏輯抽取為獨立擴充（詳見 2.33 節），v0.12.8 進一步將其核心邏輯由 shell script 移植為 Python 實作，除了改善跨平台一致性外，也讓社群更容易貢獻與除錯此一核心擴充。
+
+#### 錯誤處理與安全性強化
+
+- **明確例外類型**：catalog、auth、bundler 模組原本在遇到格式錯誤的 URL 時會拋出原始的 `ValueError`，難以與其他錯誤區分；v0.12.11 起統一改為拋出對應的自訂例外（如 `CatalogError`、`BundlerError`），便於上層邏輯精準攔截與提示。
+- **控制字元跳脫**：修正 TOML 指令檔、`SKILL.md` frontmatter、Goose recipe YAML 在內容含有控制字元時可能產生的解析錯誤，避免產生的設定檔無法被正確載入。
+- **多重安裝安全清單擴充**：Kiro CLI 正式列入 multi-install-safe 清單，可安全與其他整合並存於同一專案。
+
+---
+
+### 2.52 治理與品質保證預設集擴充、社群目錄成長（v0.12.11-v0.12.15 新增）
+
+#### 新增治理與品質保證預設
+
+社群 Preset 目錄新增兩項聚焦於**自動化執行治理**的預設，延續 2.24、2.26、2.30 節建立的治理擴充生態系脈絡：
+
+- **Test-First Governance** — 強制要求任務拆分與實作階段遵循測試先行（Test-First）紀律，適合對 TDD 有嚴格要求的團隊
+- **Autonomous Run Governance** — 針對無人值守（headless / autonomous）工作流執行提供額外的核准與稽核把關機制,降低 AI 代理在無人監督下執行破壞性操作的風險
+
+#### 社群擴充目錄持續成長
+
+此區間社群擴充目錄新增多項擴充，反映生態系持續朝**需求語法規範化**（如 EARS Requirements Syntax）、**設計工具整合**（Spec Kit Figma）、**治理與品質把關**（Quality Gates Enforcement Layer、Repository Governance）等方向擴展。以下列舉代表性項目，完整清單請以 [官方社群擴充目錄](https://github.github.io/spec-kit/community/extensions.html) 查詢結果為準：
+
+- **EARS Requirements Syntax** — 將 Easy Approach to Requirements Syntax 語法規範導入 Spec 撰寫
+- **Spec Kit Figma** — 串接 Figma 設計稿與規格文件
+- **Quality Gates (Enforcement Layer)** — 於工作流中插入可設定的品質關卡
+- **Multi-Repo Branch Sync** — 跨多個儲存庫同步 feature branch 狀態
+
+#### Extension / Preset 設定穩健性修正（v0.12.12）
+
+修正 extension 與 preset 的 `set-priority` 指令在設定檔 `priority` 欄位因外部工具或手動編輯而誤植為布林值時會導致設定損毀的問題；現在會自動偵測並修復此類損毀欄位，避免團隊需要手動清空設定重新安裝。
+
+#### Headless / CI 場景支援強化（v0.12.14）
+
+`init --here` 在**無 TTY 的環境**（例如 CI 管線、容器化建置環境）下執行時，過去會卡在互動式確認提示、需要額外的 `--force` 或標準輸入導向技巧才能繞過；v0.12.14 起會偵測無 TTY 情境並跳過確認提示，讓純自動化流程可以直接呼叫 `init --here` 而不需額外處理。
+
+#### 版本升級操作
+
+```bash
+# 從 v0.12.0 升級至 v0.12.15
+specify self upgrade --tag v0.12.15
+
+# 或使用 uv 手動安裝
+uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git@v0.12.15
+
+# 更新專案檔（注意備份 constitution）
+cp .specify/memory/constitution.md .specify/memory/constitution-backup.md
+specify init --here --force --integration <your-agent>
+mv .specify/memory/constitution-backup.md .specify/memory/constitution.md
+```
+
+---
+
+## 第三章:使用流程詳細說明
+
+本章將帶您完整走過 SDD 的六個主要步驟,從創建規格到完成實作。
+
+### 3.1 Step 1:撰寫 Spec (/speckit.specify)
+
+這是 SDD 流程的起點,定義「要做什麼」和「為什麼」。
+
+#### 何時使用
+
+- ✅ 開始新功能開發
+- ✅ 需要明確需求與驗收標準
+- ✅ 多個利害關係人需要對齊理解
+- ✅ 準備讓 AI 助手協助實作
+
+#### 指令格式
+
+```bash
+/speckit.specify <功能描述>
+```
+
+**範例**:
+
+```bash
+# 範例 1: 簡短描述
+/speckit.specify Build a user authentication system
+
+# 範例 2: 詳細描述
+/speckit.specify Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
+
+# 範例 3: 批次作業
+/speckit.specify Create a daily reconciliation batch job that downloads transaction files from SFTP server, validates data, compares with database records, and generates discrepancy reports.
+
+# 範例 4: 微服務整合
+/speckit.specify Implement an order service that receives orders from API Gateway, validates inventory through inventory-service, processes payment via payment-service, and publishes order-confirmed events to message queue.
+```
+
+#### AI 助手會做什麼
+
+執行 `/speckit.specify` 後,AI 會:
+
+1. **分析您的描述** - 理解核心需求
+2. **掃描現有規格** - 確定下一個功能編號(如 001、002、003)
+3. **建立分支** - 自動建立 `feature/NNN-feature-name` 分支
+4. **使用模板** - 複製 `spec-template.md` 到 `specs/NNN-feature-name/spec.md`
+5. **填充內容** - 產生結構化規格文件,包含:
+   - Overview(概述)
+   - User Stories(使用者故事)
+   - Acceptance Criteria(驗收標準)
+   - Success Metrics(成功指標)
+   - Out of Scope(排除項目)
+   - 標記 `[NEEDS CLARIFICATION]`(需澄清處)
+
+#### 產生的 Spec 結構
+
+**範例:照片相簿管理**
+
+```markdown
+# Feature Specification: Photo Album Management
+
+## Metadata
+- **Feature ID**: 001
+- **Status**: Draft
+- **Created**: 2025-10-29
+- **Last Updated**: 2025-10-29
+
+## 1. Overview
+
+### Purpose
+提供使用者組織和管理照片的能力,透過相簿進行分類,支援按日期分組和拖放排序。
+
+### Business Value
+- 使用者可快速找到特定時期的照片
+- 提升照片管理效率
+- 改善使用者體驗
+
+## 2. User Stories
+
+### US-001: 建立相簿
+**As a** 照片管理者  
+**I want** 建立新的相簿並命名  
+**So that** 我可以將相關照片組織在一起
+
+**Acceptance Criteria**:
+- [ ] 使用者可點擊「新增相簿」按鈕
+- [ ] 使用者可輸入相簿名稱
+- [ ] 系統自動設定相簿建立日期
+- [ ] 新相簿顯示在相簿列表中
+
+### US-002: 查看相簿列表
+**As a** 照片管理者  
+**I want** 在主頁面查看所有相簿  
+**So that** 我可以選擇要瀏覽的相簿
+
+**Acceptance Criteria**:
+- [ ] 相簿以卡片形式顯示(縮圖 + 名稱 + 日期)
+- [ ] 相簿按日期排序(最新在前)
+- [ ] 顯示每個相簿的照片數量
+- [ ] 空相簿顯示預設圖示
+
+### US-003: 拖放排序相簿
+**As a** 照片管理者  
+**I want** 透過拖放改變相簿順序  
+**So that** 我可以自訂相簿的排列方式
+
+**Acceptance Criteria**:
+- [ ] 使用者可拖動相簿卡片
+- [ ] 拖動時顯示視覺回饋(半透明效果)
+- [ ] 放下時相簿插入新位置
+- [ ] 排序立即儲存
+- [ ] 重新整理頁面後順序保持
+
+### US-004: 瀏覽相簿內照片
+**As a** 照片管理者  
+**I want** 點擊相簿查看內部照片  
+**So that** 我可以瀏覽該相簿的所有照片
+
+**Acceptance Criteria**:
+- [ ] 點擊相簿進入照片檢視頁面
+- [ ] 照片以瓷磚介面顯示(Grid Layout)
+- [ ] 每張照片顯示縮圖
+- [ ] 支援響應式佈局(不同螢幕尺寸)
+
+## 3. Functional Requirements
+
+### FR-001: 相簿管理
+- 相簿必須有唯一識別碼
+- 相簿名稱長度限制:1-50 字元
+- 相簿只能有一層(不支援巢狀相簿)
+- 刪除相簿時需要確認對話框
+
+### FR-002: 照片顯示
+- 縮圖尺寸:200x200px
+- 載入優化:使用 Lazy Loading
+- 支援圖片格式:JPG、PNG、WEBP
+- [NEEDS CLARIFICATION: 是否支援 RAW 格式?]
+
+### FR-003: 拖放功能
+- 使用 HTML5 Drag & Drop API
+- 僅在桌面裝置啟用拖放(行動裝置使用替代方案)
+- [NEEDS CLARIFICATION: 行動裝置的排序方式?長按?編輯模式?]
+
+## 4. Non-Functional Requirements
+
+### NFR-001: Performance(效能)
+- 相簿列表載入時間 < 500ms
+- 照片縮圖載入時間 < 100ms(每張)
+- 支援至少 1000 個相簿
+- 單一相簿支援至少 10,000 張照片
+
+### NFR-002: Usability(可用性)
+- 拖放操作必須直覺,不需教學
+- 響應式設計支援桌面、平板、手機
+- 提供視覺回饋(hover、拖動、載入中)
+
+### NFR-003: Data Integrity(資料完整性)
+- 照片檔案不上傳,僅記錄本機路徑
+- 相簿排序變更必須持久化
+- [NEEDS CLARIFICATION: 如何處理照片檔案被移動或刪除?]
+
+## 5. Success Metrics
+
+### 定量指標
+- 使用者可在 30 秒內建立第一個相簿
+- 拖放排序操作成功率 > 95%
+- 照片載入失敗率 < 1%
+
+### 定性指標
+- 使用者反饋操作直覺易懂
+- 無需查看說明文件即可使用
+
+## 6. Out of Scope
+
+明確不在此功能範圍內:
+
+- ❌ 照片上傳到雲端
+- ❌ 照片編輯功能(裁切、濾鏡)
+- ❌ 相簿分享給其他使用者
+- ❌ 照片自動分類(AI 辨識)
+- ❌ 相簿密碼保護
+- ❌ 支援影片檔案
+
+## 7. Constraints & Assumptions
+
+### Constraints(約束)
+- 照片必須存在於本機檔案系統
+- 僅支援現代瀏覽器(Chrome 90+、Firefox 88+、Safari 14+)
+- 資料存儲於本機(SQLite)
+
+### Assumptions(假設)
+- 使用者有基本電腦操作能力
+- 使用者照片已存在於電腦中
+- 使用者不需要多裝置同步
+
+## 8. Dependencies
+
+### External Dependencies
+- 無外部系統依賴
+
+### Internal Dependencies
+- 需要本機檔案系統存取權限
+- 需要瀏覽器 IndexedDB 支援
+
+## 9. Risks & Mitigations
+
+| 風險 | 影響 | 可能性 | 緩解措施 |
+|------|-----|--------|---------|
+| 照片檔案被移動 | 高 | 中 | 提供「重新連結」功能 |
+| 瀏覽器相容性問題 | 中 | 低 | 明確標示支援瀏覽器版本 |
+| 大量照片效能問題 | 高 | 中 | 實作虛擬滾動、分頁載入 |
+
+## 10. Open Questions
+
+- [ ] [NEEDS CLARIFICATION] 是否支援 RAW 格式照片?
+- [ ] [NEEDS CLARIFICATION] 行動裝置如何進行排序操作?
+- [ ] [NEEDS CLARIFICATION] 照片檔案移動或刪除時如何處理?
+- [ ] [NEEDS CLARIFICATION] 是否需要相簿匯出功能?
+- [ ] [NEEDS CLARIFICATION] 最大相簿數量限制?
+
+## 11. Approval
+
+| 角色 | 姓名 | 日期 | 簽核 |
+|------|-----|------|------|
+| 產品負責人 | | | [ ] |
+| 技術架構師 | | | [ ] |
+| 開發團隊代表 | | | [ ] |
+
+---
+
+**Note**: 此規格需經所有利害關係人審閱並簽核後才能進入 Plan 階段。
+```
+
+#### Spec 應包含的核心要素
+
+**✅ 必須有的內容**:
+
+1. **Overview** - 3-5 句話說明「是什麼」和「為何需要」
+2. **User Stories** - 從使用者角度描述功能,格式:`As a [角色], I want [功能], So that [價值]`
+3. **Acceptance Criteria** - 可測試的驗收標準,使用 Checkbox 格式
+4. **Success Metrics** - 如何衡量成功(定量 + 定性)
+5. **Out of Scope** - 明確排除的項目,避免範疇蔓延
+6. **[NEEDS CLARIFICATION]** - 標記所有模糊或未決定的部分
+
+**❌ 不應該有的內容**:
+
+- ❌ 技術選擇(「使用 React」、「採用 PostgreSQL」)
+- ❌ 實作細節(「建立 UserService 類別」)
+- ❌ 程式碼範例
+- ❌ 資料庫 Schema
+
+#### 審查 Spec 的檢查清單
+
+使用以下清單審查 AI 產生的 Spec:
+
+```markdown
+## Spec Quality Checklist
+
+### 完整性
+- [ ] 有明確的 Overview
+- [ ] 至少有 3 個 User Stories
+- [ ] 每個 User Story 有驗收標準
+- [ ] 定義了 Success Metrics
+- [ ] 明確列出 Out of Scope
+
+### 清晰性
+- [ ] 所有 User Story 清楚易懂
+- [ ] 驗收標準可測試(不模糊)
+- [ ] 沒有技術術語(或有解釋)
+- [ ] 模糊處已標記 [NEEDS CLARIFICATION]
+
+### 技術中立性
+- [ ] 沒有提及具體技術棧
+- [ ] 沒有實作細節
+- [ ] 專注於「什麼」和「為什麼」,而非「如何」
+
+### 可行性
+- [ ] 範圍合理(不會太大)
+- [ ] 有明確約束與假設
+- [ ] 識別了主要風險
+- [ ] 依賴關係清楚
+
+### 利害關係人對齊
+- [ ] PM/產品負責人已審閱
+- [ ] 使用者代表已確認需求
+- [ ] 技術團隊理解需求
+```
+
+#### 實務建議
+
+**1. 一次專注一個功能**
+
+```bash
+# ✅ 好:範圍明確
+/speckit.specify Build user login with email and password
+
+# ❌ 不好:範圍太大
+/speckit.specify Build complete user management system with login, registration, password reset, profile editing, role management, and audit logging
+```
+
+建議:將大功能拆分成多個 Spec
+
+**2. 充分利用對話澄清**
+
+當 AI 產生的 Spec 有 `[NEEDS CLARIFICATION]` 標記時:
+
+```bash
+# 繼續與 AI 對話
+Q: 關於行動裝置的排序方式,我們採用「編輯模式」,使用者點擊「編輯」按鈕後可透過上下箭頭調整順序。
+
+# AI 會更新 Spec,移除 [NEEDS CLARIFICATION] 並補充細節
+```
+
+**3. 使用具體範例**
+
+```bash
+# ❌ 模糊
+/speckit.specify Build a reporting feature
+
+# ✅ 具體
+/speckit.specify Build a monthly sales report that shows revenue by product category, top 10 customers, and year-over-year growth comparison. Users can export to PDF and Excel.
+```
+
+**4. 明確非功能需求**
+
+```bash
+/speckit.specify Build a product search API that must:
+- Handle 1000 requests per second
+- Return results within 200ms (P95)
+- Support fuzzy matching
+- Return relevance-ranked results
+```
+
+#### 常見錯誤與修正
+
+| 錯誤 | 問題 | 修正 |
+|------|-----|------|
+| 「使用 Vue 3 建立介面」 | 過早決定技術 | 「建立響應式使用者介面」 |
+| 「建立 UserRepository」 | 描述實作細節 | 「系統能儲存和檢索使用者資料」 |
+| 「要很快」 | 不可測試 | 「API 回應時間 < 200ms (P95)」 |
+| 「要好用」 | 太模糊 | 「使用者可在 30 秒內完成註冊」 |
+
+---
+
+### 3.2 Step 1a:澄清模糊需求 (/speckit.clarify)
+
+這是選擇性步驟,當 Spec 有太多 `[NEEDS CLARIFICATION]` 標記時使用。
+
+#### 何時使用
+
+- ✅ Spec 有多處 `[NEEDS CLARIFICATION]`
+- ✅ 利害關係人對需求有不同理解
+- ✅ 技術團隊需要更多資訊才能規劃
+- ✅ 進入 Plan 階段前想確保需求明確
+
+#### 指令格式
+
+```bash
+/speckit.clarify
+```
+
+(不需參數,AI 會讀取當前 Spec 並詢問問題)
+
+#### AI 助手會做什麼
+
+1. **掃描 Spec** - 找出所有 `[NEEDS CLARIFICATION]` 標記
+2. **分析模糊處** - 識別可能的歧義或遺漏
+3. **提出問題** - 以問答形式澄清需求
+
+**範例對話**:
+
+```text
+AI: 我在 Spec 中發現以下需要澄清的項目:
+
+1. [NEEDS CLARIFICATION: 是否支援 RAW 格式照片?]
+   Q: 系統是否需要支援 RAW 格式(如 .CR2, .NEF, .ARW)?
+   - RAW 檔案通常很大(20-50MB),可能影響載入效能
+   - 需要額外的解碼函式庫
+
+您的決定:
+```
+
+**人員回應**:
+
+```text
+A: 初版不支援 RAW 格式,僅支援 JPG、PNG、WEBP。
+   RAW 格式列入 v2.0 考慮。
+```
+
+**AI 更新 Spec**:
+
+```markdown
+### FR-002: 照片顯示
+- 支援圖片格式:JPG、PNG、WEBP
+- RAW 格式(CR2、NEF、ARW)不在初版支援範圍
+- 未來版本考慮支援(列入產品 Roadmap)
+```
+
+#### 澄清流程
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+graph TD
+    A[執行 /speckit.clarify] --> B[AI 掃描 Spec]
+    B --> C[識別所有 NEEDS CLARIFICATION]
+    C --> D[AI 逐項提問]
+    D --> E[人員回答]
+    E --> F{還有未澄清項目?}
+    F -->|是| D
+    F -->|否| G[AI 更新 Spec]
+    G --> H[移除 NEEDS CLARIFICATION 標記]
+    H --> I[補充明確說明]
+    I --> J[Spec 完成,可進入 Plan]
+```
+
+#### 實務建議
+
+**1. 分批澄清**
+
+如果有很多 `[NEEDS CLARIFICATION]`,不要試圖一次全部解決:
+
+```text
+第一輪:澄清核心功能的模糊處
+第二輪:澄清非功能需求
+第三輪:澄清邊界條件與例外處理
+```
+
+**2. 記錄決策理由**
+
+不只回答「是」或「否」,要說明原因:
+
+```text
+❌ 不好:「不支援 RAW 格式」
+✅ 好:「不支援 RAW 格式,因為:
+     1. 增加實作複雜度(需要解碼庫)
+     2. 影響效能(檔案大)
+     3. 使用者需求優先度低(使用者調查顯示 < 5% 需要)
+     4. v2.0 再評估」
+```
+
+**3. 涉及利害關係人**
+
+某些問題需要特定角色回答:
+
+- **產品問題** → PM/產品負責人
+- **技術問題** → 架構師/資深開發
+- **使用者行為** → UX 設計師/使用者代表
+- **安全/合規** → 資安/法務
+
+**4. 更新 Spec 並提交**
+
+澄清完畢後:
+
+```bash
+# 確認 Spec 無 [NEEDS CLARIFICATION]
+grep -r "NEEDS CLARIFICATION" specs/001-photo-album/
+
+# 提交更新
+git add specs/001-photo-album/spec.md
+git commit -m "spec: clarify photo format support and mobile UX"
+```
+
+---
+
+### 3.3 Step 2:撰寫 Plan (/speckit.plan)
+
+Plan 將 Spec 翻譯成技術實作方案,定義「如何」實現。
+
+#### 何時使用
+
+- ✅ Spec 已完成且所有 `[NEEDS CLARIFICATION]` 已解決
+- ✅ 準備進入技術規劃階段
+- ✅ 需要定義技術棧、架構、資料模型
+
+#### 指令格式
+
+```bash
+/speckit.plan <技術棧與架構選擇>
+```
+
+**範例**:
+
+```bash
+# 範例 1: Web 應用
+/speckit.plan The application uses Vite with minimal number of libraries. Use vanilla HTML, CSS, and JavaScript as much as possible. Images are not uploaded anywhere and metadata is stored in a local SQLite database.
+
+# 範例 2: 企業應用
+/speckit.plan Use Spring Boot 3.x with Java 17 for backend. Frontend is Vue 3 with TypeScript. Database is PostgreSQL 14. Use Redis for caching. Message queue is RabbitMQ. Follow microservices architecture with API Gateway.
+
+# 範例 3: 批次作業
+/speckit.plan Use Spring Batch framework. SFTP integration with Apache Commons VFS. Database is Oracle 19c. Scheduling with Quartz. Error notifications via Slack webhook.
+
+# 範例 4: 微服務
+/speckit.plan Implement as a RESTful microservice using Spring Boot. Use OpenAPI 3.0 for API specification. Database per service pattern with PostgreSQL. Event-driven communication via Kafka. Containerized with Docker.
+```
+
+#### AI 助手會做什麼
+
+1. **讀取 Spec** - 理解功能需求與約束
+2. **檢查 Constitution** - 確保符合專案守則
+3. **套用模板** - 使用 `plan-template.md`
+4. **產生 Plan** - 包含:
+   - Technology Stack(技術棧)
+   - Architecture Overview(架構概述)
+   - Data Model(資料模型)
+   - API Contracts(介面契約)
+   - Phase Gates(檢查點)
+   - Implementation Phases(實作階段)
+5. **產生支援文件**:
+   - `data-model.md` - 詳細資料模型
+   - `contracts/*.yaml` - API 規格
+   - `research.md` - 技術選擇研究
+   - `quickstart.md` - 快速驗證指南
+
+#### 產生的 Plan 結構
+
+**範例:照片相簿管理 Plan**
+
+````markdown
+# Implementation Plan: Photo Album Management
+
+## Metadata
+- **Feature ID**: 001
+- **Spec Version**: 1.0
+- **Plan Version**: 1.0
+- **Created**: 2025-10-29
+
+---
+
+## Phase -1: Pre-Implementation Gates
+
+### Simplicity Gate (Article VII: Simplicity)
+- [ ] **使用 ≤ 3 個專案?** ✅ 是(單一 Vite 專案)
+- [ ] **無過度設計?** ✅ 是(最小化依賴)
+- [ ] **避免未來預留?** ✅ 是(僅實作當前需求)
+
+**Justification**: 採用單一 Vite 專案,Vanilla JS + SQLite,符合簡單原則。
+
+### Anti-Abstraction Gate (Article VIII: Anti-Abstraction)
+- [ ] **直接使用框架特性?** ✅ 是(使用原生 Drag & Drop API)
+- [ ] **單一模型表示?** ✅ 是(Album 與 Photo 直接對應資料表)
+- [ ] **避免過早抽象?** ✅ 是(無額外抽象層)
+
+**Justification**: 使用瀏覽器原生 API,資料模型直接映射,無不必要抽象。
+
+### Integration-First Gate (Article IX: Integration-First)
+- [ ] **契約已定義?** ✅ 是(IndexedDB Schema 已定義)
+- [ ] **整合點已識別?** ✅ 是(檔案系統存取)
+- [ ] **測試策略已規劃?** ✅ 是(見測試章節)
+
+**Complexity Tracking**: 無需記錄複雜度,符合所有 Gates。
+
+---
+
+## Technology Stack
+
+### Frontend
+| Component | Technology | Version | Justification |
+|-----------|-----------|---------|--------------|
+| **Build Tool** | Vite | 5.x | 快速開發、HMR、最小化配置 |
+| **語言** | JavaScript (ES6+) | - | 符合 Vanilla JS 要求 |
+| **CSS** | Vanilla CSS | - | 無需預處理器,保持簡單 |
+| **UI Framework** | 無 | - | 使用原生 DOM API |
+
+### Storage
+| Component | Technology | Version | Justification |
+|-----------|-----------|---------|--------------|
+| **Metadata** | IndexedDB | - | 瀏覽器原生,支援複雜查詢 |
+| **檔案存取** | File System Access API | - | 讀取本機照片 |
+
+### Development Tools
+| Tool | Purpose |
+|------|---------|
+| **ESLint** | 程式碼品質檢查 |
+| **Prettier** | 程式碼格式化 |
+| **Vitest** | 單元測試 |
+| **Playwright** | E2E 測試 |
+
+### Browser Requirements
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+
+---
+
+## Architecture Overview
+
+### System Architecture
+
+```text
+┌─────────────────────────────────────┐
+│         User Interface              │
+│  ┌───────────┐    ┌──────────────┐ │
+│  │  Album    │    │   Photo      │ │
+│  │  List     │    │   Grid       │ │
+│  │  View     │    │   View       │ │
+│  └─────┬─────┘    └──────┬───────┘ │
+└────────┼──────────────────┼─────────┘
+         │                  │
+         ▼                  ▼
+┌─────────────────────────────────────┐
+│      Application Layer              │
+│  ┌────────────┐    ┌─────────────┐ │
+│  │  Album     │    │   Photo     │ │
+│  │  Manager   │    │   Manager   │ │
+│  └──────┬─────┘    └──────┬──────┘ │
+└─────────┼──────────────────┼────────┘
+          │                  │
+          ▼                  ▼
+┌─────────────────────────────────────┐
+│       Storage Layer                 │
+│  ┌────────────┐    ┌─────────────┐ │
+│  │ IndexedDB  │    │  File       │ │
+│  │ (Metadata) │    │  System     │ │
+│  └────────────┘    └─────────────┘ │
+└─────────────────────────────────────┘
+```
+
+### Module Structure
+
+```text
+src/
+├── index.html          # 主頁面
+├── main.js             # 應用入口
+├── styles/
+│   ├── main.css        # 全域樣式
+│   ├── album.css       # 相簿樣式
+│   └── photo.css       # 照片樣式
+├── modules/
+│   ├── album-manager.js    # 相簿管理邏輯
+│   ├── photo-manager.js    # 照片管理邏輯
+│   ├── drag-drop.js        # 拖放功能
+│   └── storage.js          # IndexedDB 封裝
+└── utils/
+    ├── image-loader.js     # 圖片載入優化
+    └── file-utils.js       # 檔案操作工具
+```
+
+---
+
+## Data Model
+
+### IndexedDB Schema
+
+```javascript
+// Database: PhotoAlbumDB, Version: 1
+
+// Object Store: albums
+{
+  keyPath: 'id',
+  autoIncrement: true,
+  indexes: [
+    { name: 'sortOrder', keyPath: 'sortOrder', unique: false },
+    { name: 'createdAt', keyPath: 'createdAt', unique: false }
+  ]
+}
+
+// Object Store: photos
+{
+  keyPath: 'id',
+  autoIncrement: true,
+  indexes: [
+    { name: 'albumId', keyPath: 'albumId', unique: false },
+    { name: 'filePath', keyPath: 'filePath', unique: true }
+  ]
+}
+```
+
+### Entity Definitions
+
+**Album Entity**:
+
+```javascript
+{
+  id: number,              // Auto-increment
+  name: string,            // 1-50 characters
+  createdAt: string,       // ISO 8601 format
+  sortOrder: number,       // User-defined order
+  thumbnailPath: string,   // Path to first photo or default icon
+  photoCount: number       // Computed field
+}
+```
+
+**Photo Entity**:
+
+```javascript
+{
+  id: number,              // Auto-increment
+  albumId: number,         // Foreign key to albums
+  filePath: string,        // Absolute path to image file
+  fileName: string,        // File name with extension
+  fileSize: number,        // Size in bytes
+  width: number,           // Image width in pixels
+  height: number,          // Image height in pixels
+  addedAt: string,         // ISO 8601 format
+  thumbnailDataUrl: string // Base64 encoded thumbnail (200x200)
+}
+```
+
+詳細資料模型請參閱:`data-model.md`
+
+---
+
+## API Contracts
+
+### Internal API (JavaScript Modules)
+
+**AlbumManager API**:
+
+```javascript
+class AlbumManager {
+  /**
+   * 建立新相簿
+   * @param {string} name - 相簿名稱
+   * @returns {Promise<Album>}
+   * @throws {ValidationError} 名稱無效
+   */
+  async createAlbum(name) {}
+
+  /**
+   * 取得所有相簿
+   * @returns {Promise<Album[]>}
+   */
+  async getAllAlbums() {}
+
+  /**
+   * 更新相簿排序
+   * @param {number[]} albumIds - 新的排序陣列
+   * @returns {Promise<void>}
+   */
+  async updateAlbumOrder(albumIds) {}
+
+  /**
+   * 刪除相簿
+   * @param {number} albumId
+   * @returns {Promise<void>}
+   */
+  async deleteAlbum(albumId) {}
+}
+```
+
+**PhotoManager API**:
+
+```javascript
+class PhotoManager {
+  /**
+   * 新增照片到相簿
+   * @param {number} albumId
+   * @param {File[]} files - 圖片檔案
+   * @returns {Promise<Photo[]>}
+   * @throws {ValidationError} 檔案格式不支援
+   */
+  async addPhotos(albumId, files) {}
+
+  /**
+   * 取得相簿的所有照片
+   * @param {number} albumId
+   * @returns {Promise<Photo[]>}
+   */
+  async getPhotosByAlbum(albumId) {}
+
+  /**
+   * 產生縮圖
+   * @param {string} filePath
+   * @returns {Promise<string>} Data URL
+   */
+  async generateThumbnail(filePath) {}
+}
+```
+
+詳細契約定義請參閱:`contracts/`
+
+---
+
+## Non-Functional Requirements Implementation
+
+### Performance Optimization
+
+**NFR-001: 相簿列表載入 < 500ms**
+
+**策略**:
+- IndexedDB 索引優化(sortOrder index)
+- 縮圖預先產生並快取
+- 虛擬滾動(若相簿數 > 100)
+
+**實作**:
+```javascript
+// 使用 index 加速查詢
+const albums = await db.albums.index('sortOrder').getAll();
+
+// 分批載入縮圖
+const loadThumbnails = async (albums) => {
+  for (let i = 0; i < albums.length; i += 10) {
+    const batch = albums.slice(i, i + 10);
+    await Promise.all(batch.map(loadThumbnail));
+    renderBatch(batch);
+  }
+};
+```
+
+**NFR-002: 照片縮圖載入 < 100ms**
+
+**策略**:
+- Lazy Loading(Intersection Observer)
+- 縮圖儲存為 Data URL(200x200)
+- 使用 Web Worker 產生縮圖
+
+**實作**:
+```javascript
+// Intersection Observer for lazy loading
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      loadImage(entry.target);
+      observer.unobserve(entry.target);
+    }
+  });
+});
+```
+
+### Security
+
+**檔案系統存取控制**:
+- 使用 File System Access API(需要使用者明確授權)
+- 僅讀取權限,不修改原始檔案
+- 驗證檔案類型(MIME type checking)
+
+```javascript
+// 驗證圖片類型
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+function validateFile(file) {
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    throw new ValidationError(`不支援的檔案類型: ${file.type}`);
+  }
+  if (file.size > 50 * 1024 * 1024) { // 50MB
+    throw new ValidationError('檔案大小超過限制(50MB)');
+  }
+}
+```
+
+### Error Handling
+
+**錯誤類型**:
+1. **ValidationError** - 輸入驗證失敗
+2. **StorageError** - IndexedDB 操作失敗
+3. **FileAccessError** - 檔案存取失敗
+
+**錯誤處理策略**:
+```javascript
+try {
+  await albumManager.createAlbum(name);
+} catch (error) {
+  if (error instanceof ValidationError) {
+    showUserMessage('相簿名稱無效,請檢查後重試');
+  } else if (error instanceof StorageError) {
+    showUserMessage('儲存失敗,請確認瀏覽器支援');
+    logError(error);
+  } else {
+    showUserMessage('未預期的錯誤,請重新整理頁面');
+    logError(error);
+  }
+}
+```
+
+---
+
+## Testing Strategy
+
+### Test Pyramid
+
+```
+        ┌─────────┐
+        │   E2E   │  (10%)
+        │  Tests  │
+     ┌──┴─────────┴──┐
+     │  Integration  │  (30%)
+     │     Tests     │
+  ┌──┴───────────────┴──┐
+  │    Unit Tests       │  (60%)
+  │                     │
+  └─────────────────────┘
+```
+
+### Unit Tests (Vitest)
+
+**測試範圍**:
+- AlbumManager 所有方法
+- PhotoManager 所有方法
+- Drag & Drop 邏輯
+- Storage 操作
+
+**範例**:
+```javascript
+// album-manager.test.js
+describe('AlbumManager', () => {
+  it('should create album with valid name', async () => {
+    const album = await albumManager.createAlbum('Vacation 2024');
+    expect(album.name).toBe('Vacation 2024');
+    expect(album.sortOrder).toBeDefined();
+  });
+
+  it('should throw ValidationError for empty name', async () => {
+    await expect(albumManager.createAlbum('')).rejects.toThrow(ValidationError);
+  });
+});
+```
+
+### Integration Tests
+
+**測試範圍**:
+- IndexedDB 整合
+- File System Access API 整合
+- UI 與邏輯層整合
+
+### E2E Tests (Playwright)
+
+**測試場景**:
+- 使用者建立第一個相簿
+- 使用者新增照片到相簿
+- 使用者拖放排序相簿
+- 使用者刪除相簿
+
+**範例**:
+```javascript
+// e2e/album-management.spec.js
+test('user can create and sort albums', async ({ page }) => {
+  await page.goto('/');
+  
+  // 建立相簿
+  await page.click('[data-testid="create-album"]');
+  await page.fill('[data-testid="album-name"]', 'Vacation');
+  await page.click('[data-testid="confirm"]');
+  
+  // 驗證相簿出現
+  await expect(page.locator('[data-testid="album-card"]')).toContainText('Vacation');
+  
+  // 拖放排序
+  await page.dragAndDrop(
+    '[data-testid="album-1"]',
+    '[data-testid="album-2"]'
+  );
+  
+  // 重新載入驗證排序保持
+  await page.reload();
+  // ... 驗證排序
+});
+```
+
+---
+
+## Implementation Phases
+
+### Phase 0: Environment Setup (1 day)
+
+**Tasks**:
+- [ ] 初始化 Vite 專案
+- [ ] 設定 ESLint + Prettier
+- [ ] 建立基礎目錄結構
+- [ ] 設定 Vitest
+- [ ] 設定 Playwright
+
+**Deliverables**:
+- 可執行的開發環境
+- 通過的 linting
+- 測試框架就緒
+
+### Phase 1: Storage Layer (2 days)
+
+**Tasks**:
+- [ ] 實作 IndexedDB wrapper
+- [ ] 建立 Album 與 Photo stores
+- [ ] 實作 CRUD 操作
+- [ ] 撰寫單元測試
+
+**Deliverables**:
+- `storage.js` 模組
+- 單元測試覆蓋率 > 80%
+
+### Phase 2: Album Management (3 days)
+
+**Tasks**:
+- [ ] 實作 AlbumManager
+- [ ] 實作相簿列表 UI
+- [ ] 實作建立/刪除相簿
+- [ ] 實作拖放排序
+- [ ] 撰寫測試
+
+**Deliverables**:
+- 完整的相簿管理功能
+- UI 符合設計
+- 測試覆蓋率 > 80%
+
+### Phase 3: Photo Management (3 days)
+
+**Tasks**:
+- [ ] 實作 PhotoManager
+- [ ] 實作照片上傳(檔案選擇)
+- [ ] 實作縮圖產生
+- [ ] 實作照片網格顯示
+- [ ] 實作 Lazy Loading
+- [ ] 撰寫測試
+
+**Deliverables**:
+- 完整的照片管理功能
+- 效能符合 NFR
+- 測試覆蓋率 > 80%
+
+### Phase 4: Integration & Optimization (2 days)
+
+**Tasks**:
+- [ ] 整合測試
+- [ ] 效能優化
+- [ ] 錯誤處理完善
+- [ ] E2E 測試
+
+**Deliverables**:
+- 所有測試通過
+- 效能達標
+- 完整的錯誤處理
+
+### Phase 5: Documentation & Deployment (1 day)
+
+**Tasks**:
+- [ ] 撰寫 README
+- [ ] API 文件
+- [ ] 使用者指南
+- [ ] 建立生產構建
+
+**Deliverables**:
+- 完整文件
+- 可部署的產出物
+
+---
+
+## Risk Mitigation
+
+| 風險 | 緩解措施 | 負責人 |
+|------|---------|-------|
+| 瀏覽器相容性 | 使用 Polyfill,明確標示支援版本 | 前端開發 |
+| 大量照片效能 | 虛擬滾動、分頁、Web Worker | 前端開發 |
+| IndexedDB 配額 | 提醒使用者、提供清理工具 | 前端開發 |
+| 檔案被移動/刪除 | 錯誤偵測、重新連結功能 | 前端開發 |
+
+---
+
+## Dependencies
+
+### External Libraries
+
+```json
+{
+  "dependencies": {},
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0",
+    "@playwright/test": "^1.40.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0"
+  }
+}
+```
+
+**Note**: 刻意最小化依賴,符合專案守則。
+
+---
+
+## Monitoring & Observability
+
+雖為本機應用,仍需基本監控:
+
+**Client-Side Logging**:
+```javascript
+// 記錄關鍵操作與錯誤
+logger.info('Album created', { albumId, name });
+logger.error('Photo load failed', { photoId, error });
+```
+
+**Performance Metrics**:
+- 相簿列表載入時間
+- 照片載入時間
+- 拖放操作延遲
+
+**儲存於 localStorage** 供開發者檢視。
+
+---
+
+## Quickstart Validation
+
+快速驗證實作是否符合 Spec,參閱:`quickstart.md`
+
+**核心驗證場景**:
+1. 建立相簿成功
+2. 新增照片成功
+3. 拖放排序成功
+4. 刪除相簿成功
+5. 效能符合 NFR
+````
+
+---
+
+**Plan 審核檢查清單**:
+- [ ] 所有技術選擇有明確理由
+- [ ] 符合專案 Constitution
+- [ ] 資料模型完整定義
+- [ ] API 契約清晰
+- [ ] 測試策略完善
+- [ ] 風險已識別並有緩解措施
+- [ ] 實作階段合理可行
+
+#### Plan 的關鍵元素
+
+**✅ 必須包含**:
+
+1. **Phase -1 Gates** - 確保符合 Constitution
+2. **Technology Stack** - 明確且有理由
+3. **Architecture Diagram** - 視覺化系統結構
+4. **Data Model** - 完整的實體定義
+5. **API Contracts** - 介面規格
+6. **Testing Strategy** - 測試金字塔
+7. **Implementation Phases** - 分階段計畫
+8. **Risk Mitigation** - 風險與應對
+
+**❌ 避免**:
+
+- ❌ 過度詳細的程式碼(應在 implementation-details/ 中)
+- ❌ 未經評估的技術選擇
+- ❌ 違反 Constitution 且未記錄例外
+- ❌ 模糊的階段定義(「Phase 1: 實作核心功能」太籠統)
+
+#### 實務建議
+
+**1. Constitution Compliance 是強制的**
+
+Plan 必須通過所有 Pre-Implementation Gates,若無法通過:
+
+```markdown
+### Simplicity Gate
+- [ ] 使用 ≤ 3 個專案? ❌ 否(需要 5 個微服務)
+
+**Exception Justification**:
+因為需要支援 10 個既有系統整合,單體架構無法滿足:
+1. 獨立部署需求
+2. 不同團隊維護
+3. 技術棧多樣性
+
+已記錄於 Complexity Tracking,經架構師核准。
+```
+
+**2. 技術選擇要有對比**
+
+不要只列選擇,要說明「為何選這個而非那個」:
+
+```markdown
+### Database Selection
+
+**Selected**: PostgreSQL
+
+**Alternatives Considered**:
+| Option | Pros | Cons | Decision |
+|--------|------|------|----------|
+| MySQL | 團隊熟悉 | JSON 支援較弱 | ❌ |
+| MongoDB | 彈性 schema | 事務支援有限 | ❌ |
+| PostgreSQL | JSONB + 強事務 | 學習曲線 | ✅ |
+```
+
+**3. 架構圖要清晰**
+
+使用 ASCII art 或 Mermaid:
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+graph LR
+    A[前端] --> B[API Gateway]
+    B --> C[Auth Service]
+    B --> D[Order Service]
+    D --> E[(PostgreSQL)]
+    D --> F[Message Queue]
+```
+
+**4. Phase 要有明確產出物**
+
+```markdown
+### Phase 2: User Management (5 days)
+
+**Tasks**:
+- [ ] 實作 UserService
+- [ ] 實作註冊 API
+- [ ] 實作登入 API
+- [ ] 撰寫單元測試
+
+**Deliverables**:
+- [ ] UserService.java (含測試覆蓋率 > 80%)
+- [ ] POST /api/v1/users (註冊)
+- [ ] POST /api/v1/auth/login (登入)
+- [ ] API 文件(OpenAPI 規格)
+
+**Acceptance**:
+- [ ] 所有測試通過
+- [ ] API 回應時間 < 200ms
+- [ ] Code review 完成
+```
+
+---
+
+### 3.3a Step 2a:驗證 Plan (Plan Validation)
+
+在產生 Plan 後、拆分 Tasks 之前，應讓 AI 助手驗證 Plan 的完整性與正確性。此步驟對應 GitHub Spec-Kit 官方流程中的 **STEP 5: Have the AI validate the plan**。
+
+#### 為什麼需要驗證 Plan
+
+- 🔍 AI 可能在規劃階段遺漏關鍵步驟或引入不必要的複雜度
+- 🏗️ 確保實作計畫涵蓋所有需求，且步驟銜接合理
+- ⚠️ AI 助手可能「過度積極」加入未被要求的元件（over-engineering）
+- 📋 確保 Plan 符合 Constitution 的所有條款
+
+#### 執行方式
+
+**1. 請 AI 審核實作計畫**
+
+```text
+現在我希望你審核實作計畫以及相關的實作細節文件。
+仔細閱讀計畫，判斷是否有遺漏的步驟或缺少的資訊。
+例如，在核心實作部分中，是否有引用到實作細節文件中對應的位置，
+以便在執行每一步時可以找到必要資訊。
+```
+
+**2. 檢查是否存在過度工程**
+
+```text
+請檢查 Plan 中是否有過度設計的部分（over-engineering）。
+確保 AI 遵循 Constitution 中的簡約原則（Article VII: Simplicity）
+和反抽象原則（Article VIII: Anti-Abstraction）。
+若有不必要的複雜度，請簡化。
+```
+
+**3. 交叉驗證 Constitution 合規性**
+
+```text
+請依據 .specify/memory/constitution.md 逐條檢查 Plan：
+1. 所有 Pre-Implementation Gates 是否通過？
+2. 是否有違反 Constitution 的技術選擇？
+3. 例外是否已記錄並經核准？
+```
+
+**4.（選用）建立 Pull Request 追蹤**
+
+若已安裝 [GitHub CLI](https://docs.github.com/en/github-cli/github-cli)，可請 AI 從當前分支建立 PR 到 `main`，附帶詳細說明，以追蹤計畫審核進度。
+
+#### 驗證檢查清單
+
+```markdown
+## Plan Validation Checklist
+
+### 完整性
+- [ ] 所有 User Stories 在 Plan 中有對應的實作階段
+- [ ] 所有 NFR 有具體的實作策略
+- [ ] API Contracts 完整定義（Request/Response/Error）
+- [ ] Data Model 涵蓋所有 Spec 中提到的實體
+
+### 正確性
+- [ ] 技術選擇有充分理由且不違反 Constitution
+- [ ] 實作階段順序合理（依賴關係正確）
+- [ ] 測試策略覆蓋所有關鍵路徑
+- [ ] 風險評估合理且緩解措施可行
+
+### 簡約性
+- [ ] 無過度設計（Article VII: Simplicity）
+- [ ] 無不必要的抽象層（Article VIII: Anti-Abstraction）
+- [ ] 依賴最小化
+- [ ] Phase -1 Gates 全數通過
+
+### 一致性
+- [ ] Plan 與 Spec 的 Acceptance Criteria 對齊
+- [ ] 所引用的 research.md 內容準確
+- [ ] 無矛盾的技術決策
+```
+
+#### 實務建議
+
+**1. 不要將 AI 的第一版 Plan 當作最終版**
+
+AI 產生的 Plan 是起點而非終點。至少進行一輪驗證與修正：
+
+```text
+第一輪：產生 Plan（/speckit.plan）
+第二輪：驗證與修正（本步驟）
+第三輪：確認後才進入 Tasks
+```
+
+**2. 針對快速變化的技術棧進行研究**
+
+如果 Plan 使用了快速迭代的框架（如 .NET Aspire、Next.js 等），應請 AI 進行補充研究：
+
+```text
+請檢查 Plan 中使用的技術棧版本是否為最新穩定版。
+針對不確定的部分，更新 research.md 並標註具體版本。
+```
+
+**3. 確認 research.md 的有效性**
+
+```text
+請閱讀 research.md，確認其中的技術調研結論仍然有效。
+特別留意已被棄用的 API 或程式庫版本。
+```
+
+> 💡 **完成 Plan Validation 後，即可進入下一步：拆分 Tasks。**
+
+---
+
+### 3.4 Step 3:拆分 Tasks (/speckit.tasks)
+
+將 Plan 拆解成可執行的具體任務。
+
+#### 何時使用 Tasks
+
+- ✅ Plan 已完成並經審查（包括 Plan Validation）
+- ✅ 準備開始實作
+- ✅ 需要分配工作給團隊成員
+- ✅ 需要估算時間與追蹤進度
+
+#### 指令格式
+
+```bash
+/speckit.tasks
+```
+
+(不需參數，AI 會讀取當前功能的 Plan 與相關文件)
+
+#### AI 助手會做什麼
+
+1. **讀取 Plan** - 分析 Implementation Phases
+2. **讀取支援文件** - data-model.md、contracts/ 等
+3. **拆分任務** - 將每個 Phase 拆成具體 Task
+4. **識別依賴** - 標記任務間的依賴關係
+5. **標記並行** - 使用 `[P]` 標記可並行任務
+6. **產生 tasks.md** - 結構化任務清單
+
+#### 產生的 Tasks 結構
+
+**範例:照片相簿管理 Tasks(節錄)**
+
+````markdown
+# Tasks: Photo Album Management
+
+## Metadata
+- **Feature ID**: 001
+- **Total Estimated**: 12 days
+- **Dependencies**: 見各任務說明
+
+---
+
+## Phase 0: Environment Setup
+
+### Task 1: [P] 初始化 Vite 專案
+**ID**: T001  
+**Depends on**: None  
+**Parallel Safe**: Yes  
+**Estimated**: 2 hours  
+**Assignee**: TBD
+
+**Description**:
+建立 Vite 專案,設定基礎配置
+
+**Acceptance Criteria**:
+- [ ] `npm create vite@latest` 執行成功
+- [ ] 開發伺服器可啟動(`npm run dev`)
+- [ ] 可訪問 http://localhost:5173
+- [ ] Hot Module Replacement(HMR)正常運作
+
+**Implementation Notes**:
+```bash
+npm create vite@latest photo-album -- --template vanilla
+cd photo-album
+npm install
+npm run dev
+```
+
+---
+
+### Task 2: [P] 設定程式碼品質工具
+**ID**: T002  
+**Depends on**: None  
+**Parallel Safe**: Yes  
+**Estimated**: 2 hours  
+**Assignee**: TBD
+
+**Description**:
+設定 ESLint、Prettier 確保程式碼品質
+
+**Acceptance Criteria**:
+- [ ] ESLint 設定完成(`.eslintrc.json`)
+- [ ] Prettier 設定完成(`.prettierrc`)
+- [ ] `npm run lint` 指令可執行
+- [ ] `npm run format` 指令可執行
+- [ ] VS Code 整合正常
+
+---
+
+## Phase 2: Album Management
+
+### Task 7: [P] 實作 AlbumManager 核心邏輯
+**ID**: T007  
+**Depends on**: T006  
+**Parallel Safe**: Yes (與 T008 並行)  
+**Estimated**: 4 hours  
+**Assignee**: TBD
+
+**Description**:
+實作相簿管理業務邏輯
+
+**Acceptance Criteria**:
+- [ ] AlbumManager 類別建立
+- [ ] createAlbum() 方法實作
+- [ ] getAllAlbums() 方法實作
+- [ ] updateAlbumOrder() 方法實作
+- [ ] deleteAlbum() 方法實作
+- [ ] 輸入驗證完整
+- [ ] 單元測試覆蓋率 > 80%
+
+**Testing**:
+- 測試建立相簿(正常 + 異常)
+- 測試取得相簿列表
+- 測試更新排序
+- 測試刪除相簿
+
+---
+
+### Task 8: [P] 實作相簿列表 UI
+**ID**: T008  
+**Depends on**: T003  
+**Parallel Safe**: Yes (與 T007 並行)  
+**Estimated**: 6 hours  
+**Assignee**: TBD
+
+**Description**:
+實作相簿列表顯示介面
+
+**Acceptance Criteria**:
+- [ ] HTML 結構建立
+- [ ] CSS 樣式符合設計
+- [ ] 相簿卡片元件
+- [ ] 響應式佈局(桌面/平板/手機)
+- [ ] 載入狀態顯示
+- [ ] 空狀態顯示
+
+---
+
+## Task Summary
+
+### By Phase
+- **Phase 0**: 4 tasks, 8 hours
+- **Phase 1**: 2 tasks, 8 hours
+- **Phase 2**: 5 tasks, 23 hours
+- **Phase 3**: 5 tasks, 24 hours
+- **Phase 4**: 3 tasks, 18 hours
+- **Phase 5**: 2 tasks, 6 hours
+
+### Total
+- **Tasks**: 21
+- **Estimated**: ~87 hours (~11 工作天)
+- **Parallel Tasks**: 10 (標記 [P])
+
+### Critical Path
+T001 → T004 → T005 → T006 → T007 → T009 → T011 → T016 → T017 → T018 → T019
+
+### Parallel Opportunities
+
+**Group 1: Environment Setup (可同時進行)**
+- T001: 初始化專案
+- T002: 設定工具
+- T004: 設定測試
+
+**Group 2: UI Development (可同時進行)**
+- T008: 相簿列表 UI
+- T014: 照片網格 UI
+
+**Group 3: Core Logic (可同時進行)**
+- T007: AlbumManager
+- T012: PhotoManager
+- T013: 縮圖產生器
+````
+
+#### Tasks 的品質標準
+
+**✅ 好的 Task 特徵**:
+
+1. **原子性** - 單一任務,單一目標
+2. **可估時** - 2-8 小時可完成
+3. **可驗證** - 明確的 Acceptance Criteria
+4. **依賴清楚** - 知道哪些任務必須先完成
+5. **可分配** - 一個人可獨立完成
+
+**❌ 避免的 Task**:
+
+- ❌ 「實作所有功能」(太大)
+- ❌ 「優化效能」(不明確)
+- ❌ 「修 bug」(非計畫性)
+- ❌ 沒有 Acceptance Criteria
+
+#### 並行任務規劃
+
+**識別可並行任務**:
+
+```markdown
+## Parallel Group 1: Phase 0 Setup
+可同時由不同人執行:
+- [P] T001: 初始化專案
+- [P] T002: 設定工具
+- [P] T003: 建立目錄
+- [P] T004: 設定測試
+
+建議:4 人 2 小時內完成所有 Setup
+```
+
+**好處**:
+- 縮短總開發時間
+- 團隊成員可平行作業
+- 提升效率
+
+#### 實務建議
+
+**1. Task ID 編號系統**
+
+```markdown
+T001-T099: Phase 0-1 (基礎建設)
+T100-T199: Phase 2 (核心功能)
+T200-T299: Phase 3 (進階功能)
+T300-T399: Phase 4 (整合優化)
+T400-T499: Phase 5 (文件部署)
+```
+
+**2. 估時技巧**
+
+- 使用斐波那契數列:1、2、3、5、8、13 小時
+- 若超過 8 小時,考慮拆分
+- 預留 20% buffer(計畫外工作)
+
+**3. 追蹤進度**
+
+```markdown
+## Task Status Tracking
+
+| Task | Assignee | Status | Actual Hours | Notes |
+|------|----------|--------|--------------|-------|
+| T001 | Alice | ✅ Done | 1.5 | - |
+| T002 | Bob | 🚧 In Progress | 1.0 | - |
+| T003 | Carol | ⏳ Pending | - | Waiting for T001 |
+```
+
+使用 GitHub Projects、Jira 或簡單的 Markdown 表格。
+
+**4. 每日站會應用**
+
+```text
+昨天:完成 T005 (IndexedDB Wrapper),測試覆蓋率 85%
+今天:開始 T007 (AlbumManager),預計下午完成
+阻礙:無
+```
+
+---
+
+### 3.5 Step 4:預實作檢查 (/speckit.analyze + /speckit.checklist)
+
+在實作前進行一致性分析與品質檢查。
+
+#### 何時使用
+
+- ✅ Tasks 已完成
+- ✅ 準備開始實作前
+- ✅ 想確保 Spec ↔ Plan ↔ Tasks 一致
+- ✅ 識別遺漏或矛盾
+
+#### 指令 1:/speckit.analyze
+
+**用途**:跨工件一致性分析
+
+```bash
+/speckit.analyze
+```
+
+**AI 會檢查**:
+
+1. **Spec → Plan 對應**
+   - Plan 是否涵蓋所有 User Stories?
+   - Plan 的技術選擇是否支援 NFR?
+
+2. **Plan → Tasks 對應**
+   - Tasks 是否涵蓋 Plan 的所有 Phases?
+   - 遺漏的實作項目?
+
+3. **Constitution 合規**
+   - Plan 是否違反專案守則?
+   - Tasks 是否遵循 TDD 原則?
+
+**輸出範例**:
+
+```markdown
+# Consistency Analysis Report
+
+## ✅ Aligned Items (17)
+
+### Spec US-001 → Plan Phase 2 → Tasks T007-T011
+- User Story「建立相簿」完整對應
+- Plan 定義 AlbumManager 實作
+- Tasks 拆分為 5 個具體任務
+
+### Spec NFR-001 → Plan Performance Section → Task T018
+- NFR「相簿列表載入 < 500ms」
+- Plan 定義 IndexedDB 索引優化
+- Task T018 專門處理效能優化
+
+## ⚠️ Potential Gaps (3)
+
+### Gap 1: Mobile Drag-Drop Alternative
+- **Spec**: US-003 提到行動裝置排序
+- **Plan**: 僅實作桌面拖放
+- **Tasks**: 無行動版本實作任務
+- **Recommendation**: 新增 Task 實作行動裝置排序(如上下箭頭按鈕)
+
+### Gap 2: Photo File Not Found Handling
+- **Spec**: Risk「照片檔案被移動」
+- **Plan**: 提到錯誤偵測,但無詳細設計
+- **Tasks**: 無相關實作任務
+- **Recommendation**: 新增錯誤處理 Task,實作重新連結功能
+
+### Gap 3: Album Export Feature
+- **Spec**: 在 Open Questions 提到可能需要
+- **Plan**: 未包含
+- **Tasks**: 未包含
+- **Recommendation**: 若需要,補充到 Plan v2.0;若不需要,移至 Out of Scope
+
+## ❌ Conflicts (1)
+
+### Conflict 1: Testing Coverage Mismatch
+- **Constitution**: 要求測試覆蓋率 > 80%
+- **Tasks**: T007、T012 有明確測試要求
+- **Tasks**: T008、T014 (UI 任務)未提及測試
+- **Recommendation**: 補充 UI 測試要求(整合測試或 E2E)
+
+## 📊 Coverage Summary
+
+| Artifact | Coverage |
+|----------|----------|
+| User Stories → Plan | 100% (4/4) |
+| User Stories → Tasks | 100% (4/4) |
+| Plan Phases → Tasks | 100% (5/5) |
+| NFRs → Plan | 100% (3/3) |
+| NFRs → Tasks | 66% (2/3) |
+| Constitution → Plan | 100% |
+| Constitution → Tasks | 90% |
+
+## 🎯 Recommendations
+
+1. **High Priority**
+   - 補充行動裝置排序功能
+   - 補充檔案錯誤處理機制
+   - 統一測試覆蓋率要求
+
+2. **Medium Priority**
+   - 澄清相簿匯出需求
+   - 補充 UI 測試策略
+
+3. **Low Priority**
+   - 無
+
+## ✅ Ready for Implementation?
+
+**Status**: ⚠️ With Recommendations
+
+建議先處理 High Priority 項目,再開始實作。
+```
+
+#### 指令 2:/speckit.checklist
+
+**用途**:產生品質檢查清單
+
+```bash
+/speckit.checklist
+```
+
+**AI 會產生**:
+
+```markdown
+# Quality Checklist: Photo Album Management
+
+## 📋 Specification Completeness
+
+### Requirements Clarity
+- [ ] ✅ 所有 User Stories 清楚易懂
+- [ ] ✅ Acceptance Criteria 可測試
+- [ ] ✅ 無 [NEEDS CLARIFICATION] 殘留
+- [ ] ⚠️ 行動裝置 UX 需補充說明
+- [ ] ⚠️ 檔案錯誤處理需明確
+
+### Non-Functional Requirements
+- [ ] ✅ 效能指標已定義(回應時間、載入時間)
+- [ ] ✅ 可用性需求明確
+- [ ] ✅ 安全需求涵蓋(檔案驗證)
+- [ ] ✅ 相容性需求明確(瀏覽器版本)
+
+### Boundaries
+- [ ] ✅ Out of Scope 清楚列出
+- [ ] ✅ 依賴關係已識別
+- [ ] ✅ 風險已評估
+
+## 🏗️ Architecture & Design
+
+### Technology Stack
+- [ ] ✅ 所有技術選擇有理由
+- [ ] ✅ 符合團隊技能組合
+- [ ] ✅ 無引入不必要依賴
+
+### Architecture Principles
+- [ ] ✅ 符合 Constitution Article I (Library-First)
+- [ ] ✅ 符合 Article VII (Simplicity)
+- [ ] ✅ 符合 Article VIII (Anti-Abstraction)
+- [ ] ✅ 通過所有 Pre-Implementation Gates
+
+### Data Model
+- [ ] ✅ 實體定義完整
+- [ ] ✅ 關聯關係清楚
+- [ ] ✅ 索引設計合理
+- [ ] ⚠️ 遷移策略需補充(未來版本)
+
+### API Contracts
+- [ ] ✅ 介面定義完整
+- [ ] ✅ 參數型別明確
+- [ ] ✅ 錯誤處理定義
+- [ ] ✅ 範例提供
+
+## 🧪 Testing Strategy
+
+### Test Coverage
+- [ ] ✅ 單元測試計畫完整
+- [ ] ⚠️ UI 整合測試需補充
+- [ ] ✅ E2E 測試場景涵蓋
+- [ ] ✅ 效能測試計畫
+
+### Test-Driven Development
+- [ ] ✅ 符合 Constitution Article III (TDD)
+- [ ] ✅ 測試優先順序明確
+- [ ] ✅ 契約測試計畫(如適用)
+
+## 🔒 Security
+
+### Input Validation
+- [ ] ✅ 檔案類型驗證
+- [ ] ✅ 檔案大小限制
+- [ ] ✅ 相簿名稱驗證
+
+### Data Protection
+- [ ] ✅ 無敏感資料傳輸(純本機)
+- [ ] ✅ 使用者授權機制(File System API)
+
+### Known Vulnerabilities
+- [ ] ✅ 依賴套件安全檢查(無第三方依賴)
+
+## ⚡ Performance
+
+### Load Time
+- [ ] ✅ 相簿列表載入目標明確(< 500ms)
+- [ ] ✅ 照片載入目標明確(< 100ms/張)
+- [ ] ✅ 優化策略定義
+
+### Scalability
+- [ ] ✅ 大量資料測試計畫(1000 相簿、10000 照片)
+- [ ] ✅ 效能瓶頸識別
+- [ ] ✅ 優化備案(虛擬滾動)
+
+## 📱 Usability & Accessibility
+
+### User Experience
+- [ ] ✅ 響應式設計計畫
+- [ ] ⚠️ 行動裝置互動需補充
+- [ ] ✅ 載入狀態視覺回饋
+- [ ] ✅ 錯誤訊息友善
+
+### Accessibility (可選)
+- [ ] ⚪ ARIA 標籤(本版本未要求)
+- [ ] ⚪ 鍵盤導航(本版本未要求)
+
+## 📦 Deployment & Operations
+
+### Build Process
+- [ ] ✅ 生產構建設定
+- [ ] ✅ 檔案優化策略
+
+### Monitoring (有限)
+- [ ] ✅ 客戶端日誌計畫
+- [ ] ✅ 效能指標收集
+
+## 📚 Documentation
+
+### Developer Documentation
+- [ ] ✅ README 計畫
+- [ ] ✅ API 文件計畫
+- [ ] ✅ 開發指南計畫
+
+### User Documentation
+- [ ] ✅ 使用者手冊計畫
+
+## 🚀 Implementation Readiness
+
+### Pre-Implementation
+- [ ] ⚠️ 3 個 Gaps 需處理
+- [ ] ⚠️ 1 個 Conflict 需解決
+- [ ] ✅ 所有任務已定義
+- [ ] ✅ 依賴關係清楚
+
+### Team Readiness
+- [ ] ⚪ 開發人員已分配(待分配)
+- [ ] ⚪ 工具與環境就緒(待確認)
+- [ ] ⚪ 時程已排定(待規劃)
+
+---
+
+## 📊 Overall Score: 85/100
+
+### Breakdown
+- Specification: 90/100 (需補充行動 UX)
+- Architecture: 95/100 (優秀)
+- Testing: 80/100 (UI 測試需補充)
+- Security: 100/100 (良好)
+- Performance: 90/100 (計畫完整)
+- Documentation: 100/100 (計畫完整)
+
+### Recommendation: ⚠️ **Proceed with Minor Fixes**
+
+建議先處理以下項目再開始實作:
+1. 補充行動裝置排序說明
+2. 定義檔案錯誤處理機制
+3. 補充 UI 測試策略
+
+預計修正時間:2-4 小時
+```
+
+#### 實務建議
+
+**1. 將 Analyze 視為必要步驟**
+
+```text
+在 Pull Request 模板中加入:
+- [ ] 執行 /speckit.analyze,無 Critical Gaps
+- [ ] 執行 /speckit.checklist,分數 > 80
+```
+
+**2. 處理 Gaps 的優先順序**
+
+- **Critical** - 阻礙實作,必須立即處理
+- **High** - 影響品質,實作前處理
+- **Medium** - 可在實作中處理
+- **Low** - 可延後到後續版本
+
+**3. 團隊評審會議**
+
+```text
+議程:
+1. 展示 Analyze 報告(10 分鐘)
+2. 討論 Gaps 與 Conflicts(20 分鐘)
+3. 決定處理方案(10 分鐘)
+4. 更新 Spec/Plan/Tasks(後續)
+5. 再次 Analyze 確認(後續)
+```
+
+**4. 持續追蹤**
+
+```markdown
+## Gap Resolution Tracking
+
+| Gap ID | Description | Priority | Assignee | Status | Resolution |
+|--------|-------------|----------|----------|--------|------------|
+| G001 | 行動排序 | High | Alice | ✅ Done | 新增 Task T022 |
+| G002 | 檔案錯誤 | High | Bob | 🚧 In Progress | 補充 Plan Section 6.3 |
+| G003 | 匯出功能 | Medium | - | ⏳ Deferred | 移至 v2.0 Roadmap |
+```
+
+---
+
+### 3.6 Step 5:實作 (/speckit.implement)
+
+正式開始程式碼實作。
+
+#### 何時使用
+
+- ✅ Tasks 已拆分完成
+- ✅ /speckit.analyze 無阻礙問題
+- ✅ /speckit.checklist 評分合格
+- ✅ 開發環境已就緒
+
+#### 指令格式
+
+```bash
+/speckit.implement <task-id>
+```
+
+**範例**:
+
+```bash
+/speckit.implement T007
+# 實作 Task T007: AlbumManager 核心邏輯
+```
+
+#### AI 助手會做什麼
+
+1. **讀取 Task 定義** - 瞭解需求與驗收條件
+2. **載入 Constitution 上下文** - 自動載入 constitution.md 中的所有約束（v0.8.6 新增），確保實作階段嚴格遵循專案治理原則
+3. **讀取相關 Contracts** - API 介面規格
+4. **讀取 Data Model** - 資料結構定義
+5. **產生測試** - 先寫測試（TDD）
+6. **產生實作** - 產生程式碼
+7. **驗證** - 執行測試確認
+
+> 💡 **v0.8.6 重要改進**：`/speckit.implement` 現在會自動載入 constitution 上下文，確保 AI 在實作階段也遵循專案守則。在此之前，AI 助手可能在實作時忽略 constitution 中定義的架構約束。
+
+#### 實作流程(TDD)
+
+**Step 1: 產生測試**
+
+```bash
+/speckit.implement T007 --test-only
+```
+
+AI 產生 `tests/album-manager.test.js`:
+
+```javascript
+import { describe, it, expect, beforeEach } from 'vitest';
+import { AlbumManager } from '../src/modules/album-manager.js';
+import { Storage } from '../src/utils/storage.js';
+
+describe('AlbumManager', () => {
+  let albumManager;
+  let storage;
+
+  beforeEach(async () => {
+    storage = new Storage();
+    await storage.init();
+    albumManager = new AlbumManager(storage);
+  });
+
+  describe('createAlbum', () => {
+    it('應該成功建立相簿', async () => {
+      const album = await albumManager.createAlbum('我的相簿');
+      
+      expect(album).toBeDefined();
+      expect(album.id).toMatch(/^[a-z0-9-]+$/);
+      expect(album.name).toBe('我的相簿');
+      expect(album.createdAt).toBeInstanceOf(Date);
+      expect(album.order).toBe(0);
+    });
+
+    it('應該拒絕空白名稱', async () => {
+      await expect(
+        albumManager.createAlbum('')
+      ).rejects.toThrow('相簿名稱不可為空');
+    });
+
+    it('應該拒絕過長名稱', async () => {
+      const longName = 'a'.repeat(101);
+      await expect(
+        albumManager.createAlbum(longName)
+      ).rejects.toThrow('相簿名稱不可超過 100 字元');
+    });
+
+    it('應該自動分配遞增的 order', async () => {
+      const album1 = await albumManager.createAlbum('相簿 1');
+      const album2 = await albumManager.createAlbum('相簿 2');
+      
+      expect(album1.order).toBe(0);
+      expect(album2.order).toBe(1);
+    });
+  });
+
+  describe('getAllAlbums', () => {
+    it('應該回傳空陣列當無相簿', async () => {
+      const albums = await albumManager.getAllAlbums();
+      expect(albums).toEqual([]);
+    });
+
+    it('應該回傳所有相簿並依 order 排序', async () => {
+      await albumManager.createAlbum('相簿 C');
+      await albumManager.createAlbum('相簿 A');
+      await albumManager.createAlbum('相簿 B');
+      
+      const albums = await albumManager.getAllAlbums();
+      
+      expect(albums).toHaveLength(3);
+      expect(albums[0].order).toBe(0);
+      expect(albums[1].order).toBe(1);
+      expect(albums[2].order).toBe(2);
+    });
+  });
+
+  describe('updateAlbumOrder', () => {
+    it('應該成功更新相簿順序', async () => {
+      const album1 = await albumManager.createAlbum('相簿 1');
+      const album2 = await albumManager.createAlbum('相簿 2');
+      const album3 = await albumManager.createAlbum('相簿 3');
+      
+      // 移動相簿 1 到位置 2
+      await albumManager.updateAlbumOrder([
+        album2.id,
+        album3.id,
+        album1.id
+      ]);
+      
+      const albums = await albumManager.getAllAlbums();
+      expect(albums[0].id).toBe(album2.id);
+      expect(albums[1].id).toBe(album3.id);
+      expect(albums[2].id).toBe(album1.id);
+    });
+  });
+
+  describe('deleteAlbum', () => {
+    it('應該成功刪除相簿', async () => {
+      const album = await albumManager.createAlbum('待刪除');
+      
+      await albumManager.deleteAlbum(album.id);
+      
+      const albums = await albumManager.getAllAlbums();
+      expect(albums).toHaveLength(0);
+    });
+
+    it('應該拒絕刪除不存在的相簿', async () => {
+      await expect(
+        albumManager.deleteAlbum('non-existent-id')
+      ).rejects.toThrow('相簿不存在');
+    });
+  });
+});
+```
+
+**Step 2: 執行測試(應該失敗)**
+
+```bash
+npm run test
+# ❌ 所有測試失敗(因為還沒實作)
+```
+
+**Step 3: 產生實作**
+
+```bash
+/speckit.implement T007 --code-only
+```
+
+AI 產生 `src/modules/album-manager.js`:
+
+```javascript
+import { nanoid } from 'nanoid';
+
+export class AlbumManager {
+  constructor(storage) {
+    this.storage = storage;
+  }
+
+  /**
+   * 建立新相簿
+   * @param {string} name - 相簿名稱
+   * @returns {Promise<Album>}
+   * @throws {Error} 名稱驗證失敗
+   */
+  async createAlbum(name) {
+    // 驗證名稱
+    this._validateAlbumName(name);
+
+    // 取得目前最大 order
+    const existingAlbums = await this.getAllAlbums();
+    const maxOrder = existingAlbums.length > 0
+      ? Math.max(...existingAlbums.map(a => a.order))
+      : -1;
+
+    // 建立相簿物件
+    const album = {
+      id: nanoid(),
+      name,
+      createdAt: new Date(),
+      order: maxOrder + 1,
+      photoCount: 0
+    };
+
+    // 儲存到 IndexedDB
+    await this.storage.add('albums', album);
+
+    return album;
+  }
+
+  /**
+   * 取得所有相簿
+   * @returns {Promise<Album[]>} 依 order 排序
+   */
+  async getAllAlbums() {
+    const albums = await this.storage.getAll('albums');
+    return albums.sort((a, b) => a.order - b.order);
+  }
+
+  /**
+   * 更新相簿順序
+   * @param {string[]} albumIds - 新的排序(ID 陣列)
+   */
+  async updateAlbumOrder(albumIds) {
+    const albums = await this.storage.getAll('albums');
+    
+    // 建立 ID → Album 映射
+    const albumMap = new Map(albums.map(a => [a.id, a]));
+
+    // 更新 order
+    for (let i = 0; i < albumIds.length; i++) {
+      const album = albumMap.get(albumIds[i]);
+      if (album) {
+        album.order = i;
+        await this.storage.update('albums', album);
+      }
+    }
+  }
+
+  /**
+   * 刪除相簿
+   * @param {string} albumId
+   * @throws {Error} 相簿不存在
+   */
+  async deleteAlbum(albumId) {
+    const album = await this.storage.get('albums', albumId);
+    
+    if (!album) {
+      throw new Error('相簿不存在');
+    }
+
+    // TODO: 刪除相簿內的所有照片(Task T011)
+    
+    await this.storage.delete('albums', albumId);
+  }
+
+  /**
+   * 驗證相簿名稱
+   * @private
+   */
+  _validateAlbumName(name) {
+    if (!name || name.trim() === '') {
+      throw new Error('相簿名稱不可為空');
+    }
+
+    if (name.length > 100) {
+      throw new Error('相簿名稱不可超過 100 字元');
+    }
+  }
+}
+
+/**
+ * @typedef {Object} Album
+ * @property {string} id - 唯一識別碼
+ * @property {string} name - 相簿名稱
+ * @property {Date} createdAt - 建立時間
+ * @property {number} order - 顯示順序
+ * @property {number} photoCount - 照片數量
+ */
+```
+
+**Step 4: 執行測試(應該通過)**
+
+```bash
+npm run test
+
+# ✅ AlbumManager
+#   ✅ createAlbum
+#     ✅ 應該成功建立相簿
+#     ✅ 應該拒絕空白名稱
+#     ✅ 應該拒絕過長名稱
+#     ✅ 應該自動分配遞增的 order
+#   ✅ getAllAlbums
+#     ✅ 應該回傳空陣列當無相簿
+#     ✅ 應該回傳所有相簿並依 order 排序
+#   ✅ updateAlbumOrder
+#     ✅ 應該成功更新相簿順序
+#   ✅ deleteAlbum
+#     ✅ 應該成功刪除相簿
+#     ✅ 應該拒絕刪除不存在的相簿
+#
+# Test Suites: 1 passed, 1 total
+# Tests: 9 passed, 9 total
+# Coverage: 87.5% (7/8 branches)
+```
+
+**Step 5: Code Review & 提交**
+
+```bash
+# 檢查程式碼品質
+npm run lint
+
+# 提交
+git add .
+git commit -m "feat(album): implement AlbumManager (T007)
+
+- Add AlbumManager class with CRUD methods
+- Implement input validation
+- Add comprehensive unit tests (9 tests, 87.5% coverage)
+- Follows TDD approach
+
+Related: T007
+"
+```
+
+#### 平台特定實作範例
+
+**範例 1:批次任務實作**
+
+```bash
+/speckit.implement T205
+# Task: 實作每日帳務對帳批次
+
+# AI 產生符合 Constitution Article XI 的實作:
+```
+
+```java
+package com.example.batch.reconciliation;
+
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * 每日帳務對帳批次
+ * 符合 Constitution Article XI: Batch Job Requirements
+ */
+@Configuration
+public class DailyReconciliationJobConfig {
+
+    @Bean
+    public Job dailyReconciliationJob(
+        Step extractTransactionsStep,
+        Step reconcileStep,
+        Step generateReportStep
+    ) {
+        return new JobBuilder("dailyReconciliationJob", jobRepository)
+            .start(extractTransactionsStep)
+            .next(reconcileStep)
+            .next(generateReportStep)
+            // Article XI: 必須支援重啟與跳過失敗記錄
+            .listener(new ReconciliationJobListener())
+            .build();
+    }
+
+    @Bean
+    public Step extractTransactionsStep(
+        ItemReader<Transaction> oracleReader,
+        ItemWriter<Transaction> stagingWriter
+    ) {
+        return new StepBuilder("extractTransactions", jobRepository)
+            .<Transaction, Transaction>chunk(1000, transactionManager)
+            .reader(oracleReader)
+            .writer(stagingWriter)
+            // Article XI: 必須記錄詳細執行日誌
+            .listener(new StepLoggingListener())
+            .build();
+    }
+
+    // ... 其他 Steps
+}
+```
+
+**範例 2:微服務整合**
+
+```bash
+/speckit.implement T312
+# Task: 實作使用者服務與訂單服務整合
+
+# AI 產生符合 Constitution Article XII 的實作:
+```
+
+```java
+package com.example.order.service;
+
+import com.example.user.client.UserServiceClient;
+import org.springframework.stereotype.Service;
+import org.springframework.retry.annotation.Retryable;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+/**
+ * 訂單服務
+ * 符合 Constitution Article XII: Microservice Integration
+ */
+@Service
+public class OrderService {
+
+    private final UserServiceClient userServiceClient;
+    private final OrderRepository orderRepository;
+
+    // Article XII: 必須使用 Circuit Breaker
+    @CircuitBreaker(name = "userService", fallbackMethod = "createOrderWithoutUserValidation")
+    @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 1000))
+    public Order createOrder(CreateOrderRequest request) {
+        // 驗證使用者(呼叫 User Service)
+        User user = userServiceClient.getUserById(request.getUserId());
+        
+        if (!user.isActive()) {
+            throw new BusinessException("使用者未啟用");
+        }
+
+        // 建立訂單
+        Order order = Order.builder()
+            .userId(user.getId())
+            .items(request.getItems())
+            .totalAmount(calculateTotal(request.getItems()))
+            .build();
+
+        return orderRepository.save(order);
+    }
+
+    // Article XII: 必須提供降級方案
+    private Order createOrderWithoutUserValidation(
+        CreateOrderRequest request,
+        Exception ex
+    ) {
+        log.warn("User Service unavailable, creating order without validation", ex);
+        
+        // 建立訂單,但標記為需要後續驗證
+        Order order = Order.builder()
+            .userId(request.getUserId())
+            .items(request.getItems())
+            .totalAmount(calculateTotal(request.getItems()))
+            .status(OrderStatus.PENDING_VALIDATION)
+            .build();
+
+        return orderRepository.save(order);
+    }
+}
+```
+
+#### 實務建議
+
+**1. 一次實作一個 Task**
+
+不要貪心同時進行多個 Task,確保每個 Task:
+- ✅ 測試通過
+- ✅ Code Review 完成
+- ✅ 提交到 Git
+
+**2. 遵循 TDD 紅綠重構循環**
+
+```text
+🔴 Red: 寫測試 → 執行(失敗)
+🟢 Green: 寫實作 → 執行(通過)
+🔵 Refactor: 重構程式碼 → 執行(仍通過)
+```
+
+**3. 使用語意化 Commit 訊息**
+
+```text
+feat(module): 新功能
+fix(module): 修 Bug
+test(module): 新增測試
+refactor(module): 重構
+docs(module): 文件
+chore: 雜項(工具設定)
+```
+
+**4. 即時更新 Task 狀態**
+
+```markdown
+### Task 7: AlbumManager 核心邏輯
+**Status**: ✅ Done  
+**Actual Hours**: 3.5 (estimated 4)  
+**Commit**: abc1234  
+**Notes**: 測試覆蓋率達 87.5%,符合標準
+```
+
+**5. 實作與文件同步**
+
+若實作過程發現 Plan 錯誤或遺漏:
+1. 先完成當前 Task
+2. 記錄發現的問題
+3. 更新 Plan 文件
+4. 告知團隊
+
+---
+
+### 3.7 Step 6:迭代維護
+
+功能完成後的持續改進與版本管理。
+
+#### 何時使用
+
+- ✅ 所有 Tasks 完成
+- ✅ 功能已部署
+- ✅ 需要新增功能或修正問題
+- ✅ 需要重構或優化
+
+#### 迭代情境
+
+**情境 1:新增功能到現有 Spec**
+
+使用者提出新需求:「相簿應支援標籤功能」
+
+**Step 1: 更新 Spec**
+
+```bash
+/speckit.specify
+# 在 spec.md 新增 User Story:
+
+## US-005: 標籤管理
+
+**As a** 使用者  
+**I want to** 為相簿新增標籤  
+**So that** 我可以依主題分類與搜尋相簿
+
+### Acceptance Criteria
+1. 可為相簿新增多個標籤
+2. 標籤可重複使用於不同相簿
+3. 可依標籤過濾相簿列表
+4. 標籤名稱限制 20 字元
+
+### Priority
+Medium
+
+### Estimated Effort
+5 days
+```
+
+**Step 2: 更新 Plan**
+
+```bash
+/speckit.plan
+# AI 會分析現有 Plan,建議新增:
+
+## Phase 6: Tag System (NEW)
+
+**6.1 Database Schema Update**
+- 新增 `tags` Object Store
+- 新增 `album_tags` 關聯表
+
+**6.2 Tag Manager**
+- TagManager 類別
+- CRUD 操作
+- 標籤搜尋
+
+**6.3 UI Integration**
+- 標籤輸入元件
+- 標籤過濾器
+- 標籤雲顯示
+```
+
+**Step 3: 產生新 Tasks**
+
+```bash
+/speckit.tasks
+# AI 產生新任務:
+
+### Task 22: [NEW] 實作 Tag Schema
+**Depends on**: None (獨立)
+**Estimated**: 2 hours
+
+### Task 23: [NEW] 實作 TagManager
+**Depends on**: T022
+**Estimated**: 4 hours
+
+### Task 24: [NEW] 實作標籤 UI
+**Depends on**: T023
+**Estimated**: 6 hours
+```
+
+**Step 4: 實作 & 部署**
+
+按照正常 SDD 流程執行。
+
+---
+
+**情境 2:重構現有實作**
+
+效能測試發現:「載入 1000 相簿時超過 500ms」
+
+**Step 1: 記錄問題**
+
+```markdown
+## Issue #42: Performance Degradation with Large Albums
+
+**Type**: Performance Bug  
+**Severity**: High  
+**Related**: NFR-001 (相簿列表載入 < 500ms)
+
+### Observation
+- 100 相簿:150ms ✅
+- 500 相簿:380ms ✅
+- 1000 相簿:750ms ❌
+
+### Root Cause Analysis
+`getAllAlbums()` 一次載入所有資料到記憶體,未使用分頁。
+```
+
+**Step 2: 更新 Plan**
+
+在 Plan 的「Performance Optimization」區段新增:
+
+```markdown
+### Optimization 2: Virtual Scrolling
+
+**Problem**: 載入大量相簿效能不佳
+
+**Solution**:
+- 實作虛擬滾動(僅渲染可視區域)
+- IndexedDB 使用 cursor 分頁查詢
+- 每次載入 50 筆
+
+**Expected Improvement**:
+- 1000 相簿載入時間 < 200ms
+- 記憶體使用減少 80%
+```
+
+**Step 3: 建立重構 Task**
+
+```bash
+/speckit.tasks
+# 產生:
+
+### Task 25: [REFACTOR] 實作虛擬滾動
+**Type**: Performance Optimization  
+**Depends on**: None (改善現有實作)  
+**Estimated**: 8 hours  
+**Breaking Change**: No (API 相容)
+```
+
+**Step 4: 實作 & 驗證**
+
+```bash
+/speckit.implement T025
+
+# 重構完成後:
+npm run test        # 確保所有測試仍通過
+npm run perf-test   # 驗證效能改善
+
+# 提交:
+git commit -m "perf(album): implement virtual scrolling (T025)
+
+- Reduce initial load time from 750ms to 180ms for 1000 albums
+- Implement cursor-based pagination in IndexedDB
+- Add virtual scrolling with 50-item buffer
+- Maintain API compatibility
+
+Closes #42
+Related: NFR-001, T025
+"
+```
+
+---
+
+**情境 3:跨功能決策追蹤**
+
+團隊討論後決定:「不支援相簿匯出功能(v1.0)」
+
+**記錄於 Decisions Log**
+
+在專案根目錄建立 `decisions/` 資料夾:
+
+```markdown
+# decisions/002-no-album-export-v1.md
+
+## Decision: No Album Export in v1.0
+
+**Date**: 2025-10-29  
+**Status**: Accepted  
+**Deciders**: Alice (PM), Bob (Tech Lead), Carol (Dev)
+
+### Context
+Spec 的 Open Questions 提到可能需要相簿匯出功能(ZIP 下載)。
+
+### Decision
+v1.0 不實作相簿匯出,延後至 v2.0。
+
+### Rationale
+1. **時程壓力**: v1.0 需在 2 週內交付
+2. **使用頻率低**: 訪談顯示僅 5% 使用者需要
+3. **技術複雜度**: 需處理大檔案壓縮與下載
+4. **替代方案**: 使用者可手動複製檔案
+
+### Consequences
+- ✅ v1.0 可如期交付
+- ✅ 專注核心功能
+- ❌ 部分進階使用者需求未滿足
+- 📝 需在 v2.0 Roadmap 加入此功能
+
+### Related
+- Spec: Open Questions #3
+- Roadmap: v2.0 Features
+```
+
+**更新 Spec**
+
+```markdown
+## Out of Scope (v1.0)
+
+### Deferred Features
+- [ ] 相簿匯出為 ZIP (移至 v2.0)
+  - **Reason**: 時程與優先序考量
+  - **Decision**: decisions/002-no-album-export-v1.md
+```
+
+---
+
+#### 版本管理策略
+
+**語意化版本(Semantic Versioning)**
+
+```text
+v1.0.0 - 初始版本
+  └─ v1.1.0 - 新增標籤功能(向後相容)
+      └─ v1.1.1 - 修正標籤搜尋 Bug
+      └─ v1.2.0 - 新增匯出功能
+  └─ v2.0.0 - 重構 IndexedDB 結構(Breaking Change)
+```
+
+**Git 分支策略(搭配 SDD)**
+
+```text
+main (生產)
+  └─ develop (開發主線)
+      ├─ feature/us-005-tags (新功能)
+      │   └─ 包含完整 Spec → Plan → Tasks → Implementation
+      ├─ bugfix/issue-42-performance (修 Bug)
+      └─ refactor/virtual-scrolling (重構)
+```
+
+**每個 Feature 分支結構**:
+
+```text
+feature/us-005-tags/
+├── .specify/
+│   ├── spec.md (更新版)
+│   ├── plan.md (新增 Phase 6)
+│   └── tasks.md (新增 T022-T024)
+├── src/
+│   └── modules/
+│       └── tag-manager.js (新實作)
+└── tests/
+    └── tag-manager.test.js (新測試)
+```
+
+**Pull Request 檢查清單**
+
+```markdown
+## PR Checklist: US-005 Tags
+
+### Specification
+- [ ] Spec 已更新(US-005)
+- [ ] Plan 已更新(Phase 6)
+- [ ] Tasks 已建立(T022-T024)
+- [ ] /speckit.analyze 無 Critical Gaps
+
+### Implementation
+- [ ] 所有 Tasks 完成
+- [ ] 單元測試通過(覆蓋率 > 80%)
+- [ ] E2E 測試通過
+- [ ] 效能測試符合 NFR
+
+### Documentation
+- [ ] README 更新
+- [ ] API 文件更新
+- [ ] CHANGELOG 更新
+
+### Review
+- [ ] Code Review 完成
+- [ ] 符合 Constitution
+- [ ] 無引入不必要依賴
+```
+
+---
+
+#### 實務建議
+
+**1. 定期執行 /speckit.analyze**
+
+每個 Sprint 或版本迭代前:
+
+```bash
+/speckit.analyze
+# 確保累積的變更仍然一致
+```
+
+**2. 維護 Roadmap**
+
+```markdown
+# roadmap.md
+
+## v1.0 (2025-11)
+- [x] US-001: 建立相簿
+- [x] US-002: 新增照片
+- [x] US-003: 拖放排序
+- [x] US-004: 相簿刪除
+
+## v1.1 (2025-12)
+- [ ] US-005: 標籤管理
+- [ ] US-006: 搜尋功能
+- [ ] Performance: 虛擬滾動
+
+## v2.0 (2026-Q1)
+- [ ] US-007: 相簿匯出
+- [ ] US-008: 多人協作
+- [ ] Architecture: 遷移至 Web Worker
+```
+
+**3. 定期回顧 Constitution**
+
+每季檢視 Constitution 是否需要更新:
+
+```markdown
+## Constitution Review Meeting (2025-Q4)
+
+### Proposed Changes
+1. **Article III (TDD)**: 放寬 UI 測試要求?
+   - 討論:UI 整合測試成本高
+   - 決議:維持原則,但允許 E2E 替代部分整合測試
+
+2. **Article X (Multi-Database)**: 新增 MongoDB 支援?
+   - 討論:新專案需要 NoSQL
+   - 決議:新增 MongoDB 相關規範
+
+### Updated
+- Constitution v1.1 (2025-11-01)
+```
+
+**4. 文件即程式碼**
+
+將 Spec、Plan、Tasks 視為程式碼的一部分:
+
+```bash
+# 所有文件變更都需要 Code Review
+git add .specify/
+git commit -m "docs(spec): add US-005 tag management
+
+- Define tag system requirements
+- Update plan with Phase 6
+- Generate tasks T022-T024
+
+Related: US-005
+"
+```
+
+---
+
+#### 搭配 Workflow Engine 進行迭代（v0.7.0+）
+
+自 v0.7.0 起，Spec-Kit 引入 **Workflow Engine** 與 **Workflow Catalog**，允許將 SDD 的各步驟組合成可重用的自動化工作流程。這對迭代維護尤為有利：
+
+**定義迭代工作流程**
+
+在 `.specify/workflows/` 目錄下建立 YAML 工作流程定義：
+
+```yaml
+# .specify/workflows/iterate-feature.yaml
+name: iterate-feature
+description: 新增或修改功能的完整迭代流程
+steps:
+  - action: speckit.specify
+    description: 更新 Spec
+  - action: speckit.plan
+    description: 更新 Plan
+  - action: speckit.tasks
+    description: 重新拆分 Tasks
+  - action: speckit.analyze
+    description: 一致性分析
+  - action: speckit.implement
+    description: 實作變更
+```
+
+**使用 Workflow Catalog 共享**
+
+團隊可將經過驗證的工作流程發佈至 Workflow Catalog，供其他專案直接引用：
+
+```bash
+# 從 Catalog 搜尋並安裝工作流程
+specify workflow search "iterate"
+specify workflow install iterate-feature
+```
+
+**好處**：
+
+- 🔁 標準化團隊迭代流程，減少人為遺漏
+- 📦 可重用工作流程跨專案共享
+- 🤖 AI 助手可自動執行整個工作流程
+- 📊 工作流程執行紀錄可追溯
+
+> 💡 詳細的 Workflow Engine 設定與進階用法，請參考 [2.13 工作流引擎 (Workflow Engine, v0.7.0)](#213-工作流引擎-workflow-engine-v070)。
+
+---
+
+### 3.8 Step 7:既有程式碼評估 (/speckit.converge)
+
+Spec-Kit v0.11.2 新增了 **`/speckit.converge`** 指令，補上了 SDD 工作流程中「規格與現實程式碼互相校準」的最後一塊拼圖，特別適合**既有(brownfield)程式碼庫**或**長期迭代後出現規格漂移**的專案。
+
+#### 何時使用
+
+- 📦 **承接既有專案**：團隊剛導入 Spec-Kit，但程式碼庫已存在多年，需要先盤點「規格寫了什麼」與「程式碼實際做了什麼」之間的落差，再決定後續任務優先順序
+- 🔄 **長期迭代後的健康檢查**：多次 `/speckit.implement` 與手動修補後，懷疑 spec.md / plan.md 已不再準確反映程式碼現況
+- 🐛 **bug 分級評估**：搭配社群提交的 **bug-assess** 標籤工作流程，將回報的問題自動歸類為「規格缺失」「實作偏離規格」或「規格與實作皆需修正」
+
+#### 與 /speckit.analyze、/speckit.checklist 的差異
+
+| 指令 | 比對對象 | 使用時機 | 輸出 |
+|------|---------|---------|------|
+| `/speckit.analyze` | spec.md ↔ plan.md ↔ tasks.md | 實作**前**，確認三份文件互相一致 | 一致性分析報告 |
+| `/speckit.checklist` | spec.md / plan.md ↔ 品質標準 | 實作**前**，確認文件完整度 | 品質檢查清單評分 |
+| `/speckit.converge` | spec.md ↔ **現有程式碼** | 任何時間點，尤其適合**既有程式碼**或**長期迭代後** | 落差報告 + 建議任務 |
+
+#### 指令格式
+
+```bash
+# 對目前 spec.md 評估與既有程式碼的落差
+/speckit.converge
+
+# 針對特定功能目錄評估
+/speckit.converge specs/003-customer-rating/
+```
+
+#### AI 助手會做什麼
+
+1. 讀取目標 spec.md（與 plan.md，若存在）
+2. 掃描對應的原始碼、測試與設定檔
+3. 比對每一條 User Story / Functional Requirement 在程式碼中的實作狀態：已實作、部分實作、未實作、或實作但規格未記載
+4. 產出落差報告，並依風險與工作量建議後續 Task 優先順序
+
+#### 範例輸出
+
+```markdown
+# Convergence Report: Customer Rating Feature
+
+## ✅ 已實作且符合規格 (4)
+- US-R001 自動計算客戶評級 → RatingCalculator.java 完整覆蓋
+
+## ⚠️ 程式碼存在但規格未記載 (2)
+- 發現 `LegacyRatingOverride` 手動覆寫機制，spec.md 未提及
+- 發現批次重算排程 Job，與 NFR 無對應
+
+## ❌ 規格存在但尚未實作 (1)
+- US-R003「評級異動通知信」尚無對應程式碼
+
+## 🎯 建議任務
+1. 將 LegacyRatingOverride 補入 spec.md 並評估是否保留
+2. 建立 Task 實作 US-R003 通知信功能
+```
+
+#### 實務建議
+
+- 🆕 **brownfield 導入第一步**：建議在撰寫任何新 Spec 之前，先對既有核心模組執行一次 `/speckit.converge`，建立「目前真相基準」，可與 [4.2 案例二:Brownfield 整合](#42-案例二brownfield-整合---為既有系統新增功能) 的策略式導入流程搭配使用
+- 🔁 **納入定期健康檢查**：可透過 Workflow Engine 將 `/speckit.converge` 排入週期性維護工作流程
+- ⚠️ 此指令會讀取大量原始碼，對於超大型程式碼庫建議搭配 `specs/` 目錄分批指定範圍執行，避免單次掃描範圍過廣
+
+---
+
+### 第三章小結
+
+經過 8 個步驟,你已經完整走過一個 SDD 循環:
+
+| 步驟 | 工具 | 產出 | 驗證 |
+|------|------|------|------|
+| 0. 建立守則 | /speckit.constitution | constitution.md | 團隊共識 |
+| 1. 撰寫 Spec | /speckit.specify | spec.md | 需求明確性 |
+| 1a. 澄清需求 | /speckit.clarify | (更新 spec.md) | 消除模糊 |
+| 2. 撰寫 Plan | /speckit.plan | plan.md | Constitution 合規 |
+| 2a. 驗證 Plan | AI 審核對話 | 修正後 plan.md | 完整性、正確性、簡約性 |
+| 3. 拆分 Tasks | /speckit.tasks | tasks.md | 可執行性 |
+| 4. 預實作檢查 | /speckit.analyze, /speckit.checklist | 分析報告 | 一致性 |
+| 5. 實作 | /speckit.implement | 程式碼 + 測試 | 測試通過（v0.8.6+ 自動載入 Constitution） |
+| 6. 迭代 | (重複 1-5) | 新版本 | 持續改進 |
+| 7. 既有程式碼評估 | /speckit.converge（v0.11.2+） | 落差報告 + 建議任務 | 規格與程式碼校準 |
+| ↳ 工作流程自動化 | Workflow Engine（v0.7.0+） | 可重用 YAML 流程 | Catalog 共享 |
+| ↳ 治理擴充 | Architecture Guard 等（v0.8.4+） | 架構偏移報告 | 持續治理 |
+
+**關鍵觀念**:
+
+- 📝 **Spec 是源頭** - 所有實作追溯到需求
+- 🏗️ **Plan 是藍圖** - 技術決策需有依據
+- ✅ **Tasks 是執行單元** - 可估時、可驗證
+- 🔍 **Analyze 是守門員** - 確保一致性
+- 🔧 **Implementation 是展現** - TDD 保證品質
+- 🔄 **Iteration 是常態** - 擁抱變化
+
+**下一章預告**:
+
+第四章將透過實務案例,展示如何將 SDD 應用在真實的企業平台開發場景中,包括:
+- 🆕 Greenfield 開發(新微服務)
+- 🏢 Brownfield 整合(既有系統)
+- 👥 團隊協作(多人開發)
+- 🤖 AI 助手最佳實踐
+
+---
+
+## 第四章:實務案例與應用指引
+
+本章透過實際案例,展示如何在企業共用平台情境下應用 SDD 方法論。
+
+### 4.1 案例一:Greenfield 開發 - 新建交易記錄微服務
+
+#### 背景
+
+平台需要新建一個獨立的交易記錄微服務,用於追蹤所有系統間的交易流水。
+
+**需求**:
+- 記錄來自多個微服務的交易資訊
+- 支援交易查詢與統計
+- 提供 REST API 與事件訂閱介面
+- 需與現有 Oracle 資料庫整合
+- 預計 3 週完成
+
+**團隊**:
+- 1 名產品經理(PM)
+- 1 名後端工程師(Backend Dev)
+- 1 名 DBA
+
+#### Step 1: PM 撰寫 Spec
+
+**PM 使用 GitHub Copilot Chat:**
+
+```text
+@workspace 我需要為交易記錄微服務撰寫規格,請使用 /speckit.specify 產生初始 Spec。
+
+需求摘要:
+- 記錄交易(訂單、支付、退款)
+- 提供查詢 API(依訂單號、使用者 ID、日期範圍)
+- 提供統計 API(每日交易量、金額統計)
+- 事件驅動:訂閱其他微服務的交易事件
+- 資料庫:Oracle(平台標準)
+- 效能:查詢 < 500ms,寫入 < 200ms
+```
+
+**AI 產生 `specs/transaction-log-service/spec.md`**:
+
+```markdown
+# Spec: Transaction Log Service
+
+## Overview
+統一的交易記錄微服務,追蹤平台所有交易活動。
+
+## User Stories
+
+### US-001: 記錄交易事件
+**As a** 微服務(訂單服務、支付服務)  
+**I want to** 發送交易事件到記錄服務  
+**So that** 所有交易被統一追蹤
+
+**Acceptance Criteria**:
+1. 支援三種交易類型:ORDER, PAYMENT, REFUND
+2. 必填欄位:transactionId, type, userId, amount, timestamp
+3. 選填欄位:orderId, metadata
+4. 事件寫入後立即持久化
+5. 寫入失敗需重試機制(最多 3 次)
+
+**Priority**: High  
+**Estimated Effort**: 5 days
+
+---
+
+### US-002: 查詢交易記錄
+**As a** 客服人員  
+**I want to** 依條件查詢交易記錄  
+**So that** 我可以追蹤使用者交易歷史
+
+**Acceptance Criteria**:
+1. 支援查詢條件:
+   - 依 transactionId(精確查詢)
+   - 依 userId + 日期範圍
+   - 依 orderId
+2. 結果依時間倒序排列
+3. 支援分頁(預設 20 筆/頁,最多 100 筆)
+4. 查詢回應時間 < 500ms
+
+**Priority**: High  
+**Estimated Effort**: 3 days
+
+---
+
+### US-003: 統計交易數據
+**As a** 營運分析師  
+**I want to** 取得交易統計數據  
+**So that** 我可以分析業務趨勢
+
+**Acceptance Criteria**:
+1. 提供每日交易統計:
+   - 交易筆數(依類型分組)
+   - 交易總金額(依類型分組)
+   - 成功率
+2. 支援日期範圍查詢(最多 90 天)
+3. 結果快取 1 小時
+
+**Priority**: Medium  
+**Estimated Effort**: 4 days
+
+## Non-Functional Requirements
+
+### NFR-001: Performance
+- 寫入 TPS: > 1000
+- 寫入延遲: < 200ms (P95)
+- 查詢延遲: < 500ms (P95)
+
+### NFR-002: Reliability
+- 可用性: 99.9%
+- 事件不遺失(至少一次語意)
+- 資料保留: 2 年
+
+### NFR-003: Scalability
+- 支援水平擴展
+- 日交易量: 100 萬筆
+
+## Technical Constraints
+
+### Database
+- **必須使用**: Oracle 19c (平台標準)
+- **Schema**: TRANS_LOG(平台既有)
+- **連線池**: HikariCP
+
+### Messaging
+- **必須使用**: Kafka (平台標準)
+- **Topics**: 
+  - `order-events`(訂閱)
+  - `payment-events`(訂閱)
+  - `refund-events`(訂閱)
+
+### API
+- **風格**: RESTful
+- **版本**: v1
+- **認證**: OAuth2(平台標準)
+
+## Dependencies
+
+### Upstream Services
+- **訂單服務**: 提供訂單事件
+- **支付服務**: 提供支付事件
+- **退款服務**: 提供退款事件
+
+### Downstream Services
+- **無** (本服務不依賴其他服務的同步呼叫)
+
+### Infrastructure
+- **服務註冊**: Eureka
+- **配置中心**: Spring Cloud Config
+- **日誌收集**: ELK Stack
+
+## Risks & Mitigation
+
+| Risk | Impact | Probability | Mitigation |
+|------|--------|-------------|------------|
+| Oracle 效能瓶頸 | High | Medium | 1. 建立適當索引<br>2. 使用分區表<br>3. 讀寫分離 |
+| Kafka 消費延遲 | Medium | Low | 1. 增加 Consumer 數量<br>2. 批次寫入資料庫 |
+| 磁碟空間不足 | High | Low | 1. 實作資料歸檔<br>2. 監控磁碟使用率 |
+
+## Out of Scope
+
+### Current Version (v1.0)
+- [ ] 即時交易監控儀表板(未來功能)
+- [ ] 交易異常偵測(未來功能)
+- [ ] 匯出為 Excel(低優先序)
+
+## Open Questions
+
+1. **[NEEDS CLARIFICATION]** 交易失敗記錄是否也要保存?
+2. **[NEEDS CLARIFICATION]** 是否需要支援交易狀態更新(如訂單取消)?
+3. **[DECISION NEEDED]** 歷史資料是否需要遷移到此服務?
+```
+
+**PM 使用 /speckit.clarify 澄清問題:**
+
+```text
+/speckit.clarify
+
+AI 識別模糊需求:
+1. "交易失敗記錄" - 定義不明確
+2. "狀態更新" - 影響資料模型設計
+3. "歷史資料遷移" - 影響時程估算
+
+建議補充:
+- 失敗記錄處理策略
+- 交易狀態機定義
+- 資料遷移範圍與時程
+```
+
+**PM 更新 Spec:**
+
+```markdown
+## Open Questions (已解決)
+
+### Q1: 交易失敗記錄處理
+**Decision**: 失敗記錄也需保存,但標記為 FAILED 狀態
+
+### Q2: 交易狀態更新
+**Decision**: v1.0 不支援狀態更新(Append-Only 設計)
+- 如需更新,發送新的補償交易事件
+- 保持事件溯源(Event Sourcing)特性
+
+### Q3: 歷史資料遷移
+**Decision**: v1.0 不遷移歷史資料
+- 僅記錄上線後的新交易
+- 歷史資料查詢仍使用舊系統(平行運作 1 個月)
+```
+
+#### Step 2: Backend Dev 撰寫 Plan
+
+**Backend Dev 使用 AI:**
+
+```text
+/speckit.plan
+
+AI 讀取 spec.md 與 Constitution,產生實作計畫...
+```
+
+**產生 `specs/transaction-log-service/plan.md` (節錄)**:
+
+````markdown
+# Plan: Transaction Log Service
+
+## Phase -1: Pre-Implementation Gates
+
+### Simplicity Gate
+- [ ] 使用 ≤ 3 個專案? ✅ 是(單一 Spring Boot 應用)
+- [ ] 避免微框架? ✅ 是(使用 Spring Boot)
+- [ ] 避免微前端? ✅ 是(無前端)
+
+### Library-First Gate
+- [ ] 優先使用現有程式庫? ✅ 是
+  - Spring Boot Starter Data JPA
+  - Spring Kafka
+  - HikariCP
+  - Spring Security OAuth2
+
+### Test-Driven Development Gate
+- [ ] 測試策略完整? ✅ 是(見 Section 7)
+- [ ] 測試覆蓋率目標 > 80%? ✅ 是
+
+### Anti-Abstraction Gate
+- [ ] 避免過度抽象? ✅ 是
+  - 直接使用 JPA Repository
+  - 簡單的 Service 層(無 DDD 過度設計)
+
+### Dependency Management Gate
+- [ ] 依賴最小化? ✅ 是(僅必要依賴)
+- [ ] 無循環依賴? ✅ 是(分層架構)
+
+### Database Complexity Gate
+- [ ] 使用 ≤ 2 個資料庫? ✅ 是(僅 Oracle)
+
+### Constitution Article X (Multi-Database) Gate
+- [ ] N/A (本專案僅使用單一資料庫)
+
+### Constitution Article XI (Batch Jobs) Gate
+- [ ] 批次任務設計? ⚠️ 需要(資料歸檔任務)
+  - 任務:每月歸檔 > 1 年的交易
+  - 使用 Spring Batch
+  - 支援重啟與失敗處理
+
+### Constitution Article XII (Microservices) Gate
+- [ ] 服務邊界清楚? ✅ 是(單一職責:交易記錄)
+- [ ] 使用 Circuit Breaker? ✅ 是(Resilience4j)
+- [ ] 健康檢查完整? ✅ 是(Actuator)
+
+**All Gates Passed**: ✅
+
+---
+
+## 1. Technology Stack
+
+| Category | Technology | Version | Justification |
+|----------|-----------|---------|---------------|
+| Language | Java | 17 | 平台標準,LTS 版本 |
+| Framework | Spring Boot | 3.1.x | 平台標準,成熟穩定 |
+| Database | Oracle | 19c | 平台標準(Constitution Article X) |
+| ORM | Spring Data JPA | - | 簡化資料存取 |
+| Messaging | Spring Kafka | - | 平台標準 |
+| Connection Pool | HikariCP | - | 高效能連線池 |
+| Resilience | Resilience4j | - | Circuit Breaker 實作 |
+| Testing | JUnit 5, Mockito, Testcontainers | - | 完整測試支援 |
+| Build | Maven | 3.9.x | 平台標準 |
+
+---
+
+## 2. Architecture
+
+### High-Level Architecture
+
+```text
+┌─────────────────┐
+│  Order Service  │──┐
+└─────────────────┘  │
+                     ├──> Kafka Topics
+┌─────────────────┐  │
+│ Payment Service │──┤
+└─────────────────┘  │
+                     │
+┌─────────────────┐  │
+│ Refund Service  │──┘
+└─────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────┐
+│   Transaction Log Service               │
+│                                         │
+│  ┌──────────────┐  ┌─────────────────┐ │
+│  │ Kafka        │  │ REST API        │ │
+│  │ Consumer     │  │ Controller      │ │
+│  └──────┬───────┘  └────────┬────────┘ │
+│         │                   │          │
+│         ▼                   ▼          │
+│  ┌────────────────────────────────┐   │
+│  │     Service Layer              │   │
+│  │  - TransactionService          │   │
+│  │  - StatisticsService           │   │
+│  └───────────┬────────────────────┘   │
+│              ▼                         │
+│  ┌────────────────────────────────┐   │
+│  │     Repository Layer           │   │
+│  │  - TransactionRepository       │   │
+│  └───────────┬────────────────────┘   │
+└──────────────┼─────────────────────────┘
+               ▼
+         ┌──────────┐
+         │  Oracle  │
+         │   19c    │
+         └──────────┘
+```
+
+### Component Responsibilities
+
+**Kafka Consumer**:
+- 訂閱交易事件 Topics
+- 反序列化事件
+- 呼叫 Service 層寫入
+
+**REST API Controller**:
+- 處理 HTTP 請求
+- 參數驗證
+- 回傳結果
+
+**Service Layer**:
+- 業務邏輯
+- 交易處理
+- 快取管理
+
+**Repository Layer**:
+- 資料存取
+- JPA 實體對應
+
+---
+
+## 3. Data Model
+
+### Entity: Transaction
+
+```java
+@Entity
+@Table(name = "TRANSACTIONS", 
+       indexes = {
+           @Index(name = "IDX_USER_DATE", columnList = "user_id, created_at"),
+           @Index(name = "IDX_ORDER", columnList = "order_id"),
+           @Index(name = "IDX_CREATED", columnList = "created_at")
+       })
+public class Transaction {
+    @Id
+    @Column(name = "transaction_id", length = 64)
+    private String transactionId;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", length = 20, nullable = false)
+    private TransactionType type; // ORDER, PAYMENT, REFUND
+    
+    @Column(name = "user_id", length = 64, nullable = false)
+    private String userId;
+    
+    @Column(name = "amount", precision = 15, scale = 2, nullable = false)
+    private BigDecimal amount;
+    
+    @Column(name = "order_id", length = 64)
+    private String orderId;
+    
+    @Column(name = "status", length = 20, nullable = false)
+    private String status; // SUCCESS, FAILED
+    
+    @Column(name = "metadata", columnDefinition = "CLOB")
+    private String metadata; // JSON 格式
+    
+    @Column(name = "created_at", nullable = false)
+    private Timestamp createdAt;
+    
+    @Column(name = "source_service", length = 50)
+    private String sourceService;
+}
+```
+
+### Database Schema
+
+```sql
+CREATE TABLE TRANSACTIONS (
+    transaction_id VARCHAR2(64) PRIMARY KEY,
+    type VARCHAR2(20) NOT NULL,
+    user_id VARCHAR2(64) NOT NULL,
+    amount NUMBER(15, 2) NOT NULL,
+    order_id VARCHAR2(64),
+    status VARCHAR2(20) NOT NULL,
+    metadata CLOB,
+    created_at TIMESTAMP NOT NULL,
+    source_service VARCHAR2(50)
+);
+
+-- 索引(效能優化)
+CREATE INDEX IDX_USER_DATE ON TRANSACTIONS(user_id, created_at);
+CREATE INDEX IDX_ORDER ON TRANSACTIONS(order_id);
+CREATE INDEX IDX_CREATED ON TRANSACTIONS(created_at);
+
+-- 分區表(支援大量資料)
+ALTER TABLE TRANSACTIONS 
+MODIFY PARTITION BY RANGE (created_at) 
+INTERVAL(NUMTOYMINTERVAL(1, 'MONTH'));
+```
+
+---
+
+## 4. API Contracts
+
+#### 4.1 POST /api/v1/transactions/query
+
+查詢交易記錄
+
+**Request**:
+```json
+{
+  "userId": "user123",
+  "startDate": "2025-10-01T00:00:00Z",
+  "endDate": "2025-10-31T23:59:59Z",
+  "type": "ORDER",
+  "page": 0,
+  "size": 20
+}
+```
+
+**Response** (200 OK):
+```json
+{
+  "content": [
+    {
+      "transactionId": "tx_abc123",
+      "type": "ORDER",
+      "userId": "user123",
+      "amount": 1999.00,
+      "orderId": "order_xyz",
+      "status": "SUCCESS",
+      "createdAt": "2025-10-15T10:30:00Z",
+      "sourceService": "order-service"
+    }
+  ],
+  "page": 0,
+  "size": 20,
+  "totalElements": 45,
+  "totalPages": 3
+}
+```
+
+#### 4.2 GET /api/v1/transactions/statistics
+
+取得統計數據
+
+**Query Parameters**:
+- `startDate`: 開始日期(ISO 8601)
+- `endDate`: 結束日期(ISO 8601)
+
+**Response** (200 OK):
+```json
+{
+  "dateRange": {
+    "start": "2025-10-01",
+    "end": "2025-10-31"
+  },
+  "summary": {
+    "ORDER": {
+      "count": 15000,
+      "totalAmount": 29850000.00,
+      "successRate": 0.98
+    },
+    "PAYMENT": {
+      "count": 14700,
+      "totalAmount": 29850000.00,
+      "successRate": 0.99
+    },
+    "REFUND": {
+      "count": 300,
+      "totalAmount": 450000.00,
+      "successRate": 1.0
+    }
+  }
+}
+```
+
+---
+
+## 5. Implementation Phases
+
+### Phase 0: Project Setup (1 day)
+**Tasks**:
+- [ ] 建立 Maven 專案
+- [ ] 設定 Spring Boot
+- [ ] 設定 Oracle 連線
+- [ ] 設定 Kafka
+- [ ] 建立 CI/CD Pipeline
+
+**Deliverables**:
+- [ ] 可啟動的 Spring Boot 應用
+- [ ] application.yml 設定完成
+- [ ] Dockerfile
+
+---
+
+### Phase 1: Core Domain (3 days)
+**Tasks**:
+- [ ] 定義 Transaction Entity
+- [ ] 實作 TransactionRepository
+- [ ] 實作 TransactionService(寫入邏輯)
+- [ ] 單元測試(覆蓋率 > 80%)
+
+**Deliverables**:
+- [ ] Transaction.java
+- [ ] TransactionRepository.java
+- [ ] TransactionService.java
+- [ ] 測試類別
+
+---
+
+### Phase 2: Kafka Consumer (4 days)
+**Tasks**:
+- [ ] 定義事件 DTO(OrderEvent, PaymentEvent, RefundEvent)
+- [ ] 實作 KafkaConsumerConfig
+- [ ] 實作 TransactionEventListener
+- [ ] 整合測試(使用 Testcontainers)
+- [ ] 錯誤處理與重試機制
+
+**Deliverables**:
+- [ ] Event DTOs
+- [ ] KafkaConsumerConfig.java
+- [ ] TransactionEventListener.java
+- [ ] 整合測試
+
+---
+
+### Phase 3: REST API (4 days)
+**Tasks**:
+- [ ] 實作 TransactionQueryController
+- [ ] 實作分頁與排序
+- [ ] 實作 StatisticsController
+- [ ] 實作快取(Caffeine)
+- [ ] API 測試(MockMvc)
+
+**Deliverables**:
+- [ ] Controllers
+- [ ] Request/Response DTOs
+- [ ] API 測試
+
+---
+
+### Phase 4: Non-Functional Features (3 days)
+**Tasks**:
+- [ ] 實作 OAuth2 認證
+- [ ] 實作 Circuit Breaker(Resilience4j)
+- [ ] 實作健康檢查(Actuator)
+- [ ] 實作監控(Prometheus Metrics)
+- [ ] 效能測試(JMeter)
+
+**Deliverables**:
+- [ ] Security Configuration
+- [ ] Resilience Configuration
+- [ ] Actuator Endpoints
+- [ ] 效能測試報告
+
+---
+
+### Phase 5: Batch Job (2 days)
+**Tasks**:
+- [ ] 實作資料歸檔 Job(Spring Batch)
+- [ ] 實作定時排程(每月 1 日執行)
+- [ ] 實作失敗重試
+- [ ] 批次測試
+
+**Deliverables**:
+- [ ] ArchiveTransactionJob.java
+- [ ] Job Configuration
+- [ ] 批次測試
+
+---
+
+### Phase 6: Documentation & Deployment (2 days)
+**Tasks**:
+- [ ] 撰寫 API 文件(OpenAPI)
+- [ ] 撰寫 README
+- [ ] 撰寫維運手冊
+- [ ] 部署到測試環境
+- [ ] 部署到生產環境
+
+**Deliverables**:
+- [ ] API 文件
+- [ ] README.md
+- [ ] 維運手冊
+- [ ] 部署完成
+
+---
+
+## 6. Testing Strategy
+
+### Unit Tests (80% Coverage Target)
+- Service 層邏輯
+- Repository 查詢
+- DTO 驗證
+
+**Tools**: JUnit 5, Mockito, AssertJ
+
+### Integration Tests
+- Kafka 消費者整合
+- Oracle 資料庫整合
+- API 端點測試
+
+**Tools**: Testcontainers (Kafka, Oracle), MockMvc
+
+### Performance Tests
+- 寫入 TPS 測試(目標 > 1000)
+- 查詢延遲測試(目標 < 500ms)
+- 並發測試(100 concurrent users)
+
+**Tools**: JMeter, Gatling
+
+### Contract Tests
+- 驗證事件 Schema(與上游服務)
+- 驗證 API 回應格式(與下游呼叫者)
+
+**Tools**: Spring Cloud Contract
+
+---
+
+## 7. Risk Mitigation
+
+### Risk 1: Oracle 效能瓶頸
+**Mitigation**:
+- 使用分區表(Partitioning)
+- 建立適當索引
+- 實作連線池優化(HikariCP)
+- 考慮讀寫分離(Oracle Active Data Guard)
+
+### Risk 2: Kafka 消費延遲
+**Mitigation**:
+- 增加 Consumer Group 實例
+- 使用批次寫入(減少資料庫往返)
+- 監控 Consumer Lag
+
+### Risk 3: 磁碟空間不足
+**Mitigation**:
+- 實作資料歸檔(Spring Batch Job)
+- 設定磁碟使用率告警(80% 閾值)
+- 定期清理歸檔資料(> 2 年)
+
+---
+
+## 8. Deployment
+
+### Environment Variables
+```properties
+# Database
+SPRING_DATASOURCE_URL=jdbc:oracle:thin:@//oracle-prod:1521/TRANS_LOG
+SPRING_DATASOURCE_USERNAME=${DB_USER}
+SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+
+# Kafka
+SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka-prod:9092
+SPRING_KAFKA_CONSUMER_GROUP_ID=transaction-log-service
+
+# OAuth2
+SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=https://auth.example.com
+```
+
+### Docker
+```dockerfile
+FROM openjdk:17-jdk-slim
+COPY target/transaction-log-service.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+```
+
+### Kubernetes
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-log-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: transaction-log-service
+  template:
+    metadata:
+      labels:
+        app: transaction-log-service
+    spec:
+      containers:
+      - name: app
+        image: transaction-log-service:1.0.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 5
+```
+
+---
+
+## Timeline Summary
+
+| Phase | Duration | Dependencies |
+|-------|----------|--------------|
+| Phase 0 | 1 day | None |
+| Phase 1 | 3 days | Phase 0 |
+| Phase 2 | 4 days | Phase 1 |
+| Phase 3 | 4 days | Phase 1 |
+| Phase 4 | 3 days | Phase 2, 3 |
+| Phase 5 | 2 days | Phase 1 |
+| Phase 6 | 2 days | Phase 4, 5 |
+
+**Total**: 19 working days (~4 weeks with buffer)
+````
+
+#### Step 3: Backend Dev 拆分 Tasks
+
+```text
+/speckit.tasks
+
+產生 21 個具體任務,依 Phase 組織...
+(詳細任務類似第三章範例,此處省略)
+```
+
+#### Step 4: 預實作檢查
+
+```text
+/speckit.analyze
+
+結果:
+✅ 所有 User Stories 對應到 Plan
+✅ 所有 NFR 有實作計畫
+✅ 通過所有 Constitution Gates
+⚠️ 1 個建議:補充 API 版本升級策略
+
+/speckit.checklist
+
+評分:90/100
+建議:可開始實作
+```
+
+#### Step 5: 實作(TDD)
+
+**Backend Dev 開始實作 Task 1:**
+
+```bash
+/speckit.implement T001
+# 產生測試 + 實作程式碼
+
+git add .
+git commit -m "feat(core): implement Transaction entity (T001)
+
+- Add Transaction JPA entity
+- Add TransactionRepository
+- Add unit tests (coverage 85%)
+
+Related: US-001, T001
+"
+```
+
+**持續進行其他 Tasks...**
+
+#### Step 6: 部署與驗收
+
+**3 週後**:
+- ✅ 所有 21 個 Tasks 完成
+- ✅ 測試覆蓋率 82%
+- ✅ 效能測試通過(寫入 TPS 1200, 查詢延遲 P95 420ms)
+- ✅ 部署到生產環境
+- ✅ PM 驗收通過
+
+**專案成果**:
+- 📝 完整文件(Spec, Plan, Tasks, API Docs)
+- 🎯 需求追溯性 100%
+- 🧪 高測試覆蓋率
+- ⚡ 效能達標
+- 📅 準時交付
+
+---
+
+### 4.2 案例二:Brownfield 整合 - 為既有系統新增功能
+
+#### 背景
+
+現有「客戶管理系統」需要新增「客戶評級」功能。
+
+**現況**:
+- 10 年老系統,Spring MVC + Oracle
+- 程式碼無測試(Coverage 0%)
+- 文件缺失
+- 多人維護,程式碼風格不一
+
+**需求**:
+- 新增客戶評級計算(依交易歷史、信用記錄)
+- 提供評級查詢 API
+- 不影響既有功能
+
+**挑戰**:
+- 如何在老系統中應用 SDD?
+- 如何補充測試?
+- 如何避免破壞既有功能?
+
+> 💡 **建議第一步**:在動手寫任何新 Spec 之前,先對「客戶管理系統」現有的評級相關模組執行一次 [`/speckit.converge`](#38-step-7既有程式碼評估-speckitconverge),取得程式碼與規格落差的客觀基準報告,再決定要先補哪些 Spec、哪些測試。
+
+#### 策略:漸進式 SDD 導入
+
+**Step 1: 為新功能撰寫 Spec**
+
+即使系統老舊,新功能仍遵循 SDD:
+
+```markdown
+# Spec: Customer Rating Feature
+
+## User Stories
+
+### US-R001: 自動計算客戶評級
+**As a** 系統  
+**I want to** 依據交易歷史自動計算客戶評級  
+**So that** 業務人員可快速評估客戶價值
+
+**Acceptance Criteria**:
+1. 評級分為 5 級:A+, A, B, C, D
+2. 計算因子:
+   - 累積交易金額(權重 40%)
+   - 交易頻率(權重 30%)
+   - 信用記錄(權重 30%)
+3. 每日凌晨 2:00 批次更新
+4. 手動觸發重新計算功能
+
+**Priority**: High  
+**Estimated Effort**: 8 days
+```
+
+**Step 2: 撰寫 Plan(隔離策略)**
+
+由於既有系統缺乏測試,Plan 需要特別考慮隔離:
+
+````markdown
+# Plan: Customer Rating Feature
+
+## Integration Strategy
+
+### Approach: Strangler Fig Pattern
+- 新功能作為獨立模組
+- 最小化修改既有程式碼
+- 透過介面整合
+
+### Architecture
+
+```
+既有 CustomerService
+        │
+        ├──> CustomerRatingService (新模組)
+        │         │
+        │         ├──> RatingCalculator (新)
+        │         ├──> RatingRepository (新)
+        │         └──> RatingBatchJob (新)
+        │
+        └──> (既有功能不變)
+```
+````
+
+### Risk Mitigation
+1. **隔離變更**: 新功能獨立 Package
+2. **防禦性程式設計**: 所有呼叫既有程式碼需 try-catch
+3. **Feature Toggle**: 可動態開關新功能
+4. **漸進式部署**: 先部署但不啟用,觀察穩定性
+
+---
+
+## Phase 1: Characterization Tests (特徵測試)
+
+在修改前,為既有相關功能補充測試:
+
+**Tasks**:
+- [ ] 為 CustomerService.getCustomer() 補充測試
+- [ ] 為 CustomerService.updateCustomer() 補充測試
+- [ ] 建立測試資料快照
+
+**目的**: 確保新功能不破壞既有行為
+
+---
+
+## Phase 2: New Module Implementation
+
+實作新模組(完全獨立):
+
+**Tasks**:
+- [ ] 實作 RatingCalculator(純邏輯,易測試)
+- [ ] 實作 RatingRepository(JPA)
+- [ ] 實作 RatingService(整合層)
+- [ ] 實作 RatingBatchJob(Spring Batch)
+- [ ] 單元測試(目標 > 85%)
+
+---
+
+## Phase 3: Integration
+
+整合新模組與既有系統:
+
+**Tasks**:
+- [ ] 在 CustomerService 新增 getRating() 方法
+- [ ] 實作 Feature Toggle
+- [ ] 整合測試
+- [ ] 回歸測試(執行既有功能,確保無破壞)
+
+---
+
+## Phase 4: Deployment
+
+分階段部署:
+
+1. **Stage 1**: 部署但不啟用(Feature Toggle Off)
+2. **Stage 2**: 小範圍啟用(10% 客戶)
+3. **Stage 3**: 全面啟用
+
+**Step 3: 實作(TDD + Characterization Tests)**
+
+**首先建立特徵測試**:
+
+```java
+/**
+ * Characterization Test: 記錄既有行為
+ * 目的:確保新功能不破壞既有邏輯
+ */
+@Test
+public void testGetCustomer_ExistingBehavior() {
+    // Arrange
+    String customerId = "CUST001";
+    
+    // Act
+    Customer customer = customerService.getCustomer(customerId);
+    
+    // Assert: 記錄當前行為(即使不完美)
+    assertThat(customer.getId()).isEqualTo("CUST001");
+    assertThat(customer.getName()).isEqualTo("王小明");
+    // ... 記錄所有欄位現狀
+}
+```
+
+**然後實作新功能(TDD)**:
+
+```java
+// 新模組完全獨立,使用 TDD
+@Test
+public void testCalculateRating_HighValueCustomer() {
+    // 高交易金額 + 高頻率 + 良好信用 = A+
+    CustomerMetrics metrics = CustomerMetrics.builder()
+        .totalAmount(new BigDecimal("5000000"))
+        .transactionFrequency(50)
+        .creditScore(95)
+        .build();
+    
+    Rating rating = ratingCalculator.calculate(metrics);
+    
+    assertThat(rating).isEqualTo(Rating.A_PLUS);
+}
+```
+
+**Step 4: Feature Toggle 控制**
+
+```java
+@Service
+public class CustomerService {
+    
+    @Autowired
+    private RatingService ratingService;
+    
+    @Value("${feature.customer-rating.enabled:false}")
+    private boolean ratingFeatureEnabled;
+    
+    public CustomerDTO getCustomerWithRating(String customerId) {
+        Customer customer = getCustomer(customerId); // 既有方法
+        
+        CustomerDTO dto = CustomerDTO.from(customer);
+        
+        // Feature Toggle 控制
+        if (ratingFeatureEnabled) {
+            try {
+                Rating rating = ratingService.getRating(customerId);
+                dto.setRating(rating);
+            } catch (Exception e) {
+                log.warn("Failed to get rating for customer: {}", customerId, e);
+                // 降級:評級查詢失敗不影響主流程
+            }
+        }
+        
+        return dto;
+    }
+}
+```
+
+**Step 5: 分階段部署**
+
+```yaml
+# Stage 1: 部署但不啟用
+feature:
+  customer-rating:
+    enabled: false
+
+# Stage 2: 小範圍啟用(Canary)
+feature:
+  customer-rating:
+    enabled: true
+    rollout-percentage: 10  # 僅 10% 客戶啟用
+
+# Stage 3: 全面啟用
+feature:
+  customer-rating:
+    enabled: true
+    rollout-percentage: 100
+```
+
+**成果**:
+- ✅ 新功能完整遵循 SDD
+- ✅ 既有功能零破壞(透過 Characterization Tests 驗證)
+- ✅ 新模組測試覆蓋率 88%
+- ✅ 可隨時回滾(Feature Toggle)
+- 📝 完整文件(Spec, Plan, Tasks)
+
+#### Brownfield 實務建議
+
+**1. 優先隔離,避免大範圍重構**
+
+```text
+❌ 錯誤做法:「趁機重構整個 CustomerService」
+✅ 正確做法:「新功能獨立模組,透過介面整合」
+```
+
+**2. 使用 Characterization Tests 保護既有行為**
+
+```text
+在修改前:
+1. 為相關既有功能補充測試
+2. 記錄當前行為(即使不完美)
+3. 確保測試通過後再修改
+```
+
+**3. Feature Toggle 是必要的**
+
+```text
+好處:
+- 可隨時關閉新功能
+- 支援 A/B Testing
+- 降低部署風險
+```
+
+**4. 漸進式文件化**
+
+```text
+不要求一次補齊所有文件:
+- 新功能:完整 Spec + Plan
+- 既有功能:逐步補充(優先補充經常修改的部分)
+```
+
+---
+
+### 4.3 團隊協作:多人開發
+
+#### 情境
+
+3 人團隊開發「訂單管理系統」:
+- Alice: 前端工程師
+- Bob: 後端工程師
+- Carol: 測試工程師
+
+#### 協作流程
+
+**Step 1: 共同撰寫 Spec(協作會議)**
+
+```text
+會議:Product Spec Review (1 小時)
+參與:PM + Alice + Bob + Carol
+
+流程:
+1. PM 展示初稿 Spec
+2. 團隊共同澄清需求(/speckit.clarify)
+3. 識別技術挑戰
+4. 確認 Acceptance Criteria
+5. PM 更新 Spec
+
+產出:
+- spec.md (經團隊同意)
+- 無 [NEEDS CLARIFICATION] 殘留
+```
+
+**Step 2: 分工撰寫 Plan**
+
+```text
+後端 Plan (Bob):
+- 產生 backend-plan.md
+- 定義 API Contracts
+- 定義 Data Model
+- 定義後端 Tasks
+
+前端 Plan (Alice):
+- 產生 frontend-plan.md
+- 依據 API Contracts 設計 UI
+- 定義前端 Tasks
+- 定義元件結構
+
+測試 Plan (Carol):
+- 產生 test-plan.md
+- 定義測試策略
+- 定義測試案例
+- 定義測試 Tasks
+```
+
+**Step 3: 同步 API Contracts(關鍵)**
+
+````markdown
+# contracts/order-api.md
+
+## POST /api/v1/orders
+
+**Request**:
+```json
+{
+  "userId": "string",
+  "items": [
+    {
+      "productId": "string",
+      "quantity": number
+    }
+  ]
+}
+```
+
+**Response** (201 Created):
+```json
+{
+  "orderId": "string",
+  "status": "PENDING",
+  "createdAt": "ISO-8601"
+}
+```
+
+**Error** (400 Bad Request):
+```json
+{
+  "error": "INVALID_REQUEST",
+  "message": "string",
+  "details": []
+}
+```
+
+---
+
+**約定**:
+- Alice 與 Bob 必須遵循此 Contract
+- 任何變更需雙方同意並更新文件
+- Carol 依此 Contract 撰寫測試
+````
+
+**Step 4: 平行開發**
+
+```text
+Alice (前端):
+- 使用 Mock API 開發(依據 Contract)
+- 實作 UI 元件
+- 前端測試
+
+Bob (後端):
+- 實作 API(符合 Contract)
+- 單元測試
+- 整合測試
+
+Carol (測試):
+- 撰寫 Contract Tests(驗證 API 符合規格)
+- 撰寫 E2E Tests
+- 效能測試
+```
+
+**Step 5: 整合**
+
+```text
+當 Bob 完成 API 實作:
+1. Carol 執行 Contract Tests(驗證 API 符合規格)
+2. Alice 切換到真實 API(移除 Mock)
+3. Carol 執行 E2E Tests
+4. 整合完成
+```
+
+#### 協作工具
+
+**Git Flow + SDD**:
+
+```text
+main
+  └─ develop
+      ├─ feature/US-010-order-creation
+      │   ├─ .specify/spec.md (共用)
+      │   ├─ .specify/backend-plan.md (Bob)
+      │   ├─ .specify/frontend-plan.md (Alice)
+      │   ├─ .specify/test-plan.md (Carol)
+      │   ├─ .specify/contracts/ (共用)
+      │   ├─ backend/ (Bob)
+      │   ├─ frontend/ (Alice)
+      │   └─ tests/ (Carol)
+```
+
+**Pull Request 模板**:
+
+```markdown
+## PR Checklist
+
+### Specification
+- [ ] Spec 已審查並同意
+- [ ] Plan 已完成
+- [ ] Contracts 已定義並同步
+
+### Implementation
+- [ ] 後端:API 符合 Contract
+- [ ] 前端:UI 符合設計稿
+- [ ] 測試:Contract Tests 通過
+- [ ] 測試:E2E Tests 通過
+
+### Documentation
+- [ ] API 文件更新
+- [ ] README 更新
+
+### Review
+- [ ] 後端 Code Review (Bob → Alice/Carol)
+- [ ] 前端 Code Review (Alice → Bob/Carol)
+- [ ] 測試 Review (Carol → Bob/Alice)
+```
+
+**每日站會**:
+
+```text
+Alice:
+- 昨天:完成訂單表單 UI (T015)
+- 今天:整合訂單建立 API (T016)
+- 阻礙:等待 Bob 的 API 部署到測試環境
+
+Bob:
+- 昨天:完成 OrderService (T008)
+- 今天:部署 API 到測試環境,開始 T009
+- 阻礙:無
+
+Carol:
+- 昨天:完成 Contract Tests (T020)
+- 今天:開始 E2E Tests (T021)
+- 阻礙:需要測試環境的測試帳號
+```
+
+#### 協作實務建議
+
+**1. API Contracts 是協作的核心**
+
+```text
+前後端分離的關鍵:
+- Contract 先行
+- 前端 Mock 開發
+- 後端符合 Contract
+- 測試驗證 Contract
+```
+
+**2. 定期同步(Sync Meeting)**
+
+```text
+頻率:每週 2 次,每次 30 分鐘
+
+議程:
+1. 展示進度(Demo)
+2. 討論阻礙
+3. 同步變更(Spec/Plan/Contracts)
+4. 調整計畫
+```
+
+**3. 使用共用文件庫**
+
+```text
+專案根目錄:
+.specify/
+├── spec.md (共用)
+├── contracts/ (共用)
+│   ├── order-api.md
+│   └── user-api.md
+├── plans/
+│   ├── backend-plan.md (Bob)
+│   ├── frontend-plan.md (Alice)
+│   └── test-plan.md (Carol)
+└── decisions/ (共用)
+    └── 001-api-versioning.md
+```
+
+**4. Contract Testing 自動化**
+
+```java
+// Carol 撰寫 Contract Test
+@Test
+public void testCreateOrder_ContractCompliance() {
+    // 驗證 API 符合 Contract
+    given()
+        .contentType(ContentType.JSON)
+        .body(validCreateOrderRequest())
+    .when()
+        .post("/api/v1/orders")
+    .then()
+        .statusCode(201)
+        .body("orderId", notNullValue())
+        .body("status", equalTo("PENDING"))
+        .body("createdAt", matchesPattern(ISO_8601_PATTERN));
+}
+```
+
+---
+
+### 4.4 AI 助手最佳實踐
+
+#### 選擇合適的 AI 助手
+
+| AI 助手 | 優勢 | 適用場景 | Spec-Kit 支援 |
+|---------|------|----------|---------------|
+| **GitHub Copilot** | VS Code 整合最佳,程式碼補全強 | 日常開發,程式碼實作 | ✅ 原生支援 |
+| **Claude Code** | 推理能力強,長文本理解佳 | Spec/Plan 撰寫,架構設計 | ✅ 支援 |
+| **Cursor** | AI-first IDE,全文件理解 | 大型專案重構 | ✅ 支援 |
+| **Gemini CLI** | Google 生態整合 | 多模態分析,文件生成 | ✅ 支援 |
+| **Devin** | 多檔案編輯,任務自動化,終端機代理 | 批次修改,腳本產生 | ✅ 支援（⛔ Windsurf 已於 v0.12.2 退場並併入 Devin） |
+| **opencode** | 開源、輕量 | 開源專案開發 | ✅ 支援 |
+| **Codex CLI** | OpenAI 模型 | 程式碼生成、自動化 | ✅ 支援 |
+| **Qwen Code** | 中文理解佳 | 中文文件專案 | ✅ 支援 |
+| **CodeBuddy** | 多功能整合 | 全端開發 | ✅ 支援 |
+| **Kiro CLI** | AWS Kiro,專案規劃導向 | 需求規劃,結構化開發 | ✅ 支援 |
+| **Goose** | YAML recipe 格式,slash command | 自動化工作流程,recipe 驅動開發 | ✅ 支援（v0.6.2+） |
+| **Devin** | Terminal skills-based 整合 | 終端機導向的 AI 代理 | ✅ 支援（v0.8.3+） |
+| **Lingma** | 阿里巴巴生態,中文理解佳 | 阿里雲生態系團隊 | ✅ 支援（v0.8.7+） |
+| **Amp / Auggie / Kilo Code** | 各有特色 | 特定工作流程 | ✅ 支援 |
+
+> 💡 完整的 30+ 種支援 AI 助手清單請參考 [1.2 Spec-Kit 概覽](#12-spec-kit-概覽)。
+> ⚡ v0.7.1 起，`--ai` 參數已被 `--integration` 取代。兩者功能相同，`--ai` 仍向後相容但將於未來版本移除。
+> 🔄 v0.8.5+ 支援**多重安裝**：在同一專案中同時使用多個 AI 代理。搭配 **Agent Orchestrator** 擴充（v0.8.7）可實現智慧路由。
+
+#### Prompt Engineering 技巧
+
+**1. 提供充分的 Context**
+
+❌ **不好的 Prompt**:
+
+```text
+幫我寫一個訂單服務
+```
+
+✅ **好的 Prompt**:
+
+```text
+@workspace 請使用 /speckit.plan 為訂單服務產生實作計畫。
+
+Context:
+- 已有 spec.md(請參考)
+- 技術棧:Spring Boot 3.1 + PostgreSQL
+- 必須符合 Constitution（請參考 .specify/memory/constitution.md）
+- 需整合既有的 UserService 與 PaymentService
+- 效能要求:API 回應時間 < 300ms
+
+請特別注意:
+1. 通過所有 Pre-Implementation Gates
+2. 定義清楚的 API Contracts
+3. 包含完整的測試策略
+```
+
+**2. 迭代式提問**
+
+```text
+第一輪:
+"請產生訂單服務的 Data Model"
+
+第二輪(基於產生的結果):
+"這個 Data Model 缺少訂單狀態轉換邏輯,請補充狀態機定義"
+
+第三輪:
+"狀態機設計很好,但請考慮併發情況下的樂觀鎖機制"
+```
+
+**3. 使用 Spec-Kit 指令**
+
+```text
+# 明確使用 Spec-Kit 指令,AI 會遵循 SDD 方法論
+/speckit.specify
+/speckit.plan
+/speckit.tasks
+/speckit.analyze
+/speckit.implement T007
+```
+
+**4. 角色扮演**
+
+```text
+你是一位資深的微服務架構師,負責設計高可用的交易系統。
+請為「交易記錄服務」撰寫實作計畫(使用 /speckit.plan)。
+
+考慮以下挑戰:
+- 日交易量 100 萬筆
+- 需支援 2 年歷史資料查詢
+- 99.9% 可用性要求
+- 事件不能遺失
+
+請在 Plan 中詳細說明:
+1. 如何設計分區策略
+2. 如何優化查詢效能
+3. 如何確保事件不遺失
+4. 如何處理大量歷史資料
+```
+
+#### 程式碼審查提示詞
+
+**審查 Spec**:
+
+```text
+請審查以下 Spec,識別潛在問題:
+
+[貼上 spec.md 內容]
+
+請檢查:
+1. User Stories 是否清楚且可測試?
+2. Acceptance Criteria 是否明確?
+3. NFR 是否可量化?
+4. 是否有遺漏的邊界條件?
+5. 是否有模糊的需求([NEEDS CLARIFICATION])?
+6. Out of Scope 是否清楚?
+```
+
+**審查 Plan**:
+
+```text
+請審查以下 Plan,確保符合 Constitution:
+
+[貼上 plan.md 內容]
+
+[貼上 constitution.md 內容]
+
+請檢查:
+1. 是否通過所有 Pre-Implementation Gates?
+2. 技術選擇是否有充分理由?
+3. 架構是否過度複雜?
+4. 測試策略是否完整?
+5. 是否有違反 Constitution 的設計?
+6. Risk Mitigation 是否合理?
+```
+
+**審查程式碼**:
+
+```text
+請審查以下程式碼,確保符合 SDD 原則:
+
+[貼上程式碼]
+
+請檢查:
+1. 是否符合 Task 的 Acceptance Criteria?
+2. 是否有對應的測試?
+3. 測試覆蓋率是否足夠?
+4. 是否遵循 SOLID 原則?
+5. 是否有潛在的效能問題?
+6. 錯誤處理是否完整?
+7. 是否有安全漏洞?
+```
+
+#### 實務建議
+
+**1. 不要盲目接受 AI 產生的程式碼**
+
+```text
+AI 產生的程式碼應該是起點,不是終點:
+- 理解每一行程式碼的用途
+- 驗證是否符合需求
+- 執行測試確認正確性
+- 根據專案特性調整
+```
+
+**2. 使用 AI 學習,不是依賴**
+
+```text
+好的使用方式:
+✅ "這段程式碼如何運作?請解釋"
+✅ "為什麼選擇這個設計模式?"
+✅ "有什麼替代方案?"
+
+不好的使用方式:
+❌ "幫我寫完所有程式碼"(不思考)
+❌ "這段程式碼報錯,幫我修"(不理解問題)
+```
+
+**3. 保持人工審查**
+
+```text
+關鍵決策必須經人工審查:
+- Spec 的需求定義
+- Plan 的架構設計
+- Constitution 的例外審批
+- 生產環境的部署
+```
+
+**4. 建立團隊提示詞庫**
+
+```text
+團隊共用的提示詞範本:
+prompts/
+├── spec-review.md
+├── plan-review.md
+├── code-review.md
+├── test-generation.md
+└── refactoring.md
+```
+
+---
+
+### 4.5 平台導入建議
+
+#### 導入路徑(3 階段)
+
+**階段 1:試點專案(1-2 個月)**
+
+**目標**:驗證 SDD 可行性
+
+**選擇標準**:
+
+- ✅ 小型專案(2-4 週可完成)
+- ✅ 新功能(避免既有系統複雜度)
+- ✅ 團隊意願高
+
+**範例**:照片相簿管理、通知服務等
+
+**活動**:
+
+1. 培訓團隊 SDD 概念(4 小時工作坊)
+2. 建立專案 Constitution
+3. 完整執行 SDD 流程(Spec → Plan → Tasks → Implement)
+4. 記錄經驗與問題
+
+**成功指標**:
+
+- [ ] Spec → Plan → Tasks 追溯性 100%
+- [ ] 測試覆蓋率 > 80%
+- [ ] 團隊滿意度 > 4/5
+- [ ] 準時交付
+
+---
+
+**階段 2:推廣至團隊(3-6 個月)**
+
+**目標**:建立團隊習慣
+
+**活動**:
+
+1. 制定團隊 Constitution(基於試點經驗)
+2. 建立 Spec/Plan/Tasks 模板
+3. 將 SDD 納入 DoD(Definition of Done)
+4. 定期 SDD Review 會議(每月)
+
+**成功指標**:
+
+- [ ] 80% 新專案使用 SDD
+- [ ] Constitution 違規率 < 10%
+- [ ] 平均測試覆蓋率 > 75%
+- [ ] 需求變更追蹤清楚
+
+---
+
+**階段 3:平台標準化(6-12 個月)**
+
+**目標**:SDD 成為平台標準
+
+**活動**:
+
+1. 建立平台 Constitution(所有專案遵循)
+2. 整合到 CI/CD Pipeline(自動檢查)
+3. 建立文件中心(集中管理 Specs/Plans)
+4. 定期回顧與改進 Constitution
+
+**成功指標**:
+
+- [ ] 100% 新專案使用 SDD
+- [ ] 自動化檢查通過率 > 95%
+- [ ] 技術債務減少 30%
+- [ ] 跨團隊協作效率提升
+
+---
+
+#### 平台專屬 Constitution 建議
+
+針對企業共用平台,建議在標準 Constitution 基礎上新增:
+
+```markdown
+## Article XIII: API Design Standards
+
+### Principle
+API 必須一致、版本化、文件化。
+
+### Rules
+1. **RESTful 風格**:
+   - 使用標準 HTTP 方法
+   - 資源命名使用複數名詞
+   - 路徑結構清楚
+
+2. **版本管理**:
+   - URL 版本(如 `/api/v1/...`)
+   - 向後相容至少 1 個版本
+
+3. **錯誤處理**:
+   - 統一錯誤格式
+   - 使用標準 HTTP 狀態碼
+
+4. **文件**:
+   - 使用 OpenAPI 3.0 規格
+   - 提供 Swagger UI
+
+### Pre-Implementation Gate
+- [ ] 符合 RESTful 風格?
+- [ ] API 版本化?
+- [ ] OpenAPI 文件完整?
+
+---
+
+## Article XIV: Security Requirements
+
+### Principle
+安全是所有服務的首要考量。
+
+### Rules
+1. **認證授權**: 統一使用 OAuth2
+2. **輸入驗證**: 所有輸入必須驗證
+3. **敏感資訊**: 密碼使用 BCrypt
+4. **HTTPS**: 生產環境強制 HTTPS
+
+---
+
+## Article XV: Observability
+
+### Principle
+所有服務必須可觀測。
+
+### Rules
+1. **日誌**: 結構化日誌(JSON 格式)
+2. **監控指標**: 整合 Prometheus + Grafana
+3. **健康檢查**: 提供 `/actuator/health` 端點
+4. **告警**: 關鍵指標設定告警
+```
+
+---
+
+#### 組織變革管理
+
+**1. 高層支持**
+
+```text
+獲得高層支持的關鍵:
+- 展示 SDD 如何解決現有痛點
+- 提供試點專案成果(數據說話)
+- 說明長期投資回報
+```
+
+**2. 激勵機制**
+
+```text
+將 SDD 納入考核:
+- Code Review 檢查 Spec/Plan 完整性
+- 測試覆蓋率納入品質指標
+- Constitution 合規率納入團隊 OKR
+```
+
+**3. 持續改進**
+
+```text
+定期回顧(每季):
+1. Constitution 是否需要更新?
+2. 哪些規則過於嚴格?
+3. 哪些規則需要加強?
+4. 團隊反饋與建議
+```
+
+**4. 知識分享**
+
+```text
+建立學習文化:
+- 每月 SDD 分享會
+- 內部 Wiki 文件庫
+- 最佳實踐集錦
+- 新人培訓課程
+```
+
+---
+
+### 第四章小結
+
+本章透過實際案例,展示了 SDD 在不同情境下的應用:
+
+| 情境 | 關鍵策略 | 成功要素 |
+|------|----------|----------|
+| **Greenfield 開發** | 完整 SDD 流程 | Spec → Plan → Tasks 追溯,TDD,Constitution 合規 |
+| **Brownfield 整合** | 隔離變更,Strangler Fig | Characterization Tests,Feature Toggle,漸進式部署 |
+| **團隊協作** | API Contracts 先行 | 前後端分離,Contract Testing,定期同步 |
+| **AI 助手** | Prompt Engineering | 充分 Context,迭代提問,人工審查 |
+| **平台導入** | 試點 → 推廣 → 標準化 | 小步快跑,建立習慣,持續改進 |
+
+**核心觀念**:
+
+- 🎯 **Spec 是需求的唯一真相來源**
+- 🏗️ **Plan 是技術決策的記錄**
+- ✅ **Tasks 是可執行的最小單位**
+- 🧪 **測試是品質的保證**
+- 📜 **Constitution 是守則,但可調整**
+- 🤖 **AI 是助手,不是替代**
+
+---
+
+## 第五章:常見問題與陷阱
+
+### 5.1 常見問題(FAQ)
+
+#### Q1: SDD 是否會拖慢開發速度?
+
+**A**: 短期可能較慢,長期會加速。
+
+**說明**:
+
+- **前期投入**: Spec/Plan 撰寫需要時間
+- **中期回報**: 實作階段更快(方向清楚,減少返工)
+- **長期優勢**: 需求追溯性佳,維護容易,技術債務少
+
+**數據**(來自 GitHub 內部):
+
+- 需求變更減少 40%
+- 測試覆蓋率提升 35%
+- 生產 Bug 減少 50%
+
+**建議**:
+
+- 試點專案可能較慢(學習曲線)
+- 第 2-3 個專案開始感受到效率提升
+- 不要為了趕進度跳過 Spec/Plan
+
+---
+
+#### Q2: 既有專案如何導入 SDD?
+
+**A**: 漸進式導入,不要全面重寫。
+
+**策略**:
+
+1. **新功能優先**:
+   - ✅ 所有新功能使用 SDD
+   - ⚠️ 既有功能暫不動
+
+2. **重要模組優先**:
+   - ✅ 經常修改的模組補充 Spec/Plan
+   - ⚠️ 穩定模組保持現狀
+
+3. **漸進式測試**:
+   - ✅ 新程式碼要求測試覆蓋率 > 80%
+   - ⚠️ 既有程式碼逐步補充 Characterization Tests
+
+**時程預估**:
+
+- 小型專案(< 10 萬行):3-6 個月
+- 中型專案(10-50 萬行):6-12 個月
+- 大型專案(> 50 萬行):1-2 年
+
+> 💡 在估算時程與排定優先順序之前,建議先用 [`/speckit.converge`](#38-step-7既有程式碼評估-speckitconverge)(v0.11.2 新增)對既有程式碼庫做一次落差評估,取得客觀的「目前真相基準」,避免憑印象判斷哪些模組最該優先補 Spec。
+
+---
+
+#### Q3: Spec 與 Plan 需要多詳細?
+
+**A**: 剛好足夠,不多不少。
+
+**Spec 詳細度**:
+
+✅ **應該包含**:
+
+- User Stories(3-5 個為佳)
+- Acceptance Criteria(可測試)
+- NFR(可量化)
+- Out of Scope(明確邊界)
+
+❌ **不應包含**:
+
+- 程式碼範例(屬於 Plan)
+- 實作細節(屬於 Implementation)
+- UI 設計稿(可參考,但不是 Spec)
+
+**Plan 詳細度**:
+
+✅ **應該包含**:
+
+- 技術選擇(含理由)
+- 架構圖(高層次)
+- Data Model(完整)
+- API Contracts(完整)
+- Implementation Phases(明確)
+
+❌ **不應包含**:
+
+- 逐行程式碼(屬於 Implementation)
+- 變數命名(實作細節)
+- 過度的類別圖(避免 Big Design Up Front)
+
+**原則**:
+> "足以讓工程師開始實作,但不至於限制實作創意"
+
+---
+
+#### Q4: 如何處理需求變更?
+
+**A**: 更新 Spec,重新檢查一致性。
+
+**流程**:
+
+1. **評估影響**:
+   ```bash
+   /speckit.analyze
+   # 檢查變更影響哪些 Plan 與 Tasks
+   ```
+
+2. **更新 Spec**:
+   ```markdown
+   ## Change Log
+   
+   ### v1.1 (2025-11-01)
+   - **Added**: US-006 標籤管理
+   - **Changed**: US-002 查詢增加標籤過濾
+   - **Removed**: US-005 匯出功能(移至 v2.0)
+   ```
+
+3. **更新 Plan** - 新增對應的 Phases,更新技術選擇(如需要)
+
+4. **更新 Tasks** - 新增任務,調整估時
+
+5. **重新 Analyze** - 確保 Spec ↔ Plan ↔ Tasks 一致
+
+6. **通知團隊** - 開會討論影響,更新時程
+
+**建議**:
+
+- 小變更:直接更新文件
+- 大變更:召開 Change Review Meeting
+
+---
+
+#### Q5: Constitution 太嚴格怎麼辦?
+
+**A**: Constitution 是指引,不是教條。
+
+**原則**:
+
+- Constitution 應該幫助團隊,不是阻礙
+- 可以申請例外(Exception),但需記錄理由
+- 定期回顧與調整
+
+**例外處理**:
+
+```markdown
+## Constitution Exception Request
+
+**Project**: Transaction Log Service  
+**Article**: Article VII (Simplicity) - "使用 ≤ 3 個專案"  
+**Requested Exception**: 需要 5 個微服務  
+**Reason**: 整合 10 個既有系統,單體架構無法滿足獨立部署需求  
+**Mitigation**: 使用 Service Mesh 統一管理複雜度  
+**Approved By**: 架構師 Alice  
+**Date**: 2025-10-29  
+**Review Date**: 2026-01-29 (3 個月後回顧)
+```
+
+**調整 Constitution**:
+
+```text
+每季回顧會議:
+1. 哪些規則經常被申請例外? → 考慮放寬
+2. 哪些規則很少被違反? → 可能太鬆散
+3. 是否有新的最佳實踐需要加入?
+4. 團隊反饋
+```
+
+---
+
+#### Q6: 如何平衡文件與程式碼?
+
+**A**: 文件是投資,不是負擔。
+
+**時間分配建議**:
+
+```text
+總開發時間 = 100%
+├─ Spec/Plan 撰寫: 15-20%
+├─ 實作: 50-60%
+├─ 測試: 20-25%
+└─ 文件: 5-10%(API 文件、README)
+```
+
+**降低文件負擔的技巧**:
+
+1. **使用 AI 產生初稿** - AI 產生 80%,人工調整 20%
+
+2. **模板化** - 使用團隊統一的 Spec/Plan 模板
+
+3. **文件即程式碼** - 文件與程式碼放在同一個 Repo
+
+4. **自動產生** - API 文件自動產生(OpenAPI)
+
+**記住**:
+> "沒有文件的程式碼,6 個月後連自己都看不懂"
+
+---
+
+#### Q7: 小團隊(1-2 人)需要 SDD 嗎?
+
+**A**: 需要,但可簡化。
+
+**簡化版 SDD**:
+
+1. **Spec**: 保留,但可更簡潔
+2. **Plan**: 保留核心部分(技術選擇、API Contracts)
+3. **Tasks**: 可省略,直接使用 GitHub Issues
+4. **Constitution**: 簡化版(3-5 條核心規則)
+
+**好處**:
+
+- 即使 1 人開發,3 個月後的自己也能理解
+- 方便未來擴展團隊
+
+---
+
+#### Q8: 如何同時使用多個 AI 代理?
+
+**A**: v0.8.5 引入了**安全多重安裝（Controlled Multi-Install）**。
+
+**步驟**:
+
+1. **初始化主要代理**:
+   ```bash
+   specify init my-project --integration copilot
+   ```
+
+2. **追加其他代理**:
+   ```bash
+   specify init --here --force --integration claude
+   ```
+
+3. **切換代理**:
+   ```bash
+   specify integration switch lingma
+   ```
+
+**注意事項**:
+
+- 切換時擴充的 slash commands 會自動遷移（v0.8.6 修正）
+- 建議搭配 **Agent Orchestrator** 擴充自動路由 prompt
+- 使用 **Multi-Model Review** 擴充進行跨模型審查
+- 透過 **Cost Tracker** 擴充比較不同代理的成本效益
+
+---
+
+#### Q9: 治理擴充太多，如何選擇?
+
+**A**: 依團隊需求分層採用。
+
+**建議採用順序**:
+
+| 階段 | 擴充 | 說明 |
+|------|------|------|
+| **基礎** | Architecture Guard | 最小化架構偏移，適合所有團隊 |
+| **安全** | Security Governance + OWASP LLM | 有合規需求的團隊 |
+| **跨平台** | Cross-Platform Governance | 多平台開發團隊 |
+| **無障礙** | A11y Governance | 面向公眾的應用 |
+| **一致性** | Agent Parity Governance | 多 AI 代理環境 |
+
+**原則**:
+
+- 先啟用 1-2 個治理擴充，觀察效果
+- 不要一次啟用所有治理擴充（過度負擔）
+- 搭配 Constitution 使用，互為補充
+
+---
+
+### 5.2 常見陷阱與避免方法
+
+#### 陷阱 1:過度設計（Over-Engineering）
+
+**症狀**:
+
+- Plan 包含複雜的設計模式(但需求簡單)
+- 過度抽象(太多 Interface、Abstract Class)
+- 預測未來需求(YAGNI 違反)
+
+**避免方法**:
+
+1. 遵循 Constitution Article VIII (Anti-Abstraction)
+2. 問自己:「現在真的需要這個抽象嗎?」
+3. 使用 YAGNI 原則
+4. Code Review 時挑戰過度設計
+
+---
+
+#### 陷阱 2:文件與程式碼不同步
+
+**症狀**:
+
+- Spec 說要做 A,程式碼實作 B
+- Plan 定義 API `/v1/orders`,程式碼寫成 `/api/orders`
+
+**避免方法**:
+
+1. **文件與程式碼在同一個 PR**
+2. **PR Checklist 強制檢查**
+3. **定期執行 analyze** - CI Pipeline 中自動執行
+4. **文件 Review** - 文件變更也需要 Code Review
+
+---
+
+#### 陷阱 3:跳過測試
+
+**症狀**:
+
+- 「先實作,測試之後補」(然後就忘了)
+- 測試覆蓋率不足
+
+**避免方法**:
+
+1. 嚴格執行 TDD(紅-綠-重構)
+2. DoD 包含「測試覆蓋率 > 80%」
+3. CI Pipeline 檢查測試覆蓋率
+4. Code Review 拒絕無測試的程式碼
+
+---
+
+#### 陷阱 4:忽略 NFR
+
+**症狀**:
+
+- 只關注功能需求,忽略效能、安全、可用性
+- NFR 定義模糊(「要快」而非「< 500ms」)
+
+**避免方法**:
+
+1. Spec 必須包含可量化的 NFR
+2. Plan 包含 NFR 實作策略
+3. 實作階段進行效能測試
+4. /speckit.checklist 檢查 NFR 覆蓋
+
+---
+
+#### 陷阱 5:盲目信任 AI
+
+**症狀**:
+
+- 不理解 AI 產生的程式碼就直接使用
+- AI 建議違反 Constitution 但未察覺
+
+**避免方法**:
+
+1. 理解每一行 AI 產生的程式碼
+2. 執行並驗證測試
+3. 人工審查關鍵決策
+4. 將 AI 當作助手,不是替代品
+
+---
+
+#### 陷阱 6:過度堅持 Constitution
+
+**症狀**:
+
+- 明知特殊情況,但仍死守規則
+- Constitution 阻礙創新
+
+**避免方法**:
+
+1. Constitution 是指引,不是教條
+2. 建立 Exception 流程
+3. 定期回顧 Constitution
+4. 鼓勵挑戰不合理的規則
+
+---
+
+### 第五章小結
+
+**核心觀念**:
+
+- 🤔 **FAQ 幫助決策** - 不確定時查閱常見問題
+- ⚠️ **認識陷阱** - 避免常見錯誤
+- 📈 **持續改進** - 從錯誤中學習
+
+**記住**:
+
+> "SDD 是幫助團隊的工具,不是負擔。  
+> 如果感到困難,檢視是否過度僵化或理解有誤。"
+
+---
+
+## 第六章:附錄
+
+### 6.1 完整模板範例
+
+#### Spec 模板
+
+```markdown
+# Spec: [功能名稱]
+
+## Overview
+[1-2 段簡短描述]
+
+## User Stories
+
+### US-001: [標題]
+**As a** [角色]  
+**I want to** [動作]  
+**So that** [價值]
+
+**Acceptance Criteria**:
+1. [可測試的條件 1]
+2. [可測試的條件 2]
+
+**Priority**: High/Medium/Low  
+**Estimated Effort**: [天數]
+
+---
+
+## Non-Functional Requirements
+
+### NFR-001: Performance
+- [可量化的效能指標]
+
+### NFR-002: Security
+- [安全需求]
+
+## Technical Constraints
+- [技術限制]
+
+## Dependencies
+- [依賴項目]
+
+## Risks & Mitigation
+
+| Risk | Impact | Probability | Mitigation |
+|------|--------|-------------|------------|
+| [風險] | High/Medium/Low | High/Medium/Low | [應對策略] |
+
+## Out of Scope
+- [ ] [不在範圍的功能]
+
+## Open Questions
+1. **[NEEDS CLARIFICATION]** [待澄清的問題]
+```
+
+---
+
+#### Plan 模板
+
+````markdown
+# Plan: [功能名稱]
+
+## Phase -1: Pre-Implementation Gates
+
+### [Gate Name]
+- [ ] [檢查項目]
+
+**All Gates Passed**: ✅/❌
+
+---
+
+## 1. Technology Stack
+
+| Category | Technology | Version | Justification |
+|----------|-----------|---------|---------------|
+| [類別] | [技術] | [版本] | [理由] |
+
+---
+
+## 2. Architecture
+
+### High-Level Architecture
+
+```text
+[架構圖]
+```
+
+---
+
+## 3. Data Model
+
+### Entity: [實體名稱]
+
+```java
+// 實體定義
+```
+
+---
+
+## 4. API Contracts
+
+#### 4.1 [API 名稱]
+
+**Request**:
+```json
+{}
+```
+
+**Response**:
+```json
+{}
+```
+
+---
+
+## 5. Implementation Phases
+
+### Phase 0: [階段名稱] (X days)
+
+**Tasks**:
+- [ ] [任務]
+
+**Deliverables**:
+- [ ] [產出物]
+
+---
+
+## 6. Testing Strategy
+
+### Unit Tests
+- [測試範圍]
+
+### Integration Tests
+- [測試範圍]
+
+---
+
+## 7. Risk Mitigation
+[風險應對]
+
+---
+
+## 8. Deployment
+[部署步驟]
+````
+
+---
+
+### 6.2 檢查清單
+
+#### Spec 完整性檢查清單
+
+```markdown
+## Spec Completeness Checklist
+
+### 基本資訊
+- [ ] 有 Overview 說明
+- [ ] 有明確的功能範圍
+
+### User Stories
+- [ ] 每個 Story 有 As a/I want to/So that
+- [ ] 每個 Story 有 Acceptance Criteria
+- [ ] Acceptance Criteria 可測試
+- [ ] 有 Priority 與 Estimated Effort
+
+### Non-Functional Requirements
+- [ ] NFR 可量化
+- [ ] 涵蓋效能、安全、擴展性
+
+### 邊界與風險
+- [ ] Out of Scope 清楚列出
+- [ ] 依賴關係已識別
+- [ ] 風險與應對策略完整
+
+### 模糊需求
+- [ ] 無 [NEEDS CLARIFICATION] 殘留
+- [ ] 所有 Open Questions 已解決
+```
+
+---
+
+#### Plan 完整性檢查清單
+
+```markdown
+## Plan Completeness Checklist
+
+### Constitution 合規
+- [ ] 通過所有 Pre-Implementation Gates
+- [ ] 無未記錄的例外
+
+### 技術選擇
+- [ ] Technology Stack 完整
+- [ ] 每個技術有選擇理由
+
+### 架構設計
+- [ ] 有架構圖
+- [ ] 元件職責明確
+- [ ] 無過度抽象
+
+### 資料模型
+- [ ] Entity 定義完整
+- [ ] Database Schema 完整
+- [ ] 索引設計合理
+
+### API Contracts
+- [ ] 所有 API 有完整定義
+- [ ] Request/Response 範例完整
+
+### 實作計畫
+- [ ] Implementation Phases 清楚
+- [ ] 每個 Phase 有明確產出物
+
+### 測試策略
+- [ ] 測試策略完整
+- [ ] 測試覆蓋率目標明確
+```
+
+---
+
+#### Code Review 檢查清單
+
+```markdown
+## Code Review Checklist
+
+### 需求符合性
+- [ ] 符合 Spec 的 Acceptance Criteria
+- [ ] 符合 Plan 的設計
+- [ ] 符合 Task 的描述
+
+### 程式碼品質
+- [ ] 命名清楚易懂
+- [ ] 無重複程式碼(DRY)
+- [ ] 函式長度合理(< 50 行)
+
+### 測試
+- [ ] 有對應的測試
+- [ ] 測試覆蓋率 > 80%
+- [ ] 測試涵蓋邊界條件
+
+### 錯誤處理
+- [ ] 異常處理完整
+- [ ] 錯誤訊息友善
+
+### 安全
+- [ ] 輸入驗證完整
+- [ ] 無 SQL Injection 風險
+- [ ] 無 XSS 風險
+
+### Constitution 合規
+- [ ] 符合 Constitution 規範
+- [ ] 例外已記錄
+```
+
+---
+
+### 6.3 參考資源
+
+#### 官方資源
+
+- **Spec-Kit GitHub**: https://github.com/github/spec-kit
+- **Spec-Kit 官方文件站**: https://github.github.io/spec-kit/
+- **影片概覽**: https://www.youtube.com/watch?v=a9eR1xsfvHg
+- **Spec-Driven 方法論**: https://github.com/github/spec-kit/blob/main/spec-driven.md
+- **安裝指南**: https://github.com/github/spec-kit/blob/main/docs/installation.md
+- **升級指南**: https://github.com/github/spec-kit/blob/main/docs/upgrade.md
+- **擴充系統文件**: https://github.com/github/spec-kit/tree/main/extensions
+- **社群擴充網站**: https://speckit-community.github.io/extensions/
+- **預設系統文件**: https://github.com/github/spec-kit/blob/main/presets/README.md
+- **Bundle 系統參考**（官方文件站 Reference 導覽，v0.12.3 起獨立列出）: https://github.github.io/spec-kit/reference/bundles.html
+- **認證機制參考**（GitHub / GHES / Azure DevOps 多方案認證，v0.12.3 起獨立列出）: https://github.github.io/spec-kit/reference/authentication.html
+- **AGENTS.md（整合架構指南）**: https://github.com/github/spec-kit/blob/main/AGENTS.md
+- **DEVELOPMENT.md（開發者指南）**: https://github.com/github/spec-kit/blob/main/DEVELOPMENT.md
+- **CHANGELOG**: https://github.com/github/spec-kit/blob/main/CHANGELOG.md
+- **SUPPORT**: https://github.com/github/spec-kit/blob/main/SUPPORT.md
+- **GitHub Copilot 文件**: https://docs.github.com/copilot
+
+#### 延伸閱讀
+
+**書籍**:
+
+- *Test-Driven Development* by Kent Beck
+- *Clean Code* by Robert C. Martin
+- *Design Patterns* by Gang of Four
+- *Building Microservices* by Sam Newman
+
+**文章**:
+
+- "YAGNI Principle" (You Aren't Gonna Need It)
+- "SOLID Principles"
+- "Contract-First Development"
+- "Strangler Fig Pattern" (Martin Fowler)
+
+#### 工具推薦
+
+**開發工具**:
+
+- **VS Code**: 最佳 GitHub Copilot 整合
+- **IntelliJ IDEA**: Java 開發首選
+- **Cursor**: AI-first IDE
+
+**測試工具**:
+
+- **JUnit 5**: Java 單元測試
+- **Vitest**: JavaScript 單元測試
+- **Testcontainers**: 整合測試
+- **JMeter / Gatling**: 效能測試
+
+**文件工具**:
+
+- **Markdown**: 文件撰寫
+- **Mermaid**: 圖表繪製
+- **Swagger / OpenAPI**: API 文件
+
+**CI/CD 工具**:
+
+- **GitHub Actions**: CI/CD 自動化
+- **Jenkins**: 企業級 CI/CD
+- **SonarQube**: 程式碼品質檢查
+
+---
+
+### 6.4 社群實作範例 (Community Walkthroughs)
+
+透過以下社群貢獻的實作範例，可以看到 SDD 在不同場景中的實際運用：
+
+#### Greenfield（全新開發）
+
+- **Greenfield .NET CLI 工具**: [spec-kit-dotnet-cli-demo](https://github.com/mnriem/spec-kit-dotnet-cli-demo) — 從空白目錄建構一個 Timezone Utility .NET 單一執行檔 CLI 工具，涵蓋完整 spec-kit 工作流程：constitution → specify → plan → tasks → multi-pass implement（使用 GitHub Copilot agents）
+
+- **Greenfield Spring Boot + React 平台**: [spec-kit-spring-react-demo](https://github.com/mnriem/spec-kit-spring-react-demo) — 從零開始建構 LLM 效能分析平台（REST API、圖表、迭代追蹤），使用 Spring Boot + embedded React + PostgreSQL + Docker Compose，包含 clarify 步驟與 cross-artifact consistency analysis pass
+
+- **Greenfield Spring Boot MVC + 自訂預設**: [spec-kit-pirate-speak-preset-demo](https://github.com/mnriem/spec-kit-pirate-speak-preset-demo) — 使用自訂 pirate-speak 預設從零建構 Spring Boot MVC 應用，展示預設系統如何重塑整個 spec-kit 體驗：Spec 變成「Voyage Manifests」，Plan 變成「Battle Plans」，Tasks 變成「Crew Assignments」— 全程使用海盜口語，無需修改任何工具
+
+#### Brownfield（既有系統擴充）
+
+- **Brownfield ASP.NET CMS 擴充**: [spec-kit-aspnet-brownfield-demo](https://github.com/mnriem/spec-kit-aspnet-brownfield-demo) — 擴充既有開源 .NET CMS (CarrotCakeCMS-Core，約 307,000 行 C#/Razor/SQL/JS/Config)，新增 Docker Compose 基礎設施與 token-authenticated headless REST API，展示 spec-kit 如何在「沒有既有 spec 或 constitution」的程式庫中運作
+
+- **Brownfield Java 執行環境擴充**: [spec-kit-java-brownfield-demo](https://github.com/mnriem/spec-kit-java-brownfield-demo) — 擴充既有開源 Jakarta EE 執行時（Piranha，約 420,000 行 Java/XML/JSP/HTML/Config，跨 180 個 Maven 模組），新增受密碼保護的 Server Admin Console，展示 spec-kit 在大型多模組 Java 專案的運用
+
+- **Brownfield Go / React 儀表板**: [spec-kit-go-brownfield-demo](https://github.com/mnriem/spec-kit-go-brownfield-demo) — 完全從終端機使用 GitHub Copilot CLI 驅動 spec-kit。擴充 NASA 開源的 Hermes 地面支援系統（Go），新增輕量級 React 遙測儀表板，證明完整的 constitution → specify → plan → tasks → implement 工作流程可在終端機中完成
+
+#### 擴充示範（Extension Demo）
+
+- **AIDE 擴充示範**: [spec-kit-aide-extension-demo](https://github.com/mnriem/spec-kit-aide-extension-demo) — 展示 AIDE 社群擴充（v0.4.1 新增），提供替代式 spec-driven 工作流程：高層規格（vision）→ 低層規格（work items），組織為 7 步驟迭代生命週期：vision → roadmap → progress tracking → work queue → work items → execution → feedback loops。以 Family Trading Platform（Spring Boot 4 + React 19 + PostgreSQL + Docker Compose）為場景，展示擴充機制如何在不修改核心工具的前提下，嵌入不同風格的 spec-driven 開發
+
+---
+
+### 6.5 社群工具生態系 (Community Friends)
+
+以下是社群建構的專案，擴展、視覺化或建構在 Spec Kit 之上：
+
+| 工具 | 說明 |
+|------|------|
+| **[cc-spex](https://github.com/rhuss/cc-spex)** | Claude Code 插件，在 Spec Kit 之上增加可組合特質（composable traits），搭配 [Superpowers](https://github.com/obra/superpowers) 品質閘門、spec/code review、Git worktree 隔離，以及透過代理團隊的平行實作（前身為 cc-sdd，v0.5.0 起更名） |
+| **[Spec Kit Assistant](https://marketplace.visualstudio.com/items?itemName=rfsales.speckit-assistant)** | VS Code 擴充套件，提供完整 SDD 工作流程的視覺化編排器（constitution → specification → planning → tasks → implementation），含階段狀態視覺化、互動式任務清單、DAG 視覺化，支援 Claude、Gemini、GitHub Copilot 與 OpenAI 後端。需要 `specify` CLI 在 PATH 中 |
+| **[SpecKit Companion](https://marketplace.visualstudio.com/items?itemName=alfredoperez.speckit-companion)** | VS Code 擴充套件，提供 Spec Kit 視覺化 GUI。以 rich markdown viewer 瀏覽規格（含可點擊檔案引用）、建立帶有圖片附件的規格、以 GitHub 風格的 inline review 評論並精煉每個步驟、透過視覺化階段步驟器追蹤 SDD 工作流程進度，並管理 constitution 與 templates 等導引文件（v0.6.0 新增） |
+
+---
+
+### 6.6 術語表
+
+| 術語 | 說明 |
+|------|------|
+| **SDD** | Specification-Driven Development，規格驅動開發 |
+| **Spec** | Specification，需求規格 |
+| **Plan** | 實作計畫，技術設計文件 |
+| **Tasks** | 可執行的任務清單 |
+| **Constitution** | 專案守則，開發原則 |
+| **Preset** | 預設，自訂 Spec-Kit 既有工作流程的模板覆寫套件 |
+| **Extension** | 擴充，新增 Spec-Kit 功能的獨立套件 |
+| **NFR** | Non-Functional Requirement，非功能性需求 |
+| **TDD** | Test-Driven Development，測試驅動開發 |
+| **DoD** | Definition of Done，完成定義 |
+| **AC** | Acceptance Criteria，驗收標準 |
+| **User Story** | 使用者故事 |
+| **API Contract** | API 契約，介面規格 |
+| **Pre-Implementation Gate** | 實作前檢查點 |
+| **Characterization Test** | 特徵測試，記錄既有行為的測試 |
+| **Feature Toggle** | 功能開關 |
+| **Strangler Fig Pattern** | 絞殺者模式，逐步替換既有系統 |
+| **YAGNI** | You Aren't Gonna Need It，避免過度設計 |
+| **DRY** | Don't Repeat Yourself，避免重複 |
+| **SOLID** | 物件導向設計五大原則 |
+| **Air-Gapped** | 隔離環境，無外部網路連線的部署環境 |
+| **Core Pack** | 核心模板包，v0.4.0 起內嵌於安裝包中供離線使用 |
+| **AIDE** | Alternative Iterative Development Extension，替代式迭代開發擴充，提供 7 步驟迭代生命週期（vision → roadmap → progress → work queue → work items → execution → feedback） |
+| **Checkpoint** | 里程碑稽核點擴充，在關鍵階段自動插入審查與驗證步驟 |
+| **V-Model** | V 型模型擴充，將 SDD 工作流程對應至 V-Model 驗證與確認階段 |
+| **Extensify** | 社群擴充：快速建立新 Extension 的鷹架工具 |
+| **Presetify** | 社群擴充：快速建立新 Preset 的鷹架工具 |
+| **Community Friends** | 社群工具生態系，由社群建構的專案，擴展或視覺化 Spec Kit 功能（如 cc-spex、Spec Kit Assistant、SpecKit Companion） |
+| **cc-sdd** | Claude Code 插件，在 Spec Kit 之上增加可組合特質與品質閘門（v0.5.0 起更名為 cc-spex） |
+| **cc-spex** | cc-sdd 的更名版本（v0.5.0 起），Claude Code 插件，搭配 Superpowers 品質閘門、spec/code review、Git worktree 隔離 |
+| **Project Health Check** | 專案健康檢查擴充，自動評估專案狀態與最佳實務符合度 |
+| **Bundled Git Extension** | 內建 Git 擴充（v0.5.1 新增），在所有核心命令上掛載 Git hooks，提供深度 Git 整合 |
+| **Integration** | 整合管理，`specify integration` 子命令（v0.5.1 新增），用於後初始化的代理整合管理 |
+| **Worktree Isolation** | Git worktree 隔離擴充（v0.6.0 新增），為平行功能開發生成隔離的 Git worktree |
+| **MemoryLint** | 代理記憶管理治理工具（v0.6.0 新增），自動稽核 AGENTS.md 與 constitution 的邊界衝突 |
+| **SpecKit Companion** | VS Code 擴充套件（v0.6.0 新增），提供 Spec Kit 視覺化 GUI，含 rich markdown viewer 與階段步驟器 |
+| **Workflow Engine** | 工作流引擎（v0.7.0 新增），支援宣告式工作流定義、搜尋與安裝，為 SDD 流程提供高層次編排 |
+| **Workflow Catalog** | 工作流目錄系統（v0.7.0 新增），類似擴充/預設的目錄機制，支援工作流的搜尋、安裝與分享 |
+| **--integration** | v0.7.1 新增的 CLI 旗標，取代 `--ai` 用於指定 AI 代理整合方式（`--ai` 已 deprecated 但仍可用） |
+| **SFSpeckit** | Salesforce SDD 擴充（v0.7.0 新增），企業級 Salesforce SDLC，含 18 個指令覆蓋完整 SDD 生命週期 |
+| **Goose** | Goose AI agent（v0.6.2 新增），使用 YAML recipe 格式解析，支援 slash command |
+| **Agent Assign** | 將專業化 Claude Code agents 指派給 spec-kit 任務以進行針對性執行的社群擴充（v0.7.1 新增） |
+| **Lean Preset** | 內建精簡預設（v0.6.1 新增），僅含最小工作流命令，適合小型專案或快速原型 |
+| **Integration Catalog** | 整合目錄（v0.7.2 新增），集中列出所有可用的 AI 代理整合選項 |
+| **Marker-Based Upsert** | 標記式更新（v0.7.3 新增），以標記點為基準進行模板內容插入或更新，避免覆蓋自訂內容 |
+| **Composition Strategy** | 組合策略（v0.8.0 新增），模板/命令/腳本的擴充機制，支援 `prepend`、`append`、`wrap` 三種策略 |
+| **feature.json** | 功能設定檔（v0.8.1 新增），用於自訂 Git 分支命名規則與功能目錄對應 |
+| **Memory MD** | 記憶管理擴充（v0.8.0 新增），結構化代理記憶管理與自動彙整 |
+| **Red Team** | 紅隊測試擴充（v0.7.4 新增），對 spec 進行對抗性分析，找出安全漏洞與邊界情況 |
+| **Spec Validate** | 規格驗證擴充（v0.7.4 新增），自動化驗證 spec 文件的完整性與一致性 |
+| **CITATION.cff** | 引用中繼資料檔（v0.7.4 新增），為 spec-kit 提供標準學術引用格式 |
+| **/speckit.taskstoissues** | 任務轉 Issue 指令（v0.7.1 新增），將 spec-kit 任務自動轉換為 GitHub Issues |
+| **Security Governance** | 安全治理擴充（v0.8.4 新增），安全治理框架與合規性檢查 |
+| **Architecture Guard** | 持續架構治理擴充（v0.8.6 新增），審查 specs、plans、code 的架構偏移 |
+| **Multi-Model Review** | 跨模型審查擴充（v0.8.6 新增），跨模型 Spec Kit handoffs — spec 撰寫、實作路由與審查 |
+| **Spec2Cloud** | 雲端部署擴充（v0.8.4 新增），從 SDD 規格到 Azure 雲端部署的完整工作流程 |
+| **Lingma** | 阿里巴巴 Tongyi Lingma AI 編碼助手整合（v0.8.7 新增） |
+| **Agent Orchestrator** | 代理編排擴充（v0.8.7 新增），跨目錄的代理發現與智慧 prompt-to-command 路由 |
+| **Cost Tracker** | 成本追蹤擴充（v0.8.7 新增），追蹤 SDD 工作流程中的 LLM 成本 |
+| **Config-Driven Auth** | 設定驅動認證（v0.8.8 新增），Config-Driven Opt-in Authentication Registry，支援多平台認證 |
+| **Schedule** | 排程擴充（v0.8.8 新增），基於 CP-SAT 的最佳多代理任務排程 |
+| **API Evolve** | API 演進擴充（v0.8.8 新增），管理式 API 契約演進，支援破壞性變更偵測與 SemVer 強制 |
+| **MDE** | 最小模型驅動工程擴充（v0.8.8 新增），提供 setup / next / status 三指令精簡 MDE 工作流程 |
+| **BrownKit** | Brownfield 評估擴充（v0.8.9 新增），針對既有程式碼庫的證據驅動能力發現與風險評估 |
+| **Spec Changelog** | 變更日誌擴充（v0.8.9 新增），自動從 spec git 歷史與需求差異產生變更日誌與發行說明 |
+| **Multi-Install** | 多重安裝（v0.8.5 新增），允許在單一專案中同時安裝多個 AI 代理的整合 |
+| **Constitution Context** | Constitution 上下文載入（v0.8.6 新增），`/speckit.implement` 自動載入 constitution 上下文以確保端對端治理一致性 |
+| **Agent Governance** | 代理治理擴充（v0.8.10 新增），AI 代理行為邊界與合規性檢查框架 |
+| **Reqnroll BDD** | 行為驅動開發擴充（v0.8.10 新增），整合 Reqnroll 測試框架 |
+| **Time Machine** | 規格時間旅行擴充（v0.8.11 新增），瀏覽與比較規格的歷史版本 |
+| **Architecture Workflow** | 架構工作流擴充（v0.8.11 新增），在 SDD 流程中嵌入架構決策記錄 |
+| **Team Assign** | 團隊任務指派擴充（v0.8.12 新增），根據技能與負載自動分配任務 |
+| **Interactive HTML Preview** | 互動式 HTML 預覽擴充（v0.8.12 新增），即時預覽 SDD 工件的 HTML 渲染結果 |
+| **Product Spec** | 產品規格擴充（v0.8.14 新增），強化 SDD 的產品管理維度 |
+| **Token Budget** | Token 預算管理擴充（v0.8.15 新增），追蹤與控制 token 使用量，設定預算上限與告警閾值 |
+| **Workflow Preset** | 工作流預設（v0.8.16 新增），預建的工作流定義模板，快速採用標準化 SDD 工作流程 |
+| **Bundle System** | Bundle 系統（v0.11.4 新增），將多個 Extension、Preset、Workflow 打包為單一可安裝單元，解決「一個角色/情境需要哪一整組元件」的問題（詳見 2.42、2.51 節） |
+| **Catalog（目錄）** | Extension、Preset、Workflow、Bundle 共用的搜尋與分發登錄機制，v0.12.5-v0.12.6 起強制要求 HTTPS 與明確主機名稱以防範供應鏈攻擊（詳見 2.50 節） |
+| **Bounded Thread Pool / `max_concurrency`** | 有界執行緒池（v0.12.2 新增），限制 `fan-out` 工作流步驟平行展開子任務的最大同時數量，兼顧效能與資源可控性（詳見 2.49 節） |
+| **`py` 腳本類型** | Python 工作流腳本步驟類型（v0.12.4 新增），搭配自動 Python 直譯器解析，補足先前僅支援 bash/PowerShell 的限制（詳見 2.49 節） |
+| **Governance Preset** | 治理類預設的統稱，涵蓋 Security/Architecture/Cross-Platform/A11y Governance（v0.8.4）至 Test-First Governance、Autonomous Run Governance（v0.12.14）等，用於在 SDD 流程中強制施加特定治理規則（詳見 2.21、2.52 節） |
+
+---
+
+### 6.7 快速指令參考
+
+#### Spec-Kit 核心指令
+
+```bash
+# 1. 初始化專案
+specify init my-project --integration copilot
+
+# 1a. 使用自訂代理（Generic 模式，⚠️ --ai-commands-dir 已於 v0.10.0 移除，請改用 specify init --help 確認當前語法）
+specify init my-project --integration generic
+
+# 1b. 安裝代理技能模板（⚠️ --ai-skills 已於 v0.10.0 移除，詳見 2.37 節）
+specify init my-project --integration claude
+
+# 1b-1. 使用 Cline（v0.9.1 原生整合新增）
+specify init my-project --integration cline
+
+# 1b-2. 使用 rovodev（v0.9.5 新增）
+specify init my-project --integration rovodev
+
+# 1b-3. 使用 Zed（v0.11.0 新增）
+specify init my-project --integration zed
+
+# 1b-4. 使用 ZCode / Z.AI（v0.11.5 新增）
+specify init my-project --integration zcode
+
+# 1b-5. 使用 Firebender，Android Studio / IntelliJ（v0.11.6 新增）
+specify init my-project --integration firebender
+
+# 1b-6. 使用 OMP，Oh My Pi（v0.11.7 新增）
+specify init my-project --integration omp
+
+# 1c. 使用 Kiro CLI
+specify init my-project --integration kiro-cli
+
+# 1d. 使用 Tabnine CLI
+specify init my-project --integration tabnine
+
+# 1e. 使用 Mistral Vibe
+specify init my-project --integration vibe
+
+# 1f. 使用 Kimi Code
+specify init my-project --integration kimi
+
+# 1g. 使用 Pi Coding Agent
+specify init my-project --integration pi
+
+# 1h. 使用 Junie（JetBrains）
+specify init my-project --integration junie
+
+# 1i. 使用 Trae
+specify init my-project --integration trae
+
+# 1j. （⛔ iFlow CLI 整合已於 v0.12.2 隨原廠產品終止而退場，請改用 opencode 或 Qwen Code）
+
+# 1k. 使用 Forge CLI（v0.4.4 新增）
+specify init my-project --integration forge
+
+# 1l. 時間戳記分支編號（分散式團隊）
+specify init my-project --integration copilot --branch-numbering timestamp
+
+# 2. 檢查環境
+specify check
+
+# 3. 查看版本
+specify version
+
+# 4. 專案健康診斷（v0.3.0+）
+specify doctor
+
+# 5. 專案狀態總覽（v0.3.1+）
+specify status
+
+# 5a. 管理整合（v0.5.1+）
+specify integration
+
+# 5b. 列出可用整合（v0.8.0+）
+specify integration list
+
+# 5c. 自我檢查（v0.7.5+）
+specify self check
+
+# 5d. 自我升級（v0.7.5 推出初版 stub，v0.9.3 起正式實作完成）
+specify self upgrade
+
+# 6. 建立專案守則
+/speckit.constitution
+
+# 7. 撰寫 Spec
+/speckit.specify
+
+# 8. 澄清需求
+/speckit.clarify
+
+# 9. 撰寫 Plan
+/speckit.plan
+
+# 10. 拆分 Tasks
+/speckit.tasks
+
+# 11. 分析一致性
+/speckit.analyze
+
+# 12. 品質檢查
+/speckit.checklist
+
+# 13. 實作
+/speckit.implement <task-id>
+
+# 14. 任務轉 GitHub Issues（v0.7.1+）
+/speckit.taskstoissues
+
+# 15. 既有程式碼評估（v0.11.2 新增，詳見 3.8 節）
+/speckit.converge
+```
+
+#### 預設系統指令（v0.3.0+）
+
+```bash
+# 搜尋可用預設
+specify preset search
+specify preset search pirate
+
+# 安裝預設
+specify preset add pirate-speak
+
+# 列出已安裝預設
+specify preset list
+
+# 啟用 / 停用
+specify preset enable pirate-speak
+specify preset disable pirate-speak
+
+# 移除預設
+specify preset remove pirate-speak
+```
+
+#### 擴充系統指令
+
+```bash
+# 搜尋擴充
+specify extension search
+specify extension search jira
+
+# 查看擴充資訊
+specify extension info jira
+
+# 安裝擴充
+specify extension add jira
+
+# 列出已安裝
+specify extension list
+
+# 更新擴充
+specify extension update
+
+# 啟用 / 停用
+specify extension enable jira
+specify extension disable jira
+
+# 移除擴充
+specify extension remove jira
+```
+
+#### 擴充目錄管理指令 (v0.2.0+)
+
+```bash
+# 列出所有啟用的目錄
+specify extension catalog list
+
+# 新增專案級目錄
+specify extension catalog add <URL>
+
+# 移除目錄
+specify extension catalog remove <URL>
+
+# 查看目錄管理說明
+specify extension catalog --help
+```
+
+#### Bundle 系統指令（v0.11.4 新增，詳見 2.42 節）
+
+```bash
+# 搜尋可用 Bundle
+specify bundle search
+specify bundle search compliance
+
+# 查看 Bundle 詳細資訊
+specify bundle info security-baseline
+
+# 安裝 Bundle
+specify bundle install security-baseline
+
+# 列出已安裝 Bundle
+specify bundle list
+
+# 更新 Bundle（v0.12.7+：新版 Bundle 中已移除的元件會被自動解除安裝，詳見 2.51 節）
+specify bundle update security-baseline
+
+# 移除 Bundle
+specify bundle remove security-baseline
+
+# 驗證自訂 Bundle 定義
+specify bundle validate --path ./my-bundle/
+
+# 建置自訂 Bundle
+specify bundle build --path ./my-bundle/
+```
+
+#### Git 工作流程
+
+```bash
+# 建立 Feature 分支
+git checkout -b feature/US-001-user-login
+
+# 撰寫 Spec/Plan
+git add .specify/
+git commit -m "docs(spec): add user login spec (US-001)"
+
+# 實作
+git add src/ tests/
+git commit -m "feat(auth): implement user login (US-001)
+
+- Add LoginService
+- Add JWT token generation
+- Test coverage: 85%
+
+Related: US-001, T007
+"
+
+# 推送
+git push origin feature/US-001-user-login
+```
+
+#### 測試指令
+
+```bash
+# 單元測試
+npm run test
+mvn test
+
+# 測試覆蓋率
+npm run test:coverage
+mvn test jacoco:report
+
+# 整合測試
+npm run test:integration
+mvn verify
+
+# E2E 測試
+npm run test:e2e
+```
+
+---
+
+### 6.8 版本異動紀錄 (Changelog 摘要)
+
+以下為 spec-kit 自首次發布以來的重要里程碑整理（僅列主要版本與重大功能），完整紀錄請參閱 [CHANGELOG.md](https://github.com/github/spec-kit/blob/main/CHANGELOG.md)：
+
+| 版本 | 日期 | 重點變更 |
+|------|------|----------|
+| **v0.1.0** | 2025-07-20 | 首個公開版本。引入核心 SDD 工作流程（constitution → specify → plan → tasks → implement）、擴充機制（Extensions）、`specify init` / `specify check` CLI |
+| **v0.2.0** | 2025-09-14 | Multi-Catalog 支援（單一專案多份 spec）、`specify status` 指令、社群擴充目錄首次上線 |
+| **v0.3.0** | 2025-12-01 | Preset 系統、`specify doctor` 診斷指令、角色約束文件標準化、Pluggable preset system |
+| **v0.3.1** | 2026-03-17 | `specify status` 增強：支援時間戳分支與階段進度顯示、Trae IDE 支援、社群擴充增至 20+ 個 |
+| **v0.3.2** | 2026-03-19 | 穩定性改進、iFlow CLI 支援、Preset enable/disable toggle、社群擴充與 Preset 文件完善 |
+| **v0.4.0** | 2026-03-23 | **重大版本**。Core Pack 嵌入（離線 / Air-Gapped 環境部署）、Junie IDE 支援、Codex/agy 原生 skills 遷移、timestamp 分支命名選項、Extensify / Presetify 社群擴充、V-Model 擴充 |
+| **v0.4.1** | 2026-03-24 | Checkpoint 擴充、AIDE 擴充（替代式 7 步驟迭代生命週期）、Project Health Check / Project Status 擴充、Community Friends 生態系、社群擴充目錄增至 27+ 個 |
+| **v0.4.2** | 2026-03-25 | 擴充自動註冊 ai-skills、Community Friends 區段（cc-spex、Spec Kit Assistant VS Code）、社群預設區段新增至 README、NFR 重新命名為 Success Criteria |
+| **v0.4.3** | 2026-03-26 | 統一 Kimi/Codex skill 命名並遷移 legacy 目錄、PowerShell 5.1 相容性修正 |
+| **v0.4.4** | 2026-04-01 | **Plugin Architecture 啟動**。Stage 1-2：Integration foundation（base classes、manifest system、registry）、Copilot integration proof of concept、Forge 代理支援、Onboard / Plan Review Gate / Product Forge / Superpowers Bridge 社群擴充 |
+| **v0.4.5** | 2026-04-02 | **Plugin Architecture 完成**。Stage 3-6：19 agents 遷移至 plugin 架構、Gemini/Tabnine TOML 遷移、Skills/Generic/Option-Driven 整合、移除 legacy scaffold 路徑、Claude Code 原生 skills 安裝、Fix Findings / FixIt / QA / Staff Review / Ship Release / Spec Critique 社群擴充、社群擴充網站上線 |
+| **v0.5.0** | 2026-04-02 | 引入 DEVELOPMENT.md 開發者文件、cc-sdd 更名為 cc-spex、社群擴充達 40+ 個、Stars 達 85k+ |
+| **v0.5.1** | 2026-04-08 | **重大更新**。`specify integration` 子命令（後初始化整合管理）、內建 Git 擴充 Stage 1-2（hooks on all core commands、GIT_BRANCH_NAME override）、Forgecode 代理支援、Canon 擴充與 Canon Core preset、Branch Convention / Spec Diagram / Spec Refine / Confluence 社群擴充、Explicit Task Dependencies / Table of Contents Navigation / VS Code Ask Questions 社群預設、Claude Code `argument-hint` frontmatter、`user-invocable: true` skill frontmatter、社群擴充達 45+ 個 |
+| **v0.6.0** | 2026-04-09 | Bugfix Workflow 社群擴充、Worktree Isolation 擴充、Multi-Repo Branching preset、SpecKit Companion（VS Code GUI）、MemoryLint 擴充、AGENTS.md 重寫為整合架構文件、Stars 達 86.7k+、社群擴充達 50+ 個 |
+| **v0.6.1** | 2026-04-10 | 內建 Lean preset（最小化工作流命令）、Brownfield Bootstrap / CI Guard / SpecTest / PR Bridge / TinySpec 社群擴充、Cursor 從 `.cursor/commands` 遷移至 `.cursor/skills`、spec-kit-verify 升級至 1.0.3、spec-kit-review 升級至 1.0.1 |
+| **v0.6.2** | 2026-04-13 | **Goose AI agent** 支援、What-if Analysis 社群擴充、GitHub Issues Integration 社群擴充、Ralph 擴充更新至 v1.0.1 |
+| **v0.7.0** | 2026-04-14 | **重大版本：Workflow Engine + Catalog System**。引入工作流引擎，支援宣告式工作流定義、搜尋與安裝。SFSpeckit（Salesforce SDD 擴充，18 個命令）、Architect Impact Previewer、Worktrees（平行 worktree 隔離）社群擴充。Claude Ask Questions 社群預設。Fiction Book Writing 預設（21 模板、17 命令）。gitflow 的可選單段分支前綴。Stars 達 88k+、社群擴充達 55+ 個 |
+| **v0.7.1** | 2026-04-15 | `--ai` 旗標正式 **deprecated**（改用 `--integration`）、Windows 測試矩陣加入 CI、Claude hook 連鎖修正、Agent Assign 社群擴充、deprecated `--skip-tls` 文件清理、TESTING.md 合併至 CONTRIBUTING.md、Stars 達 88.4k+、Contributors 達 167 |
+| **v0.7.2** | 2026-04-16 | **Integration Catalog** — 整合的探索、版本控制與社群分發。核心命令參考文件重構至 `docs/reference/`。擴充參考頁、工作流參考頁。memorylint 與 superpowers-bridge 更新至 1.3.0。Catalog CI 社群擴充、Issues 社群擴充 |
+| **v0.7.3** | 2026-04-17 | 以 marker-based upsert 取代 shell-based context 更新。Community Friends 頁面遷移至文件站。Spec Scope 社群擴充。Blueprint 社群擴充。Fiction Book Writing 預設更新至 v1.5.0 |
+| **v0.7.4** | 2026-04-21 | `CITATION.cff` 與 `.zenodo.json` — 學術引用支援。Red Team、Spec Validate、Ripple、Version Guard、Spec Reference Loader、Memory Loader 社群擴充。Antigravity (agy) 遷移至 `.agents/` 佈局 |
+| **v0.7.5** | 2026-04-22 | `specify self check` 與 `specify self upgrade` stub 指令。Preset **wrap** 組合策略。社群預設遷移至文件站。Red Team 登入社群擴充表。Wireframe 社群擴充 |
+| **v0.8.0** | 2026-04-23 | **重大版本：Composition Strategies + pipx + Skills Scaffolding**。預設組合策略（prepend、append、wrap）適用於模板、命令與腳本。`--integration-options="--skills"` 支援 skills-based 鷹架。**pipx** 新增為替代安裝方式。Memory MD 社群擴充。`--force` 現在會覆寫 init/upgrade 時的共享基礎檔案 |
+| **v0.8.1** | 2026-04-24 | `feature.json` 支援自訂 Git 分支的 `/speckit.plan`。Mistral Vibe 遷移至 SkillsIntegration。社群預設表遷移至文件站。Lean 預設 README 與目錄 metadata 增強。Jira 預設與 Screenwriting 預設註冊至社群目錄。Product Forge 更新至 v1.5.1 |
+| **v0.8.2** | 2026-04-28 | `--no-git` 旗標棄用（預計 v0.10.0 移除）。GITHUB_TOKEN/GH_TOKEN 認證用於目錄與下載請求。`--ai` 旗標在文件中全面替換為 `--integration`。Spec Orchestrator 社群擴充。MarkItDown Document Converter 擴充。M365 整合擴充。UTF-8 編碼修正。Extensify 更新至 v1.1.0。Fiction Book 預設支援 RAG |
+| **v0.8.3** | 2026-04-29 | **Devin for Terminal** skills-based 整合。目錄探索 CLI 指令（`specify extension search`、`specify preset search`）。Work IQ 擴充。Squad Bridge 擴充。OWASP LLM Threat Model 擴充。isaqb Architecture Governance 擴充。安全性修正：升級提示加入 `--from git+...` 避免 PyPI squat 套件 |
+| **v0.8.4** | 2026-05-01 | 驗證流程自引用步驟編號修正。**四大治理擴充**（Security Governance、Cross-Platform Governance、Architecture Governance、A11y Governance）。**Spec2Cloud 擴充**（Azure 部署工作流程）。擴充指令在 `integration switch` 時正確遷移。Agent Parity Governance 擴充 |
+| **v0.8.5** | 2026-05-04 | **Spec2Cloud 預設**。安全多重安裝（Controlled Multi-Install）— 在單一專案中安裝多個 AI 代理。Git 擴充預設變更通知。Tasks 模板覆寫修正。Token Analyzer 擴充。Memory Hub / Security Review 擴充更新。Stars 達 97k+ |
+| **v0.8.6** | 2026-05-06 | **`/speckit.implement` 載入 constitution 上下文** — 確保實作階段遵循治理原則。URL scheme 驗證（安全修正）。**Architecture Guard 擴充** — 持續架構治理。**Multi-Model Review 擴充** — 跨模型 handoffs。Ralph Loop 更新至 v1.0.2。GitHub Actions SHA pinning |
+| **v0.8.7** | 2026-05-07 | **Lingma 整合**（阿里巴巴 Tongyi Lingma 編碼助手）。**Agent Orchestrator 擴充** — 跨目錄代理發現與智慧路由。**Cost Tracker 擴充** — LLM 成本追蹤。**fx-to-dotnet 擴充** — .NET Framework 遷移。Forge hyphen notation 修正。非互動式 init 預設使用 copilot。uv 安裝指南新增 |
+| **v0.8.8** | 2026-05-11 | **Config-Driven Opt-in Authentication Registry** — 設定驅動的多平台認證架構。**Spec Kit Schedule 擴充** — CP-SAT 多代理任務排程。**API Evolve 擴充** — API 契約演進管理。**MDE 擴充與預設** — 模型驅動工程。`integration switch` 共用基礎設施重新整理。GitHub Actions 依賴大幅更新。Stars 達 98k+ |
+| **v0.8.9** | 2026-05-12 | **BrownKit 擴充** — 既有程式碼庫的證據驅動能力發現與風險評估。**Changelog 擴充** — 自動產生變更日誌。**Game Narrative Writing 預設**。Landing page 採四柱卡片佈局改版。治理生態系擴充統一更新。模板 metadata markdownlint 修正。Integration catalog config 載入重構。Stars 達 **99k**、Contributors 達 **206**、Releases 達 **144** |
+| **v0.8.10** | 2026-05-14 | **Agent Governance 擴充** — AI 代理治理框架。**Reqnroll BDD 擴充** — 行為驅動開發整合。社群擴充表遷移至文件站。CLI 重構系列啟動（PR-1/8 ~ PR-2/8）。opencode `commands/` 目錄修正。Constitution 參考修正。Stars 達 **100k** |
+| **v0.8.11** | 2026-05-15 | **高保證規格工作流文件化** — 企業級品質與合規工作流。**版本特徵報告** — `specify version --features`。**Time Machine 擴充** — 規格歷史版本瀏覽。**Architecture Workflow 擴充**。UTF-8 模板無 BOM。CLI 重構（PR-3/8）。多重安裝指引改進 |
+| **v0.8.12** | 2026-05-20 | **`integration: auto`** — 工作流自動偵測 AI 代理。**Team Assign 擴充** — 團隊任務自動分配。**Interactive HTML Preview 擴充**。**Squad Bridge v1.3.0** 與 **Superpowers Bridge v0.5.0** 更新。Codex dot-to-hyphen hook 修正。擴充目錄堆疊解析重構 |
+| **v0.8.13** | 2026-05-21 | **工作流迴圈修正** — `while` / `do-while` 條件判斷修正。**代理工作流自動化** — 社群目錄提交的 AI 輔助審核。**Agent Governance v1.2.0** 更新。`specify check` 新增 self-check tip。CI 新增 diff 空白檢查。Stars 達 **103k** |
+| **v0.8.14** | 2026-05-26 | **CLI commands/ 套件重構（PR-4/8）** — init handler 模組化。**分支命名規範文件化**。**Product Spec 擴充**。**Windows 子程序工具**。GitHub Actions 依賴更新（gh-aw-actions 0.74.9、stale 10.3.0） |
+| **v0.8.15** | 2026-05-27 | **後執行 hook 修正** — 提升至 H2 層級確保可靠觸發。**Token Budget 擴充** — token 使用量追蹤與預算管理。**Fiction Book Writing v1.8.1**。memorylint/superb 1.4.0。Skills 目錄按需建立。PowerShell 5.1 相容性修正。Security Governance v0.3.0 |
+| **v0.8.16** | 2026-05-27 | **規格品質重驗證** — `/speckit.clarify` 後自動重驗品質檢查清單。**`{{ context.run_id }}`** 模板變數。**Workflow Preset** — 預建工作流模板。SPECKIT_COMMAND 引用修正。**Architecture Guard v1.8.9**。pipx URL 修正（`pipx.pypa.io`）。Stars 達 **107k**、Contributors 達 **213**、Releases 達 **151** |
+| **v0.8.17** | 2026-05-28 | **Hermes Agent 整合**。**社群文件整合** — README 社群章節遷移至官方文件站。**Google Antigravity (agy) 增強**。**Superpowers Implementation Bridge v0.7.0**。**Security Governance Preset v0.4.0**。共享腳本命令提示修正。`--dev` 擴充 symlinks 修正。Skills hook 後處理改進。Stars 達 **107k+**、Contributors 達 **217**、Releases 達 **152** |
+| **v0.8.18** | 2026-05-29 | `SPECKIT_WORKFLOW_RUN_ID` 環境變數覆寫支援、`SPECKIT_INTEGRATION_<KEY>_EXECUTABLE` 與 `SPECIFY_<KEY>_EXTRA_ARGS` 環境變數。URL 來源擴充安裝新增確認提示，降低供應鏈風險 |
+| **v0.9.0** | 2026-06-01 | Agent-context 檔案更新邏輯抽取為內建 **agent-context bundled extension**，與核心 CLI 解耦，便於獨立維護與社群擴充 |
+| **v0.9.1** | 2026-06-02 | **新增 Cline 原生整合**。UTF-8 編碼修正套用至 init-options 與 `.extensionignore` I/O |
+| **v0.9.2** | 2026-06-02 | 工作流步驟新增 **`continue_on_error`** 欄位（允許非阻斷式失敗）。整合指令重構至領域目錄。新增 `.editorconfig` 統一程式碼格式。略過的檔案會記錄於 `speckit.manifest.json` |
+| **v0.9.3** | 2026-06-03 | **`specify self upgrade` 正式實作完成**（不再是 stub，可直接執行 CLI 自我升級）。Windows 終端機強制 UTF-8 編碼避免亂碼。`superpowers-bridge` 更名為 `superspec`（v1.0.1） |
+| **v0.9.4** | 2026-06-04 | Workflow run resume / status 新增 **JSON 輸出**。支援 headless CLI 全流程派遣（`-p --trust --approve-mcps --force`）。`specify workflow run` 可不依賴專案直接執行 YAML 檔 |
+| **v0.9.5** | 2026-06-05 | **新增 rovodev 支援**。內建 **bug-triage workflow 擴充**。互動式提示可顯示 gate 的 `show_file` 內容 |
+| **v0.10.0** | 2026-06-09 | **重大版本**：Git 擴充改為 **opt-in**（不再自動啟用），同時**移除 `--no-git`、`--ai`、`--ai-commands-dir`、`--ai-skills` 等 legacy 旗標**。Hook 改為支援逐事件優先順序清單。README 新增 GitHub Copilot CLI 說明 |
+| **v0.10.1** | 2026-06-09 | 整合**狀態回報（status reporting）**增強。強化 extension/preset catalog payload 結構驗證 |
+| **v0.10.2** | 2026-06-11 | Extension schema 新增 **`category`、`effect`** 一級欄位。Preset URL 安裝強化，防止不安全的重新導向 |
+| **v0.10.3** | 2026-06-16 | 多項社群擴充版本更新（Superpowers Bridge、Product Forge、Linear Integration 等），屬例行維護 |
+| **v0.10.4** | 2026-06-16 | 新增 **Data Model Diagram** 社群擴充。Preset 指令處理器重構至獨立模組。Fan-out 工作流步驟在 `items` 表達式無法解析為清單時會明確報錯 |
+| **v0.11.0** | 2026-06-16 | **新增 Workflow Step Catalog**（社群可安裝的自訂步驟類型）。**新增 Zed 整合**。新增整合鷹架產生器（integration scaffolder） |
+| **v0.11.1** | 2026-06-17 | Workflow 新增 **`output_format: json`** 選項，可取得已解析的 shell 標準輸出。工作流執行失敗或中止時回傳非零 exit code |
+| **v0.11.2** | 2026-06-18 | **新增 `/speckit.converge` 指令** — 評估既有程式碼庫與規格的落差，搭配社群提交的 bug-assess 標籤工作流程。新增 `init` 工作流步驟可直接從工作流啟動專案 |
+| **v0.11.3** | 2026-06-19 | 強化擴充失敗隔離（單一壞掉的擴充不會拖垮其他擴充）。`/speckit.analyze` 改為於獨立的 forked subagent 中執行，避免污染主對話上下文 |
+| **v0.11.4** | 2026-06-22 | **新增 `specify bundle` 指令** — 全新的 Bundle 系統，可打包與分發「角色導向」的元件組合（擴充 + 預設 + 工作流程）。新增 `SPECIFY_INIT_DIR` 支援多專案目標 |
+| **v0.11.5** | 2026-06-22 | **新增 ZCode (Z.AI) 整合**。新增 **PyPI 發布工作流程**（為未來 `pip install` 安裝鋪路；目前仍以 `uv tool install --from git+...` 為主要安裝方式）。整合啟用/升級時自動註冊已啟用的擴充 |
+| **v0.11.6** | 2026-06-23 | **新增 Firebender 整合**（Android Studio / IntelliJ）。澄清文件：constitution **Article IV-VI 為專案自定義條款**，非固定規範 |
+| **v0.11.7** | 2026-06-24 | **新增 OMP 整合**。Catalog archive **SHA256 驗證**強化供應鏈安全。`shell=True` hardening 防止 shell 注入。新增 [Monorepo 指南](https://github.com/github/spec-kit/blob/main/docs/guides/monorepo.md)。工作流 `requires` 鍵與幻影權限閘門驗證。TOML 反斜線跳脫修正。Golden Demo 與 Spec Roadmap 社群擴充 |
+| **v0.11.8** | 2026-06-24 | **Jira Integration (Sync Engine) v0.4.0**。Kimi Integration 更新。`/speckit.checklist` 建議前移至 plan 之後。工作流引號保留逗號修正。GitHub Actions SHA pinning。Spec Kit Preview v1.1.0 |
+| **v0.11.9** | 2026-06-26 | Cline/ZCode 列入 **multi-install-safe** 文件。`--force`/`--refresh-shared-infra` 旗標文件補全。GHES private release asset 下載修正。`/speckit-analyze` 長 session 凍結修正（Claude 整合）。**SicarioSpec Core v0.5.1**。preset composition strategy 參考更新 |
+| **v0.11.10** | 2026-06-29 | **Community Bundle Submission Path** — `bundle_submission.yml` issue template。GHES auth 修正（`extension add --from`）。Catalog URL host-less 驗證拒絕。`/speckit.converge` 指令文件化。PowerShell 一致性修正（create-new-feature、git-extension 輸出） |
+| **v0.12.0** | 2026-06-29 | **重大版本**：**agent-context extension 改為完整 opt-in**（不再預設啟用）。Workflow gate validate() 非字串容錯。Pipe-filter 偵測 quote-aware。Fan-in wait_for 拒絕未知步驟。PowerShell 腳本 bash parity 全面修正。Product Spec Extension v1.0.1。`init` 步驟類型文件化。**Stars 達 117K+、Contributors 達 248、Releases 達 176** |
+| **v0.12.1** | 2026-06-30 | Catalog / Integration 子命令文件補全（`search`/`info`/`scaffold`）。`check-prerequisites --paths-only` 不再誤寫入 `feature.json`。`initialize-repo.sh` 改用 ASCII `[OK]` 標記與 PowerShell 行為一致。Goose 安裝連結修正。Bundle 錯誤訊息改導向 stderr |
+| **v0.12.2** | 2026-06-30 | **Windsurf、iFlow 整合退場**（分別因併入 Devin、原廠產品終止）。Fan-out 步驟新增 **`max_concurrency`** 有界執行緒池平行處理。TOML 與腳本可攜性修正。新增 Repository Governance 社群擴充 |
+| **v0.12.3** | 2026-07-01 | **Roo Code 整合退場**（擴充停止維護）。GitHub Copilot **skills 模式棄用預告**（`--skills` 預設推行前警告）。Prerelease 版本相容性檢查放寬。文件導覽新增 Bundles / Authentication 分類 |
+| **v0.12.4** | 2026-07-02 | 工作流步驟新增 **`py` 腳本類型**與 Python 直譯器解析。新增 label-driven **bug-fix / bug-test** 代理工作流程。多重表達式樣板插值修正。新增 Analytics 社群擴充 |
+| **v0.12.5** | 2026-07-06 | **Catalog URL 驗證強化**：拒絕 host-less catalog URL。工作流比較運算子支援非數字字串字典序比較、樣板插值改為 quote-aware。新增 namespaced git feature branch 範本支援 |
+| **v0.12.6** | 2026-07-07 | **Catalog URL 驗證擴大為 HTTPS-only**（`catalog add` 強制要求 HTTPS 與明確 host）。修正擴充本地腳本路徑改寫問題。新增 Charter 社群擴充 |
+| **v0.12.7** | 2026-07-07 | **`bundle update` 版本驅動元件生命週期管理**：新版 Bundle 移除的元件會被自動解除安裝。Fan-in / shell 步驟驗證強化。新增 Orchestration Task Context Management 社群擴充 |
+| **v0.12.8** | 2026-07-08 | **`update-agent-context` 移植為 Python 實作**。修正格式錯誤 IPv6/GHES URL 導致的例外。TOML 控制字元跳脫修正。新增 LLM Wiki 社群擴充 |
+| **v0.12.9** | 2026-07-09 | 工作流鏈式表達式過濾器改為**由左至右**依序套用。Python 直譯器探索邏輯強化（略過 Windows Store python3 stub）。SKILL.md frontmatter 控制字元跳脫修正 |
+| **v0.12.10** | 2026-07-10 | Plan 範本 Phase 編號修正。PowerShell 分支建立正確處理 `-Number 0`。巢狀 Spec 目錄下的 Plan 檔案搜尋修正。CI 相依套件版本更新 |
+| **v0.12.11** | 2026-07-10 | **錯誤處理強化**：catalog/auth/bundler 對格式錯誤 URL 改拋出明確自訂例外（而非原始 `ValueError`）。新增 EARS Requirements Syntax、Spec Kit Figma 社群擴充 |
+| **v0.12.12** | 2026-07-13 | Extension/Preset **`set-priority` 修復損壞的布林 priority 欄位**。`bundle` 拒絕 `file://` 等非 HTTPS 本機來源。新增 Verify Review Ship 社群擴充 |
+| **v0.12.13** | 2026-07-13 | Switch/If 步驟驗證強化（拒絕非映射 cases）。Shell 步驟逾時可設定。擴充相對路徑於產生的指令檔中正確改寫。Kiro 整合標記為 multi-install-safe |
+| **v0.12.14** | 2026-07-13 | 新增 **Test-First Governance**、**Autonomous Run Governance** 治理預設。`init --here` 於**無 TTY 環境**不再卡在確認提示。Command 步驟輸入強制驗證為映射型別 |
+| **v0.12.15** | 2026-07-14 | Autonomous Run Governance 預設更新至 v0.1.4。Catalog 對格式錯誤 URL 統一拋出明確例外。Extension 環境變數設定不再跨前綴衝突洩漏。新增 Multi-Repo Branch Sync 社群擴充 |
+
+> **升級提示**：從任何版本升級至 v0.12.15，請使用以下指令。詳見 [升級指南](https://github.com/github/spec-kit/blob/main/docs/upgrade.md)：
+>
+> ```bash
+> # 檢查是否有新版本
+> specify self check
+>
+> # 升級 CLI（自動偵測 uv/pipx）
+> specify self upgrade
+>
+> # 或釘選特定版本
+> specify self upgrade --tag v0.12.15
+>
+> # 使用 uv 手動安裝
+> uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git@v0.12.15
+>
+> # 或使用 pipx
+> pipx install --force git+https://github.com/github/spec-kit.git@v0.12.15
+>
+> # 更新專案檔（備份 constitution 後執行）
+> specify init --here --force --integration <your-agent>
+> ```
+
+---
+
+## 結語
+
+恭喜你完成了這份 Spec-Kit 使用教學手冊!
+
+### 核心要點回顧
+
+1. **SDD 的核心價值**:
+   - 📝 需求追溯性
+   - 🎯 方向明確
+   - 🧪 品質保證
+   - 🤖 AI 協作
+
+2. **關鍵工件**:
+   - **Spec**: 需求的唯一真相來源
+   - **Plan**: 技術決策的記錄
+   - **Tasks**: 可執行的最小單位
+   - **Constitution**: 團隊的開發守則
+
+3. **成功要素**:
+   - ✅ 團隊共識
+   - ✅ 持續實踐
+   - ✅ 靈活調整
+   - ✅ 工具輔助
+
+### 下一步行動
+
+**立即開始**:
+
+1. 選擇一個小專案作為試點
+2. 建立專案 Constitution
+3. 執行完整的 SDD 流程
+4. 記錄經驗與問題
+
+**持續改進**:
+
+1. 定期回顧 Constitution
+2. 分享成功案例
+3. 優化模板與流程
+4. 培養團隊習慣
+
+**擴展應用**:
+
+1. 推廣至更多專案
+2. 建立團隊標準
+3. 整合到 CI/CD
+4. 建立知識庫
+
+---
+
+### 保持聯繫
+
+- **GitHub**: https://github.com/github/spec-kit
+- **官方文件**: https://github.github.io/spec-kit/
+- **影片概覽**: https://www.youtube.com/watch?v=a9eR1xsfvHg
+- **社群討論**: GitHub Discussions
+- **問題回報**: GitHub Issues
+
+---
+
+**祝你在 Specification-Driven Development 的旅程中順利!** 🚀
+
+*文件版本: v14.0 | 適用 Spec-Kit v0.12.15+*  
+*最後更新: 2026-07-15*  
+*適用於: Spec-Kit v0.12.15+ / Spec Kit Templates - 0.12.15*
+
