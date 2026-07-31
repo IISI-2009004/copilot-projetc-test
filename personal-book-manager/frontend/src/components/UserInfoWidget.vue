@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowRight, User } from '@element-plus/icons-vue'
+import { ArrowRight, User, Reading } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
@@ -11,7 +11,9 @@ const username = computed(() => userStore.currentUser?.username ?? '訪客')
 const avatarLetter = computed(() => username.value.charAt(0).toUpperCase())
 
 function handleCommand(command: string) {
-  if (command === 'logout') {
+  if (command === 'reading') {
+    router.push('/reading')
+  } else if (command === 'logout') {
     userStore.logout()
     router.push('/')
   }
@@ -30,6 +32,10 @@ function handleCommand(command: string) {
         <el-dropdown-item disabled>
           <el-icon><User /></el-icon>
           {{ username }}
+        </el-dropdown-item>
+        <el-dropdown-item command="reading" divided>
+          <el-icon><Reading /></el-icon>
+          閱讀記錄
         </el-dropdown-item>
         <el-dropdown-item command="logout" divided>登出</el-dropdown-item>
       </el-dropdown-menu>
