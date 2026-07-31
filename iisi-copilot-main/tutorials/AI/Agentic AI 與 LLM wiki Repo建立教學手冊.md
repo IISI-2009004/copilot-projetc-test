@@ -1,0 +1,3468 @@
++++
+date = '2026-05-07T00:00:00+08:00'
+draft = false
+title = 'Agentic AI 與 LLM wiki Repo 建立教學手冊'
+tags = ['教學', 'AI開發', 'github', 'devops', 'llm-wiki']
+categories = ['教學']
++++
+
+# Agentic AI 與 LLM wiki Repo 建立教學手冊 — 企業級 AI 資產知識庫
+
+> **版本**：v3.1（2026-07-03）
+> **適用對象**：技術主管 / 架構師 / 資深工程師 / DevOps 團隊
+> **定位**：企業標準技術白皮書
+> **參考範本**：[github/awesome-copilot](https://github.com/github/awesome-copilot)（36.1k+ Stars / 4.5k+ Forks / 400+ Contributors）
+> **延伸參考**：[Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)（5,000+ Stars / 5,000+ Forks）
+> **最後審閱日期**：2026-07-03
+
+## 執行摘要
+
+企業導入 GitHub Copilot、Claude Code 等 AI 開發工具後，最大的隱憂不是工具本身，而是團隊產出的 Agent、Instruction、Skill、Prompt 等「AI 資產」缺乏統一管理，導致重複造輪子、品質參差、知識隨人員異動而流失。本白皮書提出一套可落地的解法：以 GitHub 官方 [awesome-copilot](https://github.com/github/awesome-copilot) 的分類體系與治理機制為骨幹，建立企業內部的 AI 資產知識庫（第 1–10 章涵蓋 Repo 建立、目錄設計、內容規範、CI/CD 自動化、治理與團隊導入的完整流程）；並進一步整合 Andrej Karpathy 提出的 [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 模式（第 11 章），讓「研究型、決策型」的知識也能由 LLM 持續編譯、複合成長，而非每次查詢都重新從原始資料派生答案。兩者互補：AI 資產知識庫管理「可執行的工具」，LLM Wiki 管理「持久化的判斷與脈絡」。讀者可依團隊規模（第 9.5.4 節）選擇適合的導入深度，從最小可行的 4 個核心目錄開始，逐步擴展至完整的 10 類資產與 LLM Wiki 知識層。
+
+## 版本歷史
+
+| 版本 | 日期 | 變更摘要 |
+|------|------|---------|
+| v1.0 | 2026-05-06 | 初版發佈，涵蓋 Repo 建立、目錄設計、內容規範、CI/CD、治理與團隊導入（第 1–10 章） |
+| v2.0 | 2026-05-06 | 新增第 11 章 LLM Wiki 知識庫建構與維護，整合 Karpathy LLM Wiki 模式 |
+| v3.0 | 2026-05-07 | 全文校閱，補強第 9、10 章實務建議與 FAQ |
+| v3.1 | 2026-07-03 | 更新 awesome-copilot 最新統計數字與 Node.js 版本建議；修正巢狀 code fence 造成的 Markdown 渲染錯誤；補齊目錄缺漏（6.9 節）；第 11 章補充 Memex 思想脈絡、知識壓縮原則、Ingest 職責分離、Lint 治理紅線等 Karpathy 原始論述中尚未消化的重點；新增執行摘要、版本歷史、參考文獻、名詞對照表等白皮書要素 |
+
+---
+
+## 目錄
+
+- [第 1 章 概述與設計理念](#第-1-章-概述與設計理念)
+  - [1.1 為何需要 AI 資產知識庫](#11-為何需要-ai-資產知識庫)
+  - [1.2 awesome-copilot 設計理念分析](#12-awesome-copilot-設計理念分析)
+  - [1.3 企業客製化策略](#13-企業客製化策略)
+- [第 2 章 Repo 建立與初始設定](#第-2-章-repo-建立與初始設定)
+  - [2.1 前置準備](#21-前置準備)
+    - [2.1.1 組織（Organization）建立](#211-組織organization建立)
+    - [2.1.2 Team 建立](#212-team-建立)
+  - [2.2 Repository 建立](#22-repository-建立)
+    - [2.2.1 建立指令](#221-建立指令)
+    - [2.2.2 Repository 設定](#222-repository-設定)
+  - [2.3 初始檔案建立](#23-初始檔案建立)
+    - [2.3.1 README.md](#231-readmemd)
+    - [2.3.2 .gitignore](#232-gitignore)
+    - [2.3.3 .gitattributes](#233-gitattributes)
+    - [2.3.4 .editorconfig](#234-editorconfig)
+    - [2.3.5 LICENSE](#235-license)
+  - [2.4 初始化指令彙整](#24-初始化指令彙整)
+- [第 3 章 客製化目錄結構設計](#第-3-章-客製化目錄結構設計)
+  - [3.1 整體目錄結構](#31-整體目錄結構)
+  - [3.2 各分類目錄說明](#32-各分類目錄說明)
+  - [3.3 目錄結構對照圖](#33-目錄結構對照圖)
+- [第 4 章 內容規範與模板設計](#第-4-章-內容規範與模板設計)
+  - [4.1 檔案命名慣例](#41-檔案命名慣例)
+  - [4.2 Frontmatter 規範](#42-frontmatter-規範)
+  - [4.3 內容模板](#43-內容模板)
+- [第 5 章 資料上架流程](#第-5-章-資料上架流程)
+  - [5.1 整體流程](#51-整體流程)
+  - [5.2 CONTRIBUTING.md 設計](#52-contributingmd-設計)
+  - [5.3 Pull Request Template](#53-pull-request-template)
+  - [5.4 Issue Template](#54-issue-template)
+  - [5.5 Branch 策略](#55-branch-策略)
+- [第 6 章 GitHub Actions 自動化 Workflow](#第-6-章-github-actions-自動化-workflow)
+  - [6.1 Workflow 總覽](#61-workflow-總覽)
+  - [6.2 內容驗證 Workflow](#62-內容驗證-workflow)
+  - [6.3 PR 目標分支檢查](#63-pr-目標分支檢查)
+  - [6.4 README 動態更新](#64-readme-動態更新)
+  - [6.5 過時內容檢測](#65-過時內容檢測)
+  - [6.6 貢獻者自動更新](#66-貢獻者自動更新)
+  - [6.7 PR 自動標籤](#67-pr-自動標籤)
+  - [6.8 建構腳本說明](#68-建構腳本說明)
+  - [6.9 LLM Wiki 知識健檢 Workflow](#69-llm-wiki-知識健檢-workflow)
+- [第 7 章 探索與搜尋機制](#第-7-章-探索與搜尋機制)
+  - [7.1 README 動態生成](#71-readme-動態生成)
+  - [7.2 分類文件自動生成](#72-分類文件自動生成)
+  - [7.3 Marketplace JSON](#73-marketplace-json)
+  - [7.4 llms.txt — 機器可讀格式](#74-llmstxt--機器可讀格式)
+  - [7.5 標籤系統設計](#75-標籤系統設計)
+  - [7.6 awesome-copilot 網站與 Marketplace](#76-awesome-copilot-網站與-marketplace)
+- [第 8 章 後續維運與治理](#第-8-章-後續維運與治理)
+  - [8.1 CODEOWNERS 設定](#81-codeowners-設定)
+  - [8.2 內容生命週期管理](#82-內容生命週期管理)
+  - [8.3 過時檢測策略](#83-過時檢測策略)
+  - [8.4 品質報告](#84-品質報告)
+  - [8.5 安全掃描](#85-安全掃描)
+  - [8.6 版本管理](#86-版本管理)
+- [第 9 章 團隊導入與最佳實務](#第-9-章-團隊導入與最佳實務)
+  - [9.1 導入路線圖](#91-導入路線圖)
+  - [9.2 角色與權限設計](#92-角色與權限設計)
+  - [9.3 Onboarding 流程](#93-onboarding-流程)
+  - [9.4 知識分享文化建立](#94-知識分享文化建立)
+  - [9.5 最佳實務](#95-最佳實務)
+- [第 10 章 附錄：範本與 Checklist](#第-10-章-附錄範本與-checklist)
+  - [10.1 完整目錄結構範本](#101-完整目錄結構範本)
+  - [10.2 package.json 範本](#102-packagejson-範本)
+  - [10.3 初始化指令 Checklist](#103-初始化指令-checklist)
+  - [10.4 快速參考卡](#104-快速參考卡)
+  - [10.5 常見問題（FAQ）](#105-常見問題faq)
+  - [10.6 名詞對照表](#106-名詞對照表)
+- [第 11 章 LLM Wiki 知識庫建構與維護](#第-11-章-llm-wiki-知識庫建構與維護)
+  - [11.1 LLM Wiki 核心理念](#111-llm-wiki-核心理念)
+  - [11.2 三層架構設計](#112-三層架構設計)
+  - [11.3 核心操作流程](#113-核心操作流程)
+  - [11.4 索引與日誌系統](#114-索引與日誌系統)
+  - [11.5 工具生態系統](#115-工具生態系統)
+  - [11.6 企業級 LLM Wiki 導入策略](#116-企業級-llm-wiki-導入策略)
+  - [11.7 Schema 設計範本](#117-schema-設計範本)
+  - [11.8 實作指引](#118-實作指引)
+- [參考文獻](#參考文獻)
+
+---
+
+## 第 1 章 概述與設計理念
+
+### 1.1 為何需要 AI 資產知識庫
+
+隨著企業全面導入 AI 工具（GitHub Copilot、Claude Code、Codex、Gemini）進行軟體開發，團隊在日常工作中持續產出大量有價值的 AI 資產。根據 GitHub 官方 awesome-copilot 專案的分類體系，這些資產可歸納為以下類型：
+
+| 資產類型 | 說明 | 檔案慣例 | 企業範例 |
+|---------|------|---------|---------|
+| **Agents** | 專門化的 AI 代理，整合 MCP Server 與特定領域知識 | `*.agent.md` | Java 重構代理、安全掃描代理 |
+| **Instructions** | 編碼標準與規範，依 `applyTo` 模式自動套用至特定檔案類型 | `*.instructions.md` | Spring Boot 編碼規範、Vue 元件標準 |
+| **Skills** | 自包含的能力包，含指令 + 腳本 + 參考資料（遵循 [Agent Skills Specification](https://agentskills.io/specification)） | `{folder}/SKILL.md` | 單元測試生成器、API 文件產生器 |
+| **Plugins** | 將 Agents + Commands + Skills 打包為可安裝套件，透過 `copilot plugin install` 安裝 | `{folder}/plugin.json` | 企業 Java 開發套件、前端 Vue 工具包 |
+| **Hooks** | Copilot Coding Agent 會話期間的自動化觸發（session start/end、user prompt、tool usage） | `{folder}/hooks.json` | Session 初始化載入規範、工具守衛 |
+| **Agentic Workflows** | 以 Markdown 撰寫的 AI 驅動 GitHub Actions 自動化（透過 `gh aw` 編譯） | `*.md`（含特定 Frontmatter） | 每日 Issue 報告、PR 自動審查 |
+| **Cookbook** | Copy-paste-ready 的 Copilot API 操作配方 | 獨立目錄 | API 呼叫範例、錯誤處理 Hook |
+| **Prompts** | 結構化的 AI 提示詞模板（企業自建分類） | `{folder}/prompt.md` | Code Review Prompt、逆向工程 Prompt |
+| **教學手冊** | 技術教學文件（企業自建分類） | `*.md` | Claude Code 教學手冊、MCP 教學手冊 |
+| **範本** | 可直接複用的文件與程式碼範本（企業自建分類） | `{folder}/*.md` | 系統分析範本、架構設計範本 |
+
+若缺乏統一管理，這些資產將散落於個人電腦、聊天記錄或 Wiki 中，導致：
+
+- **重複造輪子**：相同問題被不同團隊重複解決
+- **品質不一**：缺乏標準化的品質控管
+- **知識流失**：人員異動時資產隨之消失
+- **無法追溯**：缺乏版本控管與變更記錄
+- **無法機器消費**：AI Agent 無法系統性讀取與利用團隊知識
+
+> **延伸閱讀**：除了以 GitHub Repo 作為 AI 資產知識庫，Andrej Karpathy 提出的 [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 模式提供了另一種互補的知識管理策略——由 LLM 持續建構與維護結構化 Markdown Wiki，讓知識複合成長而非每次重新派生。詳見 [**第 11 章 LLM Wiki 知識庫建構與維護**](#第-11-章-llm-wiki-知識庫建構與維護)。
+
+### 1.2 awesome-copilot 設計理念分析
+
+GitHub 官方的 [awesome-copilot](https://github.com/github/awesome-copilot) 是目前最具代表性的 AI 資產知識庫（36.1k+ Stars、400+ Contributors、4.5k+ Forks、1,913+ commits），其設計理念值得企業深入參考：
+
+{{< mermaid >}}
+graph TB
+    subgraph "awesome-copilot 架構（2026 最新）"
+        A[Agents<br/>專門化代理] --> G[統一 Frontmatter<br/>YAML Metadata]
+        B[Instructions<br/>編碼規範] --> G
+        C[Skills<br/>能力包<br/>遵循 agentskills.io] --> G
+        D[Plugins<br/>可安裝套件<br/>Claude Code spec] --> G
+        E[Hooks<br/>自動化觸發] --> G
+        F[Agentic Workflows<br/>AI GitHub Actions<br/>gh aw 編譯] --> G
+        CB[Cookbook<br/>API 操作配方] --> G
+    end
+
+    G --> H[自動化建構<br/>npm run build<br/>README + marketplace.json]
+    G --> I[品質驗證<br/>PR 自動檢查<br/>skill:validate / plugin:validate]
+    G --> J[多管道探索]
+    J --> J1[網站搜尋<br/>awesome-copilot.github.com]
+    J --> J2[Marketplace<br/>copilot plugin install]
+    J --> J3[llms.txt<br/>機器可讀格式]
+    J --> J4[Learning Hub<br/>教學與指南]
+    J --> J5[Tools<br/>MCP Servers + 開發工具]
+    G --> K[貢獻流程<br/>staged → main<br/>AI Agent 快速通道 🤖🤖🤖]
+{{< /mermaid >}}
+
+**核心設計原則**：
+
+1. **Convention over Configuration**：統一命名慣例（`*.agent.md`、`*.instructions.md`、`SKILL.md`），降低學習成本
+2. **Metadata-driven**：所有內容使用 YAML Frontmatter 描述，支援自動化處理與驗證
+3. **Staged Branch Strategy**：貢獻先進入 `staged` 分支，經 CI 驗證與人工審查後透過 `chore: publish from staged` 合併至 `main`
+4. **Automated Quality Gate**：透過 GitHub Actions 自動驗證命名慣例、Frontmatter 完整性、Skill 結構、Plugin 格式
+5. **Multi-channel Discovery**：
+   - **網站**：[awesome-copilot.github.com](https://awesome-copilot.github.com/) 提供全文搜尋與過濾
+   - **Plugin Marketplace**：新版 Copilot CLI / VS Code 已預設註冊 awesome-copilot marketplace，可直接執行 `copilot plugin install <name>@awesome-copilot`（舊版需先 `copilot plugin marketplace add`）
+   - **llms.txt**：結構化清單供 AI Agent 消費
+   - **Learning Hub**：涵蓋 Agents、Skills、Instructions、Hooks、Agentic Workflows、MCP Servers 的教學
+   - **Tools**：MCP Servers 與開發者工具專區
+6. **Plugin 生態系統**：採用 Claude Code spec 格式定義 `plugin.json`，支援本地 Plugin 與 External Plugin（GitHub / Git URL / npm / pip）。**安全限制**：外部 Plugin 來源僅接受 Microsoft / GitHub 官方 repos，第三方來源需經安全審查
+7. **MCP Server 整合**：內建 MCP Server 可直接從 repo 搜尋與安裝資源（需 Docker）
+8. **Scaffolding 工具**：提供 `npm run skill:create` 與 `npm run plugin:create` 快速建立合規的 Skill / Plugin 骨架，降低貢獻門檻
+9. **AI Agent 貢獻最佳化**：PR 標題末尾加上 `🤖🤖🤖` 可進入快速合併通道（Fast-track Approval）
+10. **All-Contributors 認可**：支援 Instructions（🧭）、Agents（🎭）、Skills（🧰）、Workflows（⚡）、Plugins（🎁）等自訂貢獻類型
+
+### 1.3 企業客製化策略
+
+企業版知識庫在 awesome-copilot 基礎上，需加入以下考量：
+
+| 面向 | awesome-copilot（開源社群） | 企業版（客製化） |
+|------|---------------------------|----------------|
+| **存取控制** | Public，任何人可貢獻 | Private / Internal，RBAC 權限控管 |
+| **內容類型** | Agents / Instructions / Skills / Plugins / Hooks / Workflows / Cookbook | 加入教學手冊、範本、Prompt Template |
+| **品質標準** | 社群 Review + AI Agent 快速通道 | 企業級 Review + 合規審查（可選擇性開放 AI 快速通道） |
+| **Plugin 來源** | External Plugin 僅接受 Microsoft/GitHub 官方 repos | 僅接受內部來源，禁止外部未審核 Plugin |
+| **命名規範** | 英文 | 支援中英文（目錄用中文、檔案用英文 slug） |
+| **安全性** | 基礎 Secret Scan | 企業級安全掃描 + DLP + TruffleHog |
+| **維運** | 社群維護 + github-actions[bot] 自動發佈 | 指定團隊 + CODEOWNERS + 定期稽核 |
+| **探索管道** | 網站 + Marketplace + llms.txt + Learning Hub + Tools | 內部網站 + README 索引 + llms.txt |
+| **MCP 整合** | 內建 MCP Server（Docker） | 可選，視安全政策決定 |
+| **AI 協作** | 支援 AI Agent 貢獻（PR 標題末尾加 🤖🤖🤖） | 需人工審查，AI 僅輔助撰寫 |
+| **知識編譯** | 未整合 LLM Wiki 模式 | 內建 LLM Wiki 子目錄（`llm-wiki/`），於 Repo 初始化時一併建立，實現知識編譯與持久化（詳見第 11 章） |
+
+> **實務建議**：不要完全複製 awesome-copilot 的結構，應根據團隊實際需求取捨。小型團隊（< 20 人）建議先從 4-5 個核心分類開始（Agents / Instructions / Skills / Prompts / 教學手冊），再逐步擴展至 Plugins、Hooks、Workflows。
+
+---
+
+## 第 2 章 Repo 建立與初始設定
+
+### 2.1 前置準備
+
+#### 2.1.1 組織（Organization）建立
+
+若公司尚未建立 GitHub Organization，需先完成：
+
+```bash
+# 步驟 1：前往 https://github.com/organizations/plan
+# 步驟 2：選擇方案（建議 GitHub Enterprise）
+# 步驟 3：填寫組織資訊
+```
+
+**組織設定建議**：
+
+| 設定項目 | 建議值 | 說明 |
+|---------|-------|------|
+| Organization name | `{company}-ai-assets` | 清楚表達用途 |
+| Default repository permission | `Read` | 最小權限原則 |
+| Repository creation | `Members` | 允許成員建立 repo |
+| Two-factor authentication | `Required` | 強制 2FA |
+| Base permissions | `Read` | 基礎讀取權限 |
+
+#### 2.1.2 Team 建立
+
+```bash
+# 建議的 Team 結構
+├── ai-assets-admins          # 管理員（2-3 人）
+├── ai-assets-maintainers     # 維護者（5-8 人，各領域代表）
+├── ai-assets-reviewers       # 審查者（10-15 人，資深工程師）
+└── ai-assets-contributors    # 貢獻者（全體開發人員）
+```
+
+### 2.2 Repository 建立
+
+#### 2.2.1 建立指令
+
+```bash
+# 方式一：GitHub CLI（建議）
+gh repo create {org}/ai-assets \
+  --description "企業 AI 資產知識庫 — Agents / Skills / Instructions / Plugins / Hooks / Workflows / Prompts / 教學手冊" \
+  --internal \
+  --license MIT \
+  --gitignore Node \
+  --clone
+
+# 方式二：透過 Web UI
+# 前往 https://github.com/organizations/{org}/repositories/new
+```
+
+#### 2.2.2 Repository 設定
+
+```bash
+# Branch Protection Rules（main 分支）
+gh api repos/{org}/ai-assets/branches/main/protection \
+  --method PUT \
+  --field required_status_checks='{"strict":true,"contexts":["validate-content","validate-readme"]}' \
+  --field enforce_admins=true \
+  --field required_pull_request_reviews='{"required_approving_review_count":2,"dismiss_stale_reviews":true}' \
+  --field restrictions=null
+
+# 啟用 GitHub Advanced Security（若 Enterprise 方案）
+gh api repos/{org}/ai-assets \
+  --method PATCH \
+  --field security_and_analysis='{"secret_scanning":{"status":"enabled"},"secret_scanning_push_protection":{"status":"enabled"}}'
+```
+
+**Branch Protection 設定項目**：
+
+| 規則 | 設定 | 說明 |
+|------|------|------|
+| Require pull request reviews | 2 位審查者 | 確保內容品質 |
+| Dismiss stale reviews | 啟用 | 程式碼變更後需重新審查 |
+| Require status checks | 啟用 | 通過 CI 才可合併 |
+| Require branches to be up to date | 啟用 | 確保分支為最新 |
+| Restrict pushes | 僅 admins | 禁止直接推送至 main |
+| Require signed commits | 啟用（建議） | 確認提交者身份 |
+
+### 2.3 初始檔案建立
+
+#### 2.3.1 README.md
+
+````markdown
+# 🤖 {Company} AI 資產知識庫
+
+> 集中管理企業 AI 開發資產，加速團隊知識累積與 AI 協作效率
+
+## 📋 快速導覽
+
+| 分類 | 數量 | 說明 |
+|------|------|------|
+| 🤖 [Agents](agents/) | — | 專門化 AI 代理定義 |
+| 📋 [Instructions](instructions/) | — | 編碼規範與標準（依 applyTo 模式自動套用） |
+| 🎯 [Skills](skills/) | — | 自包含能力包（指令 + 腳本 + 資料） |
+| 🔌 [Plugins](plugins/) | — | Agent + Skill + Command 整合套件 |
+| 🪝 [Hooks](hooks/) | — | Copilot Coding Agent 自動化觸發動作 |
+| ⚡ [Workflows](workflows/) | — | AI 驅動 GitHub Actions 自動化（Agentic Workflows） |
+| 🍳 [Cookbook](cookbook/) | — | Copy-paste-ready API 操作配方 |
+| 📝 [Prompts](prompts/) | — | 結構化 AI 提示詞模板 |
+| 📖 [教學手冊](tutorials/) | — | 技術教學與工具使用指南 |
+| 📄 [範本](templates/) | — | 可直接複用的文件與程式碼範本 |
+| 📚 [LLM Wiki](llm-wiki/) | — | LLM 持續編譯的結構化知識庫（raw → wiki → 交叉引用） |
+
+## 🚀 如何使用
+
+### 安裝 Plugin
+
+```bash
+# 透過 GitHub Copilot CLI
+copilot plugin install <plugin-name>@{org}/ai-assets
+
+# 若 Marketplace 未註冊，先執行一次
+copilot plugin marketplace add {org}/ai-assets
+copilot plugin install <plugin-name>@{org}/ai-assets
+```
+
+### 套用 Instruction
+
+將 `.instructions.md` 檔案複製到專案的 `.github/` 目錄即可自動套用。
+
+### 使用 Agent
+
+在 VS Code Copilot Chat 中使用 `@agent-name` 呼叫已註冊的 Agent。
+
+### 使用 Skill
+
+在 Copilot Chat 中描述任務，Agent 會自動匹配並載入相關 Skill。
+
+### 查閱 LLM Wiki
+
+瀏覽 `llm-wiki/wiki/` 目錄查閱 LLM 編譯的結構化知識頁面；將新的原始資料放入 `llm-wiki/raw/`，再以 LLM 執行 Ingest 即可擴充知識庫。
+
+## 📖 學習資源
+
+- [Learning Hub](docs/learning-hub/) — 入門教學與進階指南
+- [Tools](docs/tools/) — MCP Servers 與開發者工具
+- [llms.txt](llms.txt) — 機器可讀的知識庫摘要
+
+## 📥 如何貢獻
+
+請參閱 [CONTRIBUTING.md](CONTRIBUTING.md) 了解貢獻流程。所有 PR 請以 `staged` 分支為目標。
+
+## 📊 貢獻者
+
+<!-- ALL-CONTRIBUTORS-LIST:START -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+## 📜 授權
+
+本專案採用 [MIT License](LICENSE)。
+````
+
+#### 2.3.2 .gitignore
+
+```gitignore
+# Dependencies
+node_modules/
+.pnp.*
+
+# Build outputs
+dist/
+build/
+.next/
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets (嚴禁提交)
+.env
+.env.local
+*.key
+*.pem
+
+# Logs
+*.log
+npm-debug.log*
+```
+
+#### 2.3.3 .gitattributes
+
+```gitattributes
+# 統一換行符號
+* text=auto eol=lf
+
+# Markdown
+*.md text eol=lf
+
+# YAML
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# JSON
+*.json text eol=lf
+
+# Shell
+*.sh text eol=lf
+
+# Generated files (不納入 diff)
+*.lock.yml linguist-generated=true
+docs/README.*.md linguist-generated=true
+```
+
+#### 2.3.4 .editorconfig
+
+```ini
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[Makefile]
+indent_style = tab
+```
+
+#### 2.3.5 LICENSE
+
+建議採用 MIT License（內部使用）或公司自訂授權條款。
+
+### 2.4 初始化指令彙整
+
+```bash
+# 完整初始化流程
+cd ai-assets
+
+# 建立分支策略
+git checkout -b staged
+git push -u origin staged
+
+# 建立目錄結構（對齊 awesome-copilot + 企業自建分類）
+mkdir -p agents instructions skills plugins hooks workflows cookbook
+mkdir -p prompts tutorials templates
+mkdir -p .github/workflows .github/ISSUE_TEMPLATE .github/plugin
+mkdir -p docs eng scripts data _templates
+
+# 建立 LLM Wiki 目錄結構（詳見第 11 章）
+mkdir -p llm-wiki/{raw,wiki/{tools,concepts,comparisons,analysis},schema,reports}
+
+# 建立初始檔案
+touch agents/.gitkeep
+touch instructions/.gitkeep
+touch skills/.gitkeep
+touch plugins/.gitkeep
+touch hooks/.gitkeep
+touch workflows/.gitkeep
+touch cookbook/.gitkeep
+touch prompts/.gitkeep
+touch tutorials/.gitkeep
+touch templates/.gitkeep
+
+# 建立 AGENTS.md（供 AI Agent 理解專案結構）
+cat > AGENTS.md << 'EOF'
+## Project Overview
+企業 AI 資產知識庫，參考 github/awesome-copilot 架構設計。
+
+## Repository Structure
+- agents/ — AI 代理定義（*.agent.md）
+- instructions/ — 編碼規範（*.instructions.md）
+- skills/ — 能力包（{folder}/SKILL.md）
+- plugins/ — 可安裝套件（{folder}/plugin.json）
+- hooks/ — 自動化觸發（{folder}/hooks.json）
+- workflows/ — Agentic Workflows（*.md）
+- cookbook/ — API 操作配方
+- prompts/ — Prompt 模板
+- tutorials/ — 教學手冊
+- templates/ — 文件範本
+- llm-wiki/ — LLM Wiki 知識庫（raw → wiki → 交叉引用）
+  - llm-wiki/raw/ — 原始資料（不可變，僅新增）
+  - llm-wiki/wiki/ — LLM 編譯的知識頁面
+  - llm-wiki/schema/ — Wiki Schema 定義（CLAUDE.md）
+  - llm-wiki/reports/ — Lint 報告
+
+## Setup Commands
+npm ci
+npm run build
+
+## Development Workflow
+All PRs must target the `staged` branch.
+EOF
+
+# 建立 LLM Wiki Schema（CLAUDE.md）
+cat > llm-wiki/schema/CLAUDE.md << 'WIKIEOF'
+# CLAUDE.md — LLM Wiki Schema
+
+## Project Overview
+本目錄為 LLM 持續編譯的結構化知識庫。
+
+## Directory Structure
+- raw/ — 原始資料（不可變，僅新增）
+- wiki/ — LLM 編譯的知識頁面
+- schema/ — 架構定義
+- reports/ — Lint 報告
+
+## Naming Conventions
+- Raw: `raw/{YYYY-MM-DD}-{source-type}-{slug}.md`
+- Wiki: `wiki/{category}/{slug}.md`
+- 分類目錄：tools / concepts / comparisons / analysis
+
+## Ingest Workflow
+1. 將原始資料存入 raw/
+2. 解析與分類
+3. 更新或建立 wiki/ 中的相關頁面
+4. 更新 wiki/index.md
+5. 記錄至 wiki/log.md
+6. 提交 Git
+
+## Lint Rules
+- 矛盾偵測：檢查頁面間矛盾陳述
+- 過時檢查：標記 > 90 天未更新的頁面
+- 孤立頁面：無任何交叉引用的頁面
+- 缺失引用：網狀分析缺少的連結
+
+## Quality Standards
+- 每頁必含：# 標題、> 一行摘要、## 來源（含 provenance hash）
+- 每頁至少 3 個交叉引用連結
+- 未驗證內容標註 [unverified]
+- 保留原始來源雜湊值供追溯
+WIKIEOF
+
+# 建立空索引與日誌
+cat > llm-wiki/wiki/index.md << 'IDXEOF'
+# Wiki 索引
+
+（尚無內容）
+
+---
+最後更新：$(date +%Y-%m-%d)
+總頁數：0
+IDXEOF
+
+cat > llm-wiki/wiki/log.md << 'LOGEOF'
+# 操作日誌
+
+（尚無操作記錄）
+LOGEOF
+
+# 建立 Codex 相容 symlink
+# Linux / macOS
+ln -s schema/CLAUDE.md llm-wiki/AGENTS.md
+# Windows（以管理員權限執行）
+# mklink llm-wiki\AGENTS.md llm-wiki\schema\CLAUDE.md
+
+# 初始化 package.json
+npm init -y
+npm install gray-matter glob
+
+# 驗證 Scaffolding 指令可用
+npm run skill:create    # 快速建立合規的 Skill 骨架（互動式）
+npm run plugin:create   # 快速建立合規的 Plugin 骨架（互動式）
+
+# 提交前修正換行符號（跨平台一致性）
+bash eng/fix-line-endings.sh
+
+# 提交
+git add -A
+git commit -m "chore: initialize AI assets repository structure"
+git push origin staged
+
+# 建立 PR 合併至 main
+gh pr create --base main --head staged --title "chore: initialize repository" --body "Initial repository setup"
+```
+
+> **注意事項**：
+> - 務必先建立 `staged` 分支再設定 Branch Protection，否則會導致無法推送初始提交
+> - **所有功能分支必須從 `staged` 建立，而非 `main`**。`main` 僅透過 `chore: publish from staged` PR 合併更新
+> - `.gitkeep` 檔案用於保留空目錄，待有實際內容後可移除
+> - 建議第一次合併由 admin 直接執行，後續嚴格遵循 PR 流程
+> - `AGENTS.md` 是供 AI Coding Agent（如 Copilot Coding Agent / Codex）理解專案結構的關鍵檔案
+> - 提交前執行 `bash eng/fix-line-endings.sh` 確保跨平台換行符號一致
+
+---
+
+## 第 3 章 客製化目錄結構設計
+
+### 3.1 整體目錄結構
+
+```
+ai-assets/
+├── README.md                          # 主頁（動態生成表格索引）
+├── CONTRIBUTING.md                    # 貢獻指南
+├── AGENTS.md                          # AI Agent 專用專案說明
+├── CODE_OF_CONDUCT.md                 # 行為準則
+├── SECURITY.md                        # 安全政策
+├── LICENSE                            # 授權條款
+├── SUPPORT.md                         # 支援政策
+├── package.json                       # 建構工具依賴
+├── llms.txt                           # 機器可讀索引（供 AI Agent 消費）
+├── context7.json                      # Context7 整合設定（選用）
+├── .gitignore
+├── .gitattributes
+├── .editorconfig
+├── .codespellrc                       # 拼字檢查設定
+│
+├── agents/                            # 🤖 AI 代理定義
+│   ├── java-refactoring.agent.md
+│   ├── security-scanner.agent.md
+│   ├── code-reviewer.agent.md
+│   └── ...
+│
+├── instructions/                      # 📋 編碼規範（依 applyTo 自動套用）
+│   ├── java-spring-boot.instructions.md
+│   ├── vue-typescript.instructions.md
+│   ├── sql-database.instructions.md
+│   └── ...
+│
+├── skills/                            # 🎯 能力包（遵循 agentskills.io spec）
+│   ├── unit-test-generator/
+│   │   ├── SKILL.md
+│   │   ├── scripts/
+│   │   ├── references/
+│   │   └── assets/
+│   ├── api-doc-generator/
+│   └── ...
+│
+├── plugins/                           # 🔌 可安裝套件（Claude Code spec）
+│   ├── enterprise-java/
+│   │   ├── .github/plugin/plugin.json
+│   │   └── README.md
+│   ├── frontend-vue/
+│   └── external.json                  # 外部 Plugin 註冊表
+│
+├── hooks/                             # 🪝 自動化觸發
+│   ├── session-init/
+│   │   ├── README.md
+│   │   ├── hooks.json
+│   │   └── init-script.sh
+│   ├── tool-guardian/
+│   └── ...
+│
+├── workflows/                         # ⚡ Agentic Workflows（gh aw 編譯）
+│   ├── pr-auto-review.md
+│   ├── daily-issues-report.md
+│   ├── weekly-comment-sync.md
+│   └── ...
+│
+├── cookbook/                           # 🍳 API 操作配方
+│   ├── error-recovery-hooks/
+│   ├── copilot-api-examples/
+│   └── ...
+│
+├── prompts/                           # 📝 Prompt 模板（企業自建）
+│   ├── code-review/
+│   │   └── prompt.md
+│   ├── reverse-engineering/
+│   │   └── prompt.md
+│   ├── architecture-design/
+│   │   └── prompt.md
+│   └── ...
+│
+├── tutorials/                         # 📖 教學手冊（企業自建）
+│   ├── claude-code-教學手冊.md
+│   ├── copilot-ssdlc-教學手冊.md
+│   ├── mcp-教學手冊.md
+│   └── ...
+│
+├── templates/                         # 📄 文件範本（企業自建）
+│   ├── system-analysis/
+│   ├── architecture-design/
+│   └── project-plan/
+│
+├── llm-wiki/                          # 📚 LLM Wiki 知識庫（詳見第 11 章）
+│   ├── AGENTS.md -> schema/CLAUDE.md  # Codex 相容 symlink
+│   ├── schema/
+│   │   └── CLAUDE.md                  # Wiki Schema 定義
+│   ├── raw/                           # 原始資料（不可變，僅新增）
+│   │   └── .gitkeep
+│   ├── wiki/                          # LLM 編譯的知識頁面
+│   │   ├── index.md                   # 內容索引
+│   │   ├── log.md                     # 操作日誌
+│   │   ├── tools/                     # 工具與平台
+│   │   ├── concepts/                  # 概念與模式
+│   │   ├── comparisons/               # 對照表
+│   │   └── analysis/                  # 分析與決策
+│   └── reports/                       # Lint 報告
+│       └── .gitkeep
+│
+├── docs/                              # 📚 自動生成文件
+│   ├── README.agents.md
+│   ├── README.skills.md
+│   ├── README.instructions.md
+│   ├── learning-hub/                  # 學習中心
+│   └── tools/                         # 工具與 MCP Server 索引
+│
+├── eng/                               # 🔧 建構腳本
+│   ├── update-readme.mjs
+│   ├── generate-marketplace.mjs
+│   ├── validate-content.mjs
+│   ├── fix-line-endings.sh
+│   └── ...
+│
+├── scripts/                           # 🛠️ 公用腳本
+│   ├── lint-frontmatter.mjs
+│   └── ...
+│
+├── .schemas/                          # 📐 JSON Schema 定義
+│   ├── plugin.schema.json
+│   ├── hooks.schema.json
+│   └── ...
+│
+├── .vscode/                           # 🖥️ VS Code 設定
+│   ├── tasks.json                     # 快速新增 Agent/Skill 的 Task
+│   └── settings.json
+│
+├── .github/                           # ⚙️ GitHub 配置
+│   ├── workflows/
+│   │   ├── validate-content.yml
+│   │   ├── validate-readme.yml
+│   │   ├── publish.yml
+│   │   ├── staleness-report.yml
+│   │   ├── contributors.yml
+│   │   ├── security-scan.yml
+│   │   └── ...
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── new-agent.yml
+│   │   ├── new-skill.yml
+│   │   └── bug-report.yml
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   ├── CODEOWNERS
+│   ├── labeler.yml
+│   └── plugin/
+│       └── marketplace.json           # 自動生成
+│
+├── _templates/                        # 📋 空白模板（供貢獻者複製）
+│   ├── agent.template.md
+│   ├── instruction.template.md
+│   ├── skill.template/
+│   └── ...
+│
+└── data/                              # 📊 設定與 Metadata
+    ├── config.json
+    └── tags.json                      # 標準化標籤清單
+```
+
+### 3.2 各分類目錄說明
+
+#### 3.2.1 agents/ — AI 代理定義
+
+每個 Agent 為一個 `.agent.md` 檔案，使用 YAML Frontmatter 定義 metadata。根據 awesome-copilot 規範，`description` 欄位為必填（需用單引號包裹），建議包含 `model` 與 `tools` 欄位：
+
+```
+agents/
+├── java-refactoring.agent.md          # Java 重構代理
+├── security-scanner.agent.md          # 安全掃描代理
+├── code-reviewer.agent.md             # Code Review 代理
+├── database-optimizer.agent.md        # DB 優化代理
+├── api-designer.agent.md              # API 設計代理
+└── legacy-analyzer.agent.md           # 舊系統分析代理
+```
+
+#### 3.2.2 instructions/ — 編碼規範
+
+每個 Instruction 為一個 `.instructions.md` 檔案。`description` 和 `applyTo` 皆為必填欄位，`applyTo` 使用 glob 模式指定自動套用的檔案類型：
+
+```
+instructions/
+├── java-spring-boot.instructions.md   # applyTo: '**/*.java'
+├── vue-typescript.instructions.md     # applyTo: '**/*.{vue,ts}'
+├── sql-database.instructions.md       # applyTo: '**/*.sql'
+├── python-fastapi.instructions.md     # applyTo: '**/*.py'
+├── markdown-docs.instructions.md      # applyTo: '**/*.md'
+└── dockerfile.instructions.md         # applyTo: '**/Dockerfile*'
+```
+
+#### 3.2.3 skills/ — 能力包
+
+每個 Skill 為一個資料夾，包含 `SKILL.md` 及相關資源。遵循 [Agent Skills Specification](https://agentskills.io/specification)，`name` 必須與資料夾名稱一致（小寫 + 連字號，最多 64 字元），`description` 長度 10-1024 字元，單檔資源不超過 5MB：
+
+```
+skills/
+├── unit-test-generator/
+│   ├── SKILL.md                       # 能力說明與使用方式
+│   ├── scripts/
+│   │   ├── generate-junit5.sh
+│   │   └── generate-vitest.sh
+│   ├── references/
+│   │   ├── junit5-patterns.md
+│   │   └── testing-best-practices.md
+│   └── assets/
+│       └── test-template.java
+├── api-doc-generator/
+└── db-migration-helper/
+```
+
+#### 3.2.4 plugins/ — 可安裝套件
+
+每個 Plugin 為一個資料夾，包含 `.github/plugin/plugin.json`（採用 Claude Code spec 格式）與 `README.md`。Plugin 內容透過宣告式定義引用 top-level 目錄中的 agents/commands/skills，CI 負責物化（materialize）到 Plugin 目錄中：
+
+```
+plugins/
+├── enterprise-java/
+│   ├── .github/plugin/plugin.json     # name, description, version, agents[], commands[], skills[]
+│   └── README.md
+├── frontend-vue/
+│   ├── .github/plugin/plugin.json
+│   └── README.md
+└── external.json                      # 外部 Plugin 註冊表（GitHub/npm/pip/git）
+```
+
+#### 3.2.5 hooks/ — 自動化觸發
+
+每個 Hook 為一個資料夾，包含 `README.md`（含 Frontmatter）與 `hooks.json`（Hook 事件設定）。支援的事件包括 session start、session end、user prompt、tool usage：
+
+```
+hooks/
+├── session-init/
+│   ├── README.md                      # name, description, tags
+│   ├── hooks.json                     # hook 事件設定
+│   └── init-script.sh                 # 可執行腳本（需 chmod +x）
+├── tool-guardian/
+│   ├── README.md
+│   ├── hooks.json
+│   └── guardian.sh
+└── ...
+```
+
+#### 3.2.6 workflows/ — Agentic Workflows
+
+每個 Workflow 為一個 `.md` 檔案（非 `.yml`），包含特殊 Frontmatter（`on`、`permissions`、`safe-outputs`）與自然語言指令。透過 `gh aw compile --validate` 進行本地驗證，CI 會阻擋 `.yml` / `.lock.yml` 檔案：
+
+```
+workflows/
+├── pr-auto-review.md                  # AI 驅動 PR 自動審查
+├── daily-issues-report.md             # 每日 Issue 報告
+├── weekly-comment-sync.md             # 每週留言同步
+└── ...
+```
+
+#### 3.2.7 cookbook/ — API 操作配方
+
+Cookbook 提供 copy-paste-ready 的操作配方，如 Copilot API 呼叫範例、錯誤處理 Hook、PyInstaller 建構配方等：
+
+```
+cookbook/
+├── error-recovery-hooks/              # 錯誤恢復 Hook 配方
+├── copilot-api-examples/              # Copilot API 操作範例
+└── ...
+```
+
+#### 3.2.8 prompts/ — Prompt 模板（企業自建分類）
+
+```
+prompts/
+├── code-review/
+│   └── prompt.md                      # Code Review 用 Prompt
+├── reverse-engineering/
+│   └── prompt.md                      # 逆向工程用 Prompt
+├── architecture-design/
+│   └── prompt.md                      # 架構設計用 Prompt
+├── ssdlc/
+│   ├── threat-modeling.md             # 威脅建模 Prompt
+│   └── security-review.md            # 安全審查 Prompt
+└── README.md                         # Prompt 使用指南
+```
+
+#### 3.2.9 tutorials/ — 教學手冊（企業自建分類）
+
+```
+tutorials/
+├── claude-code-教學手冊.md
+├── copilot-ssdlc-教學手冊.md
+├── mcp-教學手冊.md
+├── warp-教學手冊.md
+├── ai-governance-教學手冊.md
+└── README.md                         # 教學手冊索引
+```
+
+#### 3.2.10 templates/ — 文件範本（企業自建分類）
+
+```
+templates/
+├── system-analysis/
+│   ├── requirements-spec.md           # 需求規格書範本
+│   └── use-case-spec.md              # 使用案例規格書範本
+├── architecture-design/
+│   ├── architecture-doc.md            # 架構設計文件範本
+│   └── api-spec.md                   # API 規格書範本
+├── project-plan/
+│   └── migration-plan.md             # 架構轉換計畫範本
+└── README.md                         # 範本索引
+```
+
+#### 3.2.11 llm-wiki/ — LLM Wiki 知識庫
+
+LLM Wiki 為 Repo 內建的結構化知識庫，由 LLM 持續編譯與維護（詳見第 11 章）。與其他分類的主要差異在於：Wiki Page 不使用 YAML Frontmatter，改由 `schema/CLAUDE.md` 定義的 Markdown 結構慣例管控。
+
+```
+llm-wiki/
+├── AGENTS.md -> schema/CLAUDE.md        # Codex 相容 symlink
+├── schema/
+│   └── CLAUDE.md                          # Wiki Schema 定義（目錄慣例、工作流、品質標準）
+├── raw/                                   # 原始資料（不可變，僅新增）
+│   ├── 2026-05-07-release-kubernetes-130.md
+│   ├── 2026-05-06-meeting-arch-review.md
+│   └── ...
+├── wiki/                                  # LLM 編譯的知識頁面
+│   ├── index.md                           # 內容索引（依分類組織）
+│   ├── log.md                             # 操作日誌（時間線記錄）
+│   ├── tools/                             # 工具與平台（如 redis.md、kubernetes.md）
+│   ├── concepts/                          # 概念與模式（如 caching.md）
+│   ├── comparisons/                       # 對照表（如 llm-providers-2026.md）
+│   └── analysis/                          # 分析與決策（如 adr-001-cache-strategy.md）
+└── reports/                               # Lint 報告（自動產生）
+    └── wiki-lint-2026-05-07.md
+```
+
+**命名慣例**：
+
+| 檔案類型 | 命名規則 | 範例 |
+|---------|---------|------|
+| Raw 原始資料 | `{YYYY-MM-DD}-{source-type}-{slug}.md` | `2026-05-07-release-kubernetes-130.md` |
+| Wiki 知識頁面 | `{category}/{slug}.md` | `tools/kubernetes.md` |
+| Lint 報告 | `wiki-lint-{YYYY-MM-DD}.md` | `wiki-lint-2026-05-07.md` |
+
+> **與其他分類的職責劃分**：AI 資產 Repo 的其他目錄（agents / skills / plugins 等）管理「可執行的工具型資產」，llm-wiki 管理「研究型與決策型知識」（技術調查、架構決策、會議結論等）。教學手冊可引用 Wiki 頁面作為背景知識，Wiki 的 Schema 可引用 Repo 的 AGENTS.md。
+
+### 3.3 目錄結構對照圖
+
+{{< mermaid >}}
+graph LR
+    subgraph "awesome-copilot 原生分類（7 類）"
+        A1[agents/<br/>AI 代理]
+        A2[instructions/<br/>編碼規範]
+        A3[skills/<br/>能力包]
+        A4[plugins/<br/>可安裝套件]
+        A5[hooks/<br/>自動化觸發]
+        A6[workflows/<br/>Agentic Workflows]
+        A7[cookbook/<br/>API 配方]
+    end
+
+    subgraph "企業客製化新增（3 類）"
+        B1[prompts/<br/>Prompt 模板]
+        B2[tutorials/<br/>教學手冊]
+        B3[templates/<br/>文件範本]
+    end
+
+    subgraph "知識編譯層"
+        D1[llm-wiki/<br/>LLM Wiki 知識庫]
+        D1 --> D2[raw/<br/>原始資料]
+        D1 --> D3[wiki/<br/>編譯頁面]
+        D1 --> D4[schema/<br/>CLAUDE.md]
+    end
+
+    subgraph "基礎設施"
+        C1[docs/<br/>自動生成文件]
+        C2[eng/ + scripts/<br/>建構與公用腳本]
+        C3[.github/<br/>CI/CD + 範本]
+        C4[data/ + .schemas/<br/>設定與 Schema]
+        C5[_templates/<br/>空白模板]
+    end
+
+    A4 -->|"Plugin Marketplace"| C3
+    A6 -->|"gh aw compile"| C3
+{{< /mermaid >}}
+
+> **實務建議**：
+> - awesome-copilot 的 `cookbook/` 與企業場景中的 `prompts/` 有部分重疊，但 cookbook 偏向 API 操作範例，prompts 偏向 AI 提示詞模板，建議分開維護
+> - 初期建議先啟用 5-6 個核心目錄（Agents / Instructions / Skills / Prompts / 教學手冊 / Plugins），待團隊熟悉後再擴展至 Hooks、Workflows、Cookbook
+> - `llm-wiki/` 於初始化時即建立，但團隊可依需求決定啟用時機；建議先將第一份原始資料放入 `raw/` 並執行首次 Ingest 來驗證流程
+> - 每個目錄必須有 `README.md` 說明該分類的用途與內容索引
+> - `.schemas/` 目錄可存放 JSON Schema 供 IDE 驗證（如 plugin.json、hooks.json 的格式檢查）
+> - `_templates/` 目錄存放空白模板，貢獻者可直接複製使用
+
+---
+
+## 第 4 章 內容規範與模板設計
+
+### 4.1 檔案命名慣例
+
+根據 awesome-copilot 最新的 AGENTS.md 與 CONTRIBUTING.md 規範，所有檔案必須遵循以下命名慣例：
+
+| 內容類型 | 檔案格式 | 命名規則 | 範例 | 必填 Frontmatter |
+|---------|---------|---------|------|-----------------|
+| Agent | `*.agent.md` | 小寫 + 連字號 | `java-refactoring.agent.md` | `description`(必)、`name`(必)、`model`(強烈建議)、`tools`(建議) |
+| Instruction | `*.instructions.md` | 小寫 + 連字號 | `vue-typescript.instructions.md` | `description`(必)、`applyTo`(必) |
+| Skill | `{folder}/SKILL.md` | 資料夾名小寫 + 連字號（≤64 字元） | `unit-test-generator/SKILL.md` | `name`(必，需與資料夾名一致)、`description`(必，10-1024 字元) |
+| Plugin | `{folder}/.github/plugin/plugin.json` | 資料夾名小寫 + 連字號 | `enterprise-java/plugin.json` | `name`(必)、`description`(必)、`version`(必) |
+| Hook | `{folder}/README.md` + `hooks.json` | 資料夾名小寫 + 連字號 | `session-init/hooks.json` | `name`(必)、`description`(必)、`tags`(選) |
+| Workflow | `*.md` | 小寫 + 連字號 | `daily-issues-report.md` | `name`(必)、`description`(必)、`on`(必)、`permissions`(必) |
+| Prompt | `{folder}/prompt.md` | 資料夾名小寫 + 連字號 | `code-review/prompt.md` | `name`(必)、`description`(必) |
+| 教學手冊 | `*.md` | 主題名 + 教學手冊 | `claude-code-教學手冊.md` | `name`(必)、`title`(必)、`description`(必) |
+| 範本 | `*.md` | 描述性名稱 | `requirements-spec.md` | `name`(必)、`description`(必) |
+| Wiki Raw | `raw/{YYYY-MM-DD}-{source-type}-{slug}.md` | 日期 + 來源類型 + slug | `2026-05-07-release-kubernetes-130.md` | 無（純文字，不可變） |
+| Wiki Page | `wiki/{category}/{slug}.md` | 分類目錄 + slug | `wiki/tools/kubernetes.md` | 無（由 CLAUDE.md Schema 管控結構） |
+
+> **重要規範**：所有 `description` 欄位的值必須用**單引號**包裹（如 `description: 'Java 重構代理'`），這是 awesome-copilot CI 驗證的硬性要求。
+
+### 4.2 Frontmatter 規範
+
+所有內容檔案必須包含 YAML Frontmatter，統一使用 `---` 分隔符號：
+
+#### 4.2.1 Agent Frontmatter
+
+```yaml
+---
+name: 'Java Refactoring Agent'          # 人類可讀名稱（必填）
+description: 'Java 程式碼重構代理，支援 Spring Boot 專案的自動化重構與現代化'
+model: 'copilot'                         # 建議指定模型（copilot / claude-code）
+tools:                                   # 建議指定可用工具
+  - codebase
+  - terminal
+  - github
+version: '1.0.0'
+author: '{author-name}'
+tags: [java, spring-boot, refactoring]
+created: '2026-05-06'
+updated: '2026-05-06'
+status: active                           # active | deprecated | draft
+---
+```
+
+#### 4.2.2 Instruction Frontmatter
+
+```yaml
+---
+description: 'Spring Boot 專案的編碼標準與規範'
+applyTo: '**/*.java'                     # glob 模式（必填，需單引號）
+tags: [java, spring-boot, coding-standards]
+created: '2026-05-06'
+updated: '2026-05-06'
+---
+```
+
+#### 4.2.3 Skill Frontmatter
+
+```yaml
+---
+name: unit-test-generator                # 必須與資料夾名一致（≤64 字元）
+description: '自動生成 JUnit 5 / Vitest 單元測試，支援 mock 與 assertion 最佳實踐'
+version: '1.0.0'
+author: '{author-name}'
+tags: [testing, junit5, vitest]
+assets:
+  - scripts/generate-junit5.sh
+  - references/junit5-patterns.md
+created: '2026-05-06'
+updated: '2026-05-06'
+---
+```
+
+> **Skill 特殊限制**：`description` 長度必須在 10-1024 字元之間；單一 asset 檔案大小不得超過 5MB；`name` 僅允許小寫字母、數字與連字號。
+
+#### 4.2.4 Plugin Frontmatter（plugin.json）
+
+```json
+{
+  "name": "enterprise-java",
+  "description": "企業級 Java 開發 Plugin，整合 Spring Boot Agent、編碼規範與測試生成",
+  "version": "1.0.0",
+  "agents": ["java-refactoring"],
+  "commands": [],
+  "skills": ["unit-test-generator"]
+}
+```
+
+#### 4.2.5 Workflow Frontmatter
+
+```yaml
+---
+name: 'PR Auto Review'
+description: 'AI 驅動的 Pull Request 自動審查工作流'
+on:
+  pull_request:
+    types: [opened, synchronize]
+permissions:
+  pull-requests: write
+  contents: read
+safe-outputs:
+  - pull_request.comment
+---
+```
+
+#### 4.2.6 Prompt Frontmatter
+
+```yaml
+---
+name: code-review-prompt
+description: '結構化 Code Review Prompt，涵蓋安全性、效能與可維護性'
+tags: [code-review, security, performance]
+model: [copilot, claude-code, codex]    # 適用的 AI 工具
+difficulty: intermediate                 # beginner | intermediate | advanced
+created: '2026-05-06'
+updated: '2026-05-06'
+---
+```
+
+#### 4.2.7 教學手冊 Frontmatter
+
+```yaml
+---
+name: claude-code-tutorial
+title: 'Claude Code 教學手冊'
+description: 'Claude Code 完整教學，涵蓋安裝、設定、SSDLC 整合與團隊導入'
+tags: [claude-code, ai-development, ssdlc]
+author: '{author-name}'
+version: '1.0.0'
+created: '2026-05-06'
+updated: '2026-05-06'
+status: active
+---
+```
+
+#### 4.2.8 Wiki Page 格式說明
+
+LLM Wiki 的知識頁面不使用 YAML Frontmatter，改由 `llm-wiki/schema/CLAUDE.md` 定義的 Markdown 結構慣例管控。每頁必含以下結構元素：
+
+| 結構元素 | 格式 | 說明 |
+|---------|------|------|
+| 標題 | `# {Page Title}` | 一級標題，全頁唯一 |
+| 摘要 | `> 一行描述` | 緊接標題下方的引用區塊 |
+| 內文段落 | `## {Section}` | 主要內容區塊 |
+| 交叉引用 | `[Page](../category/slug.md)` | 每頁至少 3 個交叉引用連結 |
+| 來源 | `## 來源` | 含 provenance hash 供追溯 |
+| 驗證狀態 | `[verified]` / `[unverified]` | 標註內容是否經過人工驗證 |
+
+> **註意**：Wiki Page 由 LLM 執行 Ingest 時自動產生與更新，不需人工填寫 Frontmatter，但人類可以編輯與策展。詳見 [**§11.3 核心操作流程**](#113-核心操作流程)。
+
+### 4.3 內容模板
+
+#### 4.3.1 Agent 模板
+
+````markdown
+---
+name: '{Agent 顯示名稱}'
+description: '{一行描述}'
+model: 'copilot'
+tools:
+  - codebase
+  - terminal
+version: '1.0.0'
+author: '{author}'
+tags: [{tag1}, {tag2}]
+created: '{date}'
+updated: '{date}'
+status: active
+---
+
+# {Agent 名稱}
+
+## 概述
+
+{Agent 的用途與適用場景}
+
+## 知識來源
+
+<knowledge_sources>
+- {相關文件、API 文件、編碼規範}
+</knowledge_sources>
+
+## 工作流程
+
+<workflow>
+1. {步驟 1}
+2. {步驟 2}
+3. {步驟 3}
+</workflow>
+
+## 使用方式
+
+```bash
+# 在 VS Code Copilot Chat 中
+@{agent-name} {指令}
+```
+
+## 限制與注意事項
+
+- {限制 1}
+- {限制 2}
+````
+
+#### 4.3.2 Instruction 模板
+
+````markdown
+---
+name: {instruction-name}
+description: '{一行描述}'
+applyTo: '{glob-pattern}'
+tags: [{tag1}, {tag2}]
+created: '{date}'
+updated: '{date}'
+---
+
+# {規範名稱}
+
+## 適用範圍
+
+本規範適用於符合 `{applyTo}` 模式的所有檔案。
+
+## 編碼標準
+
+### {標準 1}
+
+{說明與範例}
+
+### {標準 2}
+
+{說明與範例}
+
+## 範例
+
+### ✅ 正確做法
+
+```text
+// Good example
+```
+
+### ❌ 錯誤做法
+
+```text
+// Bad example
+```
+````
+
+#### 4.3.3 Skill 模板
+
+````markdown
+---
+name: {skill-name}
+description: '{一行描述（10-1024 字元）}'
+version: '1.0.0'
+author: '{author}'
+tags: [{tag1}, {tag2}]
+assets:
+  - scripts/{script-file}
+  - references/{ref-file}
+created: '{date}'
+updated: '{date}'
+---
+
+# {Skill 名稱}
+
+## 用途
+
+{Skill 的目的與適用場景}
+
+## 使用時機
+
+- {場景 1}
+- {場景 2}
+
+## 輸入
+
+| 參數 | 類型 | 必填 | 說明 |
+|------|------|------|------|
+| {param1} | {type} | ✅ | {說明} |
+
+## 輸出
+
+{輸出說明}
+
+## 範例
+
+```bash
+# 使用範例
+```
+
+## 參考資料
+
+- {參考連結 1}
+- {參考連結 2}
+````
+
+#### 4.3.4 Prompt 模板
+
+````markdown
+---
+name: {prompt-name}
+description: '{一行描述}'
+tags: [{tag1}, {tag2}]
+model: [{model1}, {model2}]
+difficulty: intermediate
+created: '{date}'
+updated: '{date}'
+---
+
+# {Prompt 名稱}
+
+## 適用場景
+
+{何時使用此 Prompt}
+
+## Prompt 內容
+
+```
+{完整的 Prompt 內容，可直接複製使用}
+```
+
+## 使用說明
+
+1. {步驟 1}
+2. {步驟 2}
+
+## 預期輸出
+
+{AI 應該產出什麼}
+
+## 變體
+
+### 變體 A：{簡化版}
+
+```
+{簡化版 Prompt}
+```
+
+### 變體 B：{進階版}
+
+```
+{進階版 Prompt}
+```
+
+## 注意事項
+
+- {注意事項 1}
+- {注意事項 2}
+````
+
+#### 4.3.5 Wiki Page 模板
+
+```markdown
+# {Page Title}
+
+> {one-line summary}
+
+## 概述
+
+{主要內容}
+
+## 關鍵要點
+
+- {要點 1}
+- {要點 2}
+
+## 相關頁面
+
+- [Related Page 1](../category/slug.md)
+- [Related Page 2](../category/slug.md)
+- [Related Page 3](../category/slug.md)
+
+## 來源
+
+- `raw/YYYY-MM-DD-source-type-slug.md` — SHA256: `{hash}`
+- 狀態：[verified] / [unverified]
+- 最後更新：{YYYY-MM-DD}
+```
+
+#### 4.3.6 Wiki Raw 模板
+
+```markdown
+# {Raw Source Title}
+
+來源：{URL 或來源說明}
+日期：{YYYY-MM-DD}
+來源類型：{release / meeting / article / paper / transcript}
+
+---
+
+{Original content, verbatim or lightly formatted}
+```
+
+> **實務建議**：
+> - 建議在 repo 根目錄的 `_templates/` 資料夾存放所有空白模板，貢獻者可直接複製使用（如 `_templates/agent.template.md`、`_templates/skill.template/`）
+> - 每個模板應包含足夠的註解說明，降低填寫門檻
+> - 所有字串值（尤其是 `description`、`applyTo`）一律使用**單引號**包裹，確保通過 CI 驗證
+> - Plugin 的 `plugin.json` 使用 JSON 格式而非 YAML，可搭配 `.schemas/plugin.schema.json` 做 IDE 驗證
+> - Frontmatter 的 `tags` 欄位建議制定標準標籤清單，避免同義詞混亂
+
+---
+
+## 第 5 章 資料上架流程
+
+### 5.1 整體流程
+
+{{< mermaid >}}
+graph TD
+    A[貢獻者準備內容] --> B[Fork / Branch]
+    B --> C[建立 / 修改檔案]
+    C --> D[本地驗證]
+    D --> E[建立 Pull Request<br/>目標: staged 分支]
+    E --> F{自動化檢查<br/>GitHub Actions}
+    F -->|通過| G[人工審查<br/>Maintainer Review]
+    F -->|失敗| C
+    G -->|核准| H[合併至 staged]
+    G -->|需修改| C
+    H --> I[定期發佈<br/>staged → main]
+    I --> J[自動更新<br/>README / Marketplace]
+{{< /mermaid >}}
+
+### 5.2 CONTRIBUTING.md 設計
+
+```markdown
+# 貢獻指南（Contributing Guide）
+
+感謝您願意為 AI 資產知識庫貢獻內容！請依照以下流程進行。
+
+## 🚦 快速開始
+
+### 步驟 1：選擇內容類型
+
+| 類型 | 目錄 | 檔案格式 | 說明 |
+|------|------|---------|------|
+| Agent | `agents/` | `*.agent.md` | AI 代理定義 |
+| Instruction | `instructions/` | `*.instructions.md` | 編碼規範 |
+| Skill | `skills/{name}/` | `SKILL.md` + 資源 | 能力包 |
+| Plugin | `plugins/{name}/` | `plugin.json` + `README.md` | 整合套件 |
+| Hook | `hooks/{name}/` | `hooks.json` + `README.md` | 自動化觸發 |
+| Workflow | `workflows/` | `*.md` | AI GitHub Actions |
+| Prompt | `prompts/{name}/` | `prompt.md` | Prompt 模板 |
+| 教學手冊 | `tutorials/` | `*.md` | 技術教學 |
+| 範本 | `templates/{category}/` | `*.md` | 文件範本 |
+| Wiki Raw | `llm-wiki/raw/` | `{date}-{type}-{slug}.md` | LLM Wiki 原始資料 |
+
+> **LLM Wiki 貢獻說明**：Wiki 的貢獻方式與其他分類不同——貢獻者只需將原始資料放入 `llm-wiki/raw/`，再以 LLM 執行 Ingest 即可自動產生或更新 Wiki 頁面。詳見 [**§11.3 核心操作流程**](#113-核心操作流程)。
+
+### 步驟 2：遵循命名慣例
+
+- 檔案名稱使用**小寫 + 連字號**（如 `java-refactoring.agent.md`）
+- 資料夾名稱使用**小寫 + 連字號**（如 `unit-test-generator/`）
+- 教學手冊可使用中文（如 `claude-code-教學手冊.md`）
+
+### 步驟 3：填寫 Frontmatter
+
+所有內容必須包含 YAML Frontmatter，請參考 `_templates/` 目錄中的模板。
+
+### 步驟 4：建立 Pull Request
+
+- **目標分支**：`staged`（非 `main`）
+- 使用 PR Template 填寫 Checklist
+- 附上內容截圖或使用範例
+- **AI Agent PR**：若由 AI Coding Agent（如 Copilot Coding Agent）產生的 PR，請在標題加上 🤖🤖🤖 標記，將獲得快速審查通道
+
+### 步驟 5：等待審查
+
+- 自動化檢查會在 PR 建立後自動執行
+- 至少需要 2 位 Maintainer 核准（AI Agent PR 可降為 1 位）
+- 若有修改建議，請在原 PR 上更新
+
+## ⚠️ 重要規則
+
+1. **禁止提交敏感資料**：API Key、密碼、內部 IP 等
+2. **禁止提交付費服務推廣**：除非經管理員核准
+3. **必須經過測試**：所有 Agent / Skill 需在 GitHub Copilot 中實際測試
+4. **保持一致性**：遵循現有內容的風格與格式
+5. **External Plugin 限制**：企業內部知識庫禁止安裝未經審核的外部 Plugin。awesome-copilot 官方僅接受來自 Microsoft / GitHub repos 的外部 Plugin，企業應更加嚴格
+6. **分支規範**：所有功能分支必須從 `staged` 建立（`git checkout -b feature/xxx staged`），嚴禁從 `main` 分支開分支
+```
+
+### 5.3 Pull Request Template
+
+建立 `.github/PULL_REQUEST_TEMPLATE.md`：
+
+```markdown
+## 📝 內容說明
+
+<!-- 簡述此 PR 新增或修改的內容 -->
+
+## 📋 內容類型
+
+<!-- 請勾選適用的類型 -->
+
+- [ ] 🤖 Agent
+- [ ] 📋 Instruction
+- [ ] 🎯 Skill
+- [ ] 🔌 Plugin
+- [ ] 🪝 Hook
+- [ ] ⚡ Workflow
+- [ ] 📝 Prompt
+- [ ] 📖 教學手冊
+- [ ] 📄 範本
+- [ ] 🐛 Bug 修復
+- [ ] 📝 文件更新
+
+## ✅ 自我檢查清單
+
+### 基本要求
+
+- [ ] 已閱讀 [CONTRIBUTING.md](CONTRIBUTING.md)
+- [ ] 內容放置在正確的目錄
+- [ ] 檔案遵循命名慣例
+- [ ] 包含完整的 YAML Frontmatter
+- [ ] 內容結構清晰（使用 Markdown 標題層級）
+
+### 品質要求
+
+- [ ] 已在 GitHub Copilot / Claude Code 中實際測試
+- [ ] 無敏感資料（API Key / 密碼 / 內部 IP）
+- [ ] 無付費服務推廣內容
+- [ ] 範例可正確執行
+
+### 合規要求
+
+- [ ] 符合公司 AI 使用政策
+- [ ] 無版權爭議內容
+- [ ] PR 目標為 `staged` 分支
+
+## 📸 截圖 / 範例輸出
+
+<!-- 若適用，請附上使用截圖或範例輸出 -->
+
+## 🔗 相關連結
+
+<!-- 相關 Issue、文件、參考資料 -->
+```
+
+### 5.4 Issue Template
+
+建立 `.github/ISSUE_TEMPLATE/new-agent.yml`：
+
+```yaml
+name: 🤖 新增 Agent
+description: 提議新增一個 AI Agent
+title: "[Agent] "
+labels: ["agent", "new-content"]
+body:
+  - type: input
+    id: agent-name
+    attributes:
+      label: Agent 名稱
+      placeholder: "java-refactoring"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 功能描述
+      description: 此 Agent 要解決什麼問題？
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 分類
+      options:
+        - 程式開發
+        - 程式碼審查
+        - 安全掃描
+        - 文件生成
+        - 測試
+        - 架構設計
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: 使用場景
+      description: 請列舉 2-3 個具體使用場景
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 確認事項
+      options:
+        - label: 我已搜尋現有 Agent，確認無重複
+          required: true
+        - label: 我願意撰寫此 Agent 的內容
+```
+
+### 5.5 Branch 策略
+
+{{< mermaid >}}
+gitGraph
+    commit id: "init"
+    branch staged
+    checkout staged
+    commit id: "feature/new-agent"
+    commit id: "feature/new-skill"
+    checkout main
+    merge staged id: "v1.0.0" tag: "release"
+    checkout staged
+    commit id: "fix/agent-typo"
+    commit id: "feature/new-prompt"
+    checkout main
+    merge staged id: "v1.1.0" tag: "release"
+{{< /mermaid >}}
+
+| 分支 | 用途 | 保護規則 |
+|------|------|---------|
+| `main` | 正式發佈版本 | 禁止直接推送、需 2 位審查者、需通過 CI |
+| `staged` | 整合測試分支，PR 目標 | 需 1 位審查者、需通過 CI |
+| `feature/*` | 個人開發分支（**必須從 `staged` 建立**） | 無限制 |
+
+> **實務建議**：
+> - **嚴禁從 `main` 建立功能分支**，`main` 分支僅透過 `chore: publish from staged` 合併提交更新
+> - 建議每 1-2 週進行一次 `staged → main` 合併，搭配 Release Notes
+> - 每次合併使用 Squash Merge，保持 `main` 的提交記錄乾淨
+> - 可設定自動化 Workflow 在 `staged` 推送時自動建立 PR 至 `main`
+> - AI Agent 貢獻的 PR 在標題末尾加上 `🤖🤖🤖`，可獲得 Fast-track Approval（審查者降為 1 位）
+
+---
+
+## 第 6 章 GitHub Actions 自動化 Workflow
+
+### 6.1 Workflow 總覽
+
+{{< mermaid >}}
+graph TD
+    subgraph "PR 觸發"
+        W1[validate-content.yml<br/>內容驗證]
+        W2[validate-readme.yml<br/>README 一致性]
+        W3[check-pr-target.yml<br/>PR 目標分支檢查]
+        W4[label-pr-intent.yml<br/>PR 自動標籤]
+        W10[validate-workflows.yml<br/>Agentic Workflow 驗證]
+    end
+
+    subgraph "合併觸發"
+        W5[publish.yml<br/>staged → main 發佈]
+        W6[update-readme.yml<br/>README 動態更新]
+        W11[fix-line-endings.yml<br/>行尾字元正規化]
+    end
+
+    subgraph "定期排程"
+        W7[staleness-report.yml<br/>過時內容檢測]
+        W8[contributors.yml<br/>貢獻者清單更新]
+        W9[quality-report.yml<br/>品質報告]
+        W12[wiki-lint.yml<br/>LLM Wiki 知識健檢]
+    end
+{{< /mermaid >}}
+
+### 6.2 內容驗證 Workflow
+
+`.github/workflows/validate-content.yml`：
+
+```yaml
+name: 📋 Validate Content
+
+on:
+  pull_request:
+    branches: [staged]
+    paths:
+      - 'agents/**'
+      - 'instructions/**'
+      - 'skills/**'
+      - 'plugins/**'
+      - 'hooks/**'
+      - 'workflows/**'
+      - 'prompts/**'
+      - 'tutorials/**'
+      - 'templates/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate file naming
+        run: node eng/validate-naming.mjs
+
+      - name: Validate frontmatter
+        run: node eng/validate-frontmatter.mjs
+
+      - name: Check for secrets
+        run: node eng/check-secrets.mjs
+
+      - name: Validate skill structure
+        run: node eng/validate-skills.mjs
+
+      - name: Validate plugin structure
+        run: node eng/validate-plugins.mjs
+
+      - name: Validate workflow syntax
+        run: |
+          # 驗證 Agentic Workflow 的 Frontmatter 格式
+          # 阻擋 .yml / .lock.yml 檔案被提交到 workflows/ 目錄
+          node eng/validate-workflows.mjs
+
+      - name: Fix line endings
+        run: bash eng/fix-line-endings.sh
+```
+
+### 6.3 PR 目標分支檢查
+
+`.github/workflows/check-pr-target.yml`：
+
+```yaml
+name: 🎯 Check PR Target
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify PR targets staged branch
+        if: github.event.pull_request.base.ref != 'staged'
+        run: |
+          echo "::error::PR 必須以 staged 分支為目標，而非 ${{ github.event.pull_request.base.ref }}"
+          echo "請修改 PR 的 base branch 為 staged"
+          exit 1
+```
+
+### 6.4 README 動態更新
+
+`.github/workflows/update-readme.yml`：
+
+```yaml
+name: 📖 Update README
+
+on:
+  push:
+    branches: [staged]
+    paths:
+      - 'agents/**'
+      - 'instructions/**'
+      - 'skills/**'
+      - 'plugins/**'
+      - 'prompts/**'
+      - 'tutorials/**'
+      - 'templates/**'
+      - 'llm-wiki/wiki/**'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate README tables
+        run: node eng/update-readme.mjs
+
+      - name: Generate category docs
+        run: node eng/generate-docs.mjs
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md docs/
+          git diff --staged --quiet || git commit -m "docs: auto-update README and category docs"
+          git push
+```
+
+### 6.5 過時內容檢測
+
+`.github/workflows/staleness-report.yml`：
+
+```yaml
+name: 📊 Staleness Report
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # 每週一 UTC 03:00
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate staleness report
+        run: node eng/staleness-report.mjs
+
+      - name: Create issue if stale content found
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "📊 每週過時內容報告"
+          content-filepath: ./staleness-report.md
+          labels: maintenance,staleness
+```
+
+### 6.6 貢獻者自動更新
+
+`.github/workflows/contributors.yml`：
+
+```yaml
+name: 👥 Update Contributors
+
+on:
+  schedule:
+    - cron: '0 3 * * 0'  # 每週日 UTC 03:00
+  workflow_dispatch:
+
+jobs:
+  contributors:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update contributors list
+        uses: akhilmhdh/contributors-readme-action@v2.3.10
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### 6.7 PR 自動標籤
+
+`.github/workflows/label-pr.yml`：
+
+```yaml
+name: 🏷️ Label PR
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Auto-label based on paths
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+# 需搭配 .github/labeler.yml
+```
+
+`.github/labeler.yml`：
+
+```yaml
+agent:
+  - changed-files:
+    - any-glob-to-any-file: 'agents/**'
+
+instruction:
+  - changed-files:
+    - any-glob-to-any-file: 'instructions/**'
+
+skill:
+  - changed-files:
+    - any-glob-to-any-file: 'skills/**'
+
+plugin:
+  - changed-files:
+    - any-glob-to-any-file: 'plugins/**'
+
+hook:
+  - changed-files:
+    - any-glob-to-any-file: 'hooks/**'
+
+workflow:
+  - changed-files:
+    - any-glob-to-any-file: 'workflows/**'
+
+prompt:
+  - changed-files:
+    - any-glob-to-any-file: 'prompts/**'
+
+tutorial:
+  - changed-files:
+    - any-glob-to-any-file: 'tutorials/**'
+
+template:
+  - changed-files:
+    - any-glob-to-any-file: 'templates/**'
+```
+
+### 6.8 建構腳本說明
+
+| 腳本 | 用途 | 觸發時機 |
+|------|------|---------|
+| `eng/update-readme.mjs` | 掃描所有內容，動態生成 README 表格 | Push to staged |
+| `eng/generate-docs.mjs` | 生成各分類的 README 文件（`docs/README.*.md`） | Push to staged |
+| `eng/generate-marketplace.mjs` | 生成 Plugin Marketplace JSON | Push to staged |
+| `eng/validate-naming.mjs` | 驗證檔案命名是否符合慣例 | PR to staged |
+| `eng/validate-frontmatter.mjs` | 驗證 YAML Frontmatter 完整性（單引號、必填欄位） | PR to staged |
+| `eng/validate-skills.mjs` | 驗證 Skill 結構（agentskills.io spec 合規） | PR to staged |
+| `eng/validate-plugins.mjs` | 驗證 Plugin 結構（Claude Code spec plugin.json） | PR to staged |
+| `eng/validate-workflows.mjs` | 驗證 Agentic Workflow 格式（阻擋 `.yml` 提交） | PR to staged |
+| `eng/check-secrets.mjs` | 掃描是否包含敏感資料 | PR to staged |
+| `eng/fix-line-endings.sh` | 正規化行尾字元為 LF | PR to staged |
+| `eng/staleness-report.mjs` | 生成過時內容報告 | 每週排程 |
+| `eng/create-skill.mjs` | Scaffolding — 互動式建立 Skill 骨架 | `npm run skill:create` |
+| `eng/create-plugin.mjs` | Scaffolding — 互動式建立 Plugin 骨架 | `npm run plugin:create` |
+| `eng/validate-skill.mjs` | 獨立驗證單一 Skill 結構 | `npm run skill:validate -- <path>` |
+| `eng/validate-plugin.mjs` | 獨立驗證單一 Plugin 結構 | `npm run plugin:validate -- <path>` |
+| `eng/wiki-lint.mjs` | LLM Wiki 知識健檢（矛盾偵測、過時檢查、孤立頁面、缺失引用） | 每週排程 / `npm run wiki:lint` |
+| `eng/wiki-stats.mjs` | LLM Wiki 統計（頁數、交叉引用密度、過時率、孤立率） | `npm run wiki:stats` |
+
+> **實務建議**：
+> - 所有建構腳本使用 ES Module（`.mjs`）撰寫，搭配 Node.js 22+（Active LTS，支援至 2027-10；Node 20 已於 2026-04 結束 LTS 支援）
+> - 建議使用 `gray-matter` npm 套件解析 YAML Frontmatter
+> - 腳本應具備詳細的錯誤訊息，方便貢獻者自行修復問題
+> - CI/CD 執行時間建議控制在 2 分鐘內，避免阻塞 PR 流程
+
+### 6.9 LLM Wiki 知識健檢 Workflow
+
+`.github/workflows/wiki-lint.yml`：
+
+```yaml
+name: 📚 Wiki Lint
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'  # 每週一 UTC 04:00
+  workflow_dispatch:
+  push:
+    branches: [staged]
+    paths:
+      - 'llm-wiki/wiki/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Wiki Lint
+        run: node eng/wiki-lint.mjs
+
+      - name: Commit lint report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add llm-wiki/reports/
+          git diff --staged --quiet || git commit -m "docs: auto-generate wiki lint report"
+          git push
+
+      - name: Create issue if critical findings
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "📚 Wiki Lint Report - ${{ github.run_number }}"
+          content-filepath: llm-wiki/reports/wiki-lint-latest.md
+          labels: wiki-lint,automated
+        if: hashFiles('llm-wiki/reports/wiki-lint-latest.md') != ''
+```
+
+> **Lint 檢查項目**：
+> - **矛盾偵測**：檢查頁面間是否存在互相矛盾的陳述
+> - **過時檢查**：標記 > 90 天未更新的知識頁面
+> - **孤立頁面**：無任何交叉引用連結的頁面
+> - **缺失交叉引用**：網狀分析應有但缺少的連結
+> - **來源追溯**：檢查每頁是否含 `## 來源` 與 provenance hash
+> - 詳細 Lint 規則說明見 [**§11.3 核心操作流程 — Lint（知識健檢）**](#113-核心操作流程)
+
+---
+
+## 第 7 章 探索與搜尋機制
+
+### 7.1 README 動態生成
+
+`eng/update-readme.mjs` 核心邏輯：
+
+```javascript
+import fs from 'fs/promises';
+import path from 'path';
+import matter from 'gray-matter';
+
+const CATEGORIES = [
+  { dir: 'agents', emoji: '🤖', label: 'Agents', ext: '.agent.md' },
+  { dir: 'instructions', emoji: '📋', label: 'Instructions', ext: '.instructions.md' },
+  { dir: 'skills', emoji: '🎯', label: 'Skills', file: 'SKILL.md' },
+  { dir: 'plugins', emoji: '🔌', label: 'Plugins', file: 'plugin.json' },
+  { dir: 'hooks', emoji: '🪝', label: 'Hooks', file: 'hooks.json' },
+  { dir: 'workflows', emoji: '⚡', label: 'Workflows', ext: '.md' },
+  { dir: 'prompts', emoji: '📝', label: 'Prompts', file: 'prompt.md' },
+  { dir: 'tutorials', emoji: '📖', label: '教學手冊', ext: '.md' },
+  { dir: 'templates', emoji: '📄', label: '範本', ext: '.md' },
+  { dir: 'llm-wiki/wiki', emoji: '📚', label: 'LLM Wiki', ext: '.md', nested: true },
+];
+
+async function generateReadme() {
+  let summaryTable = '| 分類 | 數量 | 說明 |\n|------|------|------|\n';
+
+  for (const cat of CATEGORIES) {
+    const items = await scanCategory(cat);
+    summaryTable += `| ${cat.emoji} [${cat.label}](${cat.dir}/) | ${items.length} | ${cat.label} |\n`;
+  }
+
+  // 更新 README.md 中的表格區塊
+  const readme = await fs.readFile('README.md', 'utf-8');
+  const updated = readme.replace(
+    /<!-- SUMMARY-TABLE:START -->[\s\S]*<!-- SUMMARY-TABLE:END -->/,
+    `<!-- SUMMARY-TABLE:START -->\n${summaryTable}\n<!-- SUMMARY-TABLE:END -->`
+  );
+  await fs.writeFile('README.md', updated);
+}
+
+async function scanCategory(category) {
+  const dirPath = path.resolve(category.dir);
+  const entries = await fs.readdir(dirPath, { withFileTypes: true });
+  const items = [];
+
+  for (const entry of entries) {
+    if (entry.name === '.gitkeep' || entry.name === 'README.md') continue;
+
+    if (entry.isFile() && category.ext && entry.name.endsWith(category.ext)) {
+      const content = await fs.readFile(path.join(dirPath, entry.name), 'utf-8');
+      const { data } = matter(content);
+      items.push({ name: data.name || entry.name, description: data.description || '', path: `${category.dir}/${entry.name}` });
+    }
+
+    if (entry.isDirectory() && category.file) {
+      const skillPath = path.join(dirPath, entry.name, category.file);
+      try {
+        const content = await fs.readFile(skillPath, 'utf-8');
+        const { data } = matter(content);
+        items.push({ name: data.name || entry.name, description: data.description || '', path: `${category.dir}/${entry.name}/` });
+      } catch { /* skip */ }
+    }
+  }
+
+  return items;
+}
+
+generateReadme();
+```
+
+### 7.2 分類文件自動生成
+
+每個分類生成獨立的 `docs/README.{category}.md`，包含詳細的表格索引：
+
+```markdown
+<!-- docs/README.agents.md（自動生成，勿手動修改） -->
+
+# 🤖 Agents 索引
+
+| 名稱 | 說明 | 標籤 | 更新日期 |
+|------|------|------|---------|
+| [java-refactoring](../agents/java-refactoring.agent.md) | Java 程式碼重構代理 | `java`, `spring-boot` | 2026-05-06 |
+| [security-scanner](../agents/security-scanner.agent.md) | 安全掃描代理 | `security`, `sast` | 2026-05-06 |
+| ... | ... | ... | ... |
+```
+
+### 7.3 Marketplace JSON
+
+`.github/plugin/marketplace.json`（自動生成）：
+
+```json
+{
+  "version": "1.0.0",
+  "generated": "2026-05-06T00:00:00Z",
+  "plugins": [
+    {
+      "name": "enterprise-java",
+      "description": "企業級 Java 開發整合套件",
+      "version": "1.0.0",
+      "source": "{org}/ai-assets/plugins/enterprise-java",
+      "tags": ["java", "spring-boot", "enterprise"]
+    }
+  ],
+  "external": []
+}
+```
+
+### 7.4 llms.txt — 機器可讀格式
+
+建立 `llms.txt` 供 AI Agent 直接讀取知識庫內容：
+
+```text
+# {Company} AI Assets Knowledge Base
+
+## Agents
+- java-refactoring: Java 程式碼重構代理，支援 Spring Boot 專案
+- security-scanner: 安全掃描代理，整合 SAST/DAST
+- code-reviewer: 自動化 Code Review 代理
+
+## Instructions
+- java-spring-boot: Spring Boot 編碼標準
+- vue-typescript: Vue + TypeScript 元件規範
+
+## Skills
+- unit-test-generator: 自動生成 JUnit 5 / Vitest 單元測試
+- api-doc-generator: 自動生成 OpenAPI 文件
+
+## Prompts
+- code-review: 結構化 Code Review Prompt
+- reverse-engineering: 逆向工程分析 Prompt
+
+## Tutorials
+- claude-code-教學手冊: Claude Code 完整教學
+- copilot-ssdlc-教學手冊: Copilot SSDLC 整合教學
+
+## Wiki Knowledge Base
+- tools/kubernetes: Kubernetes 平台知識（v1.30 含新功能）
+- tools/redis: Redis 快取與資料結構
+- concepts/caching: 快取策略與模式
+- comparisons/llm-providers-2026: LLM 供應商比較（2026）
+```
+
+### 7.5 標籤系統設計
+
+建立標準化標籤清單 `data/tags.json`：
+
+```json
+{
+  "languages": ["java", "python", "typescript", "vue", "sql", "bash"],
+  "frameworks": ["spring-boot", "fastapi", "vue3", "react", "junit5"],
+  "domains": ["security", "testing", "code-review", "refactoring", "architecture"],
+  "tools": ["copilot", "claude-code", "codex", "gemini", "mcp"],
+  "processes": ["ssdlc", "devops", "ci-cd", "reverse-engineering"],
+  "levels": ["beginner", "intermediate", "advanced"]
+}
+```
+
+> **實務建議**：
+> - 標籤使用英文小寫 + 連字號，保持一致性
+> - 定期審查標籤清單，合併同義詞（如 `unit-test` 與 `testing`）
+> - `llms.txt` 可被 AI Agent 用於快速了解知識庫內容，建議保持簡潔
+> - 若團隊規模較大，可考慮建置 Astro / Hugo 靜態網站提供搜尋功能
+
+### 7.6 awesome-copilot 網站與 Marketplace
+
+awesome-copilot 提供官方網站（awesome-copilot.github.com），內含以下探索機制，可作為企業內部知識庫網站的參考：
+
+| 功能 | 說明 | 企業對應 |
+|------|------|---------|
+| **Plugin Marketplace** | 一鍵安裝 Plugin（`copilot plugin install {name}`） | 建置內部 Marketplace 頁面 |
+| **Learning Hub** | 官方與社群學習資源索引 | `docs/learning-hub/` 目錄 |
+| **Tools** | MCP Server、開發工具、IDE 整合索引 | `docs/tools/` 目錄 |
+| **搜尋功能** | 依分類/標籤/關鍵字搜尋所有資產 | 可使用 GitHub Topics + 搜尋 |
+
+```bash
+# Plugin 安裝指令（新版 Copilot CLI 已預設註冊 awesome-copilot marketplace）
+copilot plugin install enterprise-java
+
+# 若使用舊版 CLI 或企業內部 Marketplace，需先手動註冊來源
+copilot plugin marketplace add --source {org}/ai-assets/plugins/enterprise-java
+
+# 使用 Scaffolding 快速建立新 Plugin
+npm run plugin:create
+```
+
+---
+
+## 第 8 章 後續維運與治理
+
+### 8.1 CODEOWNERS 設定
+
+建立 `.github/CODEOWNERS`：
+
+```
+# 預設審查者
+* @{org}/ai-assets-maintainers
+
+# 各分類負責人
+/agents/               @{org}/agent-team
+/instructions/         @{org}/standards-team
+/skills/               @{org}/skill-team
+/plugins/              @{org}/plugin-team
+/hooks/                @{org}/agent-team
+/workflows/            @{org}/devops-team
+/prompts/              @{org}/prompt-team
+/tutorials/            @{org}/docs-team
+/templates/            @{org}/docs-team
+
+# LLM Wiki
+/llm-wiki/schema/      @{org}/ai-assets-admins
+/llm-wiki/             @{org}/wiki-team
+
+# 基礎設施
+/eng/                  @{org}/ai-assets-admins
+/.github/              @{org}/ai-assets-admins
+```
+
+### 8.2 內容生命週期管理
+
+{{< mermaid >}}
+stateDiagram-v2
+    [*] --> Draft: 建立內容
+    Draft --> Active: PR 審核通過
+    Active --> NeedsUpdate: 過時檢測
+    NeedsUpdate --> Active: 更新內容
+    NeedsUpdate --> Deprecated: 超過 90 天未更新
+    Deprecated --> Active: 重新啟用
+    Deprecated --> Archived: 確認不再需要
+    Archived --> [*]
+{{< /mermaid >}}
+
+| 狀態 | Frontmatter `status` | 說明 | 處理方式 |
+|------|---------------------|------|---------|
+| 草稿 | `draft` | 尚未完成的內容 | 不顯示在 README 索引中 |
+| 啟用 | `active` | 目前有效的內容 | 正常顯示與使用 |
+| 需更新 | `needs-update` | 過時但仍可用 | Staleness Report 標記 |
+| 已棄用 | `deprecated` | 已有替代方案 | 顯示棄用警告 |
+| 已封存 | `archived` | 不再維護 | 移至 `_archived/` 目錄 |
+
+> **LLM Wiki 的生命週期管理**：Wiki Page 不使用 Frontmatter `status` 欄位，其生命週期由 `wiki-lint.yml` Workflow 自動管控——透過過時檢查、孤立頁面偵測、矛盾陳述掃描等機制確保知識品質。詳見 [**§6.9 LLM Wiki 知識健檢 Workflow**](#69-llm-wiki-知識健檢-workflow) 與 [**§11.3 核心操作流程**](#113-核心操作流程)。
+
+### 8.3 過時檢測策略
+
+`eng/staleness-report.mjs` 檢測邏輯：
+
+| 檢測項目 | 閾值 | 動作 |
+|---------|------|------|
+| 最後更新日期 | > 90 天 | 標記為 `needs-update` |
+| 最後更新日期 | > 180 天 | 標記為 `deprecated` |
+| 參考連結失效 | 任何失效連結 | 列入報告 |
+| Frontmatter 不完整 | 缺少必要欄位 | 列入報告 |
+| 相依套件過時 | npm audit 有漏洞 | 高優先級通知 |
+
+> **LLM Wiki 知識健檢整合**：上述過時檢測為基於時間與格式的淺層掃描，針對 AI 資產（agents / skills / plugins 等）。LLM Wiki 的知識頁面則由 `wiki-lint.yml` 提供更深層的語意層級健檢（矛盾偵測、過時技術聲明、孤立頁面、缺失交叉引用），兩者互補運作。詳見 [**§6.9 LLM Wiki 知識健檢 Workflow**](#69-llm-wiki-知識健檢-workflow)。
+
+### 8.4 品質報告
+
+每週自動生成的品質報告內容：
+
+```markdown
+# 📊 AI 資產知識庫品質報告
+
+**生成日期**：2026-05-06
+**掃描範圍**：全部 9 個分類
+
+## 📈 總覽
+
+| 指標 | 數值 |
+|------|------|
+| 總資產數 | 120 |
+| Active | 105 |
+| Needs Update | 10 |
+| Deprecated | 5 |
+| 本週新增 | 3 |
+| 本週更新 | 7 |
+
+## ⚠️ 需關注項目
+
+### 過時內容（> 90 天未更新）
+- `agents/legacy-analyzer.agent.md` — 最後更新 120 天前
+- `prompts/batch-migration/prompt.md` — 最後更新 95 天前
+
+### 失效連結
+- `tutorials/mcp-教學手冊.md` 第 45 行：https://example.com/dead-link
+
+### Frontmatter 不完整
+- `skills/db-migration/SKILL.md`：缺少 `version` 欄位
+```
+
+### 8.5 安全掃描
+
+```yaml
+# .github/workflows/security-scan.yml
+name: 🔒 Security Scan
+
+on:
+  pull_request:
+    branches: [staged]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Secret scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+      - name: Check for hardcoded credentials
+        run: |
+          # 掃描常見的敏感資料模式
+          if grep -rn "AKIA[0-9A-Z]\{16\}\|sk-[a-zA-Z0-9]\{48\}\|ghp_[a-zA-Z0-9]\{36\}" \
+            --include="*.md" --include="*.json" --include="*.yml" .; then
+            echo "::error::偵測到可能的敏感資料！請移除後重新提交。"
+            exit 1
+          fi
+```
+
+### 8.6 版本管理
+
+建議使用 GitHub Releases 進行版本管理：
+
+```bash
+# 建立 Release
+gh release create v1.0.0 \
+  --title "v1.0.0 — 初始發佈" \
+  --notes "## 新增內容
+  - 10 個 Agents
+  - 15 個 Instructions
+  - 5 個 Skills
+  - 8 個 Prompt Templates
+  - 3 份教學手冊"
+```
+
+> **實務建議**：
+> - 使用 Semantic Versioning（SemVer）：新增內容為 Minor、修正為 Patch、結構變更為 Major
+> - 每次 `staged → main` 合併時建立 Release，附上變更清單
+> - 過時內容不要直接刪除，先標記 `deprecated` 觀察 30 天，確認無使用者後再封存
+> - 安全掃描應設為 Required Status Check，未通過禁止合併
+
+---
+
+## 第 9 章 團隊導入與最佳實務
+
+### 9.1 導入路線圖
+
+{{< mermaid >}}
+gantt
+    title AI 資產知識庫導入路線圖
+    dateFormat  YYYY-MM-DD
+    section Phase 1：基礎建設
+    建立 Repo 與目錄結構       :done, p1a, 2026-05-06, 3d
+    設定 Branch Protection     :done, p1b, after p1a, 1d
+    建立 CI/CD Workflow        :active, p1c, after p1b, 5d
+    撰寫 CONTRIBUTING.md       :p1d, after p1c, 2d
+
+    section Phase 2：種子內容
+    遷移現有 Prompt/教學手冊    :p2a, after p1d, 7d
+    建立 3-5 個核心 Agent       :p2b, after p1d, 7d
+    建立 5-10 個 Instruction    :p2c, after p1d, 7d
+    內部試用與回饋收集          :p2d, after p2a, 5d
+
+    section Phase 3：全面推廣
+    全員教育訓練               :p3a, after p2d, 3d
+    開放全員貢獻               :p3b, after p3a, 1d
+    建立定期 Review 機制        :p3c, after p3b, 3d
+    設定品質報告排程            :p3d, after p3c, 2d
+
+    section Phase 4：持續優化
+    建立 Marketplace / 網站     :p4a, after p3d, 14d
+    引入自動化品質評分          :p4b, after p3d, 14d
+    跨團隊知識分享會            :p4c, after p3d, 30d
+{{< /mermaid >}}
+
+### 9.2 角色與權限設計
+
+| 角色 | GitHub Team | 權限 | 職責 |
+|------|------------|------|------|
+| **管理員** | `ai-assets-admins` | Admin | Repo 設定、Workflow 管理、Release 發佈 |
+| **維護者** | `ai-assets-maintainers` | Maintain | PR 審查、內容品質把關、過時內容處理 |
+| **審查者** | `ai-assets-reviewers` | Write | 參與 PR 審查、提供技術建議 |
+| **貢獻者** | `ai-assets-contributors` | Read + Fork | 提交內容、回報問題 |
+
+### 9.3 Onboarding 流程
+
+新成員加入團隊後的知識庫上手流程：
+
+1. **閱讀 README.md**：了解知識庫結構與用途（5 分鐘）
+2. **閱讀 CONTRIBUTING.md**：了解貢獻流程（10 分鐘）
+3. **瀏覽現有內容**：找到與自己領域相關的 Agent / Instruction / Skill（15 分鐘）
+4. **瀏覽 LLM Wiki**：閱讀 `llm-wiki/wiki/` 中與團隊技術栈相關的知識頁面（10 分鐘）
+5. **安裝一個 Plugin**：實際體驗使用流程（10 分鐘）
+6. **建立第一個貢獻**：將個人常用的 Prompt 或 Instruction 提交為 PR（30 分鐘）
+
+### 9.4 知識分享文化建立
+
+| 機制 | 頻率 | 說明 |
+|------|------|------|
+| **AI Assets Show & Tell** | 每月 | 展示本月新增的優秀資產 |
+| **Prompt 交流會** | 每兩週 | 分享高效 Prompt 設計技巧 |
+| **季度回顧** | 每季 | 檢視知識庫成長、品質與使用數據 |
+| **貢獻排行榜** | 每月 | 透過 all-contributors 呈現貢獻者 |
+| **最佳資產獎** | 每季 | 票選最受歡迎 / 最實用的資產 |
+
+### 9.5 最佳實務
+
+#### 9.5.1 內容撰寫
+
+1. **一個檔案解決一個問題**：避免大而全，保持單一職責
+2. **包含具體範例**：所有 Agent / Skill / Prompt 必須包含可執行的範例
+3. **說明適用場景**：明確說明何時該用、何時不該用
+4. **標註限制與陷阱**：誠實記錄已知限制，避免使用者踩坑
+5. **保持更新**：至少每 90 天審視一次內容是否仍然有效
+
+#### 9.5.2 Prompt 設計
+
+1. **結構化**：使用角色設定、背景、任務、約束、輸出格式
+2. **可參數化**：使用 `{placeholder}` 讓使用者替換特定內容
+3. **提供變體**：針對不同場景提供簡化版與進階版
+4. **標註適用模型**：不同 AI 工具的 Prompt 效果可能不同
+5. **附上預期輸出**：讓使用者知道正確的輸出長什麼樣
+
+#### 9.5.3 常見反模式
+
+| 反模式 | 說明 | 正確做法 |
+|--------|------|---------|
+| **垃圾資產** | 未經測試就提交的內容 | 所有內容必須實際測試後才提交 |
+| **孤兒內容** | 無人維護的過時資產 | 指定 CODEOWNERS，定期審查 |
+| **重複資產** | 功能重疊的多個 Agent/Skill | 提交前搜尋現有內容，考慮擴展而非新增 |
+| **敏感洩漏** | Prompt 中包含內部資訊 | 使用佔位符，啟用 Secret Scan |
+| **過度設計** | 一個 Agent 試圖解決所有問題 | 保持單一職責，必要時拆分 |
+
+#### 9.5.4 企業擴展建議
+
+| 團隊規模 | 建議做法 |
+|---------|---------|
+| < 20 人 | 4 個核心目錄（agents + instructions + prompts + tutorials）、1 位維護者 |
+| 20-50 人 | 7 個目錄（+ skills + plugins + cookbook）、啟用 LLM Wiki 知識建構、3 位維護者、每月 Review |
+| 50-200 人 | 全部 10 個目錄、LLM Wiki 配專人 Curator、5-8 位維護者、每週 Review、建置 Plugin Marketplace |
+| > 200 人 | 多 Repo 策略（依部門/技術領域拆分）、專職團隊、靜態網站（含 Learning Hub + 搜尋） |
+
+#### 9.5.5 LLM Wiki 整合說明
+
+本教學手冊建立的 ai-assets Repo 已內建 LLM Wiki 子目錄（`llm-wiki/`），初始化時即自動建置完成（見 [§2.4](#24-執行初始化指令)）。實務運用原則：
+
+1. **職責劃分**：工具型資產（Agents / Skills / Plugins）放在對應目錄；研究型與決策型知識放在 `llm-wiki/wiki/`
+2. **雙向參照**：教學手冊可引用 Wiki Page 作為背景知識；Wiki Page 的 `## 相關資源` 可指回 Repo 內的 AGENTS.md 或 Skills
+3. **統一索引**：Wiki 知識頁已納入 `llms.txt` 與 README 動態索引，AI Agent 可同時發現兩種知識來源
+4. **自動 Lint**：`wiki-lint.yml` 每週自動執行知識健檢，無需手動排程
+
+---
+
+## 第 10 章 附錄：範本與 Checklist
+
+### 10.1 完整目錄結構範本
+
+```
+ai-assets/
+├── README.md
+├── CONTRIBUTING.md
+├── AGENTS.md
+├── CODE_OF_CONDUCT.md
+├── SECURITY.md
+├── SUPPORT.md
+├── LICENSE
+├── .gitignore
+├── .gitattributes
+├── .editorconfig
+├── .codespellrc
+├── package.json
+├── llms.txt
+├── context7.json
+├── agents/
+│   ├── README.md
+│   └── {name}.agent.md
+├── instructions/
+│   ├── README.md
+│   └── {name}.instructions.md
+├── skills/
+│   ├── README.md
+│   └── {name}/
+│       ├── SKILL.md
+│       ├── scripts/
+│       ├── references/
+│       └── assets/
+├── plugins/
+│   ├── README.md
+│   ├── external.json
+│   └── {name}/
+│       ├── .github/plugin/plugin.json
+│       └── README.md
+├── hooks/
+│   ├── README.md
+│   └── {name}/
+│       ├── README.md
+│       ├── hooks.json
+│       └── *.sh
+├── workflows/
+│   ├── README.md
+│   └── {name}.md
+├── cookbook/
+│   ├── README.md
+│   └── {name}/
+├── prompts/
+│   ├── README.md
+│   └── {name}/
+│       └── prompt.md
+├── tutorials/
+│   ├── README.md
+│   └── {name}.md
+├── templates/
+│   ├── README.md
+│   └── {category}/
+│       └── {name}.md
+├── _templates/
+│   ├── agent.template.md
+│   ├── instruction.template.md
+│   ├── skill.template/
+│   ├── prompt.template.md
+│   └── tutorial.template.md
+├── docs/
+│   ├── README.agents.md
+│   ├── README.skills.md
+│   ├── README.instructions.md
+│   ├── README.prompts.md
+│   ├── learning-hub/
+│   └── tools/
+├── eng/
+│   ├── update-readme.mjs
+│   ├── generate-docs.mjs
+│   ├── generate-marketplace.mjs
+│   ├── validate-naming.mjs
+│   ├── validate-frontmatter.mjs
+│   ├── validate-skills.mjs
+│   ├── validate-plugins.mjs
+│   ├── validate-workflows.mjs
+│   ├── check-secrets.mjs
+│   ├── fix-line-endings.sh
+│   ├── staleness-report.mjs
+│   ├── create-skill.mjs
+│   ├── create-plugin.mjs
+│   ├── validate-skill.mjs
+│   ├── validate-plugin.mjs
+│   ├── wiki-lint.mjs
+│   └── wiki-stats.mjs
+├── scripts/
+│   ├── lint-frontmatter.mjs
+│   └── ...
+├── .schemas/
+│   ├── plugin.schema.json
+│   ├── hooks.schema.json
+│   └── ...
+├── .vscode/
+│   ├── tasks.json
+│   └── settings.json
+├── .github/
+│   ├── workflows/
+│   │   ├── validate-content.yml
+│   │   ├── check-pr-target.yml
+│   │   ├── update-readme.yml
+│   │   ├── staleness-report.yml
+│   │   ├── contributors.yml
+│   │   ├── wiki-lint.yml
+│   │   ├── label-pr.yml
+│   │   └── security-scan.yml
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── new-agent.yml
+│   │   ├── new-skill.yml
+│   │   └── bug-report.yml
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   ├── CODEOWNERS
+│   ├── labeler.yml
+│   └── plugin/
+│       └── marketplace.json
+├── llm-wiki/
+│   ├── schema/
+│   │   └── CLAUDE.md
+│   ├── raw/
+│   ├── wiki/
+│   │   ├── index.md
+│   │   ├── log.md
+│   │   ├── tools/
+│   │   ├── concepts/
+│   │   ├── comparisons/
+│   │   └── analysis/
+│   └── reports/
+└── data/
+    ├── config.json
+    └── tags.json
+```
+
+### 10.2 package.json 範本
+
+```json
+{
+  "name": "ai-assets",
+  "version": "1.0.0",
+  "description": "企業 AI 資產知識庫",
+  "type": "module",
+  "scripts": {
+    "build": "node eng/update-readme.mjs && node eng/generate-docs.mjs && node eng/generate-marketplace.mjs",
+    "validate": "node eng/validate-naming.mjs && node eng/validate-frontmatter.mjs",
+    "validate:skills": "node eng/validate-skills.mjs",
+    "validate:plugins": "node eng/validate-plugins.mjs",
+    "validate:workflows": "node eng/validate-workflows.mjs",
+    "validate:secrets": "node eng/check-secrets.mjs",
+    "validate:all": "npm run validate && npm run validate:skills && npm run validate:plugins && npm run validate:workflows && npm run validate:secrets",
+    "skill:create": "node eng/create-skill.mjs",
+    "plugin:create": "node eng/create-plugin.mjs",
+    "skill:validate": "node eng/validate-skill.mjs",
+    "plugin:validate": "node eng/validate-plugin.mjs",
+    "fix:line-endings": "bash eng/fix-line-endings.sh",
+    "report:staleness": "node eng/staleness-report.mjs",
+    "wiki:lint": "node eng/wiki-lint.mjs",
+    "wiki:stats": "node eng/wiki-stats.mjs"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "glob": "^10.3.10",
+    "inquirer": "^9.2.12"
+  }
+}
+```
+
+### 10.3 初始化指令 Checklist
+
+```markdown
+## 🚀 AI 資產知識庫初始化 Checklist
+
+### 1. 組織與權限
+- [ ] 建立 GitHub Organization（若尚未建立）
+- [ ] 啟用 Two-Factor Authentication
+- [ ] 建立 Teams（admins / maintainers / reviewers / contributors）
+- [ ] 設定 Team 權限
+
+### 2. Repository 建立
+- [ ] 建立 Repository（Internal visibility）
+- [ ] 選擇 License
+- [ ] 建立 `staged` 分支
+- [ ] 設定 Branch Protection（main + staged）
+- [ ] 啟用 GitHub Actions
+
+### 3. 檔案結構
+- [ ] 建立所有目錄（agents / instructions / skills / plugins / hooks / workflows / cookbook / prompts / tutorials / templates）
+- [ ] 建立支援目錄（_templates / .schemas / .vscode / scripts）
+- [ ] 建立 README.md
+- [ ] 建立 CONTRIBUTING.md
+- [ ] 建立 AGENTS.md
+- [ ] 建立 CODE_OF_CONDUCT.md
+- [ ] 建立 SECURITY.md
+- [ ] 建立 SUPPORT.md
+- [ ] 建立 llms.txt
+- [ ] 建立 .gitignore
+- [ ] 建立 .gitattributes
+- [ ] 建立 .editorconfig
+- [ ] 建立 .codespellrc
+- [ ] 建立 CODEOWNERS
+
+### 4. 自動化
+- [ ] 建立 validate-content.yml
+- [ ] 建立 check-pr-target.yml
+- [ ] 建立 validate-workflows.yml（Agentic Workflow 驗證）
+- [ ] 建立 update-readme.yml
+- [ ] 建立 staleness-report.yml
+- [ ] 建立 contributors.yml
+- [ ] 建立 label-pr.yml + labeler.yml
+- [ ] 建立 security-scan.yml
+- [ ] 建立 fix-line-endings.yml
+- [ ] 建立 PR Template
+- [ ] 建立 Issue Templates
+
+### 5. 建構腳本
+- [ ] 初始化 package.json
+- [ ] 安裝 devDependencies
+- [ ] 實作 update-readme.mjs
+- [ ] 實作 generate-marketplace.mjs
+- [ ] 實作 validate-naming.mjs
+- [ ] 實作 validate-frontmatter.mjs
+- [ ] 實作 validate-skills.mjs
+- [ ] 實作 validate-plugins.mjs
+- [ ] 實作 validate-workflows.mjs
+- [ ] 實作 check-secrets.mjs
+- [ ] 實作 fix-line-endings.sh
+- [ ] 實作 wiki-lint.mjs
+- [ ] 實作 wiki-stats.mjs
+
+### 6. LLM Wiki 建置
+- [ ] 建立 llm-wiki/ 目錄結構（schema / raw / wiki / reports）
+- [ ] 建立 CLAUDE.md（Schema）
+- [ ] 建立 index.md 與 log.md
+- [ ] 建立 wiki-lint.yml Workflow
+- [ ] 建立 Codex 相容軟連結（CLAUDE.md → wiki/CLAUDE.md）
+
+### 7. 種子內容
+- [ ] 遷移現有 Prompt 模板
+- [ ] 遷移現有教學手冊
+- [ ] 建立 3-5 個核心 Agent
+- [ ] 建立 5-10 個 Instruction
+- [ ] 建立標準標籤清單（data/tags.json）
+
+### 8. 推廣
+- [ ] 撰寫團隊公告
+- [ ] 舉辦啟動說明會
+- [ ] 設定 Onboarding 流程
+- [ ] 建立定期 Review 機制
+```
+
+### 10.4 快速參考卡
+
+```
+╔═══════════════════════════════════════════════════════════════╗
+║                    AI 資產知識庫 — 快速參考卡                    ║
+╠═══════════════════════════════════════════════════════════════╣
+║                                                               ║
+║  📁 目錄結構                                                   ║
+║  ├── agents/          → *.agent.md                            ║
+║  ├── instructions/    → *.instructions.md                     ║
+║  ├── skills/          → {name}/SKILL.md                       ║
+║  ├── plugins/         → {name}/plugin.json                    ║
+║  ├── hooks/           → {name}/hooks.json                     ║
+║  ├── workflows/       → *.md                                  ║
+║  ├── prompts/         → {name}/prompt.md                      ║
+║  ├── tutorials/       → *-教學手冊.md                          ║
+║  ├── templates/       → {category}/{name}.md                  ║
+║  └── llm-wiki/wiki/   → {category}/{topic}.md（知識頁）       ║
+║                                                               ║
+║  🔀 貢獻流程                                                   ║
+║  1. Fork / Branch                                             ║
+║  2. 建立內容（使用 _templates/ 模板）                           ║
+║  3. PR → staged 分支                                          ║
+║  4. 自動化檢查 + 2 位審查者核准                                 ║
+║  5. 合併至 staged → 定期發佈至 main                            ║
+║                                                               ║
+║  🏷️ 命名規則                                                   ║
+║  • 檔案名：小寫 + 連字號（java-refactoring.agent.md）          ║
+║  • 資料夾：小寫 + 連字號（unit-test-generator/）               ║
+║  • 教學手冊：可用中文（claude-code-教學手冊.md）               ║
+║                                                               ║
+║  ⚠️ 禁止事項                                                   ║
+║  • 禁止提交 API Key / 密碼 / 內部 IP                           ║
+║  • 禁止直接推送至 main 分支                                    ║
+║  • 禁止未經測試的內容                                          ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+### 10.5 常見問題（FAQ）
+
+**Q1：我應該建立 Agent 還是 Instruction？**
+
+- **Agent**：需要 AI 代理主動執行多步驟任務（如分析程式碼 → 建議重構 → 生成測試）
+- **Instruction**：被動套用的編碼規範（如命名慣例、程式碼風格）
+
+**Q2：PR 被 CI 擋下怎麼辦？**
+
+查看 GitHub Actions 的錯誤訊息，常見原因：
+- Frontmatter 缺少必要欄位 → 參考 `_templates/` 補齊
+- 檔案命名不符慣例 → 改為小寫 + 連字號
+- 偵測到敏感資料 → 移除 API Key 等敏感內容
+
+**Q3：如何更新已發佈的內容？**
+
+1. 建立新 Branch
+2. 修改內容，更新 Frontmatter 中的 `updated` 日期
+3. 建立 PR → staged
+
+**Q4：教學手冊太大怎麼辦？**
+
+- 單一檔案建議不超過 3000 行
+- 若內容確實龐大，可拆分為系列文章（如 `part-1`、`part-2`）
+- 在 `tutorials/README.md` 中建立索引
+
+**Q5：可以引用外部資源嗎？**
+
+可以，但需注意：
+- 標註來源與授權
+- 確認連結可存取
+- 過時檢測會自動檢查連結有效性
+
+**Q6：如何處理跨團隊的資產共享？**
+
+- 使用 `tags` 欄位標記適用團隊
+- 在 README 中建立「按團隊瀏覽」的索引
+- 透過 CODEOWNERS 指定各團隊的維護範圍
+
+**Q7：知識庫的內容可以用於生產環境嗎？**
+
+- Agent / Instruction / Skill 可直接安裝使用
+- Prompt 模板可直接複製使用
+- 所有內容的品質由 Maintainer 把關
+
+**Q8：如何衡量知識庫的使用成效？**
+
+建議追蹤以下指標：
+- 每月新增資產數
+- PR 提交數與合併率
+- 活躍貢獻者數
+- Marketplace Plugin 安裝次數
+- 團隊滿意度調查
+
+**Q9：支援哪些 AI 工具？**
+
+目前支援：
+- GitHub Copilot（Agent / Instruction / Skill / Plugin / Hook / Workflow）
+- Claude Code（Agent / Skill / Plugin — 採用 Claude Code spec 格式）
+- OpenAI Codex（Prompt — 透過 AGENTS.md symlink 支援 Codex agent）
+- Google Gemini（Prompt）
+- qmd（LLM Wiki 本地搜尋引擎，支援 BM25 + 向量混合搜尋）
+- Obsidian（LLM Wiki 知識管理與視覺化）
+
+> **注意**：Plugin 格式已統一採用 Claude Code specification，同時相容 GitHub Copilot 與 Claude Code。CLAUDE.md 可透過 symlink 映射為 AGENTS.md 以相容 Codex。
+
+**Q10：如何確保內容不會被 AI 訓練使用？**
+
+- Repository 設為 Internal / Private
+- 在 `robots.txt` 中禁止爬蟲
+- 與 GitHub 確認 Enterprise 方案的資料使用政策
+
+**Q11：LLM Wiki 與 AI 資產知識庫有什麼差別？**
+
+兩者已整合在同一 Repo 中，各司其職：
+- **AI 資產目錄**（agents / skills / plugins 等）：管理**可執行的工具型資產**，被 AI 工具直接載入使用
+- **LLM Wiki**（`llm-wiki/`）：管理**研究型與決策型知識**，由 LLM 持續編譯、複合成長
+
+初始化時即自動建立完成（見 [§2.4](#24-執行初始化指令)），無需額外設定。
+
+**Q12：LLM Wiki 的 Lint 會不會產生誤報？**
+
+LLM 驅動的 Lint 確實存在有損壓縮風險（lossy compression），可能遺漏細微差異或日期邊界條件。緩解策略：
+- 每頁保留原始來源的雜湊值（provenance hash），供人工追溯
+- Lint 結果僅作為建議，不自動執行修改
+- 重要頁面設定人工審查閘道
+
+**Q13：如何快速建立一個最小可行的 LLM Wiki？**
+
+執行 [§2.4 初始化指令](#24-執行初始化指令) 時已自動建立完成，包含：
+1. `llm-wiki/` 完整目錄結構（schema / raw / wiki / reports）
+2. CLAUDE.md Schema 定義資料夾慣例與工作流
+3. `index.md` 與 `log.md` 初始頁面
+
+接下來只需將第一份原始資料放入 `llm-wiki/raw/`，以 LLM 執行第一次 Ingest 即可開始使用。詳見 [**§11.8 實作指引**](#118-實作指引)。
+
+### 10.6 名詞對照表
+
+本文件混用大量英文術語，為降低不同背景讀者的理解門檻，統一對照如下：
+
+| 術語 | 中文對照 | 一句話定義 |
+|------|---------|-----------|
+| Ingest | 知識攝取 | 將新原始資料消化、更新進 Wiki 頁面的過程 |
+| Query | 知識查詢 | 對 Wiki 提問並取得跨頁面合成答案的過程 |
+| Lint | 知識健檢 | 定期掃描 Wiki 找出矛盾、過時、孤立內容的品質檢查機制 |
+| Staleness | 過時／陳舊 | 內容超過設定天數未更新的狀態，觸發標記或警示 |
+| Provenance | 來源溯源 | 一段內容可追溯回原始來源檔案與雜湊值的能力 |
+| Compounding Knowledge Asset | 複合成長知識資產 | 隨時間累積、彼此交叉引用、價值持續增加的知識庫，而非用完即丟的一次性查詢結果 |
+| Orphan Page | 孤立頁面 | 沒有被任何其他頁面連結引用的 Wiki 頁面 |
+| Frontmatter | 檔頭中繼資料 | Markdown 檔案開頭以 `---` 包裹的 YAML 結構化欄位 |
+| Staged Branch | 過渡分支 | PR 的實際合併目標分支，通過審查後才會定期發佈至 main |
+| Fast-track Approval | 快速審查通道 | 符合特定條件（如 AI Agent 貢獻標記）可降低審查門檻的合併流程 |
+
+---
+
+## 第 11 章 LLM Wiki 知識庫建構與維護
+
+### 11.1 LLM Wiki 核心理念
+
+Andrej Karpathy 於 2025 年提出的 [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 模式（5,000+ Stars / Forks），為 AI 時代的知識管理提供了一個根本性的思維轉換。其核心洞察如下：
+
+**傳統知識管理的問題**：
+
+| 傳統模式 | 問題 |
+|---------|------|
+| Confluence / Notion | 內容碎片化、搜尋品質差、格式不統一 |
+| RAG（檢索增強生成） | 每次重新派生，知識不會累積成長 |
+| 聊天記錄 | 一次性消費，無法持久化與複合 |
+| 個人筆記 | 封閉孤島，無法跨人員共享 |
+
+**LLM Wiki 的核心主張**：
+
+> Wiki 是一種**持久性、複合成長的知識資產**（compounding knowledge asset）。與 RAG 每次從原始資料重新派生答案不同，LLM Wiki 由 LLM 持續維護一組結構化的 Markdown 頁面，讓知識隨時間**累積、交叉引用、自我修正**。
+
+Karpathy 提出的類比：
+
+| LLM Wiki 類比 | 對應概念 |
+|--------------|---------|
+| Obsidian（或任何 Markdown 編輯器） | IDE |
+| LLM | 程式設計師 |
+| Wiki（Markdown 頁面集合） | 程式碼庫 |
+| 人類 | 策展者與提問者 |
+
+人類負責**策展（curation）與提問**，LLM 負責**維護書寫記錄**。這種分工讓人類擺脫繁瑣的文字整理工作，專注於高價值的知識策略決策。
+
+**思想脈絡：從 Memex 到 LLM Wiki**
+
+這套模式並非憑空出現。1945 年，Vannevar Bush 在《As We May Think》一文中提出 Memex 構想——一台能讓使用者建立個人化知識庫、並在文件之間建立「關聯路徑」（associative trails）的機器。這個構想在當時有一個始終無法解決的缺口：**誰來負責維護**？把文件讀完、消化、寫成摘要、建立交叉引用，這件事極度耗費人力，八十年來沒有真正被大規模實現過。Karpathy 的觀察是，LLM 第一次讓這個缺口有了實際解方——知識庫維護中最繁瑣的部分（不是閱讀與思考，而是「簿記」：更新交叉引用、保持摘要最新、標記矛盾陳述）恰好是 LLM 最擅長、且不會疲乏的工作。這也是為什麼 LLM Wiki 值得企業認真評估：它補上的是「持續維護」這個長期被忽略的環節，而不只是又一種文件格式。
+
+### 11.2 三層架構設計
+
+LLM Wiki 採用明確的三層架構，各層職責清晰：
+
+{{< mermaid >}}
+graph TB
+    subgraph Schema["Schema 層（架構定義）"]
+        S1["CLAUDE.md / AGENTS.md"]
+        S2["定義資料夾慣例"]
+        S3["定義工作流與規則"]
+    end
+
+    subgraph Wiki["Wiki 層（知識編譯）"]
+        W1["實體頁（Entity Pages）"]
+        W2["概念頁（Concept Pages）"]
+        W3["對照表（Comparison Tables）"]
+        W4["綜合分析（Synthesis）"]
+        W5["index.md — 內容導向索引"]
+        W6["log.md — 時序操作記錄"]
+    end
+
+    subgraph Raw["Raw Sources 層（原始資料）"]
+        R1["論文 / 技術文件"]
+        R2["會議紀錄 / 郵件"]
+        R3["程式碼 / 設定檔"]
+        R4["影片逐字稿 / Podcast"]
+    end
+
+    Schema -->|"指導"| Wiki
+    Raw -->|"Ingest 攝取"| Wiki
+    Wiki -->|"引用追溯"| Raw
+
+    style Schema fill:#e1f5fe,stroke:#01579b
+    style Wiki fill:#f3e5f5,stroke:#4a148c
+    style Raw fill:#e8f5e9,stroke:#1b5e20
+{{< /mermaid >}}
+
+#### Raw Sources（原始資料層）
+
+- **特性**：不可變（immutable）、僅新增不修改
+- **內容**：論文 PDF、會議紀錄、技術文件、程式碼片段、影片逐字稿
+- **格式**：保留原始格式，輔以 Markdown 摘要
+- **命名慣例**：`raw/{YYYY-MM-DD}-{source-type}-{slug}.md`
+
+#### Wiki（知識編譯層）
+
+LLM 生成並持續維護的結構化 Markdown 頁面，是知識庫的核心價值所在：
+
+| 頁面類型 | 說明 | 範例 |
+|---------|------|------|
+| **實體頁**（Entity Pages） | 針對特定人物、專案、工具的綜合頁面 | `wiki/tools/qmd.md` |
+| **概念頁**（Concept Pages） | 針對抽象概念的定義、歷史與應用 | `wiki/concepts/rag-vs-wiki.md` |
+| **對照表**（Comparison Tables） | 多個選項的結構化比較 | `wiki/comparisons/llm-providers-2026.md` |
+| **綜合分析**（Synthesis） | 跨多個來源的交叉分析與結論 | `wiki/analysis/enterprise-ai-adoption.md` |
+
+#### Schema（架構定義層）
+
+Schema 是 LLM Wiki 的「大腦」，透過 `CLAUDE.md`（或 symlink 為 `AGENTS.md` 以相容 Codex）定義：
+
+- 資料夾結構與命名慣例
+- 頁面格式與必備欄位
+- Ingest / Query / Lint 的標準工作流
+- 品質標準與驗證規則
+- 交叉引用的規範
+
+#### 職責分工：決定性腳本 vs. LLM 判斷
+
+實作 LLM Wiki 時，並非每個步驟都該交給 LLM。Karpathy 特別強調一個分工原則：**路由與收件（intake）這類有明確規則、可完全自動化的工作，交給確定性腳本；LLM 只保留給需要理解語意、跨頁綜合的高價值判斷**。
+
+| 工作 | 建議執行者 | 理由 |
+|------|-----------|------|
+| 原始資料歸檔、檔名正規化、格式轉換 | 確定性腳本（`eng/*.mjs`） | 規則明確、可測試、不需語意理解 |
+| index.md / log.md 的欄位更新、時間戳寫入 | 確定性腳本 | 純格式操作，LLM 執行反而增加不必要的變異性 |
+| 判斷新資料該更新哪些既有頁面、是否該新增頁面 | LLM | 需要理解內容語意與既有知識的關聯 |
+| 跨頁面矛盾偵測、摘要合成 | LLM | 需要跨文件比對與語言理解能力 |
+
+這個分工不只是效率考量，也是品質考量：把「機械性」工作留給腳本，可以讓 Ingest／Lint 的執行結果可重現、可測試；LLM 只專注在真正需要判斷力的地方，能降低不必要的幻覺風險，也讓後續除錯更容易定位問題出在腳本邏輯還是 LLM 判斷。
+
+### 11.3 核心操作流程
+
+LLM Wiki 定義三種核心操作：Ingest（知識攝取）、Query（知識查詢）、Lint（知識健檢）。
+
+{{< mermaid >}}
+graph TD
+    subgraph Ingest["Ingest（知識攝取）"]
+        I1["接收原始資料"] --> I2["解析與分類"]
+        I2 --> I3["更新既有頁面"]
+        I2 --> I4["建立新頁面"]
+        I3 --> I5["更新 index.md"]
+        I4 --> I5
+        I5 --> I6["記錄至 log.md"]
+    end
+
+    subgraph Query["Query（知識查詢）"]
+        Q1["接收使用者問題"] --> Q2["搜尋相關頁面"]
+        Q2 --> Q3["合成答案<br/>附引用來源"]
+        Q3 --> Q4{"答案有價值？"}
+        Q4 -->|"是"| Q5["回存為新頁面"]
+        Q4 -->|"否"| Q6["僅回覆"]
+    end
+
+    subgraph Lint["Lint（知識健檢）"]
+        L1["掃描所有頁面"] --> L2["矛盾偵測"]
+        L1 --> L3["過時聲明檢查"]
+        L1 --> L4["孤立頁面偵測"]
+        L1 --> L5["缺失交叉參考"]
+        L2 & L3 & L4 & L5 --> L6["生成健檢報告"]
+    end
+
+    style Ingest fill:#e8f5e9,stroke:#2e7d32
+    style Query fill:#e3f2fd,stroke:#1565c0
+    style Lint fill:#fff3e0,stroke:#e65100
+{{< /mermaid >}}
+
+#### Ingest（知識攝取）
+
+Ingest 是將新原始資料整合進 Wiki 的過程。一次 Ingest 可能觸發 **10-15 個頁面更新**：
+
+```
+輸入：一篇關於 "Redis 7.4 新功能" 的技術文件
+
+觸發更新：
+├── wiki/tools/redis.md          ← 更新版本歷史段落
+├── wiki/concepts/caching.md     ← 新增 Redis 7.4 相關資訊
+├── wiki/comparisons/cache-solutions.md ← 更新比較表
+├── wiki/index.md                ← 新增索引條目
+└── wiki/log.md                  ← 記錄此次 Ingest
+```
+
+**Ingest 工作流**（在 CLAUDE.md 中定義）：
+
+```markdown
+## Ingest Workflow
+
+1. 接收原始資料，存入 `raw/` 目錄
+2. 分析資料內容，識別涉及的實體、概念、工具
+3. 針對每個識別到的主題：
+   a. 若對應頁面已存在 → 更新相關段落，標註新來源
+   b. 若對應頁面不存在 → 建立新頁面
+4. 更新 `wiki/index.md`（新增條目或調整描述）
+5. 在 `wiki/log.md` 頂部新增一筆 Ingest 記錄
+6. 每個引用必須標註來源檔案路徑（span-level citation）
+```
+
+> **壓縮原則（Compression）**：Ingest 的目標是「合成」而非「累積」。當新資料與既有頁面談論同一主題時，應該把新資訊**融入既有頁面**（更新段落、調整結論），而不是為每個來源各自新增一頁。長期下來，Wiki 的頁數應該遠少於 Raw Sources 的份數——這是知識被真正消化、而非只是被搬運的訊號。若發現同一主題散落在多個相似頁面，應在下次 Ingest 或 Lint 時合併為一頁，並在 `log.md` 記錄合併動作。
+
+#### Query（知識查詢）
+
+Query 與傳統搜尋的差異在於**合成**步驟——不只回傳相關文件，而是跨頁面合成完整答案：
+
+1. **搜尋**：以自然語言查詢 Wiki 頁面（透過 qmd 或直接遍歷）
+2. **合成**：整合多個相關頁面的資訊，產生結構化答案
+3. **引用**：每個陳述標註來源頁面路徑
+4. **回存**：若答案具備通用價值，將其儲存為新的 Wiki 頁面（知識複合成長的關鍵）
+
+#### Lint（知識健檢）
+
+Lint 是 LLM Wiki 的品質保證機制，定期執行以維護知識庫的一致性與時效性：
+
+| 檢測項目 | 說明 | 嚴重程度 |
+|---------|------|---------|
+| **矛盾偵測** | 同一事實在不同頁面有不同陳述 | 🔴 高 |
+| **過時聲明** | 引用的版本號、日期已非最新 | 🟡 中 |
+| **孤立頁面** | 無任何其他頁面引用的頁面 | 🟡 中 |
+| **缺失交叉參考** | 相關頁面之間缺少連結 | 🔵 低 |
+| **格式不一致** | 未遵循 Schema 定義的格式規範 | 🔵 低 |
+
+> **與 §8.3 的關係**：§8.3 的過時檢測策略是基於時間戳與格式的淺層掃描，Lint 則是 LLM 驅動的語意層級深度健檢，兩者互補。
+>
+> **治理紅線：絕不自動刪除**。Lint 找到的孤立頁面、疑似重複內容、過時聲明，一律只能**標記**，不可由自動化流程直接刪除或覆寫。刪除、合併等破壞性動作必須經過人工核准（例如以 PR 形式提交，由 Wiki Maintainer 審查）。原因很直接：LLM 的判斷仍會出錯，一旦允許自動刪除，一次誤判就可能永久抹去團隊的知識資產，而這種損失往往要到事後才會被發現。
+
+### 11.4 索引與日誌系統
+
+#### index.md 設計（內容導向）
+
+`wiki/index.md` 是 Wiki 的主入口，以主題分類組織所有頁面：
+
+```markdown
+# Wiki 索引
+
+## 工具與平台
+- [Redis](tools/redis.md) — 分散式快取與資料結構伺服器（v7.4）
+- [Kafka](tools/kafka.md) — 分散式事件串流平台（v3.7）
+- [Kubernetes](tools/kubernetes.md) — 容器編排平台（v1.30）
+
+## 概念與模式
+- [快取策略](concepts/caching.md) — Cache-Aside / Write-Through / Write-Behind
+- [RAG vs Wiki](concepts/rag-vs-wiki.md) — 兩種知識管理模式的比較
+
+## 對照表
+- [LLM 供應商比較 2026](comparisons/llm-providers-2026.md)
+- [快取方案比較](comparisons/cache-solutions.md)
+
+## 分析報告
+- [企業 AI 採用策略](analysis/enterprise-ai-adoption.md)
+
+---
+最後更新：2026-05-07
+總頁數：42
+```
+
+#### log.md 設計（時序記錄）
+
+`wiki/log.md` 記錄所有操作的時間軸，最新在最上方。每筆記錄統一以**單行、可被 unix 工具解析的前綴**開頭——`## [YYYY-MM-DD] {ingest|query|lint} | {標題}`，這樣即可用 `grep '^## \[' wiki/log.md` 或 `awk` 直接抽取操作記錄，不需要額外解析器：
+
+```markdown
+# 操作日誌
+
+## [2026-05-07] ingest | Redis 7.4 Release Notes
+- **來源**: `raw/2026-05-07-release-redis-74.md`
+- **更新頁面**: `tools/redis.md`, `concepts/caching.md`, `comparisons/cache-solutions.md`
+- **新增頁面**: 無
+- **操作者**: Claude（自動）
+
+## [2026-05-07] query | "Redis 7.4 與 Valkey 的差異"
+- **查詢頁面**: `tools/redis.md`, `tools/valkey.md`, `comparisons/cache-solutions.md`
+- **結果**: 回存為 `comparisons/redis-vs-valkey-2026.md`
+
+## [2026-05-06] lint | 每週健檢
+- **掃描頁面**: 42
+- **發現問題**: 3（1 矛盾、2 過時聲明）
+- **詳見**: `reports/lint-2026-05-06.md`
+```
+
+#### 企業級索引策略
+
+| 規模 | 索引方式 | 說明 |
+|------|---------|------|
+| < 100 頁 | 單一 `index.md` | 手動分類足夠 |
+| 100-500 頁 | 分類子索引 | `index.md` + 各分類 `{category}/index.md` |
+| > 500 頁 | 全文搜尋引擎 | 搭配 qmd 或 Elasticsearch |
+
+### 11.5 工具生態系統
+
+#### qmd 本地搜尋引擎
+
+[qmd](https://github.com/karpathy/qmd) 是 Karpathy 開發的本地 Markdown 搜尋引擎，專為 LLM Wiki 設計：
+
+| 功能 | 說明 |
+|------|------|
+| **混合搜尋** | BM25 關鍵字搜尋 + 向量語意搜尋 |
+| **LLM 重排序** | 搜尋結果經 LLM 重新排序，提升準確度 |
+| **CLI** | `qmd search "query"` 命令列搜尋 |
+| **MCP Server** | 透過 MCP 協議讓 AI Agent 直接查詢 Wiki |
+| **本地部署** | 完全在地端執行，無需外部 API |
+
+```bash
+# 安裝 qmd
+pip install qmd
+
+# 索引 Wiki 目錄
+qmd index ./wiki
+
+# 搜尋
+qmd search "Redis 快取策略比較"
+
+# 啟動 MCP Server（供 AI Agent 使用）
+qmd serve --mcp
+```
+
+#### Obsidian 整合
+
+Obsidian 作為 LLM Wiki 的視覺化前端，提供以下優勢：
+
+| 功能 | 用途 |
+|------|------|
+| **Graph View** | 視覺化頁面之間的引用關係，發現知識孤島 |
+| **Dataview** | 以 SQL-like 語法查詢 Frontmatter 資料 |
+| **Web Clipper** | 快速擷取網頁內容至 `raw/` 目錄 |
+| **Marp** | 將 Wiki 頁面轉換為簡報 |
+| **Git Plugin** | 自動提交變更至 Git |
+
+#### MCP Server 整合
+
+將 LLM Wiki 透過 MCP Server 暴露給 AI Agent，實現自動化知識管理：
+
+```json
+{
+  "mcpServers": {
+    "llm-wiki": {
+      "command": "qmd",
+      "args": ["serve", "--mcp", "--wiki-dir", "./wiki"],
+      "description": "LLM Wiki 搜尋與管理"
+    }
+  }
+}
+```
+
+#### 社群工具參考
+
+| 工具 | 說明 | 連結 |
+|------|------|------|
+| **ΩmegaWiki** | LLM Wiki 規格的 TypeScript 實作 | GitHub |
+| **Kompl** | 支援多 LLM 的 Wiki 編譯器 | GitHub |
+| **llm-wiki-compiler** | Python 版 Wiki 編譯流程自動化 | GitHub |
+
+> **注意**：以上社群工具仍在早期開發階段，建議評估後再導入。企業環境建議以 qmd + Obsidian 為基礎組合。
+
+### 11.6 企業級 LLM Wiki 導入策略
+
+{{< mermaid >}}
+graph LR
+    subgraph Repo["ai-assets Repo"]
+        subgraph Assets["工具型資產"]
+            R1["Agents"]
+            R2["Skills"]
+            R3["Plugins"]
+            R4["Instructions"]
+            R5["AGENTS.md"]
+        end
+
+        subgraph Wiki["llm-wiki/ 子目錄"]
+            W1["Raw Sources"]
+            W2["Wiki Pages"]
+            W3["CLAUDE.md<br/>（Schema）"]
+        end
+    end
+
+    subgraph Tools["工具層"]
+        T1["qmd<br/>MCP Server"]
+        T2["Obsidian"]
+        T3["GitHub Actions"]
+    end
+
+    Assets <-->|"互相引用"| Wiki
+    R5 <-.->|"symlink"| W3
+    Tools -->|"搜尋 / 索引"| Wiki
+    Tools -->|"驗證 / 發佈"| Assets
+    W1 -->|"Ingest"| W2
+    T3 -->|"定期 Lint"| W2
+
+    style Repo fill:#e8f5e9,stroke:#2e7d32
+    style Assets fill:#e3f2fd,stroke:#1565c0
+    style Wiki fill:#f3e5f5,stroke:#4a148c
+    style Tools fill:#fff3e0,stroke:#e65100
+{{< /mermaid >}}
+
+#### 安全與治理考量
+
+| 面向 | 風險 | 緩解策略 |
+|------|------|---------|
+| **有損壓縮** | LLM 編譯時可能遺漏細微差異、日期邊界條件 | 每頁保留 provenance（來源溯源）hash，Lint 時驗證 |
+| **幻覺汙染** | LLM 可能在 Ingest 時引入虛假資訊 | 重要事實標註 `[verified]` / `[unverified]`，人工審查閘道 |
+| **資料外洩** | Wiki 內容可能包含敏感資訊 | Private repo + DLP 掃描 + 存取控制 |
+| **版本衝突** | 多人同時 Ingest 導致內容覆蓋 | Git 版本控管 + PR 流程 + 鎖定機制 |
+
+#### 多人協作與存取控制
+
+```yaml
+# Wiki CODEOWNERS 建議
+/wiki/               @wiki-maintainers
+/wiki/index.md       @wiki-admins
+/wiki/log.md         @wiki-admins
+/raw/                @all-contributors
+/schema/CLAUDE.md    @wiki-admins
+```
+
+| 角色 | 權限 | 說明 |
+|------|------|------|
+| Wiki Admin | 修改 Schema + index.md | 控制知識架構 |
+| Wiki Maintainer | Ingest + Lint + 編輯 Wiki 頁面 | 日常維護 |
+| Contributor | 新增 Raw Sources + Query | 貢獻原始資料 |
+| Reader | Query only | 僅查詢 |
+
+#### 規模化挑戰與緩解策略
+
+| 挑戰 | 閾值 | 緩解策略 |
+|------|------|---------|
+| **搜尋效能** | > 500 頁 | 啟用 qmd 向量索引 + BM25 混合搜尋 |
+| **Ingest 衝突** | > 10 並發 | 使用佇列機制（GitHub Actions queue） |
+| **Lint 時間** | > 1,000 頁 | 分批執行（每次掃描 100 頁） |
+| **儲存空間** | > 10 GB raw | 歸檔舊資料至 Git LFS |
+| **索引維護** | > 200 分類 | 自動化分類索引生成 |
+
+#### 與 AI 資產知識庫的整合模式
+
+AI 資產知識庫（本文件第 1-10 章）與 LLM Wiki 的整合建議：
+
+| 面向 | AI 資產 Repo | LLM Wiki | 整合方式 |
+|------|------------|----------|---------|
+| **管理對象** | 可執行工具型資產 | 研究型 / 決策型知識 | 雙向 cross-reference |
+| **Schema** | AGENTS.md | CLAUDE.md | symlink 共用（`ln -s CLAUDE.md AGENTS.md`） |
+| **品質機制** | CI/CD + Staleness Report | LLM Lint | 互補——淺層掃描 + 語意健檢 |
+| **探索方式** | Marketplace + llms.txt | qmd + Obsidian Graph | 統一 `llms.txt` 入口 |
+| **貢獻流程** | PR → staged → main | PR → Ingest → Wiki update | 可共用同一 staged 分支 |
+
+### 11.7 Schema 設計範本
+
+#### CLAUDE.md 範本
+
+```markdown
+# CLAUDE.md — LLM Wiki Schema
+
+## Project Overview
+這是 {team-name} 的 LLM Wiki 知識庫，由 LLM 持續維護結構化的技術知識。
+
+## Directory Structure
+- `raw/` — 原始資料（不可變，僅新增）
+- `wiki/` — LLM 編譯的知識頁面
+  - `tools/` — 工具與平台頁面
+  - `concepts/` — 概念與模式頁面
+  - `comparisons/` — 對照表
+  - `analysis/` — 綜合分析報告
+  - `index.md` — 主索引（必須隨每次 Ingest 更新）
+  - `log.md` — 操作日誌（最新在最上方，格式見下）
+- `schema/` — 架構定義（本檔案）
+- `reports/` — Lint 報告
+
+## Naming Conventions
+- Raw files: `raw/{YYYY-MM-DD}-{source-type}-{slug}.md`
+- Wiki pages: `wiki/{category}/{slug}.md`
+- 使用小寫 + 連字號，不使用空格或底線
+- log.md 每筆記錄以單行前綴開頭：`## [YYYY-MM-DD] {ingest|query|lint} | {標題}`，確保可被 `grep`/`awk` 解析
+
+## Ingest Workflow
+1. 將原始資料存入 `raw/`
+2. 分析涉及的實體、概念、工具
+3. 優先更新既有頁面（合成優於累積）：同一主題若已有對應頁面，應融入既有內容，而非另建新頁；僅在確實是新主題時才建立新頁面
+4. 每個引用標註來源：`[source: raw/2026-05-07-xxx.md]`
+5. 更新 `wiki/index.md`
+6. 在 `wiki/log.md` 頂部新增一筆 `## [YYYY-MM-DD] ingest | {標題}` 記錄
+
+## Query Workflow
+1. 搜尋相關 Wiki 頁面
+2. 合成答案，每個陳述附引用
+3. 若答案具通用價值，回存為新頁面，並在 `wiki/log.md` 新增一筆 `## [YYYY-MM-DD] query | {標題}` 記錄
+
+## Lint Rules
+- 每頁必須被至少一個其他頁面引用（否則為孤立頁面）
+- 版本號必須與最新發佈版一致
+- 同一事實在所有頁面的陳述必須一致
+- Frontmatter 必須包含：title, created, updated, sources
+- Lint 只能**標記**孤立頁面、疑似重複內容與過時聲明，嚴禁自動刪除或覆寫；任何刪除/合併動作必須經人工核准後才能執行
+
+## Quality Standards
+- 每個事實陳述必須有來源引用
+- 比較表格至少包含 3 個維度
+- 概念頁面必須包含：定義、歷史、應用場景、相關概念
+```
+
+#### AGENTS.md 範本（Codex 相容）
+
+在 Codex 環境中，可透過 symlink 將 CLAUDE.md 映射為 AGENTS.md：
+
+```bash
+# 建立 symlink（Unix / macOS / WSL）
+ln -s CLAUDE.md AGENTS.md
+
+# Windows（需管理員權限或開啟開發人員模式）
+mklink AGENTS.md CLAUDE.md
+```
+
+AGENTS.md 的格式與 CLAUDE.md 完全相同，Codex agent 會自動讀取此檔案作為專案導引。
+
+#### 自訂 Schema 設計原則
+
+1. **明確職責**：Schema 只定義「規則」，不包含實際內容
+2. **可驗證**：每條規則應可透過自動化工具驗證
+3. **漸進式**：從最少的規則開始，隨實務經驗逐步增加
+4. **版本化**：Schema 變更視為重大變更，需經團隊共識
+
+### 11.8 實作指引
+
+> **已整合提示**：若您已依照 [§2.4 初始化指令](#24-執行初始化指令) 建立 ai-assets Repo，以下步驟 1–4 已自動完成，可直接跳至「**Ingest 工作流範例**」開始使用。
+
+#### 最小可行 LLM Wiki 建立步驟
+
+以下步驟可在 30 分鐘內完成一個最小可行的 LLM Wiki：
+
+```bash
+# 步驟 1：建立目錄結構
+mkdir -p llm-wiki/{raw,wiki/{tools,concepts,comparisons,analysis},schema,reports}
+
+# 步驟 2：建立 Schema
+cat > llm-wiki/schema/CLAUDE.md << 'SCHEMA'
+# CLAUDE.md
+## Project Overview
+團隊 LLM Wiki 知識庫。
+## Directory Structure
+- raw/ — 原始資料（不可變）
+- wiki/ — 知識頁面（LLM 維護）
+- schema/ — 架構定義
+## Ingest Workflow
+1. 原始資料存入 raw/
+2. 更新或建立 Wiki 頁面
+3. 更新 wiki/index.md
+4. 記錄至 wiki/log.md
+SCHEMA
+
+# 步驟 3：建立空索引
+echo "# Wiki 索引\n\n（尚無內容）\n\n---\n最後更新：$(date +%Y-%m-%d)\n總頁數：0" > llm-wiki/wiki/index.md
+
+# 步驟 4：建立空日誌
+echo "# 操作日誌\n\n（尚無操作記錄）" > llm-wiki/wiki/log.md
+
+# 步驟 5：初始化 Git
+cd llm-wiki && git init && git add -A && git commit -m "chore: initialize LLM Wiki"
+
+# 步驟 6：建立 Codex 相容 symlink
+ln -s schema/CLAUDE.md AGENTS.md
+```
+
+#### Ingest 工作流範例
+
+以下示範一次完整的 Ingest 流程：
+
+```
+使用者：
+  請將以下文章 Ingest 進知識庫。
+  [貼上一篇關於 Kubernetes 1.30 新功能的技術文件]
+
+LLM 執行：
+  1. ✅ 存檔至 raw/2026-05-07-release-kubernetes-130.md
+  2. ✅ 更新 wiki/tools/kubernetes.md（新增 v1.30 段落）
+  3. ✅ 更新 wiki/concepts/container-orchestration.md（新增新功能引用）
+  4. ✅ 建立 wiki/comparisons/kubernetes-130-vs-129.md（版本差異對照表）
+  5. ✅ 更新 wiki/index.md（新增 3 個條目）
+  6. ✅ 記錄至 wiki/log.md
+
+  共更新 3 頁、新增 1 頁。
+```
+
+#### 維護排程建議
+
+| 頻率 | 工作項目 | 執行者 |
+|------|---------|-------|
+| **每日** | 新原始資料 Ingest | 貢獻者 + LLM |
+| **每週** | Lint 健檢（自動化） | GitHub Actions + LLM |
+| **每月** | index.md 重整 + 孤立頁面清理 | Wiki Maintainer |
+| **每季** | Schema 審查與調整 | Wiki Admin + 團隊 |
+| **每半年** | 全面 Lint + 歸檔舊資料 | Wiki Admin |
+
+#### 成效評估指標
+
+| 指標 | 計算方式 | 目標值 |
+|------|---------|-------|
+| **知識覆蓋率** | Wiki 頁數 / 原始資料數 | ≥ 1.5（每份原始資料產生 1.5 頁 Wiki） |
+| **交叉引用密度** | 引用連結數 / Wiki 頁數 | ≥ 3（每頁至少 3 個交叉引用） |
+| **Lint 通過率** | 無問題頁數 / 總頁數 | ≥ 90% |
+| **查詢回存率** | 回存為新頁面的 Query / 總 Query | ≥ 20% |
+| **過時率** | 過時頁面數 / 總頁數 | ≤ 10% |
+| **孤立率** | 孤立頁面數 / 總頁數 | ≤ 5% |
+
+> **社群批評的合理觀點**：有開發者指出 LLM Wiki 在以下情境應審慎使用——(1) 涉及法規遵循的精確文件（有損壓縮風險）；(2) 超大規模知識庫（> 10,000 頁）的搜尋效能；(3) 多人同時 Ingest 的併發控制。以上情境建議搭配人工審查閘道、分散式搜尋引擎、以及 Git-based 鎖定機制作為緩解。
+
+---
+
+## 參考文獻
+
+本文件所引用之主要外部來源與查證日期如下，供讀者延伸閱讀與自行核實：
+
+| 來源 | 用途 | 查證日期 |
+|------|------|---------|
+| [github/awesome-copilot](https://github.com/github/awesome-copilot) | 第 1–10 章 AI 資產知識庫架構、分類體系、CI/CD 自動化設計的主要參考範本 | 2026-07-03 |
+| [Andrej Karpathy — LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | 第 11 章 LLM Wiki 三層架構、Ingest/Query/Lint 工作流、Memex 思想脈絡的核心來源 | 2026-07-03 |
+| [Agent Skills Specification](https://agentskills.io/specification) | §3.2.3、§4.1 Skill 檔案結構與命名規範依據 | 2026-05-06 |
+| [qmd](https://github.com/karpathy/qmd) | §11.5 本地 Wiki 搜尋引擎（BM25 + 向量混合搜尋）功能說明依據 | 2026-05-06 |
+
+> **使用限制**：企業導入前，建議自行至上述來源核實最新規格與統計數字，因開源專案的 Star 數、貢獻者數、API 規格會持續變動，本文件的數字僅為查證當下的快照。
+
+---
+
+> **文件結束**
+>
+> 本教學手冊基於 [github/awesome-copilot](https://github.com/github/awesome-copilot) 的設計理念與架構，並整合 [Andrej Karpathy 的 LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 知識管理模式，針對企業需求進行客製化調整。
+>
+> 如有任何問題或建議，請透過 GitHub Issue 提出。

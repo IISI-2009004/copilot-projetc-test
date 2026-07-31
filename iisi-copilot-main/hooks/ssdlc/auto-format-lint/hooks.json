@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "./scripts/auto-format.sh",
+        "timeout": 15
+      },
+      {
+        "type": "command",
+        "command": "./scripts/auto-lint.sh",
+        "timeout": 30
+      }
+    ]
+  }
+}
