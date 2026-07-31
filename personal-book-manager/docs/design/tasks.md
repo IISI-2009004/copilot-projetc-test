@@ -72,15 +72,19 @@
   - `DELETE /api/books/{id}/cover`：先確認書本屬於目前登入者；若 `coverImageSource=UPLOADED` 則呼叫 `delete()` 移除實體檔案；無論來源皆清空 `coverImageUrl`/`coverImageSource`  
   - `PUT /api/books/{id}` 內若帶入 `coverImageUrl`（且非透過上傳端點），視為「貼上圖片網址」流程：設定 `coverImageSource=EXTERNAL_URL`；若原本為 `UPLOADED`，須先呼叫 `delete()` 清除舊上傳檔避免孤兒檔案
 
-- [ ] **A4** `TagService` / `CategoryService`（自訂 Tag 與分類目錄的 CRUD，皆帶 `userId` 隔離）  
-  - Tag：建立、列表、刪除（皆限同一 `userId`；刪除時一併移除 Book_Tag 映射）；書本加/移除 Tag；`name` 加上 `UNIQUE(userId, name)` 約束  
-  - Category：建立、列表、刪除（皆限同一 `userId`；若仍有書本歸類則拋 `CategoryInUseException` → 409，不自動級聯刪書）；`name` 加上 `UNIQUE(userId, name)` 約束
+- [ ] **A4** `TagService` / `CategoryService`（Tag／Category 為各自獨立資料表，皆帶 `userId` 隔離與 `color` 欄位）  
+  - Tag：建立、列表、更新（改名/改色）、刪除（皆限同一 `userId`；刪除時一併移除 Book_Tag 映射）；書本加/移除 Tag；`name` 加上 `UNIQUE(userId, name)` 約束；`color` 選填，格式 `#RRGGBB`  
+  - Category：樹狀階層（`parentId` 自我參照，Adjacency List），建立/更新（含搬移 parentId）/列表（回傳巢狀樹狀結構）/刪除（皆限同一 `userId`）；`name` 加上 `UNIQUE(userId, parentId, name)` 約束（同層唯一）；`color` 選填；`sortOrder` 供同層排序  
+    - 建立/搬移時檢查階層深度上限（最多 3 層），超過拋 `CategoryDepthExceededException`（400）  
+    - 搬移 `parentId` 時需沿父鏈往上追溯偵測循環參照，偵測到拋 `InvalidCategoryParentException`（400）  
+    - 刪除時若仍有子分類或書本歸類於此分類，拋 `CategoryInUseException`（409），不自動級聯刪除
 
 - [ ] **A5** BookService / Controller / TagService / CategoryService 單元測試 ≥ 80%  
   - 每個 public 方法 ≥ 3 個案例（Happy / Boundary / Error）  
   - 新增案例：更新書本 ISBN 重複（409，限同一用戶）、categoryId 不存在（400）、分類刪除時仍有書本歸類（409）、刪除書本後其既有閱讀記錄仍可查詢（驗證 deleteBook 未觸及 ReadingRecord）、六種 bookType 各自新增 Happy Path、線上內容類 URL 重複（409，限同一用戶）、線上內容類誤帶 isbn（400）、實體類誤帶 url（400）、EBOOK 重複 isbn 不觸發 409（驗證不去重）、同人誌無 isbn 新增成功且不觸發去重、purchaseUrl/authorUrl 非 http/https 格式（400）  
   - 新增封面相關測試（A7/A8）：合法圖片上傳成功（200）、偽裝副檔名的非圖片檔案上傳失敗（400，驗證以 magic bytes 而非副檔名判斷）、超過 5MB 檔案上傳失敗（400）、取代封面時舊檔案被刪除（Mockito verify storage.delete 被呼叫）、貼上外部圖片網址設定成功且不觸發任何下載行為（verify 無 HTTP client 呼叫）、刪除封面後欄位清空且對應刪除實體檔案（僅 UPLOADED 時）  
-  - 新增多用戶隔離測試：使用者 A 無法查詢/更新/刪除使用者 B 的書本（回 404）、兩位用戶各自新增相同 ISBN 的書本皆成功（不誤判為重複）、TagName/CategoryName 不同用戶可重複、同一用戶內重複則 409  
+  - 新增分類階層測試：建立子分類成功並可於 GET 樹狀回應中看到巢狀 children、超過 3 層深度建立失敗（400）、搬移分類形成循環參照失敗（400）、分類刪除時仍有子分類失敗（409）、分類刪除時仍有書本歸類失敗（409）、Tag/Category `color` 格式錯誤（400，非 `#RRGGBB`）、Tag/Category 未帶 `color` 時允許為 null  
+  - 新增多用戶隔離測試：使用者 A 無法查詢/更新/刪除使用者 B 的書本（回 404）、兩位用戶各自新增相同 ISBN 的書本皆成功（不誤判為重複）、TagName/CategoryName 不同用戶可重複、同一用戶內同層重複則 409  
   - Mockito mock Repository / CoverStorageService；AssertJ 斷言  
   - 測試命名：`should_預期行為_When_條件`
 

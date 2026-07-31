@@ -115,7 +115,92 @@ Eagle 特色為左側深色資料夾樹狀導覽 + 主內容區縮圖網格瀏�
 - `npm run build`：通過（僅有 Element Plus 套件體積較大的 chunk-size 警告，非錯誤）
 - `npm run dev` 啟動後以 `curl` 確認首頁回應 HTTP 200
 
-## 後續待辦（技術債務）
+## 追加決策紀錄（2026-08-01，Tag／Category 獨立資料表設計、樹狀分類管理與 taxonomy 模組化）
+
+**Decision**: 將書本的分類（Category）與標籤（Tag）拆為前端獨立子模組
+`frontend/src/modules/taxonomy/`，兩者對應後端各自獨立的資料表；Category 保留樹狀階層
+（Adjacency List，最多 3 層），兩者皆支援使用者自訂顯示顏色；並新增對應的管理頁面
+（標籤管理／分類管理）與搜尋、篩選、刪除防呆等互動。
+**Context**: 使用者要求（1）分類比照標籤可自由新增、（2）Tag/Category 應為不同資料表且皆可
+自訂顏色、Category 需保留樹狀階層、（3）Menu 需有「分類管理」頁面且圖示要隨顏色變化、
+（4）標籤/分類管理頁需改為不規則排列（標籤雲／樹狀），點選後才可編輯，並加上搜尋 bar、
+（5）刪除標籤或分類前，若仍有書籍使用中需警告並在使用者確認後自動清除書籍上的關聯設定、
+（6）Tag/Category 邏輯應拉出獨立小模組以符合模組邊界慣例（比照後端 book 模組僅對外暴露
+`BookQueryPort` 的作法）。
+**Options（分類階層儲存策略，詳見 `docs/architecture/adr/0007-...`）**:
+  1. Path Enumeration（如 `1/4/9`）
+  2. Nested Set（left/right 值）
+  3. Closure Table（額外的祖先-子孫關聯表）
+  4. **Adjacency List（`parentId` 自我參照）— 採用**：分類數量少、深度上限僅 3 層，
+     寫入（新增/搬移/刪除單一節點）成本 O(1) 優於其餘方案的查詢效能優勢，且可於單次
+     `findAllByUserId` 取回後於記憶體建樹，避免依賴資料庫遞迴 CTE（H2/PostgreSQL 語法不同、
+     Spring Data JPA 原生支援有限）。
+**Rationale**: 使用者情境（少量分類、淺層樹狀、前端即時互動為主）不需要 Nested Set/Closure
+Table 的查詢效能優化，Adjacency List 搭配前端遞迴工具（`categoryTree.ts`）即可滿足需求，
+且實作與維護成本最低。Tag/Category 拆為獨立模組可避免 book 相關元件直接操作內部資料結構，
+與後端 book 模組「僅對外暴露 Port 介面」的慣例一致。
+**Impact**:
+  - **後端設計文件**（`docs/design/design.md`）：Tag 資料表新增 `color` 欄位；新增
+    `Book_Tag` 多對多關聯表說明；Category 資料表恢復 `parentId`/`sortOrder`/`color`，
+    唯一鍵改為 `UNIQUE(userId, parentId, name)`；新增深度限制、循環偵測（重新指定父節點時
+    需往上追溯 `parentId` 鏈避免形成環）、刪除規則（不自動級聯，前端需先引導清空）、
+    查詢建樹策略之說明；API 章節新增 Tag `PUT /api/tags/{id}`、Category `parentId`/`color`/
+    巢狀 `children` 回應格式。
+  - **新增 ADR**：`docs/architecture/adr/0007-tag-category-separate-tables-with-hierarchy.md`
+    記錄 Adjacency List 決策的完整 Options/Rationale/Impact/Review。
+  - **`docs/design/tasks.md`**：模組 A（Tag/Category）之 A4/A5 任務補充階層相關的 Service
+    邏輯與測試案例（深度限制、循環偵測、刪除防呆）。
+  - **前端新增模組** `frontend/src/modules/taxonomy/`：
+    - `types.ts`（`Category`/`Tag` 型別、`CATEGORY_MAX_DEPTH = 3`）
+    - `store.ts`（`mockCategories` 樹狀 reactive 資料、`mockTags` 扁平 reactive 資料）
+    - `categoryTree.ts`（樹狀操作工具：`findCategoryNode`/`depthOfCategory`/
+      `findCategoryParent`/`removeCategoryNode`/`countDescendants`/`flattenCategories`）
+    - `useTagColor.ts`（依標籤名稱查詢顯示顏色的 composable）
+    - `views/TagManagementView.vue`、`views/CategoryManagementView.vue`
+    - `index.ts`：模組對外唯一公開介面（barrel export），其餘模組不得直接
+      `import` 內部檔案，僅能 `import { ... } from '@/modules/taxonomy'`
+  - **標籤管理頁**（`TagManagementView.vue`）：改為不規則「標籤雲」排列（依名稱雜湊決定
+    chip 大小），新增搜尋 bar 即時篩選，點選標籤才彈出 `el-dialog` 編輯面板（改名/改色/
+    刪除），刪除前檢查使用書籍數，>0 則跳出確認警告，確認後自動由所有相關書籍的
+    `tags` 陣列移除該標籤。
+  - **分類管理頁**（`CategoryManagementView.vue`）：改為與側邊欄一致的 `el-tree` 樹狀呈現，
+    每個節點同列有「+」可於該階層新增子分類（受 `CATEGORY_MAX_DEPTH` 限制），新增
+    搜尋 bar（`el-tree` 內建 `filter-node-method`），點選節點才彈出編輯面板（改名/改色/
+    刪除），刪除前檢查子分類數與使用書籍數，確認後子分類一併移除、書籍分類清空為
+    「未分類」。
+  - **側邊欄**（`AppSidebar.vue`）：分類樹節點的資料夾圖示（`FolderOpened`）直接套用
+    `data.color`（取消原本另外的顏色圓點），新增「分類管理」快捷項目（與「標籤管理」並列）。
+  - **書本詳細資訊面板**（`BookDetailPanel.vue`）：分類下拉選單依樹狀深度加上縮排前綴
+    呈現階層關係（仍可 `allow-create` 新增頂層分類）；新增標籤輸入改用 `el-autocomplete`，
+    依既有標籤名稱做模糊比對建議。
+  - **路由**（`router/index.ts`）：新增 `/categories` 路由，`/tags` 與 `/categories` 皆改為
+    `import('../modules/taxonomy/views/...')`。
+  - **Menu 調整**：移除 Menu 頂部固定的「閱讀記錄」項目，改放到底部使用者資訊展開選單中
+    （`UserInfoWidget.vue` 下拉選單新增「閱讀記錄」項目）。
+**Review**: 待後端 Category/Tag API 完成後，前端 `modules/taxonomy/store.ts` 需替換為真實
+API 呼叫（`src/services/*`），並移除 mock 資料；分類拖曳搬移（re-parenting）與後端循環偵測
+邏輯的前端對應尚未實作，僅新增/改名/改色/刪除，如需支援請另行設計並更新本文件。
+
+## 追加檔案清單（本次 Tag/Category 相關變更）
+
+- 新增：`frontend/src/modules/taxonomy/{index,types,store,categoryTree,useTagColor}.ts`
+- 新增：`frontend/src/modules/taxonomy/views/{TagManagementView,CategoryManagementView}.vue`
+- 新增：`docs/architecture/adr/0007-tag-category-separate-tables-with-hierarchy.md`
+- 刪除（搬移至模組內）：`frontend/src/types/{category,tag}.ts`、
+  `frontend/src/utils/categoryTree.ts`、`frontend/src/composables/useTagColor.ts`、
+  `frontend/src/views/{TagManagementView,CategoryManagementView}.vue`
+- 修改：`frontend/src/mocks/mockData.ts`（移除 `mockCategories`/`mockTags`，改由 taxonomy
+  模組提供）、`frontend/src/router/index.ts`、`frontend/src/components/AppSidebar.vue`、
+  `frontend/src/components/BookCard.vue`、`frontend/src/components/BookListItem.vue`、
+  `frontend/src/components/BookDetailPanel.vue`、`frontend/src/components/UserInfoWidget.vue`
+- 修改：`docs/design/design.md`、`docs/design/tasks.md`
+
+## 驗證（本次變更）
+
+- `npm run type-check`：通過（無型別錯誤）
+- `npm run build`：通過（僅有既有的 chunk-size 警告，非錯誤）
+- `npm run dev` 啟動後以 `curl` 確認 `/`、`/books`、`/tags`、`/categories` 皆回應 HTTP 200
+
 
 **標題**: [技術債務] - 前端 mock 資料需替換為真實 API 呼叫
 **優先級**: 中（依賴後端 user/book/reading 商業邏輯完成進度）
