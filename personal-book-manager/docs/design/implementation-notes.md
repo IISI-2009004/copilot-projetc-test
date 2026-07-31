@@ -67,6 +67,33 @@ US-U03（取得使用者資訊）、US-R05（閱讀統計）等資料形狀可�
 **Review**: 後端 `AuthController`/`UserController`/`ReadingController` 完成商業邏輯實作後，
 需重新檢視並移除本階段 mock 資料依賴。
 
+---
+
+## 追加決策紀錄（2026-08-01，參考 Eagle UI 重新設計）
+
+**Decision**: 參考「Eagle - 圖片收集及管理必備工具」的介面風格，將導覽由「頂部橫向選單」
+改為「左側深色側邊欄」，並將首頁／藏書列表改為「卡片縮圖網格畫廊」。
+**Context**: 使用者要求以 Eagle（一套設計素材/圖片收集管理工具）的 UI 作為視覺參考，
+Eagle 特色為左側深色資料夾樹狀導覽 + 主內容區縮圖網格瀏覽。
+**Options**:
+  1. 維持原本頂部選單 + 統計卡片版面（改動小，但與 Eagle 風格差異大）
+  2. 側邊欄導覽 + 縮圖網格畫廊（**採用**）：符合使用者指定的參考對象，且藏書封面天生適合以
+     縮圖網格呈現
+**Rationale**: 圖書藏書瀏覽情境與圖片素材瀏覽情境相似（大量項目、需縮圖快速辨識、可依分類/
+標籤篩選），採用 Eagle 的資訊架構可提升瀏覽效率與一致的視覺識別。
+**Impact**:
+  - 新增 `components/AppSidebar.vue`（取代 `AppMenu.vue`，移除該檔案）：深色側邊欄，含品牌區、
+    導覽選單、`el-tree` 分類樹狀（mock 資料）、底部 `UserInfoWidget`
+  - `components/UserInfoWidget.vue` 改為緊湊型（含頭像圓框），適配側邊欄底部窄版面
+  - 新增 `components/BookCard.vue`：封面縮圖卡片（尚無真實封面圖時，以標題首字 + 依 id 循環
+    的漸層色塊佔位；顯示標籤與閱讀狀態）
+  - 新增 `types/book.ts`、mock 資料 `mockBooks`/`mockCategories`
+  - `views/HomeView.vue` 新增「最近加入」縮圖畫廊區塊（沿用原統計卡片）
+  - `views/BookListView.vue` 由開發中占位頁改為含搜尋列的縮圖網格畫廊（純前端 mock 篩選）
+  - `layouts/MainLayout.vue` 改為左側欄 + 右側內容區（`flex` 版面，非 `el-container`）
+**Review**: 待後端 book 模組 API（含封面圖片上傳/URL）完成後，`BookCard` 需改為顯示真實封面圖，
+`BookListView` 搜尋/篩選需改為呼叫後端 API；側邊欄分類樹狀需改用真實分類資料。
+
 ## 新增/修改檔案
 
 - `src/types/user.ts`、`src/types/stats.ts`：對應後端 `UserResponse` DTO 與閱讀統計資料形狀的前端型別

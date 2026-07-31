@@ -2,10 +2,12 @@
 import { computed } from 'vue'
 import { Notebook, Timer, CircleCheck, Calendar } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
-import { mockReadingStats } from '@/mocks/mockData'
+import { mockReadingStats, mockBooks } from '@/mocks/mockData'
+import BookCard from '@/components/BookCard.vue'
 
 const userStore = useUserStore()
 const stats = mockReadingStats
+const recentBooks = computed(() => mockBooks.slice(0, 6))
 
 const greeting = computed(() => `歡迎回來，${userStore.currentUser?.username ?? '訪客'}`)
 
@@ -21,7 +23,7 @@ const cards = [
   <div class="home-view">
     <h2 class="home-view__greeting">{{ greeting }}</h2>
     <p class="home-view__hint">
-      以下統計資料為前端 Scaffold 階段的 mock 資料，待後端 reading 統計 API 完成後將改接真實數據。
+      以下統計資料與封面畫廊為前端 Scaffold 階段的 mock 資料，待後端 API 完成後將改接真實數據。
     </p>
 
     <el-row :gutter="16" class="home-view__cards">
@@ -37,6 +39,16 @@ const cards = [
         </el-card>
       </el-col>
     </el-row>
+
+    <div class="home-view__section">
+      <div class="home-view__section-header">
+        <h3>最近加入</h3>
+        <RouterLink to="/books" class="home-view__more">查看全部藏書 &gt;</RouterLink>
+      </div>
+      <div class="home-view__grid">
+        <BookCard v-for="book in recentBooks" :key="book.id" :book="book" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -86,4 +98,32 @@ const cards = [
   font-size: 13px;
   color: var(--el-text-color-secondary);
 }
+
+.home-view__section {
+  margin-top: 12px;
+}
+
+.home-view__section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.home-view__section-header h3 {
+  margin: 0;
+}
+
+.home-view__more {
+  font-size: 13px;
+  color: var(--el-color-primary);
+  text-decoration: none;
+}
+
+.home-view__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
 </style>
+
