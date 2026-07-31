@@ -7,20 +7,25 @@
 ## 模組 A：book（負責人 Bob，分支 `feature/book-management`）
 
 - [ ] **A1** `Book` Entity + `BookRepository`  
-  - 欄位：isbn, title, author, bookType(ENUM), categoryId(FK), deleted, createdAt, updatedAt  
-  - 自訂查詢：`findByIsbnAndBookTypeAndDeletedFalse`、`findAllByDeletedFalse`（含 keyword/tag/category 過濾）
+  - 欄位：isbn(**nullable**), url(**nullable**), sourcePlatform(**nullable**), title, author, bookType(ENUM: PHYSICAL_BOOK/PHYSICAL_DOUJINSHI/EBOOK/WEB_NOVEL/BLOG_POST/ONLINE_FANFIC), categoryId(FK), deleted, createdAt, updatedAt  
+  - DB CHECK 約束：實體/電子書類 `url IS NULL`；線上內容類 `isbn IS NULL AND url IS NOT NULL`  
+  - 自訂查詢：`findByIsbnAndBookTypeAndDeletedFalse`（ISBN 去重）、`findByUrlAndDeletedFalse`（URL 去重）、`findAllByDeletedFalse`（含 keyword/tag/category/bookType 過濾）
 
 - [ ] **A2** `BookService`（核心業務邏輯）  
-  - `createBook`：ISBN + PHYSICAL 去重（DuplicateIsbnException）  
-  - `updateBook`：更新欄位，404 處理；ISBN 變更時同樣檢查 PHYSICAL 去重（409）；`categoryId` 不存在回 400（CategoryNotFoundException）  
+  - `createBook`：依 `BookType.requiresIsbnDedup()` 決定是否執行 ISBN+bookType 去重（`PHYSICAL_BOOK`/`PHYSICAL_DOUJINSHI`，僅當 isbn 有值）；`bookType.isOnline()` 時執行 URL 去重（`DuplicateUrlException`）；`EBOOK` 不做任何去重  
+  - `updateBook`：更新欄位，404 處理；ISBN/URL 變更時比照上述規則重新檢查；`categoryId` 不存在回 400（CategoryNotFoundException）  
   - `deleteBook`：僅軟刪除（`deleted = true`）、移除 Book_Tag 映射；**不觸碰**任何 `ReadingRecord`，也不呼叫/發布任何跨模組事件（reading 的閱讀記錄為獨立歷史資料，不隨書本刪除而變動）  
-  - `searchBooks`：分頁搜尋（keyword、tag、category 可選）  
+  - `searchBooks`：分頁搜尋（keyword、tag、category、bookType 可選）  
   - 實作 `BookQueryPort.existsBook(bookId)`
 
+- [ ] **A6** `ValidBookType` 自訂 Bean Validation（class-level）  
+  - 驗證 `BookRequest` 互斥規則：`bookType.isPhysicalOrEbook()` ⇒ `url` 必為 null，`isbn` 選填（若有值需符合 10/13 碼格式）；`bookType.isOnline()` ⇒ `isbn` 必為 null，`url` 必填且僅接受 `http`/`https` scheme  
+  - 驗證失敗回 400，錯誤訊息清楚指出違反互斥規則（不洩漏內部細節）
+
 - [ ] **A3** `BookController` + Bean Validation  
-  - `BookRequest`（@NotBlank title/author、@Pattern ISBN、@NotNull bookType）  
-  - `BookResponse`（id, isbn, title, author, bookType, categoryId, tags, createdAt）  
-  - 全域 `GlobalExceptionHandler`（404/409/400 統一 ErrorResponse 格式，含 CategoryInUseException→409）
+  - `BookRequest`（@NotBlank title/author、@NotNull bookType、`@ValidBookType` class-level 驗證）  
+  - `BookResponse`（id, isbn, url, sourcePlatform, title, author, bookType, categoryId, tags, createdAt）  
+  - 全域 `GlobalExceptionHandler`（404/409/400 統一 ErrorResponse 格式，含 CategoryInUseException/DuplicateUrlException→409）
 
 - [ ] **A4** `TagService` / `CategoryService`（自訂 Tag 與分類目錄的 CRUD）  
   - Tag：建立、列表、刪除（刪除時一併移除 Book_Tag 映射）；書本加/移除 Tag  
@@ -28,7 +33,7 @@
 
 - [ ] **A5** BookService / Controller / TagService / CategoryService 單元測試 ≥ 80%  
   - 每個 public 方法 ≥ 3 個案例（Happy / Boundary / Error）  
-  - 新增案例：更新書本 ISBN 重複（409）、categoryId 不存在（400）、分類刪除時仍有書本歸類（409）、刪除書本後其既有閱讀記錄仍可查詢（驗證 deleteBook 未觸及 ReadingRecord）  
+  - 新增案例：更新書本 ISBN 重複（409）、categoryId 不存在（400）、分類刪除時仍有書本歸類（409）、刪除書本後其既有閱讀記錄仍可查詢（驗證 deleteBook 未觸及 ReadingRecord）、六種 bookType 各自新增 Happy Path、線上內容類 URL 重複（409）、線上內容類誤帶 isbn（400）、實體類誤帶 url（400）、EBOOK 重複 isbn 不觸發 409（驗證不去重）、同人誌無 isbn 新增成功且不觸發去重  
   - Mockito mock Repository；AssertJ 斷言  
   - 測試命名：`should_預期行為_When_條件`
 

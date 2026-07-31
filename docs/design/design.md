@@ -46,11 +46,13 @@ src/main/java/com/iisi/bookmanager/
 │   ├── controller/    BookController.java
 │   ├── service/       BookService.java, TagService.java, CategoryService.java
 │   ├── repository/    BookRepository.java, TagRepository.java, CategoryRepository.java
-│   ├── domain/        Book.java, Tag.java, Category.java
+│   ├── domain/        Book.java, BookType.java (ENUM), Tag.java, Category.java
 │   ├── dto/           BookRequest.java, BookResponse.java
+│   ├── validation/    ValidBookType.java（自訂 class-level 驗證註解 + Validator，isbn/url 互斥）
 │   ├── port/          BookQueryPort.java          ← 對外介面
 │   └── exception/     BookNotFoundException.java, DuplicateIsbnException.java,
-│                      CategoryInUseException.java, CategoryNotFoundException.java
+│                      DuplicateUrlException.java, CategoryInUseException.java,
+│                      CategoryNotFoundException.java
 ├── reading/
 │   ├── controller/    ReadingController.java
 │   ├── service/       ReadingService.java, ReadingCalendarService.java
@@ -69,17 +71,26 @@ src/main/java/com/iisi/bookmanager/
 ## 3. 資料模型
 
 ### Book
+
+> 決策紀錄：[`ADR-0004`](../architecture/adr/0004-expand-book-type-taxonomy.md)（擴充藏書類型，支援無 ISBN 的實體/線上內容）
+
 | 欄位 | 型別 | 說明 |
 |------|------|------|
 | id | Long (PK, auto) | 主鍵 |
-| isbn | VARCHAR(13) | ISBN 碼（10 或 13 位）|
-| title | VARCHAR(200) NOT NULL | 書名 |
+| isbn | VARCHAR(13) (**nullable**) | ISBN 碼（10 或 13 位）；僅「實體／電子書」類（`PHYSICAL_BOOK`/`PHYSICAL_DOUJINSHI`/`EBOOK`）可填，選填 |
+| url | VARCHAR(500) (**nullable**) | 來源網址；僅「線上內容」類（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）必填，限 `http`/`https` |
+| sourcePlatform | VARCHAR(100) (**nullable**) | 來源平台名稱（選填，如 "AO3"、"Wattpad"、"巴哈姆特"）；僅「線上內容」類適用 |
+| title | VARCHAR(200) NOT NULL | 書名／作品名 |
 | author | VARCHAR(100) NOT NULL | 作者 |
-| bookType | ENUM(PHYSICAL, EBOOK) | 書本類型 |
+| bookType | ENUM(PHYSICAL_BOOK, PHYSICAL_DOUJINSHI, EBOOK, WEB_NOVEL, BLOG_POST, ONLINE_FANFIC) NOT NULL | 書本類型 |
 | categoryId | Long (FK) | 分類 ID（可為 null）|
 | deleted | BOOLEAN DEFAULT false | 軟刪除旗標 |
 | createdAt | TIMESTAMP | 建立時間 |
 | updatedAt | TIMESTAMP | 更新時間 |
+
+> **互斥約束**（DB CHECK 約束 + Service 層雙重驗證，依 `bookType` 分兩類）：
+> - 實體／電子書類（`PHYSICAL_BOOK`/`PHYSICAL_DOUJINSHI`/`EBOOK`）：`url IS NULL`，`isbn` 可為 null 或合法格式
+> - 線上內容類（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）：`isbn IS NULL`，`url IS NOT NULL`
 
 ### Tag / Book_Tag（多對多）
 | 欄位 | 型別 | 說明 |
@@ -122,11 +133,18 @@ src/main/java/com/iisi/bookmanager/
 
 | Method | Path | 說明 | Request Body | Response |
 |--------|------|------|-------------|---------|
-| POST | `/api/books` | 新增書本 | BookRequest | 201 BookResponse / 400 / 409(ISBN 重複) |
+| POST | `/api/books` | 新增書本（六種類型皆可）| BookRequest | 201 BookResponse / 400(互斥驗證失敗) / 409(ISBN 或 URL 重複) |
 | GET | `/api/books/{id}` | 取得書本 | — | 200 BookResponse / 404 |
-| PUT | `/api/books/{id}` | 更新書本 | BookRequest | 200 BookResponse / 400(categoryId 不存在) / 404 / 409(ISBN 與其他書重複) |
+| PUT | `/api/books/{id}` | 更新書本 | BookRequest | 200 BookResponse / 400(categoryId 不存在或互斥驗證失敗) / 404 / 409(ISBN 或 URL 與其他書重複) |
 | DELETE | `/api/books/{id}` | 刪除書本（僅軟刪除狀態變更，不影響其閱讀記錄）| — | 204 / 404 |
-| GET | `/api/books?keyword=&tag=&category=&page=&size=` | 搜尋書本 | — | 200 Page\<BookResponse\> |
+| GET | `/api/books?keyword=&tag=&category=&bookType=&page=&size=` | 搜尋書本（可依類型篩選）| — | 200 Page\<BookResponse\> |
+
+**BookRequest 欄位**：`title`、`author`、`bookType`（必填，六選一）、`categoryId`（選填）、
+`isbn`（實體／電子書類選填，線上內容類必為 null）、`url`（線上內容類必填，實體／電子書類必為 null）、
+`sourcePlatform`（選填，僅線上內容類適用）。
+
+**BookResponse 欄位**：`id, title, author, bookType, isbn, url, sourcePlatform, categoryId, tags, createdAt`
+（依 `bookType` 不同，`isbn` 或 `url`/`sourcePlatform` 其中一組為 null）。
 
 ### Tag 管理（base: `/api/tags`）
 
@@ -194,6 +212,44 @@ BookService 實作此介面，並以 `@Service` 注入供 reading 模組使用�
 
 ---
 
+## 5a. BookType 分類與去重邏輯
+
+```java
+package com.iisi.bookmanager.book.domain;
+
+public enum BookType {
+    PHYSICAL_BOOK,       // 實體書籍（一般出版品，通常有 ISBN）
+    PHYSICAL_DOUJINSHI,  // 實體同人誌（紙本二創，通常無 ISBN）
+    EBOOK,               // 電子書（可能有 ISBN）
+    WEB_NOVEL,           // 網路小說（連載平台，如巴哈姆特、Wattpad）
+    BLOG_POST,           // Blog 文章
+    ONLINE_FANFIC;       // 同人文網站作品（如 AO3）
+
+    /** 是否為「實體／電子書」類（可能有 ISBN，不可有 URL） */
+    public boolean isPhysicalOrEbook() {
+        return this == PHYSICAL_BOOK || this == PHYSICAL_DOUJINSHI || this == EBOOK;
+    }
+
+    /** 是否為「線上內容」類（必須有 URL，不可有 ISBN） */
+    public boolean isOnline() {
+        return !isPhysicalOrEbook();
+    }
+
+    /** 是否需要於新增/更新時執行 ISBN 去重（僅實體類，EBOOK 允許多平台重複購買不去重）*/
+    public boolean requiresIsbnDedup() {
+        return this == PHYSICAL_BOOK || this == PHYSICAL_DOUJINSHI;
+    }
+}
+```
+
+**BookService 去重邏輯**（`createBook`/`updateBook` 共用）：
+1. `@ValidBookType` class-level Bean Validation 先擋互斥規則（實體/電子書類禁止有 `url`；線上內容類禁止有 `isbn` 且 `url` 必填、格式須為 `http`/`https`）。
+2. IF `bookType.requiresIsbnDedup()` AND `isbn` 不為 null：查詢是否已存在相同 `isbn` + 相同 `bookType` 的未刪除書本，存在則拋 `DuplicateIsbnException`（409）。
+3. IF `bookType.isOnline()`：查詢是否已存在相同 `url` 的未刪除書本（不分類型，避免同一連結被建立為不同類型的重複收藏），存在則拋 `DuplicateUrlException`（409）。
+4. `EBOOK` 一律不做 4 的去重檢查（允許同一本電子書從不同平台重複購買/收藏，沿用既有設計）。
+
+---
+
 ## 6. 安全 STRIDE 威脅摘要
 
 > 完整威脅模型與緩解措施詳見獨立文件：[`docs/security/threat-model.md`](../security/threat-model.md)
@@ -205,6 +261,7 @@ BookService 實作此介面，並以 `@Service` 注入供 reading 模組使用�
 | Information Disclosure | 錯誤訊息洩漏 | GlobalExceptionHandler 統一包裝，不輸出 stack |
 | Elevation of Privilege | 他人書本操作 | 後續加 userId 隔離（本 Sprint 先建基礎架構）|
 | Injection | ISBN / 關鍵字查詢 | JPA Criteria 或 JPQL 參數化 |
+| Malicious/Unsafe URL | 線上內容類（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）的 `url` 欄位 | 限制 scheme 僅 `http`/`https`（拒絕 `javascript:` 等）；系統**不主動抓取** URL 內容；前端渲染時需 HTML escape 避免 Stored XSS |
 
 ---
 

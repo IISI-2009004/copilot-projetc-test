@@ -16,13 +16,26 @@
 
 ### 模組 A — 書本管理（book）
 
+> **書本類型（BookType）**：藏書不限於有 ISBN 的實體出版品，涵蓋以下六種類型：
+> - `PHYSICAL_BOOK`　實體書籍（一般出版品，通常有 ISBN）
+> - `PHYSICAL_DOUJINSHI`　實體同人誌（紙本二創作品，通常**無** ISBN）
+> - `EBOOK`　電子書（可能有 ISBN）
+> - `WEB_NOVEL`　網路小說（連載平台文章，如巴哈姆特、Wattpad）
+> - `BLOG_POST`　Blog 文章
+> - `ONLINE_FANFIC`　同人文網站作品（如 AO3）
+>
+> 前三者（`PHYSICAL_BOOK`/`PHYSICAL_DOUJINSHI`/`EBOOK`）為「實體／電子書」類，`isbn` 為**選填**
+> （非所有實體書皆有 ISBN，例如同人誌）；後三者（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）為
+> 「線上內容」類，改以 `url`（來源網址，必填）與 `sourcePlatform`（來源平台名稱，選填，如
+> "AO3"、"Wattpad"、"巴哈姆特"）記錄；`isbn` 與 `url` 為互斥欄位，不可同時提供。
+
 | ID | 用戶故事 | EARS 需求 | 驗收標準 |
 |----|----------|-----------|---------|
-| US-B01 | 作為用戶，我想新增書本（含 ISBN、書名、作者、類型），以便建立我的書庫 | WHEN 用戶提交新增書本表單 THE SYSTEM SHALL 儲存書本資訊並回傳 201 | ISBN 格式驗證（10/13碼）；書名、作者為必填 |
-| US-B02 | 作為用戶，我想防止重複購買，系統應於新增前檢查 ISBN 是否已存在 | WHEN 用戶新增相同 ISBN 的實體書 THE SYSTEM SHALL 回傳 409 Conflict | 僅對 PHYSICAL 類型執行去重；EBOOK 允許多筆 |
-| US-B03 | 作為用戶，我想編輯書本資訊（書名、作者、類型、Tag、分類） | WHEN 用戶更新書本資訊 THE SYSTEM SHALL 驗證並持久化更新後內容 | 更新不存在的書本回傳 404；WHEN 更新後 ISBN 與其他未刪除 PHYSICAL 書本重複 THE SYSTEM SHALL 回傳 409；WHEN `categoryId` 不存在 THE SYSTEM SHALL 回傳 400 |
+| US-B01 | 作為用戶，我想新增各種類型的藏書（實體書、同人誌、電子書、網路小說、Blog文章、AO3同人文等），以便建立我的書庫 | WHEN 用戶提交新增書本表單 THE SYSTEM SHALL 依 `bookType` 儲存對應欄位並回傳 201 | 書名、作者、`bookType` 為必填；`bookType` 屬「實體／電子書」類時 `isbn` 選填（格式驗證 10/13碼，若有提供）且 `url` 必為空；`bookType` 屬「線上內容」類時 `url` 必填（合法 URL 格式）且 `isbn` 必為空 |
+| US-B02 | 作為用戶，我想避免重複建立同一本實體書或同一個線上連結 | WHEN 新增 `bookType ∈ {PHYSICAL_BOOK, PHYSICAL_DOUJINSHI}` 且 `isbn` 已存在於相同類型的未刪除書本 THE SYSTEM SHALL 回傳 409；WHEN 新增 `bookType ∈ {WEB_NOVEL, BLOG_POST, ONLINE_FANFIC}` 且 `url` 已存在於未刪除書本 THE SYSTEM SHALL 回傳 409 | `EBOOK` 不做去重（可能從不同平台購買同一本電子書）；未提供 `isbn` 的實體書/同人誌不觸發去重檢查（無法比對）|
+| US-B03 | 作為用戶，我想編輯書本資訊（書名、作者、類型、Tag、分類、ISBN/URL） | WHEN 用戶更新書本資訊 THE SYSTEM SHALL 驗證並持久化更新後內容 | 更新不存在的書本回傳 404；`isbn`/`url` 互斥規則與 US-B01 相同；WHEN 更新後 `isbn` 與其他未刪除同類型書本重複（限 PHYSICAL_BOOK/PHYSICAL_DOUJINSHI）THE SYSTEM SHALL 回傳 409；WHEN 更新後 `url` 與其他未刪除書本重複（線上內容類）THE SYSTEM SHALL 回傳 409；WHEN `categoryId` 不存在 THE SYSTEM SHALL 回傳 400 |
 | US-B04 | 作為用戶，我想刪除書本 | WHEN 用戶刪除書本 THE SYSTEM SHALL 僅將該書本狀態標記為已刪除（`deleted = true`）並移除其 Tag 映射，**不刪除**任何關聯的閱讀記錄 | 軟刪除；刪除後查詢該書本回 404；既有閱讀記錄不受影響、仍完整保留於資料庫（歷史資料），可繼續被查詢（US-R03/US-R04/US-R05）；書本被刪除後 `BookQueryPort.existsBook()` 回傳 false，故**新增**閱讀記錄會被拒絕（404，見 US-R01），但**既有**記錄不受此限制 |
-| US-B05 | 作為用戶，我想用關鍵字（書名/作者）、Tag、分類搜尋書本 | WHEN 用戶送出搜尋條件 THE SYSTEM SHALL 回傳符合條件的書本列表（分頁） | 支援空條件（回傳全部）；分頁預設 20 筆 |
+| US-B05 | 作為用戶，我想用關鍵字（書名/作者）、Tag、分類、書本類型搜尋書本 | WHEN 用戶送出搜尋條件 THE SYSTEM SHALL 回傳符合條件的書本列表（分頁） | 支援空條件（回傳全部）；分頁預設 20 筆；支援 `bookType` 篩選（例如只看網路小說或同人誌）|
 | US-B06 | 作為用戶，我想建立自訂 Tag 並套用到書本 | THE SYSTEM SHALL 提供 Tag CRUD；WHEN Tag 套用到書本 THE SYSTEM SHALL 建立多對多映射 | Tag 名稱全域唯一（同一用戶）；WHEN Tag 被刪除 THE SYSTEM SHALL 一併移除其與所有書本的映射 |
 | US-B07 | 作為用戶，我想建立分類目錄並將書本歸類 | THE SYSTEM SHALL 提供 Category CRUD；書本可屬於一個 Category | Category 名稱唯一；WHEN 分類仍有書本歸類時嘗試刪除 THE SYSTEM SHALL 回傳 409（阻擋刪除，需用戶先將書本移出或改分類，不自動級聯刪除書本）|
 

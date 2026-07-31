@@ -26,6 +26,7 @@
 | **D**enial of Service | 搜尋 API 無上限查詢 / 大量分頁請求 | 惡意大量請求造成資料庫負載 | 分頁預設 20 筆並限制 `size` 上限（建議 ≤ 100）；後續可加 Rate Limiting（本 Sprint 未實作）| 中（Rate Limiting 為技術債，見 tasks.md 待辦）|
 | **E**levation of Privilege | 未來多用戶情境下操作他人書本/閱讀記錄 | 缺乏 userId 隔離，任何請求可操作任意 bookId | 本 Sprint 先建立分層架構與模組邊界；**後續 Sprint** 於 Book/ReadingRecord 加入 `userId` 欄位並於 Service 層強制過濾 | 高（多用戶上線前必須補上）|
 | **Injection** | ISBN / 關鍵字搜尋參數 | SQL Injection / JPQL Injection | 一律使用 Spring Data JPA 衍生查詢或 `@Query` 具名參數（`:param`），禁止字串拼接 | 低 |
+| **惡意 URL（Malicious URL）** | 線上內容類藏書的 `url` 欄位（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）| 用戶輸入 `javascript:` 偽協議或惡意連結，若前端未跳脫直接渲染成可點擊連結，可能導致 Stored XSS 或誘導點擊釣魚網址 | Bean Validation 限制 `url` scheme 僅允許 `http`/`https`（`@ValidBookType` 一併檢查）；系統**不主動抓取**該 URL 內容（避免 SSRF）；前端渲染時需 HTML escape 並以 `rel="noopener noreferrer"` 開啟外部連結 | 低（惡意連結目的地本身的內容安全性不在本系統控管範圍內）|
 
 ---
 
@@ -47,3 +48,4 @@
 | 2026-07-31 | Alice（架構師） | 初版威脅模型建立 |
 | 2026-07-31 | Alice（架構師） | 依用戶決策修正：書本刪除改為純狀態變更，不刪除閱讀記錄，移除跨模組事件相關威脅項；詳見 ADR-0001（已標記 Superseded）|
 | 2026-07-31 | Alice（架構師） | 依用戶決策擴充：閱讀記錄支援借閱來源（朋友/圖書館），新增 `externalTitle`/`externalAuthor` 自由文字欄位之 Tampering 風險說明；詳見 ADR-0003 |
+| 2026-07-31 | Alice（架構師） | 依用戶決策擴充：藏書類型新增同人誌/網路小說/Blog文章/AO3等，新增 `url` 欄位之惡意連結風險評估；詳見 ADR-0004 |
