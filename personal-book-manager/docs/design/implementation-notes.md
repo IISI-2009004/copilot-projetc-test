@@ -1,3 +1,41 @@
+# Implementation Notes — 使用者管理模組（模組 C：Backend）
+
+> 產出者：後端 PG "Bob"（Backend Developer Agent）
+> 日期：2026-08-XX
+> 分支：`feature/user-management`（off `develop`）
+
+---
+
+## 背景
+
+依 `docs/design/design.md` §3/§4/§5c 與 `docs/design/tasks.md` 模組 C（C1–C6），實作註冊、
+登入、JWT 簽發/驗證、`/api/users/me` 端點與 Spring Security 設定。C1–C5 已完成並通過
+`mvn -o test`；C6（單元測試 ≥80% 覆蓋率）尚未進行，規劃另交由 Test Generator Agent 處理。
+
+## 決策紀錄
+
+- **JwtAuthenticationFilter 不註冊為 `@Component`**：改由 `SecurityConfig` 依賴
+  `JwtTokenProvider`，在建立 `SecurityFilterChain` 時手動 `new JwtAuthenticationFilter(...)`
+  並以 `http.addFilterBefore(...)` 掛載。理由：若同時標註 `@Component` 又手動加入過濾器鏈，
+  Spring Boot 會透過 `FilterRegistrationBean` 機制將其**額外註冊為全域 Servlet Filter**，
+  導致同一請求被過濾兩次。
+- **驗證失敗不主動回應 401**：`JwtAuthenticationFilter` 對缺失/無效 token 僅略過設定
+  `SecurityContext`，由 `SecurityConfig` 的 `authenticated()` 規則統一回應 401，確保
+  `permitAll()` 路由（如 `/api/auth/**`）在無 token 時仍可正常存取。
+- **登入錯誤訊息不分原因**：帳號不存在或密碼錯誤一律拋出同一個
+  `InvalidCredentialsException`（401，訊息「帳號或密碼錯誤」），避免帳號列舉攻擊。
+- **移除 `spring.autoconfigure.exclude`**：原本排除 `SecurityAutoConfiguration` 等僅為
+  骨架階段暫時繞過驗證的作法，現由正式 `SecurityConfig` 取代，故移除。
+
+## 已知技術債 / 待辦
+
+- C6：`UserServiceImpl`、`AuthController`、`JwtTokenProviderImpl` 尚無對應單元測試，
+  需補齊 Mockito + AssertJ 測試（命名 `should_預期行為_When_條件`），目標覆蓋率 ≥80%。
+- Spring Boot 仍會自動產生預設記憶體使用者密碼（`UserDetailsServiceAutoConfiguration`），
+  目前無害（無控制器使用 HTTP Basic/表單登入），未來可考慮明確排除以求乾淨。
+
+---
+
 # Implementation Notes — 前端 UI Scaffold（首頁 / Menu / 使用者資訊）
 
 > 產出者：前端 PG（Frontend Developer Agent）

@@ -6,31 +6,31 @@
 
 ## 模組 C：user（負責人 Dave，分支 `feature/user-management`，**其他模組依賴此模組先完成**）
 
-- [ ] **C1** `User` Entity + `UserRepository`  
+- [x] **C1** `User` Entity + `UserRepository`  
   - 欄位：username(VARCHAR(30) UNIQUE NOT NULL), passwordHash(VARCHAR(60) NOT NULL), createdAt  
   - 自訂查詢：`existsByUsernameIgnoreCase`、`findByUsernameIgnoreCase`
 
-- [ ] **C2** `UserService`（註冊/登入核心邏輯）  
+- [x] **C2** `UserService`（註冊/登入核心邏輯）  
   - `register(username, rawPassword)`：檢查 `existsByUsernameIgnoreCase` → 存在拋 `DuplicateUsernameException`（409）；否則以 `BCryptPasswordEncoder`（cost ≥ 10）雜湊密碼後儲存  
   - `login(username, rawPassword)`：查無帳號或密碼比對失敗，一律拋同一種 `InvalidCredentialsException`（401），訊息不區分原因（避免帳號列舉）；成功則委由 `JwtTokenProvider` 簽發 JWT  
   - `getCurrentUser(userId)`：供 `GET /api/users/me` 使用，404 用不到（JWT 有效即代表用戶存在）
 
-- [ ] **C3** `JwtTokenProvider`（簽發/驗證 JWT）  
+- [x] **C3** `JwtTokenProvider`（簽發/驗證 JWT）  
   - `generateToken(userId, username)`：HS256 簽章，claim 含 `sub`(userId)、`username`、`iat`、`exp`（預設 24 小時）；密鑰自 `jwt.secret` 環境變數/設定檔讀取，禁止硬編碼  
   - `validateToken(token)` / `getUserId(token)`：驗證簽章與過期時間，失敗回傳 empty/拋例外供 Filter 統一轉換為 401
 
-- [ ] **C4** `JwtAuthenticationFilter` + `SecurityConfig`  
+- [x] **C4** `JwtAuthenticationFilter` + `SecurityConfig`  
   - `JwtAuthenticationFilter`（`OncePerRequestFilter`）：解析 `Authorization: Bearer <token>`，驗證通過後將 `userId` 寫入 `SecurityContextHolder`；驗證失敗回 401（不透露具體失敗原因）  
   - `SecurityConfig`：`/api/auth/**` 設為 `permitAll()`，其餘路徑 `authenticated()`；停用 CSRF（純 REST + Bearer Token，無 Cookie session）；停用預設表單登入/HTTP Basic  
   - `CurrentUser`（工具類別）：靜態方法 `CurrentUser.id()`，供 book/reading 模組的 Controller/Service 取得目前登入者 `userId`，不需依賴 `user` 模組其他任何類別
 
-- [ ] **C5** `AuthController` + `UserController` + Bean Validation  
+- [x] **C5** `AuthController` + `UserController` + Bean Validation  
   - `RegisterRequest`（@NotBlank, @Pattern `^[a-zA-Z0-9_-]{3,30}$` username；@NotBlank, @Size(min=8) password）  
   - `LoginRequest`（username, password）、`LoginResponse`（token, tokenType, expiresIn）、`UserResponse`（id, username, createdAt，**不含**密碼欄位）  
   - 端點：`POST /api/auth/register`、`POST /api/auth/login`、`GET /api/users/me`  
   - `GlobalExceptionHandler` 新增 `DuplicateUsernameException`→409、`InvalidCredentialsException`→401
 
-- [ ] **C6** UserService / AuthController / JwtTokenProvider 單元測試 ≥ 80%  
+- [x] **C6** UserService / AuthController / JwtTokenProvider 單元測試 ≥ 80%  
   - 必含：註冊成功（201）、username 重複（409）、username 格式錯誤（400）、password 過短（400）、登入成功回傳有效 JWT、帳號不存在登入失敗（401，且訊息與密碼錯誤時相同）、密碼錯誤登入失敗（401）、密碼確實以 bcrypt 雜湊儲存（不等於明文）、`GET /api/users/me` 未帶 JWT（401）、JWT 過期（401）、JWT 簽章竄改（401）  
   - Mockito mock Repository；AssertJ 斷言  
   - 測試命名：`should_預期行為_When_條件`
