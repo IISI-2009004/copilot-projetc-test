@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -52,7 +53,9 @@ public class SecurityConfig {
     /**
      * 設定 HTTP 安全規則：/api/auth/** 與 H2 Console 設為 permitAll，其餘路徑 authenticated；
      * 停用 CSRF/表單登入/HTTP Basic；Session 設為 STATELESS；
-     * 將 JwtAuthenticationFilter 加在 UsernamePasswordAuthenticationFilter 之前。
+     * 將 JwtAuthenticationFilter 加在 UsernamePasswordAuthenticationFilter 之前；
+     * 停用表單登入/HTTP Basic 後，Spring Security 對未認證請求預設回應 403（{@code Http403ForbiddenEntryPoint}），
+     * 故明確指定 {@code authenticationEntryPoint} 為 {@link HttpStatusEntryPoint}(401)，符合 design.md 規格。
      *
      * <p>H2 Console（/h2-console/**）僅於 dev profile 有效（prod 已停用），為求開發除錯
      * 便利性一併排除於 JWT 驗證之外（design.md 4. API 規格 附註）；因 H2 Console 頁面使用 iframe，
@@ -70,6 +73,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(basic -> basic.disable())
                 .formLogin(form -> form.disable())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(org.springframework.http.HttpStatus.UNAUTHORIZED)))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
                         .anyRequest().authenticated())

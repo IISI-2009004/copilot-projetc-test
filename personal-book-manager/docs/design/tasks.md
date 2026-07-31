@@ -30,7 +30,7 @@
   - 端點：`POST /api/auth/register`、`POST /api/auth/login`、`GET /api/users/me`  
   - `GlobalExceptionHandler` 新增 `DuplicateUsernameException`→409、`InvalidCredentialsException`→401
 
-- [ ] **C6** UserService / AuthController / JwtTokenProvider 單元測試 ≥ 80%  
+- [x] **C6** UserService / AuthController / JwtTokenProvider 單元測試 ≥ 80%  
   - 必含：註冊成功（201）、username 重複（409）、username 格式錯誤（400）、password 過短（400）、登入成功回傳有效 JWT、帳號不存在登入失敗（401，且訊息與密碼錯誤時相同）、密碼錯誤登入失敗（401）、密碼確實以 bcrypt 雜湊儲存（不等於明文）、`GET /api/users/me` 未帶 JWT（401）、JWT 過期（401）、JWT 簽章竄改（401）  
   - Mockito mock Repository；AssertJ 斷言  
   - 測試命名：`should_預期行為_When_條件`
