@@ -1,5 +1,9 @@
 # ADR-0001: 以 Domain Event 解決 book→reading 模組邊界衝突
 
+> **狀態：Superseded（已被取代）** — 見 [`ADR-0002`](0002-book-deletion-is-state-change-not-cascade.md)。
+> 使用者於 2026-07-31 決議：刪除書本不應刪除閱讀記錄，書本刪除僅為資料狀態變更（軟刪除），
+> 因此本 ADR 提出的 `BookDeletedEvent` 跨模組事件機制**不再需要**，本文件保留作為決策歷程記錄。
+
 ## Decision - 2026-07-31
 **Decision**: 刪除書本時，book 模組發布 `BookDeletedEvent(bookId)`（`ApplicationEventPublisher`），
 reading 模組以 `@EventListener` 監聽並清除該書本的閱讀記錄；book 模組不得直接呼叫或注入
