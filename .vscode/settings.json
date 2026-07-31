@@ -1,0 +1,8 @@
+{
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "chat.promptFiles": true,
+  "files.eol": "\n",
+  "github.copilot.chat.agent.runTasks": true,
+  "terminal.integrated.shellIntegration.enabled": true,
+  "terminal.integrated.defaultProfile.windows": "PowerShell"
+}

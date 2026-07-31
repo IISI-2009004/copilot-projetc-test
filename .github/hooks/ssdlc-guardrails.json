@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "./scripts/inject-project-context.sh",
+        "timeout": 10
+      }
+    ],
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "./scripts/block-dangerous-commands.sh",
+        "timeout": 10
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "npx prettier --write \"$TOOL_INPUT_FILE_PATH\"",
+        "timeout": 15
+      },
+      {
+        "type": "command",
+        "command": "./scripts/lint-check.sh",
+        "timeout": 30
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "./scripts/generate-session-report.sh",
+        "timeout": 15
+      }
+    ]
+  }
+}
