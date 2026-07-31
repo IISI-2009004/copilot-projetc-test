@@ -26,7 +26,8 @@
 | **D**enial of Service | 搜尋 API 無上限查詢 / 大量分頁請求 | 惡意大量請求造成資料庫負載 | 分頁預設 20 筆並限制 `size` 上限（建議 ≤ 100）；後續可加 Rate Limiting（本 Sprint 未實作）| 中（Rate Limiting 為技術債，見 tasks.md 待辦）|
 | **E**levation of Privilege | 未來多用戶情境下操作他人書本/閱讀記錄 | 缺乏 userId 隔離，任何請求可操作任意 bookId | 本 Sprint 先建立分層架構與模組邊界；**後續 Sprint** 於 Book/ReadingRecord 加入 `userId` 欄位並於 Service 層強制過濾 | 高（多用戶上線前必須補上）|
 | **Injection** | ISBN / 關鍵字搜尋參數 | SQL Injection / JPQL Injection | 一律使用 Spring Data JPA 衍生查詢或 `@Query` 具名參數（`:param`），禁止字串拼接 | 低 |
-| **惡意 URL（Malicious URL）** | 線上內容類藏書的 `url` 欄位（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）| 用戶輸入 `javascript:` 偽協議或惡意連結，若前端未跳脫直接渲染成可點擊連結，可能導致 Stored XSS 或誘導點擊釣魚網址 | Bean Validation 限制 `url` scheme 僅允許 `http`/`https`（`@ValidBookType` 一併檢查）；系統**不主動抓取**該 URL 內容（避免 SSRF）；前端渲染時需 HTML escape 並以 `rel="noopener noreferrer"` 開啟外部連結 | 低（惡意連結目的地本身的內容安全性不在本系統控管範圍內）|
+| **惡意 URL（Malicious URL）** | 線上內容類藏書的 `url` 欄位（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）、`purchaseUrl`、`authorUrl`、封面 `coverImageUrl`（EXTERNAL_URL）| 用戶輸入 `javascript:` 偽協議或惡意連結，若前端未跳脫直接渲染成可點擊連結／圖片，可能導致 Stored XSS 或誘導點擊釣魚網址；或利用「外部圖片網址」誘導系統對內網位址發出請求（SSRF）| Bean Validation 限制所有 URL 欄位 scheme 僅允許 `http`/`https`；系統對**任一**外部 URL（含封面）**皆不主動抓取內容**（無伺服器端 fetch，徹底杜絕 SSRF）；前端渲染時需 HTML escape 並以 `rel="noopener noreferrer"` 開啟外部連結／載入圖片 | 低（惡意連結目的地本身的內容安全性不在本系統控管範圍內）|
+| **惡意檔案上傳（Malicious File Upload）** | 封面圖片上傳 API（`POST /api/books/{id}/cover`）| 攻擊者上傳偽裝成圖片的可執行檔／webshell（改副檔名或竄改 Content-Type）；或上傳超大檔案造成磁碟耗盡（DoS）；或利用使用者提供的檔名進行路徑穿越（Path Traversal）寫入任意路徑 | 以檔案**實際內容（magic bytes）**驗證格式，僅接受 `image/jpeg`/`image/png`/`image/webp`/`image/gif`，不信任副檔名或 Content-Type 標頭；檔案大小上限 **5MB**；儲存檔名一律以 **UUID** 產生，完全不使用使用者輸入的檔名／路徑；取代封面時舊檔由系統以已知路徑刪除（非使用者輸入路徑）| 低（仍建議未來導入病毒掃描/雲端物件儲存以進一步降低風險，見待辦技術債）|
 
 ---
 
@@ -38,6 +39,8 @@
 | userId 資料隔離 | 高 | Book / ReadingRecord 需加 `userId`，避免多用戶環境下的越權存取 |
 | API Rate Limiting | 中 | 防止搜尋 API 被濫用造成 DoS |
 | 分頁 `size` 上限校驗 | 中 | Bean Validation 加 `@Max(100)` 於 `size` 參數 |
+| 封面上傳病毒掃描 | 低 | 目前僅做 magic bytes 格式驗證，未來可整合 ClamAV 等掃描服務進一步防範惡意檔案 |
+| 遷移雲端物件儲存（S3） | 低 | 目前為本機磁碟儲存（MVP），多機部署前需遷移，`CoverStorageService` 介面已預留擴充點 |
 
 ---
 
@@ -49,3 +52,4 @@
 | 2026-07-31 | Alice（架構師） | 依用戶決策修正：書本刪除改為純狀態變更，不刪除閱讀記錄，移除跨模組事件相關威脅項；詳見 ADR-0001（已標記 Superseded）|
 | 2026-07-31 | Alice（架構師） | 依用戶決策擴充：閱讀記錄支援借閱來源（朋友/圖書館），新增 `externalTitle`/`externalAuthor` 自由文字欄位之 Tampering 風險說明；詳見 ADR-0003 |
 | 2026-07-31 | Alice（架構師） | 依用戶決策擴充：藏書類型新增同人誌/網路小說/Blog文章/AO3等，新增 `url` 欄位之惡意連結風險評估；詳見 ADR-0004 |
+| 2026-07-31 | Alice（架構師） | 依用戶決策擴充：新增 `purchaseUrl`/`authorUrl`/封面圖片欄位，擴充惡意 URL 風險範圍並新增「惡意檔案上傳」威脅項；詳見 ADR-0005 |

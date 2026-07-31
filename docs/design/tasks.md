@@ -7,8 +7,8 @@
 ## 模組 A：book（負責人 Bob，分支 `feature/book-management`）
 
 - [ ] **A1** `Book` Entity + `BookRepository`  
-  - 欄位：isbn(**nullable**), url(**nullable**), sourcePlatform(**nullable**), title, author, bookType(ENUM: PHYSICAL_BOOK/PHYSICAL_DOUJINSHI/EBOOK/WEB_NOVEL/BLOG_POST/ONLINE_FANFIC), categoryId(FK), deleted, createdAt, updatedAt  
-  - DB CHECK 約束：實體/電子書類 `url IS NULL`；線上內容類 `isbn IS NULL AND url IS NOT NULL`  
+  - 欄位：isbn(**nullable**), url(**nullable**), sourcePlatform(**nullable**), title, author, bookType(ENUM: PHYSICAL_BOOK/PHYSICAL_DOUJINSHI/EBOOK/WEB_NOVEL/BLOG_POST/ONLINE_FANFIC), categoryId(FK), purchaseUrl(**nullable**), authorUrl(**nullable**), coverImageUrl(**nullable**), coverImageSource(ENUM: UPLOADED/EXTERNAL_URL, **nullable**), deleted, createdAt, updatedAt  
+  - DB CHECK 約束：實體/電子書類 `url IS NULL`；線上內容類 `isbn IS NULL AND url IS NOT NULL`；封面欄位一致性 `(coverImageUrl IS NULL) = (coverImageSource IS NULL)`  
   - 自訂查詢：`findByIsbnAndBookTypeAndDeletedFalse`（ISBN 去重）、`findByUrlAndDeletedFalse`（URL 去重）、`findAllByDeletedFalse`（含 keyword/tag/category/bookType 過濾）
 
 - [ ] **A2** `BookService`（核心業務邏輯）  
@@ -23,9 +23,19 @@
   - 驗證失敗回 400，錯誤訊息清楚指出違反互斥規則（不洩漏內部細節）
 
 - [ ] **A3** `BookController` + Bean Validation  
-  - `BookRequest`（@NotBlank title/author、@NotNull bookType、`@ValidBookType` class-level 驗證）  
-  - `BookResponse`（id, isbn, url, sourcePlatform, title, author, bookType, categoryId, tags, createdAt）  
-  - 全域 `GlobalExceptionHandler`（404/409/400 統一 ErrorResponse 格式，含 CategoryInUseException/DuplicateUrlException→409）
+  - `BookRequest`（@NotBlank title/author、@NotNull bookType、`@ValidBookType` class-level 驗證、purchaseUrl/authorUrl/coverImageUrl 皆 @Pattern 限 `http`/`https`）  
+  - `BookResponse`（id, isbn, url, sourcePlatform, title, author, bookType, categoryId, purchaseUrl, authorUrl, coverImageUrl, coverImageSource, tags, createdAt）  
+  - 全域 `GlobalExceptionHandler`（404/409/400 統一 ErrorResponse 格式，含 CategoryInUseException/DuplicateUrlException→409、InvalidImageFileException/ImageTooLargeException→400）
+
+- [ ] **A7** `CoverStorageService`（介面）+ `LocalDiskCoverStorageService`（本機磁碟實作）  
+  - `store(bookId, MultipartFile)`：驗證檔案 magic bytes（僅接受 image/jpeg, image/png, image/webp, image/gif，不信任副檔名/Content-Type）；驗證大小 ≤ 5MB；以 UUID 產生檔名寫入 `./data/covers/`；回傳可對外存取 URL  
+  - `delete(storedPath)`：刪除既有檔案，檔案不存在則靜默略過（不拋例外）  
+  - 設定 Spring 靜態資源映射 `/covers/**` → 本機磁碟目錄
+
+- [ ] **A8** `BookController` 封面圖片端點  
+  - `POST /api/books/{id}/cover`（multipart）：呼叫 `CoverStorageService.store()`；若原本已有 `coverImageSource=UPLOADED` 的舊檔，先呼叫 `delete()` 清除舊檔再寫入新檔並更新 `coverImageUrl`/`coverImageSource=UPLOADED`  
+  - `DELETE /api/books/{id}/cover`：若 `coverImageSource=UPLOADED` 則呼叫 `delete()` 移除實體檔案；無論來源皆清空 `coverImageUrl`/`coverImageSource`  
+  - `PUT /api/books/{id}` 內若帶入 `coverImageUrl`（且非透過上傳端點），視為「貼上圖片網址」流程：設定 `coverImageSource=EXTERNAL_URL`；若原本為 `UPLOADED`，須先呼叫 `delete()` 清除舊上傳檔避免孤兒檔案
 
 - [ ] **A4** `TagService` / `CategoryService`（自訂 Tag 與分類目錄的 CRUD）  
   - Tag：建立、列表、刪除（刪除時一併移除 Book_Tag 映射）；書本加/移除 Tag  
@@ -33,8 +43,9 @@
 
 - [ ] **A5** BookService / Controller / TagService / CategoryService 單元測試 ≥ 80%  
   - 每個 public 方法 ≥ 3 個案例（Happy / Boundary / Error）  
-  - 新增案例：更新書本 ISBN 重複（409）、categoryId 不存在（400）、分類刪除時仍有書本歸類（409）、刪除書本後其既有閱讀記錄仍可查詢（驗證 deleteBook 未觸及 ReadingRecord）、六種 bookType 各自新增 Happy Path、線上內容類 URL 重複（409）、線上內容類誤帶 isbn（400）、實體類誤帶 url（400）、EBOOK 重複 isbn 不觸發 409（驗證不去重）、同人誌無 isbn 新增成功且不觸發去重  
-  - Mockito mock Repository；AssertJ 斷言  
+  - 新增案例：更新書本 ISBN 重複（409）、categoryId 不存在（400）、分類刪除時仍有書本歸類（409）、刪除書本後其既有閱讀記錄仍可查詢（驗證 deleteBook 未觸及 ReadingRecord）、六種 bookType 各自新增 Happy Path、線上內容類 URL 重複（409）、線上內容類誤帶 isbn（400）、實體類誤帶 url（400）、EBOOK 重複 isbn 不觸發 409（驗證不去重）、同人誌無 isbn 新增成功且不觸發去重、purchaseUrl/authorUrl 非 http/https 格式（400）  
+  - 新增封面相關測試（A7/A8）：合法圖片上傳成功（200）、偽裝副檔名的非圖片檔案上傳失敗（400，驗證以 magic bytes 而非副檔名判斷）、超過 5MB 檔案上傳失敗（400）、取代封面時舊檔案被刪除（Mockito verify storage.delete 被呼叫）、貼上外部圖片網址設定成功且不觸發任何下載行為（verify 無 HTTP client 呼叫）、刪除封面後欄位清空且對應刪除實體檔案（僅 UPLOADED 時）  
+  - Mockito mock Repository / CoverStorageService；AssertJ 斷言  
   - 測試命名：`should_預期行為_When_條件`
 
 ---

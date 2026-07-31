@@ -46,13 +46,15 @@ src/main/java/com/iisi/bookmanager/
 │   ├── controller/    BookController.java
 │   ├── service/       BookService.java, TagService.java, CategoryService.java
 │   ├── repository/    BookRepository.java, TagRepository.java, CategoryRepository.java
-│   ├── domain/        Book.java, BookType.java (ENUM), Tag.java, Category.java
-│   ├── dto/           BookRequest.java, BookResponse.java
+│   ├── domain/        Book.java, BookType.java (ENUM), CoverImageSource.java (ENUM), Tag.java, Category.java
+│   ├── dto/           BookRequest.java, BookResponse.java, CoverResponse.java
 │   ├── validation/    ValidBookType.java（自訂 class-level 驗證註解 + Validator，isbn/url 互斥）
+│   ├── storage/       CoverStorageService.java（介面）, LocalDiskCoverStorageService.java（實作）
 │   ├── port/          BookQueryPort.java          ← 對外介面
 │   └── exception/     BookNotFoundException.java, DuplicateIsbnException.java,
 │                      DuplicateUrlException.java, CategoryInUseException.java,
-│                      CategoryNotFoundException.java
+│                      CategoryNotFoundException.java, InvalidImageFileException.java,
+│                      ImageTooLargeException.java
 ├── reading/
 │   ├── controller/    ReadingController.java
 │   ├── service/       ReadingService.java, ReadingCalendarService.java
@@ -84,6 +86,10 @@ src/main/java/com/iisi/bookmanager/
 | author | VARCHAR(100) NOT NULL | 作者 |
 | bookType | ENUM(PHYSICAL_BOOK, PHYSICAL_DOUJINSHI, EBOOK, WEB_NOVEL, BLOG_POST, ONLINE_FANFIC) NOT NULL | 書本類型 |
 | categoryId | Long (FK) | 分類 ID（可為 null）|
+| purchaseUrl | VARCHAR(500) (**nullable**) | 購買網址（選填，限 `http`/`https`，任何 `bookType` 皆可填） |
+| authorUrl | VARCHAR(500) (**nullable**) | 作者網址（選填，限 `http`/`https`，任何 `bookType` 皆可填） |
+| coverImageUrl | VARCHAR(500) (**nullable**) | 封面圖片位址；`coverImageSource=UPLOADED` 時為本機儲存路徑／靜態資源 URL，`coverImageSource=EXTERNAL_URL` 時為外部圖片網址 |
+| coverImageSource | ENUM(UPLOADED, EXTERNAL_URL) (**nullable**) | 封面來源；null 表示尚未設定封面 |
 | deleted | BOOLEAN DEFAULT false | 軟刪除旗標 |
 | createdAt | TIMESTAMP | 建立時間 |
 | updatedAt | TIMESTAMP | 更新時間 |
@@ -91,6 +97,10 @@ src/main/java/com/iisi/bookmanager/
 > **互斥約束**（DB CHECK 約束 + Service 層雙重驗證，依 `bookType` 分兩類）：
 > - 實體／電子書類（`PHYSICAL_BOOK`/`PHYSICAL_DOUJINSHI`/`EBOOK`）：`url IS NULL`，`isbn` 可為 null 或合法格式
 > - 線上內容類（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）：`isbn IS NULL`，`url IS NOT NULL`
+>
+> `purchaseUrl`／`authorUrl`／封面欄位不受 `bookType` 分類限制，六種類型皆可自由填寫（僅需符合 URL 格式驗證）。
+>
+> **封面欄位一致性約束**（DB CHECK）：`coverImageUrl IS NULL` ⇔ `coverImageSource IS NULL`（兩者需同時為 null 或同時有值，避免只設定其中一個造成資料不一致）。
 
 ### Tag / Book_Tag（多對多）
 | 欄位 | 型別 | 說明 |
@@ -138,13 +148,26 @@ src/main/java/com/iisi/bookmanager/
 | PUT | `/api/books/{id}` | 更新書本 | BookRequest | 200 BookResponse / 400(categoryId 不存在或互斥驗證失敗) / 404 / 409(ISBN 或 URL 與其他書重複) |
 | DELETE | `/api/books/{id}` | 刪除書本（僅軟刪除狀態變更，不影響其閱讀記錄）| — | 204 / 404 |
 | GET | `/api/books?keyword=&tag=&category=&bookType=&page=&size=` | 搜尋書本（可依類型篩選）| — | 200 Page\<BookResponse\> |
+| POST | `/api/books/{id}/cover` | 上傳／取代封面圖片（`multipart/form-data`；適用「上傳檔案」與「貼上圖片」兩種前端操作，皆送出同一種檔案 blob）| `file`（multipart） | 200 CoverResponse / 400(格式或大小不符) / 404 |
+| DELETE | `/api/books/{id}/cover` | 移除封面（若為 `UPLOADED` 則同時刪除實體檔案）| — | 204 / 404 |
 
 **BookRequest 欄位**：`title`、`author`、`bookType`（必填，六選一）、`categoryId`（選填）、
 `isbn`（實體／電子書類選填，線上內容類必為 null）、`url`（線上內容類必填，實體／電子書類必為 null）、
-`sourcePlatform`（選填，僅線上內容類適用）。
+`sourcePlatform`（選填，僅線上內容類適用）、`purchaseUrl`（選填，`http`/`https`）、
+`authorUrl`（選填，`http`/`https`）、`coverImageUrl`（選填 —「貼上圖片網址」流程：直接於本欄位帶入外部網址，
+Service 會將 `coverImageSource` 設為 `EXTERNAL_URL`；**不適用**於檔案上傳，檔案上傳一律走 `POST /api/books/{id}/cover`）。
 
-**BookResponse 欄位**：`id, title, author, bookType, isbn, url, sourcePlatform, categoryId, tags, createdAt`
-（依 `bookType` 不同，`isbn` 或 `url`/`sourcePlatform` 其中一組為 null）。
+**BookResponse 欄位**：`id, title, author, bookType, isbn, url, sourcePlatform, categoryId, purchaseUrl, authorUrl, coverImageUrl, coverImageSource, tags, createdAt`
+（依 `bookType` 不同，`isbn` 或 `url`/`sourcePlatform` 其中一組為 null；封面欄位未設定時皆為 null）。
+
+**CoverResponse 欄位**：`bookId, coverImageUrl, coverImageSource`。
+
+> **封面圖片三種輸入方式與後端對應**（決策紀錄：[`ADR-0005`](../architecture/adr/0005-book-cover-purchase-author-urls.md)）：
+> 1. 「上傳檔案」（檔案選擇器）→ 前端組成 `multipart/form-data` → `POST /api/books/{id}/cover`
+> 2. 「貼上圖片」（剪貼簿貼上圖片）→ 前端將剪貼簿內容轉為檔案 blob → 與方式 1 走**同一支** `POST /api/books/{id}/cover`（後端無法也無須區分來源，兩者是同一種資料型態）
+> 3. 「貼上圖片網址」→ 前端直接呼叫 `PUT /api/books/{id}`，於 `coverImageUrl` 帶入外部網址，後端**不主動下載/抓取**該圖片內容（避免 SSRF），僅驗證 URL scheme 為 `http`/`https` 並原樣儲存
+>
+> 因此後端僅需實作**兩條真實流程**（檔案上傳 vs. 外部網址），不需要為「上傳」與「貼上圖片」分別開發。
 
 ### Tag 管理（base: `/api/tags`）
 
@@ -250,6 +273,43 @@ public enum BookType {
 
 ---
 
+## 5b. 封面圖片儲存架構（CoverStorageService）
+
+> 決策紀錄：[`ADR-0005`](../architecture/adr/0005-book-cover-purchase-author-urls.md)
+
+```java
+package com.iisi.bookmanager.book.storage;
+
+public interface CoverStorageService {
+    /** 儲存檔案並回傳可對外存取的 URL（相對路徑或靜態資源路徑） */
+    String store(Long bookId, MultipartFile file);
+
+    /** 刪除既有的已上傳檔案（by 儲存路徑），找不到則靜默略過 */
+    void delete(String storedPath);
+}
+```
+
+- **MVP 實作**：`LocalDiskCoverStorageService`，將檔案寫入本機磁碟固定目錄（如 `./data/covers/`），
+  以 **UUID 產生檔名**（不使用使用者提供的檔名，避免路徑穿越／檔名衝突），並透過 Spring
+  靜態資源設定對外提供 `GET /covers/{uuid}.{ext}`。此為架構師依專案現況（H2 本機開發、單機部署）
+  所做的預設判斷，未來若需水平擴展或多機部署，可平行實作 `S3CoverStorageService` 並替換
+  Bean 而不影響 `BookService` 邏輯（介面隔離，同 `BookQueryPort` 策略）。
+- **檔案驗證流程**（於 `BookService`／`CoverStorageService` 呼叫前執行）：
+  1. 讀取檔案前幾個位元組（magic bytes）判斷實際圖片格式，**不採信**副檔名或 `Content-Type` 標頭；
+     不符合 `image/jpeg`、`image/png`、`image/webp`、`image/gif` 其中之一則拋 `InvalidImageFileException`（400）。
+  2. 檔案大小上限 **5MB**，超過則拋 `ImageTooLargeException`（400）。
+- **取代／刪除舊檔**：呼叫 `POST /api/books/{id}/cover` 或 `DELETE /api/books/{id}/cover` 時，
+  若原本 `coverImageSource = UPLOADED`，Service 會先呼叫 `CoverStorageService.delete()` 移除舊檔，
+  避免孤兒檔案累積；若原本 `coverImageSource = EXTERNAL_URL`，僅需清空欄位，不涉及檔案系統操作。
+- **書本軟刪除時的封面處理**：沿用 [`ADR-0002`](../architecture/adr/0002-book-deletion-is-state-change-not-cascade.md)
+  的「軟刪除保留所有資料」原則，封面檔案與欄位皆**不隨書本軟刪除而變動**；僅當使用者之後手動刪除該
+  已軟刪除書本的封面，或该書本被硬刪除（目前系統未提供硬刪除功能）時才處理。
+- **外部網址型封面／購買網址／作者網址**：系統**不會**對這些 URL 發送任何伺服器端請求（不下載、不預覽、
+  不做連結有效性檢查），僅做 scheme（`http`/`https`）格式驗證，避免 SSRF；前端顯示時需 HTML escape 並加上
+  `rel="noopener noreferrer"`，與既有「Malicious/Unsafe URL」規則一致。
+
+---
+
 ## 6. 安全 STRIDE 威脅摘要
 
 > 完整威脅模型與緩解措施詳見獨立文件：[`docs/security/threat-model.md`](../security/threat-model.md)
@@ -261,7 +321,8 @@ public enum BookType {
 | Information Disclosure | 錯誤訊息洩漏 | GlobalExceptionHandler 統一包裝，不輸出 stack |
 | Elevation of Privilege | 他人書本操作 | 後續加 userId 隔離（本 Sprint 先建基礎架構）|
 | Injection | ISBN / 關鍵字查詢 | JPA Criteria 或 JPQL 參數化 |
-| Malicious/Unsafe URL | 線上內容類（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）的 `url` 欄位 | 限制 scheme 僅 `http`/`https`（拒絕 `javascript:` 等）；系統**不主動抓取** URL 內容；前端渲染時需 HTML escape 避免 Stored XSS |
+| Malicious/Unsafe URL | 線上內容類（`WEB_NOVEL`/`BLOG_POST`/`ONLINE_FANFIC`）的 `url` 欄位、`purchaseUrl`、`authorUrl`、`coverImageUrl`（EXTERNAL_URL）| 限制 scheme 僅 `http`/`https`（拒絕 `javascript:` 等）；系統**不主動抓取**任一 URL 內容（無 SSRF 風險）；前端渲染時需 HTML escape 並加 `rel="noopener noreferrer"` 避免 Stored XSS |
+| Malicious File Upload | 封面圖片上傳（`POST /api/books/{id}/cover`）| 以檔案 magic bytes 驗證實際格式（拒絕偽裝副檔名的可執行檔／webshell）；大小上限 5MB 防止 DoS；儲存檔名以 UUID 產生，不使用使用者輸入，避免路徑穿越 |
 
 ---
 

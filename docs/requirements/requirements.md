@@ -31,13 +31,14 @@
 
 | ID | 用戶故事 | EARS 需求 | 驗收標準 |
 |----|----------|-----------|---------|
-| US-B01 | 作為用戶，我想新增各種類型的藏書（實體書、同人誌、電子書、網路小說、Blog文章、AO3同人文等），以便建立我的書庫 | WHEN 用戶提交新增書本表單 THE SYSTEM SHALL 依 `bookType` 儲存對應欄位並回傳 201 | 書名、作者、`bookType` 為必填；`bookType` 屬「實體／電子書」類時 `isbn` 選填（格式驗證 10/13碼，若有提供）且 `url` 必為空；`bookType` 屬「線上內容」類時 `url` 必填（合法 URL 格式）且 `isbn` 必為空 |
+| US-B01 | 作為用戶，我想新增各種類型的藏書（實體書、同人誌、電子書、網路小說、Blog文章、AO3同人文等），並附加購買網址、作者網址、封面圖片，以便建立我的書庫 | WHEN 用戶提交新增書本表單 THE SYSTEM SHALL 依 `bookType` 儲存對應欄位並回傳 201 | 書名、作者、`bookType` 為必填；`bookType` 屬「實體／電子書」類時 `isbn` 選填（格式驗證 10/13碼，若有提供）且 `url` 必為空；`bookType` 屬「線上內容」類時 `url` 必填（合法 URL 格式）且 `isbn` 必為空；`purchaseUrl`（購買網址）、`authorUrl`（作者網址）均為選填，格式須為合法 `http`/`https` URL |
 | US-B02 | 作為用戶，我想避免重複建立同一本實體書或同一個線上連結 | WHEN 新增 `bookType ∈ {PHYSICAL_BOOK, PHYSICAL_DOUJINSHI}` 且 `isbn` 已存在於相同類型的未刪除書本 THE SYSTEM SHALL 回傳 409；WHEN 新增 `bookType ∈ {WEB_NOVEL, BLOG_POST, ONLINE_FANFIC}` 且 `url` 已存在於未刪除書本 THE SYSTEM SHALL 回傳 409 | `EBOOK` 不做去重（可能從不同平台購買同一本電子書）；未提供 `isbn` 的實體書/同人誌不觸發去重檢查（無法比對）|
-| US-B03 | 作為用戶，我想編輯書本資訊（書名、作者、類型、Tag、分類、ISBN/URL） | WHEN 用戶更新書本資訊 THE SYSTEM SHALL 驗證並持久化更新後內容 | 更新不存在的書本回傳 404；`isbn`/`url` 互斥規則與 US-B01 相同；WHEN 更新後 `isbn` 與其他未刪除同類型書本重複（限 PHYSICAL_BOOK/PHYSICAL_DOUJINSHI）THE SYSTEM SHALL 回傳 409；WHEN 更新後 `url` 與其他未刪除書本重複（線上內容類）THE SYSTEM SHALL 回傳 409；WHEN `categoryId` 不存在 THE SYSTEM SHALL 回傳 400 |
+| US-B03 | 作為用戶，我想編輯書本資訊（書名、作者、類型、Tag、分類、ISBN/URL、購買網址、作者網址） | WHEN 用戶更新書本資訊 THE SYSTEM SHALL 驗證並持久化更新後內容 | 更新不存在的書本回傳 404；`isbn`/`url` 互斥規則與 US-B01 相同；WHEN 更新後 `isbn` 與其他未刪除同類型書本重複（限 PHYSICAL_BOOK/PHYSICAL_DOUJINSHI）THE SYSTEM SHALL 回傳 409；WHEN 更新後 `url` 與其他未刪除書本重複（線上內容類）THE SYSTEM SHALL 回傳 409；WHEN `categoryId` 不存在 THE SYSTEM SHALL 回傳 400 |
 | US-B04 | 作為用戶，我想刪除書本 | WHEN 用戶刪除書本 THE SYSTEM SHALL 僅將該書本狀態標記為已刪除（`deleted = true`）並移除其 Tag 映射，**不刪除**任何關聯的閱讀記錄 | 軟刪除；刪除後查詢該書本回 404；既有閱讀記錄不受影響、仍完整保留於資料庫（歷史資料），可繼續被查詢（US-R03/US-R04/US-R05）；書本被刪除後 `BookQueryPort.existsBook()` 回傳 false，故**新增**閱讀記錄會被拒絕（404，見 US-R01），但**既有**記錄不受此限制 |
 | US-B05 | 作為用戶，我想用關鍵字（書名/作者）、Tag、分類、書本類型搜尋書本 | WHEN 用戶送出搜尋條件 THE SYSTEM SHALL 回傳符合條件的書本列表（分頁） | 支援空條件（回傳全部）；分頁預設 20 筆；支援 `bookType` 篩選（例如只看網路小說或同人誌）|
 | US-B06 | 作為用戶，我想建立自訂 Tag 並套用到書本 | THE SYSTEM SHALL 提供 Tag CRUD；WHEN Tag 套用到書本 THE SYSTEM SHALL 建立多對多映射 | Tag 名稱全域唯一（同一用戶）；WHEN Tag 被刪除 THE SYSTEM SHALL 一併移除其與所有書本的映射 |
 | US-B07 | 作為用戶，我想建立分類目錄並將書本歸類 | THE SYSTEM SHALL 提供 Category CRUD；書本可屬於一個 Category | Category 名稱唯一；WHEN 分類仍有書本歸類時嘗試刪除 THE SYSTEM SHALL 回傳 409（阻擋刪除，需用戶先將書本移出或改分類，不自動級聯刪除書本）|
+| US-B08 | 作為用戶，我想設定書本封面圖片，可以是「上傳圖片檔案」、「貼上圖片（剪貼簿）」或「貼上圖片網址」三種方式之一 | WHEN 用戶上傳圖片檔案或貼上剪貼簿圖片 THE SYSTEM SHALL 驗證檔案格式與大小後儲存並回傳可存取的 `coverImageUrl`；WHEN 用戶貼上外部圖片網址 THE SYSTEM SHALL 直接儲存該網址為 `coverImageUrl`，不下載或代管圖片內容 | 僅接受 `image/jpeg`、`image/png`、`image/webp`、`image/gif`（以實際檔案內容判斷，非僅副檔名）；檔案大小上限 5MB，超過回 400；外部圖片網址須為合法 `http`/`https` URL；「上傳圖片檔案」與「貼上圖片」在前端皆會產生一個圖片檔案，故共用同一組上傳 API，後端不需分別處理；更換封面時，若舊封面為系統代管上傳檔案，THE SYSTEM SHALL 刪除舊檔案，避免孤兒檔案堆積 |
 
 ### 模組 B — 閱讀記錄（reading）
 
@@ -65,10 +66,10 @@
 
 | 類別 | 需求 |
 |------|------|
-| 效能 | API 回應 p95 < 500ms（本機 H2 環境） |
-| 安全 | 所有輸入 Bean Validation；JPA 參數化查詢；錯誤訊息不洩漏 stack trace |
+| 效能 | API 回應 p95 < 500ms（本機 H2 環境）；封面圖片上傳 API 不受此限制，但檔案大小上限 5MB |
+| 安全 | 所有輸入 Bean Validation；JPA 參數化查詢；錯誤訊息不洩漏 stack trace；上傳圖片以實際檔案內容（magic bytes）驗證格式，不信任副檔名/Content-Type 標頭 |
 | 可測試性 | 單元測試覆蓋率 ≥ 80%；Service 層以 Mockito 隔離 Repository |
-| 可維護性 | 分層架構 Controller→Service→Repository；模組邊界由 BookQueryPort 介面隔離 |
+| 可維護性 | 分層架構 Controller→Service→Repository；模組邊界由 BookQueryPort 介面隔離；封面儲存以 `CoverStorageService` 介面隔離，未來可替換為雲端物件儲存而不影響 Service 層邏輯 |
 | 相容性 | 開發環境 H2（in-memory）；正式環境 PostgreSQL（Spring profile 切換） |
 
 ---
