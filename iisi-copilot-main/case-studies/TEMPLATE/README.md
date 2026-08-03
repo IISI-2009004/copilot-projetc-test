@@ -25,13 +25,13 @@ contact: "<聯絡窗口或貢獻者，可用暱稱/GitHub帳號，避免真實�
 
 ## 採用的元件
 
-| 類型 | 名稱 | 是否客製化 |
-|------|------|-----------|
-| Agent | 例如 backend.agent.md | 是 / 否 |
-| Instructions | 例如 springboot.instructions.md | 是 / 否 |
-| Prompt | 例如 generate-unit-tests.prompt.md | 是 / 否 |
-| Hook | 例如 validate-no-secrets | 是 / 否 |
-| Plugin | 例如 xxx-plugin | 是 / 否 |
+| 類型         | 名稱                               | 是否客製化 |
+| ------------ | ---------------------------------- | ---------- |
+| Agent        | 例如 backend.agent.md              | 是 / 否    |
+| Instructions | 例如 springboot.instructions.md    | 是 / 否    |
+| Prompt       | 例如 generate-unit-tests.prompt.md | 是 / 否    |
+| Hook         | 例如 validate-no-secrets           | 是 / 否    |
+| Plugin       | 例如 xxx-plugin                    | 是 / 否    |
 
 ## 使用心得
 
@@ -40,8 +40,8 @@ contact: "<聯絡窗口或貢獻者，可用暱稱/GitHub帳號，避免真實�
 ### 遇到的問題與解法
 
 | 問題 | 解法 |
-|------|------|
-|  |  |
+| ---- | ---- |
+|      |      |
 
 ## 客製化調整說明
 
@@ -52,8 +52,8 @@ contact: "<聯絡窗口或貢獻者，可用暱稱/GitHub帳號，避免真實�
 <!-- 若有放入 reports/ 子目錄的測試/驗收報告，於此摘要結論；也可填入量化成效比較 -->
 
 | 指標 | 導入前 | 導入後 |
-|------|--------|--------|
-|  |  |  |
+| ---- | ------ | ------ |
+|      |        |        |
 
 ## 建議與回饋
 

@@ -192,6 +192,7 @@ addyosmani/agent-skills   →  約束 AI「如何做」以及「不可跳過什�
 ```
 
 每個 Skill 都是一份結構化的 Markdown 文件（`SKILL.md`），定義了：
+
 - **工作流程**（Process）：嚴格的逐步操作步驟，禁止 AI 跳過
 - **反駁合理化表格**（Common Rationalizations）：列出 AI 常找的藉口並直接駁回
 - **紅旗警訊**（Red Flags）：流程被違反時的早期偵測指標
@@ -205,14 +206,14 @@ addyosmani/agent-skills   →  約束 AI「如何做」以及「不可跳過什�
 
 現行的 AI 編程工具（Claude Code、Cursor、GitHub Copilot 等）存在一個根本性問題：**AI 預設傾向尋找「最短路徑」**。這意味著：
 
-| 問題行為 | 影響 | 頻率 |
-|---------|------|------|
-| 跳過規格書直接寫程式 | 需求偏離、返工成本高 | 極高 |
-| 跳過單元測試 | 品質低落、回歸錯誤 | 高 |
-| 跳過安全檢查 | OWASP 漏洞、資安風險 | 高 |
-| 一次性大規模重構 | 無法回滾、引入新 Bug | 中 |
-| 合理化省略步驟 | 「這改動很小不需要測試」 | 極高 |
-| 忽略既有架構慣例 | 架構腐化、技術債務累積 | 中 |
+| 問題行為             | 影響                     | 頻率 |
+| -------------------- | ------------------------ | ---- |
+| 跳過規格書直接寫程式 | 需求偏離、返工成本高     | 極高 |
+| 跳過單元測試         | 品質低落、回歸錯誤       | 高   |
+| 跳過安全檢查         | OWASP 漏洞、資安風險     | 高   |
+| 一次性大規模重構     | 無法回滾、引入新 Bug     | 中   |
+| 合理化省略步驟       | 「這改動很小不需要測試」 | 極高 |
+| 忽略既有架構慣例     | 架構腐化、技術債務累積   | 中   |
 
 Agent Skills 的出現就是為了解決這個**品質缺口**：即使 AI 能產生「看起來正確」的程式碼，但缺乏資深工程師的紀律約束，產出的品質遠低於生產標準。
 
@@ -222,15 +223,15 @@ Addy Osmani 明確指出，目前業界盛行的 **Vibe Coding**（無紀律的 
 
 ## 1.3 專案發起背景
 
-| 項目 | 資訊 |
-|------|------|
-| **發起人** | Addy Osmani（Google Chrome DevRel 工程主管） |
-| **發起時間** | 2025 年 |
-| **設計理念** | Software Engineering at Google 工程文化 |
-| **核心原則** | 將人類工程紀律注入 AI 工作流程 |
-| **社群影響** | 68,547+ GitHub Stars、7,430 Forks |
-| **目前版本** | v0.6.2 |
-| **授權** | MIT License |
+| 項目         | 資訊                                         |
+| ------------ | -------------------------------------------- |
+| **發起人**   | Addy Osmani（Google Chrome DevRel 工程主管） |
+| **發起時間** | 2025 年                                      |
+| **設計理念** | Software Engineering at Google 工程文化      |
+| **核心原則** | 將人類工程紀律注入 AI 工作流程               |
+| **社群影響** | 68,547+ GitHub Stars、7,430 Forks            |
+| **目前版本** | v0.6.2                                       |
+| **授權**     | MIT License                                  |
 
 Addy Osmani 在 Google 工作超過十年，深諳 Google 內部的 Code Review 文化與測試金字塔等工程實踐（源自《Software Engineering at Google》一書，Google 已將全文公開於 [abseil.io/resources/swe-book](https://abseil.io/resources/swe-book/html/toc.html)）。他觀察到 AI Coding Agents 正在重蹈「快速但低品質」的軟體工程老路，因此將這些最佳實踐轉化為 AI Agent 可理解的結構化約束。Osmani 本人在部落格文章 [Agent Skills](https://addyosmani.com/blog/agent-skills/)（同步刊登於 [O'Reilly Radar](https://www.oreilly.com/radar/agent-skills/)）中明確闡述了此專案的設計動機。
 
@@ -246,12 +247,12 @@ Agent Skills 的設計哲學可以用一句話概括：
 
 每個 Skill 都包含一個 **Common Rationalizations（反駁合理化表格）**，這是 Agent Skills 最具特色的設計。例如在 `test-driven-development` Skill 中：
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「我之後再寫測試」 | 你不會的，而且事後寫的測試是在測試實作而非行為 |
-| 「這改動太小不需要測試」 | 小改動會變成大改動，測試記錄了預期行為 |
-| 「寫測試會拖慢進度」 | 沒有測試的程式碼上線後修 Bug 更慢 |
-| 「這只是 UI 調整」 | UI 邏輯需要驗證互動行為和邊界條件 |
+| AI 的藉口                | 事實反駁                                       |
+| ------------------------ | ---------------------------------------------- |
+| 「我之後再寫測試」       | 你不會的，而且事後寫的測試是在測試實作而非行為 |
+| 「這改動太小不需要測試」 | 小改動會變成大改動，測試記錄了預期行為         |
+| 「寫測試會拖慢進度」     | 沒有測試的程式碼上線後修 Bug 更慢              |
+| 「這只是 UI 調整」       | UI 邏輯需要驗證互動行為和邊界條件              |
 
 這種「預先反駁」的設計確保 AI 無法用常見藉口規避品質要求。
 
@@ -259,31 +260,31 @@ Agent Skills 的設計哲學可以用一句話概括：
 
 Addy Osmani 在其官方部落格文章中，將專案的設計基礎歸納為五個「承重原則」——移除任一項，整個框架的可靠性都會顯著下降：
 
-| 原則 | 說明 |
-|------|------|
-| **Process over prose（流程勝於長篇說明）** | SKILL.md 以逐步流程呈現，而非長篇散文式建議，降低 Agent 誤讀或選擇性遵循的機率 |
-| **Anti-rationalization tables（反合理化表格）** | 針對 AI 常見的「偷懶藉口」預先寫好反駁論點，即本節 1.4 的 Common Rationalizations 設計 |
-| **Verification as non-negotiable（驗證不可協商）** | 每個工作流程都必須以具體、可檢驗的證據收尾，而非「應該做完了」的主觀判斷 |
-| **Progressive disclosure（漸進式揭露）** | 依當前任務情境只啟用相關 Skills，避免一次性把所有規則塞進 Context（詳見第 2.4 節） |
-| **Scope discipline（範圍紀律）** | 只處理使用者明確要求的範圍，禁止 Agent 順手「多做一點」而擴大變更範圍 |
+| 原則                                               | 說明                                                                                   |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| **Process over prose（流程勝於長篇說明）**         | SKILL.md 以逐步流程呈現，而非長篇散文式建議，降低 Agent 誤讀或選擇性遵循的機率         |
+| **Anti-rationalization tables（反合理化表格）**    | 針對 AI 常見的「偷懶藉口」預先寫好反駁論點，即本節 1.4 的 Common Rationalizations 設計 |
+| **Verification as non-negotiable（驗證不可協商）** | 每個工作流程都必須以具體、可檢驗的證據收尾，而非「應該做完了」的主觀判斷               |
+| **Progressive disclosure（漸進式揭露）**           | 依當前任務情境只啟用相關 Skills，避免一次性把所有規則塞進 Context（詳見第 2.4 節）     |
+| **Scope discipline（範圍紀律）**                   | 只處理使用者明確要求的範圍，禁止 Agent 順手「多做一點」而擴大變更範圍                  |
 
 > 引用來源：[Addy Osmani – Agent Skills](https://addyosmani.com/blog/agent-skills/)。文中並提出一句常被引用的觀察：「A senior engineer's job is mostly the parts that don't show up in the diff. Specs. Tests. Reviews.」（資深工程師的工作，多半是不會出現在 diff 裡的部分：規格、測試、審查。）這正是 Agent Skills 試圖用結構化流程補上的缺口。
 
 ## 1.5 Agent Skills 與傳統 Prompt Engineering 的本質差異
 
-| 維度 | 傳統 Prompt Engineering | addyosmani/agent-skills |
-|------|------------------------|------------------------|
-| **形式** | 自然語言提示詞 | 結構化 Markdown 工作流程 |
-| **焦點** | 告訴 AI「做什麼」 | 約束 AI「如何做」與「不可跳過什麼」 |
-| **驗證** | 無內建驗證機制 | 每個 Skill 必備 Verification Checklist |
-| **防偷懶** | 無 | Common Rationalizations 反駁表 |
-| **早期偵測** | 無 | Red Flags 紅旗警訊 |
-| **可組合性** | 單一 Prompt | Skills + Personas + Commands 三層組合 |
-| **Token 效率** | 全部塞入 Context | 漸進式揭露（Progressive Disclosure） |
-| **跨工具** | 綁定特定 AI 工具 | 模型無關（Model-agnostic），支援 8+ 工具 |
-| **工程文化** | 無 | 融入 Google SWE 最佳實踐 |
-| **可維護性** | 分散、難以維護 | 標準化目錄結構，Git 版本控管 |
-| **團隊協作** | 個人使用 | 團隊共享 Skills Repository |
+| 維度           | 傳統 Prompt Engineering | addyosmani/agent-skills                  |
+| -------------- | ----------------------- | ---------------------------------------- |
+| **形式**       | 自然語言提示詞          | 結構化 Markdown 工作流程                 |
+| **焦點**       | 告訴 AI「做什麼」       | 約束 AI「如何做」與「不可跳過什麼」      |
+| **驗證**       | 無內建驗證機制          | 每個 Skill 必備 Verification Checklist   |
+| **防偷懶**     | 無                      | Common Rationalizations 反駁表           |
+| **早期偵測**   | 無                      | Red Flags 紅旗警訊                       |
+| **可組合性**   | 單一 Prompt             | Skills + Personas + Commands 三層組合    |
+| **Token 效率** | 全部塞入 Context        | 漸進式揭露（Progressive Disclosure）     |
+| **跨工具**     | 綁定特定 AI 工具        | 模型無關（Model-agnostic），支援 8+ 工具 |
+| **工程文化**   | 無                      | 融入 Google SWE 最佳實踐                 |
+| **可維護性**   | 分散、難以維護          | 標準化目錄結構，Git 版本控管             |
+| **團隊協作**   | 個人使用                | 團隊共享 Skills Repository               |
 
 ## 1.6 適用場景與不適用場景
 
@@ -306,38 +307,38 @@ Addy Osmani 在其官方部落格文章中，將專案的設計基礎歸納為�
 
 ## 1.7 addyosmani/agent-skills 與 mattpocock/skills 比較
 
-| 維度 | addyosmani/agent-skills | mattpocock/skills |
-|------|------------------------|-------------------|
-| **定位** | 生產級工程紀律約束 | 保留開發者主控權的輕量工具集 |
-| **發起人** | Addy Osmani（Google Chrome 工程主管） | Matt Pocock（TypeScript 教育家） |
-| **Stars** | 68,547+ | 154,054+ |
-| **Skills / Commands 數量** | 24 個 Skills | 近 20 個指令（分 user-invoked 如 `/grill-me`、`/to-prd` 與 model-invoked 如 `/tdd`、`/code-review` 兩類） |
-| **核心特色** | 反駁合理化表格、Red Flags | `/grill-me` 需求訪談、`/tdd` 流程、`/prototype` 快速原型 |
-| **架構** | Skills + Personas + Commands 三層 | Commands + Skills Runtime |
-| **SSDLC 支援** | 完整生命週期覆蓋 | 部分覆蓋（偏規劃／對齊／TDD／架構階段） |
-| **安全治理** | 專門的 security-and-hardening Skill | 無專門安全 Skill |
-| **Personas** | 4 個專業角色（Reviewer、QA、Security Auditor、Web Performance Auditor） | 無內建 Persona |
-| **工具支援** | Claude Code、Cursor、Gemini、Copilot、Antigravity 等 8+ | 主要 Claude Code |
-| **Google 工程文化** | 深度融入 | 無明確引用，強調「不被重流程框架奪走控制權」 |
-| **適合團隊** | 中大型企業、需要治理 | 小型團隊、快速開發、重視個人主控權 |
-| **學習曲線** | 中等（需理解工程實踐） | 低（直覺式 Commands） |
+| 維度                       | addyosmani/agent-skills                                                 | mattpocock/skills                                                                                         |
+| -------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **定位**                   | 生產級工程紀律約束                                                      | 保留開發者主控權的輕量工具集                                                                              |
+| **發起人**                 | Addy Osmani（Google Chrome 工程主管）                                   | Matt Pocock（TypeScript 教育家）                                                                          |
+| **Stars**                  | 68,547+                                                                 | 154,054+                                                                                                  |
+| **Skills / Commands 數量** | 24 個 Skills                                                            | 近 20 個指令（分 user-invoked 如 `/grill-me`、`/to-prd` 與 model-invoked 如 `/tdd`、`/code-review` 兩類） |
+| **核心特色**               | 反駁合理化表格、Red Flags                                               | `/grill-me` 需求訪談、`/tdd` 流程、`/prototype` 快速原型                                                  |
+| **架構**                   | Skills + Personas + Commands 三層                                       | Commands + Skills Runtime                                                                                 |
+| **SSDLC 支援**             | 完整生命週期覆蓋                                                        | 部分覆蓋（偏規劃／對齊／TDD／架構階段）                                                                   |
+| **安全治理**               | 專門的 security-and-hardening Skill                                     | 無專門安全 Skill                                                                                          |
+| **Personas**               | 4 個專業角色（Reviewer、QA、Security Auditor、Web Performance Auditor） | 無內建 Persona                                                                                            |
+| **工具支援**               | Claude Code、Cursor、Gemini、Copilot、Antigravity 等 8+                 | 主要 Claude Code                                                                                          |
+| **Google 工程文化**        | 深度融入                                                                | 無明確引用，強調「不被重流程框架奪走控制權」                                                              |
+| **適合團隊**               | 中大型企業、需要治理                                                    | 小型團隊、快速開發、重視個人主控權                                                                        |
+| **學習曲線**               | 中等（需理解工程實踐）                                                  | 低（直覺式 Commands）                                                                                     |
 
 **建議**：兩者可互補使用。mattpocock/skills 適合需求探索與快速原型階段，addyosmani/agent-skills 適合進入正式開發後的品質保障與工程治理。值得注意的是，mattpocock/skills 的 star 數（154,054+）目前遠高於 addyosmani/agent-skills（68,547+），但兩者定位不同：前者是輕量、可自由拆解的指令集合，後者是完整的生產工程紀律框架，star 數差異不代表工程嚴謹度的高低，選型仍應以團隊實際需求為準。
 
 ## 1.8 專案資訊
 
-| 項目 | 資訊 |
-|------|------|
-| **GitHub** | [github.com/addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) |
-| **版本** | v0.6.2 |
-| **Stars** | 68,547+（Forks 7,430） |
-| **授權** | MIT License |
-| **語言** | Markdown（模型無關） |
-| **Skills 數量** | 24 個（23 生命週期 + 1 Meta，最新新增 `observability-and-instrumentation`） |
-| **Personas** | 4 個（code-reviewer、test-engineer、security-auditor、web-performance-auditor） |
-| **Commands** | 8 個（/spec、/plan、/build、/test、/review、/code-simplify、/ship、/webperf） |
-| **Checklists** | 7 個（testing、security、performance、accessibility、orchestration、definition-of-done、observability） |
-| **Hooks** | 4 個腳本（session-start、sdd-cache-pre/post、simplify-ignore）+ 2 個測試腳本 + `hooks.json` 設定檔 |
+| 項目            | 資訊                                                                                                    |
+| --------------- | ------------------------------------------------------------------------------------------------------- |
+| **GitHub**      | [github.com/addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)                        |
+| **版本**        | v0.6.2                                                                                                  |
+| **Stars**       | 68,547+（Forks 7,430）                                                                                  |
+| **授權**        | MIT License                                                                                             |
+| **語言**        | Markdown（模型無關）                                                                                    |
+| **Skills 數量** | 24 個（23 生命週期 + 1 Meta，最新新增 `observability-and-instrumentation`）                             |
+| **Personas**    | 4 個（code-reviewer、test-engineer、security-auditor、web-performance-auditor）                         |
+| **Commands**    | 8 個（/spec、/plan、/build、/test、/review、/code-simplify、/ship、/webperf）                           |
+| **Checklists**  | 7 個（testing、security、performance、accessibility、orchestration、definition-of-done、observability） |
+| **Hooks**       | 4 個腳本（session-start、sdd-cache-pre/post、simplify-ignore）+ 2 個測試腳本 + `hooks.json` 設定檔      |
 
 > **💡 實務建議**：在團隊導入前，建議所有工程師先閱讀本手冊的第 1-2 章建立基礎認知，再依角色閱讀相關章節。架構師重點閱讀第 2、9、10、20 章；開發工程師重點閱讀第 3、8、11 章；QA 工程師重點閱讀第 3.4-3.5、17 章；DevSecOps 工程師重點閱讀第 14、15 章。
 
@@ -433,11 +434,11 @@ graph TB
 
 ### 三層架構說明
 
-| 層級 | 定位 | 檔案位置 | 關鍵問題 |
-|------|------|---------|---------|
-| **Skills** | 工作流程與步驟 | `skills/<name>/SKILL.md` | **How** — 如何完成任務 |
-| **Personas** | 角色視角與輸出格式 | `agents/<role>.md` | **Who** — 以什麼角色審查 |
-| **Commands** | 使用者進入點 | `.claude/commands/*.md` | **When** — 何時觸發哪些 Skills |
+| 層級         | 定位               | 檔案位置                 | 關鍵問題                       |
+| ------------ | ------------------ | ------------------------ | ------------------------------ |
+| **Skills**   | 工作流程與步驟     | `skills/<name>/SKILL.md` | **How** — 如何完成任務         |
+| **Personas** | 角色視角與輸出格式 | `agents/<role>.md`       | **Who** — 以什麼角色審查       |
+| **Commands** | 使用者進入點       | `.claude/commands/*.md`  | **When** — 何時觸發哪些 Skills |
 
 ## 2.2 組合規則
 
@@ -466,9 +467,9 @@ sequenceDiagram
     Ship->>CR: 啟動五軸程式碼審查
     Ship->>TE: 啟動測試覆蓋率分析
     Ship->>SA: 啟動安全性稽核
-    
+
     Note over CR,SA: 三個 Persona 平行執行（無共享狀態）
-    
+
     CR-->>Result: APPROVE / REQUEST CHANGES
     TE-->>Result: 測試覆蓋率報告
     SA-->>Result: 安全性稽核報告
@@ -503,14 +504,15 @@ graph TD
 
 ```yaml
 ---
-name: skill-name-with-hyphens      # 必填：小寫、連字號分隔，必須與目錄名一致
-description: >                      # 必填：最多 1024 字元
+name: skill-name-with-hyphens # 必填：小寫、連字號分隔，必須與目錄名一致
+description: > # 必填：最多 1024 字元
   Guides agents through [task/workflow].
   Use when [specific trigger conditions].
 ---
 ```
 
 **Frontmatter 規則：**
+
 - `name`：小寫、連字號分隔，**必須與目錄名完全一致**
 - `description`：第三人稱描述「做什麼」+ 明確的「Use when」觸發條件
 - Description 會被注入 System Prompt，Agent 據此自動發現適用的 Skill
@@ -518,14 +520,14 @@ description: >                      # 必填：最多 1024 字元
 
 ### 各章節的設計目的
 
-| 章節 | 目的 | 必要性 |
-|------|------|--------|
-| **Overview** | 電梯簡報：做什麼、為什麼 Agent 應遵循 | 建議 |
-| **When to Use** | 正向觸發（Use when X）+ 反向排除（NOT for Y） | 建議 |
-| **Core Process** | 逐步工作流程，具體且可操作 | **必要** |
-| **Common Rationalizations** | AI 藉口 vs 事實反駁（表格格式） | 建議 |
-| **Red Flags** | 可觀察的違規指標（用於 Code Review） | 建議 |
-| **Verification** | 退出標準核對清單，每項都需要**證據** | 建議 |
+| 章節                        | 目的                                          | 必要性   |
+| --------------------------- | --------------------------------------------- | -------- |
+| **Overview**                | 電梯簡報：做什麼、為什麼 Agent 應遵循         | 建議     |
+| **When to Use**             | 正向觸發（Use when X）+ 反向排除（NOT for Y） | 建議     |
+| **Core Process**            | 逐步工作流程，具體且可操作                    | **必要** |
+| **Common Rationalizations** | AI 藉口 vs 事實反駁（表格格式）               | 建議     |
+| **Red Flags**               | 可觀察的違規指標（用於 Code Review）          | 建議     |
+| **Verification**            | 退出標準核對清單，每項都需要**證據**          | 建議     |
 
 ### 範例：SKILL.md 骨架模板
 
@@ -544,25 +546,29 @@ description: >
 ## When to Use
 
 **適用情境：**
+
 - [情境 1]
 - [情境 2]
 
 **不適用情境：**
+
 - [排除 1]
 - [排除 2]
 
 ## Core Process
 
 ### Step 1: [步驟名稱]
+
 [具體操作，非模糊建議]
 
 ### Step 2: [步驟名稱]
+
 [具體操作]
 
 ## Common Rationalizations
 
-| Rationalization | Counter |
-|----------------|---------|
+| Rationalization | Counter    |
+| --------------- | ---------- |
 | 「[AI 的藉口]」 | [事實反駁] |
 
 ## Red Flags
@@ -591,6 +597,7 @@ Level 4: MCP 整合（Chrome DevTools、PostgreSQL 等）
 ```
 
 **設計原則：**
+
 - `SKILL.md` 是進入點，保持簡潔（建議 < 500 行）
 - 超過 100 行的參考資料，移至 `references/` 目錄
 - 不在 Skill 目錄內建立參考檔案，統一使用 `references/`
@@ -598,14 +605,14 @@ Level 4: MCP 整合（Chrome DevTools、PostgreSQL 等）
 
 ## 2.5 Token 效率設計原則
 
-| 原則 | 說明 |
-|------|------|
-| **每個章節必須證明其存在價值** | 如果某章節不影響 Agent 行為，就刪除它 |
-| **不重複內容** | 跨 Skill 引用而非複製貼上 |
-| **漸進式載入** | 只在需要時載入 Supporting Files |
-| **不一次載入所有 Skills** | 根據當前任務階段載入 2-3 個 Skills |
-| **description 用於自動發現** | Agent 讀 description 決定是否載入完整 Skill |
-| **程式碼優先於散文** | 用程式碼範例說明，比長篇描述更有效 |
+| 原則                           | 說明                                        |
+| ------------------------------ | ------------------------------------------- |
+| **每個章節必須證明其存在價值** | 如果某章節不影響 Agent 行為，就刪除它       |
+| **不重複內容**                 | 跨 Skill 引用而非複製貼上                   |
+| **漸進式載入**                 | 只在需要時載入 Supporting Files             |
+| **不一次載入所有 Skills**      | 根據當前任務階段載入 2-3 個 Skills          |
+| **description 用於自動發現**   | Agent 讀 description 決定是否載入完整 Skill |
+| **程式碼優先於散文**           | 用程式碼範例說明，比長篇描述更有效          |
 
 ## 2.6 完整專案目錄結構
 
@@ -818,11 +825,11 @@ graph LR
 
 ### 3.1.1 `using-agent-skills` — 路由 Meta-Skill
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 接收使用者意圖，映射到正確的 Skill 工作流程 |
+| 項目         | 說明                                            |
+| ------------ | ----------------------------------------------- |
+| **用途**     | 接收使用者意圖，映射到正確的 Skill 工作流程     |
 | **觸發條件** | 每次新 Session 開始、使用者提出任何開發相關請求 |
-| **階段** | Meta（跨所有階段） |
+| **階段**     | Meta（跨所有階段）                              |
 
 **核心流程摘要：**
 
@@ -839,17 +846,17 @@ graph LR
 
 **意圖 → Skill 映射表：**
 
-| 使用者意圖 | 映射 Skill |
-|-----------|-----------|
+| 使用者意圖      | 映射 Skill                                                                           |
+| --------------- | ------------------------------------------------------------------------------------ |
 | 新功能 / 新需求 | `spec-driven-development` → `incremental-implementation` → `test-driven-development` |
-| 任務拆解 / 規劃 | `planning-and-task-breakdown` |
-| Bug / 故障 | `debugging-and-error-recovery` |
-| Code Review | `code-review-and-quality` |
-| 重構 / 簡化 | `code-simplification` |
-| API 設計 | `api-and-interface-design` |
-| UI 開發 | `frontend-ui-engineering` |
-| 安全性審查 | `security-and-hardening` |
-| 部署上線 | `shipping-and-launch` |
+| 任務拆解 / 規劃 | `planning-and-task-breakdown`                                                        |
+| Bug / 故障      | `debugging-and-error-recovery`                                                       |
+| Code Review     | `code-review-and-quality`                                                            |
+| 重構 / 簡化     | `code-simplification`                                                                |
+| API 設計        | `api-and-interface-design`                                                           |
+| UI 開發         | `frontend-ui-engineering`                                                            |
+| 安全性審查      | `security-and-hardening`                                                             |
+| 部署上線        | `shipping-and-launch`                                                                |
 
 **10 個失敗模式（必須避免）：**
 
@@ -872,11 +879,11 @@ graph LR
 
 ### 3.2.1 `interview-me` — 需求訪談
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 一次一問的結構化需求訪談，直到信心度達 ~95% |
-| **觸發條件** | 使用者的需求描述模糊、缺乏細節、有多種可能解讀 |
-| **階段** | Define |
+| 項目            | 說明                                                                       |
+| --------------- | -------------------------------------------------------------------------- |
+| **用途**        | 一次一問的結構化需求訪談，直到信心度達 ~95%                                |
+| **觸發條件**    | 使用者的需求描述模糊、缺乏細節、有多種可能解讀                             |
+| **階段**        | Define                                                                     |
 | **關聯 Skills** | → `idea-refine`（想法不夠具體時）→ `spec-driven-development`（訪談完成後） |
 
 **核心流程摘要：**
@@ -892,11 +899,11 @@ graph LR
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「需求已經很清楚了，不需要訪談」 | 看似清楚的需求常隱藏假設，10 分鐘訪談可節省數小時返工 |
-| 「使用者會嫌煩，直接開始做比較好」 | 使用者更在意最終結果正確，而非過程快速 |
-| 「我可以邊做邊問」 | 邊做邊問會產生已投入成本偏見（Sunk Cost Bias） |
+| AI 的藉口                          | 事實反駁                                              |
+| ---------------------------------- | ----------------------------------------------------- |
+| 「需求已經很清楚了，不需要訪談」   | 看似清楚的需求常隱藏假設，10 分鐘訪談可節省數小時返工 |
+| 「使用者會嫌煩，直接開始做比較好」 | 使用者更在意最終結果正確，而非過程快速                |
+| 「我可以邊做邊問」                 | 邊做邊問會產生已投入成本偏見（Sunk Cost Bias）        |
 
 **驗證清單：**
 
@@ -934,11 +941,11 @@ A5: 「最少 8 字元，至少一個大寫、一個數字、一個特殊字元�
 
 ### 3.2.2 `idea-refine` — 結構化發散/收斂思考
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 將模糊的想法轉化為具體可實作的提案 |
-| **觸發條件** | 使用者有模糊的想法但尚未形成明確需求 |
-| **階段** | Define |
+| 項目            | 說明                                                                  |
+| --------------- | --------------------------------------------------------------------- |
+| **用途**        | 將模糊的想法轉化為具體可實作的提案                                    |
+| **觸發條件**    | 使用者有模糊的想法但尚未形成明確需求                                  |
+| **階段**        | Define                                                                |
 | **關聯 Skills** | ← `interview-me`（互補使用）→ `spec-driven-development`（想法成熟後） |
 
 **核心流程摘要：**
@@ -961,20 +968,20 @@ A5: 「最少 8 字元，至少一個大寫、一個數字、一個特殊字元�
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
+| AI 的藉口                | 事實反駁                                 |
+| ------------------------ | ---------------------------------------- |
 | 「第一個想法就是最好的」 | 第一個想法通常是最顯而易見的，未必最適合 |
-| 「不需要探索替代方案」 | 沒有比較就無法判斷方案的優劣 |
+| 「不需要探索替代方案」   | 沒有比較就無法判斷方案的優劣             |
 
 ---
 
 ### 3.2.3 `spec-driven-development`（SDD）— 規格驅動開發
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 撰寫 PRD（產品需求文件）後才開始寫程式碼 |
-| **觸發條件** | 任何非簡單修復的功能開發 |
-| **階段** | Define |
+| 項目            | 說明                                                             |
+| --------------- | ---------------------------------------------------------------- |
+| **用途**        | 撰寫 PRD（產品需求文件）後才開始寫程式碼                         |
+| **觸發條件**    | 任何非簡單修復的功能開發                                         |
+| **階段**        | Define                                                           |
 | **關聯 Skills** | ← `interview-me` / `idea-refine` → `planning-and-task-breakdown` |
 
 **核心流程摘要：**
@@ -986,6 +993,7 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 ```
 
 **Phase 1 — SPECIFY（撰寫規格）：**
+
 - 6 個核心規格區域：
   1. **Objective**：這個功能要解決什麼問題
   2. **Commands**：CLI 或 API 進入點
@@ -997,22 +1005,25 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 - **Surface Assumptions Immediately**：任何假設必須立即標記
 
 **Phase 2 — PLAN（規劃）：**
+
 - 產出：實作計畫，含步驟順序與依賴關係
 
 **Phase 3 — TASKS（拆解任務）：**
+
 - 產出：`tasks/plan.md` 與 `tasks/todo.md`
 - 每個任務含驗收標準
 
 **Phase 4 — IMPLEMENT（實作）：**
+
 - 遵循 `incremental-implementation` 和 `test-driven-development`
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「這個需求很簡單，不需要寫 Spec」 | 簡單的需求更容易被誤解，Spec 是溝通的保障 |
-| 「寫 Spec 太花時間」 | 不寫 Spec 導致的返工時間遠超寫 Spec 的時間 |
-| 「程式碼就是最好的規格」 | 程式碼描述「是什麼」，Spec 描述「為什麼」和「不做什麼」 |
+| AI 的藉口                         | 事實反駁                                                |
+| --------------------------------- | ------------------------------------------------------- |
+| 「這個需求很簡單，不需要寫 Spec」 | 簡單的需求更容易被誤解，Spec 是溝通的保障               |
+| 「寫 Spec 太花時間」              | 不寫 Spec 導致的返工時間遠超寫 Spec 的時間              |
+| 「程式碼就是最好的規格」          | 程式碼描述「是什麼」，Spec 描述「為什麼」和「不做什麼」 |
 
 **驗證清單：**
 
@@ -1028,11 +1039,11 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 ### 3.3.1 `planning-and-task-breakdown` — 任務拆解
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 將規格分解為小型、可驗證的任務，含驗收標準與依賴排序 |
-| **觸發條件** | Spec 已通過人類審查，準備進入實作階段 |
-| **階段** | Plan |
+| 項目            | 說明                                                       |
+| --------------- | ---------------------------------------------------------- |
+| **用途**        | 將規格分解為小型、可驗證的任務，含驗收標準與依賴排序       |
+| **觸發條件**    | Spec 已通過人類審查，準備進入實作階段                      |
+| **階段**        | Plan                                                       |
 | **關聯 Skills** | ← `spec-driven-development` → `incremental-implementation` |
 
 **核心流程摘要：**
@@ -1052,10 +1063,10 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
+| AI 的藉口                      | 事實反駁                                           |
+| ------------------------------ | -------------------------------------------------- |
 | 「直接開始寫就好，何必拆任務」 | 不拆任務會導致無法追蹤進度、無法回滾、無法局部驗證 |
-| 「這個任務拆太細了」 | 小任務可以獨立驗證、獨立回滾，風險更低 |
+| 「這個任務拆太細了」           | 小任務可以獨立驗證、獨立回滾，風險更低             |
 
 **實戰案例：**
 
@@ -1065,22 +1076,27 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 ## 功能：使用者登入系統
 
 ### Task 1: 資料庫 Schema（無依賴）
+
 - 建立 users 表（id, email, password_hash, locked_until, failed_attempts）
 - 驗收標準：Migration 可正確執行與回滾
 
 ### Task 2: 密碼雜湊服務（依賴 Task 1）
+
 - 實作 BCrypt 密碼雜湊
 - 驗收標準：單元測試通過，雜湊結果可驗證
 
 ### Task 3: 登入 API Endpoint（依賴 Task 2）
+
 - POST /api/auth/login
 - 驗收標準：成功登入返回 JWT、失敗返回 401
 
 ### Task 4: 帳號鎖定機制（依賴 Task 3）
+
 - 3 次失敗鎖定 15 分鐘
 - 驗收標準：整合測試覆蓋鎖定與解鎖場景
 
 ### Task 5: 前端登入頁面（依賴 Task 3）
+
 - Vue 3 登入表單 + 錯誤提示
 - 驗收標準：E2E 測試覆蓋成功/失敗/鎖定情境
 ```
@@ -1091,11 +1107,11 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 ### 3.4.1 `incremental-implementation` — 增量式實作
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 薄型垂直切片實作、Feature Flags、安全回滾 |
-| **觸發條件** | 任務已拆解完成，準備開始實作 |
-| **階段** | Build |
+| 項目            | 說明                                                        |
+| --------------- | ----------------------------------------------------------- |
+| **用途**        | 薄型垂直切片實作、Feature Flags、安全回滾                   |
+| **觸發條件**    | 任務已拆解完成，準備開始實作                                |
+| **階段**        | Build                                                       |
 | **關聯 Skills** | ← `planning-and-task-breakdown` + `test-driven-development` |
 
 **核心流程摘要：**
@@ -1123,21 +1139,21 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
+| AI 的藉口                        | 事實反駁                                     |
+| -------------------------------- | -------------------------------------------- |
 | 「一次把所有功能做完比較有效率」 | 大批量變更無法有效 Code Review、無法局部回滾 |
-| 「這些改動有關聯，應該一起提交」 | 有關聯不等於必須一起提交，分步驟提交更安全 |
-| 「Feature Flag 增加複雜度」 | Feature Flag 降低部署風險，部署後可立即關閉 |
+| 「這些改動有關聯，應該一起提交」 | 有關聯不等於必須一起提交，分步驟提交更安全   |
+| 「Feature Flag 增加複雜度」      | Feature Flag 降低部署風險，部署後可立即關閉  |
 
 ---
 
 ### 3.4.2 `test-driven-development` — 測試驅動開發
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | Red-Green-Refactor、測試金字塔（80/15/5）、Beyoncé Rule |
-| **觸發條件** | 任何需要撰寫或修改程式碼的任務 |
-| **階段** | Build / Verify |
+| 項目            | 說明                                                                           |
+| --------------- | ------------------------------------------------------------------------------ |
+| **用途**        | Red-Green-Refactor、測試金字塔（80/15/5）、Beyoncé Rule                        |
+| **觸發條件**    | 任何需要撰寫或修改程式碼的任務                                                 |
+| **階段**        | Build / Verify                                                                 |
 | **關聯 Skills** | 搭配 `incremental-implementation`；Bug 修復搭配 `debugging-and-error-recovery` |
 
 **核心流程 — Red-Green-Refactor：**
@@ -1176,12 +1192,12 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「我之後再寫測試」 | 你不會的，事後寫的測試是在測試實作而非行為 |
-| 「這改動很小不需要測試」 | 小改動會變大，測試記錄了預期行為 |
-| 「寫測試會拖慢進度」 | 沒測試的程式碼上線後修 Bug 更慢 |
-| 「這只是 UI 調整」 | UI 邏輯需要驗證互動行為和邊界條件 |
+| AI 的藉口                | 事實反駁                                   |
+| ------------------------ | ------------------------------------------ |
+| 「我之後再寫測試」       | 你不會的，事後寫的測試是在測試實作而非行為 |
+| 「這改動很小不需要測試」 | 小改動會變大，測試記錄了預期行為           |
+| 「寫測試會拖慢進度」     | 沒測試的程式碼上線後修 Bug 更慢            |
+| 「這只是 UI 調整」       | UI 邏輯需要驗證互動行為和邊界條件          |
 
 **驗證清單：**
 
@@ -1196,22 +1212,22 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 ### 3.4.3 `context-engineering` — Context 工程
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 在正確的時間餵入正確的上下文資訊 |
-| **觸發條件** | AI Agent 開始工作前的環境準備 |
-| **階段** | Build（貫穿所有階段） |
-| **關聯 Skills** | 支援所有其他 Skills 的有效運作 |
+| 項目            | 說明                             |
+| --------------- | -------------------------------- |
+| **用途**        | 在正確的時間餵入正確的上下文資訊 |
+| **觸發條件**    | AI Agent 開始工作前的環境準備    |
+| **階段**        | Build（貫穿所有階段）            |
+| **關聯 Skills** | 支援所有其他 Skills 的有效運作   |
 
 **五層 Context 階層：**
 
-| 層級 | 來源 | 載入時機 |
-|------|------|---------|
+| 層級    | 來源                                    | 載入時機              |
+| ------- | --------------------------------------- | --------------------- |
 | Level 1 | Rules Files（CLAUDE.md / .cursorrules） | 每次 Session 自動載入 |
-| Level 2 | Specs（SPEC.md、tasks/） | 開始任務時載入 |
-| Level 3 | Source Files（程式碼、設定檔） | 需要時按需載入 |
-| Level 4 | Error Output（編譯錯誤、測試失敗） | 發生錯誤時載入 |
-| Level 5 | Conversation（對話歷史） | 自動累積 |
+| Level 2 | Specs（SPEC.md、tasks/）                | 開始任務時載入        |
+| Level 3 | Source Files（程式碼、設定檔）          | 需要時按需載入        |
+| Level 4 | Error Output（編譯錯誤、測試失敗）      | 發生錯誤時載入        |
+| Level 5 | Conversation（對話歷史）                | 自動累積              |
 
 **Context Packing 三種策略：**
 
@@ -1221,17 +1237,18 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 **MCP 整合矩陣：**
 
-| MCP Server | 用途 | 搭配 Skill |
-|-----------|------|-----------|
-| Chrome DevTools | 即時瀏覽器資料 | browser-testing-with-devtools |
-| Context7 | 最新框架文件 | source-driven-development |
-| PostgreSQL | 資料庫 Schema 查詢 | incremental-implementation |
-| Filesystem | 專案結構探索 | context-engineering |
-| GitHub | PR/Issue 資料 | code-review-and-quality |
+| MCP Server      | 用途               | 搭配 Skill                    |
+| --------------- | ------------------ | ----------------------------- |
+| Chrome DevTools | 即時瀏覽器資料     | browser-testing-with-devtools |
+| Context7        | 最新框架文件       | source-driven-development     |
+| PostgreSQL      | 資料庫 Schema 查詢 | incremental-implementation    |
+| Filesystem      | 專案結構探索       | context-engineering           |
+| GitHub          | PR/Issue 資料      | code-review-and-quality       |
 
 **Confusion Management（困惑管理）：**
 
 當 AI 對需求或實作感到困惑時：
+
 1. **承認困惑**（不猜測）
 2. **明確說出困惑點**
 3. **提出具體問題**
@@ -1241,12 +1258,12 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 ### 3.4.4 `source-driven-development` — 以官方文件為依據
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 以官方文件為依據實作框架相關功能，引用來源、標記未驗證內容 |
-| **觸發條件** | 實作涉及特定框架或函式庫的 API 使用 |
-| **階段** | Build |
-| **關聯 Skills** | 搭配 `doubt-driven-development`（交叉驗證） |
+| 項目            | 說明                                                       |
+| --------------- | ---------------------------------------------------------- |
+| **用途**        | 以官方文件為依據實作框架相關功能，引用來源、標記未驗證內容 |
+| **觸發條件**    | 實作涉及特定框架或函式庫的 API 使用                        |
+| **階段**        | Build                                                      |
+| **關聯 Skills** | 搭配 `doubt-driven-development`（交叉驗證）                |
 
 **核心流程摘要：**
 
@@ -1258,21 +1275,21 @@ SPECIFY → [人類審查] → PLAN → [人類審查] → TASKS → [人類審�
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「我記得這個 API 是這樣用的」 | AI 的訓練資料可能過時，必須驗證 |
+| AI 的藉口                     | 事實反駁                            |
+| ----------------------------- | ----------------------------------- |
+| 「我記得這個 API 是這樣用的」 | AI 的訓練資料可能過時，必須驗證     |
 | 「Stack Overflow 上都這樣寫」 | Stack Overflow 答案可能針對不同版本 |
 
 ---
 
 ### 3.4.5 `doubt-driven-development` — 對抗性審查
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 對抗性新鮮上下文審查，防止 AI 幻覺 |
-| **觸發條件** | 任何非簡單的技術決策 |
-| **階段** | Build |
-| **關聯 Skills** | 搭配 `source-driven-development` |
+| 項目            | 說明                               |
+| --------------- | ---------------------------------- |
+| **用途**        | 對抗性新鮮上下文審查，防止 AI 幻覺 |
+| **觸發條件**    | 任何非簡單的技術決策               |
+| **階段**        | Build                              |
+| **關聯 Skills** | 搭配 `source-driven-development`   |
 
 **核心流程 — CLAIM-EXTRACT-DOUBT-RECONCILE-STOP：**
 
@@ -1310,11 +1327,11 @@ STOP: 繼續實作
 
 ### 3.4.6 `frontend-ui-engineering` — 前端 UI 工程
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 生產品質的 UI 實作，含元件架構、設計系統、WCAG 2.1 AA 無障礙 |
-| **觸發條件** | 任何前端 UI 開發任務 |
-| **階段** | Build |
+| 項目            | 說明                                                                            |
+| --------------- | ------------------------------------------------------------------------------- |
+| **用途**        | 生產品質的 UI 實作，含元件架構、設計系統、WCAG 2.1 AA 無障礙                    |
+| **觸發條件**    | 任何前端 UI 開發任務                                                            |
+| **階段**        | Build                                                                           |
 | **關聯 Skills** | 搭配 `browser-testing-with-devtools`（驗證）→ 參考 `accessibility-checklist.md` |
 
 **核心流程摘要：**
@@ -1342,11 +1359,11 @@ STOP: 繼續實作
 
 ### 3.4.7 `api-and-interface-design` — API 與介面設計
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 契約優先設計、Hyrum's Law、One-Version Rule、邊界驗證 |
-| **觸發條件** | 設計新 API、修改既有 API、定義模組介面 |
-| **階段** | Build |
+| 項目            | 說明                                                                             |
+| --------------- | -------------------------------------------------------------------------------- |
+| **用途**        | 契約優先設計、Hyrum's Law、One-Version Rule、邊界驗證                            |
+| **觸發條件**    | 設計新 API、修改既有 API、定義模組介面                                           |
+| **階段**        | Build                                                                            |
 | **關聯 Skills** | 搭配 `spec-driven-development`（API Spec）→ `security-and-hardening`（安全驗證） |
 
 **核心流程摘要：**
@@ -1371,10 +1388,10 @@ STOP: 繼續實作
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「先實作再定義 API」 | 實作驅動的 API 會有實作細節洩漏（Hyrum's Law） |
-| 「內部 API 不需要版本化」 | One-Version Rule：保持一個版本但確保向後相容 |
+| AI 的藉口                 | 事實反駁                                       |
+| ------------------------- | ---------------------------------------------- |
+| 「先實作再定義 API」      | 實作驅動的 API 會有實作細節洩漏（Hyrum's Law） |
+| 「內部 API 不需要版本化」 | One-Version Rule：保持一個版本但確保向後相容   |
 
 ---
 
@@ -1382,11 +1399,11 @@ STOP: 繼續實作
 
 ### 3.5.1 `browser-testing-with-devtools` — 瀏覽器測試
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 使用 Chrome DevTools MCP 取得即時執行期資料 |
-| **觸發條件** | 前端 UI 開發完成、需要驗證效能/無障礙/功能 |
-| **階段** | Verify |
+| 項目            | 說明                                                                                        |
+| --------------- | ------------------------------------------------------------------------------------------- |
+| **用途**        | 使用 Chrome DevTools MCP 取得即時執行期資料                                                 |
+| **觸發條件**    | 前端 UI 開發完成、需要驗證效能/無障礙/功能                                                  |
+| **階段**        | Verify                                                                                      |
 | **關聯 Skills** | ← `frontend-ui-engineering` → 參考 `performance-checklist.md`、`accessibility-checklist.md` |
 
 **核心流程摘要：**
@@ -1406,11 +1423,11 @@ STOP: 繼續實作
 
 ### 3.5.2 `debugging-and-error-recovery` — 偵錯與錯誤恢復
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 五步驟系統化偵錯流程 |
-| **觸發條件** | 任何 Bug 報告、測試失敗、生產環境錯誤 |
-| **階段** | Verify |
+| 項目            | 說明                                            |
+| --------------- | ----------------------------------------------- |
+| **用途**        | 五步驟系統化偵錯流程                            |
+| **觸發條件**    | 任何 Bug 報告、測試失敗、生產環境錯誤           |
+| **階段**        | Verify                                          |
 | **關聯 Skills** | → `test-driven-development`（Prove-It Pattern） |
 
 **核心流程 — 五步驟分流：**
@@ -1428,10 +1445,10 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「我知道問題在哪，直接修就好」 | 不重現就修復容易遺漏根本原因 |
-| 「修好了就不需要寫回歸測試」 | 沒有回歸測試，同樣的 Bug 會再次出現 |
+| AI 的藉口                      | 事實反駁                            |
+| ------------------------------ | ----------------------------------- |
+| 「我知道問題在哪，直接修就好」 | 不重現就修復容易遺漏根本原因        |
+| 「修好了就不需要寫回歸測試」   | 沒有回歸測試，同樣的 Bug 會再次出現 |
 
 ---
 
@@ -1439,28 +1456,30 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.6.1 `code-review-and-quality` — 五軸程式碼審查
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 五軸審查、~100 行變更大小、嚴重度標籤 |
-| **觸發條件** | 程式碼準備合併到主分支前 |
-| **階段** | Review |
-| **關聯 Skills** | 由 `code-reviewer` Persona 執行 |
+| 項目            | 說明                                  |
+| --------------- | ------------------------------------- |
+| **用途**        | 五軸審查、~100 行變更大小、嚴重度標籤 |
+| **觸發條件**    | 程式碼準備合併到主分支前              |
+| **階段**        | Review                                |
+| **關聯 Skills** | 由 `code-reviewer` Persona 執行       |
 
 **五軸審查框架：**
 
-| 軸線 | 審查重點 |
-|------|---------|
-| **Correctness（正確性）** | 是否符合 Spec？邊界條件處理？測試驗證行為？ |
-| **Readability（可讀性）** | 他人能否不需解釋就看懂？命名描述性？控制流清晰？ |
-| **Architecture（架構）** | 遵循既有模式？模組邊界維護？抽象層級適當？ |
-| **Security（安全性）** | 輸入驗證？Secrets 保護？Auth/AuthZ 檢查？參數化查詢？ |
-| **Performance（效能）** | N+1 查詢？無界迴圈？同步操作應非同步？不必要的 Re-render？ |
+| 軸線                      | 審查重點                                                   |
+| ------------------------- | ---------------------------------------------------------- |
+| **Correctness（正確性）** | 是否符合 Spec？邊界條件處理？測試驗證行為？                |
+| **Readability（可讀性）** | 他人能否不需解釋就看懂？命名描述性？控制流清晰？           |
+| **Architecture（架構）**  | 遵循既有模式？模組邊界維護？抽象層級適當？                 |
+| **Security（安全性）**    | 輸入驗證？Secrets 保護？Auth/AuthZ 檢查？參數化查詢？      |
+| **Performance（效能）**   | N+1 查詢？無界迴圈？同步操作應非同步？不必要的 Re-render？ |
 
 **變更大小規範：**
+
 - 目標：~100 行變更（不含自動產生的檔案）
 - 超過 400 行應拆分為多個 PR
 
 **嚴重度標籤：**
+
 - **Critical**：必須修復，阻擋合併
 - **Important**：應該修復，在此 PR 或下一個 PR
 - **Suggestion**：可以考慮，非阻擋
@@ -1469,12 +1488,12 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.6.2 `code-simplification` — 程式碼簡化
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 降低複雜度但不改變行為（Chesterton's Fence 原則） |
-| **觸發條件** | 程式碼過於複雜、重複過多、難以維護 |
-| **階段** | Review |
-| **關聯 Skills** | 受 Chesterton's Fence 原則約束 |
+| 項目            | 說明                                              |
+| --------------- | ------------------------------------------------- |
+| **用途**        | 降低複雜度但不改變行為（Chesterton's Fence 原則） |
+| **觸發條件**    | 程式碼過於複雜、重複過多、難以維護                |
+| **階段**        | Review                                            |
+| **關聯 Skills** | 受 Chesterton's Fence 原則約束                    |
 
 **核心流程摘要：**
 
@@ -1497,56 +1516,57 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.6.3 `security-and-hardening` — 安全強化
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | OWASP Top 10 防護、Auth 模式、Secrets 管理、三層邊界系統 |
-| **觸發條件** | 任何涉及使用者輸入、認證、授權、資料處理的變更 |
-| **階段** | Review |
+| 項目            | 說明                                                                      |
+| --------------- | ------------------------------------------------------------------------- |
+| **用途**        | OWASP Top 10 防護、Auth 模式、Secrets 管理、三層邊界系統                  |
+| **觸發條件**    | 任何涉及使用者輸入、認證、授權、資料處理的變更                            |
+| **階段**        | Review                                                                    |
 | **關聯 Skills** | 由 `security-auditor` Persona 執行深度審查 → 參考 `security-checklist.md` |
 
 **三層邊界系統：**
 
-| 層級 | 規則 | 範例 |
-|------|------|------|
-| **Always Do（必做）** | 無例外，必須執行 | 執行 `npm audit`、密碼用 BCrypt 雜湊、設定安全標頭 |
-| **Ask First（先問）** | 需人類審批 | 新 Auth 流程、儲存新 PII、新服務整合 |
-| **Never Do（禁止）** | 絕對禁止 | 提交 Secrets、使用 `eval()` 處理使用者輸入、信任客戶端驗證 |
+| 層級                  | 規則             | 範例                                                       |
+| --------------------- | ---------------- | ---------------------------------------------------------- |
+| **Always Do（必做）** | 無例外，必須執行 | 執行 `npm audit`、密碼用 BCrypt 雜湊、設定安全標頭         |
+| **Ask First（先問）** | 需人類審批       | 新 Auth 流程、儲存新 PII、新服務整合                       |
+| **Never Do（禁止）**  | 絕對禁止         | 提交 Secrets、使用 `eval()` 處理使用者輸入、信任客戶端驗證 |
 
 **OWASP Top 10 防護對應：**
 
-| OWASP 風險 | Agent Skills 防護措施 |
-|-----------|---------------------|
-| A01 Broken Access Control | 每個 Endpoint 檢查 Auth/AuthZ、IDOR 防護 |
-| A02 Cryptographic Failures | BCrypt 密碼雜湊、傳輸加密（TLS）、靜態加密 |
-| A03 Injection | 參數化查詢、輸入驗證（Zod Schema）、ORM 使用 |
-| A04 Insecure Design | Spec-Driven Development、威脅建模 |
+| OWASP 風險                    | Agent Skills 防護措施                           |
+| ----------------------------- | ----------------------------------------------- |
+| A01 Broken Access Control     | 每個 Endpoint 檢查 Auth/AuthZ、IDOR 防護        |
+| A02 Cryptographic Failures    | BCrypt 密碼雜湊、傳輸加密（TLS）、靜態加密      |
+| A03 Injection                 | 參數化查詢、輸入驗證（Zod Schema）、ORM 使用    |
+| A04 Insecure Design           | Spec-Driven Development、威脅建模               |
 | A05 Security Misconfiguration | 安全標頭（CSP/HSTS/X-Frame-Options）、CORS 限制 |
-| A06 Vulnerable Components | 依賴審計（npm audit / OWASP Dependency-Check） |
-| A07 Auth Failures | Session 管理、密碼規則、帳號鎖定 |
-| A08 Data Integrity Failures | 簽章驗證、完整性檢查 |
-| A09 Logging Failures | 結構化日誌、敏感資料脫敏 |
-| A10 SSRF | URL 白名單、DNS Rebinding 防護 |
+| A06 Vulnerable Components     | 依賴審計（npm audit / OWASP Dependency-Check）  |
+| A07 Auth Failures             | Session 管理、密碼規則、帳號鎖定                |
+| A08 Data Integrity Failures   | 簽章驗證、完整性檢查                            |
+| A09 Logging Failures          | 結構化日誌、敏感資料脫敏                        |
+| A10 SSRF                      | URL 白名單、DNS Rebinding 防護                  |
 
 ---
 
 ### 3.6.4 `performance-optimization` — 效能優化
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | Measure-First 方法、Core Web Vitals、Profiling 工作流 |
-| **觸發條件** | 效能指標未達標、使用者回報慢、新功能效能影響評估 |
-| **階段** | Review |
-| **關聯 Skills** | → 參考 `performance-checklist.md` |
+| 項目            | 說明                                                  |
+| --------------- | ----------------------------------------------------- |
+| **用途**        | Measure-First 方法、Core Web Vitals、Profiling 工作流 |
+| **觸發條件**    | 效能指標未達標、使用者回報慢、新功能效能影響評估      |
+| **階段**        | Review                                                |
+| **關聯 Skills** | → 參考 `performance-checklist.md`                     |
 
 **Core Web Vitals 目標：**
 
-| 指標 | 目標值 | 說明 |
-|------|--------|------|
-| **LCP** | ≤ 2.5s | Largest Contentful Paint（最大內容繪製） |
+| 指標    | 目標值  | 說明                                        |
+| ------- | ------- | ------------------------------------------- |
+| **LCP** | ≤ 2.5s  | Largest Contentful Paint（最大內容繪製）    |
 | **INP** | ≤ 200ms | Interaction to Next Paint（互動到下次繪製） |
-| **CLS** | ≤ 0.1 | Cumulative Layout Shift（累積版面位移） |
+| **CLS** | ≤ 0.1   | Cumulative Layout Shift（累積版面位移）     |
 
 **核心原則：Measure First（先量測再優化）**
+
 - 不做沒有數據支持的「優化」
 - 使用 Profiling 工具找出瓶頸
 - 優化後再次量測確認改善
@@ -1557,11 +1577,11 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.7.1 `git-workflow-and-versioning` — Git 工作流
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | Trunk-Based Development、原子提交、~100 行變更 |
-| **觸發條件** | 任何程式碼變更的版本控制操作 |
-| **階段** | Ship |
+| 項目         | 說明                                           |
+| ------------ | ---------------------------------------------- |
+| **用途**     | Trunk-Based Development、原子提交、~100 行變更 |
+| **觸發條件** | 任何程式碼變更的版本控制操作                   |
+| **階段**     | Ship                                           |
 
 **核心原則：**
 
@@ -1579,11 +1599,11 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.7.2 `ci-cd-and-automation` — CI/CD 自動化
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | Shift Left、Faster is Safer、Feature Flags、品質閘門 |
-| **觸發條件** | 設定 CI/CD Pipeline、評估部署策略 |
-| **階段** | Ship |
+| 項目         | 說明                                                 |
+| ------------ | ---------------------------------------------------- |
+| **用途**     | Shift Left、Faster is Safer、Feature Flags、品質閘門 |
+| **觸發條件** | 設定 CI/CD Pipeline、評估部署策略                    |
+| **階段**     | Ship                                                 |
 
 **核心原則：**
 
@@ -1596,11 +1616,11 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.7.3 `deprecation-and-migration` — 棄用與遷移
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | Code-as-Liability 思維、遷移模式、僵屍碼清除 |
-| **觸發條件** | API 棄用、框架升級、移除過時功能 |
-| **階段** | Ship |
+| 項目         | 說明                                         |
+| ------------ | -------------------------------------------- |
+| **用途**     | Code-as-Liability 思維、遷移模式、僵屍碼清除 |
+| **觸發條件** | API 棄用、框架升級、移除過時功能             |
+| **階段**     | Ship                                         |
 
 **核心理念 — Code as Liability：**
 
@@ -1617,11 +1637,11 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.7.4 `documentation-and-adrs` — 文件與架構決策記錄
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | ADR（Architecture Decision Records）、API 文件、內聯文件標準 |
-| **觸發條件** | 架構決策、API 變更、重要設計選擇 |
-| **階段** | Ship |
+| 項目         | 說明                                                         |
+| ------------ | ------------------------------------------------------------ |
+| **用途**     | ADR（Architecture Decision Records）、API 文件、內聯文件標準 |
+| **觸發條件** | 架構決策、API 變更、重要設計選擇                             |
+| **階段**     | Ship                                                         |
 
 **ADR 格式：**
 
@@ -1629,15 +1649,19 @@ Reproduce → Localize → Reduce → Fix → Guard
 # ADR-001: 使用 JWT 作為認證機制
 
 ## 狀態
+
 已接受（Accepted）
 
 ## 背景
+
 系統需要無狀態的認證機制，支援微服務架構。
 
 ## 決策
+
 使用 JWT（JSON Web Token）作為認證 Token。
 
 ## 後果
+
 - ✅ 無狀態，適合微服務
 - ✅ 可攜帶使用者資訊
 - ⚠️ Token 無法即時撤銷（需搭配黑名單機制）
@@ -1648,11 +1672,11 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.7.5 `shipping-and-launch` — 上線發布
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | Pre-Launch Checklist、階段式發布、Rollback 程序 |
-| **觸發條件** | 功能已通過所有審查，準備部署到生產環境 |
-| **階段** | Ship |
+| 項目            | 說明                                               |
+| --------------- | -------------------------------------------------- |
+| **用途**        | Pre-Launch Checklist、階段式發布、Rollback 程序    |
+| **觸發條件**    | 功能已通過所有審查，準備部署到生產環境             |
+| **階段**        | Ship                                               |
 | **關聯 Skills** | 觸發 `/ship` Command 時，平行啟動三個 Persona 審查 |
 
 **核心流程摘要：**
@@ -1686,11 +1710,11 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 ### 3.7.6 `observability-and-instrumentation` — 可觀測性與監控埋點（v0.6.x 新增）
 
-| 項目 | 說明 |
-|------|------|
-| **用途** | 結構化日誌、RED 指標（Rate/Errors/Duration）、OpenTelemetry 分散式追蹤埋點 |
-| **觸發條件** | 新增對外服務端點、關鍵業務邏輯上線前、既有功能缺乏監控被回報 |
-| **階段** | Ship |
+| 項目            | 說明                                                                                           |
+| --------------- | ---------------------------------------------------------------------------------------------- |
+| **用途**        | 結構化日誌、RED 指標（Rate/Errors/Duration）、OpenTelemetry 分散式追蹤埋點                     |
+| **觸發條件**    | 新增對外服務端點、關鍵業務邏輯上線前、既有功能缺乏監控被回報                                   |
+| **階段**        | Ship                                                                                           |
 | **關聯 Skills** | 搭配 `shipping-and-launch`（上線前的可觀測性檢查）、參考第 6.7 節 `observability-checklist.md` |
 
 **核心流程摘要：**
@@ -1706,11 +1730,11 @@ Reproduce → Localize → Reduce → Fix → Guard
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「先上線，之後再補監控」 | 沒有監控的功能上線後，故障只能靠使用者回報才會發現 |
-| 「印出 `console.log` 就是日誌」 | 非結構化日誌無法被查詢、聚合或設定告警，等同沒有日誌 |
-| 「這個端點不重要，不需要指標」 | 重要性會隨業務演進改變，事後補埋點的成本遠高於一開始就做 |
+| AI 的藉口                       | 事實反駁                                                 |
+| ------------------------------- | -------------------------------------------------------- |
+| 「先上線，之後再補監控」        | 沒有監控的功能上線後，故障只能靠使用者回報才會發現       |
+| 「印出 `console.log` 就是日誌」 | 非結構化日誌無法被查詢、聚合或設定告警，等同沒有日誌     |
+| 「這個端點不重要，不需要指標」  | 重要性會隨業務演進改變，事後補埋點的成本遠高於一開始就做 |
 
 **Red Flags：**
 
@@ -1756,48 +1780,48 @@ graph LR
 
 #### 軸線 1：Correctness（正確性）
 
-| 檢查項目 | 說明 |
-|---------|------|
-| Spec 一致性 | 實作是否符合 SPEC.md 定義的需求 |
-| 邊界條件 | null / 空陣列 / 最大值 / 最小值 / 並行存取 |
-| 測試覆蓋 | 行為是否有對應的自動化測試 |
-| 回歸風險 | 是否可能破壞既有功能 |
+| 檢查項目    | 說明                                       |
+| ----------- | ------------------------------------------ |
+| Spec 一致性 | 實作是否符合 SPEC.md 定義的需求            |
+| 邊界條件    | null / 空陣列 / 最大值 / 最小值 / 並行存取 |
+| 測試覆蓋    | 行為是否有對應的自動化測試                 |
+| 回歸風險    | 是否可能破壞既有功能                       |
 
 #### 軸線 2：Readability（可讀性）
 
-| 檢查項目 | 說明 |
-|---------|------|
-| 命名 | 變數/函數/類別名稱是否描述其用途 |
-| 控制流 | 是否有過深的巢狀結構（建議 ≤ 3 層） |
-| 註解 | 是否說明「為什麼」而非「做什麼」 |
-| 一致性 | 是否遵循專案既有的程式碼風格 |
+| 檢查項目 | 說明                                |
+| -------- | ----------------------------------- |
+| 命名     | 變數/函數/類別名稱是否描述其用途    |
+| 控制流   | 是否有過深的巢狀結構（建議 ≤ 3 層） |
+| 註解     | 是否說明「為什麼」而非「做什麼」    |
+| 一致性   | 是否遵循專案既有的程式碼風格        |
 
 #### 軸線 3：Architecture（架構）
 
-| 檢查項目 | 說明 |
-|---------|------|
+| 檢查項目 | 說明                       |
+| -------- | -------------------------- |
 | 模式遵循 | 是否遵循專案既有的架構模式 |
-| 模組邊界 | 是否有跨模組的非法依賴 |
-| 抽象層級 | 是否過度抽象或抽象不足 |
-| 依賴方向 | 依賴是否從高層指向低層 |
+| 模組邊界 | 是否有跨模組的非法依賴     |
+| 抽象層級 | 是否過度抽象或抽象不足     |
+| 依賴方向 | 依賴是否從高層指向低層     |
 
 #### 軸線 4：Security（安全性）
 
-| 檢查項目 | 說明 |
-|---------|------|
-| 輸入驗證 | 所有外部輸入是否已驗證 |
-| 認證授權 | Auth/AuthZ 檢查是否完整 |
-| Secrets | 是否有硬編碼的密碼或金鑰 |
-| 注入防護 | SQL/XSS/SSRF 等注入防護 |
+| 檢查項目 | 說明                     |
+| -------- | ------------------------ |
+| 輸入驗證 | 所有外部輸入是否已驗證   |
+| 認證授權 | Auth/AuthZ 檢查是否完整  |
+| Secrets  | 是否有硬編碼的密碼或金鑰 |
+| 注入防護 | SQL/XSS/SSRF 等注入防護  |
 
 #### 軸線 5：Performance（效能）
 
-| 檢查項目 | 說明 |
-|---------|------|
-| N+1 查詢 | 迴圈中的資料庫查詢 |
-| 無界集合 | 未設上限的列表/查詢 |
+| 檢查項目 | 說明                       |
+| -------- | -------------------------- |
+| N+1 查詢 | 迴圈中的資料庫查詢         |
+| 無界集合 | 未設上限的列表/查詢        |
 | 同步阻塞 | 可非同步的操作使用同步呼叫 |
-| 快取策略 | 重複計算是否可快取 |
+| 快取策略 | 重複計算是否可快取         |
 
 ### 審查輸出格式
 
@@ -1805,6 +1829,7 @@ graph LR
 ## Code Review Report
 
 ### Summary
+
 [一句話摘要]
 
 ### Verdict: APPROVE / REQUEST CHANGES
@@ -1812,17 +1837,21 @@ graph LR
 ### Findings
 
 #### 🔴 Critical（必須修復）
+
 1. [file:line] 問題描述
    - 建議修復方式
    - 原因說明
 
 #### 🟡 Important（應該修復）
+
 1. [file:line] 問題描述
 
 #### 🔵 Suggestion（建議考慮）
+
 1. [file:line] 問題描述
 
 ### Metrics
+
 - Files reviewed: N
 - Lines changed: N
 - Test coverage: N%
@@ -1880,15 +1909,18 @@ Step 5: 此測試永久保留，防止回歸
 ## Test Coverage Analysis
 
 ### Test Pyramid Status
+
 - Unit Tests: N tests (目標 80%)
 - Integration Tests: N tests (目標 15%)
 - E2E Tests: N tests (目標 5%)
 
 ### Coverage Gaps
+
 1. [module/function] 缺少邊界案例測試
 2. [feature] 缺少 Prove-It 回歸測試
 
 ### Recommendations
+
 1. 優先補充 [具體測試項目]
 ```
 
@@ -1902,23 +1934,23 @@ Step 5: 此測試永久保留，防止回歸
 
 ### 五大安全領域
 
-| 領域 | 審查範圍 |
-|------|---------|
+| 領域                             | 審查範圍                                              |
+| -------------------------------- | ----------------------------------------------------- |
 | **Input Validation（輸入驗證）** | SQL Injection、XSS、Command Injection、Path Traversal |
-| **Authentication（認證）** | 密碼雜湊、Session 管理、MFA、帳號鎖定 |
-| **Data Protection（資料保護）** | 加密、PII 處理、Secrets 管理、日誌脫敏 |
-| **Infrastructure（基礎設施）** | 安全標頭、CORS、TLS、依賴漏洞 |
-| **Third-Party（第三方）** | 依賴審計、Supply Chain 攻擊防護 |
+| **Authentication（認證）**       | 密碼雜湊、Session 管理、MFA、帳號鎖定                 |
+| **Data Protection（資料保護）**  | 加密、PII 處理、Secrets 管理、日誌脫敏                |
+| **Infrastructure（基礎設施）**   | 安全標頭、CORS、TLS、依賴漏洞                         |
+| **Third-Party（第三方）**        | 依賴審計、Supply Chain 攻擊防護                       |
 
 ### 嚴重度分級
 
-| 嚴重度 | 定義 | 處理方式 |
-|--------|------|---------|
-| **Critical** | 可被遠端利用、導致資料外洩 | 阻擋合併，立即修復 |
-| **High** | 需要認證才能利用、影響範圍有限 | 阻擋合併，本次 PR 修復 |
-| **Medium** | 需要特定條件觸發 | 建議修復，可在下個 PR |
-| **Low** | 最佳實踐偏差 | 建議改善 |
-| **Info** | 資訊提示 | 知悉即可 |
+| 嚴重度       | 定義                           | 處理方式               |
+| ------------ | ------------------------------ | ---------------------- |
+| **Critical** | 可被遠端利用、導致資料外洩     | 阻擋合併，立即修復     |
+| **High**     | 需要認證才能利用、影響範圍有限 | 阻擋合併，本次 PR 修復 |
+| **Medium**   | 需要特定條件觸發               | 建議修復，可在下個 PR  |
+| **Low**      | 最佳實踐偏差                   | 建議改善               |
+| **Info**     | 資訊提示                       | 知悉即可               |
 
 ### 審查輸出格式
 
@@ -1926,23 +1958,28 @@ Step 5: 此測試永久保留，防止回歸
 ## Security Audit Report
 
 ### Summary
+
 [威脅概述]
 
 ### Findings
 
 #### 🔴 Critical
+
 1. **[Domain]** [file:line] SQL Injection in user query
    - Risk: Unauthenticated remote code execution
    - Fix: Use parameterized queries
    - Reference: OWASP A03:2021
 
 #### 🟠 High
+
 ...
 
 #### 🟡 Medium
+
 ...
 
 ### Compliance Notes
+
 - OWASP Top 10: [coverage status]
 - Secrets scan: [PASS/FAIL]
 ```
@@ -1957,18 +1994,18 @@ Step 5: 此測試永久保留，防止回歸
 
 ### 兩種稽核模式
 
-| 模式 | 適用情境 | 涵蓋範圍 |
-|------|---------|---------|
-| **Quick 模式** | PR 階段快速檢查 | 靜態分析：Bundle 大小、明顯的阻塞資源、圖片未壓縮 |
-| **Deep 模式** | 上線前或效能迴歸調查 | 結合 `browser-testing-with-devtools` 取得真實 Core Web Vitals 數據、Network 瀑布圖、Long Task 分析 |
+| 模式           | 適用情境             | 涵蓋範圍                                                                                           |
+| -------------- | -------------------- | -------------------------------------------------------------------------------------------------- |
+| **Quick 模式** | PR 階段快速檢查      | 靜態分析：Bundle 大小、明顯的阻塞資源、圖片未壓縮                                                  |
+| **Deep 模式**  | 上線前或效能迴歸調查 | 結合 `browser-testing-with-devtools` 取得真實 Core Web Vitals 數據、Network 瀑布圖、Long Task 分析 |
 
 ### 核心指標門檻
 
-| 指標 | 良好 | 需改善 | 差 |
-|------|------|--------|-----|
-| LCP（Largest Contentful Paint） | ≤ 2.5s | 2.5s–4s | > 4s |
+| 指標                             | 良好    | 需改善    | 差      |
+| -------------------------------- | ------- | --------- | ------- |
+| LCP（Largest Contentful Paint）  | ≤ 2.5s  | 2.5s–4s   | > 4s    |
 | INP（Interaction to Next Paint） | ≤ 200ms | 200–500ms | > 500ms |
-| CLS（Cumulative Layout Shift） | ≤ 0.1 | 0.1–0.25 | > 0.25 |
+| CLS（Cumulative Layout Shift）   | ≤ 0.1   | 0.1–0.25  | > 0.25  |
 
 ### 審查輸出格式
 
@@ -1978,6 +2015,7 @@ Step 5: 此測試永久保留，防止回歸
 ### Mode: Quick / Deep
 
 ### Core Web Vitals
+
 - LCP: N s（[良好/需改善/差]）
 - INP: N ms（[良好/需改善/差]）
 - CLS: N（[良好/需改善/差]）
@@ -1985,12 +2023,15 @@ Step 5: 此測試永久保留，防止回歸
 ### Findings
 
 #### 🔴 Critical（阻擋上線）
+
 1. [頁面/元件] 問題描述 — 影響指標與量化數據
 
 #### 🟡 Important（建議本次修復）
+
 1. [頁面/元件] 問題描述
 
 ### Recommendations
+
 1. 具體優化建議（如：圖片改用 WebP、延遲載入非首屏資源）
 ```
 
@@ -2072,93 +2113,100 @@ graph TD
 
 ### `/spec` — 啟動規格驅動開發
 
-| 項目 | 說明 |
-|------|------|
-| **映射 Skill** | `spec-driven-development` |
-| **典型使用場景** | 新功能開發、大型重構 |
-| **產出** | `SPEC.md` |
+| 項目             | 說明                      |
+| ---------------- | ------------------------- |
+| **映射 Skill**   | `spec-driven-development` |
+| **典型使用場景** | 新功能開發、大型重構      |
+| **產出**         | `SPEC.md`                 |
 
 **使用範例：**
+
 ```
 /spec 建立使用者認證系統，支援 JWT + OAuth 2.0
 ```
 
 ### `/plan` — 任務拆解
 
-| 項目 | 說明 |
-|------|------|
-| **映射 Skill** | `planning-and-task-breakdown` |
-| **典型使用場景** | Spec 審查通過後 |
-| **產出** | `tasks/plan.md`、`tasks/todo.md` |
-| **注意** | Gemini CLI 使用 `/planning`（避免與內建 `/plan` 衝突） |
+| 項目             | 說明                                                   |
+| ---------------- | ------------------------------------------------------ |
+| **映射 Skill**   | `planning-and-task-breakdown`                          |
+| **典型使用場景** | Spec 審查通過後                                        |
+| **產出**         | `tasks/plan.md`、`tasks/todo.md`                       |
+| **注意**         | Gemini CLI 使用 `/planning`（避免與內建 `/plan` 衝突） |
 
 **使用範例：**
+
 ```
 /plan 根據 SPEC.md 拆解認證系統的實作任務
 ```
 
 ### `/build` — 增量式實作
 
-| 項目 | 說明 |
-|------|------|
-| **映射 Skill** | `incremental-implementation` + `test-driven-development` |
-| **典型使用場景** | 任務拆解完成後 |
-| **產出** | 程式碼 + 測試 + Git Commits |
+| 項目             | 說明                                                     |
+| ---------------- | -------------------------------------------------------- |
+| **映射 Skill**   | `incremental-implementation` + `test-driven-development` |
+| **典型使用場景** | 任務拆解完成後                                           |
+| **產出**         | 程式碼 + 測試 + Git Commits                              |
 
 **使用範例：**
+
 ```
 /build 從 tasks/todo.md 開始實作第一個任務
 ```
 
 ### `/test` — 測試驅動開發
 
-| 項目 | 說明 |
-|------|------|
-| **映射 Skill** | `test-driven-development` |
-| **典型使用場景** | 需要為特定功能撰寫測試 |
-| **產出** | 測試程式碼 |
+| 項目             | 說明                      |
+| ---------------- | ------------------------- |
+| **映射 Skill**   | `test-driven-development` |
+| **典型使用場景** | 需要為特定功能撰寫測試    |
+| **產出**         | 測試程式碼                |
 
 **使用範例：**
+
 ```
 /test 為 AuthService.login() 撰寫單元測試，覆蓋成功/失敗/鎖定情境
 ```
 
 ### `/review` — 程式碼審查
 
-| 項目 | 說明 |
-|------|------|
-| **映射 Skill** | `code-review-and-quality` |
-| **典型使用場景** | 準備提交 PR 前 |
-| **產出** | 五軸審查報告 |
+| 項目             | 說明                      |
+| ---------------- | ------------------------- |
+| **映射 Skill**   | `code-review-and-quality` |
+| **典型使用場景** | 準備提交 PR 前            |
+| **產出**         | 五軸審查報告              |
 
 **使用範例：**
+
 ```
 /review 審查最近的變更
 ```
 
 ### `/code-simplify` — 程式碼簡化
 
-| 項目 | 說明 |
-|------|------|
-| **映射 Skill** | `code-simplification` |
+| 項目             | 說明                       |
+| ---------------- | -------------------------- |
+| **映射 Skill**   | `code-simplification`      |
 | **典型使用場景** | 程式碼複雜度過高、重複過多 |
-| **產出** | 簡化建議 + 行為保持驗證 |
+| **產出**         | 簡化建議 + 行為保持驗證    |
 
 **使用範例：**
+
 ```
 /code-simplify 簡化 AuthService 的登入流程，目前圈複雜度過高
 ```
 
 ### `/ship` — 上線發布（最重要的 Command）
 
-| 項目 | 說明 |
-|------|------|
-| **映射 Skill** | `shipping-and-launch` |
-| **獨特行為** | 扇出（Fan-Out）三個 Persona **平行**審查 |
-| **典型使用場景** | 功能開發完成，準備合併到主分支 |
-| **產出** | 三份審查報告 + Pre-Launch Checklist |
+| 項目             | 說明                                     |
+| ---------------- | ---------------------------------------- |
+| **映射 Skill**   | `shipping-and-launch`                    |
+| **獨特行為**     | 扇出（Fan-Out）三個 Persona **平行**審查 |
+| **典型使用場景** | 功能開發完成，準備合併到主分支           |
+| **產出**         | 三份審查報告 + Pre-Launch Checklist      |
 
 **使用範例：**
+
 ```
 /ship 準備發布認證系統 v1.0
 ```
@@ -2178,14 +2226,15 @@ graph TD
 
 ### `/webperf` — Web 效能稽核（v0.6.x 新增）
 
-| 項目 | 說明 |
-|------|------|
-| **映射 Persona** | `web-performance-auditor` |
-| **典型使用場景** | 前端功能上線前、效能迴歸調查、Core Web Vitals 定期健檢 |
-| **產出** | Web Performance Audit Report（含 LCP/INP/CLS 數據與優化建議） |
-| **注意** | 獨立於 `/ship` 的三方扇出審查之外，因效能稽核常需真實部署環境或瀏覽器執行期資料（見第 4.4 節） |
+| 項目             | 說明                                                                                           |
+| ---------------- | ---------------------------------------------------------------------------------------------- |
+| **映射 Persona** | `web-performance-auditor`                                                                      |
+| **典型使用場景** | 前端功能上線前、效能迴歸調查、Core Web Vitals 定期健檢                                         |
+| **產出**         | Web Performance Audit Report（含 LCP/INP/CLS 數據與優化建議）                                  |
+| **注意**         | 獨立於 `/ship` 的三方扇出審查之外，因效能稽核常需真實部署環境或瀏覽器執行期資料（見第 4.4 節） |
 
 **使用範例：**
+
 ```
 /webperf --deep 稽核 /checkout 頁面的載入效能
 ```
@@ -2198,54 +2247,54 @@ Reference Checklists 是 Skills 和 Personas 引用的查核清單，提供具�
 
 ## 6.1 `testing-patterns.md` — 測試模式清單
 
-| 分類 | 檢查項目 |
-|------|---------|
-| **測試結構** | 測試檔案與原始碼的映射關係、測試命名慣例 |
-| **斷言品質** | 一個測試一個斷言（One Assert Per Test）、具體的斷言訊息 |
-| **Mock 使用** | 只 Mock 邊界（DB、HTTP）、不 Mock 內部函數 |
-| **測試資料** | 使用 Builder Pattern 建立測試資料、避免硬編碼 |
-| **非同步測試** | 正確處理 Promise/Future、避免人為延遲（`sleep`） |
-| **測試隔離** | 無共享可變狀態、每個測試可獨立執行 |
+| 分類           | 檢查項目                                                |
+| -------------- | ------------------------------------------------------- |
+| **測試結構**   | 測試檔案與原始碼的映射關係、測試命名慣例                |
+| **斷言品質**   | 一個測試一個斷言（One Assert Per Test）、具體的斷言訊息 |
+| **Mock 使用**  | 只 Mock 邊界（DB、HTTP）、不 Mock 內部函數              |
+| **測試資料**   | 使用 Builder Pattern 建立測試資料、避免硬編碼           |
+| **非同步測試** | 正確處理 Promise/Future、避免人為延遲（`sleep`）        |
+| **測試隔離**   | 無共享可變狀態、每個測試可獨立執行                      |
 
 **引用此清單的 Skills/Personas：** `test-driven-development`、`test-engineer`
 
 ## 6.2 `security-checklist.md` — 安全查核清單
 
-| 分類 | 檢查項目 |
-|------|---------|
-| **輸入驗證** | 白名單驗證、長度限制、型別檢查、編碼輸出 |
-| **認證** | 密碼雜湊（BCrypt/Argon2）、Session 管理、MFA |
-| **授權** | 最小權限原則、RBAC/ABAC、IDOR 防護 |
+| 分類         | 檢查項目                                            |
+| ------------ | --------------------------------------------------- |
+| **輸入驗證** | 白名單驗證、長度限制、型別檢查、編碼輸出            |
+| **認證**     | 密碼雜湊（BCrypt/Argon2）、Session 管理、MFA        |
+| **授權**     | 最小權限原則、RBAC/ABAC、IDOR 防護                  |
 | **資料保護** | 傳輸加密（TLS 1.2+）、靜態加密（AES-256）、PII 脫敏 |
-| **安全標頭** | CSP、HSTS、X-Content-Type-Options、X-Frame-Options |
+| **安全標頭** | CSP、HSTS、X-Content-Type-Options、X-Frame-Options  |
 | **依賴管理** | 定期 `npm audit` / `mvn dependency-check`、鎖定版本 |
-| **日誌** | 不記錄密碼/Token、結構化日誌、稽核追蹤 |
-| **Secrets** | 不提交至 Git、使用環境變數或 Vault、定期輪替 |
+| **日誌**     | 不記錄密碼/Token、結構化日誌、稽核追蹤              |
+| **Secrets**  | 不提交至 Git、使用環境變數或 Vault、定期輪替        |
 
 **引用此清單的 Skills/Personas：** `security-and-hardening`、`security-auditor`
 
 ## 6.3 `performance-checklist.md` — 效能查核清單
 
-| 分類 | 檢查項目 |
-|------|---------|
-| **Web Vitals** | LCP ≤ 2.5s、INP ≤ 200ms、CLS ≤ 0.1 |
-| **資料庫** | N+1 查詢防護、索引使用、Query Plan 分析 |
-| **API** | 分頁（Pagination）、限流（Rate Limiting）、壓縮（gzip/brotli） |
-| **快取** | HTTP Cache-Control、CDN、Application-level Cache |
-| **前端** | 程式碼分割（Code Splitting）、懶載入、Tree Shaking |
-| **監控** | APM 設定、Error Rate 追蹤、Latency P99 |
+| 分類           | 檢查項目                                                       |
+| -------------- | -------------------------------------------------------------- |
+| **Web Vitals** | LCP ≤ 2.5s、INP ≤ 200ms、CLS ≤ 0.1                             |
+| **資料庫**     | N+1 查詢防護、索引使用、Query Plan 分析                        |
+| **API**        | 分頁（Pagination）、限流（Rate Limiting）、壓縮（gzip/brotli） |
+| **快取**       | HTTP Cache-Control、CDN、Application-level Cache               |
+| **前端**       | 程式碼分割（Code Splitting）、懶載入、Tree Shaking             |
+| **監控**       | APM 設定、Error Rate 追蹤、Latency P99                         |
 
 **引用此清單的 Skills/Personas：** `performance-optimization`、`code-reviewer`
 
 ## 6.4 `accessibility-checklist.md` — 無障礙查核清單
 
-| 分類 | 檢查項目 |
-|------|---------|
-| **感知** | 替代文字（alt text）、顏色對比度 ≥ 4.5:1、字幕 |
+| 分類     | 檢查項目                                         |
+| -------- | ------------------------------------------------ |
+| **感知** | 替代文字（alt text）、顏色對比度 ≥ 4.5:1、字幕   |
 | **操作** | 鍵盤導覽、Tab 順序、焦點管理、觸控目標 ≥ 44×44px |
-| **理解** | 一致的導覽、明確的錯誤提示、可預測的互動 |
-| **穩健** | ARIA 正確使用、語義化 HTML、螢幕閱讀器相容 |
-| **測試** | Lighthouse ≥ 90、axe-core 掃描、手動鍵盤測試 |
+| **理解** | 一致的導覽、明確的錯誤提示、可預測的互動         |
+| **穩健** | ARIA 正確使用、語義化 HTML、螢幕閱讀器相容       |
+| **測試** | Lighthouse ≥ 90、axe-core 掃描、手動鍵盤測試     |
 
 **引用此清單的 Skills/Personas：** `frontend-ui-engineering`、`browser-testing-with-devtools`
 
@@ -2255,22 +2304,22 @@ Reference Checklists 是 Skills 和 Personas 引用的查核清單，提供具�
 
 ### 5 種正式模式
 
-| 編號 | 模式 | 說明 | 成本 | 代表 |
-|------|------|------|------|------|
-| 1 | **Direct Invocation** | 單一 Persona、單一視角、單一產出物。最低成本的基線選擇。 | 一次往返 | `@code-reviewer Review this PR` |
-| 2 | **Single-Persona Slash Command** | 將常用的直接呼叫包裝成指令，省去每次重新說明。 | 等同直接呼叫 | `/review`、`/test`、`/code-simplify` |
-| 3 | **Parallel Fan-Out with Merge** | 多個 Persona 平行處理同一輸入，各自產出獨立報告，主 Agent 合併為統一決策。 | N 個平行 Context + 1 次合併 | `/ship` |
-| 4 | **Sequential Pipeline（User-Driven）** | 使用者按順序執行 Slash Commands，Context 透過 Commit 歷史傳遞。**無自動化協調者 — 人類就是協調者。** | 每步 1 個 Context | `/spec` → `/plan` → `/build` → `/test` → `/review` → `/ship` |
-| 5 | **Research Isolation** | 生成研究子代理讀取大量資料，僅回傳摘要至主 Context，保持主 Session 專注。 | 1 個隔離 Context | Claude Code 內建 `Explore` 子代理 |
+| 編號 | 模式                                   | 說明                                                                                                 | 成本                        | 代表                                                         |
+| ---- | -------------------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------ |
+| 1    | **Direct Invocation**                  | 單一 Persona、單一視角、單一產出物。最低成本的基線選擇。                                             | 一次往返                    | `@code-reviewer Review this PR`                              |
+| 2    | **Single-Persona Slash Command**       | 將常用的直接呼叫包裝成指令，省去每次重新說明。                                                       | 等同直接呼叫                | `/review`、`/test`、`/code-simplify`                         |
+| 3    | **Parallel Fan-Out with Merge**        | 多個 Persona 平行處理同一輸入，各自產出獨立報告，主 Agent 合併為統一決策。                           | N 個平行 Context + 1 次合併 | `/ship`                                                      |
+| 4    | **Sequential Pipeline（User-Driven）** | 使用者按順序執行 Slash Commands，Context 透過 Commit 歷史傳遞。**無自動化協調者 — 人類就是協調者。** | 每步 1 個 Context           | `/spec` → `/plan` → `/build` → `/test` → `/review` → `/ship` |
+| 5    | **Research Isolation**                 | 生成研究子代理讀取大量資料，僅回傳摘要至主 Context，保持主 Session 專注。                            | 1 個隔離 Context            | Claude Code 內建 `Explore` 子代理                            |
 
 ### 4 種反模式
 
-| 反模式 | 說明 | 為何失敗 |
-|--------|------|---------|
-| **A. Router Persona** | 一個「元協調者」Persona 決定呼叫哪個 Persona | 純路由層無領域價值、雙重釋義導致資訊損失、Token 加倍 |
-| **B. Persona-Calls-Persona** | `code-reviewer` 內部自動呼叫 `security-auditor` | 鏈式呼叫破壞單一視角設計、Context 傳遞遺失資訊 |
-| **C. Sequential Auto-Orchestrator** | 自動化 Agent 代替使用者依序執行 `/spec` → `/plan` → `/build` | 失去人類檢查點、累積 Context 偏移、Token 加倍 |
-| **D. Deep Persona Trees** | `/ship` → `pre-ship-coordinator` → `quality-coordinator` → `code-reviewer` | 每層增加延遲與 Token，葉端 Persona 因多層摘要損失 Context |
+| 反模式                              | 說明                                                                       | 為何失敗                                                  |
+| ----------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------- |
+| **A. Router Persona**               | 一個「元協調者」Persona 決定呼叫哪個 Persona                               | 純路由層無領域價值、雙重釋義導致資訊損失、Token 加倍      |
+| **B. Persona-Calls-Persona**        | `code-reviewer` 內部自動呼叫 `security-auditor`                            | 鏈式呼叫破壞單一視角設計、Context 傳遞遺失資訊            |
+| **C. Sequential Auto-Orchestrator** | 自動化 Agent 代替使用者依序執行 `/spec` → `/plan` → `/build`               | 失去人類檢查點、累積 Context 偏移、Token 加倍             |
+| **D. Deep Persona Trees**           | `/ship` → `pre-ship-coordinator` → `quality-coordinator` → `code-reviewer` | 每層增加延遲與 Token，葉端 Persona 因多層摘要損失 Context |
 
 ### 決策流程
 
@@ -2287,6 +2336,7 @@ Reference Checklists 是 Skills 和 Personas 引用的查核清單，提供具�
 ```
 
 **協作規則：**
+
 - 使用者/Command 是唯一的協調者
 - Persona 不可呼叫其他 Persona（Claude Code 平台層級強制執行此規則 — 子代理不可生成子代理）
 - Persona 可以調用 Skills（Skills 是強制步驟）
@@ -2297,14 +2347,14 @@ Reference Checklists 是 Skills 和 Personas 引用的查核清單，提供具�
 
 此清單將「完成」從模糊的主觀判斷，轉化為可逐項勾選的客觀標準，避免不同工程師對「做完了」有不同認知。
 
-| 分類 | 檢查項目 |
-|------|---------|
-| **程式碼** | 通過所有 Lint／型別檢查、無殘留的 TODO 或除錯輸出 |
-| **測試** | 新行為有對應測試、既有測試全數通過、覆蓋率未下降 |
-| **文件** | 公開 API 有文件、重大決策已記錄為 ADR（見 3.7.4 節） |
-| **審查** | 至少通過一項 Persona 審查（`/review` 或 `/ship`） |
-| **部署** | Feature Flag 預設狀態正確、Rollback 步驟已驗證 |
-| **可觀測性** | 關鍵路徑已有結構化日誌／指標（見 6.7 節） |
+| 分類         | 檢查項目                                             |
+| ------------ | ---------------------------------------------------- |
+| **程式碼**   | 通過所有 Lint／型別檢查、無殘留的 TODO 或除錯輸出    |
+| **測試**     | 新行為有對應測試、既有測試全數通過、覆蓋率未下降     |
+| **文件**     | 公開 API 有文件、重大決策已記錄為 ADR（見 3.7.4 節） |
+| **審查**     | 至少通過一項 Persona 審查（`/review` 或 `/ship`）    |
+| **部署**     | Feature Flag 預設狀態正確、Rollback 步驟已驗證       |
+| **可觀測性** | 關鍵路徑已有結構化日誌／指標（見 6.7 節）            |
 
 **引用此清單的 Skills/Personas：** `incremental-implementation`、`shipping-and-launch`、`code-reviewer`
 
@@ -2312,13 +2362,13 @@ Reference Checklists 是 Skills 和 Personas 引用的查核清單，提供具�
 
 此清單搭配新增的 `observability-and-instrumentation` Skill（見第 3.7.5 節），確保功能上線後「可被觀察」而非上線後才發現問題。
 
-| 分類 | 檢查項目 |
-|------|---------|
+| 分類           | 檢查項目                                                               |
+| -------------- | ---------------------------------------------------------------------- |
 | **結構化日誌** | 使用結構化格式（JSON）、不記錄 PII/Secrets、含 Trace ID 供追蹤請求鏈路 |
-| **RED 指標** | Rate（請求速率）、Errors（錯誤率）、Duration（延遲分布，含 P99） |
-| **告警** | 告警閾值基於 SLO 而非猜測、避免告警疲勞（Alert Fatigue） |
-| **追蹤** | 導入 OpenTelemetry 或等效標準、跨服務呼叫可端到端追蹤 |
-| **儀表板** | 關鍵業務指標與技術指標均有對應儀表板 |
+| **RED 指標**   | Rate（請求速率）、Errors（錯誤率）、Duration（延遲分布，含 P99）       |
+| **告警**       | 告警閾值基於 SLO 而非猜測、避免告警疲勞（Alert Fatigue）               |
+| **追蹤**       | 導入 OpenTelemetry 或等效標準、跨服務呼叫可端到端追蹤                  |
+| **儀表板**     | 關鍵業務指標與技術指標均有對應儀表板                                   |
 
 **引用此清單的 Skills/Personas：** `observability-and-instrumentation`、`ci-cd-and-automation`
 
@@ -2330,7 +2380,7 @@ Agent Skills 融合了多項源自 Google 工程文化的原則與法則，多�
 
 ## 7.1 Hyrum's Law（海勒姆定律）
 
-> *「With a sufficient number of users of an API, all observable behaviors of your system will be depended on by somebody.」*
+> _「With a sufficient number of users of an API, all observable behaviors of your system will be depended on by somebody.」_
 >
 > 當 API 的使用者足夠多時，系統的**所有可觀察行為**都會被某人依賴。
 >
@@ -2338,12 +2388,12 @@ Agent Skills 融合了多項源自 Google 工程文化的原則與法則，多�
 
 **在 Agent Skills 中的應用：**
 
-| 應用場景 | 具體做法 |
-|---------|---------|
-| `api-and-interface-design` | 不暴露不打算支援的行為；回傳值排序不保證穩定就不依賴 |
-| `code-review-and-quality` | 審查時檢查是否有意外暴露的可觀察行為 |
-| `deprecation-and-migration` | 棄用 API 時，不能假設「沒人用這個行為」 |
-| `shipping-and-launch` | 上線前評估新 API 表面的 Hyrum's Law 風險 |
+| 應用場景                    | 具體做法                                             |
+| --------------------------- | ---------------------------------------------------- |
+| `api-and-interface-design`  | 不暴露不打算支援的行為；回傳值排序不保證穩定就不依賴 |
+| `code-review-and-quality`   | 審查時檢查是否有意外暴露的可觀察行為                 |
+| `deprecation-and-migration` | 棄用 API 時，不能假設「沒人用這個行為」              |
+| `shipping-and-launch`       | 上線前評估新 API 表面的 Hyrum's Law 風險             |
 
 **實務案例：**
 
@@ -2361,7 +2411,7 @@ public List<User> getActiveUsers() {
 
 ## 7.2 Beyoncé Rule（碧昂絲法則）
 
-> *「If you liked it, then you should have put a test on it.」*
+> _「If you liked it, then you should have put a test on it.」_
 >
 > 如果你在意某個行為，就應該為它寫測試來保護它（諧仿碧昂絲歌曲《Single Ladies》歌詞 "If you liked it, then you should have put a ring on it"）。
 >
@@ -2375,17 +2425,17 @@ public List<User> getActiveUsers() {
 
 ## 7.3 Chesterton's Fence（乞斯特頓柵欄）
 
-> *「Don't remove a fence until you know why it was put there.」*
-> 
+> _「Don't remove a fence until you know why it was put there.」_
+>
 > 在理解一段程式碼為何存在之前，不要移除它。
 
 **在 Agent Skills 中的應用：**
 
-| 應用場景 | 具體做法 |
-|---------|---------|
-| `code-simplification` | 簡化前必須理解原始程式碼的存在原因 |
+| 應用場景                    | 具體做法                             |
+| --------------------------- | ------------------------------------ |
+| `code-simplification`       | 簡化前必須理解原始程式碼的存在原因   |
 | `deprecation-and-migration` | 移除功能前查詢 Git 歷史與 Issue 追蹤 |
-| `code-review-and-quality` | 審查刪除操作時，確認刪除的理由 |
+| `code-review-and-quality`   | 審查刪除操作時，確認刪除的理由       |
 
 **實務案例：**
 
@@ -2432,11 +2482,11 @@ Shift Left：安全掃描 + 測試 + Code Review → 開發（同步進行） �
 
 **背後的數據支持（Google Code Review 研究）：**
 
-| PR 大小 | 審查時間 | 發現缺陷率 |
-|---------|---------|-----------|
-| < 100 行 | < 30 分鐘 | 高 |
-| 100-400 行 | 30-60 分鐘 | 中 |
-| > 400 行 | > 60 分鐘 | 低（審查疲勞） |
+| PR 大小    | 審查時間   | 發現缺陷率     |
+| ---------- | ---------- | -------------- |
+| < 100 行   | < 30 分鐘  | 高             |
+| 100-400 行 | 30-60 分鐘 | 中             |
+| > 400 行   | > 60 分鐘  | 低（審查疲勞） |
 
 - `incremental-implementation`：薄型垂直切片，自然控制變更大小
 - `git-workflow-and-versioning`：原子提交
@@ -2466,13 +2516,13 @@ Shift Left：安全掃描 + 測試 + Code Review → 開發（同步進行） �
 
 Agent Skills 支援 8 種 AI 開發工具。安裝方式分為三大類：
 
-| 類型 | 工具 | 安裝方式 |
-|------|------|---------|
-| **Plugin / Marketplace** | Claude Code | Plugin Marketplace 或本地 Plugin 載入 |
-| **CLI 原生指令** | Gemini CLI | `gemini skills install` |
-| **目錄複製** | Cursor、Windsurf、GitHub Copilot、Antigravity | 手動複製 SKILL.md 至指定目錄 |
-| **AGENTS.md** | OpenCode | 寫入 AGENTS.md |
-| **符號連結** | Codex | 符號連結到 Skills 目錄 |
+| 類型                     | 工具                                          | 安裝方式                              |
+| ------------------------ | --------------------------------------------- | ------------------------------------- |
+| **Plugin / Marketplace** | Claude Code                                   | Plugin Marketplace 或本地 Plugin 載入 |
+| **CLI 原生指令**         | Gemini CLI                                    | `gemini skills install`               |
+| **目錄複製**             | Cursor、Windsurf、GitHub Copilot、Antigravity | 手動複製 SKILL.md 至指定目錄          |
+| **AGENTS.md**            | OpenCode                                      | 寫入 AGENTS.md                        |
+| **符號連結**             | Codex                                         | 符號連結到 Skills 目錄                |
 
 > **⚠️ 重要說明**：Agent Skills **不存在** `npx agent-skills install` 命令。專案是一組 Markdown 檔案，安裝方式為 Git Clone 後根據各工具的規範複製或引用。
 
@@ -2488,6 +2538,7 @@ Claude Code 是 Agent Skills 的首要支援平台。專案提供 `.claude-plugi
 ```
 
 安裝後，Claude Code 會自動探索 `.claude-plugin/plugin.json`，載入：
+
 - `skills/` — 24 個 Skills（SKILL.md 自動探索）
 - `.claude/commands/` — 8 個 Slash Commands
 - `agents/` — 4 個 Persona（自動成為 Subagent）
@@ -2525,17 +2576,20 @@ agent-skills/
 # CLAUDE.md
 
 ## 專案資訊
+
 - 語言：Java 17
 - 框架：Spring Boot 3.2
 - 建置工具：Maven
 - 測試框架：JUnit 5 + Mockito
 
 ## 程式碼風格
+
 - 命名慣例：camelCase (方法/變數)、PascalCase (類別)
 - 註解語言：繁體中文
 - Commit Message：英文，遵循 Conventional Commits
 
 ## Agent Skills 設定
+
 - Plugin 已載入：addyosmani/agent-skills
 - 使用 /spec 開始新功能開發
 - 使用 /ship 進行上線前審查
@@ -2578,6 +2632,7 @@ chmod +x hooks/session-start.sh
 Cursor 使用 `.cursor/rules/` 目錄中的 `.mdc` 規則檔案。安裝方式為手動將 SKILL.md 內容複製至對應的規則檔案。
 
 **Bash：**
+
 ```bash
 # Clone agent-skills
 git clone https://github.com/addyosmani/agent-skills.git
@@ -2593,6 +2648,7 @@ cp agent-skills/skills/incremental-implementation/SKILL.md .cursor/rules/skills/
 ```
 
 **PowerShell：**
+
 ```powershell
 git clone https://github.com/addyosmani/agent-skills.git
 
@@ -2653,6 +2709,7 @@ cat /path/to/agent-skills/skills/code-review-and-quality/SKILL.md >> GEMINI.md
 
 ```markdown
 # GEMINI.md
+
 @skills/test-driven-development/SKILL.md
 @skills/incremental-implementation/SKILL.md
 ```
@@ -2665,12 +2722,12 @@ cat /path/to/agent-skills/skills/code-review-and-quality/SKILL.md >> GEMINI.md
 
 ### Skills vs. GEMINI.md 選擇建議
 
-| 項目 | Skills（按需啟動） | GEMINI.md（持久 Context） |
-|------|------------------|-------------------------|
-| **載入方式** | 匹配任務時自動啟動 | 每次 Prompt 都載入 |
-| **Context 影響** | 保持乾淨 | 佔用固定 Token |
-| **適用場景** | 階段性工作流 | 每次都需要的專案慣例 |
-| **推薦 Skills** | TDD、SDD、前端、安全、效能 | `incremental-implementation`、`code-review-and-quality` |
+| 項目             | Skills（按需啟動）         | GEMINI.md（持久 Context）                               |
+| ---------------- | -------------------------- | ------------------------------------------------------- |
+| **載入方式**     | 匹配任務時自動啟動         | 每次 Prompt 都載入                                      |
+| **Context 影響** | 保持乾淨                   | 佔用固定 Token                                          |
+| **適用場景**     | 階段性工作流               | 每次都需要的專案慣例                                    |
+| **推薦 Skills**  | TDD、SDD、前端、安全、效能 | `incremental-implementation`、`code-review-and-quality` |
 
 ---
 
@@ -2792,15 +2849,18 @@ Copy-Item "agent-skills\agents\security-auditor.md" ".github\agents\"
 # Project Coding Standards
 
 ## Testing
+
 - Write tests before code (TDD)
 - For bugs: write a failing test first, then fix (Prove-It pattern)
 - Test hierarchy: unit > integration > e2e
 
 ## Code Quality
+
 - Review across five axes: correctness, readability, architecture, security, performance
 - No secrets in code or version control
 
 ## Boundaries
+
 - Always: Run tests before commits, validate user input
 - Never: Commit secrets, remove failing tests, skip verification
 ```
@@ -2875,6 +2935,7 @@ New-Item -ItemType SymbolicLink -Path "codex-skills" -Target "agent-skills\skill
 安裝任何工具後，執行以下驗證步驟：
 
 **Bash：**
+
 ```bash
 # 1. 確認目錄結構正確
 find . -name "SKILL.md" | head -20
@@ -2894,6 +2955,7 @@ node scripts/validate-skills.js
 ```
 
 **PowerShell：**
+
 ```powershell
 # 1. 列出所有 SKILL.md
 Get-ChildItem -Recurse -Filter "SKILL.md" | Select-Object FullName
@@ -2970,64 +3032,64 @@ graph LR
 
 ### 階段 1：需求分析（Requirements）
 
-| 活動 | Agent Skills 對應 | 安全產出 |
-|------|------------------|---------|
-| 需求訪談 | `interview-me` | 識別安全需求（認證、授權、加密） |
-| 威脅建模 | `spec-driven-development` (Boundaries) | 威脅清單、攻擊面分析 |
-| 合規需求 | `interview-me` | 識別 GDPR/PCIDSS/個資法要求 |
+| 活動     | Agent Skills 對應                      | 安全產出                         |
+| -------- | -------------------------------------- | -------------------------------- |
+| 需求訪談 | `interview-me`                         | 識別安全需求（認證、授權、加密） |
+| 威脅建模 | `spec-driven-development` (Boundaries) | 威脅清單、攻擊面分析             |
+| 合規需求 | `interview-me`                         | 識別 GDPR/PCIDSS/個資法要求      |
 
 ### 階段 2：設計（Design）
 
-| 活動 | Agent Skills 對應 | 安全產出 |
-|------|------------------|---------|
-| 安全架構 | `api-and-interface-design` | 安全架構圖、信任邊界 |
+| 活動     | Agent Skills 對應          | 安全產出                     |
+| -------- | -------------------------- | ---------------------------- |
+| 安全架構 | `api-and-interface-design` | 安全架構圖、信任邊界         |
 | API 安全 | `api-and-interface-design` | 認證/授權設計、Rate Limiting |
-| 資料分類 | `spec-driven-development` | PII 識別、加密策略 |
+| 資料分類 | `spec-driven-development`  | PII 識別、加密策略           |
 
 ### 階段 3：實作（Implementation）
 
-| 活動 | Agent Skills 對應 | 安全產出 |
-|------|------------------|---------|
-| 安全編碼 | `security-and-hardening` (Always Do) | 輸入驗證、參數化查詢 |
-| Secrets 管理 | `security-and-hardening` (Never Do) | 環境變數、Vault 整合 |
-| 依賴審計 | `security-and-hardening` | `npm audit` / `mvn dependency-check` |
+| 活動         | Agent Skills 對應                    | 安全產出                             |
+| ------------ | ------------------------------------ | ------------------------------------ |
+| 安全編碼     | `security-and-hardening` (Always Do) | 輸入驗證、參數化查詢                 |
+| Secrets 管理 | `security-and-hardening` (Never Do)  | 環境變數、Vault 整合                 |
+| 依賴審計     | `security-and-hardening`             | `npm audit` / `mvn dependency-check` |
 
 ### 階段 4：測試（Testing）
 
-| 活動 | Agent Skills 對應 | 安全產出 |
-|------|------------------|---------|
-| 安全單元測試 | `test-driven-development` | Auth 邊界測試、注入防護測試 |
-| SAST 掃描 | `ci-cd-and-automation` | 靜態分析報告 |
-| 滲透測試 | `browser-testing-with-devtools` | 安全漏洞報告 |
+| 活動         | Agent Skills 對應               | 安全產出                    |
+| ------------ | ------------------------------- | --------------------------- |
+| 安全單元測試 | `test-driven-development`       | Auth 邊界測試、注入防護測試 |
+| SAST 掃描    | `ci-cd-and-automation`          | 靜態分析報告                |
+| 滲透測試     | `browser-testing-with-devtools` | 安全漏洞報告                |
 
 ### 階段 5：部署（Deployment）
 
-| 活動 | Agent Skills 對應 | 安全產出 |
-|------|------------------|---------|
-| 安全審查 | `security-auditor` Persona | 安全審計報告 |
-| 安全標頭 | `security-and-hardening` | CSP/HSTS/X-Frame-Options |
-| Feature Flags | `shipping-and-launch` | 漸進式發布、快速關閉 |
+| 活動          | Agent Skills 對應          | 安全產出                 |
+| ------------- | -------------------------- | ------------------------ |
+| 安全審查      | `security-auditor` Persona | 安全審計報告             |
+| 安全標頭      | `security-and-hardening`   | CSP/HSTS/X-Frame-Options |
+| Feature Flags | `shipping-and-launch`      | 漸進式發布、快速關閉     |
 
 ### 階段 6：維運（Operations）
 
-| 活動 | Agent Skills 對應 | 安全產出 |
-|------|------------------|---------|
+| 活動     | Agent Skills 對應              | 安全產出            |
+| -------- | ------------------------------ | ------------------- |
 | 事件回應 | `debugging-and-error-recovery` | Root Cause Analysis |
-| 漏洞修復 | `deprecation-and-migration` | 安全更新、版本升級 |
-| 日誌監控 | `security-and-hardening` | 稽核日誌、異常偵測 |
+| 漏洞修復 | `deprecation-and-migration`    | 安全更新、版本升級  |
+| 日誌監控 | `security-and-hardening`       | 稽核日誌、異常偵測  |
 
 ## 9.4 合規對應
 
 SSDLC 六個階段所產出的安全成果，並非各自孤立，而是可以直接對應到主流合規框架的具體控制項。本節銜接第 14 章已建立的 OWASP SAMM（14.2 節）與 ISO 27001（14.3 節）對照表，說明「SSDLC 階段產出」與「合規要求」之間的映射關係，供需要應付稽核的團隊快速定位證據來源。
 
-| SSDLC 階段 | 主要合規關聯 | 稽核時可提供的證據 |
-|-----------|-------------|-------------------|
-| 需求分析 | GDPR／個資法（資料最小化原則）、PCI DSS（範圍界定） | `interview-me` 訪談紀錄、SPEC.md 的 Boundaries 區塊 |
-| 設計 | ISO 27001 A.14（系統開發安全）、OWASP SAMM Design 實踐 | `api-and-interface-design` 產出的信任邊界圖、威脅模型 |
-| 實作 | OWASP Top 10、PCI DSS Requirement 6（安全開發） | `security-and-hardening` 的 Always/Never Do 清單執行紀錄 |
-| 測試 | SAMM Verification 實踐、SOC 2 CC7（系統監控） | CI 內建的 SAST 報告、`test-engineer` 的 Coverage Analysis |
-| 部署 | ISO 27001 A.12（作業安全）、變更管理要求 | `security-auditor` 審計報告、Pre-Launch Checklist（見 3.7.5 節） |
-| 維運 | SOC 2 CC7（監控）、事件回應要求 | `observability-and-instrumentation` 的日誌／指標（見 3.7.6、6.7 節）、事件回應紀錄 |
+| SSDLC 階段 | 主要合規關聯                                           | 稽核時可提供的證據                                                                 |
+| ---------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| 需求分析   | GDPR／個資法（資料最小化原則）、PCI DSS（範圍界定）    | `interview-me` 訪談紀錄、SPEC.md 的 Boundaries 區塊                                |
+| 設計       | ISO 27001 A.14（系統開發安全）、OWASP SAMM Design 實踐 | `api-and-interface-design` 產出的信任邊界圖、威脅模型                              |
+| 實作       | OWASP Top 10、PCI DSS Requirement 6（安全開發）        | `security-and-hardening` 的 Always/Never Do 清單執行紀錄                           |
+| 測試       | SAMM Verification 實踐、SOC 2 CC7（系統監控）          | CI 內建的 SAST 報告、`test-engineer` 的 Coverage Analysis                          |
+| 部署       | ISO 27001 A.12（作業安全）、變更管理要求               | `security-auditor` 審計報告、Pre-Launch Checklist（見 3.7.5 節）                   |
+| 維運       | SOC 2 CC7（監控）、事件回應要求                        | `observability-and-instrumentation` 的日誌／指標（見 3.7.6、6.7 節）、事件回應紀錄 |
 
 **與第 20.7 節的關係**：本節聚焦「技術層級的 SSDLC 階段如何對應合規控制項」；若需了解「組織層級的合規考量」（如資料駐留、供應商風險評估），請參閱第 20.7 節。
 
@@ -3071,34 +3133,34 @@ graph TB
 
 ## 10.3 角色分工
 
-| 角色 | 人類職責 | AI Agent 職責 |
-|------|---------|--------------|
-| **需求定義** | 最終決策權 | 結構化訪談、假設浮現 |
-| **架構設計** | 審查與批准 | 提案、利弊分析 |
-| **程式實作** | 審查 AI 產出 | 增量式實作、TDD |
-| **Code Review** | 最終 Approve | 五軸自動審查 |
-| **安全審查** | 風險接受決策 | 系統性安全掃描 |
-| **測試** | 確認覆蓋策略 | 測試金字塔分析 |
-| **部署** | Go/No-Go 決策 | Pre-Launch Checklist |
+| 角色            | 人類職責      | AI Agent 職責        |
+| --------------- | ------------- | -------------------- |
+| **需求定義**    | 最終決策權    | 結構化訪談、假設浮現 |
+| **架構設計**    | 審查與批准    | 提案、利弊分析       |
+| **程式實作**    | 審查 AI 產出  | 增量式實作、TDD      |
+| **Code Review** | 最終 Approve  | 五軸自動審查         |
+| **安全審查**    | 風險接受決策  | 系統性安全掃描       |
+| **測試**        | 確認覆蓋策略  | 測試金字塔分析       |
+| **部署**        | Go/No-Go 決策 | Pre-Launch Checklist |
 
 ## 10.4 溝通協議
 
 ### 人類 → AI
 
-| 指令類型 | 範例 | AI 行為 |
-|---------|------|--------|
-| 明確指令 | 「實作登入 API」 | 執行 `interview-me` → `spec-driven-development` |
-| 模糊需求 | 「改善效能」 | 提問：「哪個功能的效能？有量測數據嗎？」 |
+| 指令類型   | 範例                 | AI 行為                                               |
+| ---------- | -------------------- | ----------------------------------------------------- |
+| 明確指令   | 「實作登入 API」     | 執行 `interview-me` → `spec-driven-development`       |
+| 模糊需求   | 「改善效能」         | 提問：「哪個功能的效能？有量測數據嗎？」              |
 | 不合理要求 | 「跳過測試直接上線」 | 推回：「跳過測試違反 Quality Gates，可能的後果是...」 |
 
 ### AI → 人類
 
-| 情境 | AI 行為 |
-|------|--------|
+| 情境         | AI 行為                    |
+| ------------ | -------------------------- |
 | 需要人類決策 | 列出選項 + 推薦 + 等待回應 |
-| 發現安全風險 | 立即回報，標記嚴重度 |
-| 感到困惑 | 承認困惑，提出具體問題 |
-| 發現假設 | 浮現假設，要求確認 |
+| 發現安全風險 | 立即回報，標記嚴重度       |
+| 感到困惑     | 承認困惑，提出具體問題     |
+| 發現假設     | 浮現假設，要求確認         |
 
 ## 10.5 Agent Teams（實驗性功能）
 
@@ -3106,13 +3168,13 @@ Claude Code v2.1.32+ 提供 **Agent Teams** 實驗性功能，讓多個 AI 隊�
 
 ### Agent Teams vs. Subagents 差異
 
-| 面向 | Subagents（`/ship`） | Agent Teams |
-|------|---------------------|-------------|
-| **協調方式** | 主 Agent 扇出，子代理僅回報結果 | 隊員之間可直接通訊、共享任務清單 |
-| **Context** | 每個子代理獨立 Context | 每個隊員獨立 Context |
-| **適用場景** | 獨立任務產出報告 | 需要對抗性辯論的協作任務 |
-| **狀態** | 穩定 | 實驗性（需環境變數啟用） |
-| **成本** | 較低 | 較高（每個隊員是獨立的 Claude 實例） |
+| 面向         | Subagents（`/ship`）            | Agent Teams                          |
+| ------------ | ------------------------------- | ------------------------------------ |
+| **協調方式** | 主 Agent 扇出，子代理僅回報結果 | 隊員之間可直接通訊、共享任務清單     |
+| **Context**  | 每個子代理獨立 Context          | 每個隊員獨立 Context                 |
+| **適用場景** | 獨立任務產出報告                | 需要對抗性辯論的協作任務             |
+| **狀態**     | 穩定                            | 實驗性（需環境變數啟用）             |
+| **成本**     | 較低                            | 較高（每個隊員是獨立的 Claude 實例） |
 
 ### 啟用方式
 
@@ -3144,6 +3206,7 @@ Claude Code v2.1.32+ 提供 **Agent Teams** 實驗性功能，讓多個 AI 隊�
 ```
 
 **執行過程**：
+
 1. 每個隊員在自己的 Context 中從各自的角度探索程式碼庫
 2. 隊員使用 `message` 直接傳送發現給彼此
 3. 共享任務清單顯示每位隊員的調查進度
@@ -3153,12 +3216,12 @@ Claude Code v2.1.32+ 提供 **Agent Teams** 實驗性功能，讓多個 AI 隊�
 
 ### 何時不使用 Agent Teams
 
-| 場景 | 正確做法 |
-|------|---------|
+| 場景                   | 正確做法                  |
+| ---------------------- | ------------------------- |
 | 已知 Diff 的上線前審查 | 使用 `/ship`（Subagents） |
-| 單一視角審查單一產出物 | 直接 Persona 呼叫 |
-| 循序生命週期 | 使用者驅動 Slash Commands |
-| 大量讀取後產出摘要 | 內建 `Explore` 子代理 |
+| 單一視角審查單一產出物 | 直接 Persona 呼叫         |
+| 循序生命週期           | 使用者驅動 Slash Commands |
+| 大量讀取後產出摘要     | 內建 `Explore` 子代理     |
 
 > **注意**：本 Repo 的 Persona 定義在兩種模式中通用 — 作為 Subagent 時回報結果給主 Session；作為 Agent Teams 隊員時可直接挑戰彼此的發現。唯一差異在於啟動方式。
 
@@ -3204,14 +3267,14 @@ Claude Code v2.1.32+ 提供 **Agent Teams** 實驗性功能，讓多個 AI 隊�
 
 使用 Agent Skills 從零開始開發一個 Web Application：
 
-| 項目 | 說明 |
-|------|------|
+| 項目         | 說明                        |
+| ------------ | --------------------------- |
 | **專案名稱** | TaskFlow — 團隊任務管理系統 |
-| **後端** | Spring Boot 3.2 + Java 17 |
-| **前端** | Vue 3 + TypeScript |
-| **資料庫** | PostgreSQL 15 |
-| **認證** | JWT + OAuth 2.0 (Google) |
-| **部署** | Docker + GitHub Actions |
+| **後端**     | Spring Boot 3.2 + Java 17   |
+| **前端**     | Vue 3 + TypeScript          |
+| **資料庫**   | PostgreSQL 15               |
+| **認證**     | JWT + OAuth 2.0 (Google)    |
+| **部署**     | Docker + GitHub Actions     |
 
 ## 11.2 Phase 1：需求定義（Define）
 
@@ -3245,9 +3308,11 @@ A5: 「帳號密碼 + Google OAuth」
 # SPEC.md — TaskFlow
 
 ## Objective
+
 建立一個面向開發團隊的任務管理系統，支援 Kanban 看板與 Sprint 管理。
 
 ## Commands
+
 - `POST /api/auth/login` — 帳號密碼登入
 - `POST /api/auth/oauth/google` — Google OAuth 登入
 - `GET /api/boards` — 取得看板列表
@@ -3256,6 +3321,7 @@ A5: 「帳號密碼 + Google OAuth」
 - `GET /api/sprints/current` — 取得當前 Sprint
 
 ## Project Structure
+
 ```
 taskflow/
   backend/
@@ -3272,11 +3338,13 @@ taskflow/
 ```
 
 ## Testing Strategy
+
 - 單元測試：JUnit 5 + Mockito (80%)
 - 整合測試：Spring Boot Test + Testcontainers (15%)
 - E2E 測試：Cypress (5%)
 
 ## Boundaries
+
 - 不做即時協作（同時編輯）
 - 不做檔案上傳
 - 不做聊天功能
@@ -3297,27 +3365,34 @@ taskflow/
 ## Sprint 1: 認證基礎（Week 1-2）
 
 ### Task 1.1: 資料庫 Schema（無依賴）
+
 - users 表：id, email, password_hash, name, avatar_url
 - 驗收標準：Migration 執行/回滾正常
 
 ### Task 1.2: 帳號密碼註冊 + 登入（依賴 1.1）
+
 - POST /api/auth/register
 - POST /api/auth/login → JWT
 - 驗收標準：整合測試覆蓋成功/失敗/重複信箱
 
 ### Task 1.3: Google OAuth 登入（依賴 1.1）
+
 - POST /api/auth/oauth/google
 - 驗收標準：Mock Google API 的整合測試
 
 ### Task 1.4: JWT 中介層（依賴 1.2）
+
 - 驗證 JWT Token 的 Filter
 - 驗收標準：未認證請求返回 401
 
 ## Sprint 2: 看板核心（Week 3-4）
 
 ### Task 2.1: Board CRUD（依賴 1.4）
+
 ### Task 2.2: Task CRUD（依賴 2.1）
+
 ### Task 2.3: 看板拖拉排序（依賴 2.2）
+
 ### Task 2.4: Vue 3 看板 UI（依賴 2.3）
 ```
 
@@ -3388,6 +3463,7 @@ public class AuthController {
 **Step 3：Refactor — 在測試保護下重構**
 
 **Step 4：Commit**
+
 ```bash
 git add -A
 git commit -m "feat(auth): add login endpoint with JWT authentication"
@@ -3400,6 +3476,7 @@ git commit -m "feat(auth): add login endpoint with JWT authentication"
 ### 使用 `/ship` 觸發三個 Persona 平行審查
 
 **code-reviewer 報告摘要：**
+
 ```
 Verdict: APPROVE
 - Correctness: ✅ 符合 SPEC.md
@@ -3410,14 +3487,16 @@ Verdict: APPROVE
 ```
 
 **test-engineer 報告摘要：**
+
 ```
-Test Pyramid: 
+Test Pyramid:
 - Unit: 12 tests (80%) ✅
 - Integration: 3 tests (15%) ✅
 - E2E: 0 tests (5%) ⚠️ — 下一個 Sprint 補充
 ```
 
 **security-auditor 報告摘要：**
+
 ```
 Findings:
 - 🟡 Medium: 未設定 Rate Limiting（建議下一 Sprint）
@@ -3435,12 +3514,12 @@ Findings:
 
 ### 遷移背景
 
-| 項目 | 說明 |
-|------|------|
-| **現有系統** | Java EE 8 + WildFly 26 |
-| **目標** | Jakarta EE 10 + WildFly 30 |
-| **核心變更** | `javax.*` → `jakarta.*` 命名空間 |
-| **風險** | 所有 import 需變更、部分 API 已棄用 |
+| 項目         | 說明                                |
+| ------------ | ----------------------------------- |
+| **現有系統** | Java EE 8 + WildFly 26              |
+| **目標**     | Jakarta EE 10 + WildFly 30          |
+| **核心變更** | `javax.*` → `jakarta.*` 命名空間    |
+| **風險**     | 所有 import 需變更、部分 API 已棄用 |
 
 ### 使用 Agent Skills 的遷移流程
 
@@ -3450,9 +3529,11 @@ Findings:
 # SPEC.md — Jakarta EE Migration
 
 ## Objective
+
 將現有 Java EE 8 應用遷移到 Jakarta EE 10，確保功能完全相容。
 
 ## Boundaries
+
 - 不在遷移過程中加入新功能
 - 不變更業務邏輯
 - 每個模組獨立遷移並驗證
@@ -3464,22 +3545,27 @@ Findings:
 # tasks/plan.md
 
 ### Task 1: 依賴更新（pom.xml）
+
 - javax → jakarta 依賴替換
 - 驗收標準：`mvn compile` 通過
 
 ### Task 2: Import 命名空間替換
+
 - 全域搜尋替換 javax.* → jakarta.*
 - 驗收標準：無編譯錯誤
 
 ### Task 3: 棄用 API 替換
+
 - 識別已棄用的 API 並替換為新 API
 - 驗收標準：無 deprecation 警告
 
 ### Task 4: 設定檔更新
+
 - persistence.xml、web.xml 等設定檔更新
 - 驗收標準：應用可正常啟動
 
 ### Task 5: 全面測試
+
 - 執行所有既有測試
 - 驗收標準：所有測試通過，無回歸
 ```
@@ -3513,12 +3599,12 @@ Phase 4: 移除所有 javax.* 引用
 
 ### 遷移背景
 
-| 項目 | 說明 |
-|------|------|
-| **現有系統** | Spring Boot 2.7（Java 8） |
-| **目標** | Spring Boot 3.2（Java 17，Jakarta EE 10 命名空間） |
-| **核心變更** | JDK 版本躍升、`javax.*` → `jakarta.*`、Spring Security 6.x 設定 DSL 改為 Lambda 風格 |
-| **風險** | 第三方函式庫相容性、Security 設定語法不相容導致認證失效、JDK 升級影響既有 Reflection/序列化行為 |
+| 項目         | 說明                                                                                            |
+| ------------ | ----------------------------------------------------------------------------------------------- |
+| **現有系統** | Spring Boot 2.7（Java 8）                                                                       |
+| **目標**     | Spring Boot 3.2（Java 17，Jakarta EE 10 命名空間）                                              |
+| **核心變更** | JDK 版本躍升、`javax.*` → `jakarta.*`、Spring Security 6.x 設定 DSL 改為 Lambda 風格            |
+| **風險**     | 第三方函式庫相容性、Security 設定語法不相容導致認證失效、JDK 升級影響既有 Reflection/序列化行為 |
 
 Spring Boot 3.x 的升級與 12.1 節的 Jakarta EE 遷移高度相關（Spring Boot 3.x 內部即建構於 Jakarta EE 10 之上），但額外疊加了 JDK 版本與 Spring Security 設定語法的變更，因此另立一節說明。
 
@@ -3530,10 +3616,12 @@ Spring Boot 3.x 的升級與 12.1 節的 Jakarta EE 遷移高度相關（Spring 
 # SPEC.md — Spring Boot 3 Migration
 
 ## Objective
+
 將現有 Spring Boot 2.7（Java 8）應用升級至 Spring Boot 3.2（Java 17），
 確保 API 行為與既有整合測試全數通過。
 
 ## Boundaries
+
 - 不在升級過程中重構既有業務邏輯
 - 不同時升級資料庫版本（分開處理，降低變數）
 - JDK 升級與 Spring Boot 升級拆成兩個獨立可回滾的階段
@@ -3545,26 +3633,32 @@ Spring Boot 3.x 的升級與 12.1 節的 Jakarta EE 遷移高度相關（Spring 
 # tasks/plan.md
 
 ### Task 1: JDK 8 → JDK 17 升級（無依賴）
+
 - 更新建置工具的 JDK 版本設定
 - 驗收標準：既有 Spring Boot 2.7 應用可在 JDK 17 上編譯並通過測試
 
 ### Task 2: 依賴版本盤點（依賴 Task 1）
+
 - 檢查所有第三方函式庫是否有相容 Spring Boot 3.x 的版本
 - 驗收標準：產出相容性清單，標記需替換的函式庫
 
 ### Task 3: javax → jakarta 命名空間替換（依賴 Task 2）
+
 - 比照 12.1 節流程，全域替換命名空間
 - 驗收標準：無編譯錯誤
 
 ### Task 4: Spring Security 設定遷移（依賴 Task 3）
+
 - WebSecurityConfigurerAdapter（已棄用）→ SecurityFilterChain Bean
 - 驗收標準：所有認證／授權整合測試通過
 
 ### Task 5: 設定檔與屬性名稱更新（依賴 Task 3）
+
 - application.properties 中已重新命名的屬性
 - 驗收標準：應用可正常啟動，無 Deprecated 警告
 
 ### Task 6: 全面回歸測試（依賴 Task 4、5）
+
 - 驗收標準：所有既有測試通過，效能無明顯回歸
 ```
 
@@ -3658,7 +3752,7 @@ Q5: 「上次重大事故的原因？」
 ```
 CLAIM: 「這個 Singleton 是因為 Thread Safety」
 
-EXTRACT: 
+EXTRACT:
 - 使用了 synchronized keyword
 - 但 synchronized 的範圍是整個方法（非 Double-Checked Locking）
 
@@ -3674,17 +3768,21 @@ RECONCILE: 查詢 Git 歷史 → 發現是 2015 年為了修 OOM 問題加的
 # ADR-001: 保留 UserService 的 Singleton Pattern
 
 ## 背景
+
 UserService 使用 Singleton 模式 + synchronized。
 初始分析認為可以替換為 Spring Bean。
 
 ## 決策
+
 暫時保留 Singleton。
 
 ## 原因
+
 Git 歷史顯示這是為了修復 OOM 問題（#423）。
 在沒有完全理解記憶體使用模式之前，不應移除。
 
 ## 後續行動
+
 - 加入記憶體監控，收集數據
 - 3 個月後重新評估
 ```
@@ -3702,11 +3800,11 @@ Git 歷史顯示這是為了修復 OOM 問題（#423）。
 
 ### 現代化 vs. 重寫
 
-| 策略 | 風險 | 適用情境 |
-|------|------|---------|
-| **完全重寫（Big Rewrite）** | 極高：常見的「二次系統效應」，重寫期間業務需求持續變動，追不上進度 | 系統極小、業務邏輯簡單、有充分時間窗口 |
-| **絞殺者模式（Strangler Fig）** | 低：新舊系統並存，逐步替換 | 大型系統、無法承受長時間凍結需求 |
-| **模組化重構（Modularize in Place）** | 中：不換技術棧，但拆分邊界 | 技術棧仍可接受，但架構耦合嚴重 |
+| 策略                                  | 風險                                                               | 適用情境                               |
+| ------------------------------------- | ------------------------------------------------------------------ | -------------------------------------- |
+| **完全重寫（Big Rewrite）**           | 極高：常見的「二次系統效應」，重寫期間業務需求持續變動，追不上進度 | 系統極小、業務邏輯簡單、有充分時間窗口 |
+| **絞殺者模式（Strangler Fig）**       | 低：新舊系統並存，逐步替換                                         | 大型系統、無法承受長時間凍結需求       |
+| **模組化重構（Modularize in Place）** | 中：不換技術棧，但拆分邊界                                         | 技術棧仍可接受，但架構耦合嚴重         |
 
 Agent Skills 預設建議採用 **Strangler Fig Pattern**（見 3.7.3 節 `deprecation-and-migration`），與 12.1 節框架升級案例使用相同的漸進式哲學。
 
@@ -3720,10 +3818,10 @@ Agent Skills 預設建議採用 **Strangler Fig Pattern**（見 3.7.3 節 `depre
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
+| AI 的藉口                        | 事實反駁                                                                                     |
+| -------------------------------- | -------------------------------------------------------------------------------------------- |
 | 「這段程式碼太亂了，重寫比較快」 | 重寫會遺失隱含在舊程式碼中的邊界案例處理邏輯（見 13.2 節 Step 3 的 Chesterton's Fence 案例） |
-| 「先把整個系統換新技術棧再說」 | 缺乏特徵測試保護的大範圍換棧，等同於在沒有安全網的情況下走鋼索 |
+| 「先把整個系統換新技術棧再說」   | 缺乏特徵測試保護的大範圍換棧，等同於在沒有安全網的情況下走鋼索                               |
 
 **驗證清單：**
 
@@ -3745,91 +3843,91 @@ Agent Skills 的安全模型基於三層邊界系統（Three-Tier Boundary Syste
 
 這些規則必須在**每次**程式碼變更時執行，AI 不可以藉口跳過：
 
-| 規則 | 說明 | 驗證方式 |
-|------|------|---------|
-| 執行依賴審計 | `npm audit` / `mvn dependency-check:check` | CI Pipeline 自動執行 |
-| 密碼雜湊 | BCrypt (cost ≥ 10) 或 Argon2id | Code Review 檢查 |
-| 輸入驗證 | 所有外部輸入必須驗證（白名單優先） | SAST 掃描 |
-| 安全標頭 | CSP、HSTS、X-Content-Type-Options | 自動化安全掃描 |
-| 參數化查詢 | 禁止字串串接 SQL | SAST 掃描 |
-| HTTPS | 生產環境必須 TLS 1.2+ | 部署檢查 |
-| 最小權限 | 服務帳號只授予必要權限 | Infrastructure Review |
+| 規則         | 說明                                       | 驗證方式              |
+| ------------ | ------------------------------------------ | --------------------- |
+| 執行依賴審計 | `npm audit` / `mvn dependency-check:check` | CI Pipeline 自動執行  |
+| 密碼雜湊     | BCrypt (cost ≥ 10) 或 Argon2id             | Code Review 檢查      |
+| 輸入驗證     | 所有外部輸入必須驗證（白名單優先）         | SAST 掃描             |
+| 安全標頭     | CSP、HSTS、X-Content-Type-Options          | 自動化安全掃描        |
+| 參數化查詢   | 禁止字串串接 SQL                           | SAST 掃描             |
+| HTTPS        | 生產環境必須 TLS 1.2+                      | 部署檢查              |
+| 最小權限     | 服務帳號只授予必要權限                     | Infrastructure Review |
 
 ### Ask First（先問）— 需要人類審批
 
 這些操作需要人類明確同意後才可執行：
 
-| 操作 | 需要誰審批 | 原因 |
-|------|-----------|------|
-| 新增 Auth 流程 | Security Lead | 認證是高風險區域 |
-| 儲存新的 PII | DPO / Legal | 合規需求（GDPR/個資法） |
-| 新增第三方服務整合 | Tech Lead | Supply Chain 風險 |
-| 變更加密演算法 | Security Lead | 密碼學決策需專家審查 |
-| 開放新的 API Endpoint | API Owner | 增加攻擊面 |
-| 修改 CORS 設定 | Security Lead | 跨域安全影響 |
+| 操作                  | 需要誰審批    | 原因                    |
+| --------------------- | ------------- | ----------------------- |
+| 新增 Auth 流程        | Security Lead | 認證是高風險區域        |
+| 儲存新的 PII          | DPO / Legal   | 合規需求（GDPR/個資法） |
+| 新增第三方服務整合    | Tech Lead     | Supply Chain 風險       |
+| 變更加密演算法        | Security Lead | 密碼學決策需專家審查    |
+| 開放新的 API Endpoint | API Owner     | 增加攻擊面              |
+| 修改 CORS 設定        | Security Lead | 跨域安全影響            |
 
 ### Never Do（禁止）— 絕對紅線
 
 這些操作在**任何情況下**都不允許：
 
-| 禁止操作 | 後果 |
-|---------|------|
-| 提交 Secrets 到 Git | 即使立即移除，歷史記錄中仍存在 |
-| 使用 `eval()` 處理使用者輸入 | Remote Code Execution |
-| 信任客戶端驗證 | 客戶端驗證可被繞過 |
-| 在日誌中記錄密碼/Token | 日誌可能被未授權存取 |
-| 使用 MD5/SHA1 做密碼雜湊 | 已被破解，不安全 |
-| 禁用 SSL 憑證驗證 | Man-in-the-Middle 攻擊 |
-| 硬編碼 IP 白名單作為唯一安全機制 | IP 可偽造 |
+| 禁止操作                         | 後果                           |
+| -------------------------------- | ------------------------------ |
+| 提交 Secrets 到 Git              | 即使立即移除，歷史記錄中仍存在 |
+| 使用 `eval()` 處理使用者輸入     | Remote Code Execution          |
+| 信任客戶端驗證                   | 客戶端驗證可被繞過             |
+| 在日誌中記錄密碼/Token           | 日誌可能被未授權存取           |
+| 使用 MD5/SHA1 做密碼雜湊         | 已被破解，不安全               |
+| 禁用 SSL 憑證驗證                | Man-in-the-Middle 攻擊         |
+| 硬編碼 IP 白名單作為唯一安全機制 | IP 可偽造                      |
 
 ## 14.2 OWASP SAMM 對照
 
 OWASP SAMM（Software Assurance Maturity Model）是軟體安全成熟度模型。以下為 Agent Skills 與 SAMM 的對照：
 
-| SAMM 實踐 | Level 1 | Level 2 | Level 3 | Agent Skills 對應 |
-|-----------|---------|---------|---------|------------------|
-| **威脅評估** | 識別威脅 | 威脅建模 | 持續威脅分析 | `spec-driven-development` (Boundaries) |
-| **安全需求** | 基本安全需求 | 結構化需求 | 安全品質閘門 | `interview-me` + `security-and-hardening` |
-| **安全架構** | 安全設計原則 | 設計審查 | 架構安全驗證 | `api-and-interface-design` |
-| **安全測試** | 自動化掃描 | 滲透測試 | 持續安全測試 | `test-driven-development` + `security-auditor` |
-| **漏洞管理** | 修復已知漏洞 | 監控新漏洞 | 預防性安全 | `deprecation-and-migration` |
+| SAMM 實踐    | Level 1      | Level 2    | Level 3      | Agent Skills 對應                              |
+| ------------ | ------------ | ---------- | ------------ | ---------------------------------------------- |
+| **威脅評估** | 識別威脅     | 威脅建模   | 持續威脅分析 | `spec-driven-development` (Boundaries)         |
+| **安全需求** | 基本安全需求 | 結構化需求 | 安全品質閘門 | `interview-me` + `security-and-hardening`      |
+| **安全架構** | 安全設計原則 | 設計審查   | 架構安全驗證 | `api-and-interface-design`                     |
+| **安全測試** | 自動化掃描   | 滲透測試   | 持續安全測試 | `test-driven-development` + `security-auditor` |
+| **漏洞管理** | 修復已知漏洞 | 監控新漏洞 | 預防性安全   | `deprecation-and-migration`                    |
 
 ## 14.3 ISO 27001 對照
 
-| ISO 27001 控制項 | Agent Skills 實踐 |
-|-----------------|------------------|
-| A.8.25 安全開發生命週期 | SSDLC 整合（第 9 章） |
-| A.8.26 應用安全需求 | `interview-me` + `spec-driven-development` |
-| A.8.28 安全編碼 | `security-and-hardening` (Always Do) |
-| A.8.29 安全測試 | `test-driven-development` + `security-auditor` |
-| A.8.31 開發、測試與生產環境分離 | `ci-cd-and-automation` + Feature Flags |
-| A.8.33 測試資訊 | 測試資料不含生產 PII |
+| ISO 27001 控制項                | Agent Skills 實踐                              |
+| ------------------------------- | ---------------------------------------------- |
+| A.8.25 安全開發生命週期         | SSDLC 整合（第 9 章）                          |
+| A.8.26 應用安全需求             | `interview-me` + `spec-driven-development`     |
+| A.8.28 安全編碼                 | `security-and-hardening` (Always Do)           |
+| A.8.29 安全測試                 | `test-driven-development` + `security-auditor` |
+| A.8.31 開發、測試與生產環境分離 | `ci-cd-and-automation` + Feature Flags         |
+| A.8.33 測試資訊                 | 測試資料不含生產 PII                           |
 
 ## 14.4 金融 / 保險 / 政府合規建議
 
 ### 金融業（FSC / PCI DSS）
 
-| 合規要求 | Agent Skills 實踐 |
-|---------|------------------|
-| PCI DSS 6.2 安全開發 | `security-and-hardening` + `security-auditor` |
-| PCI DSS 6.3 Code Review | `code-review-and-quality` + `code-reviewer` |
-| PCI DSS 11.3 滲透測試 | `browser-testing-with-devtools` + 人工滲透測試 |
+| 合規要求                | Agent Skills 實踐                              |
+| ----------------------- | ---------------------------------------------- |
+| PCI DSS 6.2 安全開發    | `security-and-hardening` + `security-auditor`  |
+| PCI DSS 6.3 Code Review | `code-review-and-quality` + `code-reviewer`    |
+| PCI DSS 11.3 滲透測試   | `browser-testing-with-devtools` + 人工滲透測試 |
 
 ### 保險業
 
-| 合規要求 | Agent Skills 實踐 |
-|---------|------------------|
+| 合規要求 | Agent Skills 實踐                            |
+| -------- | -------------------------------------------- |
 | 個資保護 | `security-and-hardening` (Ask First: 新 PII) |
-| 稽核追蹤 | `documentation-and-adrs` + Git 歷史 |
-| 變更管理 | `spec-driven-development` (Gated Workflow) |
+| 稽核追蹤 | `documentation-and-adrs` + Git 歷史          |
+| 變更管理 | `spec-driven-development` (Gated Workflow)   |
 
 ### 政府機關（資通安全法）
 
-| 合規要求 | Agent Skills 實踐 |
-|---------|------------------|
-| 安全軟體開發 | SSDLC 完整流程 |
-| 弱點管理 | `deprecation-and-migration` + 依賴審計 |
-| 日誌與監控 | `security-and-hardening` + 結構化日誌 |
+| 合規要求     | Agent Skills 實踐                      |
+| ------------ | -------------------------------------- |
+| 安全軟體開發 | SSDLC 完整流程                         |
+| 弱點管理     | `deprecation-and-migration` + 依賴審計 |
+| 日誌與監控   | `security-and-hardening` + 結構化日誌  |
 
 ## 14.5 Prompt Injection 防護
 
@@ -3899,13 +3997,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
 
       - name: Build & Test
         run: mvn clean verify
@@ -3936,6 +4034,7 @@ jobs:
 ## 15.3 Pre-Commit Hook 整合
 
 **Bash (`.git/hooks/pre-commit`)：**
+
 ```bash
 #!/bin/bash
 
@@ -3965,6 +4064,7 @@ echo "✅ Pre-Commit Check 通過"
 ```
 
 **PowerShell (`.git/hooks/pre-commit.ps1`)：**
+
 ```powershell
 Write-Host "🔍 Agent Skills Pre-Commit Check..."
 
@@ -4004,16 +4104,16 @@ Write-Host "✅ Pre-Commit Check 通過" -ForegroundColor Green
 
 品質閘門（Quality Gate）是 CI/CD Pipeline 中的強制檢查點：任何一個閘門未通過，變更就不能繼續往下一階段推進。這與第 7.5 節的 Shift Left 原則直接呼應——閘門的順序刻意將「成本低、回饋快」的檢查（編譯、單元測試）放在前面，將「成本高、回饋慢」的檢查（人類審查）放在最後，讓問題盡早被攔截，避免昂貴的人力審查資源被低階錯誤消耗。
 
-| 閘門 | 檢查項目 | 阻擋條件 |
-|------|---------|---------|
-| **Gate 1: Build** | 編譯成功 | 編譯錯誤 |
-| **Gate 2: Unit Test** | 所有單元測試通過 | 任何測試失敗 |
-| **Gate 3: Coverage** | 覆蓋率 ≥ 80% | 覆蓋率低於閾值 |
-| **Gate 4: SAST** | 無 Critical/High 弱點 | 發現 Critical 弱點 |
-| **Gate 5: Dependency** | 無已知 CVE | 發現 Critical CVE |
-| **Gate 6: Review** | code-reviewer APPROVE | REQUEST CHANGES |
-| **Gate 7: Security** | security-auditor APPROVE | Critical Finding |
-| **Gate 8: Human** | Tech Lead 審查 | 人類拒絕 |
+| 閘門                   | 檢查項目                 | 阻擋條件           |
+| ---------------------- | ------------------------ | ------------------ |
+| **Gate 1: Build**      | 編譯成功                 | 編譯錯誤           |
+| **Gate 2: Unit Test**  | 所有單元測試通過         | 任何測試失敗       |
+| **Gate 3: Coverage**   | 覆蓋率 ≥ 80%             | 覆蓋率低於閾值     |
+| **Gate 4: SAST**       | 無 Critical/High 弱點    | 發現 Critical 弱點 |
+| **Gate 5: Dependency** | 無已知 CVE               | 發現 Critical CVE  |
+| **Gate 6: Review**     | code-reviewer APPROVE    | REQUEST CHANGES    |
+| **Gate 7: Security**   | security-auditor APPROVE | Critical Finding   |
+| **Gate 8: Human**      | Tech Lead 審查           | 人類拒絕           |
 
 **設計原則：**
 
@@ -4041,21 +4141,21 @@ graph LR
     style D fill:#fce4ec
 ```
 
-| 階段 | 說明 | 典型時長 |
-|------|------|---------|
-| **1. 建立（Create）** | 新增 Flag，預設關閉（Off），程式碼中同時保留新舊兩條路徑 | 隨功能開發同步進行 |
-| **2. 灰度（Gradual Rollout）** | 依第 3.7.5 節的 Canary 模式逐步開啟：1% → 10% → 50% → 100%，每階段監控錯誤率與業務指標 | 數天至數週 |
-| **3. 全量（Full Rollout）** | Flag 對 100% 使用者開啟且穩定運行一段時間（建議至少一個完整業務週期，如一週） | 依風險等級而定 |
-| **4. 清理（Cleanup）** | 移除 Flag 判斷邏輯與舊路徑程式碼，Flag 本身從設定系統中刪除 | 全量穩定後 1-2 個迭代內 |
+| 階段                           | 說明                                                                                   | 典型時長                |
+| ------------------------------ | -------------------------------------------------------------------------------------- | ----------------------- |
+| **1. 建立（Create）**          | 新增 Flag，預設關閉（Off），程式碼中同時保留新舊兩條路徑                               | 隨功能開發同步進行      |
+| **2. 灰度（Gradual Rollout）** | 依第 3.7.5 節的 Canary 模式逐步開啟：1% → 10% → 50% → 100%，每階段監控錯誤率與業務指標 | 數天至數週              |
+| **3. 全量（Full Rollout）**    | Flag 對 100% 使用者開啟且穩定運行一段時間（建議至少一個完整業務週期，如一週）          | 依風險等級而定          |
+| **4. 清理（Cleanup）**         | 移除 Flag 判斷邏輯與舊路徑程式碼，Flag 本身從設定系統中刪除                            | 全量穩定後 1-2 個迭代內 |
 
 ### 常見反模式：Flag 債務（Flag Debt）
 
 Feature Flag 若只做到「全量」就停止，不進入「清理」階段，會累積成技術債：
 
-| 反模式 | 問題 | 對策 |
-|--------|------|------|
-| **永久性 Flag** | Flag 開關邏輯永久留在程式碼中，無人記得為何存在 | 建立 Flag 存活時間上限（如 90 天），逾期自動提示清理 |
-| **巢狀 Flag** | 多個 Flag 互相依賴，組合狀態難以測試 | 限制單一功能最多使用 1-2 個 Flag，避免組合爆炸 |
+| 反模式                | 問題                                                            | 對策                                                                  |
+| --------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------- |
+| **永久性 Flag**       | Flag 開關邏輯永久留在程式碼中，無人記得為何存在                 | 建立 Flag 存活時間上限（如 90 天），逾期自動提示清理                  |
+| **巢狀 Flag**         | 多個 Flag 互相依賴，組合狀態難以測試                            | 限制單一功能最多使用 1-2 個 Flag，避免組合爆炸                        |
 | **Flag 當作永久設定** | 將本該是「環境設定」的邏輯誤用 Flag 實作（如區分付費/免費方案） | 區分「發布用 Flag（暫時）」與「設定開關（永久）」，兩者用不同機制管理 |
 
 **驗證清單：**
@@ -4102,25 +4202,30 @@ graph TB
 **作用**：定義 AI 的基本行為規則、專案脈絡、程式碼風格。
 
 **最佳實踐：**
+
 - 保持簡潔（< 500 行）
 - 只放不變的資訊（專案語言、框架版本、團隊慣例）
 - 不放會變的資訊（當前任務、進行中的 Bug）
 
 **範例 CLAUDE.md 結構：**
+
 ```markdown
 # 專案脈絡
+
 - 語言：Java 17 + Spring Boot 3.2
 - 建置：Maven 3.9
 - 測試：JUnit 5 + Mockito
 - 資料庫：PostgreSQL 15
 
 # 程式碼風格
+
 - 方法/變數：camelCase
 - 類別：PascalCase
 - Commit：Conventional Commits (英文)
 - 註解：繁體中文
 
 # 團隊慣例
+
 - PR 大小限制：~100 行
 - 測試覆蓋率目標：80%
 - 所有 API 需要 OpenAPI 文件
@@ -4137,6 +4242,7 @@ graph TB
 **作用**：提供具體的程式碼實作。
 
 **最佳實踐：**
+
 - 只載入當前任務相關的檔案
 - 使用 `@file` 明確指定（而非讓 AI 自己猜）
 - 大型檔案只載入相關的函數/類別
@@ -4146,6 +4252,7 @@ graph TB
 **作用**：提供錯誤訊息以協助除錯。
 
 **最佳實踐：**
+
 - 完整貼上錯誤訊息（包含 Stack Trace）
 - 標記哪個命令產生的錯誤
 - 提供錯誤發生的前置操作
@@ -4155,6 +4262,7 @@ graph TB
 **作用**：對話歷史自動累積。
 
 **最佳實踐：**
+
 - 長對話時定期摘要
 - 完成一個任務後開新的 Session
 - 避免在同一個 Session 中混合多個不相關的任務
@@ -4163,34 +4271,34 @@ graph TB
 
 MCP 是一種標準化的協議，讓 AI Agent 可以存取外部工具和資料。
 
-| MCP Server | 提供的 Context | 搭配 Skill | 使用場景 |
-|-----------|---------------|-----------|---------|
-| **Chrome DevTools MCP** | 即時瀏覽器資料 | `browser-testing-with-devtools` | 前端偵錯、效能分析 |
-| **Context7** | 最新框架文件 | `source-driven-development` | 確認 API 用法 |
-| **PostgreSQL MCP** | 資料庫 Schema | `incremental-implementation` | 實作 DAO/Repository |
-| **Filesystem MCP** | 檔案系統存取 | `context-engineering` | 專案結構探索 |
-| **GitHub MCP** | PR/Issue/Code | `code-review-and-quality` | 審查變更、查詢歷史 |
-| **Sentry MCP** | 生產環境錯誤 | `debugging-and-error-recovery` | 分析生產 Bug |
+| MCP Server              | 提供的 Context | 搭配 Skill                      | 使用場景            |
+| ----------------------- | -------------- | ------------------------------- | ------------------- |
+| **Chrome DevTools MCP** | 即時瀏覽器資料 | `browser-testing-with-devtools` | 前端偵錯、效能分析  |
+| **Context7**            | 最新框架文件   | `source-driven-development`     | 確認 API 用法       |
+| **PostgreSQL MCP**      | 資料庫 Schema  | `incremental-implementation`    | 實作 DAO/Repository |
+| **Filesystem MCP**      | 檔案系統存取   | `context-engineering`           | 專案結構探索        |
+| **GitHub MCP**          | PR/Issue/Code  | `code-review-and-quality`       | 審查變更、查詢歷史  |
+| **Sentry MCP**          | 生產環境錯誤   | `debugging-and-error-recovery`  | 分析生產 Bug        |
 
 ## 16.4 Token 效率策略
 
-| 策略 | 說明 | 節省效果 |
-|------|------|---------|
-| **Selective Include** | 只載入相關檔案 | 高 |
-| **Summary First** | 先給摘要，需要時再載入細節 | 中 |
-| **Progressive Disclosure** | 先載入核心邏輯，再載入邊緣案例 | 中 |
-| **Dedup** | 避免重複載入相同檔案 | 低 |
-| **Structured Reference** | 用 `@file:line` 而非複製貼上 | 高 |
+| 策略                       | 說明                           | 節省效果 |
+| -------------------------- | ------------------------------ | -------- |
+| **Selective Include**      | 只載入相關檔案                 | 高       |
+| **Summary First**          | 先給摘要，需要時再載入細節     | 中       |
+| **Progressive Disclosure** | 先載入核心邏輯，再載入邊緣案例 | 中       |
+| **Dedup**                  | 避免重複載入相同檔案           | 低       |
+| **Structured Reference**   | 用 `@file:line` 而非複製貼上   | 高       |
 
 ## 16.5 Session 管理策略
 
-| 情境 | 建議 |
-|------|------|
-| 新功能開發 | 一個功能一個 Session |
-| Bug 修復 | 一個 Bug 一個 Session |
-| Code Review | 一個 PR 一個 Session |
-| 架構討論 | 一個議題一個 Session |
-| 重構 | 一個模組一個 Session |
+| 情境        | 建議                  |
+| ----------- | --------------------- |
+| 新功能開發  | 一個功能一個 Session  |
+| Bug 修復    | 一個 Bug 一個 Session |
+| Code Review | 一個 PR 一個 Session  |
+| 架構討論    | 一個議題一個 Session  |
+| 重構        | 一個模組一個 Session  |
 
 ## 16.6 Anti-Hallucination 策略
 
@@ -4198,12 +4306,12 @@ Context Engineering 決定「AI 看得到什麼」，但看得到不代表說得
 
 ### 幻覺的常見來源
 
-| 來源 | 說明 | 對應防護 |
-|------|------|---------|
-| **版本漂移** | AI 記得的 API 用法是訓練資料截止時的版本，但專案實際使用更新／更舊的版本 | `source-driven-development`（3.4.4 節）：以官方文件為依據，標記版本 |
-| **相似 API 混淆** | 不同框架有相似命名的 API，AI 可能張冠李戴（如 Spring 與 Spring Security 的設定類別混淆） | 在 Context Level 3（見 16.2 節）明確提供實際使用中的程式碼範例 |
-| **過度自信的推論** | AI 傾向對不確定的內容給出肯定語氣的回答，而非承認不確定 | `doubt-driven-development`（3.4.5 節）：CLAIM-EXTRACT-DOUBT-RECONCILE-STOP 流程 |
-| **Context 稀釋** | 對話過長導致早期提供的正確資訊被稀釋、被後續錯誤推論覆蓋 | 依 16.5 節切分 Session，避免單一 Session 過度累積 |
+| 來源               | 說明                                                                                     | 對應防護                                                                        |
+| ------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| **版本漂移**       | AI 記得的 API 用法是訓練資料截止時的版本，但專案實際使用更新／更舊的版本                 | `source-driven-development`（3.4.4 節）：以官方文件為依據，標記版本             |
+| **相似 API 混淆**  | 不同框架有相似命名的 API，AI 可能張冠李戴（如 Spring 與 Spring Security 的設定類別混淆） | 在 Context Level 3（見 16.2 節）明確提供實際使用中的程式碼範例                  |
+| **過度自信的推論** | AI 傾向對不確定的內容給出肯定語氣的回答，而非承認不確定                                  | `doubt-driven-development`（3.4.5 節）：CLAIM-EXTRACT-DOUBT-RECONCILE-STOP 流程 |
+| **Context 稀釋**   | 對話過長導致早期提供的正確資訊被稀釋、被後續錯誤推論覆蓋                                 | 依 16.5 節切分 Session，避免單一 Session 過度累積                               |
 
 ### 三道防線
 
@@ -4213,11 +4321,11 @@ Context Engineering 決定「AI 看得到什麼」，但看得到不代表說得
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
-| 「這個 API 我很確定是這樣用」 | 訓練資料有截止日期，框架仍在持續更新，確定感不等於正確性 |
-| 「文件懶得查，先寫寫看能不能跑」 | 能編譯不代表行為正確，尤其是設定類 API 常常「能跑但邏輯錯」 |
-| 「之前的專案都這樣寫」 | 不同專案的框架版本可能不同，經驗需要對照當前專案的實際版本驗證 |
+| AI 的藉口                        | 事實反駁                                                       |
+| -------------------------------- | -------------------------------------------------------------- |
+| 「這個 API 我很確定是這樣用」    | 訓練資料有截止日期，框架仍在持續更新，確定感不等於正確性       |
+| 「文件懶得查，先寫寫看能不能跑」 | 能編譯不代表行為正確，尤其是設定類 API 常常「能跑但邏輯錯」    |
+| 「之前的專案都這樣寫」           | 不同專案的框架版本可能不同，經驗需要對照當前專案的實際版本驗證 |
 
 **驗證清單：**
 
@@ -4236,13 +4344,13 @@ Agent Skills 嚴格遵循測試金字塔，以 80/15/5 比例作為目標。
 
 ### 單元測試（80%）
 
-| 原則 | 說明 |
-|------|------|
-| **測試行為，非實作** | 測試「做什麼」而非「怎麼做」 |
-| **一個測試一個斷言** | 每個測試方法只驗證一個行為 |
-| **命名描述預期** | `shouldReturn401WhenPasswordIsIncorrect()` |
-| **無外部依賴** | 不依賴資料庫、網路、檔案系統 |
-| **快速執行** | 單元測試總共應在 < 10 秒內完成 |
+| 原則                 | 說明                                       |
+| -------------------- | ------------------------------------------ |
+| **測試行為，非實作** | 測試「做什麼」而非「怎麼做」               |
+| **一個測試一個斷言** | 每個測試方法只驗證一個行為                 |
+| **命名描述預期**     | `shouldReturn401WhenPasswordIsIncorrect()` |
+| **無外部依賴**       | 不依賴資料庫、網路、檔案系統               |
+| **快速執行**         | 單元測試總共應在 < 10 秒內完成             |
 
 **Java 範例：**
 
@@ -4275,12 +4383,12 @@ class PasswordValidatorTest {
 
 ### 整合測試（15%）
 
-| 原則 | 說明 |
-|------|------|
-| **測試邊界** | API Endpoint、DB 操作、外部服務 |
-| **使用 Testcontainers** | 真實的 DB/Redis/MQ 容器 |
-| **Setup/Teardown** | 每個測試獨立的資料環境 |
-| **可重複** | 不依賴外部服務狀態 |
+| 原則                    | 說明                            |
+| ----------------------- | ------------------------------- |
+| **測試邊界**            | API Endpoint、DB 操作、外部服務 |
+| **使用 Testcontainers** | 真實的 DB/Redis/MQ 容器         |
+| **Setup/Teardown**      | 每個測試獨立的資料環境          |
+| **可重複**              | 不依賴外部服務狀態              |
 
 **Java + Testcontainers 範例：**
 
@@ -4316,11 +4424,11 @@ class UserRepositoryIntegrationTest {
 
 ### E2E 測試（5%）
 
-| 原則 | 說明 |
-|------|------|
-| **只測關鍵流程** | 登入、核心業務流程、付款 |
-| **穩定性優先** | 避免 Flaky Test |
-| **合理的等待** | 使用顯式等待而非 `Thread.sleep()` |
+| 原則             | 說明                              |
+| ---------------- | --------------------------------- |
+| **只測關鍵流程** | 登入、核心業務流程、付款          |
+| **穩定性優先**   | 避免 Flaky Test                   |
+| **合理的等待**   | 使用顯式等待而非 `Thread.sleep()` |
 
 ## 17.2 Red-Green-Refactor 循環
 
@@ -4346,25 +4454,25 @@ class UserRepositoryIntegrationTest {
 
 **常見錯誤：**
 
-| 錯誤 | 正確做法 |
-|------|---------|
-| 先寫程式碼再寫測試 | 先寫測試（Red），再寫程式碼（Green） |
-| 一次寫太多測試 | 一次只寫一個失敗的測試 |
-| Green 階段寫過多程式碼 | 只寫讓測試通過的最少程式碼 |
-| 跳過 Refactor | 每次 Green 後都要考慮是否需要重構 |
-| Refactor 時加新功能 | Refactor 不改變行為，新功能回到 Red |
+| 錯誤                   | 正確做法                             |
+| ---------------------- | ------------------------------------ |
+| 先寫程式碼再寫測試     | 先寫測試（Red），再寫程式碼（Green） |
+| 一次寫太多測試         | 一次只寫一個失敗的測試               |
+| Green 階段寫過多程式碼 | 只寫讓測試通過的最少程式碼           |
+| 跳過 Refactor          | 每次 Green 後都要考慮是否需要重構    |
+| Refactor 時加新功能    | Refactor 不改變行為，新功能回到 Red  |
 
 ## 17.3 Mock 使用原則
 
 Mock 策略的核心判斷標準只有一個：**這個依賴是不是系統邊界？** 邊界之外（資料庫、外部 API、檔案系統、時間、亂數）應該 Mock；邊界之內（同一服務內的其他類別/函數）不應該 Mock。違反這個原則是測試品質下降最常見的原因——過度 Mock 內部協作物件，會讓測試變成「驗證程式碼怎麼寫」而非「驗證系統做什麼」，一旦重構內部實作（即使行為不變），測試就會大量失敗，反而抑制重構意願。
 
-| 場景 | 是否 Mock | 原因 |
-|------|----------|------|
-| 資料庫 | ✅ 單元測試中 Mock | 單元測試不應依賴外部 |
-| HTTP Client | ✅ Mock 外部 API | 外部 API 不穩定 |
-| 內部 Service | ❌ 不要 Mock | Mock 內部函數會測試實作而非行為 |
-| 時間 | ✅ Mock `Clock` | 測試時間相關邏輯 |
-| 亂數 | ✅ Mock `Random` | 測試隨機行為 |
+| 場景         | 是否 Mock          | 原因                            |
+| ------------ | ------------------ | ------------------------------- |
+| 資料庫       | ✅ 單元測試中 Mock | 單元測試不應依賴外部            |
+| HTTP Client  | ✅ Mock 外部 API   | 外部 API 不穩定                 |
+| 內部 Service | ❌ 不要 Mock       | Mock 內部函數會測試實作而非行為 |
+| 時間         | ✅ Mock `Clock`    | 測試時間相關邏輯                |
+| 亂數         | ✅ Mock `Random`   | 測試隨機行為                    |
 
 ```java
 // ❌ 不良：Mock 內部 Service
@@ -4385,11 +4493,11 @@ void shouldReturnExchangeRate() {
 
 **反駁合理化範例：**
 
-| AI 的藉口 | 事實反駁 |
-|-----------|---------|
+| AI 的藉口                            | 事實反駁                                                                                   |
+| ------------------------------------ | ------------------------------------------------------------------------------------------ |
 | 「Mock 內部 Service 比較好隔離測試」 | 隔離過度會讓測試無法偵測模組間整合錯誤，那正是整合測試該負責的層次（見 17.1 節測試金字塔） |
-| 「這樣寫測試比較快」 | 過度 Mock 換來的是易碎測試（Fragile Test）——重構就大量失敗，長期反而拖慢開發 |
-| 「Mock 全部依賴才叫單元測試」 | 單元測試的「單元」指的是被測行為的範圍，不是「零依賴」；只 Mock 系統邊界才是正確定義 |
+| 「這樣寫測試比較快」                 | 過度 Mock 換來的是易碎測試（Fragile Test）——重構就大量失敗，長期反而拖慢開發               |
+| 「Mock 全部依賴才叫單元測試」        | 單元測試的「單元」指的是被測行為的範圍，不是「零依賴」；只 Mock 系統邊界才是正確定義       |
 
 **驗證清單：**
 
@@ -4406,12 +4514,12 @@ void shouldReturnExchangeRate() {
 
 Agent Skills 提供 4 個 Hooks（位於 `hooks/` 目錄），在特定事件時自動執行腳本。另有 2 個測試輔助腳本供開發時使用。
 
-| Hook | 觸發時機 | 用途 |
-|------|---------|------|
-| `session-start.sh` | 每次新 Session 開始 | 載入 `using-agent-skills` Meta-Skill、顯示待辦事項 |
-| `sdd-cache-pre.sh` | SDD 開始前 | 檢查是否有快取的 Spec |
-| `sdd-cache-post.sh` | SDD 完成後 | 快取 Spec 結果 |
-| `simplify-ignore.sh` | `code-simplification` 開始前 | 載入忽略清單 |
+| Hook                 | 觸發時機                     | 用途                                               |
+| -------------------- | ---------------------------- | -------------------------------------------------- |
+| `session-start.sh`   | 每次新 Session 開始          | 載入 `using-agent-skills` Meta-Skill、顯示待辦事項 |
+| `sdd-cache-pre.sh`   | SDD 開始前                   | 檢查是否有快取的 Spec                              |
+| `sdd-cache-post.sh`  | SDD 完成後                   | 快取 Spec 結果                                     |
+| `simplify-ignore.sh` | `code-simplification` 開始前 | 載入忽略清單                                       |
 
 `hooks/` 目錄下另有 `hooks.json`（統一註冊上述 4 個 Hook 與其觸發事件的設定檔）、`session-start-test.sh`／`simplify-ignore-test.sh`（2 個測試腳本，供 CI 驗證 Hook 行為未被破壞）、以及 `SDD-CACHE.md`／`SIMPLIFY-IGNORE.md` 兩份說明文件，記載 Cache 失效策略與忽略清單語法。
 
@@ -4422,6 +4530,7 @@ Agent Skills 提供 4 個 Hooks（位於 `hooks/` 目錄），在特定事件時
 這是最重要的 Hook，確保每次 Session 開始時 AI 都處於正確的狀態。
 
 **Bash 版本：**
+
 ```bash
 #!/bin/bash
 
@@ -4457,6 +4566,7 @@ echo "✅ Session 初始化完成"
 ```
 
 **PowerShell 版本：**
+
 ```powershell
 # session-start.ps1 — Agent Skills Session 初始化
 
@@ -4546,13 +4656,13 @@ curl -X POST "$WEBHOOK_URL" \
 
 ## 19.1 何時需要自訂 Skill
 
-| 情境 | 是否需要自訂 |
-|------|------------|
-| 既有 24 個 Skills 已涵蓋 | ❌ 使用既有 Skill |
-| 組織特有的規範（例如特定的 Code Style） | ✅ 自訂 |
-| 產業特有的合規要求 | ✅ 自訂 |
-| 特定技術棧的最佳實踐 | ✅ 自訂 |
-| 團隊的特定工作流程 | ✅ 自訂 |
+| 情境                                    | 是否需要自訂      |
+| --------------------------------------- | ----------------- |
+| 既有 24 個 Skills 已涵蓋                | ❌ 使用既有 Skill |
+| 組織特有的規範（例如特定的 Code Style） | ✅ 自訂           |
+| 產業特有的合規要求                      | ✅ 自訂           |
+| 特定技術棧的最佳實踐                    | ✅ 自訂           |
+| 團隊的特定工作流程                      | ✅ 自訂           |
 
 ## 19.2 Skill Anatomy 完整規格
 
@@ -4560,40 +4670,40 @@ curl -X POST "$WEBHOOK_URL" \
 
 ### Frontmatter 完整規格
 
-| 欄位 | 必填 | 規則 |
-|------|------|------|
-| `name` | ✅ | 小寫、連字號分隔（kebab-case），**必須與所在目錄名完全一致**，長度建議 ≤ 64 字元 |
-| `description` | ✅ | 第三人稱描述「做什麼」+ 明確的「Use when」觸發條件，**最多 1024 字元**，不可包含具體工作流步驟（步驟屬於內文） |
+| 欄位          | 必填 | 規則                                                                                                           |
+| ------------- | ---- | -------------------------------------------------------------------------------------------------------------- |
+| `name`        | ✅   | 小寫、連字號分隔（kebab-case），**必須與所在目錄名完全一致**，長度建議 ≤ 64 字元                               |
+| `description` | ✅   | 第三人稱描述「做什麼」+ 明確的「Use when」觸發條件，**最多 1024 字元**，不可包含具體工作流步驟（步驟屬於內文） |
 
 ### 章節命名規範
 
 CI 驗證腳本會檢查以下章節標題是否存在且命名一致（大小寫與用詞需與範本相符，避免 Agent 因標題不一致而無法正確解析）：
 
-| 標準章節標題 | 允許的別名 |
-|-------------|-----------|
-| `## Overview` | 無 |
-| `## When to Use` | 無 |
-| `## Core Process` | `## Process` |
+| 標準章節標題                 | 允許的別名                             |
+| ---------------------------- | -------------------------------------- |
+| `## Overview`                | 無                                     |
+| `## When to Use`             | 無                                     |
+| `## Core Process`            | `## Process`                           |
 | `## Common Rationalizations` | `## Common Rationalizations to Reject` |
-| `## Red Flags` | 無 |
-| `## Verification` | 無 |
+| `## Red Flags`               | 無                                     |
+| `## Verification`            | 無                                     |
 
 ### 目錄與檔案規格
 
-| 規則 | 說明 |
-|------|------|
-| 檔名固定為 `SKILL.md` | 不可使用其他檔名，Agent 的自動探索機制僅辨識此檔名 |
-| 目錄名須與 `name` 欄位一致 | 例如 `skills/database-migration-safety/SKILL.md` 對應 `name: database-migration-safety` |
-| 超過 100 行的參考資料移至 `references/` | 依第 2.4 節漸進式揭露原則，避免 SKILL.md 本身過於臃腫 |
-| 不建立空的 `scripts/` 目錄 | 只有在 Skill 確實有可執行腳本時才建立此目錄 |
+| 規則                                    | 說明                                                                                    |
+| --------------------------------------- | --------------------------------------------------------------------------------------- |
+| 檔名固定為 `SKILL.md`                   | 不可使用其他檔名，Agent 的自動探索機制僅辨識此檔名                                      |
+| 目錄名須與 `name` 欄位一致              | 例如 `skills/database-migration-safety/SKILL.md` 對應 `name: database-migration-safety` |
+| 超過 100 行的參考資料移至 `references/` | 依第 2.4 節漸進式揭露原則，避免 SKILL.md 本身過於臃腫                                   |
+| 不建立空的 `scripts/` 目錄              | 只有在 Skill 確實有可執行腳本時才建立此目錄                                             |
 
 ### 常見驗證失敗原因
 
-| 失敗原因 | 修正方式 |
-|---------|---------|
-| `name` 與目錄名不一致 | 兩者必須逐字相符，包含連字號位置 |
-| `description` 超過 1024 字元 | 精簡為「做什麼 + 何時使用」，詳細流程移至內文 |
-| 缺少 `## Verification` 章節 | 每個 Skill 都必須有可勾選的驗證清單，這是與傳統文件最大的差異 |
+| 失敗原因                     | 修正方式                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------ |
+| `name` 與目錄名不一致        | 兩者必須逐字相符，包含連字號位置                                                           |
+| `description` 超過 1024 字元 | 精簡為「做什麼 + 何時使用」，詳細流程移至內文                                              |
+| 缺少 `## Verification` 章節  | 每個 Skill 都必須有可勾選的驗證清單，這是與傳統文件最大的差異                              |
 | Frontmatter 使用了非標準欄位 | 目前規格僅定義 `name` 與 `description` 為必要欄位，額外欄位需先確認 Agent 平台是否支援解析 |
 
 ## 19.3 SKILL.md 完整範本
@@ -4625,15 +4735,18 @@ description: >
 ## Core Process
 
 ### Step 1: 向後相容性檢查
+
 新的 Migration 必須與當前版本的應用程式相容。
 
 **規則：**
+
 - ❌ 不可直接 DROP COLUMN（先標記棄用，下個版本再移除）
 - ❌ 不可 RENAME COLUMN（新增 + 資料複製 + 棄用舊欄位）
 - ✅ 新增 COLUMN 必須有 DEFAULT 值或允許 NULL
 - ✅ 新增 INDEX 使用 CONCURRENTLY（PostgreSQL）
 
 ### Step 2: 回滾驗證
+
 每個 Migration 必須有對應的 Rollback。
 
 ```sql
@@ -4645,14 +4758,17 @@ ALTER TABLE users DROP COLUMN phone;
 ```
 
 ### Step 3: 效能影響評估
+
 大型表格的 ALTER TABLE 可能需要數小時。
 
 **規則：**
+
 - 超過 100 萬行的表格：必須使用 pt-online-schema-change 或等效工具
 - 新增索引：估算索引建立時間
 - 資料遷移：分批處理（Batch），每批 1000-5000 行
 
 ### Step 4: 部署順序
+
 ```
 1. 部署新的 Migration
 2. 驗證應用程式正常運作（新舊欄位共存）
@@ -4662,11 +4778,11 @@ ALTER TABLE users DROP COLUMN phone;
 
 ## Common Rationalizations to Reject
 
-| Rationalization | Response |
-|----------------|----------|
-| 「直接 DROP COLUMN 比較快」 | 如果應用程式有 SELECT *，會立即崩潰 |
+| Rationalization                     | Response                            |
+| ----------------------------------- | ----------------------------------- |
+| 「直接 DROP COLUMN 比較快」         | 如果應用程式有 SELECT *，會立即崩潰 |
 | 「不需要 Rollback，這個改動很安全」 | 所有改動都需要 Rollback，這是防護網 |
-| 「直接在生產環境執行就好」 | 必須先在 Staging 驗證，包含回滾測試 |
+| 「直接在生產環境執行就好」          | 必須先在 Staging 驗證，包含回滾測試 |
 
 ## Red Flags
 
@@ -4686,18 +4802,19 @@ ALTER TABLE users DROP COLUMN phone;
 
 ## 19.4 寫作原則對照
 
-| 原則 | 在自訂 Skill 中的體現 |
-|------|---------------------|
-| **Process over Knowledge** | Step 1-4 定義了具體流程，而非只列規則 |
-| **Specific over General** | 使用 SQL 範例和具體數字（100 萬行） |
-| **Evidence over Assumption** | 要求效能評估數據 |
-| **Anti-rationalization** | 明確列出常見藉口與反駁 |
-| **Progressive Disclosure** | Overview → Core Process → Details |
-| **Token-conscious** | 結構化格式，避免冗長文字 |
+| 原則                         | 在自訂 Skill 中的體現                 |
+| ---------------------------- | ------------------------------------- |
+| **Process over Knowledge**   | Step 1-4 定義了具體流程，而非只列規則 |
+| **Specific over General**    | 使用 SQL 範例和具體數字（100 萬行）   |
+| **Evidence over Assumption** | 要求效能評估數據                      |
+| **Anti-rationalization**     | 明確列出常見藉口與反駁                |
+| **Progressive Disclosure**   | Overview → Core Process → Details     |
+| **Token-conscious**          | 結構化格式，避免冗長文字              |
 
 ## 19.5 將自訂 Skill 加入專案
 
 **Bash：**
+
 ```bash
 # 1. 建立 Skill 目錄
 mkdir -p .claude/skills/database-migration-safety
@@ -4715,6 +4832,7 @@ cat .claude/skills/database-migration-safety/SKILL.md
 ```
 
 **PowerShell：**
+
 ```powershell
 # 1. 建立 Skill 目錄
 New-Item -ItemType Directory -Path ".claude\skills\database-migration-safety" -Force
@@ -4759,22 +4877,22 @@ graph LR
 
 ### 評估問卷
 
-| 評估項目 | 問題 | 影響 |
-|---------|------|------|
-| **AI 工具** | 團隊目前使用哪些 AI 開發工具？ | 決定安裝目標 |
-| **開發流程** | 目前是否有 Code Review / CI/CD？ | 決定整合策略 |
-| **安全需求** | 是否有合規要求（PCI DSS / 個資法）？ | 決定安全設定 |
-| **團隊規模** | 多少開發人員？幾個團隊？ | 決定推廣策略 |
-| **技術棧** | 主要語言和框架？ | 決定自訂 Skills |
+| 評估項目     | 問題                                 | 影響            |
+| ------------ | ------------------------------------ | --------------- |
+| **AI 工具**  | 團隊目前使用哪些 AI 開發工具？       | 決定安裝目標    |
+| **開發流程** | 目前是否有 Code Review / CI/CD？     | 決定整合策略    |
+| **安全需求** | 是否有合規要求（PCI DSS / 個資法）？ | 決定安全設定    |
+| **團隊規模** | 多少開發人員？幾個團隊？             | 決定推廣策略    |
+| **技術棧**   | 主要語言和框架？                     | 決定自訂 Skills |
 
 ### Pilot Team 選擇標準
 
-| 標準 | 原因 |
-|------|------|
-| 對 AI 開發工具有興趣 | 降低抵觸風險 |
-| 有一定的測試文化 | Agent Skills 強調 TDD |
+| 標準                           | 原因                       |
+| ------------------------------ | -------------------------- |
+| 對 AI 開發工具有興趣           | 降低抵觸風險               |
+| 有一定的測試文化               | Agent Skills 強調 TDD      |
 | 正在開發新功能（非維護老系統） | 更容易完整走 Define → Ship |
-| 2-5 人的小型團隊 | 容易協調與收集回饋 |
+| 2-5 人的小型團隊               | 容易協調與收集回饋         |
 
 ## 20.3 Phase 2：Pilot 導入
 
@@ -4802,36 +4920,36 @@ graph LR
 
 ### 成效量化指標
 
-| 指標 | 量測方式 | 目標 |
-|------|---------|------|
-| Code Review 時間 | PR 建立到合併的時間 | 減少 30-50% |
-| 缺陷逃逸率 | 上線後發現的 Bug / 總 Bug | 減少 20-40% |
-| 測試覆蓋率 | JaCoCo / Istanbul | 提升至 80%+ |
-| 開發者滿意度 | 問卷調查 | ≥ 7/10 |
-| 安全漏洞 | SAST/DAST 掃描 | 零 Critical |
+| 指標             | 量測方式                  | 目標        |
+| ---------------- | ------------------------- | ----------- |
+| Code Review 時間 | PR 建立到合併的時間       | 減少 30-50% |
+| 缺陷逃逸率       | 上線後發現的 Bug / 總 Bug | 減少 20-40% |
+| 測試覆蓋率       | JaCoCo / Istanbul         | 提升至 80%+ |
+| 開發者滿意度     | 問卷調查                  | ≥ 7/10      |
+| 安全漏洞         | SAST/DAST 掃描            | 零 Critical |
 
 ## 20.4 Phase 3：擴大導入
 
 ### 常見阻力與應對
 
-| 阻力 | 應對策略 |
-|------|---------|
-| 「AI 會取代我的工作」 | 強調 AI 是工具而非替代品，人類保有決策權 |
-| 「多了一堆步驟，太慢了」 | 展示 Pilot Team 的量化成效數據 |
-| 「我們的程式碼太特殊」 | 自訂 Skills 適配團隊需求 |
-| 「安全風險太高」 | 展示三層邊界系統和 Prompt Injection 防護 |
-| 「學習曲線太陡」 | 提供本手冊 + 內部教育訓練 |
+| 阻力                     | 應對策略                                 |
+| ------------------------ | ---------------------------------------- |
+| 「AI 會取代我的工作」    | 強調 AI 是工具而非替代品，人類保有決策權 |
+| 「多了一堆步驟，太慢了」 | 展示 Pilot Team 的量化成效數據           |
+| 「我們的程式碼太特殊」   | 自訂 Skills 適配團隊需求                 |
+| 「安全風險太高」         | 展示三層邊界系統和 Prompt Injection 防護 |
+| 「學習曲線太陡」         | 提供本手冊 + 內部教育訓練                |
 
 ## 20.5 Phase 4：持續改善
 
 ### 治理架構
 
-| 角色 | 職責 |
-|------|------|
-| **Agent Skills Champion** | 推廣、教育訓練、回饋收集 |
-| **Rules Files 管理者** | 維護組織級的 CLAUDE.md / .cursorrules |
-| **Custom Skills 維護者** | 開發與維護組織特有的 Skills |
-| **Security Owner** | 審核 Agent Skills 的安全設定 |
+| 角色                      | 職責                                  |
+| ------------------------- | ------------------------------------- |
+| **Agent Skills Champion** | 推廣、教育訓練、回饋收集              |
+| **Rules Files 管理者**    | 維護組織級的 CLAUDE.md / .cursorrules |
+| **Custom Skills 維護者**  | 開發與維護組織特有的 Skills           |
+| **Security Owner**        | 審核 Agent Skills 的安全設定          |
 
 ## 20.6 AI Governance 治理機制
 
@@ -4839,12 +4957,12 @@ graph LR
 
 ### 治理委員會運作模式
 
-| 機制 | 說明 | 頻率 |
-|------|------|------|
-| **Skills 變更審核會議** | 任何新增／修改組織級自訂 Skill，須經 Agent Skills Champion 與 Security Owner 共同核准 | 依需求，非固定週期 |
-| **採用成效複盤** | 依第 20.3 節的量化指標（Review 時間、缺陷逃逸率等）檢視導入成效 | 每季 |
-| **例外請求流程** | 團隊若需偏離既定 Rules Files 或跳過某個 Skill 的強制步驟，須提出書面理由並經 Champion 核准，禁止靜默跳過 | 依需求 |
-| **供應鏈變更追蹤** | 上游 `addyosmani/agent-skills` 發布新版本時，由 Rules Files 管理者評估變更影響後才升級（見下方版本升級治理） | 每次上游發版 |
+| 機制                    | 說明                                                                                                         | 頻率               |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------ |
+| **Skills 變更審核會議** | 任何新增／修改組織級自訂 Skill，須經 Agent Skills Champion 與 Security Owner 共同核准                        | 依需求，非固定週期 |
+| **採用成效複盤**        | 依第 20.3 節的量化指標（Review 時間、缺陷逃逸率等）檢視導入成效                                              | 每季               |
+| **例外請求流程**        | 團隊若需偏離既定 Rules Files 或跳過某個 Skill 的強制步驟，須提出書面理由並經 Champion 核准，禁止靜默跳過     | 依需求             |
+| **供應鏈變更追蹤**      | 上游 `addyosmani/agent-skills` 發布新版本時，由 Rules Files 管理者評估變更影響後才升級（見下方版本升級治理） | 每次上游發版       |
 
 ### 版本升級治理
 
@@ -4864,13 +4982,13 @@ Agent Skills 是持續演進的外部專案（如本次手冊更新所示，短�
 
 企業導入 AI Coding Agent 與 Agent Skills 框架時，除了第 14 章討論的程式碼層級安全控制（OWASP、ISO 27001 對照）外，還須考量以下組織層級的合規面向：
 
-| 合規面向 | 考量重點 |
-|---------|---------|
-| **資料駐留與傳輸** | AI Coding Agent（如 Claude Code）在處理程式碼時，原始碼片段可能傳輸至供應商伺服器；金融、醫療、政府等受規範產業須確認供應商的資料處理條款是否符合當地法規（如個資法、GDPR） |
-| **供應商風險評估** | 將 AI Coding Agent 與 `addyosmani/agent-skills` 這類第三方開源框架納入既有的供應商/開源元件風險評估流程，而非視為「僅是文字檔案」而略過 |
-| **AI 產出的責任歸屬** | 明確定義：AI 產出的程式碼經人類審查並合併後，責任歸屬與人類撰寫的程式碼一致；Persona 審查報告不能取代人類簽核 |
-| **稽核追蹤要求** | 若產業要求完整變更追蹤（如 SOC 2、金融監理），需確保 `/ship` 三方審查報告、ADR、Pre-Launch Checklist 均可被稽核單位存取與驗證 |
-| **授權合規** | 確認 `addyosmani/agent-skills`（MIT License）與其鏈接的其他開源 Checklist／範本內容之授權條款，符合組織的開源使用政策 |
+| 合規面向              | 考量重點                                                                                                                                                                    |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **資料駐留與傳輸**    | AI Coding Agent（如 Claude Code）在處理程式碼時，原始碼片段可能傳輸至供應商伺服器；金融、醫療、政府等受規範產業須確認供應商的資料處理條款是否符合當地法規（如個資法、GDPR） |
+| **供應商風險評估**    | 將 AI Coding Agent 與 `addyosmani/agent-skills` 這類第三方開源框架納入既有的供應商/開源元件風險評估流程，而非視為「僅是文字檔案」而略過                                     |
+| **AI 產出的責任歸屬** | 明確定義：AI 產出的程式碼經人類審查並合併後，責任歸屬與人類撰寫的程式碼一致；Persona 審查報告不能取代人類簽核                                                               |
+| **稽核追蹤要求**      | 若產業要求完整變更追蹤（如 SOC 2、金融監理），需確保 `/ship` 三方審查報告、ADR、Pre-Launch Checklist 均可被稽核單位存取與驗證                                               |
+| **授權合規**          | 確認 `addyosmani/agent-skills`（MIT License）與其鏈接的其他開源 Checklist／範本內容之授權條款，符合組織的開源使用政策                                                       |
 
 > **💡 實務建議**：合規考量應在第 20.2 節的「評估與準備」階段就一併納入評估問卷，而非等到 Pilot 導入後才發現法遵風險。受高度監管產業建議在 Pilot 前先取得法遵與資安部門的書面同意。
 
@@ -4882,40 +5000,40 @@ Agent Skills 是持續演進的外部專案（如本次手冊更新所示，短�
 
 ## 21.1 日常開發最佳實踐
 
-| # | 實踐 | 原因 |
-|---|------|------|
-| 1 | **每次 Session 只做一件事** | 避免 Context 混亂 |
-| 2 | **先 /spec 再 /build** | 避免實作與需求偏離 |
-| 3 | **每個 Commit ~100 行** | 便於 Review 和回滾 |
-| 4 | **TDD：先寫測試** | 確保行為正確 |
-| 5 | **Bug 修復用 Prove-It** | 防止回歸 |
-| 6 | **上線前用 /ship** | 自動三重審查 |
-| 7 | **困惑時立即提問** | 不猜測、不假設 |
-| 8 | **記錄架構決策（ADR）** | 未來的自己會感謝你 |
-| 9 | **定期更新依賴** | 避免安全漏洞 |
-| 10 | **Rules Files 保持簡潔** | Token 效率 |
+| #   | 實踐                        | 原因               |
+| --- | --------------------------- | ------------------ |
+| 1   | **每次 Session 只做一件事** | 避免 Context 混亂  |
+| 2   | **先 /spec 再 /build**      | 避免實作與需求偏離 |
+| 3   | **每個 Commit ~100 行**     | 便於 Review 和回滾 |
+| 4   | **TDD：先寫測試**           | 確保行為正確       |
+| 5   | **Bug 修復用 Prove-It**     | 防止回歸           |
+| 6   | **上線前用 /ship**          | 自動三重審查       |
+| 7   | **困惑時立即提問**          | 不猜測、不假設     |
+| 8   | **記錄架構決策（ADR）**     | 未來的自己會感謝你 |
+| 9   | **定期更新依賴**            | 避免安全漏洞       |
+| 10  | **Rules Files 保持簡潔**    | Token 效率         |
 
 ## 21.2 團隊協作最佳實踐
 
-| # | 實踐 | 原因 |
-|---|------|------|
-| 1 | **統一 Rules Files** | 團隊一致的 AI 行為 |
-| 2 | **PR 附上 Persona 報告** | 透明的品質審查 |
-| 3 | **共享自訂 Skills** | 組織知識的累積 |
-| 4 | **定期回顧 Agent Skills 使用** | 持續改善 |
-| 5 | **新人入職包含 Agent Skills 教學** | 降低學習曲線 |
+| #   | 實踐                               | 原因               |
+| --- | ---------------------------------- | ------------------ |
+| 1   | **統一 Rules Files**               | 團隊一致的 AI 行為 |
+| 2   | **PR 附上 Persona 報告**           | 透明的品質審查     |
+| 3   | **共享自訂 Skills**                | 組織知識的累積     |
+| 4   | **定期回顧 Agent Skills 使用**     | 持續改善           |
+| 5   | **新人入職包含 Agent Skills 教學** | 降低學習曲線       |
 
 ## 21.3 安全最佳實踐
 
-| # | 實踐 | 原因 |
-|---|------|------|
-| 1 | **永遠不提交 Secrets** | Git 歷史不可完全清除 |
-| 2 | **所有外部輸入必須驗證** | 防止注入攻擊 |
-| 3 | **使用參數化查詢** | 防止 SQL Injection |
-| 4 | **密碼使用 BCrypt/Argon2** | MD5/SHA1 已不安全 |
-| 5 | **設定安全標頭** | 防止 XSS/Clickjacking |
-| 6 | **定期依賴審計** | 修復已知 CVE |
-| 7 | **三層邊界系統嚴格執行** | 安全底線不可妥協 |
+| #   | 實踐                       | 原因                  |
+| --- | -------------------------- | --------------------- |
+| 1   | **永遠不提交 Secrets**     | Git 歷史不可完全清除  |
+| 2   | **所有外部輸入必須驗證**   | 防止注入攻擊          |
+| 3   | **使用參數化查詢**         | 防止 SQL Injection    |
+| 4   | **密碼使用 BCrypt/Argon2** | MD5/SHA1 已不安全     |
+| 5   | **設定安全標頭**           | 防止 XSS/Clickjacking |
+| 6   | **定期依賴審計**           | 修復已知 CVE          |
+| 7   | **三層邊界系統嚴格執行**   | 安全底線不可妥協      |
 
 > **💡 如何使用本清單**：新團隊導入時，建議不要一次要求所有 10+7+7 條實踐同時到位。可依第 20.3 節的 Pilot 導入順序，第一週先落實 21.1 的第 1-4 項（Session 管理、Spec 先行、小批量提交、TDD），第二週再納入 21.2 的協作規範，21.3 的安全底線則應從第一天就不可妥協地執行（見第 14.1 節三層邊界系統）。
 
@@ -4927,34 +5045,34 @@ Agent Skills 是持續演進的外部專案（如本次手冊更新所示，短�
 
 ## 22.1 開發流程反模式
 
-| # | 反模式 | 正確做法 | 原因 |
-|---|--------|---------|------|
-| 1 | **YOLO Deploy** — 跳過所有審查直接部署 | 完整 `/ship` 流程 | 三重審查防止遺漏 |
-| 2 | **Big Bang** — 一次提交上千行 | 薄型垂直切片 ~100 行 | 大量變更無法有效審查 |
-| 3 | **Test Later** — 先寫程式碼再寫測試 | TDD Red-Green-Refactor | 事後寫的測試測實作而非行為 |
-| 4 | **Spec Skip** — 直接寫程式碼不寫規格 | `/spec` 先行 | 沒有 Spec 就沒有驗收標準 |
-| 5 | **Context Dump** — 把所有檔案丟給 AI | Selective Include | Token 浪費、回應品質下降 |
-| 6 | **Blind Trust** — 不驗證 AI 產出 | 所有產出需人類驗證 | AI 會產生幻覺 |
+| #   | 反模式                                 | 正確做法               | 原因                       |
+| --- | -------------------------------------- | ---------------------- | -------------------------- |
+| 1   | **YOLO Deploy** — 跳過所有審查直接部署 | 完整 `/ship` 流程      | 三重審查防止遺漏           |
+| 2   | **Big Bang** — 一次提交上千行          | 薄型垂直切片 ~100 行   | 大量變更無法有效審查       |
+| 3   | **Test Later** — 先寫程式碼再寫測試    | TDD Red-Green-Refactor | 事後寫的測試測實作而非行為 |
+| 4   | **Spec Skip** — 直接寫程式碼不寫規格   | `/spec` 先行           | 沒有 Spec 就沒有驗收標準   |
+| 5   | **Context Dump** — 把所有檔案丟給 AI   | Selective Include      | Token 浪費、回應品質下降   |
+| 6   | **Blind Trust** — 不驗證 AI 產出       | 所有產出需人類驗證     | AI 會產生幻覺              |
 
 ## 22.2 安全反模式
 
-| # | 反模式 | 正確做法 | 風險 |
-|---|--------|---------|------|
-| 1 | **Security by Obscurity** — 靠隱藏實作來保安全 | 公開透明的安全機制 | 實作一旦曝光即失效 |
-| 2 | **Client-Side Only** — 只在前端驗證 | 後端必須重新驗證 | 前端驗證可被繞過 |
-| 3 | **Catch All Silence** — 捕獲所有例外但不處理 | 有意義的錯誤處理 | 隱藏安全問題 |
-| 4 | **SQL String Concat** — 字串串接 SQL | 參數化查詢 | SQL Injection |
-| 5 | **Hardcoded Secrets** — 硬編碼密碼 | 環境變數/Vault | Secrets 洩漏 |
+| #   | 反模式                                         | 正確做法           | 風險               |
+| --- | ---------------------------------------------- | ------------------ | ------------------ |
+| 1   | **Security by Obscurity** — 靠隱藏實作來保安全 | 公開透明的安全機制 | 實作一旦曝光即失效 |
+| 2   | **Client-Side Only** — 只在前端驗證            | 後端必須重新驗證   | 前端驗證可被繞過   |
+| 3   | **Catch All Silence** — 捕獲所有例外但不處理   | 有意義的錯誤處理   | 隱藏安全問題       |
+| 4   | **SQL String Concat** — 字串串接 SQL           | 參數化查詢         | SQL Injection      |
+| 5   | **Hardcoded Secrets** — 硬編碼密碼             | 環境變數/Vault     | Secrets 洩漏       |
 
 ## 22.3 AI 協作反模式
 
-| # | 反模式 | 正確做法 | 後果 |
-|---|--------|---------|------|
-| 1 | **Prompt and Pray** — 丟需求後不看 AI 產出 | 逐步驗證 | 品質失控 |
-| 2 | **AI Knows Best** — 完全相信 AI 的技術建議 | `doubt-driven-development` 交叉驗證 | AI 幻覺風險 |
-| 3 | **One Shot** — 期望一次對話完成所有工作 | 增量式對話 | Context 超載 |
-| 4 | **Context Amnesia** — 不使用 Rules Files | 設定 CLAUDE.md | 每次重新教 AI 專案脈絡 |
-| 5 | **Skill Hopping** — 在一次對話中跳來跳去 | 一次一個 Skill，循序進行 | 產出品質下降 |
+| #   | 反模式                                     | 正確做法                            | 後果                   |
+| --- | ------------------------------------------ | ----------------------------------- | ---------------------- |
+| 1   | **Prompt and Pray** — 丟需求後不看 AI 產出 | 逐步驗證                            | 品質失控               |
+| 2   | **AI Knows Best** — 完全相信 AI 的技術建議 | `doubt-driven-development` 交叉驗證 | AI 幻覺風險            |
+| 3   | **One Shot** — 期望一次對話完成所有工作    | 增量式對話                          | Context 超載           |
+| 4   | **Context Amnesia** — 不使用 Rules Files   | 設定 CLAUDE.md                      | 每次重新教 AI 專案脈絡 |
+| 5   | **Skill Hopping** — 在一次對話中跳來跳去   | 一次一個 Skill，循序進行            | 產出品質下降           |
 
 ### 綜合案例：三個反模式如何疊加成一次生產事故
 
@@ -4994,18 +5112,19 @@ Agent Skills 是持續演進的外部專案（如本次手冊更新所示，短�
 
 **可能原因與解法：**
 
-| 原因 | 解法 |
-|------|------|
-| 檔案未放在正確目錄 | 確認 `.claude/skills/` 或 `.cursor/rules/` 存在 |
-| Session Start Hook 未設定 | 檢查 `hooks/session-start.sh` 是否可執行 |
-| Rules File 未載入 | 確認 `CLAUDE.md` 或 `.cursorrules` 在專案根目錄 |
-| AI 工具不支援 | 確認使用支援的工具版本 |
+| 原因                      | 解法                                            |
+| ------------------------- | ----------------------------------------------- |
+| 檔案未放在正確目錄        | 確認 `.claude/skills/` 或 `.cursor/rules/` 存在 |
+| Session Start Hook 未設定 | 檢查 `hooks/session-start.sh` 是否可執行        |
+| Rules File 未載入         | 確認 `CLAUDE.md` 或 `.cursorrules` 在專案根目錄 |
+| AI 工具不支援             | 確認使用支援的工具版本                          |
 
 ### 問題 2：`/spec` 產出的 SPEC.md 品質不佳
 
 **症狀**：Spec 過於籠統、缺少 Boundaries、遺漏重要需求。
 
 **解法：**
+
 1. 先使用 `interview-me` 釐清需求（信心度達 ~95%）
 2. 在 Rules File 中加入專案特定的 Spec 範本
 3. 在 `spec-driven-development` 執行時，明確要求涵蓋 6 個核心區域
@@ -5015,6 +5134,7 @@ Agent Skills 是持續演進的外部專案（如本次手冊更新所示，短�
 **症狀**：AI 一次寫了 500+ 行程式碼，難以審查。
 
 **解法：**
+
 1. 使用 `/plan` 先拆解任務
 2. 在 Rules File 中加入：「每次實作不超過 100 行」
 3. 使用 `incremental-implementation` 的垂直切片原則
@@ -5024,6 +5144,7 @@ Agent Skills 是持續演進的外部專案（如本次手冊更新所示，短�
 **症狀**：AI 寫的測試不夠全面或測試品質低。
 
 **解法：**
+
 1. 在 Rules File 中明確定義測試金字塔比例（80/15/5）
 2. 要求 AI 使用 TDD（先寫測試再寫程式碼）
 3. 審查時使用 `test-engineer` Persona 分析覆蓋缺口
@@ -5033,6 +5154,7 @@ Agent Skills 是持續演進的外部專案（如本次手冊更新所示，短�
 **症狀**：`code-reviewer` 只給 APPROVE 沒有具體 Findings。
 
 **解法：**
+
 1. 提供具體的程式碼變更（diff）而非整個檔案
 2. 在 Rules File 中要求：「Review 必須包含 5 軸分析」
 3. 確認提供了足夠的 Context（Spec + 程式碼）
@@ -5048,6 +5170,7 @@ Agent Skills 是持續演進的外部專案（如本次手冊更新所示，短�
 **症狀**：同時安裝 Claude Code 和 Cursor，行為不一致。
 
 **解法：**
+
 1. 確認各工具使用各自的目錄（`.claude/` vs `.cursor/`）
 2. 統一 Rules File 的核心內容
 3. 工具特有的設定放在各自的目錄
@@ -5076,6 +5199,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **症狀**：AI 開始「遺忘」之前的對話內容。
 
 **解法：**
+
 1. 遵循 Session 管理策略（第 16.5 節）
 2. 一個任務一個 Session
 3. 使用 Selective Include 而非 Context Dump
@@ -5086,6 +5210,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **症狀**：GitHub Actions 中的 Agent Skills 步驟失敗。
 
 **解法：**
+
 1. 確認 CI 環境已 Clone agent-skills 專案並正確複製檔案
 2. 檢查 CI 環境的檔案權限
 3. 確認 CI 的工作目錄正確
@@ -5095,6 +5220,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **症狀**：建立了自訂 Skill，但 AI 沒有使用它。
 
 **解法：**
+
 1. 確認 SKILL.md 的 YAML Frontmatter 格式正確
 2. 確認檔案放在正確的 Skills 目錄
 3. 在 `using-agent-skills` 中新增映射
@@ -5124,13 +5250,13 @@ Agent Skills 是語言無關的（Language-agnostic）。它定義的是工作�
 
 **Q5: Agent Skills 和 mattpocock/skills 有什麼不同？**
 
-| 面向 | addyosmani/agent-skills | mattpocock/skills |
-|------|------------------------|--------------------|
-| 範圍 | 完整 SDLC | 以規劃／對齊／TDD／架構為主 |
-| 安全性 | 三層邊界系統 | 未特別定義 |
-| Persona | 4 個專業角色 | 無 |
-| 工具支援 | 8 種以上 | 主要 Claude Code |
-| 合規 | OWASP / SAMM 對齊 | 未覆蓋 |
+| 面向     | addyosmani/agent-skills | mattpocock/skills           |
+| -------- | ----------------------- | --------------------------- |
+| 範圍     | 完整 SDLC               | 以規劃／對齊／TDD／架構為主 |
+| 安全性   | 三層邊界系統            | 未特別定義                  |
+| Persona  | 4 個專業角色            | 無                          |
+| 工具支援 | 8 種以上                | 主要 Claude Code            |
+| 合規     | OWASP / SAMM 對齊       | 未覆蓋                      |
 
 ## 24.2 安裝與設定
 
@@ -5154,16 +5280,17 @@ Agent Skills 是語言無關的（Language-agnostic）。它定義的是工作�
 
 **Q10: 什麼時候該用 `/spec`？什麼時候直接 `/build`？**
 
-| 場景 | 建議 |
-|------|------|
-| 新功能（> 1 天工作量） | `/spec` → `/plan` → `/build` |
-| 小功能（< 4 小時） | `/plan` → `/build` |
-| Bug 修復 | 直接 `/build`（搭配 Prove-It） |
-| 重構 | `/code-simplify` |
+| 場景                   | 建議                           |
+| ---------------------- | ------------------------------ |
+| 新功能（> 1 天工作量） | `/spec` → `/plan` → `/build`   |
+| 小功能（< 4 小時）     | `/plan` → `/build`             |
+| Bug 修復               | 直接 `/build`（搭配 Prove-It） |
+| 重構                   | `/code-simplify`               |
 
 **Q11: AI 推回我的要求怎麼辦？**
 
 這是 Agent Skills 的設計行為。AI 推回時會說明原因。你可以：
+
 1. 接受建議（推薦）
 2. 提供更多脈絡，讓 AI 重新評估
 3. 明確覆蓋：「我理解風險，請繼續」（AI 會記錄此覆蓋）
@@ -5175,8 +5302,10 @@ Agent Skills 是語言無關的（Language-agnostic）。它定義的是工作�
 **Q13: 如何讓 AI 的 Code Review 更嚴格？**
 
 在 Rules File 中加入：
+
 ```markdown
 ## Code Review 嚴格度
+
 - 任何 Warning 視為 Critical
 - 測試覆蓋率目標：90%
 - 禁止 TODO / FIXME 進入 main 分支
@@ -5202,6 +5331,7 @@ Agent Skills 是語言無關的（Language-agnostic）。它定義的是工作�
 **Q17: 可以用 Agent Skills 來訓練新人嗎？**
 
 可以。Agent Skills 的結構化流程本身就是一份開發最佳實踐教材。新人可以通過使用 Agent Skills 來學習：
+
 - TDD 的正確方式
 - Code Review 的五軸標準
 - 安全編碼原則
@@ -5214,12 +5344,15 @@ Agent Skills 不做程式碼生成模板。它定義的是**工作流程**，程
 **Q19: 如何處理多語言專案？**
 
 在 Rules File 中分別定義各語言的規範：
+
 ```markdown
 ## Java 規範
+
 - JUnit 5 + Mockito
 - Maven + Spring Boot
 
 ## TypeScript 規範
+
 - Vitest + Testing Library
 - pnpm + Vite
 ```
@@ -5277,6 +5410,7 @@ Agent Skills 是**補充**而非替代。它可以安裝在 GitHub Copilot 之�
 **Q30: 未來發展方向？**
 
 根據專案的 Roadmap，可能包括：
+
 - 更多預建 Skills
 - 更好的多工具支援
 - 企業級管理功能
@@ -5290,54 +5424,54 @@ Agent Skills 是**補充**而非替代。它可以安裝在 GitHub Copilot 之�
 
 ### A.1 Skills 速查表
 
-| Skill | 階段 | 一句話說明 |
-|-------|------|-----------|
-| `using-agent-skills` | Meta | 路由使用者意圖到正確的 Skill |
-| `interview-me` | Define | 一次一問的結構化需求訪談 |
-| `idea-refine` | Define | 發散/收斂思考，將想法具體化 |
-| `spec-driven-development` | Define | 先寫 Spec 再寫程式碼 |
-| `planning-and-task-breakdown` | Plan | 垂直切片任務拆解 |
-| `incremental-implementation` | Build | 薄型切片增量實作 |
-| `test-driven-development` | Build | Red-Green-Refactor + Prove-It |
-| `context-engineering` | Build | 正確的時間給正確的 Context |
-| `source-driven-development` | Build | 以官方文件為依據 |
-| `doubt-driven-development` | Build | 對抗性假設驗證 |
-| `frontend-ui-engineering` | Build | 生產品質的 UI + WCAG 2.1 AA |
-| `api-and-interface-design` | Build | 契約優先 + Hyrum's Law |
-| `browser-testing-with-devtools` | Verify | Chrome DevTools 驗證 |
-| `debugging-and-error-recovery` | Verify | 五步驟系統化偵錯 |
-| `code-review-and-quality` | Review | 五軸審查 |
-| `code-simplification` | Review | Chesterton's Fence + 降複雜度 |
-| `security-and-hardening` | Review | 三層邊界 + OWASP |
-| `performance-optimization` | Review | Measure First + Core Web Vitals |
-| `git-workflow-and-versioning` | Ship | Trunk-Based + 原子提交 |
-| `ci-cd-and-automation` | Ship | Shift Left + 品質閘門 |
-| `deprecation-and-migration` | Ship | Code-as-Liability + 僵屍碼清除 |
-| `documentation-and-adrs` | Ship | ADR + API 文件 |
-| `observability-and-instrumentation` | Ship | 結構化日誌 + RED 指標 + OpenTelemetry |
-| `shipping-and-launch` | Ship | Pre-Launch + 階段式發布 |
+| Skill                               | 階段   | 一句話說明                            |
+| ----------------------------------- | ------ | ------------------------------------- |
+| `using-agent-skills`                | Meta   | 路由使用者意圖到正確的 Skill          |
+| `interview-me`                      | Define | 一次一問的結構化需求訪談              |
+| `idea-refine`                       | Define | 發散/收斂思考，將想法具體化           |
+| `spec-driven-development`           | Define | 先寫 Spec 再寫程式碼                  |
+| `planning-and-task-breakdown`       | Plan   | 垂直切片任務拆解                      |
+| `incremental-implementation`        | Build  | 薄型切片增量實作                      |
+| `test-driven-development`           | Build  | Red-Green-Refactor + Prove-It         |
+| `context-engineering`               | Build  | 正確的時間給正確的 Context            |
+| `source-driven-development`         | Build  | 以官方文件為依據                      |
+| `doubt-driven-development`          | Build  | 對抗性假設驗證                        |
+| `frontend-ui-engineering`           | Build  | 生產品質的 UI + WCAG 2.1 AA           |
+| `api-and-interface-design`          | Build  | 契約優先 + Hyrum's Law                |
+| `browser-testing-with-devtools`     | Verify | Chrome DevTools 驗證                  |
+| `debugging-and-error-recovery`      | Verify | 五步驟系統化偵錯                      |
+| `code-review-and-quality`           | Review | 五軸審查                              |
+| `code-simplification`               | Review | Chesterton's Fence + 降複雜度         |
+| `security-and-hardening`            | Review | 三層邊界 + OWASP                      |
+| `performance-optimization`          | Review | Measure First + Core Web Vitals       |
+| `git-workflow-and-versioning`       | Ship   | Trunk-Based + 原子提交                |
+| `ci-cd-and-automation`              | Ship   | Shift Left + 品質閘門                 |
+| `deprecation-and-migration`         | Ship   | Code-as-Liability + 僵屍碼清除        |
+| `documentation-and-adrs`            | Ship   | ADR + API 文件                        |
+| `observability-and-instrumentation` | Ship   | 結構化日誌 + RED 指標 + OpenTelemetry |
+| `shipping-and-launch`               | Ship   | Pre-Launch + 階段式發布               |
 
 ### A.2 Personas 速查表
 
-| Persona | 角色 | 審查框架 | 產出 |
-|---------|------|---------|------|
-| `code-reviewer` | Staff Engineer | 五軸（Correctness, Readability, Architecture, Security, Performance） | APPROVE / REQUEST CHANGES |
-| `test-engineer` | QA Specialist | 測試金字塔 80/15/5 + Prove-It | Coverage Analysis |
-| `security-auditor` | Security Engineer | 五領域（Input, Auth, Data, Infra, Third-party） | Security Audit Report |
-| `web-performance-auditor` | Web Performance Specialist | Core Web Vitals（LCP/INP/CLS）、Quick/Deep 模式 | Web Performance Audit Report |
+| Persona                   | 角色                       | 審查框架                                                              | 產出                         |
+| ------------------------- | -------------------------- | --------------------------------------------------------------------- | ---------------------------- |
+| `code-reviewer`           | Staff Engineer             | 五軸（Correctness, Readability, Architecture, Security, Performance） | APPROVE / REQUEST CHANGES    |
+| `test-engineer`           | QA Specialist              | 測試金字塔 80/15/5 + Prove-It                                         | Coverage Analysis            |
+| `security-auditor`        | Security Engineer          | 五領域（Input, Auth, Data, Infra, Third-party）                       | Security Audit Report        |
+| `web-performance-auditor` | Web Performance Specialist | Core Web Vitals（LCP/INP/CLS）、Quick/Deep 模式                       | Web Performance Audit Report |
 
 ### A.3 Commands 速查表
 
-| Command | 映射 Skill / Persona | 產出 |
-|---------|-----------|------|
-| `/spec` | `spec-driven-development` | SPEC.md |
-| `/plan` | `planning-and-task-breakdown` | tasks/plan.md + tasks/todo.md |
-| `/build` | `incremental-implementation` + `test-driven-development` | 程式碼 + 測試 |
-| `/test` | `test-driven-development` | 測試程式碼 |
-| `/review` | `code-review-and-quality` | Review Report |
-| `/code-simplify` | `code-simplification` | 簡化建議 |
-| `/ship` | `shipping-and-launch` → 三 Persona | 三份報告 + Checklist |
-| `/webperf` | `web-performance-auditor` | Web Performance Audit Report |
+| Command          | 映射 Skill / Persona                                     | 產出                          |
+| ---------------- | -------------------------------------------------------- | ----------------------------- |
+| `/spec`          | `spec-driven-development`                                | SPEC.md                       |
+| `/plan`          | `planning-and-task-breakdown`                            | tasks/plan.md + tasks/todo.md |
+| `/build`         | `incremental-implementation` + `test-driven-development` | 程式碼 + 測試                 |
+| `/test`          | `test-driven-development`                                | 測試程式碼                    |
+| `/review`        | `code-review-and-quality`                                | Review Report                 |
+| `/code-simplify` | `code-simplification`                                    | 簡化建議                      |
+| `/ship`          | `shipping-and-launch` → 三 Persona                       | 三份報告 + Checklist          |
+| `/webperf`       | `web-performance-auditor`                                | Web Performance Audit Report  |
 
 ## 附錄 B：Rules File 範本
 
@@ -5347,6 +5481,7 @@ Agent Skills 是**補充**而非替代。它可以安裝在 GitHub Copilot 之�
 # CLAUDE.md
 
 ## 專案
+
 - 名稱：TaskFlow
 - 語言：Java 17
 - 框架：Spring Boot 3.2.5
@@ -5355,6 +5490,7 @@ Agent Skills 是**補充**而非替代。它可以安裝在 GitHub Copilot 之�
 - 前端：Vue 3 + TypeScript + Vite
 
 ## 程式碼規範
+
 - 類別：PascalCase
 - 方法/變數：camelCase
 - 常數：UPPER_SNAKE_CASE
@@ -5363,18 +5499,21 @@ Agent Skills 是**補充**而非替代。它可以安裝在 GitHub Copilot 之�
 - Commit：英文 Conventional Commits
 
 ## 測試
+
 - 框架：JUnit 5 + Mockito
 - 覆蓋率目標：80%
 - 整合測試：Testcontainers
 - 測試命名：shouldXxxWhenYyy()
 
 ## 安全
+
 - 認證：JWT (RS256)
 - 密碼：BCrypt (cost=12)
 - 所有 API 需要 Auth（除了 /api/auth/**）
 - 禁止：eval()、字串串接 SQL、提交 Secrets
 
 ## Agent Skills
+
 - 新功能：/spec → /plan → /build → /ship
 - Bug 修復：直接 /build + Prove-It
 - PR 大小：~100 行
@@ -5387,18 +5526,21 @@ Agent Skills 是**補充**而非替代。它可以安裝在 GitHub Copilot 之�
 # Cursor Rules
 
 ## 行為規則
+
 - 每次回應前先確認理解需求
 - 困惑時提問，不猜測
 - 每個變更 ~100 行
 - 先寫測試再寫程式碼
 
 ## 技術棧
+
 - Java 17 + Spring Boot 3.2
 - Vue 3 + TypeScript
 - PostgreSQL 15
 - JUnit 5 + Mockito
 
 ## 禁止事項
+
 - 不使用 var（Java）除非型別顯而易見
 - 不使用 @Autowired 在欄位注入（使用建構子注入）
 - 不提交 TODO/FIXME 到 main 分支
@@ -5410,14 +5552,17 @@ Agent Skills 是**補充**而非替代。它可以安裝在 GitHub Copilot 之�
 # GitHub Copilot Instructions
 
 ## 程式碼風格
+
 遵循 Google Java Style Guide。使用建構子注入而非欄位注入。
 
 ## 測試
+
 所有公開方法必須有對應的單元測試。
 測試命名格式：shouldXxxWhenYyy()。
 使用 AssertJ 斷言。
 
 ## 安全
+
 - 所有 SQL 使用 JPA 或 Parameterized Query
 - 輸入驗證使用 Bean Validation (@Valid)
 - 密碼雜湊使用 BCrypt
@@ -5436,8 +5581,8 @@ on:
     branches: [main]
 
 env:
-  JAVA_VERSION: '17'
-  NODE_VERSION: '20'
+  JAVA_VERSION: "17"
+  NODE_VERSION: "20"
 
 jobs:
   build-and-test:
@@ -5464,8 +5609,8 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'temurin'
-          cache: 'maven'
+          distribution: "temurin"
+          cache: "maven"
 
       - name: Build
         run: mvn compile -q
@@ -5502,11 +5647,11 @@ jobs:
     needs: build-and-test
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: OWASP ZAP Scan
         uses: zaproxy/action-baseline@v0.10.0
         with:
-          target: 'http://localhost:8080'
+          target: "http://localhost:8080"
           fail_action: true
 ```
 
@@ -5590,28 +5735,28 @@ jobs:
 
 ## 附錄 E：詞彙表
 
-| 術語 | 定義 |
-|------|------|
-| **ADR** | Architecture Decision Record — 架構決策記錄 |
-| **Agent Skills** | AI Agent 的行為規範框架 |
-| **Beyoncé Rule** | 「If you liked it, put a test on it」— 為重要行為寫測試 |
-| **Canary Release** | 先部署到小比例流量，逐步擴大 |
-| **Chesterton's Fence** | 理解程式碼存在原因後才能移除 |
-| **Context Engineering** | 管理 AI Agent 接收的上下文資訊 |
-| **Feature Flag** | 功能開關，允許不部署就開啟/關閉功能 |
-| **Hyrum's Law** | 所有可觀察行為都會被依賴 |
-| **MCP** | Model Context Protocol — 模型上下文協議 |
-| **Persona** | AI Agent 扮演的專業角色 |
-| **Prove-It Pattern** | 先寫重現 Bug 的測試，再修復 |
-| **SAST** | Static Application Security Testing — 靜態安全測試 |
-| **SDD** | Spec-Driven Development — 規格驅動開發 |
-| **Shift Left** | 將品質檢查提前到開發流程早期 |
-| **SKILL.md** | Skill 的定義檔案 |
-| **SSDLC** | Secure Software Development Life Cycle — 安全軟體開發生命週期 |
-| **TDD** | Test-Driven Development — 測試驅動開發 |
-| **Trunk-Based Development** | 使用短命分支、頻繁合併到主幹的開發模式 |
-| **Vertical Slice** | 端到端可測試的最小功能切片 |
-| **WCAG** | Web Content Accessibility Guidelines — 網頁內容無障礙指南 |
+| 術語                        | 定義                                                          |
+| --------------------------- | ------------------------------------------------------------- |
+| **ADR**                     | Architecture Decision Record — 架構決策記錄                   |
+| **Agent Skills**            | AI Agent 的行為規範框架                                       |
+| **Beyoncé Rule**            | 「If you liked it, put a test on it」— 為重要行為寫測試       |
+| **Canary Release**          | 先部署到小比例流量，逐步擴大                                  |
+| **Chesterton's Fence**      | 理解程式碼存在原因後才能移除                                  |
+| **Context Engineering**     | 管理 AI Agent 接收的上下文資訊                                |
+| **Feature Flag**            | 功能開關，允許不部署就開啟/關閉功能                           |
+| **Hyrum's Law**             | 所有可觀察行為都會被依賴                                      |
+| **MCP**                     | Model Context Protocol — 模型上下文協議                       |
+| **Persona**                 | AI Agent 扮演的專業角色                                       |
+| **Prove-It Pattern**        | 先寫重現 Bug 的測試，再修復                                   |
+| **SAST**                    | Static Application Security Testing — 靜態安全測試            |
+| **SDD**                     | Spec-Driven Development — 規格驅動開發                        |
+| **Shift Left**              | 將品質檢查提前到開發流程早期                                  |
+| **SKILL.md**                | Skill 的定義檔案                                              |
+| **SSDLC**                   | Secure Software Development Life Cycle — 安全軟體開發生命週期 |
+| **TDD**                     | Test-Driven Development — 測試驅動開發                        |
+| **Trunk-Based Development** | 使用短命分支、頻繁合併到主幹的開發模式                        |
+| **Vertical Slice**          | 端到端可測試的最小功能切片                                    |
+| **WCAG**                    | Web Content Accessibility Guidelines — 網頁內容無障礙指南     |
 
 ## 附錄 F：導入 Checklist
 
@@ -5654,9 +5799,8 @@ jobs:
 ---
 
 > **📘 本手冊結束**
-> 
+>
 > 本手冊涵蓋 addyosmani/agent-skills v0.6.2 的完整內容，包含 Claude Code Plugin Marketplace、Agent Teams（實驗性）、協調模式參考、Observability 與 Web Performance 相關新增功能等最新內容。
 > 隨著專案更新，請定期查閱 [GitHub Repository](https://github.com/addyosmani/agent-skills) 以獲取最新資訊。
 >
 > **授權**：本手冊為教學用途，Agent Skills 專案採用 MIT License。
-

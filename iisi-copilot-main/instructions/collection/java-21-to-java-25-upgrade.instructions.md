@@ -1,5 +1,5 @@
 ---
-applyTo: ['*']
+applyTo: ["*"]
 description: "自 Java 21 發布以來，採用 Java 25 新功能的全面最佳實務。"
 ---
 
@@ -14,13 +14,15 @@ description: "自 Java 21 發布以來，採用 Java 25 新功能的全面最佳
 **Pattern、instanceof 和 switch 中的原始類型**
 
 使用模式匹配時：
+
 - 建議在 switch 表達式和 instanceof 檢查中使用原始類型模式
 - 傳統 switch 的升級範例：
+
 ```java
 // 舊方法 (Java 21)
 switch (x.getStatus()) {
     case 0 -> "okay";
-    case 1 -> "warning"; 
+    case 1 -> "warning";
     case 2 -> "error";
     default -> "unknown status: " + x.getStatus();
 }
@@ -29,13 +31,14 @@ switch (x.getStatus()) {
 switch (x.getStatus()) {
     case 0 -> "okay";
     case 1 -> "warning";
-    case 2 -> "error"; 
+    case 2 -> "error";
     case int i -> "unknown status: " + i;
 }
 ```
 
 - 使用 `--enable-preview` 標誌啟用預覽功能
 - 建議在更複雜的條件下使用 guard patterns：
+
 ```java
 switch (x.getYearlyFlights()) {
     case 0 -> ...;
@@ -49,9 +52,11 @@ switch (x.getYearlyFlights()) {
 **用標準 API 取代 ASM**
 
 當檢測到位元碼操作或類別檔案處理時：
+
 - 建議從 ASM 函式庫遷移到標準 Class-File API
 - 使用 `java.lang.classfile` 套件取代 `org.objectweb.asm`
 - 範例遷移模式：
+
 ```java
 // 舊版 ASM 方法
 ClassReader reader = new ClassReader(classBytes);
@@ -60,7 +65,7 @@ ClassWriter writer = new ClassWriter(reader, 0);
 
 // 新版 Class-File API 方法
 ClassModel classModel = ClassFile.of().parse(classBytes);
-byte[] newBytes = ClassFile.of().transform(classModel, 
+byte[] newBytes = ClassFile.of().transform(classModel,
     ClassTransform.transformingMethods(methodTransform));
 ```
 
@@ -69,9 +74,11 @@ byte[] newBytes = ClassFile.of().transform(classModel,
 **JavaDoc 現代化**
 
 當處理 JavaDoc 註解時：
+
 - 建議將 HTML-heavy 的 JavaDoc 轉換為 Markdown 語法
 - 使用 `///` 來撰寫 Markdown 文件註釋
 - 範例轉換：
+
 ```java
 // 舊版 HTML JavaDoc
 /**
@@ -79,17 +86,17 @@ byte[] newBytes = ClassFile.of().transform(classModel,
  * <p>
  * If the argument is not negative, return the argument.
  * If the argument is negative, return the negation of the argument.
- * 
+ *
  * @param a the argument whose absolute value is to be determined
  * @return the absolute value of the argument
  */
 
-// 新版 Markdown JavaDoc  
+// 新版 Markdown JavaDoc
 /// Returns the **absolute** value of an `int` value.
 ///
 /// If the argument is not negative, return the argument.
 /// If the argument is negative, return the negation of the argument.
-/// 
+///
 /// @param a the argument whose absolute value is to be determined
 /// @return the absolute value of the argument
 ```
@@ -99,9 +106,11 @@ byte[] newBytes = ClassFile.of().transform(classModel,
 **記錄增強**
 
 當處理記錄時：
+
 - 建議使用 `with` 表達式來建立衍生記錄
 - 啟用預覽功能以使用衍生記錄建立
 - 範例模式：
+
 ```java
 // 舊版手動複製記錄
 public record Person(String name, int age, String email) {
@@ -119,9 +128,11 @@ Person updated = person with { age = 30; };
 **增強的流處理**
 
 當處理複雜的流操作時：
+
 - 建議使用 `Stream.gather()` 進行自訂的中間操作
 - 導入 `java.util.stream.Gatherers` 以使用內建的 gatherers
 - 範例用法：
+
 ```java
 // 自訂視窗操作
 List<List<String>> windows = stream
@@ -143,8 +154,10 @@ List<Integer> filtered = numbers.stream()
 ### sun.misc.Unsafe 記憶體存取方法 (JEP 471 - 23 已棄用)
 
 當檢測到 `sun.misc.Unsafe` 使用時：
+
 - 警告已棄用的記憶體存取方法
 - 建議遷移到標準替代方案：
+
 ```java
 // 舊版 sun.misc.Unsafe 記憶體存取
 Unsafe unsafe = Unsafe.getUnsafe();
@@ -163,10 +176,12 @@ int value = segment.get(ValueLayout.JAVA_INT, offset);
 ### JNI 使用警告 (JEP 472 - 24 中的警告)
 
 當檢測到 JNI 使用時：
+
 - 警告即將對 JNI 使用施加限制
 - 建議為使用 JNI 的應用程式添加 `--enable-native-access` 標誌
 - 建議在可能的情況下遷移到 Foreign Function & Memory API
 - 為本機訪問添加 module-info.java 條目：
+
 ```java
 module com.example.app {
     requires jdk.unsupported; // for remaining JNI usage
@@ -178,8 +193,10 @@ module com.example.app {
 ### ZGC Generational Mode (ZGC 世代模式) (JEP 474 - Default in 23)
 
 當配置垃圾收集時：
+
 - 預設 ZGC 現在使用世代模式
 - 如果明確使用非世代 ZGC，請更新 JVM 標誌：
+
 ```bash
 # 明確使用非世代模式 (將顯示棄用警告)
 -XX:+UseZGC -XX:-ZGenerational
@@ -191,15 +208,18 @@ module com.example.app {
 ### G1 Improvements (G1 改進) (JEP 475 - Implemented in 24)
 
 當使用 G1GC 時：
+
 - 不需要更改代碼 - 內部 JVM 優化
 - 可能會看到 C2 編譯器的編譯性能提升
 
 ## Vector API (JEP 469 - Eighth Incubator in 25)
 
 當處理數值計算時：
+
 - 建議使用 Vector API 進行 SIMD 操作（仍在孵化中）
 - 添加 `--add-modules jdk.incubator.vector`
 - 範例用法：
+
 ```java
 import jdk.incubator.vector.*;
 
@@ -223,9 +243,11 @@ for (int i = 0; i < a.length; i += species.length()) {
 ### 預覽功能
 
 對於使用預覽功能的專案：
+
 - 在編譯器參數中添加 `--enable-preview`
 - 在運行時參數中添加 `--enable-preview`
 - Maven 配置：
+
 ```xml
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
@@ -248,6 +270,7 @@ for (int i = 0; i < a.length; i += species.length()) {
 ```
 
 - Gradle 配置：
+
 ```kotlin
 java {
     toolchain {
@@ -278,6 +301,7 @@ tasks.withType<Test> {
 ### 代碼審查清單
 
 在審查 Java 25 升級的代碼時：
+
 - [ ] 將 ASM 使用替換為 Class-File API
 - [ ] 將複雜的 HTML JavaDoc 轉換為 Markdown
 - [ ] 在 switch 表達式中使用原始模式（如適用）

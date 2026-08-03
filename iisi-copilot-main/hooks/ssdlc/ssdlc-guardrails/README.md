@@ -1,6 +1,6 @@
 ---
-name: 'SSDLC Guardrails'
-description: '綜合性 SSDLC 護欄 Hook，涵蓋 Agent 會話完整生命週期：SessionStart 注入專案上下文、PreToolUse 阻擋危險命令、PostToolUse 自動格式化與 Lint 檢查、Stop 產生會話報告。'
+name: "SSDLC Guardrails"
+description: "綜合性 SSDLC 護欄 Hook，涵蓋 Agent 會話完整生命週期：SessionStart 注入專案上下文、PreToolUse 阻擋危險命令、PostToolUse 自動格式化與 Lint 檢查、Stop 產生會話報告。"
 tags:
   - ssdlc
   - security
@@ -14,12 +14,12 @@ tags:
 
 ## 涵蓋事件
 
-| 事件 | 用途 |
-|------|------|
-| `SessionStart` | 注入專案上下文（版本、分支、環境資訊） |
-| `PreToolUse` | 阻擋危險命令（`rm -rf`、`DROP TABLE`、`git push --force`） |
-| `PostToolUse` | 自動格式化（Prettier）+ Lint 檢查 |
-| `Stop` | 產生 Agent 會話摘要報告 |
+| 事件           | 用途                                                       |
+| -------------- | ---------------------------------------------------------- |
+| `SessionStart` | 注入專案上下文（版本、分支、環境資訊）                     |
+| `PreToolUse`   | 阻擋危險命令（`rm -rf`、`DROP TABLE`、`git push --force`） |
+| `PostToolUse`  | 自動格式化（Prettier）+ Lint 檢查                          |
+| `Stop`         | 產生 Agent 會話摘要報告                                    |
 
 ## 使用方式
 

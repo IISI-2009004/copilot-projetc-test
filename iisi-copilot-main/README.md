@@ -41,27 +41,27 @@ iisi-copilot/
 
 ### Step 1：選擇你需要的元件
 
-| 目標 | 前往 |
-|------|------|
-| 建立 AI Agent 團隊（規劃/開發/審查/安全/發布） | [agents/ssdlc/](agents/ssdlc/) |
-| 強制執行安全政策與格式化（開發時防護） | [hooks/ssdlc/](hooks/ssdlc/) |
-| 讓 Copilot 遵循專案技術規範 | [instructions/ssdlc/](instructions/ssdlc/) 或 [instructions/collection/](instructions/collection/) |
-| 取得標準化 Prompt 範本 | [prompts/ssdlc/](prompts/ssdlc/) |
-| 加入可重用的 Agent Skills | [skills/ssdlc/](skills/ssdlc/) |
-| 取得 SSDLC 各階段文件模板 | [templates/ssdlc/](templates/ssdlc/) |
-| 學習 AI 工具或技術框架 | [tutorials/](tutorials/) |
-| 回饋你的專案導入案例與驗證結果 | [case-studies/](case-studies/) |
+| 目標                                           | 前往                                                                                               |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 建立 AI Agent 團隊（規劃/開發/審查/安全/發布） | [agents/ssdlc/](agents/ssdlc/)                                                                     |
+| 強制執行安全政策與格式化（開發時防護）         | [hooks/ssdlc/](hooks/ssdlc/)                                                                       |
+| 讓 Copilot 遵循專案技術規範                    | [instructions/ssdlc/](instructions/ssdlc/) 或 [instructions/collection/](instructions/collection/) |
+| 取得標準化 Prompt 範本                         | [prompts/ssdlc/](prompts/ssdlc/)                                                                   |
+| 加入可重用的 Agent Skills                      | [skills/ssdlc/](skills/ssdlc/)                                                                     |
+| 取得 SSDLC 各階段文件模板                      | [templates/ssdlc/](templates/ssdlc/)                                                               |
+| 學習 AI 工具或技術框架                         | [tutorials/](tutorials/)                                                                           |
+| 回饋你的專案導入案例與驗證結果                 | [case-studies/](case-studies/)                                                                     |
 
 ### Step 2：參考對應的說明文件
 
-| 元件 | 說明文件 |
-|------|---------|
-| Agents | [docs/README.agents.md](docs/README.agents.md) |
-| Hooks | [docs/README.hooks.md](docs/README.hooks.md) |
+| 元件         | 說明文件                                                   |
+| ------------ | ---------------------------------------------------------- |
+| Agents       | [docs/README.agents.md](docs/README.agents.md)             |
+| Hooks        | [docs/README.hooks.md](docs/README.hooks.md)               |
 | Instructions | [docs/README.instructions.md](docs/README.instructions.md) |
-| Plugins | [docs/README.plugins.md](docs/README.plugins.md) |
-| Skills | [docs/README.skills.md](docs/README.skills.md) |
-| Workflows | [docs/README.workflows.md](docs/README.workflows.md) |
+| Plugins      | [docs/README.plugins.md](docs/README.plugins.md)           |
+| Skills       | [docs/README.skills.md](docs/README.skills.md)             |
+| Workflows    | [docs/README.workflows.md](docs/README.workflows.md)       |
 
 ---
 
@@ -71,23 +71,23 @@ iisi-copilot/
 
 SSDLC Agent 團隊由 15 個專責角色組成，覆蓋完整開發生命週期：
 
-| 階段 | Agent | 職責 |
-|------|-------|------|
-| 調度 | [Orchestrator](agents/ssdlc/orchestrator.agent.md) | 全局調度與 Agent 編排 |
-| 調度 | [Project Manager](agents/ssdlc/project-manager.agent.md) | 專案進度與資源管控 |
-| 規劃 | [Planner](agents/ssdlc/planner.agent.md) | 需求分析與任務拆解 |
-| 規劃 | [Architect](agents/ssdlc/architect.agent.md) | 架構設計與 STRIDE 威脅建模 |
-| 開發 | [Backend](agents/ssdlc/backend.agent.md) | 後端開發與 API 設計 |
-| 開發 | [Frontend](agents/ssdlc/frontend.agent.md) | 前端開發與 UI 實作 |
-| 品質 | [Code Reviewer](agents/ssdlc/code-reviewer.agent.md) | 程式碼審查與品質把關 |
-| 安全 | [Security Reviewer](agents/ssdlc/security-reviewer.agent.md) | SAST/SCA 掃描與安全審查 |
-| 測試 | [Test Generator](agents/ssdlc/test-generator.agent.md) | 測試案例與安全測試產生 |
-| 交付 | [Doc Writer](agents/ssdlc/doc-writer.agent.md) | 技術文件撰寫 |
-| 交付 | [Release](agents/ssdlc/release.agent.md) | 版本發佈與安全閘門 |
-| 交付 | [DevOps](agents/ssdlc/devops.agent.md) | CI/CD Pipeline 與 IaC |
-| 維運 | [Incident Response](agents/ssdlc/incident-response.agent.md) | 事件回應與事後檢討 |
-| 輔助 | [Reverse Engineer](agents/ssdlc/reverse-eng.agent.md) | 逆向工程與系統理解 |
-| 輔助 | [Thinking Beast Mode](agents/ssdlc/Thinking-Beast-Mode.agent.md) | 深度推理與創意突破 |
+| 階段 | Agent                                                            | 職責                       |
+| ---- | ---------------------------------------------------------------- | -------------------------- |
+| 調度 | [Orchestrator](agents/ssdlc/orchestrator.agent.md)               | 全局調度與 Agent 編排      |
+| 調度 | [Project Manager](agents/ssdlc/project-manager.agent.md)         | 專案進度與資源管控         |
+| 規劃 | [Planner](agents/ssdlc/planner.agent.md)                         | 需求分析與任務拆解         |
+| 規劃 | [Architect](agents/ssdlc/architect.agent.md)                     | 架構設計與 STRIDE 威脅建模 |
+| 開發 | [Backend](agents/ssdlc/backend.agent.md)                         | 後端開發與 API 設計        |
+| 開發 | [Frontend](agents/ssdlc/frontend.agent.md)                       | 前端開發與 UI 實作         |
+| 品質 | [Code Reviewer](agents/ssdlc/code-reviewer.agent.md)             | 程式碼審查與品質把關       |
+| 安全 | [Security Reviewer](agents/ssdlc/security-reviewer.agent.md)     | SAST/SCA 掃描與安全審查    |
+| 測試 | [Test Generator](agents/ssdlc/test-generator.agent.md)           | 測試案例與安全測試產生     |
+| 交付 | [Doc Writer](agents/ssdlc/doc-writer.agent.md)                   | 技術文件撰寫               |
+| 交付 | [Release](agents/ssdlc/release.agent.md)                         | 版本發佈與安全閘門         |
+| 交付 | [DevOps](agents/ssdlc/devops.agent.md)                           | CI/CD Pipeline 與 IaC      |
+| 維運 | [Incident Response](agents/ssdlc/incident-response.agent.md)     | 事件回應與事後檢討         |
+| 輔助 | [Reverse Engineer](agents/ssdlc/reverse-eng.agent.md)            | 逆向工程與系統理解         |
+| 輔助 | [Thinking Beast Mode](agents/ssdlc/Thinking-Beast-Mode.agent.md) | 深度推理與創意突破         |
 
 詳細 Agent 設計規範、格式說明與協作流程圖，請參閱 [agents/README.md](agents/README.md)。
 
@@ -97,16 +97,16 @@ SSDLC Agent 團隊由 15 個專責角色組成，覆蓋完整開發生命週期�
 
 Hooks 在 AI 寫程式工具每次操作前後自動執行，提供確定性的安全強制機制：
 
-| Hook | 功能 |
-|------|------|
-| [auto-format-lint](hooks/ssdlc/auto-format-lint/) | 自動格式化與 Lint 檢查 |
-| [block-dangerous-commands](hooks/ssdlc/block-dangerous-commands/) | 攔截高風險終端指令 |
-| [block-force-push](hooks/ssdlc/block-force-push/) | 防止 force push 至保護分支 |
-| [protect-sensitive-files](hooks/ssdlc/protect-sensitive-files/) | 保護機敏檔案不被意外修改 |
-| [save-chat-history](hooks/ssdlc/save-chat-history/) | 會話結束時保存 Copilot 對話逐字稿 |
-| [session-report](hooks/ssdlc/session-report/) | 會話結束時產生稽核報告 |
-| [ssdlc-guardrails](hooks/ssdlc/ssdlc-guardrails/) | SSDLC 流程合規強制執行 |
-| [validate-no-secrets](hooks/ssdlc/validate-no-secrets/) | 偵測並阻止機密資料提交 |
+| Hook                                                              | 功能                              |
+| ----------------------------------------------------------------- | --------------------------------- |
+| [auto-format-lint](hooks/ssdlc/auto-format-lint/)                 | 自動格式化與 Lint 檢查            |
+| [block-dangerous-commands](hooks/ssdlc/block-dangerous-commands/) | 攔截高風險終端指令                |
+| [block-force-push](hooks/ssdlc/block-force-push/)                 | 防止 force push 至保護分支        |
+| [protect-sensitive-files](hooks/ssdlc/protect-sensitive-files/)   | 保護機敏檔案不被意外修改          |
+| [save-chat-history](hooks/ssdlc/save-chat-history/)               | 會話結束時保存 Copilot 對話逐字稿 |
+| [session-report](hooks/ssdlc/session-report/)                     | 會話結束時產生稽核報告            |
+| [ssdlc-guardrails](hooks/ssdlc/ssdlc-guardrails/)                 | SSDLC 流程合規強制執行            |
+| [validate-no-secrets](hooks/ssdlc/validate-no-secrets/)           | 偵測並阻止機密資料提交            |
 
 詳細安裝與設定說明，請參閱 [docs/README.hooks.md](docs/README.hooks.md)。
 
@@ -129,15 +129,15 @@ Hooks 在 AI 寫程式工具每次操作前後自動執行，提供確定性的�
 
 針對 SSDLC 七大階段提供標準化 Prompt：
 
-| 階段 | 路徑 |
-|------|------|
-| 需求分析 | [prompts/ssdlc/requirements/](prompts/ssdlc/requirements/) |
-| 設計 | [prompts/ssdlc/design/](prompts/ssdlc/design/) |
-| 寫程式 | [prompts/ssdlc/coding/](prompts/ssdlc/coding/) |
-| 測試 | [prompts/ssdlc/testing/](prompts/ssdlc/testing/) |
-| 安全審查 | [prompts/ssdlc/security/](prompts/ssdlc/security/) |
-| 程式碼審查 | [prompts/ssdlc/review/](prompts/ssdlc/review/) |
-| 逆向工程 | [prompts/ssdlc/reverse-engineering/](prompts/ssdlc/reverse-engineering/) |
+| 階段       | 路徑                                                                     |
+| ---------- | ------------------------------------------------------------------------ |
+| 需求分析   | [prompts/ssdlc/requirements/](prompts/ssdlc/requirements/)               |
+| 設計       | [prompts/ssdlc/design/](prompts/ssdlc/design/)                           |
+| 寫程式     | [prompts/ssdlc/coding/](prompts/ssdlc/coding/)                           |
+| 測試       | [prompts/ssdlc/testing/](prompts/ssdlc/testing/)                         |
+| 安全審查   | [prompts/ssdlc/security/](prompts/ssdlc/security/)                       |
+| 程式碼審查 | [prompts/ssdlc/review/](prompts/ssdlc/review/)                           |
+| 逆向工程   | [prompts/ssdlc/reverse-engineering/](prompts/ssdlc/reverse-engineering/) |
 
 詳細設計原則請參閱 [prompts/README.md](prompts/README.md)。
 
@@ -145,14 +145,14 @@ Hooks 在 AI 寫程式工具每次操作前後自動執行，提供確定性的�
 
 ### Skills — 可重用 Agent 能力模組
 
-| Skill | 功能 |
-|-------|------|
-| [api-reviewer](skills/ssdlc/api-reviewer/) | API 設計審查與規範驗證 |
-| [doc-generator](skills/ssdlc/doc-generator/) | 技術文件自動產生 |
-| [junit-generator](skills/ssdlc/junit-generator/) | JUnit 測試案例產生 |
-| [pr-checker](skills/ssdlc/pr-checker/) | PR 品質與安全檢核 |
-| [reverse-analysis](skills/ssdlc/reverse-analysis/) | 現有程式碼逆向分析 |
-| [security-review](skills/ssdlc/security-review/) | 安全弱點掃描與報告 |
+| Skill                                              | 功能                   |
+| -------------------------------------------------- | ---------------------- |
+| [api-reviewer](skills/ssdlc/api-reviewer/)         | API 設計審查與規範驗證 |
+| [doc-generator](skills/ssdlc/doc-generator/)       | 技術文件自動產生       |
+| [junit-generator](skills/ssdlc/junit-generator/)   | JUnit 測試案例產生     |
+| [pr-checker](skills/ssdlc/pr-checker/)             | PR 品質與安全檢核      |
+| [reverse-analysis](skills/ssdlc/reverse-analysis/) | 現有程式碼逆向分析     |
+| [security-review](skills/ssdlc/security-review/)   | 安全弱點掃描與報告     |
 
 詳細規範請參閱 [docs/README.skills.md](docs/README.skills.md)。
 
@@ -162,14 +162,14 @@ Hooks 在 AI 寫程式工具每次操作前後自動執行，提供確定性的�
 
 提供各 SSDLC 階段的標準文件範本：
 
-| 類別 | 包含模板 |
-|------|---------|
-| [需求](templates/ssdlc/requirements/) | BRD、FRD、PRD、SRD、UseCase、SecurityRequirements、ChangeRequest |
-| [設計](templates/ssdlc/design/) | 系統設計文件 |
-| [測試](templates/ssdlc/testing/) | TestPlan、TestCase、TestReport、PerformanceTestReport、SecurityScanReport |
-| [部署](templates/ssdlc/deployment/) | 部署相關文件 |
-| [維運](templates/ssdlc/operations/) | 維運相關文件 |
-| [專案](templates/ssdlc/project/) | README、CHANGELOG、Retrospective、UserManual |
+| 類別                                  | 包含模板                                                                  |
+| ------------------------------------- | ------------------------------------------------------------------------- |
+| [需求](templates/ssdlc/requirements/) | BRD、FRD、PRD、SRD、UseCase、SecurityRequirements、ChangeRequest          |
+| [設計](templates/ssdlc/design/)       | 系統設計文件                                                              |
+| [測試](templates/ssdlc/testing/)      | TestPlan、TestCase、TestReport、PerformanceTestReport、SecurityScanReport |
+| [部署](templates/ssdlc/deployment/)   | 部署相關文件                                                              |
+| [維運](templates/ssdlc/operations/)   | 維運相關文件                                                              |
+| [專案](templates/ssdlc/project/)      | README、CHANGELOG、Retrospective、UserManual                              |
 
 ---
 
@@ -178,22 +178,27 @@ Hooks 在 AI 寫程式工具每次操作前後自動執行，提供確定性的�
 涵蓋五大類別的完整中文教學手冊：
 
 #### AI 工具
+
 涵蓋 Claude Code、GitHub Copilot、SSDLC Agent Team 建立、MCP、Agent Skills 等 50+ 篇教學。
 → [tutorials/AI/](tutorials/AI/)
 
 #### 框架
+
 Spring Boot、Spring Framework、Quarkus、Angular、React、Vue3、Node.js、Jakarta EE、Tailwind CSS 等。
 → [tutorials/framework/](tutorials/framework/)
 
 #### 方法論
+
 Clean Architecture、Clean Code、DDD、TDD、BDD、Microservices、Design Patterns、Refactoring、UML 等。
 → [tutorials/methodology/](tutorials/methodology/)
 
 #### 程式語言
+
 Java、Python、TypeScript、JavaScript、C#、C++、Rust、SQL、Bash、PowerShell 等。
 → [tutorials/program language/](tutorials/program%20language/)
 
 #### 工具
+
 Git、GitHub、GitLab、Jenkins、Kubernetes、Podman、Redis、Kafka、Keycloak、VS Code、IntelliJ 等。
 → [tutorials/tools/](tutorials/tools/)
 
@@ -229,6 +234,7 @@ Git、GitHub、GitLab、Jenkins、Kubernetes、Podman、Redis、Kafka、Keycloak
 歡迎貢獻新的 Agents、Instructions、Hooks、Skills、Prompts，或回饋你的專案導入案例。詳細規範請參閱 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## Copilot 專案初始化與標準目錄設計
+
 ### your-project 標準目錄樹
 
 ```
@@ -344,19 +350,18 @@ your-project/
 
 ### 檔案用途說明
 
-| 檔案 / 目錄 | 用途 | 自動套用 | 版本控管 |
-|------------|------|---------|---------|
-| `AGENTS.md` | 全域 Agent 指令，所有 AI Agent（VS Code、Claude Code 等）通用 | ✓ 始終套用 | ✓ |
-| `.github/copilot-instructions.md` | Copilot 專用全域指令 | ✓ 始終套用 | ✓ |
-| `.github/agents/*.agent.md` | Custom Agent 定義（VS Code 格式） | 選擇 Agent 時套用 | ✓ |
-| `.github/agents/*.md` | Custom Agent 定義（GitHub.com / CLI 通用） | 選擇 Agent 時套用 | ✓ |
-| `.github/instructions/*.instructions.md` | 檔案型指令，按 `applyTo` 模式套用 | ✓ 符合模式時自動套用 | ✓ |
-| `.github/skills/*/SKILL.md` | Agent Skills，按需載入（也可放在 `.claude/skills/` 或 `.agents/skills/`） | 相關時自動載入 | ✓ |
-| `.github/hooks/*.json` | Hooks 定義（VS Code Preview / Cloud Agent+CLI GA） | ✓ 觸發時自動執行 | ✓ |
-| `.github/prompts/*.prompt.md` | Prompt 範本，手動引用 | ✗ 需手動選用 | ✓ |
-| `docs/governance/` | 治理文件 | ✗ 供人類閱讀 | ✓ |
-| `docs/architecture/adr/` | 架構決策紀錄 | ✗ 可被 Agent 引用 | ✓ |
-
+| 檔案 / 目錄                              | 用途                                                                      | 自動套用             | 版本控管 |
+| ---------------------------------------- | ------------------------------------------------------------------------- | -------------------- | -------- |
+| `AGENTS.md`                              | 全域 Agent 指令，所有 AI Agent（VS Code、Claude Code 等）通用             | ✓ 始終套用           | ✓        |
+| `.github/copilot-instructions.md`        | Copilot 專用全域指令                                                      | ✓ 始終套用           | ✓        |
+| `.github/agents/*.agent.md`              | Custom Agent 定義（VS Code 格式）                                         | 選擇 Agent 時套用    | ✓        |
+| `.github/agents/*.md`                    | Custom Agent 定義（GitHub.com / CLI 通用）                                | 選擇 Agent 時套用    | ✓        |
+| `.github/instructions/*.instructions.md` | 檔案型指令，按 `applyTo` 模式套用                                         | ✓ 符合模式時自動套用 | ✓        |
+| `.github/skills/*/SKILL.md`              | Agent Skills，按需載入（也可放在 `.claude/skills/` 或 `.agents/skills/`） | 相關時自動載入       | ✓        |
+| `.github/hooks/*.json`                   | Hooks 定義（VS Code Preview / Cloud Agent+CLI GA）                        | ✓ 觸發時自動執行     | ✓        |
+| `.github/prompts/*.prompt.md`            | Prompt 範本，手動引用                                                     | ✗ 需手動選用         | ✓        |
+| `docs/governance/`                       | 治理文件                                                                  | ✗ 供人類閱讀         | ✓        |
+| `docs/architecture/adr/`                 | 架構決策紀錄                                                              | ✗ 可被 Agent 引用    | ✓        |
 
 ### 實務建議
 
@@ -369,12 +374,12 @@ your-project/
 
 ## Project / User / Org 層級差異
 
-| 層級 | 適用範圍 | 儲存位置 | 治理責任 |
-|------|---------|---------|---------|
-| **Project（專案）** | 單一 Repository | `.github/agents/`, `.github/instructions/`, `.github/skills/` | 專案團隊 |
-| **User（個人）** | 個人所有工作區 | `~/.copilot/agents/`, `~/.copilot/instructions/`, `~/.copilot/skills/`（或 `~/.claude/skills/`, `~/.agents/skills/`） | 個人 |
-| **Organization（組織）** | 組織內所有 Repository | `.github-private` repo 的 `agents/`, `instructions/` | 組織管理員 |
-| **Enterprise（企業）** | 企業內所有組織 | `.github-private` repo（企業層級） | 企業管理員 |
+| 層級                     | 適用範圍              | 儲存位置                                                                                                              | 治理責任   |
+| ------------------------ | --------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------- |
+| **Project（專案）**      | 單一 Repository       | `.github/agents/`, `.github/instructions/`, `.github/skills/`                                                         | 專案團隊   |
+| **User（個人）**         | 個人所有工作區        | `~/.copilot/agents/`, `~/.copilot/instructions/`, `~/.copilot/skills/`（或 `~/.claude/skills/`, `~/.agents/skills/`） | 個人       |
+| **Organization（組織）** | 組織內所有 Repository | `.github-private` repo 的 `agents/`, `instructions/`                                                                  | 組織管理員 |
+| **Enterprise（企業）**   | 企業內所有組織        | `.github-private` repo（企業層級）                                                                                    | 企業管理員 |
 
 ### 優先順序
 
@@ -396,17 +401,17 @@ your-project/
 
 ## 版本控管策略
 
-| 項目 | 版本控管策略 |
-|------|------------|
-| **Agent Profiles** | 納入 Git，隨專案版本控管 |
-| **Instructions** | 納入 Git，隨專案版本控管 |
-| **Skills** | 納入 Git，隨專案版本控管 |
-| **Hooks** | 納入 Git，隨專案版本控管 |
-| **Prompt Files** | 納入 Git，隨專案版本控管 |
-| **個人 Instructions/Agents** | 個人管理，可透過 Settings Sync 同步 |
-| **組織層級設定** | 由 `.github-private` repo 管理，有獨立 PR 審核流程 |
-| **VS Code settings.json** | 團隊共用部分納入 Git，個人偏好不納入 |
-| **Memory** | ⚠️ **不可** 直接版本控管（由 Copilot 管理，28 天自動過期） |
+| 項目                         | 版本控管策略                                               |
+| ---------------------------- | ---------------------------------------------------------- |
+| **Agent Profiles**           | 納入 Git，隨專案版本控管                                   |
+| **Instructions**             | 納入 Git，隨專案版本控管                                   |
+| **Skills**                   | 納入 Git，隨專案版本控管                                   |
+| **Hooks**                    | 納入 Git，隨專案版本控管                                   |
+| **Prompt Files**             | 納入 Git，隨專案版本控管                                   |
+| **個人 Instructions/Agents** | 個人管理，可透過 Settings Sync 同步                        |
+| **組織層級設定**             | 由 `.github-private` repo 管理，有獨立 PR 審核流程         |
+| **VS Code settings.json**    | 團隊共用部分納入 Git，個人偏好不納入                       |
+| **Memory**                   | ⚠️ **不可** 直接版本控管（由 Copilot 管理，28 天自動過期） |
 
 ### 命名規範
 

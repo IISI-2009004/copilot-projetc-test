@@ -1,8 +1,7 @@
 ---
-description: '應用物件導向程式設計 (OOP) 設計模式（包括四人幫 (GoF) 模式和 SOLID 原則）的最佳實踐，以確保程式碼的簡潔性、可維護性和可擴展性。'
-applyTo: '**/*.py, **/*.java, **/*.ts, **/*.js, **/*.cs'
+description: "應用物件導向程式設計 (OOP) 設計模式（包括四人幫 (GoF) 模式和 SOLID 原則）的最佳實踐，以確保程式碼的簡潔性、可維護性和可擴展性。"
+applyTo: "**/*.py, **/*.java, **/*.ts, **/*.js, **/*.cs"
 ---
-
 
 # Design Patterns for Object-Oriented Programming for Clean Code 物件導向程式設計的設計模式，打造整潔程式碼
 

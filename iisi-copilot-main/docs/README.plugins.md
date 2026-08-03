@@ -2,7 +2,7 @@
 
 精選的相關代理和技能插件，圍繞特定主題、工作流程或用例進行組織。插件可直接透過 GitHub Copilot CLI 或 VS Code 安裝。
 
-> *Awesome Copilot* 是一個預設的插件市場 ——在 Copilot CLI 或 VS Code 中均無需設定。
+> _Awesome Copilot_ 是一個預設的插件市場 ——在 Copilot CLI 或 VS Code 中均無需設定。
 
 ## 如何使用插件
 
@@ -24,4 +24,4 @@
 - 或打開命令面板並運行`Chat:Plugins`
 
 | Name 姓名 | Description 描述 | Items 件數 | Tags 標籤 |
-| ---- | ----------- | ----- | ---- |
+| --------- | ---------------- | ---------- | --------- |

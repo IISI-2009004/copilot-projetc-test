@@ -1,6 +1,6 @@
 ---
-description: '建構安全、受控的人工智慧代理系統的指導原則。在編寫使用代理框架、工具呼叫層級管理（LLM）或多代理程式編排的程式碼時，應遵循這些原則，以確保適當的安全邊界、策略執行和可審計性。'
-applyTo: '**'
+description: "建構安全、受控的人工智慧代理系統的指導原則。在編寫使用代理框架、工具呼叫層級管理（LLM）或多代理程式編排的程式碼時，應遵循這些原則，以確保適當的安全邊界、策略執行和可審計性。"
+applyTo: "**"
 ---
 
 # Agent Safety & Governance
@@ -44,6 +44,7 @@ applyTo: '**'
 ## Code Patterns
 
 編寫代理工具函數時：
+
 ```python
 # Good: Governed tool with explicit policy
 @govern(policy)
@@ -56,6 +57,7 @@ async def search(query: str) -> str:
 ```
 
 When defining policies:
+
 ```yaml
 # Good: Explicit allowlist, content filters, rate limit
 name: my-agent
@@ -69,6 +71,7 @@ allowed_tools: ["*"]
 ```
 
 When composing multi-agent policies:
+
 ```python
 # Good: Most-restrictive-wins composition
 final_policy = compose_policies(org_policy, team_policy, agent_policy)
@@ -90,6 +93,6 @@ final_policy = agent_policy
 - 僅依賴輸出防護措施（生成後）而非執行前治理
 - 將策略規則硬編碼而不是從配置中加載
 - 允許代理自我修改其治理策略
-- 忘記對工具 *參數* 進行治理檢查，而不僅僅是工具 *名稱*
+- 忘記對工具 _參數_ 進行治理檢查，而不僅僅是工具 _名稱_
 - 不隨時間衰減信任分數——過時的信任是危險的
 - 在審計日誌中記錄提示——記錄決策和元數據，而不是用戶內容

@@ -1,6 +1,6 @@
 ---
-description: '為 GitHub Copilot 創建高品質代理技能的指南'
-applyTo: '**/skills/**/SKILL.md'
+description: "為 GitHub Copilot 創建高品質代理技能的指南"
+applyTo: "**/skills/**/SKILL.md"
 ---
 
 # Agent Skills File Guidelines
@@ -11,6 +11,7 @@ applyTo: '**/skills/**/SKILL.md'
 
 Agent Skills 是自包含的資料夾，內含指令和捆綁資源，用於教導 AI 代理專門的能力。與定義編碼標準的自訂指令不同，技能啟用特定任務的工作流程，這些工作流程可以包括腳本、範例、範本和參考資料。
 主要特徵：
+
 - **可移植**: 可在 VS Code、Copilot CLI 和 Copilot 編碼代理中使用
 - **漸進加載**: 僅在與用戶請求相關時加載
 - **資源捆綁**: 可以包括腳本、範本、範例與指令一起
@@ -20,11 +21,11 @@ Agent Skills 是自包含的資料夾，內含指令和捆綁資源，用於教�
 
 技能儲存在特定位置：
 
-| Location | Scope | Recommendation |
-|----------|-------|----------------|
-| `.github/skills/<skill-name>/` | Project/repository | 推薦用於專案技能 |
-| `.claude/skills/<skill-name>/` | Project/repository | 舊版，用於向後相容 |
-| `~/.github/skills/<skill-name>/` | Personal (user-wide) | 推薦用於個人技能 |
+| Location                         | Scope                | Recommendation     |
+| -------------------------------- | -------------------- | ------------------ |
+| `.github/skills/<skill-name>/`   | Project/repository   | 推薦用於專案技能   |
+| `.claude/skills/<skill-name>/`   | Project/repository   | 舊版，用於向後相容 |
+| `~/.github/skills/<skill-name>/` | Personal (user-wide) | 推薦用於個人技能   |
 | `~/.claude/skills/<skill-name>/` | Personal (user-wide) | 舊版，用於向後相容 |
 
 每個技能**都必須**有自己的子目錄，其中至少包含一個 SKILL.md 檔案。
@@ -36,37 +37,41 @@ Agent Skills 是自包含的資料夾，內含指令和捆綁資源，用於教�
 ```yaml
 ---
 name: webapp-testing
-description: '用於使用 Playwright 測試本機 Web 應用程式的工具包。可用於驗證前端功能、偵錯 UI 行為、擷取瀏覽器螢幕截圖、檢查視覺回歸或檢視瀏覽器控制台日誌。支援 Chrome、Firefox 和 WebKit 核心瀏覽器。'
+description: "用於使用 Playwright 測試本機 Web 應用程式的工具包。可用於驗證前端功能、偵錯 UI 行為、擷取瀏覽器螢幕截圖、檢查視覺回歸或檢視瀏覽器控制台日誌。支援 Chrome、Firefox 和 WebKit 核心瀏覽器。"
 license: Complete terms in LICENSE.txt
 ---
 ```
 
-| Field | Required | Constraints |
-|-------|----------|-------------|
-| `name` | Yes | 全部小寫，空格以連字表示，最多 64 個字元（例如， webapp-testing ） |
-| `description` | Yes | 10-1024 個字元，清楚描述功能和使用案例，使用單引號包裹 |
-| `license` | No | 參考 LICENSE.txt（例如，`Complete terms in LICENSE.txt`）或 SPDX 標識符 |
+| Field         | Required | Constraints                                                             |
+| ------------- | -------- | ----------------------------------------------------------------------- |
+| `name`        | Yes      | 全部小寫，空格以連字表示，最多 64 個字元（例如， webapp-testing ）      |
+| `description` | Yes      | 10-1024 個字元，清楚描述功能和使用案例，使用單引號包裹                  |
+| `license`     | No       | 參考 LICENSE.txt（例如，`Complete terms in LICENSE.txt`）或 SPDX 標識符 |
 
 ### Description Best Practices
 
 **重要提示 ：** description 欄位是自動發現技能的主要機制。 Copilot 僅讀取技能 name 和 description 來決定是否載入該技能。如果您的描述含糊不清，該技能將永遠不會被啟動。
 
 **What to include in description:**
+
 1. **WHAT** 技能的功能（能力）
 2. **WHEN** 使用時機（特定觸發器、場景、檔案類型或使用者請求）
 3. **Keywords** 使用者可能在提示中提到的關鍵字
 
 **Good description:**
+
 ```yaml
-description: '用於使用 Playwright 測試本機 Web 應用程式的工具包。可用於驗證前端功能、偵錯 UI 行為、擷取瀏覽器螢幕截圖、檢查視覺回歸或檢視瀏覽器控制台日誌。支援 Chrome、Firefox 和 WebKit 核心瀏覽器。'
+description: "用於使用 Playwright 測試本機 Web 應用程式的工具包。可用於驗證前端功能、偵錯 UI 行為、擷取瀏覽器螢幕截圖、檢查視覺回歸或檢視瀏覽器控制台日誌。支援 Chrome、Firefox 和 WebKit 核心瀏覽器。"
 ```
 
 **Poor description:**
+
 ```yaml
-description: 'Web testing helpers'
+description: "Web testing helpers"
 ```
 
 描述不完善，原因如下：
+
 - 沒有特定的觸發條件（Copilot 何時載入此內容？）
 - 沒有關鍵字（哪些使用者提示會與之匹配？）
 - 沒有功能說明（它實際上能做什麼？）
@@ -75,15 +80,15 @@ description: 'Web testing helpers'
 
 T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些指令。推薦章節：
 
-| Section | Purpose |
-|---------|---------|
-| `# Title` | 簡要概述這項技能的功能 |
-| `## When to Use This Skill` | 使用此技能的情境列表（強化描述觸發條件） |
-| `## Prerequisites` | 所需工具、依賴項、環境設置（如適用） |
-| `## Step-by-Step Workflows` | 可重複操作的步驟（構建、部署、設置） |
-| `## Gotchas` | 關於非顯而易見行為的主動警告（"永遠不要做 X，因為 Y"） |
-| `## Troubleshooting` | 已知問題的反應性修復（"如果看到 X，請嘗試 Y"） |
-| `## References` | 連結到捆綁的文件或外部資源 |
+| Section                     | Purpose                                                |
+| --------------------------- | ------------------------------------------------------ |
+| `# Title`                   | 簡要概述這項技能的功能                                 |
+| `## When to Use This Skill` | 使用此技能的情境列表（強化描述觸發條件）               |
+| `## Prerequisites`          | 所需工具、依賴項、環境設置（如適用）                   |
+| `## Step-by-Step Workflows` | 可重複操作的步驟（構建、部署、設置）                   |
+| `## Gotchas`                | 關於非顯而易見行為的主動警告（"永遠不要做 X，因為 Y"） |
+| `## Troubleshooting`        | 已知問題的反應性修復（"如果看到 X，請嘗試 Y"）         |
+| `## References`             | 連結到捆綁的文件或外部資源                             |
 
 並非每項技能都需要包含所有章節。如果沒有外部依賴項，請跳過 ## Prerequisites 。如果技能僅提供建議，請跳過 ## Step-by-Step Workflows 」。如果技能涉及外部工具、API 或平台特定行為，請包含 ## Gotchas 。
 
@@ -141,11 +146,11 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 ```markdown
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Plugin won't connect | Check servers are running (`npm run start:all`) |
+| Issue                    | Solution                                               |
+| ------------------------ | ------------------------------------------------------ |
+| Plugin won't connect     | Check servers are running (`npm run start:all`)        |
 | Browser blocks localhost | Allow local network access, or try a different browser |
-| Tool execution times out | Ensure the plugin UI is open and shows "Connected" |
+| Tool execution times out | Ensure the plugin UI is open and shows "Connected"     |
 ```
 
 **`## References`** — 連結到捆綁的文件或外部資源。使用相對路徑引用捆綁的文件。
@@ -156,12 +161,12 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 
 ### Supported Resource Types
 
-| Folder | Purpose | Loaded into Context? | Example Files |
-|--------|---------|---------------------|---------------|
-| `scripts/` | 可執行的自動化操作 | 當執行時 | `helper.py`, `validate.sh`, `build.ts` |
-| `references/` | AI 代理用來做決策的文件 | 是，當被引用時 | `api_reference.md`, `schema.md`, `workflow_guide.md` |
-| `assets/` | **靜態文件，原樣使用** 在輸出中（AI 代理不會修改） | 否 | `logo.png`, `brand-template.pptx`, `custom-font.ttf` |
-| `templates/` | **起始代碼/模板，AI 代理會修改** 並基於此構建 | 是，當被引用時 | `viewer.html` (插入算法), `hello-world/` (擴展) |
+| Folder        | Purpose                                            | Loaded into Context? | Example Files                                        |
+| ------------- | -------------------------------------------------- | -------------------- | ---------------------------------------------------- |
+| `scripts/`    | 可執行的自動化操作                                 | 當執行時             | `helper.py`, `validate.sh`, `build.ts`               |
+| `references/` | AI 代理用來做決策的文件                            | 是，當被引用時       | `api_reference.md`, `schema.md`, `workflow_guide.md` |
+| `assets/`     | **靜態文件，原樣使用** 在輸出中（AI 代理不會修改） | 否                   | `logo.png`, `brand-template.pptx`, `custom-font.ttf` |
+| `templates/`  | **起始代碼/模板，AI 代理會修改** 並基於此構建      | 是，當被引用時       | `viewer.html` (插入算法), `hello-world/` (擴展)      |
 
 ### Directory Structure Example
 
@@ -189,11 +194,13 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 ### Assets vs Templates: Key Distinction
 
 **Assets** 是靜態資源，**在輸出中保持不變**：
+
 - 一個嵌入到生成文檔中的 `logo.png`
 - 一個作為輸出格式複製的 `report-template.html`
 - 一個應用於文字渲染的 `custom-font.ttf`
 
 **Templates** 是起始代碼/模板，**AI 代理會主動修改**：
+
 - 一個 `scaffold.py`，AI 代理會在其中插入邏輯
 - 一個 `config.template`，AI 代理會根據使用者需求填寫值
 - 一個 `hello-world/` 專案目錄，AI 代理會擴展新功能
@@ -218,13 +225,14 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 
 技能採用三級加載以提高效率：
 
-| Level | What Loads | When |
-|-------|------------|------|
-| 1. Discovery | 僅 name 和 description | 始終(輕量級元資​​料) |
-| 2. Instructions | 完整的 `SKILL.md` 內容 | 當請求與描述匹配時 |
-| 3. Resources | 腳本、範例、文檔 | 僅當 Copilot 引用它們時 |
+| Level           | What Loads             | When                    |
+| --------------- | ---------------------- | ----------------------- |
+| 1. Discovery    | 僅 name 和 description | 始終(輕量級元資​​料)    |
+| 2. Instructions | 完整的 `SKILL.md` 內容 | 當請求與描述匹配時      |
+| 3. Resources    | 腳本、範例、文檔       | 僅當 Copilot 引用它們時 |
 
 這意味著：
+
 - 安裝許多技能而不消耗上下文
 - 每個任務僅加載相關內容
 - 資源僅在明確需要時加載
@@ -243,14 +251,15 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 
 引入腳本時，優先選擇跨平台語言：
 
-| Language | Use Case |
-|----------|----------|
-| Python | 複雜自動化、資料處理 |
-| pwsh | PowerShell Core 腳本 |
-| Node.js | 基於 JavaScript 的工具 |
-| Bash/Shell | 簡單自動化任務 |
+| Language   | Use Case               |
+| ---------- | ---------------------- |
+| Python     | 複雜自動化、資料處理   |
+| pwsh       | PowerShell Core 腳本   |
+| Node.js    | 基於 JavaScript 的工具 |
+| Bash/Shell | 簡單自動化任務         |
 
 最佳實踐：
+
 - 包含幫助/使用說明 (`--help` 標誌)
 - 優雅地處理錯誤並提供清晰的訊息
 - 避免存儲憑證或秘密
@@ -259,6 +268,7 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 ### When to Bundle Scripts
 
 在以下情況下，請將腳本包含在您的技能中：
+
 - 相同的代碼會被代理重複編寫
 - 確定性可靠性至關重要（例如，文件操作、API 調用）
 - 複雜邏輯受益於預先測試，而不是每次生成
@@ -295,12 +305,15 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 
 ```markdown
 # ❌ Too rigid
+
 1. 開啟 src/api/handlers.ts 文件
 2. 找出名為 processOrder 的函數
 3. 在第 45-60 行附近新增 try-catch 區塊
 
 # ✅ Flexible
+
 修復 API 處理程序中的錯誤處理時：
+
 - 確保所有資料庫操作都有適當的錯誤處理
 - 使用專案的 ErrorHandler 工具（請參閱 ./references/error-handling.md）
 - 記錄錯誤時提供足夠的上下文訊息，以便在生產環境中進行調試。
@@ -327,11 +340,11 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 文檔參數清晰明確：
 
 ```markdown
-| Parameter | Required | Default | Description |
-|-----------|----------|---------|-------------|
-| `--input` | Yes | - | 要處理的輸入文件或 URL |
-| `--action` | Yes | - | 要執行的操作 |
-| `--verbose` | No | `false` | 啟用詳細輸出 |
+| Parameter   | Required | Default | Description            |
+| ----------- | -------- | ------- | ---------------------- |
+| `--input`   | Yes      | -       | 要處理的輸入文件或 URL |
+| `--action`  | Yes      | -       | 要執行的操作           |
+| `--verbose` | No       | `false` | 啟用詳細輸出           |
 ```
 
 ### Workflow Execution Pattern
@@ -340,6 +353,7 @@ T主體部分包含詳細的指令，Copilot 會在技能啟動後載入這些�
 
 ```markdown
 ## TODO
+
 - [ ] Step 1: Configure environment - see [workflow-setup.md](./references/workflow-setup.md#environment)
 - [ ] Step 2: Build project - see [workflow-setup.md](./references/workflow-setup.md#build)
 - [ ] Step 3: Deploy to staging - see [workflow-deployment.md](./references/workflow-deployment.md#staging)

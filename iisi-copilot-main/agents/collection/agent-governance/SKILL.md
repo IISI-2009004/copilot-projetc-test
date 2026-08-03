@@ -205,7 +205,7 @@ def is_safe(content: str, threshold: float = 0.7) -> bool:
     return not any(s.confidence >= threshold for s in signals)
 ```
 
-**Key insight**: Intent classification happens *before* tool execution, acting as a pre-flight safety check. This is fundamentally different from output guardrails which only check *after* generation.
+**Key insight**: Intent classification happens _before_ tool execution, acting as a pre-flight safety check. This is fundamentally different from output guardrails which only check _after_ generation.
 
 ---
 
@@ -513,26 +513,26 @@ async def read_file(path: str) -> str:
 
 Match governance strictness to risk level:
 
-| Level | Controls | Use Case |
-|-------|----------|----------|
-| **Open** | Audit only, no restrictions | Internal dev/testing |
-| **Standard** | Tool allowlist + content filters | General production agents |
-| **Strict** | All controls + human approval for sensitive ops | Financial, healthcare, legal |
-| **Locked** | Allowlist only, no dynamic tools, full audit | Compliance-critical systems |
+| Level        | Controls                                        | Use Case                     |
+| ------------ | ----------------------------------------------- | ---------------------------- |
+| **Open**     | Audit only, no restrictions                     | Internal dev/testing         |
+| **Standard** | Tool allowlist + content filters                | General production agents    |
+| **Strict**   | All controls + human approval for sensitive ops | Financial, healthcare, legal |
+| **Locked**   | Allowlist only, no dynamic tools, full audit    | Compliance-critical systems  |
 
 ---
 
 ## Best Practices
 
-| Practice | Rationale |
-|----------|-----------|
-| **Policy as configuration** | Store policies in YAML/JSON, not hardcoded — enables change without deploys |
-| **Most-restrictive-wins** | When composing policies, deny always overrides allow |
-| **Pre-flight intent check** | Classify intent *before* tool execution, not after |
-| **Trust decay** | Trust scores should decay over time — require ongoing good behavior |
-| **Append-only audit** | Never modify or delete audit entries — immutability enables compliance |
-| **Fail closed** | If governance check errors, deny the action rather than allowing it |
-| **Separate policy from logic** | Governance enforcement should be independent of agent business logic |
+| Practice                       | Rationale                                                                   |
+| ------------------------------ | --------------------------------------------------------------------------- |
+| **Policy as configuration**    | Store policies in YAML/JSON, not hardcoded — enables change without deploys |
+| **Most-restrictive-wins**      | When composing policies, deny always overrides allow                        |
+| **Pre-flight intent check**    | Classify intent _before_ tool execution, not after                          |
+| **Trust decay**                | Trust scores should decay over time — require ongoing good behavior         |
+| **Append-only audit**          | Never modify or delete audit entries — immutability enables compliance      |
+| **Fail closed**                | If governance check errors, deny the action rather than allowing it         |
+| **Separate policy from logic** | Governance enforcement should be independent of agent business logic        |
 
 ---
 
@@ -542,17 +542,20 @@ Match governance strictness to risk level:
 ## Agent Governance Implementation Checklist
 
 ### Setup
+
 - [ ] Define governance policy (allowed tools, blocked patterns, rate limits)
 - [ ] Choose governance level (open/standard/strict/locked)
 - [ ] Set up audit trail storage
 
 ### Implementation
+
 - [ ] Add @govern decorator to all tool functions
 - [ ] Add intent classification to user input processing
 - [ ] Implement trust scoring for multi-agent interactions
 - [ ] Wire up audit trail export
 
 ### Validation
+
 - [ ] Test that blocked tools are properly denied
 - [ ] Test that content filters catch sensitive patterns
 - [ ] Test rate limiting behavior

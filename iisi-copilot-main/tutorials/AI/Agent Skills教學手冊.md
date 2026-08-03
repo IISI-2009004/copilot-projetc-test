@@ -104,6 +104,7 @@ categories = ['教學']
 **定義**：Agent Skills 是一種基於 [agentskills.io](https://agentskills.io/) **開放標準**的模組化、可重複使用「AI 能力包」（Capability Package），以資料夾形式存在，內含說明文件（`SKILL.md`）、腳本（Python / Bash / PowerShell）、範本（Templates）和參考資源（References）。
 
 > **開放標準（Open Standard）**：Agent Skills 規範最初由 Anthropic 提出，現已成為獨立的開放標準，託管在 [github.com/agentskills/agentskills](https://github.com/agentskills/agentskills)。截至目前，已有 **20+ AI Agent 產品**採用此標準，包括：
+>
 > - **GitHub Copilot**（GitHub — Cloud Agent、VS Code Agent Mode、**Copilot CLI**）
 > - **Claude Code**（Anthropic — 含 Claude.ai Skills、Claude API Skills）
 > - **Amp**（Sourcegraph）
@@ -116,6 +117,7 @@ categories = ['教學']
 > - **Qodo**、**Tabnine**、**Pear AI**、**Augment Code** 等
 >
 > **知名社群 Skills 套件**：
+>
 > - **[mattpocock/skills](https://github.com/mattpocock/skills)**（⭐ 151k）— 「Skills for Real Engineers」，20+ 個工程實務 Skills，分為 Engineering（`/grill-with-docs`、`/tdd`、`/diagnosing-bugs`、`/to-prd`、`/triage`、`/improve-codebase-architecture`）、Productivity（`/grill-me`、`/handoff`、`/teach`）、Misc 三大分類。針對 4 大 Agent 失敗模式設計——Agent 對齊不足、輸出冗長、程式碼品質、架構腐化，強調 `CONTEXT.md` 共用領域語言與小型可組合設計。區分 User-invoked（使用者手動觸發的編排層）與 Model-invoked（Agent 可自行啟動的可重用紀律）兩類叫用模式
 > - **[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)**（⭐ 68.1k）— 24 個生產級 Skills（23 個生命週期 + 1 個 Meta），依 DEFINE→PLAN→BUILD→VERIFY→REVIEW→SHIP 六階段組織，搭配 8 個 Slash Commands（`/spec`、`/plan`、`/build`、`/test`、`/review`、`/webperf`、`/code-simplify`、`/ship`）、4 個 Agent Personas（code-reviewer、test-engineer、security-auditor、web-performance-auditor）與 7 份 Reference Checklists。融合 Google 工程文化（Hyrum's Law、Beyoncé Rule、Chesterton's Fence），每個 Skill 含反合理化表格（Anti-rationalization Tables）與驗證門檻。支援 `/build auto` 自主執行模式
 > - **[anthropics/skills](https://github.com/anthropics/skills)**（⭐ 157k）— Anthropic 官方 Skills，含 Example Skills 與 Document Skills（docx、pdf、pptx、xlsx），支援 Claude Code Plugin Marketplace（`/plugin marketplace add anthropics/skills`）、Claude.ai、Claude API。含 Partner Skills（如 Notion）
@@ -123,14 +125,14 @@ categories = ['教學']
 
 **核心價值**：
 
-| 面向 | 價值 |
-|------|------|
+| 面向         | 價值                                                                             |
+| ------------ | -------------------------------------------------------------------------------- |
 | **開放標準** | 跨平台互通——同一份 SKILL.md 在 GitHub Copilot、Claude Code 等 20+ Agent 產品通用 |
-| **標準化** | 將零散的 Prompt 轉化為可管理、可版控的企業資產 |
-| **可重用性** | 一次撰寫，跨專案、跨團隊、跨 Agent 產品重複使用 |
-| **品質保證** | 通過審核機制確保每個 Skill 品質一致 |
-| **知識傳承** | 將資深工程師的經驗封裝為可共享的知識元件 |
-| **效率提升** | AI 動態載入相關技能，精準完成特定任務 |
+| **標準化**   | 將零散的 Prompt 轉化為可管理、可版控的企業資產                                   |
+| **可重用性** | 一次撰寫，跨專案、跨團隊、跨 Agent 產品重複使用                                  |
+| **品質保證** | 通過審核機制確保每個 Skill 品質一致                                              |
+| **知識傳承** | 將資深工程師的經驗封裝為可共享的知識元件                                         |
+| **效率提升** | AI 動態載入相關技能，精準完成特定任務                                            |
 
 **企業應用場景**：
 
@@ -154,13 +156,13 @@ graph TB
         E --> F[執行指令 / 腳本]
         F --> G[產出結果]
     end
-    
+
     subgraph "支援平台"
         H[GitHub Copilot]
         I[Claude Code]
         J[VS Code Agent Mode]
     end
-    
+
     D --> H
     D --> I
     D --> J
@@ -171,16 +173,16 @@ graph TB
 
 ### 1.2 與傳統 Prompt Engineering 的差異
 
-| 比較項目 | 傳統 Prompt Engineering | Agent Skills |
-|----------|------------------------|--------------|
-| **儲存方式** | 文件、筆記、個人收藏 | 版控系統（Git Repository） |
-| **可重用性** | 手動複製貼上 | 自動觸發、動態載入 |
-| **維護方式** | 各自維護、版本混亂 | 統一版控、審核發布 |
-| **上下文管理** | 整段載入、浪費 Token | 漸進式揭露（Progressive Disclosure） |
-| **協作方式** | 口耳相傳、通訊軟體分享 | Pull Request 審核、Code Review |
-| **品質控管** | 無標準、因人而異 | Quality Gate、自動化測試 |
-| **安全性** | 無控管 | RBAC、安全審查、Prompt Injection 防護 |
-| **可追蹤性** | 無法追蹤使用狀況 | Telemetry、使用統計 |
+| 比較項目       | 傳統 Prompt Engineering | Agent Skills                          |
+| -------------- | ----------------------- | ------------------------------------- |
+| **儲存方式**   | 文件、筆記、個人收藏    | 版控系統（Git Repository）            |
+| **可重用性**   | 手動複製貼上            | 自動觸發、動態載入                    |
+| **維護方式**   | 各自維護、版本混亂      | 統一版控、審核發布                    |
+| **上下文管理** | 整段載入、浪費 Token    | 漸進式揭露（Progressive Disclosure）  |
+| **協作方式**   | 口耳相傳、通訊軟體分享  | Pull Request 審核、Code Review        |
+| **品質控管**   | 無標準、因人而異        | Quality Gate、自動化測試              |
+| **安全性**     | 無控管                  | RBAC、安全審查、Prompt Injection 防護 |
+| **可追蹤性**   | 無法追蹤使用狀況        | Telemetry、使用統計                   |
 
 **關鍵差異圖解**：
 
@@ -192,26 +194,26 @@ graph LR
         P3 --> P4[版本不一致]
         P4 --> P5[品質參差不齊]
     end
-    
+
     subgraph "Agent Skills 工作流"
         S1[工程師撰寫 Skill] --> S2[PR 審核]
         S2 --> S3[合併至 Skills Repo]
         S3 --> S4[AI 自動載入]
         S4 --> S5[一致的高品質輸出]
     end
-    
+
     style P5 fill:#f44336,color:#fff
     style S5 fill:#4CAF50,color:#fff
 ```
 
 ### 1.3 Skills vs Prompt vs Tool vs Agent 比較
 
-| 元件 | 定義 | 生命週期 | 典型大小 | 範例 |
-|------|------|----------|----------|------|
-| **Prompt** | 單次指令或對話 | 一次性、臨時 | 幾百字 | 「幫我寫一個 REST API」 |
-| **Skill** | 可重用的能力包 | 持久、版控 | 數 KB ~ 數十 KB | API 設計 Skill（含範本 + 腳本） |
-| **Tool** | MCP Server 提供的功能 | 由伺服器管理 | N/A（API 介面） | `read_file`、`run_terminal` |
-| **Agent** | 具備規劃與執行能力的 AI | 任務期間存活 | N/A（執行環境） | Copilot Coding Agent |
+| 元件       | 定義                    | 生命週期     | 典型大小        | 範例                            |
+| ---------- | ----------------------- | ------------ | --------------- | ------------------------------- |
+| **Prompt** | 單次指令或對話          | 一次性、臨時 | 幾百字          | 「幫我寫一個 REST API」         |
+| **Skill**  | 可重用的能力包          | 持久、版控   | 數 KB ~ 數十 KB | API 設計 Skill（含範本 + 腳本） |
+| **Tool**   | MCP Server 提供的功能   | 由伺服器管理 | N/A（API 介面） | `read_file`、`run_terminal`     |
+| **Agent**  | 具備規劃與執行能力的 AI | 任務期間存活 | N/A（執行環境） | Copilot Coding Agent            |
 
 **互動關係**：
 
@@ -220,17 +222,17 @@ graph TB
     Agent[AI Agent] --> |讀取| Skill[Skills]
     Agent --> |呼叫| Tool[Tools / MCP]
     Agent --> |執行| Prompt[Prompt 指令]
-    
+
     Skill --> |包含| SkillMD[SKILL.md]
     Skill --> |包含| Script[Scripts]
     Skill --> |包含| Template[Templates]
     Skill --> |包含| Reference[References]
-    
+
     Tool --> |提供| FileOps[檔案操作]
     Tool --> |提供| Terminal[終端機]
     Tool --> |提供| Search[搜尋]
     Tool --> |提供| Web[網路存取]
-    
+
     style Agent fill:#9C27B0,color:#fff
     style Skill fill:#4CAF50,color:#fff
     style Tool fill:#2196F3,color:#fff
@@ -260,11 +262,11 @@ sequenceDiagram
 
 **三層揭露機制**：
 
-| 層級 | 載入時機 | 內容 | Token 消耗 |
-|------|----------|------|------------|
-| **L0 - 註冊** | Agent 啟動時 | `name` + `description` | 極低（約 50-100 Tokens / Skill） |
-| **L1 - 摘要** | 任務匹配時 | `SKILL.md` 主體指令 | 中等（建議 < 5000 Tokens） |
-| **L2 - 完整** | 執行需要時 | Scripts + Templates + References | 按需載入 |
+| 層級          | 載入時機     | 內容                             | Token 消耗                       |
+| ------------- | ------------ | -------------------------------- | -------------------------------- |
+| **L0 - 註冊** | Agent 啟動時 | `name` + `description`           | 極低（約 50-100 Tokens / Skill） |
+| **L1 - 摘要** | 任務匹配時   | `SKILL.md` 主體指令              | 中等（建議 < 5000 Tokens）       |
+| **L2 - 完整** | 執行需要時   | Scripts + Templates + References | 按需載入                         |
 
 > **上下文預算（Context Budget）**：Skill 描述在 Agent 啟動時載入，佔用的字元預算依平台而異。Claude Code 按上下文窗口的 **1%** 動態調整（fallback 8,000 字元），每條描述（`description` + `when_to_use` 合併）上限 **1,536 字元**。若 Skill 數量較多導致預算不足，可透過環境變數 `SLASH_COMMAND_TOOL_CHAR_BUDGET` 調高上限。建議將關鍵用途放在描述前段，因為截斷時會從尾端裁剪。
 
@@ -279,7 +281,7 @@ description: >
   or scaffold a new REST API endpoint.
 
 # ❌ 壞的描述 - 模糊、無法明確觸發
-name: api-stuff  
+name: api-stuff
 description: Helps with API things.
 ```
 
@@ -323,20 +325,23 @@ allowed-tools: shell
 # API Design Skill
 
 ## 觸發條件
+
 - 使用者要求設計新的 API
 - 使用者需要建立 Controller / DTO / Service
 
 ## 執行步驟
+
 1. 分析需求，確認 API 端點
 2. 設計 OpenAPI 規格
 3. 生成 Controller、Service、Repository 程式碼
 4. 建立對應的單元測試
 
 ## 設計規範
+
 - 遵循 RESTful 設計原則
 - 使用 Clean Architecture 分層
 - DTO 與 Entity 分離
-...
+  ...
 ```
 
 > **🏦 金融業實務案例**：某銀行將轉帳 API、對帳 API、風控 API 的設計規範分別封裝為 Skills，新進同仁只需輸入業務需求，即可產出符合企業標準的 API 設計文件與基礎程式碼。
@@ -358,24 +363,24 @@ graph TB
         CLI[Copilot CLI]
         VSC[VS Code Agent Mode]
     end
-    
+
     subgraph "Claude Code 平台"
         CC[Claude Code CLI]
         CCW[Claude Code Web]
     end
-    
+
     subgraph "Skills 儲存位置（共通）"
         PS_GH[.github/skills/]
         PS_CL[.claude/skills/]
         PS_AG[.agents/skills/]
     end
-    
+
     subgraph "個人 Skills"
         HS_CP[~/.copilot/skills/]
         HS_CL[~/.claude/skills/]
         HS_AG[~/.agents/skills/]
     end
-    
+
     CA --> PS_GH
     CA --> PS_CL
     CA --> PS_AG
@@ -383,7 +388,7 @@ graph TB
     VSC --> HS_CP
     CC --> PS_CL
     CC --> HS_CL
-    
+
     style CA fill:#6e40c9,color:#fff
     style CC fill:#d97706,color:#fff
     style VSC fill:#007ACC,color:#fff
@@ -391,12 +396,12 @@ graph TB
 
 **Skills 儲存位置對照（含兩大平台）**：
 
-| 層級 | GitHub Copilot 路徑 | Claude Code 路徑 | 作用範圍 |
-|------|---------------------|-------------------|----------|
-| **企業級** | 組織/企業級（即將推出） | Managed Settings 部署 | 全組織所有使用者 |
-| **個人** | `~/.copilot/skills/`、`~/.claude/skills/`、`~/.agents/skills/` | `~/.claude/skills/<skill>/SKILL.md` | 跨專案（個人） |
-| **專案** | `.github/skills/`、`.claude/skills/`、`.agents/skills/` | `.claude/skills/<skill>/SKILL.md` | 單一 Repository |
-| **Plugin** | — | `<plugin>/skills/<skill>/SKILL.md` | Plugin 啟用範圍 |
+| 層級       | GitHub Copilot 路徑                                            | Claude Code 路徑                    | 作用範圍         |
+| ---------- | -------------------------------------------------------------- | ----------------------------------- | ---------------- |
+| **企業級** | 組織/企業級（即將推出）                                        | Managed Settings 部署               | 全組織所有使用者 |
+| **個人**   | `~/.copilot/skills/`、`~/.claude/skills/`、`~/.agents/skills/` | `~/.claude/skills/<skill>/SKILL.md` | 跨專案（個人）   |
+| **專案**   | `.github/skills/`、`.claude/skills/`、`.agents/skills/`        | `.claude/skills/<skill>/SKILL.md`   | 單一 Repository  |
+| **Plugin** | —                                                              | `<plugin>/skills/<skill>/SKILL.md`  | Plugin 啟用範圍  |
 
 > **優先層級**：同名 Skill 在多個層級同時存在時，高層級覆蓋低層級：**Enterprise > Personal > Project**。Plugin Skills 使用 `plugin-name:skill-name` 命名空間，不會與其他層級衝突。
 
@@ -411,27 +416,27 @@ sequenceDiagram
     participant D as Skill Discovery
     participant L as Skill Loader
     participant E as Execution Engine
-    
+
     U->>C: 輸入任務指令
     C->>D: 1. 觸發 Skill Discovery
-    
+
     Note over D: 掃描所有 Skills 目錄<br/>.github/skills/<br/>~/.copilot/skills/
-    
+
     D->>D: 2. 比對 description 與任務意圖
     D-->>C: 3. 回傳匹配的 Skills 清單
-    
+
     C->>L: 4. 載入最佳匹配 SKILL.md
     L-->>C: 5. 注入指令至 Context
-    
+
     C->>E: 6. 依指令執行任務
-    
+
     alt 需要執行腳本
         E->>E: 7a. 執行 Scripts
         Note over E: 檢查 allowed-tools<br/>若未預核准則需確認
     else 需要範本
         E->>E: 7b. 套用 Templates
     end
-    
+
     E-->>U: 8. 回傳結果
 ```
 
@@ -485,14 +490,14 @@ allowed-tools: Bash(git:*) Read Grep
 
 **開放標準欄位速查表**：
 
-| 欄位 | 必要 | 說明 | 範例 |
-|------|------|------|------|
-| `name` | ✅ | 小寫英數字 + 連字號，max 64 字元，須與目錄名相同 | `spring-boot-api-design` |
-| `description` | ✅ | 包含「做什麼」+「何時觸發」，max 1024 字元 | `Guide for... Use when asked to...` |
-| `license` | ❌ | 授權條款 | `MIT`、`Apache-2.0` |
-| `compatibility` | ❌ | 環境需求，max 500 字元 | `Requires Python 3.14+ and uv` |
-| `metadata` | ❌ | 任意 key-value 擴展 | `author: org-name` |
-| `allowed-tools` | ❌ | 預核准工具（實驗性） | `Bash(git:*) Read` |
+| 欄位            | 必要 | 說明                                             | 範例                                |
+| --------------- | ---- | ------------------------------------------------ | ----------------------------------- |
+| `name`          | ✅   | 小寫英數字 + 連字號，max 64 字元，須與目錄名相同 | `spring-boot-api-design`            |
+| `description`   | ✅   | 包含「做什麼」+「何時觸發」，max 1024 字元       | `Guide for... Use when asked to...` |
+| `license`       | ❌   | 授權條款                                         | `MIT`、`Apache-2.0`                 |
+| `compatibility` | ❌   | 環境需求，max 500 字元                           | `Requires Python 3.14+ and uv`      |
+| `metadata`      | ❌   | 任意 key-value 擴展                              | `author: org-name`                  |
+| `allowed-tools` | ❌   | 預核准工具（實驗性）                             | `Bash(git:*) Read`                  |
 
 #### 2.3.2 Claude Code 擴展欄位
 
@@ -563,43 +568,43 @@ disallowed-tools: AskUserQuestion
 
 **Claude Code 擴展欄位速查表**：
 
-| 欄位 | 說明 | 預設值 |
-|------|------|--------|
-| `when_to_use` | 額外觸發條件描述，附加在 `description` 後方，共享 1,536 字元上限 | 無 |
-| `arguments` | 具名位置參數（空格分隔或 YAML list），可用 `$name` 引用 | 無 |
-| `argument-hint` | 自動完成時的參數提示 | 無 |
-| `disable-model-invocation` | 禁止 Claude 自動觸發 | `false` |
-| `user-invocable` | 是否出現在 / 選單 | `true` |
-| `context` | `fork` = 在 Subagent 中執行 | 無（inline 執行） |
-| `agent` | Subagent 類型（需搭配 `context: fork`） | `general-purpose` |
-| `model` | 覆蓋模型 | 繼承 Session |
-| `effort` | 推理力度（low/medium/high/**xhigh**/max） | 繼承 Session |
-| `hooks` | Skill 生命週期鉤子 | 無 |
-| `paths` | 自動觸發的檔案 Glob 過濾 | 無（不限制） |
-| `shell` | `!`<cmd>`` 使用的 Shell | `bash` |
-| `disallowed-tools` | Skill 執行期間從可用工具池中移除的工具，限制在使用者傳送下一則訊息時清除 | 無 |
+| 欄位                       | 說明                                                                     | 預設值            |
+| -------------------------- | ------------------------------------------------------------------------ | ----------------- |
+| `when_to_use`              | 額外觸發條件描述，附加在 `description` 後方，共享 1,536 字元上限         | 無                |
+| `arguments`                | 具名位置參數（空格分隔或 YAML list），可用 `$name` 引用                  | 無                |
+| `argument-hint`            | 自動完成時的參數提示                                                     | 無                |
+| `disable-model-invocation` | 禁止 Claude 自動觸發                                                     | `false`           |
+| `user-invocable`           | 是否出現在 / 選單                                                        | `true`            |
+| `context`                  | `fork` = 在 Subagent 中執行                                              | 無（inline 執行） |
+| `agent`                    | Subagent 類型（需搭配 `context: fork`）                                  | `general-purpose` |
+| `model`                    | 覆蓋模型                                                                 | 繼承 Session      |
+| `effort`                   | 推理力度（low/medium/high/**xhigh**/max）                                | 繼承 Session      |
+| `hooks`                    | Skill 生命週期鉤子                                                       | 無                |
+| `paths`                    | 自動觸發的檔案 Glob 過濾                                                 | 無（不限制）      |
+| `shell`                    | `!`<cmd>`` 使用的 Shell                                                  | `bash`            |
+| `disallowed-tools`         | Skill 執行期間從可用工具池中移除的工具，限制在使用者傳送下一則訊息時清除 | 無                |
 
 **叫用控制矩陣**：
 
-| 組合 | 使用者可叫用 | Claude 可自動觸發 | 說明 |
-|------|-------------|-------------------|------|
-| （預設） | ✅ | ✅ | 描述常駐上下文，叫用時載入完整內容 |
-| `disable-model-invocation: true` | ✅ | ❌ | 描述不進入上下文，僅手動 `/name` |
-| `user-invocable: false` | ❌ | ✅ | 描述常駐上下文，Claude 按需載入 |
+| 組合                             | 使用者可叫用 | Claude 可自動觸發 | 說明                               |
+| -------------------------------- | ------------ | ----------------- | ---------------------------------- |
+| （預設）                         | ✅           | ✅                | 描述常駐上下文，叫用時載入完整內容 |
+| `disable-model-invocation: true` | ✅           | ❌                | 描述不進入上下文，僅手動 `/name`   |
+| `user-invocable: false`          | ❌           | ✅                | 描述常駐上下文，Claude 按需載入    |
 
 #### 2.3.3 字串替換（String Substitutions）
 
 Claude Code Skills 支援動態變數替換，讓 Skill 內容可接受叫用時傳入的參數：
 
-| 變數 | 說明 | 範例 |
-|------|------|------|
-| `$ARGUMENTS` | 叫用時傳入的所有參數 | `/fix-issue 123` → `$ARGUMENTS` = `123` |
-| `$ARGUMENTS[N]` | 第 N 個參數（0-based） | `/migrate SearchBar React Vue` → `$ARGUMENTS[1]` = `React` |
-| `$N` | `$ARGUMENTS[N]` 的簡寫 | `$0` = 第一個參數 |
-| `$name` | 具名參數（由 `arguments` 欄位定義，按順序對應位置） | `arguments: [issue, branch]` → `$issue` = 第一個參數 |
-| `${CLAUDE_SESSION_ID}` | 當前 Session ID | 用於日誌、Session 專屬檔案 |
-| `${CLAUDE_EFFORT}` | 當前推理力度（low/medium/high/xhigh/max） | 用於依據 effort 調整 Skill 指令深度 |
-| `${CLAUDE_SKILL_DIR}` | Skill 的 SKILL.md 所在目錄 | 用於引用 Skill 內建腳本 |
+| 變數                   | 說明                                                | 範例                                                       |
+| ---------------------- | --------------------------------------------------- | ---------------------------------------------------------- |
+| `$ARGUMENTS`           | 叫用時傳入的所有參數                                | `/fix-issue 123` → `$ARGUMENTS` = `123`                    |
+| `$ARGUMENTS[N]`        | 第 N 個參數（0-based）                              | `/migrate SearchBar React Vue` → `$ARGUMENTS[1]` = `React` |
+| `$N`                   | `$ARGUMENTS[N]` 的簡寫                              | `$0` = 第一個參數                                          |
+| `$name`                | 具名參數（由 `arguments` 欄位定義，按順序對應位置） | `arguments: [issue, branch]` → `$issue` = 第一個參數       |
+| `${CLAUDE_SESSION_ID}` | 當前 Session ID                                     | 用於日誌、Session 專屬檔案                                 |
+| `${CLAUDE_EFFORT}`     | 當前推理力度（low/medium/high/xhigh/max）           | 用於依據 effort 調整 Skill 指令深度                        |
+| `${CLAUDE_SKILL_DIR}`  | Skill 的 SKILL.md 所在目錄                          | 用於引用 Skill 內建腳本                                    |
 
 **範例：修復 GitHub Issue Skill**
 
@@ -669,11 +674,13 @@ allowed-tools: Bash(gh *)
 ---
 
 ## Pull Request 上下文
+
 - PR diff: !`gh pr diff`
 - PR 評論: !`gh pr view --comments`
 - 變更檔案: !`gh pr diff --name-only`
 
 ## 你的任務
+
 根據以上資訊摘要此 Pull Request...
 ```
 
@@ -685,17 +692,17 @@ allowed-tools: Bash(gh *)
 
 Claude Code 隨附多個內建 Skills，在每個 Session 中均可使用。與 Built-in Commands 不同，Bundled Skills 是**提示驅動型**——它們給 Claude 一份詳細腳本，讓 Claude 使用工具自行協調執行。
 
-| Skill | 說明 |
-|-------|------|
-| `/batch <instruction>` | **大規模平行變更**——分析 Codebase、將工作拆為 5~30 個獨立單元，核准後為每個單元啟動一個背景 Agent（獨立 git worktree），各自實作、跑測試、開 PR。需要 git repo。範例：`/batch migrate src/ from Solid to React` |
-| `/claude-api` | **Claude API 參考**——載入目前專案語言（Python / TS / Java / Go / Ruby / C# / PHP / cURL）的 Claude API + Agent SDK 參考文件。在 code import `anthropic` 時也會自動啟動。 |
-| `/code-review` | **程式碼審查**——對當前變更進行結構化審查，涵蓋正確性、可讀性、效能與安全性，產出審查報告與建議。 |
-| `/debug [description]` | **除錯日誌**——啟用 Session 除錯日誌，分析問題。可搭配描述聚焦分析範圍。 |
-| `/loop [interval] <prompt>` | **定期執行**——在 Session 存活期間以指定間隔重複執行 Prompt。範例：`/loop 5m check if the deploy finished` |
-| `/run [args]` | **執行應用程式**——根據專案類型（CLI、Server、TUI、瀏覽器）推斷啟動方式，啟動應用並驅動互動以確認變更是否生效。需 v2.1.145+。 |
-| `/verify` | **驗證變更**——建置並執行應用程式，確認程式碼變更是否執行預期操作，不回退到測試或型別檢查。需 v2.1.145+。 |
-| `/run-skill-generator` | **記錄啟動配方**——從乾淨環境中嘗試啟動應用程式，捕捉有效的安裝、env 變數、啟動指令，產出專案專屬的 Skill（`.claude/skills/run-<name>/`）。建議每個專案執行一次。需 v2.1.145+。 |
-| `/simplify [focus]` | **程式碼簡化**——Review 最近變更的檔案，平行啟動三個 Review Agent 分析程式碼重用、品質與效率問題，彙總後自動修正。範例：`/simplify focus on memory efficiency` |
+| Skill                       | 說明                                                                                                                                                                                                            |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/batch <instruction>`      | **大規模平行變更**——分析 Codebase、將工作拆為 5~30 個獨立單元，核准後為每個單元啟動一個背景 Agent（獨立 git worktree），各自實作、跑測試、開 PR。需要 git repo。範例：`/batch migrate src/ from Solid to React` |
+| `/claude-api`               | **Claude API 參考**——載入目前專案語言（Python / TS / Java / Go / Ruby / C# / PHP / cURL）的 Claude API + Agent SDK 參考文件。在 code import `anthropic` 時也會自動啟動。                                        |
+| `/code-review`              | **程式碼審查**——對當前變更進行結構化審查，涵蓋正確性、可讀性、效能與安全性，產出審查報告與建議。                                                                                                                |
+| `/debug [description]`      | **除錯日誌**——啟用 Session 除錯日誌，分析問題。可搭配描述聚焦分析範圍。                                                                                                                                         |
+| `/loop [interval] <prompt>` | **定期執行**——在 Session 存活期間以指定間隔重複執行 Prompt。範例：`/loop 5m check if the deploy finished`                                                                                                       |
+| `/run [args]`               | **執行應用程式**——根據專案類型（CLI、Server、TUI、瀏覽器）推斷啟動方式，啟動應用並驅動互動以確認變更是否生效。需 v2.1.145+。                                                                                    |
+| `/verify`                   | **驗證變更**——建置並執行應用程式，確認程式碼變更是否執行預期操作，不回退到測試或型別檢查。需 v2.1.145+。                                                                                                        |
+| `/run-skill-generator`      | **記錄啟動配方**——從乾淨環境中嘗試啟動應用程式，捕捉有效的安裝、env 變數、啟動指令，產出專案專屬的 Skill（`.claude/skills/run-<name>/`）。建議每個專案執行一次。需 v2.1.145+。                                  |
+| `/simplify [focus]`         | **程式碼簡化**——Review 最近變更的檔案，平行啟動三個 Review Agent 分析程式碼重用、品質與效率問題，彙總後自動修正。範例：`/simplify focus on memory efficiency`                                                   |
 
 > **ℹ️ `/run` 與 `/verify` 的關係**：`/run` 與 `/verify` 無需額外設定即可運作，會根據專案的 README、`package.json` 或 `Makefile` 推斷啟動方式。但對於需要資料庫、env 檔案、多步驟建置的專案，推斷可能不可靠，此時應先執行 `/run-skill-generator` 來記錄完整配方。
 
@@ -722,12 +729,12 @@ Copilot Coding Agent 可自動發現並使用 Repository 中的 Skills：
 
 **Skills 與 Custom Instructions 的定位差異**：
 
-| 面向 | Custom Instructions | Agent Skills |
-|------|-------------------|--------------|
-| **載入時機** | 每次對話都載入 | 僅在任務相關時載入 |
-| **適用場景** | 通用規範（Coding Standards） | 特定任務（API 設計、測試生成） |
+| 面向         | Custom Instructions               | Agent Skills                           |
+| ------------ | --------------------------------- | -------------------------------------- |
+| **載入時機** | 每次對話都載入                    | 僅在任務相關時載入                     |
+| **適用場景** | 通用規範（Coding Standards）      | 特定任務（API 設計、測試生成）         |
 | **檔案位置** | `.github/copilot-instructions.md` | `.github/skills/<skill-name>/SKILL.md` |
-| **內容量** | 精簡（節省 Token） | 可較詳盡（按需載入） |
+| **內容量**   | 精簡（節省 Token）                | 可較詳盡（按需載入）                   |
 
 **最佳搭配策略**：
 
@@ -763,24 +770,24 @@ Claude：（自動載入匹配的 api-design Skill）→ 依規範產出 API 設
 
 **Claude Code Skill 分享與部署**：
 
-| 方式 | 說明 | 適用場景 |
-|------|------|----------|
-| **專案 Skills** | 提交 `.claude/skills/` 至版控 | 團隊共用的專案規範 |
-| **Plugin Skills** | 在 Plugin 的 `skills/` 目錄中定義 | 跨專案可重用 Skill 套件 |
-| **Managed Settings** | 透過組織級 Managed Settings 部署 | 全組織統一 Skills（企業級） |
+| 方式                 | 說明                              | 適用場景                    |
+| -------------------- | --------------------------------- | --------------------------- |
+| **專案 Skills**      | 提交 `.claude/skills/` 至版控     | 團隊共用的專案規範          |
+| **Plugin Skills**    | 在 Plugin 的 `skills/` 目錄中定義 | 跨專案可重用 Skill 套件     |
+| **Managed Settings** | 透過組織級 Managed Settings 部署  | 全組織統一 Skills（企業級） |
 
 **多路徑 Skills 載入（Claude Code + GitHub Copilot）**：
 
 Claude Code 與 GitHub Copilot 支援從多個路徑自動探索 Skills：
 
-| 路徑 | 適用平台 | 說明 |
-|------|---------|------|
-| `.github/skills/` | GitHub Copilot | 標準位置，Coding Agent 與 Copilot App 使用 |
-| `.claude/skills/` | Claude Code | Claude Code 預設 Skills 目錄 |
-| `.agents/skills/` | 跨平台 | 通用路徑，多 Agent 產品共用 |
-| `~/.copilot/skills/` | GitHub Copilot（個人） | 使用者級 Skills（不同步至版控） |
-| `~/.claude/skills/` | Claude Code（個人） | 使用者級 Skills |
-| `~/.agents/skills/` | 跨平台（個人） | 通用使用者級 Skills |
+| 路徑                 | 適用平台               | 說明                                       |
+| -------------------- | ---------------------- | ------------------------------------------ |
+| `.github/skills/`    | GitHub Copilot         | 標準位置，Coding Agent 與 Copilot App 使用 |
+| `.claude/skills/`    | Claude Code            | Claude Code 預設 Skills 目錄               |
+| `.agents/skills/`    | 跨平台                 | 通用路徑，多 Agent 產品共用                |
+| `~/.copilot/skills/` | GitHub Copilot（個人） | 使用者級 Skills（不同步至版控）            |
+| `~/.claude/skills/`  | Claude Code（個人）    | 使用者級 Skills                            |
+| `~/.agents/skills/`  | 跨平台（個人）         | 通用使用者級 Skills                        |
 
 **Commands → Skills 合併（Claude Code v2.1+）**：
 
@@ -829,17 +836,17 @@ graph TB
         OR --> |包含| DomainS[領域 Skills]
         OR --> |包含| TeamS[團隊 Skills]
     end
-    
+
     subgraph "專案 Repository"
         P1[project-a/.github/skills/]
         P2[project-b/.github/skills/]
         P3[project-c/.github/skills/]
     end
-    
+
     CoreS --> |同步/引用| P1
     CoreS --> |同步/引用| P2
     DomainS --> |同步/引用| P3
-    
+
     style OR fill:#4CAF50,color:#fff
 ```
 
@@ -942,13 +949,13 @@ gh skill publish --fix
 gh skill publish
 ```
 
-| 命令 | 說明 |
-|------|------|
-| `gh skill search <topic>` | 搜尋 GitHub 上的 Skills |
-| `gh skill preview <owner/repo> <skill>` | 預覽 Skill 內容（安全審查） |
+| 命令                                    | 說明                                                     |
+| --------------------------------------- | -------------------------------------------------------- |
+| `gh skill search <topic>`               | 搜尋 GitHub 上的 Skills                                  |
+| `gh skill preview <owner/repo> <skill>` | 預覽 Skill 內容（安全審查）                              |
 | `gh skill install <owner/repo> [skill]` | 安裝 Skill（支援 `@TAG`、`--pin`、`--agent`、`--scope`） |
-| `gh skill update [skill \| --all]` | 更新已安裝的 Skills |
-| `gh skill publish [--dry-run \| --fix]` | 驗證並發布 Skills |
+| `gh skill update [skill \| --all]`      | 更新已安裝的 Skills                                      |
+| `gh skill publish [--dry-run \| --fix]` | 驗證並發布 Skills                                        |
 
 > **⚠️ 安全提醒**：Skills 未經 GitHub 驗證，可能包含 Prompt Injection、隱藏指令或惡意腳本。安裝前務必使用 `gh skill preview` 檢查內容。
 
@@ -962,12 +969,12 @@ gh skill publish
 
 當對話上下文接近滿載時，Claude Code 會執行 Auto-Compaction（自動壓縮）。此時已叫用的 Skills 會在壓縮摘要之後被重新附加，遵循以下 Token 預算規則：
 
-| 規則 | 說明 |
-|------|------|
-| **單一 Skill 預算** | 每個 Skill 保留最近一次叫用的前 **5,000 Tokens** |
-| **合併預算上限** | 所有重新附加的 Skills 共享 **25,000 Tokens** 上限 |
-| **優先順序** | 從**最近叫用**的 Skill 開始填充預算 |
-| **溢出處理** | 超出預算的舊 Skill 在 Compaction 後可能被完全丟棄 |
+| 規則                | 說明                                              |
+| ------------------- | ------------------------------------------------- |
+| **單一 Skill 預算** | 每個 Skill 保留最近一次叫用的前 **5,000 Tokens**  |
+| **合併預算上限**    | 所有重新附加的 Skills 共享 **25,000 Tokens** 上限 |
+| **優先順序**        | 從**最近叫用**的 Skill 開始填充預算               |
+| **溢出處理**        | 超出預算的舊 Skill 在 Compaction 後可能被完全丟棄 |
 
 ```mermaid
 graph LR
@@ -978,12 +985,13 @@ graph LR
     E --> F[重新附加 Skills]
     F --> G[前 5000 Tokens / Skill]
     G --> H[合計上限 25,000 Tokens]
-    
+
     style E fill:#FF9800,color:#fff
     style H fill:#f44336,color:#fff
 ```
 
 **實務建議**：
+
 - 將核心指令放在 SKILL.md 前段（確保 Compaction 後保留）
 - 詳細參考資料放入 `references/` 目錄（按需載入，不佔 Compaction 預算）
 - 若 Skill 在第一次回應後似乎不再生效，通常是模型選擇了其他工具——可強化 `description` 或使用 Hooks 強制行為
@@ -1010,23 +1018,23 @@ Claude Code 會監控 Skills 目錄的檔案變更。在 `~/.claude/skills/`、�
 {
   "skillOverrides": {
     "fix-issue": {
-      "visibility": "name-only"   // Skill 描述不進入上下文，僅名稱可見
+      "visibility": "name-only", // Skill 描述不進入上下文，僅名稱可見
     },
     "internal-tool": {
-      "visibility": "off"         // 完全停用此 Skill
+      "visibility": "off", // 完全停用此 Skill
     },
     "deploy": {
-      "model": "claude-sonnet-4-20250514"   // 覆蓋特定 Skill 的模型
-    }
-  }
+      "model": "claude-sonnet-4-20250514", // 覆蓋特定 Skill 的模型
+    },
+  },
 }
 ```
 
-| `visibility` 值 | 效果 |
-|-----------------|------|
-| （預設） | 描述常駐上下文，完整內容按需載入 |
-| `name-only` | 描述**不**進入上下文，僅在 `/` 選單中顯示名稱；減少 Token 消耗 |
-| `off` | 完全停用——不出現在選單、描述不載入、Claude 無法觸發 |
+| `visibility` 值 | 效果                                                           |
+| --------------- | -------------------------------------------------------------- |
+| （預設）        | 描述常駐上下文，完整內容按需載入                               |
+| `name-only`     | 描述**不**進入上下文，僅在 `/` 選單中顯示名稱；減少 Token 消耗 |
+| `off`           | 完全停用——不出現在選單、描述不載入、Claude 無法觸發            |
 
 **`skillListingBudgetFraction` Token 預算微調**：
 
@@ -1034,7 +1042,7 @@ Claude Code 會監控 Skills 目錄的檔案變更。在 `~/.claude/skills/`、�
 
 ```jsonc
 {
-  "skillListingBudgetFraction": 0.05  // 預設值，佔系統提示詞 5%
+  "skillListingBudgetFraction": 0.05, // 預設值，佔系統提示詞 5%
 }
 ```
 
@@ -1080,6 +1088,7 @@ disable-model-invocation: true
 ---
 
 Analyze the project structure and generate:
+
 1. A `classDiagram` of the main modules
 2. A `graph TD` of the dependency flow
 3. A `sequenceDiagram` of the key API interactions
@@ -1111,7 +1120,7 @@ Skills 可封裝為 Claude Code Plugin 發布，讓使用者透過 Plugin Market
   "name": "enterprise-ssdlc-skills",
   "description": "Enterprise SSDLC Skills for secure development",
   "version": "1.0.0",
-  "skills": ["api-design", "code-review", "security-scan"]
+  "skills": ["api-design", "code-review", "security-scan"],
 }
 ```
 
@@ -1134,7 +1143,7 @@ graph LR
         DP --> M[Maintenance<br/>維運]
         M -.-> R
     end
-    
+
     subgraph "對應 Skills"
         RS[需求分析 Skills<br/>BRD / FRD / User Story]
         DS[設計 Skills<br/>架構圖 / API 規格]
@@ -1144,7 +1153,7 @@ graph LR
         DPS[部署 Skills<br/>CI/CD / Docker]
         MS[維運 Skills<br/>Log / Incident]
     end
-    
+
     R --> RS
     D --> DS
     DEV --> DEVS
@@ -1152,7 +1161,7 @@ graph LR
     S --> SS
     DP --> DPS
     M --> MS
-    
+
     style R fill:#FF9800,color:#fff
     style D fill:#2196F3,color:#fff
     style DEV fill:#4CAF50,color:#fff
@@ -1166,12 +1175,12 @@ graph LR
 
 **可轉換為 Skills 的內容**：
 
-| 常見工作 | 轉換為 Skill | 說明 |
-|----------|-------------|------|
-| 撰寫 BRD | `generate-brd` | 根據會議記錄產出 Business Requirement Document |
-| 撰寫 FRD | `generate-frd` | 根據 BRD 產出 Functional Requirement Document |
-| 撰寫 User Story | `generate-user-story` | 依需求產出 User Story + Acceptance Criteria |
-| 需求追溯 | `requirement-traceability` | 建立需求追溯矩陣 |
+| 常見工作        | 轉換為 Skill               | 說明                                           |
+| --------------- | -------------------------- | ---------------------------------------------- |
+| 撰寫 BRD        | `generate-brd`             | 根據會議記錄產出 Business Requirement Document |
+| 撰寫 FRD        | `generate-frd`             | 根據 BRD 產出 Functional Requirement Document  |
+| 撰寫 User Story | `generate-user-story`      | 依需求產出 User Story + Acceptance Criteria    |
+| 需求追溯        | `requirement-traceability` | 建立需求追溯矩陣                               |
 
 **範例：User Story 生成 Skill**
 
@@ -1190,22 +1199,28 @@ ssdlc-phase: requirements
 # User Story 生成 Skill
 
 ## 輸入要求
+
 請提供以下資訊：
+
 1. 業務需求描述
 2. 目標使用者角色
 3. 系統範圍
 
 ## User Story 格式
+
 使用標準格式：
 ```
+
 作為 [角色]，
 我想要 [功能]，
 以便 [價值/目的]。
 
 ### 驗收條件（Acceptance Criteria）
+
 **Given** [前提條件]
 **When** [操作]
 **Then** [預期結果]
+
 ```
 
 ## 產出規範
@@ -1263,7 +1278,9 @@ metadata:
 # BRD 生成 Skill
 
 ## 輸入要求
+
 請提供以下資訊（至少一項）：
+
 1. 會議記錄 / 訪談紀錄
 2. 現有系統問題描述
 3. 業務目標與願景
@@ -1271,55 +1288,62 @@ metadata:
 ## BRD 標準結構
 
 ### 1. 專案概述（Executive Summary）
+
 - 專案背景與動機
 - 業務目標（量化指標）
 - 預期效益（ROI 分析）
 
 ### 2. 範圍定義（Scope）
+
 - In Scope（納入範圍）
 - Out of Scope（排除範圍）
 - 系統邊界圖
 
 ### 3. 利害關係人分析
 
-| 角色 | 姓名/部門 | 關注點 | 影響力 |
-|------|-----------|--------|--------|
-| Sponsor | ... | ... | 高 |
-| End User | ... | ... | 中 |
+| 角色     | 姓名/部門 | 關注點 | 影響力 |
+| -------- | --------- | ------ | ------ |
+| Sponsor  | ...       | ...    | 高     |
+| End User | ...       | ...    | 中     |
 
 ### 4. 業務需求清單
 
-| 編號 | 需求描述 | 優先順序 | 來源 |
-|------|----------|----------|------|
-| BR-001 | ... | P0 | ... |
+| 編號   | 需求描述 | 優先順序 | 來源 |
+| ------ | -------- | -------- | ---- |
+| BR-001 | ...      | P0       | ...  |
 
 ### 5. 非功能需求
+
 - 效能：回應時間 < 2 秒
 - 可用性：99.9% SLA
 - 安全性：符合 ISO 27001
 
 ### 6. 限制與假設
+
 - 限制條件
 - 前提假設
 
 ### 7. 交付時程
+
 - 里程碑列表
 - 預估時程
 
 ## 產出規範
+
 - 格式：Markdown 文件
 - 需求編號：BR-XXX（三碼流水號）
 - 每個需求須標注優先順序（P0 / P1 / P2）
 - 每個需求須標注來源（哪次會議 / 誰提出）
 
 ## 安全需求
+
 - 涉及個資處理的需求須標注「PII」
 - 涉及法規遵循的需求須標注「Regulatory」
 ```
 
 **範例：FRD 生成 Skill**
 
-```markdown
+````markdown
 ---
 name: generate-frd
 description: >
@@ -1336,7 +1360,9 @@ metadata:
 # FRD 生成 Skill
 
 ## 輸入要求
+
 請提供以下資訊：
+
 1. BRD 或業務需求描述
 2. 系統架構概述（若有）
 3. 現有介面規格（若有）
@@ -1344,10 +1370,12 @@ metadata:
 ## FRD 標準結構
 
 ### 1. 功能概述
+
 - 系統功能清單
 - 功能層級分解（Feature → Function → Sub-function）
 
 ### 2. 功能規格
+
 對每個功能項目，須包含：
 
 ```text
@@ -1382,25 +1410,28 @@ metadata:
   | accountId | String | ✅ | 帳號編號 |
   | amount | BigDecimal | ✅ | 交易金額 |
 ```
+````
 
 ### 3. 非功能需求對應
 
-| 功能編號 | 效能要求 | 安全等級 | 備註 |
-|----------|----------|----------|------|
-| F-001 | < 2s | High | 涉及交易 |
+| 功能編號 | 效能要求 | 安全等級 | 備註     |
+| -------- | -------- | -------- | -------- |
+| F-001    | < 2s     | High     | 涉及交易 |
 
 ### 4. 功能追溯矩陣
 
-| 業務需求 | 功能需求 | 狀態 |
-|----------|----------|------|
-| BR-001 | F-001, F-002 | Draft |
+| 業務需求 | 功能需求     | 狀態  |
+| -------- | ------------ | ----- |
+| BR-001   | F-001, F-002 | Draft |
 
 ## 產出規範
+
 - 功能編號：F-XXX
 - 每個功能須包含主要流程、替代流程、例外流程
 - 每個功能須對應至少一個業務需求（BR-XXX）
 - 包含資料需求欄位定義
-```
+
+````
 
 **範例：需求追溯矩陣 Skill**
 
@@ -1408,9 +1439,9 @@ metadata:
 ---
 name: requirement-traceability
 description: >
-  Builds Requirement Traceability Matrix (RTM) linking business 
-  requirements to functional specs, design, code, and test cases. 
-  Use when asked to create traceability matrix, verify requirement 
+  Builds Requirement Traceability Matrix (RTM) linking business
+  requirements to functional specs, design, code, and test cases.
+  Use when asked to create traceability matrix, verify requirement
   coverage, or audit requirement completeness.
 metadata:
   version: "1.0"
@@ -1450,23 +1481,23 @@ metadata:
 - 標注所有缺口（Gap）並建議處理方式
 - 孤兒程式碼須標注風險等級
 - 未實作需求須標注延遲原因與預計時程
-```
+````
 
 ### 3.2 Design（設計階段）
 
 **可轉換為 Skills 的內容**：
 
-| 常見工作 | 轉換為 Skill | 說明 |
-|----------|-------------|------|
-| 系統架構設計 | `architecture-design` | 產出系統架構圖（C4 Model） |
-| API 設計 | `api-design` | 產出 OpenAPI Spec + Controller 骨架 |
-| 資料庫設計 | `database-design` | 產出 ER Model + DDL |
-| DDD 設計 | `ddd-modeling` | 產出 Domain Model + Bounded Context |
-| UI/UX 設計 | `uiux-design` | 產出 Wireframe 規格、元件規範、互動流程與無障礙檢核 |
+| 常見工作     | 轉換為 Skill          | 說明                                                |
+| ------------ | --------------------- | --------------------------------------------------- |
+| 系統架構設計 | `architecture-design` | 產出系統架構圖（C4 Model）                          |
+| API 設計     | `api-design`          | 產出 OpenAPI Spec + Controller 骨架                 |
+| 資料庫設計   | `database-design`     | 產出 ER Model + DDL                                 |
+| DDD 設計     | `ddd-modeling`        | 產出 Domain Model + Bounded Context                 |
+| UI/UX 設計   | `uiux-design`         | 產出 Wireframe 規格、元件規範、互動流程與無障礙檢核 |
 
 **範例：Clean Architecture API 設計 Skill**
 
-```markdown
+````markdown
 ---
 name: clean-architecture-api
 description: >
@@ -1478,6 +1509,7 @@ version: 2.0.0
 category: design
 ssdlc-phase: design
 ---
+
 # Clean Architecture API 設計 Skill
 
 ## 分層規範
@@ -1503,8 +1535,10 @@ src/main/java/com/company/service/
 └── config/                   # 設定
     └── BeanConfig.java
 ```
+````
 
 ## API 設計規範
+
 1. URI 使用複數名詞：`/api/v1/transactions`
 2. 使用 HTTP Method 語義：GET / POST / PUT / DELETE
 3. 版本控制：URI Path Versioning（/api/v1/）
@@ -1512,16 +1546,19 @@ src/main/java/com/company/service/
 5. 錯誤回應：統一格式 `{ code, message, details }`
 
 ## DTO 設計
+
 - Request DTO：`XxxRequest`
 - Response DTO：`XxxResponse`
 - DTO 與 Entity 必須完全分離
 - 使用 MapStruct 進行物件轉換
 
 ## 安全規範
+
 - 所有 API 須經過 JWT 驗證
 - 敏感欄位（如身分證字號）須遮罩
 - 寫入操作須記錄 Audit Log
-```
+
+````
 
 **範例：系統架構設計 Skill**
 
@@ -1529,9 +1566,9 @@ src/main/java/com/company/service/
 ---
 name: architecture-design
 description: >
-  Designs system architecture using C4 Model and generates 
-  architecture diagrams in Mermaid format. Use when asked to 
-  design system architecture, draw architecture diagrams, 
+  Designs system architecture using C4 Model and generates
+  architecture diagrams in Mermaid format. Use when asked to
+  design system architecture, draw architecture diagrams,
   or evaluate architectural decisions.
 metadata:
   version: "1.0"
@@ -1553,9 +1590,10 @@ graph TB
     System --> CoreBanking[核心銀行系統<br/>外部系統]
     System --> EmailGW[Email Gateway<br/>外部系統]
     System --> SMSGW[SMS Gateway<br/>外部系統]
-```
+````
 
 ### Level 2：Container Diagram（容器圖）
+
 描述系統內的應用程式、資料庫、訊息佇列等容器。
 
 ```mermaid
@@ -1582,9 +1620,11 @@ graph TB
 ```
 
 ### Level 3：Component Diagram（元件圖）
+
 描述單一容器內的主要元件與互動。
 
 ### Level 4：Code Diagram（程式碼圖）
+
 描述單一元件的類別圖（通常由 IDE 自動生成）。
 
 ## Architecture Decision Record（ADR）格式
@@ -1612,11 +1652,13 @@ graph TB
 ```
 
 ## 產出規範
+
 - 使用 Mermaid 語法繪製架構圖
 - 每個架構決策須撰寫 ADR
 - 圖表須標注技術選型（含版本）
 - 包含容量預估（TPS、儲存量）
-```
+
+````
 
 **範例：資料庫設計 Skill**
 
@@ -1624,9 +1666,9 @@ graph TB
 ---
 name: database-design
 description: >
-  Designs database schema including ER Model, DDL scripts, 
-  and migration files for relational databases. Use when asked 
-  to design database, create ER diagram, write DDL, or plan 
+  Designs database schema including ER Model, DDL scripts,
+  and migration files for relational databases. Use when asked
+  to design database, create ER diagram, write DDL, or plan
   database migration.
 metadata:
   version: "1.0"
@@ -1672,7 +1714,7 @@ erDiagram
         varchar operator "操作者"
         timestamp created_at
     }
-```
+````
 
 ## DDL 規範
 
@@ -1692,7 +1734,7 @@ CREATE TABLE accounts (
     status        VARCHAR(20)     NOT NULL DEFAULT 'ACTIVE',
     created_at    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    
+
     CONSTRAINT chk_balance_non_negative CHECK (balance >= 0),
     CONSTRAINT chk_status CHECK (status IN ('ACTIVE', 'FROZEN', 'CLOSED'))
 );
@@ -1704,6 +1746,7 @@ CREATE INDEX idx_accounts_status ON accounts(status);
 ```
 
 ## 設計規範
+
 1. 所有表必須有 `id`（BIGSERIAL）作為主鍵
 2. 必須有 `created_at`、`updated_at` 時間戳
 3. 金額欄位使用 `DECIMAL(18, 2)`，禁止使用 FLOAT
@@ -1712,11 +1755,13 @@ CREATE INDEX idx_accounts_status ON accounts(status);
 6. 使用 Flyway / Liquibase 管理 Schema Migration
 
 ## 安全規範
+
 - 禁止在 DDL 中包含測試資料
 - 敏感欄位須加密（AES-256）
 - 刪除操作使用軟刪除（`deleted_at` 欄位）
 - 生產環境 DDL 須經 DBA 審核
-```
+
+````
 
 **範例：DDD 領域建模 Skill**
 
@@ -1724,10 +1769,10 @@ CREATE INDEX idx_accounts_status ON accounts(status);
 ---
 name: ddd-modeling
 description: >
-  Performs Domain-Driven Design modeling including Bounded 
-  Context identification, Aggregate design, Entity/Value 
-  Object definition, and Domain Event mapping. Use when asked 
-  to do DDD modeling, design domain model, or identify 
+  Performs Domain-Driven Design modeling including Bounded
+  Context identification, Aggregate design, Entity/Value
+  Object definition, and Domain Event mapping. Use when asked
+  to do DDD modeling, design domain model, or identify
   bounded contexts.
 metadata:
   version: "1.0"
@@ -1745,24 +1790,24 @@ graph TB
         A1[Account Aggregate]
         A2[Customer Entity]
     end
-    
+
     subgraph "交易 Context"
         T1[Transaction Aggregate]
         T2[Transfer Service]
     end
-    
+
     subgraph "通知 Context"
         N1[Notification Service]
         N2[Template Entity]
     end
-    
+
     A1 -->|Account Created Event| T1
     T1 -->|Transaction Completed Event| N1
 
     style A1 fill:#4CAF50,color:#fff
     style T1 fill:#2196F3,color:#fff
     style N1 fill:#FF9800,color:#fff
-```
+````
 
 ## Step 2：定義 Aggregate
 
@@ -1775,14 +1820,14 @@ public class Transaction {
     private Money amount;               // Value Object
     private TransactionStatus status;   // Enum
     private List<DomainEvent> events;   // Domain Events
-    
+
     // 業務行為封裝在 Aggregate 內
     public void execute() {
         validate();
         this.status = TransactionStatus.SUCCESS;
         events.add(new TransactionCompletedEvent(this));
     }
-    
+
     private void validate() {
         if (amount.isNegativeOrZero()) {
             throw new InvalidAmountException("金額必須大於零");
@@ -1811,27 +1856,29 @@ public record Money(BigDecimal amount, Currency currency) {
 
 ## Step 3：Domain Event 設計
 
-| 事件名稱 | 觸發時機 | 發布 Context | 消費 Context |
-|----------|----------|-------------|-------------|
-| AccountCreatedEvent | 帳戶建立後 | 帳戶管理 | 交易、通知 |
-| TransactionCompletedEvent | 交易完成後 | 交易 | 通知、帳戶管理 |
-| BalanceInsufficientEvent | 餘額不足時 | 交易 | 通知 |
+| 事件名稱                  | 觸發時機   | 發布 Context | 消費 Context   |
+| ------------------------- | ---------- | ------------ | -------------- |
+| AccountCreatedEvent       | 帳戶建立後 | 帳戶管理     | 交易、通知     |
+| TransactionCompletedEvent | 交易完成後 | 交易         | 通知、帳戶管理 |
+| BalanceInsufficientEvent  | 餘額不足時 | 交易         | 通知           |
 
 ## Step 4：Context Map（上下文映射）
 
-| 上游 Context | 下游 Context | 關係模式 |
-|-------------|-------------|----------|
-| 帳戶管理 | 交易 | Customer-Supplier |
-| 交易 | 通知 | Published Language |
-| 核心銀行（外部） | 帳戶管理 | Anti-Corruption Layer |
+| 上游 Context     | 下游 Context | 關係模式              |
+| ---------------- | ------------ | --------------------- |
+| 帳戶管理         | 交易         | Customer-Supplier     |
+| 交易             | 通知         | Published Language    |
+| 核心銀行（外部） | 帳戶管理     | Anti-Corruption Layer |
 
 ## 設計原則
+
 1. **Aggregate 不可跨 Bounded Context 引用**
 2. **跨 Context 通訊使用 Domain Event（非同步）**
 3. **Value Object 優先於 Entity**（若不需要唯一識別）
 4. **Repository 只為 Aggregate Root 建立**
 5. **業務邏輯封裝在 Domain 層，不洩漏至 Service 層**
-```
+
+````
 
 **範例：UI/UX 設計 Skill**
 
@@ -1839,10 +1886,10 @@ public record Money(BigDecimal amount, Currency currency) {
 ---
 name: uiux-design
 description: >
-  Generates UI/UX design specifications including wireframe 
-  descriptions, component guidelines, interaction flows, 
-  responsive layout rules, and accessibility (a11y) checklist. 
-  Use when asked to design user interface, create wireframes, 
+  Generates UI/UX design specifications including wireframe
+  descriptions, component guidelines, interaction flows,
+  responsive layout rules, and accessibility (a11y) checklist.
+  Use when asked to design user interface, create wireframes,
   define design system components, or review UX flows.
 metadata:
   version: "1.0"
@@ -1881,7 +1928,7 @@ graph TD
     Dialog -->|取消| Dashboard
     Result --> Feedback[Toast 回饋訊息]
     Feedback --> Dashboard
-```
+````
 
 ### 2. 頁面 Wireframe 規格
 
@@ -1926,61 +1973,62 @@ graph TD
 
 ### 3. 元件設計規範（Design Tokens / Component Spec）
 
-| Token 類型 | Token 名稱 | 值 | 用途 |
-|------------|-----------|-----|------|
-| Color | `--color-primary` | `#1976D2` | 主要操作按鈕、連結 |
-| Color | `--color-error` | `#D32F2F` | 錯誤訊息、刪除按鈕 |
-| Color | `--color-success` | `#388E3C` | 成功狀態 |
-| Spacing | `--spacing-sm` | `8px` | 元件內間距 |
-| Spacing | `--spacing-md` | `16px` | 區塊間距 |
-| Spacing | `--spacing-lg` | `24px` | 段落間距 |
-| Typography | `--font-heading` | `24px / Bold` | 頁面標題 |
-| Typography | `--font-body` | `14px / Regular` | 內文 |
-| Border | `--radius-sm` | `4px` | 按鈕、輸入框圓角 |
-| Border | `--radius-md` | `8px` | 卡片圓角 |
+| Token 類型 | Token 名稱        | 值               | 用途               |
+| ---------- | ----------------- | ---------------- | ------------------ |
+| Color      | `--color-primary` | `#1976D2`        | 主要操作按鈕、連結 |
+| Color      | `--color-error`   | `#D32F2F`        | 錯誤訊息、刪除按鈕 |
+| Color      | `--color-success` | `#388E3C`        | 成功狀態           |
+| Spacing    | `--spacing-sm`    | `8px`            | 元件內間距         |
+| Spacing    | `--spacing-md`    | `16px`           | 區塊間距           |
+| Spacing    | `--spacing-lg`    | `24px`           | 段落間距           |
+| Typography | `--font-heading`  | `24px / Bold`    | 頁面標題           |
+| Typography | `--font-body`     | `14px / Regular` | 內文               |
+| Border     | `--radius-sm`     | `4px`            | 按鈕、輸入框圓角   |
+| Border     | `--radius-md`     | `8px`            | 卡片圓角           |
 
 **按鈕元件規格**：
 
-| 屬性 | Primary | Secondary | Danger | Disabled |
-|------|---------|-----------|--------|----------|
-| 背景色 | `--color-primary` | `transparent` | `--color-error` | `#E0E0E0` |
-| 文字色 | `#FFFFFF` | `--color-primary` | `#FFFFFF` | `#9E9E9E` |
-| 邊框 | 無 | `1px solid primary` | 無 | 無 |
-| Hover | 加深 10% | 背景 `primary/10%` | 加深 10% | 無變化 |
-| 最小寬度 | `120px` | `120px` | `120px` | `120px` |
-| 高度 | `40px` | `40px` | `40px` | `40px` |
+| 屬性     | Primary           | Secondary           | Danger          | Disabled  |
+| -------- | ----------------- | ------------------- | --------------- | --------- |
+| 背景色   | `--color-primary` | `transparent`       | `--color-error` | `#E0E0E0` |
+| 文字色   | `#FFFFFF`         | `--color-primary`   | `#FFFFFF`       | `#9E9E9E` |
+| 邊框     | 無                | `1px solid primary` | 無              | 無        |
+| Hover    | 加深 10%          | 背景 `primary/10%`  | 加深 10%        | 無變化    |
+| 最小寬度 | `120px`           | `120px`             | `120px`         | `120px`   |
+| 高度     | `40px`            | `40px`              | `40px`          | `40px`    |
 
 ### 4. 互動規格（Interaction Spec）
 
-| 互動情境 | 觸發方式 | 動畫 / 過渡 | 回饋方式 |
-|----------|----------|-------------|----------|
-| 表單送出 | Click / Enter | Button → Loading Spinner | 成功 Toast / 錯誤 Inline |
-| 刪除確認 | Click 刪除按鈕 | Modal 浮現（fade-in 200ms） | 確認後 Toast |
-| 頁面切換 | 點擊導航項目 | Content fade（150ms） | Active 狀態高亮 |
-| 輸入驗證 | onBlur / onChange | 無 | Inline 錯誤訊息 |
-| 長列表載入 | 捲動至底部 | Skeleton Row 佔位 | 自動載入下一頁 |
+| 互動情境   | 觸發方式          | 動畫 / 過渡                 | 回饋方式                 |
+| ---------- | ----------------- | --------------------------- | ------------------------ |
+| 表單送出   | Click / Enter     | Button → Loading Spinner    | 成功 Toast / 錯誤 Inline |
+| 刪除確認   | Click 刪除按鈕    | Modal 浮現（fade-in 200ms） | 確認後 Toast             |
+| 頁面切換   | 點擊導航項目      | Content fade（150ms）       | Active 狀態高亮          |
+| 輸入驗證   | onBlur / onChange | 無                          | Inline 錯誤訊息          |
+| 長列表載入 | 捲動至底部        | Skeleton Row 佔位           | 自動載入下一頁           |
 
 ### 5. 響應式設計（Responsive Layout）
 
-| 斷點 | 寬度 | 佈局調整 |
-|------|------|----------|
-| Desktop | ≥ 1280px | Sidebar + Main Content 並排 |
-| Tablet | 768px – 1279px | Sidebar 摺疊為 Hamburger Menu |
-| Mobile | < 768px | 單欄佈局，Bottom Navigation |
+| 斷點    | 寬度           | 佈局調整                      |
+| ------- | -------------- | ----------------------------- |
+| Desktop | ≥ 1280px       | Sidebar + Main Content 並排   |
+| Tablet  | 768px – 1279px | Sidebar 摺疊為 Hamburger Menu |
+| Mobile  | < 768px        | 單欄佈局，Bottom Navigation   |
 
 ### 6. 無障礙設計檢核（Accessibility / a11y）
 
-| 檢核項目 | 標準 | 要求 |
-|----------|------|------|
-| 色彩對比 | WCAG 2.1 AA | 文字對比度 ≥ 4.5:1，大字 ≥ 3:1 |
-| 鍵盤操作 | WCAG 2.1 | 所有互動元素可透過 Tab / Enter 操作 |
-| Focus 指示 | WCAG 2.1 | 可見的 Focus Ring（outline） |
-| 圖片替代文字 | WCAG 2.1 | 所有 `<img>` 須有 `alt` 屬性 |
-| ARIA 標籤 | WAI-ARIA | 動態內容須有 `aria-live`、`role` |
-| 螢幕閱讀器 | NVDA / VoiceOver | 表單元素須有 `<label>` 關聯 |
-| 觸控目標 | WCAG 2.5.5 | 觸控目標 ≥ 44×44px |
+| 檢核項目     | 標準             | 要求                                |
+| ------------ | ---------------- | ----------------------------------- |
+| 色彩對比     | WCAG 2.1 AA      | 文字對比度 ≥ 4.5:1，大字 ≥ 3:1      |
+| 鍵盤操作     | WCAG 2.1         | 所有互動元素可透過 Tab / Enter 操作 |
+| Focus 指示   | WCAG 2.1         | 可見的 Focus Ring（outline）        |
+| 圖片替代文字 | WCAG 2.1         | 所有 `<img>` 須有 `alt` 屬性        |
+| ARIA 標籤    | WAI-ARIA         | 動態內容須有 `aria-live`、`role`    |
+| 螢幕閱讀器   | NVDA / VoiceOver | 表單元素須有 `<label>` 關聯         |
+| 觸控目標     | WCAG 2.5.5       | 觸控目標 ≥ 44×44px                  |
 
 ## 產出規範
+
 - 每個頁面須包含 Wireframe 佈局圖（ASCII 或 Mermaid）
 - 每個互動須定義觸發方式、回饋方式與狀態變化
 - 色彩規格須標注 Hex 值與用途
@@ -1988,12 +2036,14 @@ graph TD
 - 無障礙檢核須對照 WCAG 2.1 AA 標準
 
 ## 安全與隱私規範
+
 - 密碼欄位須使用 `type="password"` 且提供顯示/隱藏切換
 - 敏感資訊（如身分證、卡號）在畫面上須部分遮罩
 - 表單須包含 CSRF Token
 - 使用者輸入須在前端做基本驗證，後端做完整驗證（雙重驗證）
 - 錯誤訊息不可洩漏系統內部資訊
-```
+
+````
 
 > **🏦 金融業實務案例**：某銀行的網路銀行改版專案，將轉帳頁面、帳戶總覽、交易明細等 UI 設計規格封裝為 Skills，新進前端工程師只需輸入功能需求，即可產出符合企業 Design System 的 Wireframe 規格、元件清單與無障礙檢核報告，大幅縮短從設計到開發的銜接時間。
 
@@ -2014,8 +2064,8 @@ graph TD
 ---
 name: spring-boot-codegen
 description: >
-  Generates Spring Boot 3.x components following enterprise 
-  coding standards. Use when asked to create controllers, 
+  Generates Spring Boot 3.x components following enterprise
+  coding standards. Use when asked to create controllers,
   services, repositories, DTOs, or complete CRUD endpoints.
 version: 1.5.0
 category: development
@@ -2037,19 +2087,19 @@ public class TransactionController {
 
     /**
      * 查詢交易記錄
-     * 
+     *
      * @param request 查詢條件
      * @return 交易記錄列表
      */
     @GetMapping
-    public ResponseEntity<PageResponse<TransactionResponse>> 
+    public ResponseEntity<PageResponse<TransactionResponse>>
             getTransactions(@Valid TransactionQueryRequest request) {
         log.info("查詢交易記錄: {}", request);
         var result = transactionUseCase.query(request.toDomain());
         return ResponseEntity.ok(PageResponse.of(result));
     }
 }
-```
+````
 
 ## Service 規範
 
@@ -2067,14 +2117,14 @@ public class TransactionService implements TransactionUseCase {
     public TransactionResult execute(TransactionCommand command) {
         // 1. 驗證業務規則
         validate(command);
-        
+
         // 2. 執行核心邏輯
         var transaction = Transaction.create(command);
         var saved = transactionRepository.save(transaction);
-        
+
         // 3. 發布領域事件
         eventPublisher.publish(new TransactionCreatedEvent(saved));
-        
+
         // 4. 回傳結果
         return TransactionResult.from(saved);
     }
@@ -2082,12 +2132,14 @@ public class TransactionService implements TransactionUseCase {
 ```
 
 ## 檢查項目
+
 - [ ] 每個 public 方法都有 JavaDoc
 - [ ] 使用 @Valid 進行輸入驗證
 - [ ] 例外處理使用 @ControllerAdvice
 - [ ] Log 記錄關鍵操作（不含敏感資料）
 - [ ] 交易操作標註 @Transactional
-```
+
+````
 
 **範例：Code Review Skill**
 
@@ -2095,8 +2147,8 @@ public class TransactionService implements TransactionUseCase {
 ---
 name: code-review-standard
 description: >
-  Performs code review following enterprise coding standards 
-  and security guidelines. Use when asked to review code, 
+  Performs code review following enterprise coding standards
+  and security guidelines. Use when asked to review code,
   check code quality, or perform pull request review.
 version: 2.1.0
 category: development
@@ -2136,11 +2188,11 @@ ssdlc-phase: development
 - [ ] 單元測試覆蓋主要路徑
 - [ ] 異常路徑有測試
 - [ ] 測試可重複執行
-```
+````
 
 **範例：重構模式 Skill**
 
-```markdown
+````markdown
 ---
 name: refactoring-patterns
 description: >
@@ -2158,16 +2210,16 @@ metadata:
 
 ## Code Smell 識別與對應重構手法
 
-| Code Smell | 識別標準 | 推薦重構手法 |
-|------------|----------|-------------|
-| **Long Method** | 方法 > 30 行 | Extract Method |
-| **Large Class** | 類別 > 300 行或職責 > 2 個 | Extract Class |
-| **Long Parameter List** | 參數 > 4 個 | Introduce Parameter Object |
-| **Duplicated Code** | 相似邏輯出現 ≥ 2 處 | Extract Method / Template Method |
-| **Switch / If-else 鏈** | ≥ 3 個分支依型別判斷 | Replace Conditional with Polymorphism |
-| **Feature Envy** | 方法大量使用其他類別資料 | Move Method |
-| **Data Clump** | 同一組參數反覆出現 | Extract Class / Parameter Object |
-| **Primitive Obsession** | 用基本型別表達領域概念 | Replace Primitive with Value Object |
+| Code Smell              | 識別標準                   | 推薦重構手法                          |
+| ----------------------- | -------------------------- | ------------------------------------- |
+| **Long Method**         | 方法 > 30 行               | Extract Method                        |
+| **Large Class**         | 類別 > 300 行或職責 > 2 個 | Extract Class                         |
+| **Long Parameter List** | 參數 > 4 個                | Introduce Parameter Object            |
+| **Duplicated Code**     | 相似邏輯出現 ≥ 2 處        | Extract Method / Template Method      |
+| **Switch / If-else 鏈** | ≥ 3 個分支依型別判斷       | Replace Conditional with Polymorphism |
+| **Feature Envy**        | 方法大量使用其他類別資料   | Move Method                           |
+| **Data Clump**          | 同一組參數反覆出現         | Extract Class / Parameter Object      |
+| **Primitive Obsession** | 用基本型別表達領域概念     | Replace Primitive with Value Object   |
 
 ## 重構範例 1：Extract Method
 
@@ -2177,7 +2229,7 @@ public void processOrder(Order order) {
     // 驗證訂單（10 行）
     if (order.getItems().isEmpty()) { throw new EmptyOrderException(); }
     if (order.getTotalAmount().compareTo(BigDecimal.ZERO) <= 0) { throw new InvalidAmountException(); }
-    
+
     // 計算折扣（15 行）
     BigDecimal discount = BigDecimal.ZERO;
     if (order.getMemberLevel().equals("VIP")) {
@@ -2186,7 +2238,7 @@ public void processOrder(Order order) {
         discount = order.getTotalAmount().multiply(new BigDecimal("0.05"));
     }
     order.setDiscount(discount);
-    
+
     // 儲存與通知（10 行）
     orderRepository.save(order);
     notificationService.sendConfirmation(order);
@@ -2214,6 +2266,7 @@ private void completeOrder(Order order) {
     notificationService.sendConfirmation(order);
 }
 ```
+````
 
 ## 重構範例 2：Replace Conditional with Polymorphism
 
@@ -2254,11 +2307,13 @@ private final Map<String, FeeCalculator> calculators = Map.of(
 ```
 
 ## 重構安全守則
+
 1. **每次重構前須有完整測試覆蓋**
 2. **小步前進**：每次只做一個重構動作，確認測試通過後再進行下一步
 3. **不改變外部行為**：重構 ≠ 新增功能
 4. **重構後執行全部測試套件**
-```
+
+````
 
 **範例：程式碼規範 Skill**
 
@@ -2266,9 +2321,9 @@ private final Map<String, FeeCalculator> calculators = Map.of(
 ---
 name: coding-standards
 description: >
-  Enforces enterprise coding standards for Java/Spring Boot 
-  projects including naming conventions, code structure, and 
-  documentation requirements. Use when asked to check coding 
+  Enforces enterprise coding standards for Java/Spring Boot
+  projects including naming conventions, code structure, and
+  documentation requirements. Use when asked to check coding
   standards, enforce code style, or review naming conventions.
 metadata:
   version: "2.0"
@@ -2298,20 +2353,21 @@ metadata:
 public class ExampleService {
     // 1. 靜態常數
     private static final int MAX_RETRY = 3;
-    
+
     // 2. 實例變數（final 優先）
     private final TransactionRepository repository;
     private final EventPublisher publisher;
-    
+
     // 3. 建構子
     // 4. public 方法（業務方法）
     // 5. package-private 方法
     // 6. protected 方法
     // 7. private 方法（輔助方法）
 }
-```
+````
 
 ## 禁止事項
+
 - ❌ 禁止使用 `System.out.println`（使用 SLF4J Logger）
 - ❌ 禁止吞掉例外（空 catch 區塊）
 - ❌ 禁止使用 `@Autowired` 欄位注入（使用建構子注入）
@@ -2321,10 +2377,12 @@ public class ExampleService {
 - ❌ 禁止硬編碼設定值（使用 `@Value` 或 `@ConfigurationProperties`）
 
 ## JavaDoc 規範
+
 - 所有 public 類別和方法須有 JavaDoc
 - JavaDoc 須包含 `@param`、`@return`、`@throws`
 - 業務方法須說明業務規則
-```
+
+````
 
 ### 3.4 Testing（測試階段）
 
@@ -2343,8 +2401,8 @@ public class ExampleService {
 ---
 name: junit-test-generation
 description: >
-  Generates comprehensive JUnit 5 test cases for Java classes 
-  following AAA (Arrange-Act-Assert) pattern. Use when asked 
+  Generates comprehensive JUnit 5 test cases for Java classes
+  following AAA (Arrange-Act-Assert) pattern. Use when asked
   to write tests, generate unit tests, or improve test coverage.
 version: 1.3.0
 category: testing
@@ -2354,9 +2412,11 @@ ssdlc-phase: testing
 # JUnit 5 測試生成 Skill
 
 ## 測試命名規範
-```
+````
+
 methodName_givenCondition_expectedBehavior
-```
+
+````
 
 ## 測試結構（AAA Pattern）
 
@@ -2366,10 +2426,10 @@ class TransactionServiceTest {
 
     @Mock
     private TransactionRepository transactionRepository;
-    
+
     @Mock
     private EventPublisher eventPublisher;
-    
+
     @InjectMocks
     private TransactionService transactionService;
 
@@ -2382,19 +2442,19 @@ class TransactionServiceTest {
                 .toAccount("B001")
                 .amount(BigDecimal.valueOf(1000))
                 .build();
-        
+
         when(transactionRepository.save(any()))
                 .thenReturn(Transaction.of("TXN001", command));
-        
+
         // Act
         var result = transactionService.execute(command);
-        
+
         // Assert
         assertThat(result).isNotNull();
         assertThat(result.getStatus()).isEqualTo("SUCCESS");
         verify(eventPublisher).publish(any(TransactionCreatedEvent.class));
     }
-    
+
     @Test
     @DisplayName("執行轉帳 - 餘額不足時 - 應拋出 InsufficientBalanceException")
     void execute_whenBalanceInsufficient_shouldThrowException() {
@@ -2403,30 +2463,33 @@ class TransactionServiceTest {
                 .fromAccount("A001")
                 .amount(BigDecimal.valueOf(999999999))
                 .build();
-        
+
         // Act & Assert
         assertThatThrownBy(() -> transactionService.execute(command))
                 .isInstanceOf(InsufficientBalanceException.class)
                 .hasMessageContaining("餘額不足");
     }
 }
-```
+````
 
 ## 測試覆蓋要求
-| 類型 | 覆蓋率目標 | 說明 |
-|------|-----------|------|
-| Service 層 | ≥ 80% | 核心業務邏輯 |
-| Controller 層 | ≥ 70% | API 端點 |
-| Domain 層 | ≥ 90% | 領域模型 |
-| Utility | ≥ 85% | 工具類別 |
+
+| 類型          | 覆蓋率目標 | 說明         |
+| ------------- | ---------- | ------------ |
+| Service 層    | ≥ 80%      | 核心業務邏輯 |
+| Controller 層 | ≥ 70%      | API 端點     |
+| Domain 層     | ≥ 90%      | 領域模型     |
+| Utility       | ≥ 85%      | 工具類別     |
 
 ## 必須測試的場景
+
 1. 正常路徑（Happy Path）
 2. 邊界值（Boundary Values）
 3. 異常輸入（Invalid Input）
 4. Null / Empty 處理
 5. 併發場景（如適用）
-```
+
+````
 
 **範例：整合測試生成 Skill**
 
@@ -2434,8 +2497,8 @@ class TransactionServiceTest {
 ---
 name: integration-test-gen
 description: >
-  Generates Spring Boot integration tests using @SpringBootTest, 
-  TestContainers, and MockMvc. Use when asked to write integration 
+  Generates Spring Boot integration tests using @SpringBootTest,
+  TestContainers, and MockMvc. Use when asked to write integration
   tests, create end-to-end API tests, or test with real database.
 metadata:
   version: "1.0"
@@ -2457,7 +2520,7 @@ src/test/java/
     ├── application-test.yml         # 測試環境設定
     └── testdata/
         └── transactions.json        # 測試資料
-```
+````
 
 ## 基底測試類別
 
@@ -2518,7 +2581,7 @@ class TransactionApiTest extends BaseIntegrationTest {
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody().getStatus()).isEqualTo("SUCCESS");
-        
+
         // 驗證資料庫狀態
         var account = accountRepository.findByAccountNo("A001").orElseThrow();
         assertThat(account.getBalance()).isEqualByComparingTo("9000.00");
@@ -2539,12 +2602,14 @@ class TransactionApiTest extends BaseIntegrationTest {
 ```
 
 ## 測試規範
+
 1. 整合測試類別繼承 `BaseIntegrationTest`
 2. 使用 TestContainers 取代 H2（確保與生產環境一致）
 3. 每個測試方法獨立，使用 `@BeforeEach` 初始化資料
 4. 驗證 HTTP Status Code + Response Body + 資料庫狀態
 5. 不使用 `@DirtiesContext`（影響效能），改用資料清理
-```
+
+````
 
 **範例：API 測試案例生成 Skill**
 
@@ -2552,9 +2617,9 @@ class TransactionApiTest extends BaseIntegrationTest {
 ---
 name: api-test-gen
 description: >
-  Generates REST API test cases covering positive, negative, 
-  boundary, and security scenarios. Use when asked to create 
-  API tests, write REST endpoint tests, or generate test 
+  Generates REST API test cases covering positive, negative,
+  boundary, and security scenarios. Use when asked to create
+  API tests, write REST endpoint tests, or generate test
   collections for API validation.
 metadata:
   version: "1.0"
@@ -2645,8 +2710,9 @@ class TransactionControllerTest {
                 .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
     }
 }
-```
-```
+````
+
+````
 
 **範例：測試案例設計 Skill**
 
@@ -2654,9 +2720,9 @@ class TransactionControllerTest {
 ---
 name: test-case-design
 description: >
-  Designs test cases using equivalence partitioning, boundary 
-  value analysis, decision table, and state transition techniques. 
-  Use when asked to design test cases, plan test strategy, or 
+  Designs test cases using equivalence partitioning, boundary
+  value analysis, decision table, and state transition techniques.
+  Use when asked to design test cases, plan test strategy, or
   create test coverage matrix.
 metadata:
   version: "1.0"
@@ -2720,26 +2786,28 @@ stateDiagram-v2
     FAILED --> PENDING : 重試
     SUCCESS --> [*]
     FAILED --> [*] : 超過重試上限
-```
+````
 
 **狀態轉換測試案例**：
 
-| 測試編號 | 起始狀態 | 事件 | 預期狀態 |
-|----------|----------|------|----------|
-| ST-001 | — | 建立交易 | PENDING |
-| ST-002 | PENDING | 開始處理 | PROCESSING |
-| ST-003 | PROCESSING | 處理成功 | SUCCESS |
-| ST-004 | PROCESSING | 處理失敗 | FAILED |
-| ST-005 | FAILED | 重試（未超限） | PENDING |
-| ST-006 | FAILED | 重試（超過上限） | FAILED（終態） |
-| ST-007 | SUCCESS | 嘗試重試 | 拒絕（非法轉換） |
+| 測試編號 | 起始狀態   | 事件             | 預期狀態         |
+| -------- | ---------- | ---------------- | ---------------- |
+| ST-001   | —          | 建立交易         | PENDING          |
+| ST-002   | PENDING    | 開始處理         | PROCESSING       |
+| ST-003   | PROCESSING | 處理成功         | SUCCESS          |
+| ST-004   | PROCESSING | 處理失敗         | FAILED           |
+| ST-005   | FAILED     | 重試（未超限）   | PENDING          |
+| ST-006   | FAILED     | 重試（超過上限） | FAILED（終態）   |
+| ST-007   | SUCCESS    | 嘗試重試         | 拒絕（非法轉換） |
 
 ## 產出規範
+
 - 每個功能至少涵蓋：正向路徑 + 邊界值 + 異常路徑
 - 測試案例編號格式：TC-{模組}-{流水號}
 - 預期結果須明確（含 HTTP Status Code + 回應內容）
 - 標注測試優先順序（P0：核心路徑、P1：異常路徑、P2：邊界值）
-```
+
+````
 
 ### 3.5 Security（安全）
 
@@ -2758,8 +2826,8 @@ stateDiagram-v2
 ---
 name: owasp-security-review
 description: >
-  Reviews code against OWASP Top 10 2025 vulnerabilities. 
-  Use when asked to perform security review, check for 
+  Reviews code against OWASP Top 10 2025 vulnerabilities.
+  Use when asked to perform security review, check for
   vulnerabilities, or audit code security.
 version: 3.0.0
 category: security
@@ -2785,15 +2853,17 @@ public UserResponse getUser(@PathVariable Long userId) { ... }
 // ❌ 錯誤：無權限檢查
 @GetMapping("/users/{userId}")
 public UserResponse getUser(@PathVariable Long userId) { ... }
-```
+````
 
 ### A02: Cryptographic Failures（加密失效）
+
 - [ ] 敏感資料傳輸使用 TLS 1.2+
 - [ ] 密碼使用 bcrypt / scrypt 雜湊
 - [ ] 無硬編碼金鑰
 - [ ] 使用安全的亂數產生器
 
 ### A03: Injection（注入攻擊）
+
 - [ ] SQL 使用 Parameterized Query
 - [ ] 輸入驗證使用白名單
 - [ ] 輸出編碼（Output Encoding）
@@ -2809,6 +2879,7 @@ List<Transaction> findByAccountId(@Param("accountId") String accountId);
 ```
 
 ### A04: Insecure Design（不安全設計）
+
 - [ ] 使用 Threat Modeling 識別設計弱點
 - [ ] 業務邏輯有適當的速率與數量限制
 - [ ] 敏感操作使用多因子驗證
@@ -2833,6 +2904,7 @@ public TransferResult transfer(TransferCommand cmd) {
 ```
 
 ### A05: Security Misconfiguration（安全設定錯誤）
+
 - [ ] 移除預設帳號與密碼
 - [ ] 關閉不必要的 HTTP Method（如 TRACE、OPTIONS）
 - [ ] 錯誤訊息不洩漏堆疊資訊或系統內部細節
@@ -2856,6 +2928,7 @@ public ResponseEntity<String> handleException(Exception ex) {
 ```
 
 ### A06: Vulnerable and Outdated Components（易受攻擊與過時元件）
+
 - [ ] 定期掃描依賴套件的 CVE 漏洞（如 OWASP Dependency-Check）
 - [ ] 移除未使用的依賴
 - [ ] 鎖定依賴版本，避免自動升級至未驗證版本
@@ -2881,6 +2954,7 @@ public ResponseEntity<String> handleException(Exception ex) {
 ```
 
 ### A07: Identification and Authentication Failures（身分識別與驗證失效）
+
 - [ ] 密碼策略符合規範（長度、複雜度）
 - [ ] 實作帳號鎖定機制（連續失敗 N 次後鎖定）
 - [ ] Session Token 有適當的過期時間
@@ -2917,6 +2991,7 @@ public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 ```
 
 ### A08: Software and Data Integrity Failures（軟體與資料完整性失效）
+
 - [ ] CI/CD Pipeline 有完整性驗證（簽章、校驗和）
 - [ ] 不反序列化不受信任的資料
 - [ ] 軟體更新經過簽章驗證
@@ -2938,6 +3013,7 @@ Object obj = ois.readObject(); // 危險！任意類別實例化
 ```
 
 ### A09: Security Logging and Monitoring Failures（安全日誌與監控失效）
+
 - [ ] 記錄所有登入成功 / 失敗事件
 - [ ] 記錄所有存取控制失敗事件
 - [ ] 敏感操作（轉帳、權限變更）有完整 Audit Log
@@ -2967,6 +3043,7 @@ log.info("Transfer: from={}, to={}, password={}", fromAcct, toAcct, password);
 ```
 
 ### A10: Server-Side Request Forgery（伺服器端請求偽造，SSRF）
+
 - [ ] 驗證並限制使用者提供的 URL（白名單網域）
 - [ ] 禁止存取內部網路位址（127.0.0.1、10.x、172.16-31.x、192.168.x）
 - [ ] 不將原始回應直接回傳給使用者
@@ -2993,11 +3070,13 @@ public String fetchUrl(String userProvidedUrl) {
 ```
 
 ## 發現漏洞時的處理流程
+
 1. 標記嚴重等級（Critical / High / Medium / Low）
 2. 產出修復建議
 3. 建立追蹤 Issue
 4. 通知安全團隊
-```
+
+````
 
 **範例：安全編碼指引 Skill**
 
@@ -3005,10 +3084,10 @@ public String fetchUrl(String userProvidedUrl) {
 ---
 name: secure-coding-guide
 description: >
-  Provides secure coding guidelines for Java/Spring Boot 
-  projects covering input validation, output encoding, 
-  authentication, and cryptography. Use when asked for 
-  secure coding practices, security coding standards, or 
+  Provides secure coding guidelines for Java/Spring Boot
+  projects covering input validation, output encoding,
+  authentication, and cryptography. Use when asked for
+  secure coding practices, security coding standards, or
   how to write secure code.
 metadata:
   version: "2.0"
@@ -3028,11 +3107,11 @@ public record TransferRequest(
         @NotBlank(message = "來源帳號不可為空")
         @Pattern(regexp = "^[A-Z0-9]{10,20}$", message = "帳號格式不正確")
         String fromAccount,
-        
+
         @NotBlank(message = "目標帳號不可為空")
         @Pattern(regexp = "^[A-Z0-9]{10,20}$", message = "帳號格式不正確")
         String toAccount,
-        
+
         @NotNull(message = "金額不可為空")
         @DecimalMin(value = "0.01", message = "金額須大於 0")
         @DecimalMax(value = "10000000", message = "金額超過上限")
@@ -3043,7 +3122,7 @@ public record TransferRequest(
 public void transfer(String from, String to, BigDecimal amount) {
     // 直接使用未驗證的輸入...
 }
-```
+````
 
 ## 2. 輸出編碼（Output Encoding）
 
@@ -3081,7 +3160,7 @@ Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 
 ```java
 // ✅ 正確：遮罩敏感資訊
-log.info("Transfer from={} to={} amount={}", 
+log.info("Transfer from={} to={} amount={}",
     mask(fromAccount), mask(toAccount), amount);
 
 // ❌ 錯誤：Log 中包含敏感資料
@@ -3090,16 +3169,18 @@ log.info("Card number={}", cardNumber);
 ```
 
 ## 安全編碼速查表
-| 風險 | 防禦措施 |
-|------|----------|
-| SQL Injection | Parameterized Query / JPA |
-| XSS | Output Encoding / CSP Header |
-| CSRF | Spring Security CSRF Token |
-| 密碼外洩 | BCrypt + 鹽值 |
-| 敏感資料 | AES-256-GCM 加密 |
-| Session 劫持 | HttpOnly + Secure + SameSite |
-| 路徑穿越 | 白名單驗證 + 正規化路徑 |
-```
+
+| 風險          | 防禦措施                     |
+| ------------- | ---------------------------- |
+| SQL Injection | Parameterized Query / JPA    |
+| XSS           | Output Encoding / CSP Header |
+| CSRF          | Spring Security CSRF Token   |
+| 密碼外洩      | BCrypt + 鹽值                |
+| 敏感資料      | AES-256-GCM 加密             |
+| Session 劫持  | HttpOnly + Secure + SameSite |
+| 路徑穿越      | 白名單驗證 + 正規化路徑      |
+
+````
 
 **範例：弱點掃描整合 Skill**
 
@@ -3107,9 +3188,9 @@ log.info("Card number={}", cardNumber);
 ---
 name: vulnerability-scan
 description: >
-  Integrates vulnerability scanning tools including OWASP 
-  Dependency-Check, SpotBugs, and SonarQube into the build 
-  process. Use when asked to set up vulnerability scanning, 
+  Integrates vulnerability scanning tools including OWASP
+  Dependency-Check, SpotBugs, and SonarQube into the build
+  process. Use when asked to set up vulnerability scanning,
   check dependencies for CVEs, or integrate SAST tools.
 metadata:
   version: "1.0"
@@ -3150,7 +3231,7 @@ allowed-tools: Bash(mvn *) Bash(gradle *)
                 </formats>
             </configuration>
         </plugin>
-        
+
         <!-- SpotBugs + Find Security Bugs：原始碼安全分析 -->
         <plugin>
             <groupId>com.github.spotbugs</groupId>
@@ -3170,42 +3251,44 @@ allowed-tools: Bash(mvn *) Bash(gradle *)
         </plugin>
     </plugins>
 </build>
-```
+````
 
 ## CI/CD 整合（GitHub Actions）
 
 ```yaml
-  security-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: OWASP Dependency-Check
-        run: mvn dependency-check:check
-      
-      - name: SpotBugs Security Analysis
-        run: mvn spotbugs:check
-      
-      - name: Trivy Container Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'myapp:latest'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '1'
-      
-      - name: Upload Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: security-reports
-          path: target/dependency-check-report.*
+security-scan:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: OWASP Dependency-Check
+      run: mvn dependency-check:check
+
+    - name: SpotBugs Security Analysis
+      run: mvn spotbugs:check
+
+    - name: Trivy Container Scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: "myapp:latest"
+        severity: "CRITICAL,HIGH"
+        exit-code: "1"
+
+    - name: Upload Reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-reports
+        path: target/dependency-check-report.*
 ```
 
 ## 掃描結果處理流程
+
 1. **CVSS ≥ 9（Critical）**：立即停止部署，通知安全團隊
 2. **CVSS 7~8.9（High）**：建立 P0 Issue，24 小時內修復
 3. **CVSS 4~6.9（Medium）**：建立 P1 Issue，Sprint 內修復
 4. **CVSS < 4（Low）**：記錄並排入 Backlog
-```
+
+````
 
 **範例：敏感資料保護 Skill**
 
@@ -3213,9 +3296,9 @@ allowed-tools: Bash(mvn *) Bash(gradle *)
 ---
 name: data-protection
 description: >
-  Implements PII data protection including data masking, 
-  encryption at rest, encryption in transit, and data 
-  classification. Use when asked about PII handling, data 
+  Implements PII data protection including data masking,
+  encryption at rest, encryption in transit, and data
+  classification. Use when asked about PII handling, data
   protection, sensitive data masking, or GDPR compliance.
 metadata:
   version: "1.0"
@@ -3244,35 +3327,35 @@ public class DataMaskUtil {
         if (id == null || id.length() < 10) return "***";
         return id.substring(0, 3) + "****" + id.substring(7);
     }
-    
+
     /** 手機號碼：0912345678 → 0912***678 */
     public static String maskPhone(String phone) {
         if (phone == null || phone.length() < 10) return "***";
         return phone.substring(0, 4) + "***" + phone.substring(7);
     }
-    
+
     /** Email：user@example.com → u***@example.com */
     public static String maskEmail(String email) {
         if (email == null || !email.contains("@")) return "***";
         int atIndex = email.indexOf('@');
         return email.charAt(0) + "***" + email.substring(atIndex);
     }
-    
+
     /** 帳號：1234567890 → 123****890 */
     public static String maskAccount(String account) {
         if (account == null || account.length() < 6) return "***";
-        return account.substring(0, 3) + "****" 
+        return account.substring(0, 3) + "****"
              + account.substring(account.length() - 3);
     }
-    
+
     /** 信用卡號：4111111111111111 → ************1111 */
     public static String maskCreditCard(String card) {
         if (card == null || card.length() < 4) return "***";
-        return "*".repeat(card.length() - 4) 
+        return "*".repeat(card.length() - 4)
              + card.substring(card.length() - 4);
     }
 }
-```
+````
 
 ## JPA 欄位加密（使用 AttributeConverter）
 
@@ -3327,13 +3410,15 @@ public record CustomerResponse(
 ```
 
 ## 合規檢查清單
+
 - [ ] PII 欄位已分類並標記
 - [ ] 機密欄位使用 AES-256 加密儲存
 - [ ] API Response 敏感欄位已遮罩
 - [ ] Log 中不包含任何 PII 原始值
 - [ ] 資料保留期限已設定（依法規要求）
 - [ ] 資料刪除機制已實作（GDPR Right to Erasure）
-```
+
+````
 
 ### 3.6 Deployment（部署）
 
@@ -3352,9 +3437,9 @@ public record CustomerResponse(
 ---
 name: github-actions-pipeline
 description: >
-  Generates GitHub Actions CI/CD pipelines for Spring Boot 
-  projects with security scanning and quality gates. Use when 
-  asked to create CI/CD pipeline, set up automated builds, 
+  Generates GitHub Actions CI/CD pipelines for Spring Boot
+  projects with security scanning and quality gates. Use when
+  asked to create CI/CD pipeline, set up automated builds,
   or configure deployment workflows.
 version: 2.0.0
 category: deployment
@@ -3384,30 +3469,30 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-      
+
       - name: Build with Maven
         run: mvn clean verify
-      
+
       - name: Run Tests
         run: mvn test
-      
+
   security-scan:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: SAST Scan
         uses: github/codeql-action/analyze@v3
-      
+
       - name: Dependency Check
         run: mvn dependency-check:check
-      
+
   quality-gate:
     needs: [build, security-scan]
     runs-on: ubuntu-latest
     steps:
       - name: SonarQube Analysis
         run: mvn sonar:sonar
-      
+
   deploy:
     needs: quality-gate
     if: github.ref == 'refs/heads/main'
@@ -3416,14 +3501,16 @@ jobs:
       - name: Deploy to Production
         run: |
           # 部署指令
-```
+````
 
 ## 多環境部署策略
+
 - dev → 自動部署（PR merge 後）
 - sit → 手動觸發
 - uat → 審核通過後部署
 - prod → 需雙重審核 + 變更單號
-```
+
+````
 
 **範例：Dockerfile 生成 Skill**
 
@@ -3431,9 +3518,9 @@ jobs:
 ---
 name: dockerfile-gen
 description: >
-  Generates secure multi-stage Dockerfiles for Spring Boot 
-  applications following container security best practices. 
-  Use when asked to create Dockerfile, containerize application, 
+  Generates secure multi-stage Dockerfiles for Spring Boot
+  applications following container security best practices.
+  Use when asked to create Dockerfile, containerize application,
   or optimize Docker image.
 metadata:
   version: "1.0"
@@ -3492,9 +3579,10 @@ ENTRYPOINT ["java", \
     "-XX:MaxRAMPercentage=75.0", \
     "-Djava.security.egd=file:/dev/./urandom", \
     "org.springframework.boot.loader.launch.JarLauncher"]
-```
+````
 
 ## Docker 安全檢查清單
+
 - [ ] 使用特定版本 Base Image（不使用 `latest`）
 - [ ] 使用 Alpine / Distroless 最小化 Image
 - [ ] 以非 root 使用者執行（`USER appuser`）
@@ -3518,7 +3606,8 @@ docker-compose*.yml
 *.key
 *.pem
 ```
-```
+
+````
 
 **範例：Kubernetes 部署清單生成 Skill**
 
@@ -3526,9 +3615,9 @@ docker-compose*.yml
 ---
 name: k8s-manifest-gen
 description: >
-  Generates Kubernetes deployment manifests including Deployment, 
-  Service, ConfigMap, Secret, HPA, and NetworkPolicy. Use when 
-  asked to create K8s manifests, deploy to Kubernetes, or 
+  Generates Kubernetes deployment manifests including Deployment,
+  Service, ConfigMap, Secret, HPA, and NetworkPolicy. Use when
+  asked to create K8s manifests, deploy to Kubernetes, or
   configure container orchestration.
 metadata:
   version: "1.0"
@@ -3556,7 +3645,7 @@ k8s/
     │   └── kustomization.yaml
     └── prod/
         └── kustomization.yaml
-```
+````
 
 ## Deployment 範本
 
@@ -3681,6 +3770,7 @@ spec:
 ```
 
 ## K8s 安全檢查清單
+
 - [ ] 以非 root 使用者執行（`runAsNonRoot: true`）
 - [ ] 禁止特權升級（`allowPrivilegeEscalation: false`）
 - [ ] 設定 Resource Requests / Limits
@@ -3688,7 +3778,8 @@ spec:
 - [ ] 使用 NetworkPolicy 限制網路存取
 - [ ] Secret 不以明文存放（整合 Vault / Sealed Secrets）
 - [ ] Image 來自可信 Registry 且經過掃描
-```
+
+````
 
 **範例：多環境設定生成 Skill**
 
@@ -3696,9 +3787,9 @@ spec:
 ---
 name: env-config-gen
 description: >
-  Generates multi-environment configuration files for Spring 
-  Boot applications including dev, sit, uat, and prod profiles. 
-  Use when asked to create environment configurations, set up 
+  Generates multi-environment configuration files for Spring
+  Boot applications including dev, sit, uat, and prod profiles.
+  Use when asked to create environment configurations, set up
   Spring profiles, or manage application properties.
 metadata:
   version: "1.0"
@@ -3717,7 +3808,7 @@ src/main/resources/
 ├── application-sit.yml          # 系統整合測試
 ├── application-uat.yml          # 使用者驗收測試
 └── application-prod.yml         # 正式環境
-```
+````
 
 ## 共用設定（application.yml）
 
@@ -3772,13 +3863,13 @@ logging:
 # application-prod.yml
 spring:
   datasource:
-    url: ${DB_URL}          # 從 ConfigMap / Secret 注入
+    url: ${DB_URL} # 從 ConfigMap / Secret 注入
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: none        # 正式環境禁止自動 DDL
+      ddl-auto: none # 正式環境禁止自動 DDL
 
 logging:
   level:
@@ -3794,21 +3885,23 @@ server:
 
 ## 環境差異矩陣
 
-| 設定項 | dev | sit | uat | prod |
-|--------|-----|-----|-----|------|
-| DB DDL Auto | update | validate | validate | none |
-| SQL Log | ✅ | ✅ | ❌ | ❌ |
-| Log Level | DEBUG | INFO | INFO | WARN |
-| SSL | ❌ | ✅ | ✅ | ✅ |
-| 密碼來源 | .env 檔 | Vault | Vault | Vault |
-| 副本數 | 1 | 2 | 2 | 3+ |
+| 設定項      | dev     | sit      | uat      | prod  |
+| ----------- | ------- | -------- | -------- | ----- |
+| DB DDL Auto | update  | validate | validate | none  |
+| SQL Log     | ✅      | ✅       | ❌       | ❌    |
+| Log Level   | DEBUG   | INFO     | INFO     | WARN  |
+| SSL         | ❌      | ✅       | ✅       | ✅    |
+| 密碼來源    | .env 檔 | Vault    | Vault    | Vault |
+| 副本數      | 1       | 2        | 2        | 3+    |
 
 ## 安全規範
+
 - ❌ 禁止在設定檔中硬編碼密碼、Token、金鑰
 - ✅ 使用環境變數或 Vault 注入敏感資訊
 - ✅ 正式環境設定檔不進版控（使用 ConfigMap + Secret）
 - ✅ 正式環境關閉 `show-sql`、`ddl-auto`
-```
+
+````
 
 ### 3.7 Maintenance（維運）
 
@@ -3827,8 +3920,8 @@ server:
 ---
 name: log-analyzer
 description: >
-  Analyzes application logs to identify errors, performance 
-  issues, and anomalies. Use when asked to debug issues, 
+  Analyzes application logs to identify errors, performance
+  issues, and anomalies. Use when asked to debug issues,
   analyze logs, or troubleshoot production problems.
 version: 1.2.0
 category: maintenance
@@ -3846,21 +3939,25 @@ grep -c "ERROR" application.log
 
 # 找出最常見的錯誤
 grep "ERROR" application.log | awk '{print $5}' | sort | uniq -c | sort -rn | head -20
-```
+````
 
 ### Step 2：時間軸分析
+
 ```bash
 # 每分鐘錯誤趨勢
 grep "ERROR" application.log | awk '{print substr($1,1,16)}' | uniq -c
 ```
 
 ### Step 3：關聯分析
+
 - 比對錯誤時間與部署時間
 - 比對錯誤時間與流量峰值
 - 比對資料庫慢查詢記錄
 
 ### Step 4：根因分析（Root Cause Analysis）
+
 使用 5-Whys 方法：
+
 1. **Why 1**: 為什麼出現錯誤？ → 因為 DB 連線逾時
 2. **Why 2**: 為什麼連線逾時？ → 因為連線池用盡
 3. **Why 3**: 為什麼連線池用盡？ → 因為連線沒有正確釋放
@@ -3868,12 +3965,14 @@ grep "ERROR" application.log | awk '{print substr($1,1,16)}' | uniq -c
 5. **Why 5**: 為什麼沒有 commit？ → 缺少 @Transactional 標註
 
 ### Step 5：產出報告
+
 - 問題描述
 - 影響範圍
 - 根本原因
 - 修復方案
 - 預防措施
-```
+
+````
 
 > **🏦 金融業實務案例**：某銀行的維運團隊將常見的「交易失敗排查」、「批次異常處理」、「系統效能告警回應」分別封裝為 Skills，值班人員可透過 AI 快速定位問題根因，平均問題解決時間從 2 小時降至 30 分鐘。
 
@@ -3883,10 +3982,10 @@ grep "ERROR" application.log | awk '{print substr($1,1,16)}' | uniq -c
 ---
 name: troubleshooting-guide
 description: >
-  Provides structured troubleshooting SOP for common production 
-  issues including database connection failures, API timeouts, 
-  memory leaks, and deployment rollback. Use when asked to 
-  troubleshoot issues, debug production problems, or create 
+  Provides structured troubleshooting SOP for common production
+  issues including database connection failures, API timeouts,
+  memory leaks, and deployment rollback. Use when asked to
+  troubleshoot issues, debug production problems, or create
   troubleshooting runbook.
 metadata:
   version: "1.0"
@@ -3905,23 +4004,23 @@ graph TD
     B --> |效能問題| D[效能排查]
     B --> |功能異常| E[邏輯排查]
     B --> |部署異常| F[部署排查]
-    
+
     C --> G[Step 1: 檢查連線池狀態]
     G --> H[Step 2: 檢查 DB 存活與負載]
     H --> I[Step 3: 檢查網路與防火牆]
-    
+
     D --> J[Step 1: 檢查 JVM Heap 使用率]
     J --> K[Step 2: 檢查慢查詢 Log]
     K --> L[Step 3: 檢查 Thread Dump]
-    
+
     E --> M[Step 1: 重現問題]
     M --> N[Step 2: 檢查對應 Log]
     N --> O[Step 3: 比對最近部署變更]
-    
+
     F --> P[Step 1: 檢查部署日誌]
     P --> Q[Step 2: 檢查 Pod 狀態]
     Q --> R[Step 3: 必要時 Rollback]
-```
+````
 
 ## SOP 1：資料庫連線失敗
 
@@ -3942,12 +4041,12 @@ grep -E "maximum-pool-size|minimum-idle|connection-timeout" \
 
 **常見原因與解決方案**：
 
-| 原因 | 現象 | 解決方案 |
-|------|------|----------|
-| 連線池用盡 | 等待逾時 | 增加 pool size / 檢查連線洩漏 |
-| DB 重啟 | 連線中斷 | 確認 connection validation 設定 |
-| 網路中斷 | Connection refused | 檢查防火牆 / Security Group |
-| 密碼過期 | Authentication failed | 更新 Secret / Vault 密碼 |
+| 原因       | 現象                  | 解決方案                        |
+| ---------- | --------------------- | ------------------------------- |
+| 連線池用盡 | 等待逾時              | 增加 pool size / 檢查連線洩漏   |
+| DB 重啟    | 連線中斷              | 確認 connection validation 設定 |
+| 網路中斷   | Connection refused    | 檢查防火牆 / Security Group     |
+| 密碼過期   | Authentication failed | 更新 Secret / Vault 密碼        |
 
 ## SOP 2：API 回應逾時
 
@@ -3979,10 +4078,12 @@ kubectl rollout status deployment/transaction-service
 ```
 
 ## 產出規範
+
 - 每個問題排查須產出「排查紀錄」
 - 記錄：問題描述、排查步驟、根因、解決方案、預防措施
 - 將新發現的問題補充至本 SOP
-```
+
+````
 
 **範例：事件回應 Skill**
 
@@ -3990,9 +4091,9 @@ kubectl rollout status deployment/transaction-service
 ---
 name: incident-response
 description: >
-  Guides incident response process including severity 
-  classification, communication, resolution, and post-mortem. 
-  Use when asked to handle production incidents, create 
+  Guides incident response process including severity
+  classification, communication, resolution, and post-mortem.
+  Use when asked to handle production incidents, create
   incident reports, or establish incident response procedures.
 metadata:
   version: "1.0"
@@ -4027,10 +4128,10 @@ graph TD
     I --> J[發出恢復通知]
     J --> K[撰寫事後報告 Post-Mortem]
     K --> L[改善措施追蹤]
-    
+
     style A fill:#f44336,color:#fff
     style K fill:#4CAF50,color:#fff
-```
+````
 
 ## 事件通知範本
 
@@ -4056,6 +4157,7 @@ graph TD
 # Post-Mortem Report
 
 ## 事件摘要
+
 - **事件編號**：INC-2026-0407-001
 - **嚴重等級**：P1
 - **發生時間**：2026-04-07 14:30 ~ 15:45 (UTC+8)
@@ -4063,33 +4165,36 @@ graph TD
 - **影響範圍**：轉帳功能，約 5,000 名使用者受影響
 
 ## 時間軸
-| 時間 | 事件 |
-|------|------|
-| 14:30 | 監控告警觸發（轉帳錯誤率 > 10%） |
-| 14:33 | On-call 工程師接收告警 |
-| 14:45 | 判定為 P1，組建應變小組 |
-| 15:00 | 定位根因：DB 連線池耗盡 |
+
+| 時間  | 事件                                |
+| ----- | ----------------------------------- |
+| 14:30 | 監控告警觸發（轉帳錯誤率 > 10%）    |
+| 14:33 | On-call 工程師接收告警              |
+| 14:45 | 判定為 P1，組建應變小組             |
+| 15:00 | 定位根因：DB 連線池耗盡             |
 | 15:15 | 執行修復：重啟服務 + 調整連線池參數 |
-| 15:30 | 錯誤率回復正常 |
-| 15:45 | 確認事件結束，發出恢復通知 |
+| 15:30 | 錯誤率回復正常                      |
+| 15:45 | 確認事件結束，發出恢復通知          |
 
 ## 根因分析（Root Cause）
+
 批次作業佔用大量 DB 連線未釋放，導致連線池耗盡。
 
 ## 修復措施
-1.（立即）重啟受影響服務，釋放連線
-2.（立即）調整 HikariCP maximum-pool-size：20 → 50
+
+1.（立即）重啟受影響服務，釋放連線 2.（立即）調整 HikariCP maximum-pool-size：20 → 50
 
 ## 預防措施
-1.（短期）批次作業使用獨立連線池
-2.（中期）加入連線池使用率監控告警
-3.（長期）批次作業改為 Job 模式，與 API 服務分離
+
+1.（短期）批次作業使用獨立連線池 2.（中期）加入連線池使用率監控告警 3.（長期）批次作業改為 Job 模式，與 API 服務分離
 
 ## 經驗教訓（Lessons Learned）
+
 - 批次作業與線上 API 共用連線池是風險點
 - 需加強連線池水位監控
 ```
-```
+
+````
 
 **範例：效能調校 Skill**
 
@@ -4097,9 +4202,9 @@ graph TD
 ---
 name: performance-tuning
 description: >
-  Analyzes and optimizes application performance including 
-  JVM tuning, database query optimization, caching strategy, 
-  and concurrency tuning. Use when asked to optimize performance, 
+  Analyzes and optimizes application performance including
+  JVM tuning, database query optimization, caching strategy,
+  and concurrency tuning. Use when asked to optimize performance,
   tune JVM, fix slow queries, or analyze performance bottlenecks.
 metadata:
   version: "1.0"
@@ -4118,18 +4223,18 @@ graph TD
     B --> |資料庫| D[慢查詢分析]
     B --> |網路| E[延遲 / 頻寬分析]
     B --> |基礎設施| F[CPU / Memory / Disk]
-    
+
     C --> C1[Thread Dump 分析]
     C --> C2[Heap Dump 分析]
     C --> C3[GC Log 分析]
-    
+
     D --> D1[Slow Query Log]
     D --> D2[執行計畫分析 EXPLAIN]
     D --> D3[索引優化]
-    
+
     F --> F1[kubectl top pods]
     F --> F2[Prometheus / Grafana]
-```
+````
 
 ## 1. JVM 調校
 
@@ -4150,12 +4255,12 @@ JAVA_OPTS="\
 
 **JVM 調校參考值**：
 
-| 參數 | 小型服務 | 中型服務 | 大型服務 |
-|------|----------|----------|----------|
-| Heap(-Xmx) | 512m ~ 1g | 2g ~ 4g | 4g ~ 8g |
-| MaxRAMPercentage | 75% | 75% | 75% |
-| GC | G1GC | G1GC | ZGC |
-| MaxGCPauseMillis | 200ms | 200ms | 10ms(ZGC) |
+| 參數             | 小型服務  | 中型服務 | 大型服務  |
+| ---------------- | --------- | -------- | --------- |
+| Heap(-Xmx)       | 512m ~ 1g | 2g ~ 4g  | 4g ~ 8g   |
+| MaxRAMPercentage | 75%       | 75%      | 75%       |
+| GC               | G1GC      | G1GC     | ZGC       |
+| MaxGCPauseMillis | 200ms     | 200ms    | 10ms(ZGC) |
 
 ## 2. 資料庫查詢優化
 
@@ -4174,19 +4279,19 @@ WHERE account_id = 'A001' AND created_at > '2026-01-01';
 -- Step 3：常見優化手法
 ```
 
-| 問題 | 現象 | 優化手法 |
-|------|------|----------|
-| 缺少索引 | Seq Scan on large table | 新增適當索引 |
-| N+1 查詢 | 迴圈中每筆呼叫 DB | 改用 JOIN / Batch Query |
-| SELECT * | 回傳過多欄位 | 只選需要的欄位 |
-| 無分頁 | 一次回傳大量資料 | 加入 LIMIT + OFFSET / Cursor |
-| 鎖競爭 | Lock wait timeout | 縮小交易範圍 / 樂觀鎖 |
+| 問題     | 現象                    | 優化手法                     |
+| -------- | ----------------------- | ---------------------------- |
+| 缺少索引 | Seq Scan on large table | 新增適當索引                 |
+| N+1 查詢 | 迴圈中每筆呼叫 DB       | 改用 JOIN / Batch Query      |
+| SELECT * | 回傳過多欄位            | 只選需要的欄位               |
+| 無分頁   | 一次回傳大量資料        | 加入 LIMIT + OFFSET / Cursor |
+| 鎖競爭   | Lock wait timeout       | 縮小交易範圍 / 樂觀鎖        |
 
 ## 3. 快取策略
 
 ```java
 // Spring Cache 使用範本
-@Cacheable(value = "accounts", key = "#accountId", 
+@Cacheable(value = "accounts", key = "#accountId",
            unless = "#result == null")
 public Account findByAccountId(String accountId) {
     return accountRepository.findByAccountId(accountId);
@@ -4200,28 +4305,30 @@ public void updateAccount(Account account) {
 
 **快取策略選擇**：
 
-| 場景 | 快取策略 | TTL | 範例 |
-|------|----------|-----|------|
-| 靜態設定資料 | Cache-Aside | 1 小時 | 匯率、手續費率 |
-| 使用者 Session | 分散式快取 | 30 分鐘 | Redis |
-| API Response | HTTP Cache | 依 API 特性 | ETag / Cache-Control |
-| 熱點資料 | Local Cache + Remote Cache | 5 分鐘 | Caffeine + Redis |
+| 場景           | 快取策略                   | TTL         | 範例                 |
+| -------------- | -------------------------- | ----------- | -------------------- |
+| 靜態設定資料   | Cache-Aside                | 1 小時      | 匯率、手續費率       |
+| 使用者 Session | 分散式快取                 | 30 分鐘     | Redis                |
+| API Response   | HTTP Cache                 | 依 API 特性 | ETag / Cache-Control |
+| 熱點資料       | Local Cache + Remote Cache | 5 分鐘      | Caffeine + Redis     |
 
 ## 4. 併發調校
 
-| 參數 | 說明 | 預設值 | 建議調整 |
-|------|------|--------|----------|
-| Tomcat threads.max | 最大工作執行緒 | 200 | 依 CPU 核心數調整 |
-| HikariCP maximum-pool-size | DB 連線池上限 | 10 | CPU 核心數 × 2 + 磁碟數 |
-| OkHttp connectionPool | HTTP 連線池 | 5 | 依下游服務 TPS 調整 |
+| 參數                       | 說明           | 預設值 | 建議調整                |
+| -------------------------- | -------------- | ------ | ----------------------- |
+| Tomcat threads.max         | 最大工作執行緒 | 200    | 依 CPU 核心數調整       |
+| HikariCP maximum-pool-size | DB 連線池上限  | 10     | CPU 核心數 × 2 + 磁碟數 |
+| OkHttp connectionPool      | HTTP 連線池    | 5      | 依下游服務 TPS 調整     |
 
 ## 效能測試基準
+
 - API P99 回應時間 < 500ms
 - API P95 回應時間 < 200ms
 - 每秒交易量（TPS）≥ 目標值的 1.5 倍
 - CPU 使用率 < 70%（尖峰時段）
 - DB 連線使用率 < 80%
-```
+
+````
 
 ---
 
@@ -4240,9 +4347,9 @@ graph TB
         D[文件完備] --> E
         E --> F[高可重用性 Skill]
     end
-    
+
     style F fill:#4CAF50,color:#fff
-```
+````
 
 **1. 單一職責原則（SRP）**
 
@@ -4273,7 +4380,9 @@ description: >
 # API 端點生成
 
 ## 設定參數
+
 在使用前，請指定以下參數：
+
 - **框架**：Spring Boot 3.x（預設）/ Express.js / FastAPI
 - **ORM**：JPA（預設）/ MyBatis / Prisma
 - **認證**：JWT（預設）/ OAuth2 / API Key
@@ -4286,7 +4395,9 @@ Skills 之間可以互相引用，形成工作流：
 
 ```markdown
 ## 完整 API 開發流程
+
 建議依序使用以下 Skills：
+
 1. 先使用 `api-design` Skill 產出 OpenAPI 規格
 2. 再使用 `spring-boot-gen` Skill 產出程式碼
 3. 使用 `junit-test-gen` Skill 產出測試
@@ -4297,12 +4408,12 @@ Skills 之間可以互相引用，形成工作流：
 
 Agent Skills 的設計必須考慮 Token 消耗，以下是優化策略：
 
-| 策略 | 說明 | 預估節省 |
-|------|------|----------|
-| **精煉描述** | description 精準但簡潔 | 30-50% |
-| **分層載入** | 將詳細資訊放入 references/ | 40-60% |
-| **條件載入** | 只在需要時才載入特定 reference | 50-70% |
-| **範本分離** | 大型範本放入 templates/ 而非 SKILL.md | 60-80% |
+| 策略         | 說明                                  | 預估節省 |
+| ------------ | ------------------------------------- | -------- |
+| **精煉描述** | description 精準但簡潔                | 30-50%   |
+| **分層載入** | 將詳細資訊放入 references/            | 40-60%   |
+| **條件載入** | 只在需要時才載入特定 reference        | 50-70%   |
+| **範本分離** | 大型範本放入 templates/ 而非 SKILL.md | 60-80%   |
 
 **SKILL.md Token 消耗預估**：
 
@@ -4311,7 +4422,7 @@ Agent Skills 的設計必須考慮 Token 消耗，以下是優化策略：
 ├── 核心指令                        // ~500-1000 Tokens
 ├── 範例程式碼                      // ~300-500 Tokens
 └── 檢查清單                        // ~200-300 Tokens
-    
+
 👉 建議 SKILL.md 主體控制在 5000 Tokens 以內
 👉 SKILL.md 建議不超過 500 行（Agent Skills Spec 推薦）
 👉 詳細參考資料放入 references/ 資料夾
@@ -4321,21 +4432,31 @@ Agent Skills 的設計必須考慮 Token 消耗，以下是優化策略：
 
 ```markdown
 # ❌ 將所有內容塞入 SKILL.md（消耗約 5000 Tokens）
+
 ---
+
 name: api-design
 description: ...
 ---
+
 # API Design（包含完整 OpenAPI Spec 範例、所有 HTTP Status Code、
-#  完整的 Error Response 格式、詳細的安全規範...等等）
+
+# 完整的 Error Response 格式、詳細的安全規範...等等）
 
 # ✅ 核心指令在 SKILL.md，詳細內容在 references/（載入約 1500 Tokens）
+
 ---
+
 name: api-design
 description: ...
 ---
+
 # API Design
+
 ## 核心規範（精簡摘要）
+
 若需詳細規範，請參考：
+
 - references/openapi-template.yaml
 - references/error-codes.md
 - references/security-standards.md
@@ -4359,14 +4480,14 @@ description: ...
 
 **命名規則**（依據 [Agent Skills Specification](https://agentskills.io/specification)）：
 
-| 規則 | 說明 | 範例 |
-|------|------|------|
-| 全小寫 | 僅限小寫英數字 + 連字號 | `api-design` ✅ / `API-Design` ❌ |
-| 連字號分隔 | 使用 `-` 分隔單詞 | `code-review` ✅ |
-| 不可開頭/結尾 | 不可以連字號開頭或結尾 | `-pdf` ❌ / `pdf-` ❌ |
-| 不可連續連字號 | 不可出現 `--` | `pdf--processing` ❌ |
-| 與目錄名一致 | `name` 欄位必須與父目錄名稱相同 | 目錄 `api-design/` → `name: api-design` |
-| 長度限制 | 1-64 字元 | `spring-boot-api-design` ✅ |
+| 規則           | 說明                            | 範例                                    |
+| -------------- | ------------------------------- | --------------------------------------- |
+| 全小寫         | 僅限小寫英數字 + 連字號         | `api-design` ✅ / `API-Design` ❌       |
+| 連字號分隔     | 使用 `-` 分隔單詞               | `code-review` ✅                        |
+| 不可開頭/結尾  | 不可以連字號開頭或結尾          | `-pdf` ❌ / `pdf-` ❌                   |
+| 不可連續連字號 | 不可出現 `--`                   | `pdf--processing` ❌                    |
+| 與目錄名一致   | `name` 欄位必須與父目錄名稱相同 | 目錄 `api-design/` → `name: api-design` |
+| 長度限制       | 1-64 字元                       | `spring-boot-api-design` ✅             |
 
 ### 4.4 模組化與版本控管
 
@@ -4376,17 +4497,17 @@ description: ...
 # SKILL.md frontmatter 中包含版本
 ---
 name: api-design
-version: 2.1.0  # Semantic Versioning
+version: 2.1.0 # Semantic Versioning
 ---
 ```
 
 **Semantic Versioning 規則**：
 
-| 版本變更 | 類型 | 範例 |
-|----------|------|------|
+| 版本變更           | 類型  | 範例          |
+| ------------------ | ----- | ------------- |
 | 修正錯字 / Bug Fix | Patch | 2.0.0 → 2.0.1 |
 | 新增功能但向下相容 | Minor | 2.0.0 → 2.1.0 |
-| 重大變更、不相容 | Major | 2.0.0 → 3.0.0 |
+| 重大變更、不相容   | Major | 2.0.0 → 3.0.0 |
 
 **Git 分支策略**：
 
@@ -4409,18 +4530,19 @@ gitGraph
 
 **安全設計原則**：
 
-| 原則 | 實務做法 |
-|------|----------|
-| **最小權限** | `allowed-tools` 只開放必要工具 |
-| **腳本審核** | 所有 Scripts 須經安全團隊審核 |
-| **無敏感資訊** | Skills 中不可包含密碼、Token、API Key |
-| **輸入驗證** | 腳本須驗證所有輸入參數 |
-| **Prompt Injection 防護** | 描述中避免可被利用的指令 |
+| 原則                      | 實務做法                              |
+| ------------------------- | ------------------------------------- |
+| **最小權限**              | `allowed-tools` 只開放必要工具        |
+| **腳本審核**              | 所有 Scripts 須經安全團隊審核         |
+| **無敏感資訊**            | Skills 中不可包含密碼、Token、API Key |
+| **輸入驗證**              | 腳本須驗證所有輸入參數                |
+| **Prompt Injection 防護** | 描述中避免可被利用的指令              |
 
 **安全檢查清單**：
 
 ```markdown
 ## Skill 安全審查檢查清單
+
 - [ ] SKILL.md 中無敏感資訊（密碼、Token、金鑰）
 - [ ] Scripts 已經過安全審核
 - [ ] allowed-tools 遵循最小權限原則
@@ -4445,22 +4567,26 @@ gitGraph
 
 ```markdown
 # CONTEXT.md 範例
+
 ## 領域術語
+
 - **Ledger Entry**：一筆帳務紀錄（非「交易」，因交易另有定義）
 - **Settlement**：清算——將多筆 Ledger Entry 彙總為淨額
 - **Cutoff Time**：截止時間——每日批次處理的分界點
 
 ## 架構決策
+
 - 參見 docs/adr/ 目錄中的 ADR 文件
 ```
 
 **效益**：
-| 面向 | 改善 |
-|------|------|
-| **命名一致性** | 變數、函式、檔案名稱遵循共用語言 |
-| **Token 節省** | Agent 使用精確術語，減少解釋性文字 |
-| **程式碼導航** | 一致命名使 Agent 更容易搜尋定位程式碼 |
-| **新進人員上手** | 領域術語清單加速理解 |
+
+| 面向             | 改善                                  |
+| ---------------- | ------------------------------------- |
+| **命名一致性**   | 變數、函式、檔案名稱遵循共用語言      |
+| **Token 節省**   | Agent 使用精確術語，減少解釋性文字    |
+| **程式碼導航**   | 一致命名使 Agent 更容易搜尋定位程式碼 |
+| **新進人員上手** | 領域術語清單加速理解                  |
 
 > **💡 實務建議**：使用 mattpocock 的 `/grill-with-docs` Skill 可自動引導團隊建立 `CONTEXT.md` 與 ADR。安裝方式：`npx skills@latest add mattpocock/skills`。
 
@@ -4473,12 +4599,12 @@ gitGraph
 ```markdown
 ## 常見合理化推託與反駁
 
-| Agent 可能的藉口 | 為什麼這是錯的 |
-|-----------------|---------------|
-| 「這個改動太小了，不需要測試」 | 小改動引起的迴歸錯誤佔生產事故的 40% |
-| 「這只是重構，行為沒變」 | 重構必須有測試保護，否則無法證明行為未改變 |
-| 「我之後再加測試」 | 「之後」通常意味著「永遠不會」——現在就寫 |
-| 「效能影響可以忽略」 | 除非你已量測過，否則不能斷言「可以忽略」 |
+| Agent 可能的藉口               | 為什麼這是錯的                             |
+| ------------------------------ | ------------------------------------------ |
+| 「這個改動太小了，不需要測試」 | 小改動引起的迴歸錯誤佔生產事故的 40%       |
+| 「這只是重構，行為沒變」       | 重構必須有測試保護，否則無法證明行為未改變 |
+| 「我之後再加測試」             | 「之後」通常意味著「永遠不會」——現在就寫   |
+| 「效能影響可以忽略」           | 除非你已量測過，否則不能斷言「可以忽略」   |
 ```
 
 > **核心原則**：「驗證不可妥協」（Verification is non-negotiable）——每個 Skill 都必須以證據要求收尾：測試通過、建置輸出、執行期數據。「看起來對」永遠不夠。
@@ -4487,20 +4613,20 @@ gitGraph
 
 **概念**：預先配置專家角色（Specialist Personas），讓 Agent 在特定場景以該角色的標準執行任務。
 
-| Persona | 專家角色 | 職責 |
-|---------|---------|------|
-| `code-reviewer` | Staff Engineer | 五軸式程式碼審查，以「Staff Engineer 是否會核准？」為標準 |
-| `test-engineer` | QA Specialist | 測試策略、覆蓋率分析、Prove-It 模式 |
-| `security-auditor` | Security Engineer | 弱點偵測、威脅建模、OWASP 評估 |
+| Persona            | 專家角色          | 職責                                                      |
+| ------------------ | ----------------- | --------------------------------------------------------- |
+| `code-reviewer`    | Staff Engineer    | 五軸式程式碼審查，以「Staff Engineer 是否會核准？」為標準 |
+| `test-engineer`    | QA Specialist     | 測試策略、覆蓋率分析、Prove-It 模式                       |
+| `security-auditor` | Security Engineer | 弱點偵測、威脅建模、OWASP 評估                            |
 
 **搭配 Reference Checklists**：
 
-| 清單 | 涵蓋內容 |
-|------|---------|
-| `testing-patterns.md` | 測試結構、命名、Mocking、React/API/E2E 範例、反模式 |
-| `security-checklist.md` | Pre-commit 檢查、認證、輸入驗證、Headers、CORS、OWASP Top 10 |
-| `performance-checklist.md` | Core Web Vitals 目標、前後端清單、量測指令 |
-| `accessibility-checklist.md` | 鍵盤導航、螢幕閱讀器、視覺設計、ARIA、測試工具 |
+| 清單                         | 涵蓋內容                                                     |
+| ---------------------------- | ------------------------------------------------------------ |
+| `testing-patterns.md`        | 測試結構、命名、Mocking、React/API/E2E 範例、反模式          |
+| `security-checklist.md`      | Pre-commit 檢查、認證、輸入驗證、Headers、CORS、OWASP Top 10 |
+| `performance-checklist.md`   | Core Web Vitals 目標、前後端清單、量測指令                   |
+| `accessibility-checklist.md` | 鍵盤導航、螢幕閱讀器、視覺設計、ARIA、測試工具               |
 
 > **💡 企業應用**：可參考此模式為組織定義「企業審查員 Persona」——例如「合規審查員」（Compliance Auditor）、「效能工程師」（Performance Engineer），搭配組織專屬的審查清單。
 
@@ -4523,12 +4649,12 @@ gitGraph
 
 mattpocock 將 AI Agent 的常見問題歸納為四大失敗模式，並為每個模式提供對應的 Skill：
 
-| 失敗模式 | 問題 | 對應 Skill |
-|---------|------|-----------|
-| **#1 需求不對齊** | Agent 不理解使用者真正想要什麼 | `/grill-me`、`/grill-with-docs` — 強制 Agent 提問釐清需求 |
-| **#2 回應過於冗長** | Agent 使用 20 個字解釋 1 個字能說清楚的事 | `CONTEXT.md` 共用語言 + `/caveman` 極簡模式（Token 節省 ~75%） |
-| **#3 程式碼不能用** | 缺乏回饋迴路，Agent 盲目產出 | `/tdd` 紅綠重構迴圈 + `/diagnose` 結構化除錯 |
-| **#4 泥球架構** | Agent 加速軟體熵增，程式碼越來越複雜 | `/zoom-out` 全局視角 + `/improve-codebase-architecture` 架構改善 |
+| 失敗模式            | 問題                                      | 對應 Skill                                                       |
+| ------------------- | ----------------------------------------- | ---------------------------------------------------------------- |
+| **#1 需求不對齊**   | Agent 不理解使用者真正想要什麼            | `/grill-me`、`/grill-with-docs` — 強制 Agent 提問釐清需求        |
+| **#2 回應過於冗長** | Agent 使用 20 個字解釋 1 個字能說清楚的事 | `CONTEXT.md` 共用語言 + `/caveman` 極簡模式（Token 節省 ~75%）   |
+| **#3 程式碼不能用** | 缺乏回饋迴路，Agent 盲目產出              | `/tdd` 紅綠重構迴圈 + `/diagnose` 結構化除錯                     |
+| **#4 泥球架構**     | Agent 加速軟體熵增，程式碼越來越複雜      | `/zoom-out` 全局視角 + `/improve-codebase-architecture` 架構改善 |
 
 > **💡 實務建議**：在企業導入 Skills 時，可將此四大失敗模式框架作為 Skills 需求評估的起點——針對每個失敗模式，評估組織目前是否有對應的 Skill 覆蓋。
 
@@ -4536,12 +4662,13 @@ mattpocock 將 AI Agent 的常見問題歸納為四大失敗模式，並為每�
 
 **概念**：mattpocock 將 Skills 區分為兩種叫用模式，建議依據用途選擇正確的類型：
 
-| 類型 | 觸發者 | 設計目標 | 範例 |
-|------|--------|---------|------|
-| **User-invoked** | 使用者手動 `/skill-name` | 編排層（Orchestration）——定義多步驟工作流程，引導 Agent 依序執行 | `/grill-me`、`/tdd`、`/handoff` |
-| **Model-invoked** | Agent 自動根據描述匹配 | 可重用紀律（Reusable Discipline）——Agent 在工作過程中自動套用的規範 | `context-engineering`、`test-coverage` |
+| 類型              | 觸發者                   | 設計目標                                                            | 範例                                   |
+| ----------------- | ------------------------ | ------------------------------------------------------------------- | -------------------------------------- |
+| **User-invoked**  | 使用者手動 `/skill-name` | 編排層（Orchestration）——定義多步驟工作流程，引導 Agent 依序執行    | `/grill-me`、`/tdd`、`/handoff`        |
+| **Model-invoked** | Agent 自動根據描述匹配   | 可重用紀律（Reusable Discipline）——Agent 在工作過程中自動套用的規範 | `context-engineering`、`test-coverage` |
 
 **設計準則**：
+
 - **User-invoked** Skills 應使用 `disable-model-invocation: true`，避免 Agent 自行啟動工作流
 - **Model-invoked** Skills 應使用 `user-invocable: false`，避免出現在 `/` 選單中造成混淆
 - 兩者搭配形成完整的「主動引導 + 被動規範」Skills 體系
@@ -4568,12 +4695,12 @@ mattpocock 將 AI Agent 的常見問題歸納為四大失敗模式，並為每�
 
 社群已發展出多種安裝方式，企業可視管控需求選擇：
 
-| 安裝方式 | 指令 | 特色 |
-|---------|------|------|
-| **npx skills** | `npx skills@latest add mattpocock/skills` | mattpocock 提供的互動式安裝器，支援選擇性安裝個別 Skill |
-| **gh skill** | `gh skill install owner/repo skill-name` | GitHub CLI 整合（§2.7），支援 `--pin` 版本鎖定 |
-| **Plugin Marketplace** | `/plugin marketplace add anthropics/skills` | Claude Code Plugin 生態，一鍵安裝整套 Skills |
-| **手動 git clone** | `git clone` + 複製至 `.github/skills/` | 最大控制權，適合企業內部審核流程 |
+| 安裝方式               | 指令                                        | 特色                                                    |
+| ---------------------- | ------------------------------------------- | ------------------------------------------------------- |
+| **npx skills**         | `npx skills@latest add mattpocock/skills`   | mattpocock 提供的互動式安裝器，支援選擇性安裝個別 Skill |
+| **gh skill**           | `gh skill install owner/repo skill-name`    | GitHub CLI 整合（§2.7），支援 `--pin` 版本鎖定          |
+| **Plugin Marketplace** | `/plugin marketplace add anthropics/skills` | Claude Code Plugin 生態，一鍵安裝整套 Skills            |
+| **手動 git clone**     | `git clone` + 複製至 `.github/skills/`      | 最大控制權，適合企業內部審核流程                        |
 
 > **💡 企業建議**：建議建立組織級 Skills 安裝白名單，僅允許經安全審查的來源。可搭配 `gh skill preview` 在安裝前進行內容審查。
 
@@ -4601,7 +4728,7 @@ mattpocock 將 AI Agent 的常見問題歸納為四大失敗模式，並為每�
 
 **SKILL.md**：
 
-```markdown
+````markdown
 ---
 name: generate-api-spec
 description: >
@@ -4616,34 +4743,44 @@ ssdlc-phase: design
 # API 規格文件生成 Skill
 
 ## 使用方式
+
 當使用者要求設計 API 時，請依照以下步驟：
 
 ### Step 1：收集資訊
+
 確認以下資訊：
+
 - API 名稱與用途
 - 資源（Resource）清單
 - 操作（Operations）清單
 - 認證方式
 
 ### Step 2：產出 OpenAPI Spec
+
 使用 `templates/openapi-template.yaml` 作為基礎範本，
 依據 `references/api-standards.md` 中的規範填入內容。
 
 ### Step 3：驗證
+
 如果需要驗證規格檔，可執行：
+
 ```bash
 bash scripts/validate-openapi.sh <output-file>
 ```
+````
 
 ### Step 4：錯誤回應格式
+
 所有 API 的錯誤回應格式須遵循
 `references/error-response-format.md` 中的規範。
 
 ## 產出清單
+
 1. `openapi.yaml` - OpenAPI 3.1 規格文件
 2. API 端點清單（Markdown 表格）
 3. 資料模型定義（Schema）
-```
+
+````
 
 **templates/openapi-template.yaml**：
 
@@ -4656,13 +4793,13 @@ info:
   contact:
     name: "{{TEAM_NAME}}"
     email: "{{TEAM_EMAIL}}"
-    
+
 servers:
   - url: https://api.example.com/v1
     description: Production
   - url: https://api-sit.example.com/v1
     description: SIT
-    
+
 paths:
   /{{RESOURCE_PATH}}:
     get:
@@ -4705,7 +4842,7 @@ components:
           type: integer
         totalPages:
           type: integer
-        
+
   responses:
     Unauthorized:
       description: 未授權
@@ -4719,7 +4856,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-            
+
     ErrorResponse:
       type: object
       properties:
@@ -4730,7 +4867,7 @@ components:
         timestamp:
           type: string
           format: date-time
-```
+````
 
 **scripts/validate-openapi.sh**：
 
@@ -4764,18 +4901,18 @@ import yaml
 try:
     with open('$FILE', 'r') as f:
         spec = yaml.safe_load(f)
-    
+
     # 檢查必要欄位
     required = ['openapi', 'info', 'paths']
     for field in required:
         if field not in spec:
             print(f'ERROR: Missing required field: {field}')
             sys.exit(1)
-    
+
     # 檢查版本
     if not spec['openapi'].startswith('3.'):
         print(f'WARNING: OpenAPI version {spec[\"openapi\"]} is not 3.x')
-    
+
     print('✅ OpenAPI spec validation passed')
 except Exception as e:
     print(f'ERROR: {e}')
@@ -4801,7 +4938,7 @@ fi
 
 **SKILL.md**：
 
-```markdown
+````markdown
 ---
 name: enterprise-code-review
 description: >
@@ -4819,13 +4956,17 @@ ssdlc-phase: development
 ## 審查流程
 
 ### Phase 1：快速掃描（30 秒）
+
 快速瀏覽變更概覽：
+
 - 變更了哪些檔案？
 - 變更規模是否合理？（建議 PR < 400 行）
 - 是否包含測試？
 
 ### Phase 2：安全審查（最優先）
+
 依據 `references/security-checklist.md` 逐項檢查：
+
 - SQL Injection
 - XSS
 - 敏感資料保護
@@ -4833,19 +4974,24 @@ ssdlc-phase: development
 - 輸入驗證
 
 ### Phase 3：功能正確性
+
 - 業務邏輯是否正確？
 - 邊界條件是否處理？
 - 錯誤處理是否完整？
 
 ### Phase 4：程式碼品質
+
 依據 `references/coding-standards.md` 檢查：
+
 - 命名規範
 - 方法長度
 - 類別職責
 - 程式碼重複
 
 ### Phase 5：效能
+
 依據 `references/performance-checklist.md` 檢查：
+
 - N+1 查詢
 - 不必要的記憶體配置
 - 適當的快取使用
@@ -4856,26 +5002,31 @@ ssdlc-phase: development
 ## Code Review 報告
 
 ### 📊 總覽
+
 - 檔案數：X
 - 變更行數：+X / -X
 - 整體評分：⭐⭐⭐⭐☆
 
 ### 🔴 必須修改（Must Fix）
+
 1. [安全] 第 XX 行：SQL Injection 風險
 2. [正確性] 第 XX 行：NullPointerException 風險
 
 ### 🟡 建議修改（Should Fix）
+
 1. [品質] 第 XX 行：方法過長，建議拆分
 2. [效能] 第 XX 行：N+1 查詢問題
 
 ### 🟢 建議（Nice to Have）
+
 1. [風格] 第 XX 行：命名可更具描述性
 
 ### ✅ 優點
+
 1. 測試覆蓋完整
 2. 結構清晰
 ```
-
+````
 
 ### 5.3 範例 3：Spring Boot 服務生成 Skill
 
@@ -4914,6 +5065,7 @@ ssdlc-phase: development
 # Spring Boot 服務元件生成 Skill
 
 ## 生成項目
+
 依據使用者提供的需求，產生以下元件：
 
 1. **Controller**（使用 `templates/Controller.java.template`）
@@ -4926,18 +5078,22 @@ ssdlc-phase: development
 8. **Unit Test**（使用 `templates/ServiceTest.java.template`）
 
 ## 命名規範
+
 遵循 `references/naming-conventions.md`
 
 ## 分層規範
+
 遵循 `references/clean-architecture.md`
 
 ## 程式碼規範
+
 - Java 21+ 語法（Record、Pattern Matching）
 - Lombok 最小化使用（僅 @Slf4j、@RequiredArgsConstructor）
 - Bean Validation（Jakarta Validation）
 - MapStruct 進行 DTO 轉換
 
 ## 生成流程
+
 1. 確認資源名稱（如 Transaction）
 2. 確認需要的 CRUD 操作
 3. 依模板生成各元件
@@ -5102,7 +5258,7 @@ public class {{ResourceName}}Controller {
 graph TB
     subgraph "三維分類體系"
         direction TB
-        
+
         subgraph "維度 1：SSDLC 階段"
             SS1[Requirements]
             SS2[Design]
@@ -5112,7 +5268,7 @@ graph TB
             SS6[Deployment]
             SS7[Maintenance]
         end
-        
+
         subgraph "維度 2：技術層級"
             TL1[Frontend]
             TL2[Backend]
@@ -5120,7 +5276,7 @@ graph TB
             TL4[Infrastructure]
             TL5[Cross-cutting]
         end
-        
+
         subgraph "維度 3：業務領域"
             BD1[Core Banking]
             BD2[Payment]
@@ -5137,7 +5293,7 @@ graph TB
 catalog:
   version: "1.0.0"
   last_updated: "2026-04-01"
-  
+
   skills:
     - name: api-design-restful
       path: ssdlc/design/api-design-restful
@@ -5148,7 +5304,7 @@ catalog:
       author: platform-team
       status: active
       tags: [api, rest, openapi]
-      
+
     - name: junit-test-gen
       path: ssdlc/testing/junit-test-gen
       phase: testing
@@ -5158,7 +5314,7 @@ catalog:
       author: qa-team
       status: active
       tags: [test, junit, java]
-      
+
     - name: transaction-api
       path: domain/banking/transaction-api
       phase: development
@@ -5174,12 +5330,12 @@ catalog:
 
 **GitHub Repository 層級的權限設計**：
 
-| 角色 | 權限 | 說明 |
-|------|------|------|
-| **Skills Admin** | Admin | 管理 Repository 設定、審核流程 |
-| **Skills Reviewer** | Write + Review | 審核 PR、合併變更 |
-| **Skills Contributor** | Write | 提交新 Skill 或修改 |
-| **Skills Consumer** | Read | 使用 Skills（所有工程師） |
+| 角色                   | 權限           | 說明                           |
+| ---------------------- | -------------- | ------------------------------ |
+| **Skills Admin**       | Admin          | 管理 Repository 設定、審核流程 |
+| **Skills Reviewer**    | Write + Review | 審核 PR、合併變更              |
+| **Skills Contributor** | Write          | 提交新 Skill 或修改            |
+| **Skills Consumer**    | Read           | 使用 Skills（所有工程師）      |
 
 **CODEOWNERS 設定**：
 
@@ -5211,19 +5367,19 @@ name: Validate Skill
 on:
   pull_request:
     paths:
-      - '**/SKILL.md'
-      - '**/scripts/**'
+      - "**/SKILL.md"
+      - "**/scripts/**"
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Validate SKILL.md format
         run: |
           python scripts/validate-all-skills.py
-          
+
       - name: Check naming convention
         run: |
           # 檢查所有 Skill 目錄名稱是否符合命名規範
@@ -5234,7 +5390,7 @@ jobs:
               exit 1
             fi
           done
-          
+
       - name: Security scan scripts
         run: |
           # 掃描腳本中的安全風險
@@ -5251,11 +5407,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Lint Markdown
         uses: DavidAnson/markdownlint-cli2-action@v19
         with:
-          globs: '**/SKILL.md'
+          globs: "**/SKILL.md"
 ```
 
 > **🏦 金融業實務案例**：某金控集團透過 GitHub Actions 實現了 Skills 的自動化品質控管。每個 Skill 的 PR 必須通過：格式驗證、命名規範檢查、安全掃描、至少 2 位 Reviewer 審核（含 1 位安全團隊成員）才能合併。有效防止了不安全的腳本被引入生產環境。
@@ -5366,11 +5522,11 @@ Skill
 
 **安全最佳實務**：
 
-| 場景 | 建議設定 |
-|------|----------|
-| 部署、發訊息 | `disable-model-invocation: true` |
-| 有副作用的腳本 | 不加 `allowed-tools: shell`，讓使用者每次確認 |
-| 背景知識 | `user-invocable: false` |
+| 場景                 | 建議設定                                                |
+| -------------------- | ------------------------------------------------------- |
+| 部署、發訊息         | `disable-model-invocation: true`                        |
+| 有副作用的腳本       | 不加 `allowed-tools: shell`，讓使用者每次確認           |
+| 背景知識             | `user-invocable: false`                                 |
 | 危險操作（rm、drop） | `disable-model-invocation: true` + 限制 `allowed-tools` |
 
 **Plugin 分發與進階設定**：
@@ -5388,18 +5544,18 @@ Skill
 ```jsonc
 // .vscode/settings.json
 {
-    // Copilot 相關設定
-    "github.copilot.chat.codeGeneration.instructions": [
-        { "file": ".github/copilot-instructions.md" }
-    ],
-    
-    // 推薦 Extensions
-    "recommendations": [
-        "github.copilot",
-        "github.copilot-chat",
-        "vscjava.vscode-java-pack",
-        "vmware.vscode-spring-boot"
-    ]
+  // Copilot 相關設定
+  "github.copilot.chat.codeGeneration.instructions": [
+    { "file": ".github/copilot-instructions.md" },
+  ],
+
+  // 推薦 Extensions
+  "recommendations": [
+    "github.copilot",
+    "github.copilot-chat",
+    "vscjava.vscode-java-pack",
+    "vmware.vscode-spring-boot",
+  ],
 }
 ```
 
@@ -5413,7 +5569,7 @@ sequenceDiagram
     participant VS as VS Code
     participant AM as Agent Mode
     participant S as Skills
-    
+
     U->>VS: 開啟 Copilot Chat
     U->>AM: 切換至 Agent Mode
     U->>AM: 輸入任務
@@ -5434,14 +5590,14 @@ name: Skill Quality Gate
 on:
   push:
     paths:
-      - '.github/skills/**'
+      - ".github/skills/**"
 
 jobs:
   quality-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Validate all SKILL.md files
         run: |
           find .github/skills -name "SKILL.md" | while read file; do
@@ -5484,7 +5640,7 @@ graph TD
     G --> |Approved| H[合併至 main]
     G --> |Rejected| E
     H --> I[自動同步至專案]
-    
+
     style H fill:#4CAF50,color:#fff
 ```
 
@@ -5494,15 +5650,18 @@ graph TD
 <!-- .github/PULL_REQUEST_TEMPLATE/skill-pr.md -->
 
 ## Skill 資訊
+
 - **名稱**：
 - **類別**：core / ssdlc / domain
 - **SSDLC 階段**：requirements / design / development / testing / security / deployment / maintenance
 - **版本**：
 
 ## 變更說明
+
 <!-- 描述這個 Skill 做什麼、為什麼需要 -->
 
 ## 檢查清單
+
 - [ ] SKILL.md 包含必要的 frontmatter（name, description）
 - [ ] description 清楚說明觸發條件
 - [ ] 命名遵循企業命名規範
@@ -5513,6 +5672,7 @@ graph TD
 - [ ] 已更新 catalog.yaml
 
 ## 測試結果
+
 <!-- 附上使用 Skill 的截圖或結果 -->
 ```
 
@@ -5534,44 +5694,44 @@ graph TB
         B --> D[Quality Review Team<br/>品質審查團隊]
         B --> E[Domain Expert<br/>領域專家]
     end
-    
+
     subgraph "審核流程"
         F[新 Skill PR] --> G{格式驗證}
         G --> |Pass| H{安全審查}
         H --> |Pass| I{品質審查}
         I --> |Pass| J{領域審查}
         J --> |Approved| K[發布]
-        
+
         G --> |Fail| L[退回修改]
         H --> |Fail| L
         I --> |Fail| L
         J --> |Fail| L
     end
-    
+
     style K fill:#4CAF50,color:#fff
     style L fill:#f44336,color:#fff
 ```
 
 **審核維度**：
 
-| 維度 | 審核內容 | 審核者 |
-|------|----------|--------|
-| **格式** | SKILL.md 格式正確、命名規範 | 自動化（CI） |
-| **安全** | 無敏感資訊、腳本安全、最小權限 | Security Team |
-| **品質** | 指令清晰、可重用性高、Token 效率 | Quality Team |
-| **領域** | 業務邏輯正確、符合行業規範 | Domain Expert |
+| 維度     | 審核內容                         | 審核者        |
+| -------- | -------------------------------- | ------------- |
+| **格式** | SKILL.md 格式正確、命名規範      | 自動化（CI）  |
+| **安全** | 無敏感資訊、腳本安全、最小權限   | Security Team |
+| **品質** | 指令清晰、可重用性高、Token 效率 | Quality Team  |
+| **領域** | 業務邏輯正確、符合行業規範       | Domain Expert |
 
 ### 8.2 品質控管（Quality Gate）
 
 **Skill Quality Gate 指標**：
 
-| 指標 | 門檻 | 說明 |
-|------|------|------|
-| **格式合規** | 100% | SKILL.md 格式必須完全正確 |
-| **描述品質** | ≥ 80 分 | description 清晰度評分 |
-| **安全掃描** | 0 Critical / High | 無高風險安全問題 |
-| **Token 效率** | ≤ 5000 Tokens | SKILL.md 主體大小（不超過 500 行） |
-| **Reviewer 核准** | ≥ 2 人 | 至少 2 位 Reviewer 同意 |
+| 指標              | 門檻              | 說明                               |
+| ----------------- | ----------------- | ---------------------------------- |
+| **格式合規**      | 100%              | SKILL.md 格式必須完全正確          |
+| **描述品質**      | ≥ 80 分           | description 清晰度評分             |
+| **安全掃描**      | 0 Critical / High | 無高風險安全問題                   |
+| **Token 效率**    | ≤ 5000 Tokens     | SKILL.md 主體大小（不超過 500 行） |
+| **Reviewer 核准** | ≥ 2 人            | 至少 2 位 Reviewer 同意            |
 
 **自動化品質檢查腳本**：
 
@@ -5589,40 +5749,40 @@ def validate_skill(skill_path: str) -> list[str]:
     """驗證單個 Skill 的品質"""
     errors = []
     skill_md = Path(skill_path) / "SKILL.md"
-    
+
     if not skill_md.exists():
         errors.append(f"Missing SKILL.md in {skill_path}")
         return errors
-    
+
     content = skill_md.read_text(encoding="utf-8")
-    
+
     # 1. 驗證 frontmatter
     if not content.startswith("---"):
         errors.append("Missing YAML frontmatter")
         return errors
-    
+
     parts = content.split("---", 2)
     if len(parts) < 3:
         errors.append("Invalid YAML frontmatter format")
         return errors
-    
+
     try:
         metadata = yaml.safe_load(parts[1])
     except yaml.YAMLError as e:
         errors.append(f"Invalid YAML: {e}")
         return errors
-    
+
     # 2. 驗證必要欄位
     if "name" not in metadata:
         errors.append("Missing required field: name")
     elif not metadata["name"].replace("-", "").isalnum():
         errors.append(f"Invalid name format: {metadata['name']}")
-    
+
     if "description" not in metadata:
         errors.append("Missing required field: description")
     elif len(metadata["description"]) < 20:
         errors.append("Description too short (min 20 chars)")
-    
+
     # 3. 驗證描述包含觸發條件
     desc = metadata.get("description", "")
     trigger_keywords = ["use when", "use this when", "trigger when"]
@@ -5631,7 +5791,7 @@ def validate_skill(skill_path: str) -> list[str]:
             "Description should include trigger condition "
             "(e.g., 'Use when asked to...')"
         )
-    
+
     # 4. 檢查 Token 大小（粗略估算）
     body = parts[2]
     estimated_tokens = len(body.split()) * 1.3
@@ -5640,10 +5800,10 @@ def validate_skill(skill_path: str) -> list[str]:
             f"SKILL.md body too large: ~{int(estimated_tokens)} tokens "
             f"(recommended < 2000)"
         )
-    
+
     # 5. 安全檢查
     sensitive_patterns = [
-        "password", "secret", "api_key", "token", 
+        "password", "secret", "api_key", "token",
         "private_key", "access_key"
     ]
     for pattern in sensitive_patterns:
@@ -5651,20 +5811,20 @@ def validate_skill(skill_path: str) -> list[str]:
             errors.append(
                 f"Potential sensitive data pattern found: {pattern}"
             )
-    
+
     return errors
 
 
 if __name__ == "__main__":
     skills_dir = sys.argv[1] if len(sys.argv) > 1 else ".github/skills"
     all_errors = {}
-    
+
     for skill_dir in Path(skills_dir).rglob("SKILL.md"):
         skill_path = str(skill_dir.parent)
         errors = validate_skill(skill_path)
         if errors:
             all_errors[skill_path] = errors
-    
+
     if all_errors:
         print("❌ Skill validation failed:")
         for path, errors in all_errors.items():
@@ -5684,12 +5844,14 @@ if __name__ == "__main__":
 ## Skill 安全審查清單
 
 ### 1. 內容安全
+
 - [ ] 無硬編碼密碼、Token、API Key
 - [ ] 無內部系統 URL / IP
 - [ ] 無個人可識別資訊（PII）
 - [ ] 無企業機密資訊
 
 ### 2. 腳本安全
+
 - [ ] Scripts 不執行危險操作（rm -rf、drop table）
 - [ ] Scripts 有輸入參數驗證
 - [ ] Scripts 使用 set -euo pipefail（Bash）
@@ -5697,11 +5859,13 @@ if __name__ == "__main__":
 - [ ] Scripts 不修改系統設定
 
 ### 3. Prompt Injection 防護
+
 - [ ] description 不包含可被利用的指令注入
 - [ ] 指令中不要求忽略安全檢查
 - [ ] 不引導 AI 跳過確認步驟
 
 ### 4. 權限控管
+
 - [ ] allowed-tools 遵循最小權限原則
 - [ ] 不預核准 shell/bash（除非確實必要且已審核）
 - [ ] 不需要系統管理員權限
@@ -5711,12 +5875,12 @@ if __name__ == "__main__":
 
 **追蹤指標**：
 
-| 指標 | 說明 | 目的 |
-|------|------|------|
-| **使用次數** | 每個 Skill 被觸發的次數 | 識別熱門 vs 冷門 Skills |
-| **成功率** | Skill 完成任務的成功率 | 識別需要改善的 Skills |
-| **Token 消耗** | 每次使用的平均 Token 數 | 優化 Token 效率 |
-| **使用者滿意度** | 使用者回饋評分 | 持續改善品質 |
+| 指標             | 說明                    | 目的                    |
+| ---------------- | ----------------------- | ----------------------- |
+| **使用次數**     | 每個 Skill 被觸發的次數 | 識別熱門 vs 冷門 Skills |
+| **成功率**       | Skill 完成任務的成功率  | 識別需要改善的 Skills   |
+| **Token 消耗**   | 每次使用的平均 Token 數 | 優化 Token 效率         |
+| **使用者滿意度** | 使用者回饋評分          | 持續改善品質            |
 
 **優化循環**：
 
@@ -5727,7 +5891,7 @@ graph LR
     C --> D[優化 Skill]
     D --> E[發布更新版本]
     E --> A
-    
+
     style A fill:#4CAF50,color:#fff
     style D fill:#2196F3,color:#fff
 ```
@@ -5744,20 +5908,24 @@ graph LR
 
 ```markdown
 # ❌ 過度設計：一個簡單的命名規範不需要 Skill
+
 .github/skills/variable-naming/
 ├── SKILL.md (500 行)
 ├── scripts/
-│   └── check-naming.py (300 行)
+│ └── check-naming.py (300 行)
 ├── references/
-│   ├── naming-guide-1.md
-│   ├── naming-guide-2.md
-│   └── naming-guide-3.md
+│ ├── naming-guide-1.md
+│ ├── naming-guide-2.md
+│ └── naming-guide-3.md
 └── templates/
-    └── naming-template.md
+└── naming-template.md
 
 # ✅ 正確：簡單規範放在 copilot-instructions.md
+
 # 在 .github/copilot-instructions.md 中加入：
+
 ## 命名規範
+
 - 類別：PascalCase
 - 方法/變數：camelCase
 - 常數：UPPER_SNAKE_CASE
@@ -5765,12 +5933,12 @@ graph LR
 
 **判斷標準**：
 
-| 情境 | 建議 |
-|------|------|
-| 少於 10 行的規範 | 放入 `copilot-instructions.md` |
-| 通用且需每次都載入 | 放入 `copilot-instructions.md` |
-| 特定任務、需要腳本 / 範本 | 建立 Skill |
-| 複雜流程、多步驟 | 建立 Skill |
+| 情境                      | 建議                           |
+| ------------------------- | ------------------------------ |
+| 少於 10 行的規範          | 放入 `copilot-instructions.md` |
+| 通用且需每次都載入        | 放入 `copilot-instructions.md` |
+| 特定任務、需要腳本 / 範本 | 建立 Skill                     |
+| 複雜流程、多步驟          | 建立 Skill                     |
 
 ### 9.2 Token 爆炸問題
 
@@ -5778,33 +5946,47 @@ graph LR
 
 ```markdown
 # ❌ Token 爆炸：整份設計規範放入 SKILL.md
+
 ---
+
 name: api-design
 description: API design guide
 ---
 
 # API Design（5000+ 行的完整規範...）
+
 ## HTTP Methods（200 行）
+
 ## Status Codes（300 行）
+
 ## Error Handling（400 行）
+
 ## Security（500 行）
+
 ## Performance（300 行）
+
 ## 完整範例（2000 行）
+
 ...
 ```
 
 ```markdown
 # ✅ 正確：核心指令精簡，詳細內容在 references/
+
 ---
+
 name: api-design
 description: API design guide. Use when designing REST APIs.
 ---
 
 # API Design
+
 ## 核心原則（50 行精簡摘要）
+
 ## 快速參考（20 行）
 
 若需詳細規範，請參考：
+
 - references/http-methods.md
 - references/status-codes.md
 - references/security-standards.md
@@ -5816,39 +5998,50 @@ description: API design guide. Use when designing REST APIs.
 
 ```markdown
 # ❌ 強耦合：Skill B 必須在 Skill A 之後使用
+
 # api-test-gen/SKILL.md
+
 ---
+
 name: api-test-gen
 description: Generates API tests. MUST use api-design skill first.
 ---
+
 # 此 Skill 假設已使用 api-design Skill 產出 OpenAPI Spec...
+
 # 如果缺少 OpenAPI Spec 就無法運作...
 
 # ✅ 鬆耦合：Skill 可獨立使用
+
 # api-test-gen/SKILL.md
+
 ---
+
 name: api-test-gen
 description: >
-  Generates API test cases. Can use existing OpenAPI spec 
-  or generate tests from code analysis.
+Generates API test cases. Can use existing OpenAPI spec
+or generate tests from code analysis.
 ---
+
 # 此 Skill 支援兩種模式：
+
 # 1. 有 OpenAPI Spec → 依據 Spec 生成測試
+
 # 2. 無 OpenAPI Spec → 分析程式碼生成測試
 ```
 
 ### 9.4 其他常見反模式
 
-| 反模式 | 說明 | 解決方案 |
-|--------|------|----------|
-| **描述模糊** | description 無法準確觸發 | 加入明確的觸發條件語句 |
-| **萬用 Skill** | 一個 Skill 處理所有事 | 拆分為多個專注的 Skills |
-| **無版本管理** | 修改不留記錄 | 使用 Semantic Versioning |
-| **硬編碼環境** | 假設特定環境 / 路徑 | 使用參數化設計 |
-| **忽視安全** | Scripts 不做輸入驗證 | 加入安全檢查邏輯 |
-| **缺乏測試** | 未驗證 Skill 效果 | 建立 Skill 測試案例 |
-| **缺少驗證門檻** | Skill 未要求產出證據 | 每個 Skill 結尾加入驗證步驟（測試通過、建置成功） |
-| **未防止合理化推託** | Agent 找藉口跳過步驟 | 加入反合理化表格（參見 §4.6.2） |
+| 反模式               | 說明                     | 解決方案                                          |
+| -------------------- | ------------------------ | ------------------------------------------------- |
+| **描述模糊**         | description 無法準確觸發 | 加入明確的觸發條件語句                            |
+| **萬用 Skill**       | 一個 Skill 處理所有事    | 拆分為多個專注的 Skills                           |
+| **無版本管理**       | 修改不留記錄             | 使用 Semantic Versioning                          |
+| **硬編碼環境**       | 假設特定環境 / 路徑      | 使用參數化設計                                    |
+| **忽視安全**         | Scripts 不做輸入驗證     | 加入安全檢查邏輯                                  |
+| **缺乏測試**         | 未驗證 Skill 效果        | 建立 Skill 測試案例                               |
+| **缺少驗證門檻**     | Skill 未要求產出證據     | 每個 Skill 結尾加入驗證步驟（測試通過、建置成功） |
+| **未防止合理化推託** | Agent 找藉口跳過步驟     | 加入反合理化表格（參見 §4.6.2）                   |
 
 ---
 
@@ -5873,12 +6066,13 @@ graph TB
         I --> |Yes| J[回報完成]
         I --> |No| E
     end
-    
+
     style A fill:#FF9800,color:#fff
     style J fill:#4CAF50,color:#fff
 ```
 
 **企業應用方向**：
+
 - AI Agent 自動從需求文件生成完整的 API（使用多個 Skills 串接）
 - AI Agent 自動識別程式碼問題並修復（Code Review + Fix）
 - AI Agent 自動處理生產環境事件（Log Analysis + Incident Response）
@@ -5898,7 +6092,7 @@ graph TB
         QA --> SEC[Security Agent<br/>安全掃描 Skills]
         SEC --> OPS[DevOps Agent<br/>部署 Skills]
     end
-    
+
     style PM fill:#FF9800,color:#fff
     style Arch fill:#2196F3,color:#fff
     style BE fill:#4CAF50,color:#fff
@@ -5914,24 +6108,24 @@ Agent Skills 開放標準（agentskills.io）已被 20+ AI Agent 產品採用，
 
 **已採用 Agent Skills 標準的產品（部分）**：
 
-| 產品 | 組織 | 特點 |
-|------|------|------|
-| Claude Code | Anthropic | 最完整實作，含 Subagent、Hooks、動態注入、Plugin 分發 |
+| 產品           | 組織             | 特點                                                                |
+| -------------- | ---------------- | ------------------------------------------------------------------- |
+| Claude Code    | Anthropic        | 最完整實作，含 Subagent、Hooks、動態注入、Plugin 分發               |
 | GitHub Copilot | GitHub/Microsoft | Cloud Agent + VS Code Agent Mode + **Copilot CLI** + `gh skill` CLI |
-| Amp | Sourcegraph | 程式碼搜尋 + AI Agent |
-| Junie | JetBrains | IntelliJ 生態系整合 |
-| Goose | Block | 開源 AI Agent |
-| OpenHands | All Hands AI | 開源自主 AI Agent |
-| Kiro | AWS | IDE & CLI，深度整合 AWS 生態系 |
-| Gemini CLI | Google | `.gemini/commands/` 相容格式 |
-| Cursor | Anysphere | AI 程式碼編輯器 |
-| Windsurf | Codeium | IDE 整合 Agent |
-| Codex | OpenAI | CLI 自主 Agent |
-| OpenCode | — | 開源終端 AI Agent |
-| Qodo | Qodo | 測試導向 AI Agent |
-| Tabnine | Tabnine | 程式碼補全 + Agent |
-| Augment Code | Augment | 企業級 AI Agent |
-| Pear AI | Pear | 開源 AI 編輯器 |
+| Amp            | Sourcegraph      | 程式碼搜尋 + AI Agent                                               |
+| Junie          | JetBrains        | IntelliJ 生態系整合                                                 |
+| Goose          | Block            | 開源 AI Agent                                                       |
+| OpenHands      | All Hands AI     | 開源自主 AI Agent                                                   |
+| Kiro           | AWS              | IDE & CLI，深度整合 AWS 生態系                                      |
+| Gemini CLI     | Google           | `.gemini/commands/` 相容格式                                        |
+| Cursor         | Anysphere        | AI 程式碼編輯器                                                     |
+| Windsurf       | Codeium          | IDE 整合 Agent                                                      |
+| Codex          | OpenAI           | CLI 自主 Agent                                                      |
+| OpenCode       | —                | 開源終端 AI Agent                                                   |
+| Qodo           | Qodo             | 測試導向 AI Agent                                                   |
+| Tabnine        | Tabnine          | 程式碼補全 + Agent                                                  |
+| Augment Code   | Augment          | 企業級 AI Agent                                                     |
+| Pear AI        | Pear             | 開源 AI 編輯器                                                      |
 
 **Skills 管理工具**：
 
@@ -5946,14 +6140,15 @@ gh skill publish --fix        # 自動修復 metadata
 gh skill publish              # 驗證並發布
 ```
 
-| 發展階段 | 說明 | 時程預估 |
-|----------|------|----------|
-| **Phase 1** | 組織內部 Skills Repository | 現在可行 |
+| 發展階段    | 說明                                 | 時程預估                                    |
+| ----------- | ------------------------------------ | ------------------------------------------- |
+| **Phase 1** | 組織內部 Skills Repository           | 現在可行                                    |
 | **Phase 2** | 跨團隊 Skills 共享平台 + Plugin 分發 | ✅ 已實現（Claude Code Plugin Marketplace） |
-| **Phase 3** | 產業級 Skills Marketplace | 2026 Q4-2027 |
-| **Phase 4** | AI 自動生成 / 優化 Skills | 2027+ |
+| **Phase 3** | 產業級 Skills Marketplace            | 2026 Q4-2027                                |
+| **Phase 4** | AI 自動生成 / 優化 Skills            | 2027+                                       |
 
 **現有社群資源**：
+
 - **Agent Skills Specification**：[agentskills.io](https://agentskills.io/) — 開放標準規範（含 [Discord 社群](https://discord.gg/MKPE9g8aUy)）
 - **GitHub awesome-copilot**：[github/awesome-copilot/skills](https://github.com/github/awesome-copilot) — 250+ 社群貢獻的 Skills
 - **Anthropic Skills**：[anthropics/skills](https://github.com/anthropics/skills) — Anthropic 官方 Skills（⭐ 157k+），含 Example Skills 與 Document Skills
@@ -6006,23 +6201,23 @@ gh skill publish              # 驗證並發布
 
 ## 附錄 B：Prompt → Skill 轉換速查表
 
-| 原始 Prompt 用途 | 轉換為 Skill 名稱 | SSDLC 階段 |
-|------------------|-------------------|------------|
-| 「幫我寫 User Story」 | `generate-user-story` | Requirements |
-| 「設計 REST API」 | `api-design-restful` | Design |
-| 「畫架構圖」 | `architecture-diagram` | Design |
-| 「產出 ER Model」 | `database-design` | Design |
-| 「寫 Spring Boot Controller」 | `spring-boot-codegen` | Development |
-| 「寫 Vue 元件」 | `vue-component-gen` | Development |
-| 「Code Review」 | `enterprise-code-review` | Development |
-| 「寫 Unit Test」 | `junit-test-generation` | Testing |
-| 「寫 API Test」 | `api-test-generation` | Testing |
-| 「安全檢查」 | `owasp-security-review` | Security |
-| 「掃描依賴漏洞」 | `dependency-audit` | Security |
-| 「產生 Dockerfile」 | `dockerfile-generation` | Deployment |
-| 「建立 CI/CD Pipeline」 | `github-actions-pipeline` | Deployment |
-| 「分析 Error Log」 | `log-analyzer` | Maintenance |
-| 「排查生產問題」 | `incident-response` | Maintenance |
+| 原始 Prompt 用途              | 轉換為 Skill 名稱         | SSDLC 階段   |
+| ----------------------------- | ------------------------- | ------------ |
+| 「幫我寫 User Story」         | `generate-user-story`     | Requirements |
+| 「設計 REST API」             | `api-design-restful`      | Design       |
+| 「畫架構圖」                  | `architecture-diagram`    | Design       |
+| 「產出 ER Model」             | `database-design`         | Design       |
+| 「寫 Spring Boot Controller」 | `spring-boot-codegen`     | Development  |
+| 「寫 Vue 元件」               | `vue-component-gen`       | Development  |
+| 「Code Review」               | `enterprise-code-review`  | Development  |
+| 「寫 Unit Test」              | `junit-test-generation`   | Testing      |
+| 「寫 API Test」               | `api-test-generation`     | Testing      |
+| 「安全檢查」                  | `owasp-security-review`   | Security     |
+| 「掃描依賴漏洞」              | `dependency-audit`        | Security     |
+| 「產生 Dockerfile」           | `dockerfile-generation`   | Deployment   |
+| 「建立 CI/CD Pipeline」       | `github-actions-pipeline` | Deployment   |
+| 「分析 Error Log」            | `log-analyzer`            | Maintenance  |
+| 「排查生產問題」              | `incident-response`       | Maintenance  |
 
 ---
 
@@ -6032,28 +6227,28 @@ gh skill publish              # 驗證並發布
 
 以下是 `github/awesome-copilot` Repository 中推薦的企業實用 Skills：
 
-| Skill 名稱 | 用途 | 類別 |
-|------------|------|------|
-| `create-spring-boot-java-project` | 建立 Spring Boot Java 專案 | Development |
-| `java-junit` | Java JUnit 測試生成 | Testing |
-| `java-springboot` | Spring Boot 開發指引 | Development |
-| `spring-boot-testing` | Spring Boot 4.0 測試 | Testing |
-| `code-review` | 程式碼審查 | Development |
-| `security-review` | 安全審查 | Security |
-| `codeql` | GitHub CodeQL 安全掃描 | Security |
-| `dependabot` | 依賴安全檢查 | Security |
-| `create-specification` | 產出規格文件 | Requirements |
-| `create-implementation-plan` | 產出實作計劃 | Design |
-| `conventional-commit` | 規範化 Commit Message | Development |
-| `multi-stage-dockerfile` | 多階段 Dockerfile | Deployment |
-| `github-actions-failure-debugging` | GitHub Actions 除錯 | Maintenance |
-| `quality-playbook` | 品質控管劇本 | Governance |
-| `threat-model-analyst` | STRIDE 威脅模型分析 | Security |
-| `ai-team-orchestration` | 多 Agent 開發團隊協作 | Productivity |
-| `agent-owasp-compliance` | OWASP 合規檢查 | Security |
-| `acquire-codebase-knowledge` | 程式碼庫知識獲取 | Productivity |
-| `code-tour` | AI 生成 CodeTour 導覽 | Documentation |
-| `eval-driven-dev` | 評估驅動開發 | Development |
+| Skill 名稱                         | 用途                       | 類別          |
+| ---------------------------------- | -------------------------- | ------------- |
+| `create-spring-boot-java-project`  | 建立 Spring Boot Java 專案 | Development   |
+| `java-junit`                       | Java JUnit 測試生成        | Testing       |
+| `java-springboot`                  | Spring Boot 開發指引       | Development   |
+| `spring-boot-testing`              | Spring Boot 4.0 測試       | Testing       |
+| `code-review`                      | 程式碼審查                 | Development   |
+| `security-review`                  | 安全審查                   | Security      |
+| `codeql`                           | GitHub CodeQL 安全掃描     | Security      |
+| `dependabot`                       | 依賴安全檢查               | Security      |
+| `create-specification`             | 產出規格文件               | Requirements  |
+| `create-implementation-plan`       | 產出實作計劃               | Design        |
+| `conventional-commit`              | 規範化 Commit Message      | Development   |
+| `multi-stage-dockerfile`           | 多階段 Dockerfile          | Deployment    |
+| `github-actions-failure-debugging` | GitHub Actions 除錯        | Maintenance   |
+| `quality-playbook`                 | 品質控管劇本               | Governance    |
+| `threat-model-analyst`             | STRIDE 威脅模型分析        | Security      |
+| `ai-team-orchestration`            | 多 Agent 開發團隊協作      | Productivity  |
+| `agent-owasp-compliance`           | OWASP 合規檢查             | Security      |
+| `acquire-codebase-knowledge`       | 程式碼庫知識獲取           | Productivity  |
+| `code-tour`                        | AI 生成 CodeTour 導覽      | Documentation |
+| `eval-driven-dev`                  | 評估驅動開發               | Development   |
 
 ### 來自 mattpocock/skills（⭐ 151k）
 
@@ -6061,26 +6256,26 @@ gh skill publish              # 驗證並發布
 >
 > 分為 **Engineering**、**Productivity**、**Misc** 三大分類，區分 User-invoked（編排層）與 Model-invoked（可重用紀律）兩類叫用模式。
 
-| Skill 名稱 | 用途 | 說明 |
-|------------|------|------|
-| `grill-me` | 需求對齊 | 強制 Agent 提問釐清需求，直到決策樹的每個分支都解決 |
-| `grill-with-docs` | 需求對齊 + 文件產出 | 與 grill-me 相同，但額外產出 CONTEXT.md（共用語言）與 ADR 文件 |
-| `tdd` | 測試驅動開發 | 紅綠重構迴圈，逐片段垂直切割實作 |
-| `diagnose` | 結構化除錯 | 重現→最小化→假設→檢測→修復→迴歸測試的除錯迴圈 |
-| `zoom-out` | 全局視角 | 引導 Agent 解釋程式碼在系統整體中的定位 |
-| `improve-codebase-architecture` | 架構改善 | 基於 CONTEXT.md 與 ADR 尋找深化機會 |
-| `to-prd` | PRD 生成 | 從對話上下文合成 PRD 並提交為 GitHub Issue |
-| `to-issues` | Issue 拆分 | 將計劃 / PRD 拆為可獨立執行的 GitHub Issues |
-| `triage` | Issue 分類 | 透過分類角色狀態機進行 Issue 分流 |
-| `caveman` | 極簡溝通模式 | 超壓縮溝通，Token 節省約 75% |
-| `write-a-skill` | 建立新 Skill | 引導建立結構正確的新 Skill |
-| `prototype` | 快速原型 | 以最少的步驟建立可運作的原型 |
-| `domain-modeling` | 領域建模 | 引導建立領域模型與共用語言 |
-| `codebase-design` | 程式碼庫設計 | 引導建立或改善專案結構 |
-| `handoff` | 工作交接 | 結構化工作交接紀錄，包含進度、決策、待處理事項 |
-| `teach` | 教學模式 | Agent 以教師角色解釋概念 |
-| `ask-matt` | 向專家提問 | 模擬 mattpocock 的建議風格 |
-| `writing-great-skills` | Skill 撰寫指南 | Skill 設計最佳實務教學 |
+| Skill 名稱                      | 用途                | 說明                                                           |
+| ------------------------------- | ------------------- | -------------------------------------------------------------- |
+| `grill-me`                      | 需求對齊            | 強制 Agent 提問釐清需求，直到決策樹的每個分支都解決            |
+| `grill-with-docs`               | 需求對齊 + 文件產出 | 與 grill-me 相同，但額外產出 CONTEXT.md（共用語言）與 ADR 文件 |
+| `tdd`                           | 測試驅動開發        | 紅綠重構迴圈，逐片段垂直切割實作                               |
+| `diagnose`                      | 結構化除錯          | 重現→最小化→假設→檢測→修復→迴歸測試的除錯迴圈                  |
+| `zoom-out`                      | 全局視角            | 引導 Agent 解釋程式碼在系統整體中的定位                        |
+| `improve-codebase-architecture` | 架構改善            | 基於 CONTEXT.md 與 ADR 尋找深化機會                            |
+| `to-prd`                        | PRD 生成            | 從對話上下文合成 PRD 並提交為 GitHub Issue                     |
+| `to-issues`                     | Issue 拆分          | 將計劃 / PRD 拆為可獨立執行的 GitHub Issues                    |
+| `triage`                        | Issue 分類          | 透過分類角色狀態機進行 Issue 分流                              |
+| `caveman`                       | 極簡溝通模式        | 超壓縮溝通，Token 節省約 75%                                   |
+| `write-a-skill`                 | 建立新 Skill        | 引導建立結構正確的新 Skill                                     |
+| `prototype`                     | 快速原型            | 以最少的步驟建立可運作的原型                                   |
+| `domain-modeling`               | 領域建模            | 引導建立領域模型與共用語言                                     |
+| `codebase-design`               | 程式碼庫設計        | 引導建立或改善專案結構                                         |
+| `handoff`                       | 工作交接            | 結構化工作交接紀錄，包含進度、決策、待處理事項                 |
+| `teach`                         | 教學模式            | Agent 以教師角色解釋概念                                       |
+| `ask-matt`                      | 向專家提問          | 模擬 mattpocock 的建議風格                                     |
+| `writing-great-skills`          | Skill 撰寫指南      | Skill 設計最佳實務教學                                         |
 
 ### 來自 addyosmani/agent-skills（⭐ 68.1k）
 
@@ -6088,42 +6283,42 @@ gh skill publish              # 驗證並發布
 
 **24 個生產級 Skills（23 個生命週期 + 1 個 Meta，按生命週期分類）**：
 
-| 階段 | Skill 名稱 | 說明 |
-|------|-----------|------|
-| **Define** | `idea-refine` | 結構化發散 / 收斂思考，將模糊想法轉為具體提案 |
-| **Define** | `spec-driven-development` | 撰寫 PRD（目標、指令、結構、測試、邊界） |
-| **Plan** | `planning-and-task-breakdown` | 將規格拆解為可驗證的小任務 |
-| **Build** | `incremental-implementation` | 薄垂直切片實作，含 Feature Flag 與安全回滾 |
-| **Build** | `test-driven-development` | 紅綠重構、測試金字塔（80/15/5）、Beyoncé Rule |
-| **Build** | `context-engineering` | 在正確時機餵入正確資訊 |
-| **Build** | `source-driven-development` | 以官方文件為依據的框架決策，含引用驗證 |
-| **Build** | `frontend-ui-engineering` | 元件架構、設計系統、WCAG 2.1 AA 無障礙 |
-| **Build** | `api-and-interface-design` | 契約優先設計、Hyrum's Law、邊界驗證 |
+| 階段       | Skill 名稱                      | 說明                                           |
+| ---------- | ------------------------------- | ---------------------------------------------- |
+| **Define** | `idea-refine`                   | 結構化發散 / 收斂思考，將模糊想法轉為具體提案  |
+| **Define** | `spec-driven-development`       | 撰寫 PRD（目標、指令、結構、測試、邊界）       |
+| **Plan**   | `planning-and-task-breakdown`   | 將規格拆解為可驗證的小任務                     |
+| **Build**  | `incremental-implementation`    | 薄垂直切片實作，含 Feature Flag 與安全回滾     |
+| **Build**  | `test-driven-development`       | 紅綠重構、測試金字塔（80/15/5）、Beyoncé Rule  |
+| **Build**  | `context-engineering`           | 在正確時機餵入正確資訊                         |
+| **Build**  | `source-driven-development`     | 以官方文件為依據的框架決策，含引用驗證         |
+| **Build**  | `frontend-ui-engineering`       | 元件架構、設計系統、WCAG 2.1 AA 無障礙         |
+| **Build**  | `api-and-interface-design`      | 契約優先設計、Hyrum's Law、邊界驗證            |
 | **Verify** | `browser-testing-with-devtools` | Chrome DevTools MCP 即時 DOM / 網路 / 效能分析 |
-| **Verify** | `debugging-and-error-recovery` | 五步驟分類法：重現→定位→縮小→修復→防護 |
-| **Review** | `code-review-and-quality` | 五軸審查、變更大小控制（~100 行）、嚴重度標籤 |
-| **Review** | `code-simplification` | Chesterton's Fence、500 規則 |
-| **Review** | `security-and-hardening` | OWASP Top 10、認證模式、三層邊界系統 |
-| **Review** | `performance-optimization` | 量測優先、Core Web Vitals、Bundle 分析 |
-| **Ship** | `git-workflow-and-versioning` | Trunk-based 開發、Commit-as-Save-Point |
-| **Ship** | `ci-cd-and-automation` | Shift Left、Feature Flag、品質門檻 Pipeline |
-| **Ship** | `deprecation-and-migration` | 程式碼即負債思維、強制 / 建議式棄用策略 |
-| **Ship** | `documentation-and-adrs` | ADR、API 文件、記錄「為什麼」 |
-| **Ship** | `shipping-and-launch` | 上線前清單、階段式發布、回滾程序 |
-| **Meta** | `meta-skill` | 跨 Skill 協調、自動化工作流 |
+| **Verify** | `debugging-and-error-recovery`  | 五步驟分類法：重現→定位→縮小→修復→防護         |
+| **Review** | `code-review-and-quality`       | 五軸審查、變更大小控制（~100 行）、嚴重度標籤  |
+| **Review** | `code-simplification`           | Chesterton's Fence、500 規則                   |
+| **Review** | `security-and-hardening`        | OWASP Top 10、認證模式、三層邊界系統           |
+| **Review** | `performance-optimization`      | 量測優先、Core Web Vitals、Bundle 分析         |
+| **Ship**   | `git-workflow-and-versioning`   | Trunk-based 開發、Commit-as-Save-Point         |
+| **Ship**   | `ci-cd-and-automation`          | Shift Left、Feature Flag、品質門檻 Pipeline    |
+| **Ship**   | `deprecation-and-migration`     | 程式碼即負債思維、強制 / 建議式棄用策略        |
+| **Ship**   | `documentation-and-adrs`        | ADR、API 文件、記錄「為什麼」                  |
+| **Ship**   | `shipping-and-launch`           | 上線前清單、階段式發布、回滾程序               |
+| **Meta**   | `meta-skill`                    | 跨 Skill 協調、自動化工作流                    |
 
 **8 個 Slash Commands（生命週期入口點）**：
 
-| Command | 說明 |
-|---------|------|
-| `/spec` | DEFINE 階段——撰寫 PRD，含目標、結構、測試、邊界 |
-| `/plan` | PLAN 階段——將 PRD 拆解為可驗證的小任務 |
-| `/build` | BUILD 階段——實作任務，支援 `auto` 自主執行模式 |
-| `/test` | VERIFY 階段——執行測試並驗證結果 |
-| `/review` | REVIEW 階段——五軸式程式碼審查 |
-| `/webperf` | 效能審查——Core Web Vitals、Bundle 分析 |
-| `/code-simplify` | 程式碼簡化——Chesterton's Fence、500 規則 |
-| `/ship` | SHIP 階段——上線前清單、發布、回滾 |
+| Command          | 說明                                            |
+| ---------------- | ----------------------------------------------- |
+| `/spec`          | DEFINE 階段——撰寫 PRD，含目標、結構、測試、邊界 |
+| `/plan`          | PLAN 階段——將 PRD 拆解為可驗證的小任務          |
+| `/build`         | BUILD 階段——實作任務，支援 `auto` 自主執行模式  |
+| `/test`          | VERIFY 階段——執行測試並驗證結果                 |
+| `/review`        | REVIEW 階段——五軸式程式碼審查                   |
+| `/webperf`       | 效能審查——Core Web Vitals、Bundle 分析          |
+| `/code-simplify` | 程式碼簡化——Chesterton's Fence、500 規則        |
+| `/ship`          | SHIP 階段——上線前清單、發布、回滾               |
 
 ### 來自 Anthropic Skills 官方庫
 
@@ -6131,31 +6326,31 @@ gh skill publish              # 驗證並發布
 
 **開源 Skills（Apache 2.0）— Example Skills**：
 
-| Skill 名稱 | 用途 | 說明 |
-|------------|------|------|
-| `skill-creator` | Skill 建立與迭代 | 引導建立新 Skill、撰寫測試案例、評估輸出品質、優化 description 觸發準確度的完整工作流 |
-| `claude-api` | Claude API 開發參考 | 多語言（Python / TS / Java / Go / Ruby / C# / PHP / cURL）的 Claude API + Agent SDK 完整參考文件，含 Models、Thinking、Caching、Compaction 等 |
-| `mcp-builder` | MCP Server 開發 | 引導建立高品質 MCP Server 的完整流程——研究規劃、實作、測試、評估，支援 TypeScript 與 Python |
-| `doc-coauthoring` | 文件共同撰寫 | 三階段結構化文件撰寫工作流：Context Gathering → Refinement & Structure → Reader Testing（Fresh Claude 驗證） |
-| `frontend-design` | 前端介面設計 | 生成獨特、生產級前端介面（HTML/CSS/JS、React、Vue），避免泛用「AI slop」美學 |
-| `web-artifacts-builder` | Claude Artifact 建構 | 使用 React + TypeScript + Tailwind + shadcn/ui 建構複雜的 claude.ai HTML Artifact，打包為單一 HTML |
-| `webapp-testing` | Web 應用測試 | 使用 Playwright 測試本地 Web 應用，含伺服器生命週期管理、DOM 偵測、截圖驗證 |
-| `canvas-design` | 視覺藝術創作 | 透過設計哲學（Design Philosophy）創作高品質視覺藝術，輸出 .pdf / .png 檔案 |
-| `algorithmic-art` | 演算法藝術 | 使用 p5.js 創作生成式演算法藝術，含 Seeded Randomness 與互動參數控制器 |
-| `theme-factory` | 主題樣式套用 | 提供 10 套預設主題（色彩 + 字型配對），可套用至簡報、文件、HTML 等各類產出物 |
-| `brand-guidelines` | Anthropic 品牌規範 | 將 Anthropic 官方品牌色彩與字型套用至任何產出物 |
-| `internal-comms` | 內部溝通文件 | 撰寫 3P Updates、公司通訊、FAQ、狀態報告、事件報告等內部溝通文件 |
-| `slack-gif-creator` | Slack GIF 製作 | 使用 PIL 製作符合 Slack 規格的動態 GIF（含 Emoji 尺寸最佳化、動畫概念、驗證工具） |
-| Template Skill | Skill 建立範本 | 最小化的 SKILL.md 範本，作為快速建立新 Skill 的起點 |
+| Skill 名稱              | 用途                 | 說明                                                                                                                                          |
+| ----------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `skill-creator`         | Skill 建立與迭代     | 引導建立新 Skill、撰寫測試案例、評估輸出品質、優化 description 觸發準確度的完整工作流                                                         |
+| `claude-api`            | Claude API 開發參考  | 多語言（Python / TS / Java / Go / Ruby / C# / PHP / cURL）的 Claude API + Agent SDK 完整參考文件，含 Models、Thinking、Caching、Compaction 等 |
+| `mcp-builder`           | MCP Server 開發      | 引導建立高品質 MCP Server 的完整流程——研究規劃、實作、測試、評估，支援 TypeScript 與 Python                                                   |
+| `doc-coauthoring`       | 文件共同撰寫         | 三階段結構化文件撰寫工作流：Context Gathering → Refinement & Structure → Reader Testing（Fresh Claude 驗證）                                  |
+| `frontend-design`       | 前端介面設計         | 生成獨特、生產級前端介面（HTML/CSS/JS、React、Vue），避免泛用「AI slop」美學                                                                  |
+| `web-artifacts-builder` | Claude Artifact 建構 | 使用 React + TypeScript + Tailwind + shadcn/ui 建構複雜的 claude.ai HTML Artifact，打包為單一 HTML                                            |
+| `webapp-testing`        | Web 應用測試         | 使用 Playwright 測試本地 Web 應用，含伺服器生命週期管理、DOM 偵測、截圖驗證                                                                   |
+| `canvas-design`         | 視覺藝術創作         | 透過設計哲學（Design Philosophy）創作高品質視覺藝術，輸出 .pdf / .png 檔案                                                                    |
+| `algorithmic-art`       | 演算法藝術           | 使用 p5.js 創作生成式演算法藝術，含 Seeded Randomness 與互動參數控制器                                                                        |
+| `theme-factory`         | 主題樣式套用         | 提供 10 套預設主題（色彩 + 字型配對），可套用至簡報、文件、HTML 等各類產出物                                                                  |
+| `brand-guidelines`      | Anthropic 品牌規範   | 將 Anthropic 官方品牌色彩與字型套用至任何產出物                                                                                               |
+| `internal-comms`        | 內部溝通文件         | 撰寫 3P Updates、公司通訊、FAQ、狀態報告、事件報告等內部溝通文件                                                                              |
+| `slack-gif-creator`     | Slack GIF 製作       | 使用 PIL 製作符合 Slack 規格的動態 GIF（含 Emoji 尺寸最佳化、動畫概念、驗證工具）                                                             |
+| Template Skill          | Skill 建立範本       | 最小化的 SKILL.md 範本，作為快速建立新 Skill 的起點                                                                                           |
 
 **Source-Available Skills — Document Skills（驅動 Claude 文件功能）**：
 
-| Skill 名稱 | 用途 | 說明 |
-|------------|------|------|
-| `docx` | Word 文件處理 | 建立（docx-js）、編輯（Unpack → XML → Repack）、分析 .docx 檔案，含 Tracked Changes、Comments、表格、頁首頁尾等完整支援 |
-| `pdf` | PDF 處理 | 讀取 / 合併 / 分割 / 旋轉 / 浮水印 / OCR / 表單填寫 / 加密，支援 pypdf、pdfplumber、reportlab |
-| `pptx` | 簡報處理 | 建立（pptxgenjs）、編輯（Unpack/Pack）、視覺 QA 驗證流程，含 10 套配色方案與字型配對建議 |
-| `xlsx` | 試算表處理 | 建立 / 編輯 / 分析 .xlsx 檔案（openpyxl + pandas），強制使用 Excel 公式而非硬編碼值，含公式重算驗證腳本 |
+| Skill 名稱 | 用途          | 說明                                                                                                                    |
+| ---------- | ------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `docx`     | Word 文件處理 | 建立（docx-js）、編輯（Unpack → XML → Repack）、分析 .docx 檔案，含 Tracked Changes、Comments、表格、頁首頁尾等完整支援 |
+| `pdf`      | PDF 處理      | 讀取 / 合併 / 分割 / 旋轉 / 浮水印 / OCR / 表單填寫 / 加密，支援 pypdf、pdfplumber、reportlab                           |
+| `pptx`     | 簡報處理      | 建立（pptxgenjs）、編輯（Unpack/Pack）、視覺 QA 驗證流程，含 10 套配色方案與字型配對建議                                |
+| `xlsx`     | 試算表處理    | 建立 / 編輯 / 分析 .xlsx 檔案（openpyxl + pandas），強制使用 Excel 公式而非硬編碼值，含公式重算驗證腳本                 |
 
 > **💡 安裝方式**：在 Claude Code 中執行 `/plugin install document-skills@anthropic-agent-skills` 或 `/plugin install example-skills@anthropic-agent-skills` 即可安裝對應的 Plugin 套件。在 Claude.ai 付費方案中，所有 Example Skills 已內建可用。
 
@@ -6163,38 +6358,38 @@ gh skill publish              # 驗證並發布
 
 ## 附錄 D：參考資源
 
-| 資源 | URL | 說明 |
-|------|-----|------|
-| Agent Skills Specification | https://agentskills.io/specification | 開放標準完整規格（v1.0） |
-| Agent Skills 概述 | https://agentskills.io/what-are-skills | 開放標準入門介紹 |
-| GitHub Copilot Skills 官方文件 | https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-skills | 官方建立 Skills 教學 |
-| GitHub 關於 Agent Skills | https://docs.github.com/en/copilot/concepts/agents/about-agent-skills | Agent Skills 概念說明 |
-| gh skill CLI 手冊 | https://cli.github.com/manual/gh_skill | GitHub CLI Skills 管理命令（v2.90.0+） |
-| Claude Code Skills 文件 | https://code.claude.com/docs/en/skills | Claude Code Skills 完整使用指南 |
-| Claude Code Subagents | https://code.claude.com/docs/en/sub-agents | Subagent 配置與 Skills 整合 |
-| Claude Code Plugins | https://code.claude.com/docs/en/plugins | Plugin 打包與分發 Skills |
-| Claude Code Hooks | https://code.claude.com/docs/en/hooks | Skills 生命週期鉤子 |
-| Claude.ai Skills | https://support.anthropic.com/en/articles/11153-claude-ai-skills | Claude.ai 付費方案 Skills 說明 |
-| Claude API Skills | https://docs.anthropic.com/en/docs/build-with-claude/agent-skills | Claude API 整合 Skills |
-| GitHub awesome-copilot Skills | https://github.com/github/awesome-copilot/tree/main/skills | 200+ 社群 Skills |
-| Anthropic Skills Repository | https://github.com/anthropics/skills | Anthropic 官方 Skills（⭐ 126k+） |
-| Agent Skills 驗證工具 | https://github.com/agentskills/agentskills/tree/main/skills-ref | skills-ref 驗證庫 |
-| Agent Skills Authoring Best Practices | https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices | 撰寫最佳實務 |
-| mattpocock/skills | https://github.com/mattpocock/skills | Skills for Real Engineers — 20+ 個工程實務 Skills（⭐ 151k） |
-| addyosmani/agent-skills | https://github.com/addyosmani/agent-skills | 24 個生產級工程 Skills（⭐ 68.1k） |
-| Skills Installer (skills.sh) | https://www.npmjs.com/package/skills | `npx skills@latest add` 社群 Skills 安裝器 |
-| Claude Skills 使用說明 | https://support.claude.com/en/articles/12512180-using-skills-in-claude | Claude.ai Skills 完整使用指南 |
-| Claude 自訂 Skills | https://support.claude.com/en/articles/12512198-creating-custom-skills | Claude.ai 自訂 Skills 建立教學 |
-| Anthropic Agent Skills 工程部落格 | https://anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills | 技術設計理念與架構說明 |
+| 資源                                  | URL                                                                                      | 說明                                                         |
+| ------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Agent Skills Specification            | https://agentskills.io/specification                                                     | 開放標準完整規格（v1.0）                                     |
+| Agent Skills 概述                     | https://agentskills.io/what-are-skills                                                   | 開放標準入門介紹                                             |
+| GitHub Copilot Skills 官方文件        | https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-skills | 官方建立 Skills 教學                                         |
+| GitHub 關於 Agent Skills              | https://docs.github.com/en/copilot/concepts/agents/about-agent-skills                    | Agent Skills 概念說明                                        |
+| gh skill CLI 手冊                     | https://cli.github.com/manual/gh_skill                                                   | GitHub CLI Skills 管理命令（v2.90.0+）                       |
+| Claude Code Skills 文件               | https://code.claude.com/docs/en/skills                                                   | Claude Code Skills 完整使用指南                              |
+| Claude Code Subagents                 | https://code.claude.com/docs/en/sub-agents                                               | Subagent 配置與 Skills 整合                                  |
+| Claude Code Plugins                   | https://code.claude.com/docs/en/plugins                                                  | Plugin 打包與分發 Skills                                     |
+| Claude Code Hooks                     | https://code.claude.com/docs/en/hooks                                                    | Skills 生命週期鉤子                                          |
+| Claude.ai Skills                      | https://support.anthropic.com/en/articles/11153-claude-ai-skills                         | Claude.ai 付費方案 Skills 說明                               |
+| Claude API Skills                     | https://docs.anthropic.com/en/docs/build-with-claude/agent-skills                        | Claude API 整合 Skills                                       |
+| GitHub awesome-copilot Skills         | https://github.com/github/awesome-copilot/tree/main/skills                               | 200+ 社群 Skills                                             |
+| Anthropic Skills Repository           | https://github.com/anthropics/skills                                                     | Anthropic 官方 Skills（⭐ 126k+）                            |
+| Agent Skills 驗證工具                 | https://github.com/agentskills/agentskills/tree/main/skills-ref                          | skills-ref 驗證庫                                            |
+| Agent Skills Authoring Best Practices | https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices         | 撰寫最佳實務                                                 |
+| mattpocock/skills                     | https://github.com/mattpocock/skills                                                     | Skills for Real Engineers — 20+ 個工程實務 Skills（⭐ 151k） |
+| addyosmani/agent-skills               | https://github.com/addyosmani/agent-skills                                               | 24 個生產級工程 Skills（⭐ 68.1k）                           |
+| Skills Installer (skills.sh)          | https://www.npmjs.com/package/skills                                                     | `npx skills@latest add` 社群 Skills 安裝器                   |
+| Claude Skills 使用說明                | https://support.claude.com/en/articles/12512180-using-skills-in-claude                   | Claude.ai Skills 完整使用指南                                |
+| Claude 自訂 Skills                    | https://support.claude.com/en/articles/12512198-creating-custom-skills                   | Claude.ai 自訂 Skills 建立教學                               |
+| Anthropic Agent Skills 工程部落格     | https://anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills  | 技術設計理念與架構說明                                       |
 
 ---
 
 > **文件版本紀錄**
-> 
-> | 版本 | 日期 | 變更說明 | 作者 |
-> |------|------|----------|------|
-> | v1.0.0 | 2026-04-01 | 初版建立 | Platform Team |
-> | v1.1.0 | 2026-04-01 | 對齊 Agent Skills 開放標準（agentskills.io）；新增 Claude Code Skills 完整參考（Bundled Skills、擴展 Frontmatter、字串替換、動態上下文注入、Subagent 執行）；更新多平台架構與優先層級；更新 Token 預算與命名規範為官方數據；新增附錄 D 參考資源 | Platform Team |
-> | v1.2.0 | 2026-04-30 | 新增 `when_to_use`/`arguments` 欄位、effort `xhigh` 選項、`${CLAUDE_EFFORT}`/`$name` 字串替換；新增 §2.7 gh skill CLI（search/install/publish）、§2.8 Skill 內容生命週期與 Token 預算（5,000/25,000 tokens）；擴充支援平台清單（Copilot CLI、Kiro、Gemini CLI、Cursor、Windsurf、OpenCode、Codex、Pear AI）；更新 §7.1 Copilot CLI Skills 命令、§10.3 生態系採用者表格；更新附錄 C/D 資源連結 | Platform Team |
-> | v1.3.0 | 2026-04-30 | 新增 §4.6 社群設計模式參考（CONTEXT.md 共用語言、反合理化表格、Agent Personas、生命週期導向組織、四大失敗模式框架）；新增附錄 C mattpocock/skills（⭐ 47.5k）與 addyosmani/agent-skills（⭐ 26.5k）完整 Skills 清單；更新 anthropics/skills 星數（108k → 126k）；新增附錄 D 參考資源（mattpocock、addyosmani、skills.sh installer、Claude.ai Skills 文件、Anthropic 工程部落格）；更新 §1.1 社群知名 Skills 套件說明 | Platform Team |
+>
+> | 版本   | 日期       | 變更說明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | 作者          |
+> | ------ | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+> | v1.0.0 | 2026-04-01 | 初版建立                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Platform Team |
+> | v1.1.0 | 2026-04-01 | 對齊 Agent Skills 開放標準（agentskills.io）；新增 Claude Code Skills 完整參考（Bundled Skills、擴展 Frontmatter、字串替換、動態上下文注入、Subagent 執行）；更新多平台架構與優先層級；更新 Token 預算與命名規範為官方數據；新增附錄 D 參考資源                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Platform Team |
+> | v1.2.0 | 2026-04-30 | 新增 `when_to_use`/`arguments` 欄位、effort `xhigh` 選項、`${CLAUDE_EFFORT}`/`$name` 字串替換；新增 §2.7 gh skill CLI（search/install/publish）、§2.8 Skill 內容生命週期與 Token 預算（5,000/25,000 tokens）；擴充支援平台清單（Copilot CLI、Kiro、Gemini CLI、Cursor、Windsurf、OpenCode、Codex、Pear AI）；更新 §7.1 Copilot CLI Skills 命令、§10.3 生態系採用者表格；更新附錄 C/D 資源連結                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Platform Team |
+> | v1.3.0 | 2026-04-30 | 新增 §4.6 社群設計模式參考（CONTEXT.md 共用語言、反合理化表格、Agent Personas、生命週期導向組織、四大失敗模式框架）；新增附錄 C mattpocock/skills（⭐ 47.5k）與 addyosmani/agent-skills（⭐ 26.5k）完整 Skills 清單；更新 anthropics/skills 星數（108k → 126k）；新增附錄 D 參考資源（mattpocock、addyosmani、skills.sh installer、Claude.ai Skills 文件、Anthropic 工程部落格）；更新 §1.1 社群知名 Skills 套件說明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Platform Team |
 > | v1.4.0 | 2026-06-30 | 更新社群 Skills 套件星數（mattpocock ⭐151k、addyosmani ⭐68.1k、anthropics ⭐157k、awesome-copilot 250+）。充實套件描述（mattpocock 20+ Skills 三分類 + User/Model-invoked；addyosmani 24 Skills + 8 Commands + 4 Personas + 7 Checklists + `/build auto`）。新增 §2.3.2 `disallowed-tools` 欄位。新增 §2.4 Bundled Skills（`/run`、`/verify`、`/run-skill-generator`、`/code-review`）。新增 §2.5 多路徑載入表、Commands→Skills 合併、Monorepo 巢狀 Skills。新增 §2.8 `skillOverrides`、`skillListingBudgetFraction`、`/doctor`、skill-creator plugin、Visual Output Pattern、Skills as Plugins。新增 §4.6.6-4.6.8（User/Model-invoked 設計模式、`/build auto` 自主模式、Skills 安裝器生態）。更新 §7.2 Plugin 分發與進階設定參考。更新 §7.3 Agent Mode 說明。更新 §10.3 生態時程、社群資源星數。更新附錄 C Skills 清單（mattpocock 20+ Skills、addyosmani 24 Skills + 8 Commands + Meta）。更新附錄 D 星數。同步 TOC | Platform Team |

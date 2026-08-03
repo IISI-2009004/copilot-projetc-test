@@ -85,14 +85,14 @@ HumanLayer 是一家專注於「Human-in-the-loop AI Agent 基礎設施」的團
 
 企業導入 AI Agent 常見的失敗模式可歸納如下：
 
-| 失敗模式 | 現象 | 根因 |
-|---|---|---|
-| Context 爆炸 | Token 用量暴增、回應變慢、答案品質下降 | 把所有歷史訊息無限堆疊進 Context |
-| 狀態遺失 | Agent 重啟後忘記任務進度 | 沒有把狀態外部化、缺乏 Checkpoint |
-| 工具呼叫黑箱 | 出錯時不知道是 Prompt、Tool、還是 LLM 的問題 | 把 Agent 當整體黑箱，沒有拆解成可測試單元 |
-| 人機協作缺失 | Agent 卡住、或自作主張做出高風險操作 | 沒有設計 Human-in-the-loop 的介面與時機 |
-| 框架綁定過深 | 換一個 LLM 供應商或框架就要重寫全部邏輯 | 把業務邏輯寫死在特定 Agent 框架的抽象裡 |
-| 多步驟控制流失控 | Agent 在多輪迴圈中行為飄移、難以預測 | 把「控制流程」全部交給 LLM 自由發揮，缺乏顯式的程式碼控制 |
+| 失敗模式         | 現象                                         | 根因                                                      |
+| ---------------- | -------------------------------------------- | --------------------------------------------------------- |
+| Context 爆炸     | Token 用量暴增、回應變慢、答案品質下降       | 把所有歷史訊息無限堆疊進 Context                          |
+| 狀態遺失         | Agent 重啟後忘記任務進度                     | 沒有把狀態外部化、缺乏 Checkpoint                         |
+| 工具呼叫黑箱     | 出錯時不知道是 Prompt、Tool、還是 LLM 的問題 | 把 Agent 當整體黑箱，沒有拆解成可測試單元                 |
+| 人機協作缺失     | Agent 卡住、或自作主張做出高風險操作         | 沒有設計 Human-in-the-loop 的介面與時機                   |
+| 框架綁定過深     | 換一個 LLM 供應商或框架就要重寫全部邏輯      | 把業務邏輯寫死在特定 Agent 框架的抽象裡                   |
+| 多步驟控制流失控 | Agent 在多輪迴圈中行為飄移、難以預測         | 把「控制流程」全部交給 LLM 自由發揮，缺乏顯式的程式碼控制 |
 
 12-Factor Agents 的目標，就是針對上述每一種失敗模式，提出對應的工程化原則。
 
@@ -137,26 +137,26 @@ Prompt Engineering（提示工程）曾是 LLM 應用開發的核心技能，但
 
 12-Factor Agents 借用同樣的方法論精神，但把對象從「Web App」換成「LLM Agent」：
 
-| 12-Factor App 精神 | 12-Factor Agents 對應精神 |
-|---|---|
+| 12-Factor App 精神                | 12-Factor Agents 對應精神                          |
+| --------------------------------- | -------------------------------------------------- |
 | Stateless Processes（無狀態程序） | Agent 本身不持有狀態，狀態外部化到 Context／資料庫 |
-| Config 與 Codebase 分離 | Prompt／Tool Schema 與商業邏輯分離 |
-| Logs 視為事件流 | Context／Trace 視為可觀測的事件流 |
-| Build-Release-Run 分離 | Agent 的「決策」與「執行」分離，可分階段驗證 |
-| Disposability（可拋棄性） | Agent 執行單元可隨時中斷、重試、從 Checkpoint 恢復 |
+| Config 與 Codebase 分離           | Prompt／Tool Schema 與商業邏輯分離                 |
+| Logs 視為事件流                   | Context／Trace 視為可觀測的事件流                  |
+| Build-Release-Run 分離            | Agent 的「決策」與「執行」分離，可分階段驗證       |
+| Disposability（可拋棄性）         | Agent 執行單元可隨時中斷、重試、從 Checkpoint 恢復 |
 
 兩者的共同核心信念是：**可靠的系統來自於對「狀態」與「邊界」的工程化管理，而不是依賴執行環境的隱性假設。**
 
 ### 1.7　Agent 與傳統應用程式差異
 
-| 維度 | 傳統應用程式 | AI Agent 應用程式 |
-|---|---|---|
-| 控制流 | 由程式碼明確定義（if/else、迴圈） | 部分控制流由 LLM 推理動態決定 |
-| 輸入 | 結構化（表單、API Payload） | 自然語言（非結構化、模糊） |
-| 輸出 | 確定性（同輸入同輸出） | 機率性（同輸入可能不同輸出） |
-| 錯誤處理 | Exception／Error Code | 需要將錯誤「轉譯」回自然語言給 LLM 理解 |
-| 測試 | 單元測試斷言精確值 | 需要 Eval／LLM-as-judge 評估「品質」而非「相等」 |
-| 狀態管理 | Session／Database | Context Window 本身就是主要狀態載體 |
+| 維度     | 傳統應用程式                      | AI Agent 應用程式                                |
+| -------- | --------------------------------- | ------------------------------------------------ |
+| 控制流   | 由程式碼明確定義（if/else、迴圈） | 部分控制流由 LLM 推理動態決定                    |
+| 輸入     | 結構化（表單、API Payload）       | 自然語言（非結構化、模糊）                       |
+| 輸出     | 確定性（同輸入同輸出）            | 機率性（同輸入可能不同輸出）                     |
+| 錯誤處理 | Exception／Error Code             | 需要將錯誤「轉譯」回自然語言給 LLM 理解          |
+| 測試     | 單元測試斷言精確值                | 需要 Eval／LLM-as-judge 評估「品質」而非「相等」 |
+| 狀態管理 | Session／Database                 | Context Window 本身就是主要狀態載體              |
 
 理解這個差異是設計 Agent 系統架構的起點：**你不能完全套用傳統應用程式的設計模式，但也不能完全拋棄工程紀律，改用「祈禱式工程（Prompt and Pray）」。**
 
@@ -259,11 +259,11 @@ flowchart TB
 
 Agent Runtime 是承載 Agent Loop 執行的環境，常見三種模式：
 
-| Runtime 模式 | 範例 | 特性 |
-|---|---|---|
-| CLI 互動式 Runtime | Claude Code、GitHub Copilot CLI | 人機協作密集、Session 內保留 Context |
-| 無頭批次 Runtime | CI/CD Pipeline 中的 Agent、排程任務 | 無人值守、需要完整的錯誤恢復機制 |
-| 服務化 Runtime | 透過 API 封裝的 Agent 微服務 | 多租戶、需考慮併發、隔離、限流 |
+| Runtime 模式       | 範例                                | 特性                                 |
+| ------------------ | ----------------------------------- | ------------------------------------ |
+| CLI 互動式 Runtime | Claude Code、GitHub Copilot CLI     | 人機協作密集、Session 內保留 Context |
+| 無頭批次 Runtime   | CI/CD Pipeline 中的 Agent、排程任務 | 無人值守、需要完整的錯誤恢復機制     |
+| 服務化 Runtime     | 透過 API 封裝的 Agent 微服務        | 多租戶、需考慮併發、隔離、限流       |
 
 企業導入時常見的誤區是「只驗證了 CLI 互動式 Runtime 下的效果，就直接套用到無頭批次場景」，但無頭批次缺乏人類即時介入修正的機會，對 Factor 7（Human-in-the-loop）、Factor 9（錯誤處理）的要求遠高於互動式場景。
 
@@ -348,13 +348,13 @@ public record AgentState(
 
 沒有可觀測性，Agent 系統就是黑箱。最低限度應記錄：
 
-| 觀測面向 | 記錄內容 | 用途 |
-|---|---|---|
-| Prompt / Context Log | 每次 LLM 呼叫的完整輸入 | 除錯、回放、Eval 資料集來源 |
-| Tool Call Log | 工具名稱、參數、回傳、耗時 | 定位失敗點、效能分析 |
-| Decision Trace | 每一步的決策理由（若模型有輸出） | 理解 Agent「為什麼這樣做」 |
-| Token / Cost Metrics | 每次呼叫的 Token 用量與成本 | 成本控管、容量規劃 |
-| Human Intervention Log | 何時、誰、核准／拒絕了什麼 | 稽核、合規 |
+| 觀測面向               | 記錄內容                         | 用途                        |
+| ---------------------- | -------------------------------- | --------------------------- |
+| Prompt / Context Log   | 每次 LLM 呼叫的完整輸入          | 除錯、回放、Eval 資料集來源 |
+| Tool Call Log          | 工具名稱、參數、回傳、耗時       | 定位失敗點、效能分析        |
+| Decision Trace         | 每一步的決策理由（若模型有輸出） | 理解 Agent「為什麼這樣做」  |
+| Token / Cost Metrics   | 每次呼叫的 Token 用量與成本      | 成本控管、容量規劃          |
+| Human Intervention Log | 何時、誰、核准／拒絕了什麼       | 稽核、合規                  |
 
 > **實務案例**：某團隊在 Agent 上線初期沒有記錄 Tool Call Log，當 Agent 在生產環境誤刪測試資料表時，花了三天才從應用程式日誌裡拼湊出事發過程。補上結構化的 Tool Call Log 與 Human Intervention Log 後，後續類似事件的根因定位時間從「天」縮短到「分鐘」級別。
 
@@ -396,8 +396,8 @@ flowchart LR
   "tools": {
     "allow": ["Read", "Grep", "Glob"],
     "ask": ["Edit", "Write", "Bash(git *)"],
-    "deny": ["Bash(rm -rf *)", "Bash(git push --force*)"]
-  }
+    "deny": ["Bash(rm -rf *)", "Bash(git push --force*)"],
+  },
 }
 ```
 
@@ -793,20 +793,20 @@ flowchart LR
 
 > **十二大原則總覽表**
 
-| Factor | 一句話總結 |
-|---|---|
-| 1 | 自然語言只負責產生結構化工具呼叫，不直接執行危險動作 |
-| 2 | Prompt 是程式碼資產，自己掌控、版本控制、測試 |
-| 3 | Context Window 是唯一記憶，主動設計其內容與管理策略 |
-| 4 | 工具呼叫只是結構化輸出，執行與否由你的業務邏輯決定 |
-| 5 | 執行狀態與業務狀態應同源，避免狀態漂移 |
-| 6 | 任務應可被簡單 API 啟動／暫停／恢復 |
-| 7 | 聯絡人類也是一種標準化的工具呼叫 |
-| 8 | 控制流由程式碼掌控，LLM 只負責關鍵決策點 |
-| 9 | 錯誤先壓縮萃取重點，再放進 Context |
-| 10 | 寧可拆成多個小而專注的 Agent，不要打造萬能 Agent |
-| 11 | 支援多元觸發管道，貼近使用者既有工作場域 |
-| 12 | Agent 核心邏輯設計成無狀態 Reducer，狀態完全外部化 |
+| Factor         | 一句話總結                                                         |
+| -------------- | ------------------------------------------------------------------ |
+| 1              | 自然語言只負責產生結構化工具呼叫，不直接執行危險動作               |
+| 2              | Prompt 是程式碼資產，自己掌控、版本控制、測試                      |
+| 3              | Context Window 是唯一記憶，主動設計其內容與管理策略                |
+| 4              | 工具呼叫只是結構化輸出，執行與否由你的業務邏輯決定                 |
+| 5              | 執行狀態與業務狀態應同源，避免狀態漂移                             |
+| 6              | 任務應可被簡單 API 啟動／暫停／恢復                                |
+| 7              | 聯絡人類也是一種標準化的工具呼叫                                   |
+| 8              | 控制流由程式碼掌控，LLM 只負責關鍵決策點                           |
+| 9              | 錯誤先壓縮萃取重點，再放進 Context                                 |
+| 10             | 寧可拆成多個小而專注的 Agent，不要打造萬能 Agent                   |
+| 11             | 支援多元觸發管道，貼近使用者既有工作場域                           |
+| 12             | Agent 核心邏輯設計成無狀態 Reducer，狀態完全外部化                 |
 | 13（榮譽提及） | 針對可預測的任務類型，預先確定性擷取所需 Context，減少執行中斷往返 |
 
 > **注意事項**：十二項原則彼此高度關聯（如 Factor 5、6、12 本質上是同一個「狀態外部化」思想的不同面向），實作時不需要機械式逐條打勾，而應該理解其背後共通的工程價值觀：**把不確定性留給 LLM，把確定性還給程式碼**。
@@ -856,13 +856,13 @@ flowchart TB
 
 ### 4.1　Agent Layer
 
-| Agent | 職責 | 輸入 | 輸出 |
-|---|---|---|---|
-| Planning Agent | 把需求拆解成可執行任務清單 | 需求描述、既有架構文件 | 結構化任務清單（含優先序、依賴關係） |
-| Coding Agent | 依任務清單產出程式碼變更 | 任務項目、相關程式碼上下文 | Diff / Patch / 新檔案 |
-| Review Agent | 檢視程式碼品質、風險、規範一致性 | Diff、Coding Standard | 結構化審查意見（含嚴重度分級） |
-| Testing Agent | 產生並執行測試、回報結果 | 變更後程式碼 | 測試報告、覆蓋率、失敗清單 |
-| Deployment Agent | 執行／驗證部署流程 | 已通過測試的版本、部署設定 | 部署結果、健康檢查報告 |
+| Agent            | 職責                             | 輸入                       | 輸出                                 |
+| ---------------- | -------------------------------- | -------------------------- | ------------------------------------ |
+| Planning Agent   | 把需求拆解成可執行任務清單       | 需求描述、既有架構文件     | 結構化任務清單（含優先序、依賴關係） |
+| Coding Agent     | 依任務清單產出程式碼變更         | 任務項目、相關程式碼上下文 | Diff / Patch / 新檔案                |
+| Review Agent     | 檢視程式碼品質、風險、規範一致性 | Diff、Coding Standard      | 結構化審查意見（含嚴重度分級）       |
+| Testing Agent    | 產生並執行測試、回報結果         | 變更後程式碼               | 測試報告、覆蓋率、失敗清單           |
+| Deployment Agent | 執行／驗證部署流程               | 已通過測試的版本、部署設定 | 部署結果、健康檢查報告               |
 
 設計上應遵循 Factor 10（Small, Focused Agents），每個 Agent 只專注單一職責，由 Orchestrator（可以是 Planning Agent 升格扮演，也可以是獨立的程式碼邏輯）依任務清單依序或並行調度。
 
@@ -875,23 +875,23 @@ flowchart TB
 
 ### 4.3　Tool Layer
 
-| 工具類別 | 範例 | 設計要點 |
-|---|---|---|
-| Git | clone / diff / commit / branch | 限制可操作的分支範圍，避免直接操作 `main`／`master` |
-| GitHub | 建立 PR、留言、指派 Reviewer | 透過 Fine-grained PAT 限制權限範圍 |
-| Database | 查詢、Migration 執行 | 唯讀查詢與寫入操作分開授權 |
-| Browser | 自動化瀏覽、截圖、表單填寫 | 限制可存取網域，記錄所有操作軌跡 |
-| Filesystem | 讀寫專案檔案 | 限制可寫入路徑，禁止存取 `.env`、金鑰檔 |
-| API Gateway | 統一對外部 API 的呼叫入口 | 集中限流、認證、稽核日誌 |
+| 工具類別    | 範例                           | 設計要點                                            |
+| ----------- | ------------------------------ | --------------------------------------------------- |
+| Git         | clone / diff / commit / branch | 限制可操作的分支範圍，避免直接操作 `main`／`master` |
+| GitHub      | 建立 PR、留言、指派 Reviewer   | 透過 Fine-grained PAT 限制權限範圍                  |
+| Database    | 查詢、Migration 執行           | 唯讀查詢與寫入操作分開授權                          |
+| Browser     | 自動化瀏覽、截圖、表單填寫     | 限制可存取網域，記錄所有操作軌跡                    |
+| Filesystem  | 讀寫專案檔案                   | 限制可寫入路徑，禁止存取 `.env`、金鑰檔             |
+| API Gateway | 統一對外部 API 的呼叫入口      | 集中限流、認證、稽核日誌                            |
 
 ### 4.4　Runtime Layer
 
-| Runtime | 定位 | 適用場景 |
-|---|---|---|
-| Claude Code | CLI 原生 Agent，支援 Sub-agent、Hooks、Skill | 深度客製化的工程工作流、企業內部自動化 |
-| GitHub Copilot | IDE／GitHub 原生整合的 Agent Mode | 與既有 GitHub 工作流（PR/Issue）緊密結合的場景 |
-| Gemini CLI | Google 生態圈的命令列 Agent | 已採用 GCP／Gemini 生態的團隊 |
-| Codex CLI | OpenAI 生態圈的命令列 Agent | 已採用 OpenAI 生態的團隊 |
+| Runtime        | 定位                                         | 適用場景                                       |
+| -------------- | -------------------------------------------- | ---------------------------------------------- |
+| Claude Code    | CLI 原生 Agent，支援 Sub-agent、Hooks、Skill | 深度客製化的工程工作流、企業內部自動化         |
+| GitHub Copilot | IDE／GitHub 原生整合的 Agent Mode            | 與既有 GitHub 工作流（PR/Issue）緊密結合的場景 |
+| Gemini CLI     | Google 生態圈的命令列 Agent                  | 已採用 GCP／Gemini 生態的團隊                  |
+| Codex CLI      | OpenAI 生態圈的命令列 Agent                  | 已採用 OpenAI 生態的團隊                       |
 
 > **實務案例**：某保險公司的核保系統現代化專案，採用「Planning Agent（Claude Code Sub-agent）先產出任務清單 → Coding Agent 逐項實作 → Review Agent 把關 → Testing Agent 驗證 → Deployment Agent 透過既有 CI/CD 部署」的四層架構，搭配 RAG 注入內部核保業務規則文件，使新進工程師也能在 Agent 輔助下正確處理過去需要資深核保專家才能理解的業務邏輯。
 
@@ -951,11 +951,11 @@ flowchart TB
 
 把 Context 依「變動頻率」分層管理，能大幅提升 Prompt Caching 的命中率（進而降低成本與延遲）：
 
-| 層級 | 內容 | 變動頻率 | Caching 策略 |
-|---|---|---|---|
-| 第一層：靜態指令 | System Prompt、Coding Standard | 幾乎不變 | 永久快取 |
-| 第二層：任務情境 | 當前任務描述、相關檔案 | 每個任務變動一次 | 任務內快取 |
-| 第三層：動態歷史 | 工具呼叫結果、對話歷史 | 每一輪都變動 | 不快取／短期快取 |
+| 層級             | 內容                           | 變動頻率         | Caching 策略     |
+| ---------------- | ------------------------------ | ---------------- | ---------------- |
+| 第一層：靜態指令 | System Prompt、Coding Standard | 幾乎不變         | 永久快取         |
+| 第二層：任務情境 | 當前任務描述、相關檔案         | 每個任務變動一次 | 任務內快取       |
+| 第三層：動態歷史 | 工具呼叫結果、對話歷史         | 每一輪都變動     | 不快取／短期快取 |
 
 > 將最常變動的內容放在 Context 尾端、最少變動的內容放在開頭，是多數 LLM 供應商 Prompt Caching 機制（如 Anthropic 的 Prompt Caching）發揮效益的關鍵前提。
 
@@ -977,12 +977,12 @@ flowchart LR
     end
 ```
 
-| 維度 | Prompt Engineering | Context Engineering | Loop Engineering |
-|---|---|---|---|
-| 關注焦點 | 單次指令的文字技巧 | 整個輸入內容的結構與管理 | 多輪迴圈的控制與反饋機制 |
-| 適用情境 | 單次問答、簡單任務 | 需要整合多來源資訊的中型任務 | 長時程、需自我修正的複雜任務 |
-| 核心技能 | 措辭、範例、角色設定 | 資訊架構、Token 預算管理、快取策略 | 反饋訊號設計、停止條件、評估機制 |
-| 與 12-Factor Agents 對應 | Factor 2 | Factor 3、Factor 9 | Factor 6、Factor 8、Factor 12 |
+| 維度                     | Prompt Engineering   | Context Engineering                | Loop Engineering                 |
+| ------------------------ | -------------------- | ---------------------------------- | -------------------------------- |
+| 關注焦點                 | 單次指令的文字技巧   | 整個輸入內容的結構與管理           | 多輪迴圈的控制與反饋機制         |
+| 適用情境                 | 單次問答、簡單任務   | 需要整合多來源資訊的中型任務       | 長時程、需自我修正的複雜任務     |
+| 核心技能                 | 措辭、範例、角色設定 | 資訊架構、Token 預算管理、快取策略 | 反饋訊號設計、停止條件、評估機制 |
+| 與 12-Factor Agents 對應 | Factor 2             | Factor 3、Factor 9                 | Factor 6、Factor 8、Factor 12    |
 
 三者並非互斥，而是**疊加關係**：紮實的 Prompt Engineering 是 Context Engineering 的基礎元件之一，而 Context Engineering 又是 Loop Engineering 中每一輪迴圈得以高品質運作的前提。企業專案通常需要三者並用：用 Prompt Engineering 打磨單一決策點的指令品質，用 Context Engineering 管理整個任務的資訊架構，用 Loop Engineering 設計任務從啟動到完成的整體控制流。
 
@@ -1079,18 +1079,22 @@ claude -p "[Implement] 依據已核准的 installment-payment-plan.md 實作程�
 # CLAUDE.md
 
 ## 架構規範
+
 - 採用 Clean Architecture，分層：Controller → Service → Repository → Domain
 - 跨模組溝通一律透過介面（Interface），禁止直接依賴實作類別
 
 ## Coding Standard
+
 - Java 採用 Google Java Style，命名遵循既有 `com.company.project` 套件慣例
 - 所有 Public API 必須有對應的單元測試
 
 ## Security Standard
+
 - 禁止把任何金鑰、密碼寫入程式碼或設定檔，一律透過 Vault／環境變數注入
 - 所有 SQL 查詢必須使用參數化查詢，禁止字串拼接
 
 ## SSDLC Standard
+
 - 新增依賴前必須執行 SCA 掃描（見第十三章）
 - 涉及使用者資料的變更，必須附上資料流影響分析
 ```
@@ -1167,12 +1171,12 @@ claude -p "確認所有測試通過後，產出部署前檢查清單，
 
 GitHub Copilot Agent Mode 讓 Copilot 從「行內程式碼建議」升級為能夠自主規劃、跨檔案修改、執行終端機指令、並迭代修正的 Agent。對應 12-Factor Agents：
 
-| 12-Factor 概念 | Copilot Agent Mode 對應機制 |
-|---|---|
+| 12-Factor 概念             | Copilot Agent Mode 對應機制                                                   |
+| -------------------------- | ----------------------------------------------------------------------------- |
 | Factor 1（結構化工具呼叫） | 內建 Tool（檔案編輯、終端機、瀏覽器）皆以結構化方式呼叫，並可在設定中限制範圍 |
-| Factor 2（掌控 Prompt） | `.github/copilot-instructions.md`、`*.instructions.md` |
-| Factor 7（人機協作） | 檔案修改／終端機指令預設跳出確認，可在設定調整自動核准範圍 |
-| Factor 11（多元觸發） | VS Code、GitHub.com、GitHub Mobile、Issue 指派皆可觸發同一個 Coding Agent |
+| Factor 2（掌控 Prompt）    | `.github/copilot-instructions.md`、`*.instructions.md`                        |
+| Factor 7（人機協作）       | 檔案修改／終端機指令預設跳出確認，可在設定調整自動核准範圍                    |
+| Factor 11（多元觸發）      | VS Code、GitHub.com、GitHub Mobile、Issue 指派皆可觸發同一個 Coding Agent     |
 
 ### 7.2　MCP（Model Context Protocol）
 
@@ -1186,14 +1190,18 @@ MCP 是讓 Copilot（與 Claude Code）能以標準化協定串接外部工具�
       "type": "stdio",
       "command": "node",
       "args": ["./mcp-servers/jira-server.js"],
-      "env": { "JIRA_BASE_URL": "${env:JIRA_BASE_URL}" }
+      "env": { "JIRA_BASE_URL": "${env:JIRA_BASE_URL}" },
     },
     "postgres-readonly": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres", "${env:DB_READONLY_URL}"]
-    }
-  }
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${env:DB_READONLY_URL}",
+      ],
+    },
+  },
 }
 ```
 
@@ -1224,7 +1232,7 @@ Copilot Agent Mode 可透過 MCP 串接多個專職工具伺服器（對應 Fact
 {
   "github.copilot.chat.agent.enabled": true,
   "chat.tools.autoApprove": false,
-  "github.copilot.chat.codeGeneration.useInstructionFiles": true
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
 }
 ```
 
@@ -1232,19 +1240,24 @@ Copilot Agent Mode 可透過 MCP 串接多個專職工具伺服器（對應 Fact
 
 ```markdown
 <!-- .github/copilot-instructions.md -->
+
 # 專案規範（Copilot Agent 必讀）
 
 ## 架構
+
 本專案採用 Clean Architecture，分為 Controller / Service / Repository / Domain 四層。
 
 ## 安全規範
+
 - 嚴禁在程式碼中硬編碼密鑰，一律使用環境變數或 Vault
 - 所有對外 API 必須驗證 JWT，並記錄稽核日誌
 
 ## 測試規範
+
 - 任何 Service 層新增方法，必須附上對應的單元測試（JUnit 5 + Mockito）
 
 ## 提交規範
+
 - Commit 訊息採用 Conventional Commits 格式（feat/fix/refactor/docs...）
 ```
 
@@ -1252,10 +1265,14 @@ Copilot Agent Mode 可透過 MCP 串接多個專職工具伺服器（對應 Fact
 
 ```markdown
 <!-- .github/instructions/security.instructions.md -->
+
 ---
+
 applyTo: "**/*.java"
 ---
+
 # 安全開發指引
+
 1. 所有使用者輸入必須經過驗證與消毒（Sanitization）
 2. SQL 查詢一律使用 PreparedStatement／JPA 參數化查詢
 3. 檔案上傳功能必須驗證檔案類型與大小，並隔離儲存路徑
@@ -1273,12 +1290,12 @@ applyTo: "**/*.java"
 
 以大型企業級平台為案例，技術棧如下：
 
-| 層級 | 技術 |
-|---|---|
-| 前端 | Vue 3、TypeScript、Tailwind CSS、Micro Frontend |
-| 後端 | Java 21、Spring Boot 3.5、Clean Architecture |
-| 資料庫 | Oracle（核心交易資料）、PostgreSQL（讀取／報表服務） |
-| 整合 | Redis（快取／Session）、Kafka（事件流）、SFTP（批次檔交換）、MQ（非同步訊息） |
+| 層級   | 技術                                                                          |
+| ------ | ----------------------------------------------------------------------------- |
+| 前端   | Vue 3、TypeScript、Tailwind CSS、Micro Frontend                               |
+| 後端   | Java 21、Spring Boot 3.5、Clean Architecture                                  |
+| 資料庫 | Oracle（核心交易資料）、PostgreSQL（讀取／報表服務）                          |
+| 整合   | Redis（快取／Session）、Kafka（事件流）、SFTP（批次檔交換）、MQ（非同步訊息） |
 
 ```mermaid
 flowchart TB
@@ -1503,13 +1520,13 @@ public BigDecimal calculateDiscount(CustomerType custType, BigDecimal amount) {
 
 ### 9.7　Agent 工作流程總結
 
-| 階段 | 負責 Agent | 輸出 | 人工把關點 |
-|---|---|---|---|
-| 系統分析 | Analysis Agent | 商業規則自然語言描述 | 業務專家審查是否還原正確 |
-| Schema 分析 | DBA Agent | DDL + ER 圖 | DBA 審查正規化方案 |
-| API 設計 | Architect Agent | OpenAPI 規格 | 架構師審查相容性 |
-| 資料遷移 | Migration Agent | 遷移腳本 + 核對報表 | 資料部門審查筆數與抽樣資料 |
-| 程式轉換 | Coding Agent | Java 程式碼 | Review Agent + 資深工程師雙重審查 |
+| 階段        | 負責 Agent      | 輸出                 | 人工把關點                        |
+| ----------- | --------------- | -------------------- | --------------------------------- |
+| 系統分析    | Analysis Agent  | 商業規則自然語言描述 | 業務專家審查是否還原正確          |
+| Schema 分析 | DBA Agent       | DDL + ER 圖          | DBA 審查正規化方案                |
+| API 設計    | Architect Agent | OpenAPI 規格         | 架構師審查相容性                  |
+| 資料遷移    | Migration Agent | 遷移腳本 + 核對報表  | 資料部門審查筆數與抽樣資料        |
+| 程式轉換    | Coding Agent    | Java 程式碼          | Review Agent + 資深工程師雙重審查 |
 
 > **實務案例**：某保險公司將一套運作 18 年、原開發團隊已全數離職的 Domino 保單核保系統進行逆向工程，透過 Agent 在兩週內還原出原系統 90% 以上的商業規則文件（過去若靠人工閱讀 LotusScript 預估需 2-3 個月），大幅縮短了現代化專案的探索期。
 
@@ -1553,11 +1570,11 @@ claude -p "掃描 pom.xml 與原始碼，列出：
 輸出風險矩陣 .ai/upgrade/risk-matrix.md"
 ```
 
-| 風險等級 | 範例 | 處理方式 |
-|---|---|---|
-| 高風險 | 直接使用 `javax.servlet.*`、自訂 Security Filter Chain | 人工逐一審查，Agent 僅輔助生成草稿 |
-| 中風險 | 第三方函式庫主版本升級伴隨 Breaking Change | Agent 產出變更摘要，人工確認後套用 |
-| 低風險 | 套件名稱機械式替換（`javax.persistence` → `jakarta.persistence`） | Agent 全自動執行 + 自動化測試把關 |
+| 風險等級 | 範例                                                              | 處理方式                           |
+| -------- | ----------------------------------------------------------------- | ---------------------------------- |
+| 高風險   | 直接使用 `javax.servlet.*`、自訂 Security Filter Chain            | 人工逐一審查，Agent 僅輔助生成草稿 |
+| 中風險   | 第三方函式庫主版本升級伴隨 Breaking Change                        | Agent 產出變更摘要，人工確認後套用 |
+| 低風險   | 套件名稱機械式替換（`javax.persistence` → `jakarta.persistence`） | Agent 全自動執行 + 自動化測試把關  |
 
 ### 10.4　Agent Workflow 與自動化升級流程
 
@@ -1605,15 +1622,15 @@ claude -p "執行完整測試套件，若有失敗，
 
 ### 11.1　七種角色 Agent
 
-| Agent 角色 | 核心職責 | 主要工具 |
-|---|---|---|
-| Architect Agent | 系統設計、技術選型、架構評審 | 文件檢索、Mermaid 產圖、ADR 範本 |
-| Backend Agent | 後端程式碼實作 | Git、編譯工具、單元測試框架 |
-| Frontend Agent | 前端程式碼實作 | npm/pnpm、瀏覽器自動化、元件庫 |
-| Security Agent | 安全掃描、威脅建模、漏洞修復建議 | SAST/DAST/SCA 工具、CVE 資料庫 |
-| DBA Agent | Schema 設計、查詢效能優化、Migration 審查 | 資料庫 Explain Plan、Migration 工具 |
-| QA Agent | 測試案例設計、自動化測試執行 | 測試框架、覆蓋率工具、Eval 框架 |
-| DevOps Agent | CI/CD 流程、部署、監控告警設定 | Kubernetes、CI/CD 工具、IaC |
+| Agent 角色      | 核心職責                                  | 主要工具                            |
+| --------------- | ----------------------------------------- | ----------------------------------- |
+| Architect Agent | 系統設計、技術選型、架構評審              | 文件檢索、Mermaid 產圖、ADR 範本    |
+| Backend Agent   | 後端程式碼實作                            | Git、編譯工具、單元測試框架         |
+| Frontend Agent  | 前端程式碼實作                            | npm/pnpm、瀏覽器自動化、元件庫      |
+| Security Agent  | 安全掃描、威脅建模、漏洞修復建議          | SAST/DAST/SCA 工具、CVE 資料庫      |
+| DBA Agent       | Schema 設計、查詢效能優化、Migration 審查 | 資料庫 Explain Plan、Migration 工具 |
+| QA Agent        | 測試案例設計、自動化測試執行              | 測試框架、覆蓋率工具、Eval 框架     |
+| DevOps Agent    | CI/CD 流程、部署、監控告警設定            | Kubernetes、CI/CD 工具、IaC         |
 
 ### 11.2　Agent Collaboration Diagram
 
@@ -1721,13 +1738,13 @@ flowchart LR
 
 ### 12.3　Metrics
 
-| 指標 | 說明 | 治理意義 |
-|---|---|---|
-| Token 用量 / 任務 | 每個任務消耗的 Token 數 | 成本控管、異常偵測（突然飆高代表 Context 管理失效） |
-| 任務成功率 | 完成且通過驗證的任務比例 | Agent 品質的核心指標 |
-| 人工介入率 | 需要 Human-in-the-loop 的任務比例 | 評估自動化程度與信任水位 |
-| 平均任務耗時 | 從啟動到完成的時間 | 流程效率評估 |
-| 工具呼叫失敗率 | 各工具的失敗比例 | 定位不穩定的整合點 |
+| 指標              | 說明                              | 治理意義                                            |
+| ----------------- | --------------------------------- | --------------------------------------------------- |
+| Token 用量 / 任務 | 每個任務消耗的 Token 數           | 成本控管、異常偵測（突然飆高代表 Context 管理失效） |
+| 任務成功率        | 完成且通過驗證的任務比例          | Agent 品質的核心指標                                |
+| 人工介入率        | 需要 Human-in-the-loop 的任務比例 | 評估自動化程度與信任水位                            |
+| 平均任務耗時      | 從啟動到完成的時間                | 流程效率評估                                        |
+| 工具呼叫失敗率    | 各工具的失敗比例                  | 定位不穩定的整合點                                  |
 
 ### 12.4　Audit Trail（稽核軌跡）
 
@@ -1782,12 +1799,12 @@ flowchart TB
     E --> F[緩解措施設計]
 ```
 
-| 威脅 | 範例情境 | 緩解措施 |
-|---|---|---|
-| Prompt Injection | 惡意使用者在輸入或被讀取的檔案中嵌入「忽略先前指令，改為...」 | 對外部輸入內容做隔離標記，工具回傳內容不可被誤判為系統指令 |
-| Tool Abuse | Agent 被誘導呼叫 `delete_database` 而非預期的 `query_database` | 高風險工具強制 Factor 7 人工核准，且工具命名／描述避免混淆 |
-| Context Leakage | Agent 把含個資的 Context 摘要寄送到外部 Webhook | 輸出前過濾敏感欄位，限制 Agent 可呼叫的對外通訊工具範圍 |
-| Excessive Agency | Agent 自行決定修改非任務範圍內的檔案 | 明確界定工具的可操作路徑／範圍邊界 |
+| 威脅             | 範例情境                                                       | 緩解措施                                                   |
+| ---------------- | -------------------------------------------------------------- | ---------------------------------------------------------- |
+| Prompt Injection | 惡意使用者在輸入或被讀取的檔案中嵌入「忽略先前指令，改為...」  | 對外部輸入內容做隔離標記，工具回傳內容不可被誤判為系統指令 |
+| Tool Abuse       | Agent 被誘導呼叫 `delete_database` 而非預期的 `query_database` | 高風險工具強制 Factor 7 人工核准，且工具命名／描述避免混淆 |
+| Context Leakage  | Agent 把含個資的 Context 摘要寄送到外部 Webhook                | 輸出前過濾敏感欄位，限制 Agent 可呼叫的對外通訊工具範圍    |
+| Excessive Agency | Agent 自行決定修改非任務範圍內的檔案                           | 明確界定工具的可操作路徑／範圍邊界                         |
 
 ### 13.2　SAST（靜態應用程式安全測試）
 
@@ -1824,9 +1841,12 @@ claude -p "執行 mvn org.owasp:dependency-check-maven:check，
 {
   "hooks": {
     "PreToolUse": [
-      { "matcher": "Bash(git commit*)", "command": "gitleaks protect --staged" }
-    ]
-  }
+      {
+        "matcher": "Bash(git commit*)",
+        "command": "gitleaks protect --staged",
+      },
+    ],
+  },
 }
 ```
 
@@ -1860,11 +1880,11 @@ flowchart LR
     B -.失敗則止步.-> X2[退回 POC 調整]
 ```
 
-| 階段 | 目標 | 範圍 | 成功標準 |
-|---|---|---|---|
-| POC | 驗證技術可行性 | 1-2 個低風險、高重複性任務 | Agent 產出品質可接受、團隊認同價值 |
-| Pilot | 驗證可規模化、建立治理機制 | 1 個完整團隊、真實但非關鍵業務 | 建立 Checklist、Eval、Observability 基礎設施 |
-| Production | 全面營運 | 多團隊、含關鍵業務場景 | 達成既定 ROI 指標、治理機制運作良好 |
+| 階段       | 目標                       | 範圍                           | 成功標準                                     |
+| ---------- | -------------------------- | ------------------------------ | -------------------------------------------- |
+| POC        | 驗證技術可行性             | 1-2 個低風險、高重複性任務     | Agent 產出品質可接受、團隊認同價值           |
+| Pilot      | 驗證可規模化、建立治理機制 | 1 個完整團隊、真實但非關鍵業務 | 建立 Checklist、Eval、Observability 基礎設施 |
+| Production | 全面營運                   | 多團隊、含關鍵業務場景         | 達成既定 ROI 指標、治理機制運作良好          |
 
 ### 14.2　成熟度模型（Maturity Model）
 
@@ -1877,20 +1897,20 @@ flowchart TB
     L5[Level 5: Autonomous<br/>多 Agent 協作、高度自動化、人工僅做關鍵核准]
 ```
 
-| 等級 | 特徵 | 典型痛點 |
-|---|---|---|
-| Level 1 | 工程師各自零散使用 AI 工具，無團隊規範 | 品質不一致、無法複用經驗 |
-| Level 2 | 團隊統一導入 Claude Code／Copilot，建立基本 CLAUDE.md／Instructions | 仍缺乏標準化流程，依賴個人熟練度 |
-| Level 3 | 建立標準化 Agent Workflow（如本手冊第六、八章範例），Prompt 納入版控 | Observability 與安全治理尚未系統化 |
-| Level 4 | 落實第十二、十三章的觀測性與 SSDLC，具備完整 Checklist | 多 Agent 協作仍以人工調度為主 |
-| Level 5 | Multi-Agent Team 自主協作，人工僅在關鍵節點核准 | 需要長期投入才能達成，且不適用所有業務場景 |
+| 等級    | 特徵                                                                 | 典型痛點                                   |
+| ------- | -------------------------------------------------------------------- | ------------------------------------------ |
+| Level 1 | 工程師各自零散使用 AI 工具，無團隊規範                               | 品質不一致、無法複用經驗                   |
+| Level 2 | 團隊統一導入 Claude Code／Copilot，建立基本 CLAUDE.md／Instructions  | 仍缺乏標準化流程，依賴個人熟練度           |
+| Level 3 | 建立標準化 Agent Workflow（如本手冊第六、八章範例），Prompt 納入版控 | Observability 與安全治理尚未系統化         |
+| Level 4 | 落實第十二、十三章的觀測性與 SSDLC，具備完整 Checklist               | 多 Agent 協作仍以人工調度為主              |
+| Level 5 | Multi-Agent Team 自主協作，人工僅在關鍵節點核准                      | 需要長期投入才能達成，且不適用所有業務場景 |
 
 ### 14.3　組織與角色配置建議
 
-| 階段 | 建議角色配置 |
-|---|---|
-| POC | 1-2 名資深工程師（兼任 AI Champion）+ 技術主管支持 |
-| Pilot | 增加 1 名負責 Observability／治理基礎設施的工程師 |
+| 階段       | 建議角色配置                                                              |
+| ---------- | ------------------------------------------------------------------------- |
+| POC        | 1-2 名資深工程師（兼任 AI Champion）+ 技術主管支持                        |
+| Pilot      | 增加 1 名負責 Observability／治理基礎設施的工程師                         |
 | Production | 設立跨團隊的 AI Agent Platform 小組，負責共用基礎設施、規範制定、教育訓練 |
 
 > **實務案例**：某企業共用平台團隊在 POC 階段選擇「程式碼審查輔助」作為切入點（風險低、價值可量化、不涉及生產環境變更），驗證效果後在 Pilot 階段擴展到「測試生成」與「文件生成」，半年後才進入 Production 階段導入「自動化升級」與「Multi-Agent 協作」等高風險場景，循序漸進的策略大幅降低了組織抗拒與導入風險。
@@ -1904,6 +1924,7 @@ flowchart TB
 ### 15.1　Top 50 Best Practices
 
 **Context 與 Prompt（1-10）**
+
 1. 把 Prompt 與 System Instruction 當作程式碼納入版本控制
 2. 為每一類任務設定明確的 Token 預算
 3. 工具回傳結果先結構化萃取再放入 Context，不要塞原始 JSON
@@ -1915,53 +1936,13 @@ flowchart TB
 9. 任務描述優先使用結構化格式（如 YAML／JSON）而非長段落自然語言
 10. 定期審查並精簡 Context Builder 的組裝邏輯，移除已不再需要的欄位
 
-**工具與控制流（11-20）**
-11. 工具設計遵循單一職責原則
-12. 工具輸入輸出一律使用嚴格 JSON Schema
-13. 高風險工具預設需要人工核准
-14. 控制流（迴圈、分支、重試）盡量用程式碼實作，不依賴 LLM 自由判斷
-15. 為每個工具設計冪等行為，支援安全重試
-16. 工具錯誤訊息要對 LLM 友善，而非透傳底層技術錯誤
-17. 為工具呼叫設定逾時與重試上限，避免無限迴圈
-18. 工具權限遵循最小權限原則並定期審查
-19. 避免設計「萬能工具」，拆分成多個專職工具
-20. 工具命名語意明確，避免相似名稱造成誤呼叫
+**工具與控制流（11-20）** 11. 工具設計遵循單一職責原則 12. 工具輸入輸出一律使用嚴格 JSON Schema 13. 高風險工具預設需要人工核准 14. 控制流（迴圈、分支、重試）盡量用程式碼實作，不依賴 LLM 自由判斷 15. 為每個工具設計冪等行為，支援安全重試 16. 工具錯誤訊息要對 LLM 友善，而非透傳底層技術錯誤 17. 為工具呼叫設定逾時與重試上限，避免無限迴圈 18. 工具權限遵循最小權限原則並定期審查 19. 避免設計「萬能工具」，拆分成多個專職工具 20. 工具命名語意明確，避免相似名稱造成誤呼叫
 
-**狀態與架構（21-30）**
-21. 狀態完全外部化，Agent 程序本身保持無狀態
-22. 業務狀態與執行狀態同源，避免雙重維護
-23. 任務應可隨時暫停、之後可從外部狀態恢復
-24. 採用小而專注的多 Agent 架構取代單一萬能 Agent
-25. Agent 之間以結構化交接物件溝通，而非自然語言猜測
-26. 為核心 Agent 邏輯撰寫單元測試（固定輸入驗證輸出 Schema）
-27. 用 Eval（回歸測試集）取代「感覺有變好」的主觀判斷
-28. 把可重複的工作流封裝成 Skill／Slash Command，累積組織知識
-29. 為 RAG 檢索結果設計相關性過濾，避免低品質片段污染 Context
-30. 長期記憶內容定期審查與更新，避免過時知識持續被注入
+**狀態與架構（21-30）** 21. 狀態完全外部化，Agent 程序本身保持無狀態 22. 業務狀態與執行狀態同源，避免雙重維護 23. 任務應可隨時暫停、之後可從外部狀態恢復 24. 採用小而專注的多 Agent 架構取代單一萬能 Agent 25. Agent 之間以結構化交接物件溝通，而非自然語言猜測 26. 為核心 Agent 邏輯撰寫單元測試（固定輸入驗證輸出 Schema）27. 用 Eval（回歸測試集）取代「感覺有變好」的主觀判斷 28. 把可重複的工作流封裝成 Skill／Slash Command，累積組織知識 29. 為 RAG 檢索結果設計相關性過濾，避免低品質片段污染 Context 30. 長期記憶內容定期審查與更新，避免過時知識持續被注入
 
-**觀測性與安全（31-40）**
-31. 從架構設計階段就規劃 Observability 資料結構，不要事後補
-32. 記錄完整的 Tool Call Log 與 Decision Trace
-33. 高風險任務保留完整 Context Snapshot
-34. 建立 Token／成本監控告警機制
-35. 定期執行 Prompt Injection 紅隊測試
-36. 機密資訊偵測納入 Pre-commit／PreToolUse Hook
-37. SCA／依賴掃描納入標準流程，不因導入 Agent 而省略
-38. 稽核軌跡需可回答「誰、何時、核准了什麼」
-39. 為 Agent 設計明確的可操作路徑邊界（檔案系統／網路）
-40. 安全事件需可透過 Context Audit 完整回溯
+**觀測性與安全（31-40）** 31. 從架構設計階段就規劃 Observability 資料結構，不要事後補 32. 記錄完整的 Tool Call Log 與 Decision Trace 33. 高風險任務保留完整 Context Snapshot 34. 建立 Token／成本監控告警機制 35. 定期執行 Prompt Injection 紅隊測試 36. 機密資訊偵測納入 Pre-commit／PreToolUse Hook 37. SCA／依賴掃描納入標準流程，不因導入 Agent 而省略 38. 稽核軌跡需可回答「誰、何時、核准了什麼」39. 為 Agent 設計明確的可操作路徑邊界（檔案系統／網路）40. 安全事件需可透過 Context Audit 完整回溯
 
-**團隊與導入（41-50）**
-41. 採用 POC → Pilot → Production 三階段導入，不跳階段
-42. 優先從低風險、高重複性任務切入
-43. 建立跨團隊的 AI Agent Platform 小組統籌規範與基礎設施
-44. 為新進同仁準備 Production Ready Checklist（見第十七章）
-45. 把 Agent 導入視為持續演進的能力建設，而非一次性專案
-46. 定期回顧 Token 成本與任務成功率，調整 Agent 設計
-47. 鼓勵團隊成員分享 Prompt／Skill，建立內部知識庫
-48. 高風險場景的人工核准流程要簡單到 10 秒內能做出判斷
-49. 升級／逆向工程等高槓桿場景優先導入 Agent 輔助
-50. 保持「人類是 Loop 的設計者」的心態，避免過度依賴 Agent 自主性
+**團隊與導入（41-50）** 41. 採用 POC → Pilot → Production 三階段導入，不跳階段 42. 優先從低風險、高重複性任務切入 43. 建立跨團隊的 AI Agent Platform 小組統籌規範與基礎設施 44. 為新進同仁準備 Production Ready Checklist（見第十七章）45. 把 Agent 導入視為持續演進的能力建設，而非一次性專案 46. 定期回顧 Token 成本與任務成功率，調整 Agent 設計 47. 鼓勵團隊成員分享 Prompt／Skill，建立內部知識庫 48. 高風險場景的人工核准流程要簡單到 10 秒內能做出判斷 49. 升級／逆向工程等高槓桿場景優先導入 Agent 輔助 50. 保持「人類是 Loop 的設計者」的心態，避免過度依賴 Agent 自主性
 
 ### 15.2　Top 30 Anti-Patterns
 
@@ -2031,13 +2012,13 @@ flowchart TB
 
 建立一個服務集團內多個事業單位的**企業共用平台**，技術棧涵蓋：
 
-| 類別 | 技術 |
-|---|---|
-| Frontend | Vue 3（主力）／Angular（既有舊模組） + TypeScript |
-| Backend | Java 21 + Spring Boot 3.5 |
-| Database | Oracle（核心交易） + PostgreSQL（報表／分析） |
-| Infrastructure | Docker + Kubernetes |
-| AI Tools | Claude Code（核心開發） + GitHub Copilot（IDE 輔助） + MCP（工具整合） |
+| 類別           | 技術                                                                   |
+| -------------- | ---------------------------------------------------------------------- |
+| Frontend       | Vue 3（主力）／Angular（既有舊模組） + TypeScript                      |
+| Backend        | Java 21 + Spring Boot 3.5                                              |
+| Database       | Oracle（核心交易） + PostgreSQL（報表／分析）                          |
+| Infrastructure | Docker + Kubernetes                                                    |
+| AI Tools       | Claude Code（核心開發） + GitHub Copilot（IDE 輔助） + MCP（工具整合） |
 
 ### 16.2　完整開發生命週期
 
@@ -2122,11 +2103,11 @@ claude -p "確認 Staging 回歸測試通過後，產出 Kubernetes Deployment �
 
 ### 16.7　成果與反思
 
-| 指標 | 導入前 | 導入後 |
-|---|---|---|
-| 需求到 Staging 平均時程 | 8 個工作日 | 3 個工作日 |
-| Code Review 平均輪次 | 3.2 輪 | 1.8 輪（Review Agent 預先過濾常見問題） |
-| 文件完整度（架構決策有記錄比例） | 約 40% | 約 95%（ADR 由 Architect Agent 強制產出） |
+| 指標                             | 導入前     | 導入後                                    |
+| -------------------------------- | ---------- | ----------------------------------------- |
+| 需求到 Staging 平均時程          | 8 個工作日 | 3 個工作日                                |
+| Code Review 平均輪次             | 3.2 輪     | 1.8 輪（Review Agent 預先過濾常見問題）   |
+| 文件完整度（架構決策有記錄比例） | 約 40%     | 約 95%（ADR 由 Architect Agent 強制產出） |
 
 > **實務案例**：此共用平台案例中，最大的非預期收益並非開發速度提升，而是**架構決策文件化程度大幅提升**——過去口頭討論後常常沒有留下書面 ADR，導入 Architect Agent 強制產出 ADR 作為架構審查的前提後，新人理解既有架構決策脈絡的時間大幅縮短。
 
@@ -2276,35 +2257,42 @@ project-root/
 > 本文件是 Claude Code 在此專案中行動的核心規範來源，請保持精簡，細節規範請拆至連結文件。
 
 ## 專案概覽
+
 - 專案名稱：企業共用平台
 - 技術棧：Vue 3 / Java 21 + Spring Boot 3.5 / Oracle + PostgreSQL
 - 架構模式：Clean Architecture（詳見 docs/architecture.md）
 
 ## 架構規範
+
 - 分層：Controller → Service → Repository → Domain，禁止跨層直接呼叫
 - 跨模組溝通一律透過介面，禁止依賴實作類別
 - 新增模組前，先確認是否已有可重用的既有元件（見 .ai/memory/architecture.md）
 
 ## Coding Standard
+
 - 遵循 Google Java Style Guide
 - 所有 Public API 必須有對應單元測試，覆蓋率門檻 80%
 - Commit 訊息採用 Conventional Commits 格式
 
 ## Security Standard
+
 - 禁止硬編碼任何金鑰／密碼，一律使用環境變數或 Vault 注入
 - 所有 SQL 查詢必須參數化，禁止字串拼接
 - 涉及個資的欄位，存取前必須檢查授權範圍
 
 ## SSDLC Standard
+
 - 新增第三方依賴前，必須執行 SCA 掃描並確認無 High/Critical CVE
 - 涉及使用者資料的變更，必須附上資料流影響分析
 - 高風險操作（刪除、生產環境部署）必須先呼叫 request_approval 工具
 
 ## 工具使用慣例
+
 - 修改檔案前先以 Read／Grep 確認上下文，避免盲目覆寫
 - 執行測試指令：`mvn test`；執行 Lint：`mvn checkstyle:check`
 
 ## 延伸文件
+
 - 架構詳細規範：docs/architecture.md
 - 資料庫慣例：docs/database-conventions.md
 - 部署流程：docs/deployment.md
@@ -2314,78 +2302,93 @@ project-root/
 
 ```markdown
 <!-- .claude/agents/code-reviewer.md -->
+
 ---
+
 name: code-reviewer
 description: 專職程式碼審查，檢查規範一致性、潛在缺陷、安全風險
 tools: Read, Grep, Glob
 ---
 
 你是一位資深程式碼審查員。針對傳入的 diff：
+
 1. 檢查是否符合 CLAUDE.md 的 Coding Standard 與架構規範
 2. 找出潛在缺陷（空指標、資源未釋放、競態條件）
 3. 找出安全風險（SQL Injection、敏感資訊洩漏）
 4. 輸出結構化審查意見，依嚴重度分級（Blocker / Major / Minor / Nit）
-不要直接修改程式碼，只輸出審查意見。
+   不要直接修改程式碼，只輸出審查意見。
 ```
 
 ```markdown
 <!-- .claude/agents/security-scanner.md -->
+
 ---
+
 name: security-scanner
 description: 專職安全掃描，識別 OWASP Top 10 風險與機密資訊洩漏
 tools: Read, Grep, Bash(mvn dependency-check:check)
 ---
 
 你是一位應用程式安全專家。針對本次變更：
+
 1. 檢查 OWASP Top 10 相關風險
 2. 執行依賴掃描，列出 High/Critical CVE
 3. 檢查是否有機密資訊（金鑰、密碼）被寫入程式碼
-輸出結構化安全報告，每個發現需標註風險等級與修復建議。
-高風險發現（Critical）需明確標記「需要安全團隊複核」。
+   輸出結構化安全報告，每個發現需標註風險等級與修復建議。
+   高風險發現（Critical）需明確標記「需要安全團隊複核」。
 ```
 
 ```markdown
 <!-- .claude/agents/dba-agent.md -->
+
 ---
+
 name: dba-agent
 description: 專職資料庫 Schema 設計與 Migration 審查
 tools: Read, Grep, Bash(psql *), Bash(sqlplus *)
 ---
 
 你是一位資深 DBA。針對 Schema 變更需求：
+
 1. 設計符合正規化原則的 Table 結構
 2. 評估索引策略與查詢效能影響
 3. 產出 Migration Script（含 Rollback 腳本）
 4. 標註任何可能造成鎖表或停機的高風險操作
-所有 Migration Script 在執行前必須先標記為「待人工核准」。
+   所有 Migration Script 在執行前必須先標記為「待人工核准」。
 ```
 
 ## 附錄 D　Agent Memory 範本集
 
 ```markdown
 <!-- .ai/memory/architecture.md -->
+
 # 架構決策記憶
 
 ## 已確立的架構慣例
+
 - 所有跨模組事件採用 Kafka，Topic 命名慣例：`{domain}.{event}`（如 `order.created`）
 - 分頁查詢統一使用 Cursor-based Pagination，禁止 Offset-based（效能考量，已於 2025-Q3 確認）
 - 報表查詢一律走 PostgreSQL 唯讀複本，禁止直接查詢 Oracle 正式環境
 
 ## 過去犯過的錯誤（避免重複）
+
 - 2025-11：曾在未確認索引的情況下對千萬筆資料表加欄位，造成 20 分鐘鎖表，
   之後所有 Schema 變更必須先在 Staging 評估鎖表時間
 - 2026-02：曾誤用 Offset-based Pagination 處理大型資料集，導致深分頁查詢逾時
 
 ## 使用者／團隊偏好
+
 - 後端慣用 Constructor Injection，禁止 Field Injection
 - 前端元件慣用 Composition API，避免使用 Options API
 ```
 
 ```markdown
 <!-- .ai/memory/lessons-learned.md -->
+
 # 經驗教訓記憶（持續累積）
 
 ## Agent 行為觀察
+
 - coding-agent 在處理 Oracle 特定 SQL 語法時容易誤用 PostgreSQL 語法，
   需在 Context 中明確標註目標資料庫類型
 - 高風險的 Schema 異動建議交由 dba-agent 而非 backend-agent 處理，
@@ -2396,9 +2399,11 @@ tools: Read, Grep, Bash(psql *), Bash(sqlplus *)
 
 ```markdown
 <!-- .ai/prompts/system/code_review_agent.md -->
+
 # Code Review Agent System Prompt
 
 你是企業共用平台的程式碼審查專家。審查時請依序檢查：
+
 1. **架構合規性**：是否遵循 Clean Architecture 分層
 2. **安全性**：是否有 OWASP Top 10 相關風險
 3. **效能**：是否有明顯的 N+1 查詢或不必要的迴圈巢狀
@@ -2407,30 +2412,37 @@ tools: Read, Grep, Bash(psql *), Bash(sqlplus *)
 輸出格式：
 \`\`\`json
 {
-  "findings": [
-    { "severity": "Blocker|Major|Minor|Nit", "file": "...", "line": 0, "issue": "...", "suggestion": "..." }
-  ]
+"findings": [
+{ "severity": "Blocker|Major|Minor|Nit", "file": "...", "line": 0, "issue": "...", "suggestion": "..." }
+]
 }
 \`\`\`
 ```
 
 ```markdown
 <!-- .ai/prompts/templates/context_summary.hbs -->
+
 ## 任務摘要
+
 任務 ID：{{taskId}}
 目前階段：{{currentStep}}
 
 ## 已完成項目
+
 {{#each completedSteps}}
+
 - {{this.description}}（結果：{{this.result}}）
-{{/each}}
+  {{/each}}
 
 ## 待處理項目
+
 {{#each pendingSteps}}
+
 - {{this.description}}
-{{/each}}
+  {{/each}}
 
 ## 最近一次錯誤（如有，已壓縮萃取重點）
+
 {{#if lastError}}
 {{lastError.summary}}
 {{/if}}
@@ -2446,20 +2458,27 @@ tools: Read, Grep, Bash(psql *), Bash(sqlplus *)
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GH_PAT}" }
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GH_PAT}" },
     },
     "postgres-readonly": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres", "${env:PG_READONLY_URL}"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${env:PG_READONLY_URL}",
+      ],
     },
     "internal-jira": {
       "type": "stdio",
       "command": "node",
       "args": ["./mcp-servers/jira-server.js"],
-      "env": { "JIRA_BASE_URL": "${env:JIRA_BASE_URL}", "JIRA_TOKEN": "${env:JIRA_TOKEN}" }
-    }
-  }
+      "env": {
+        "JIRA_BASE_URL": "${env:JIRA_BASE_URL}",
+        "JIRA_TOKEN": "${env:JIRA_TOKEN}",
+      },
+    },
+  },
 }
 ```
 
@@ -2467,13 +2486,16 @@ tools: Read, Grep, Bash(psql *), Bash(sqlplus *)
 // .claude/settings.json 中啟用對應 MCP Server 並設定工具權限
 {
   "mcpServers": {
-    "github": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-github"] }
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+    },
   },
   "tools": {
     "allow": ["Read", "Grep", "Glob", "mcp__github__list_issues"],
     "ask": ["mcp__github__create_pull_request", "Edit", "Write"],
-    "deny": ["Bash(rm -rf *)", "mcp__postgres__execute_write"]
-  }
+    "deny": ["Bash(rm -rf *)", "mcp__postgres__execute_write"],
+  },
 }
 ```
 
@@ -2481,15 +2503,15 @@ tools: Read, Grep, Bash(psql *), Bash(sqlplus *)
 
 > 本附錄彙整第十七章的七大類 Checklist，供新進同仁快速查閱與打勾使用，詳細說明請參見第十七章。
 
-| 類別 | 核心檢查項（精簡版） |
-|---|---|
-| Architecture | 分層清晰、Agent 職責單一、狀態外部化、控制流由程式碼掌控 |
-| Development | Prompt 版控、工具 Schema 嚴格、Context 預算明確、錯誤壓縮、暫停／恢復可行 |
-| Security | 威脅建模完成、高風險工具強制核准、機密掃描、SAST/DAST/SCA 未省略、最小權限 |
-| Testing | 單元測試覆蓋核心邏輯、具備 Eval 回歸集、高風險路徑可 Dry-run、整合測試涵蓋交接介面 |
-| Deployment | 人工核准節點明確、可回退、Staging 一致性已驗證、Migration 已審查 |
-| Operations | 成本監控、Log/Trace/Audit 落地、核心指標儀表板、Context 保留策略明確 |
-| AI Governance | 完成 POC/Pilot、Platform 小組已設立、規範文件持續維護、合規確認、定期回顧機制 |
+| 類別          | 核心檢查項（精簡版）                                                               |
+| ------------- | ---------------------------------------------------------------------------------- |
+| Architecture  | 分層清晰、Agent 職責單一、狀態外部化、控制流由程式碼掌控                           |
+| Development   | Prompt 版控、工具 Schema 嚴格、Context 預算明確、錯誤壓縮、暫停／恢復可行          |
+| Security      | 威脅建模完成、高風險工具強制核准、機密掃描、SAST/DAST/SCA 未省略、最小權限         |
+| Testing       | 單元測試覆蓋核心邏輯、具備 Eval 回歸集、高風險路徑可 Dry-run、整合測試涵蓋交接介面 |
+| Deployment    | 人工核准節點明確、可回退、Staging 一致性已驗證、Migration 已審查                   |
+| Operations    | 成本監控、Log/Trace/Audit 落地、核心指標儀表板、Context 保留策略明確               |
+| AI Governance | 完成 POC/Pilot、Platform 小組已設立、規範文件持續維護、合規確認、定期回顧機制      |
 
 ---
 

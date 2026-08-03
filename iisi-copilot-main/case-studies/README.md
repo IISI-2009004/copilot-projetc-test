@@ -12,12 +12,12 @@
 
 ## 可回饋的內容
 
-| 類型 | 說明 | 是否必要 |
-|------|------|---------|
-| 使用心得（README） | 專案背景、採用哪些 Agent/Instructions/Prompts/Hooks/Plugins、遇到的問題與解法 | 必要 |
-| 客製化後的檔案 | 依專案需求調整過的 `.agent.md`、`.instructions.md`、`.prompt.md`、Hooks 設定與腳本、Plugin 配置 | 選填 |
-| 驗證測試結果 | 測試報告、驗收報告（可對應 [templates/ssdlc/testing/](../templates/ssdlc/testing/) 格式） | 選填 |
-| 成效數據 | 導入前後的量化比較（審查耗時、缺陷密度、安全掃描發現數等） | 選填 |
+| 類型               | 說明                                                                                            | 是否必要 |
+| ------------------ | ----------------------------------------------------------------------------------------------- | -------- |
+| 使用心得（README） | 專案背景、採用哪些 Agent/Instructions/Prompts/Hooks/Plugins、遇到的問題與解法                   | 必要     |
+| 客製化後的檔案     | 依專案需求調整過的 `.agent.md`、`.instructions.md`、`.prompt.md`、Hooks 設定與腳本、Plugin 配置 | 選填     |
+| 驗證測試結果       | 測試報告、驗收報告（可對應 [templates/ssdlc/testing/](../templates/ssdlc/testing/) 格式）       | 選填     |
+| 成效數據           | 導入前後的量化比較（審查耗時、缺陷密度、安全掃描發現數等）                                      | 選填     |
 
 ## 資料夾命名規則
 

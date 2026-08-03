@@ -20,41 +20,41 @@ copilot plugin install ssdlc
 
 ## 包含的 Agents
 
-| Agent | 說明 |
-|-------|------|
-| Orchestrator | SSDLC 流程協調者，負責將任務分派給適當的 Agent |
-| Architect | 系統架構設計、STRIDE 威脅建模、ADR 技術決策 |
-| Backend | 後端開發，遵循安全編碼規範 |
-| Frontend | 前端開發，注重 XSS 防護與 CSP 設定 |
-| Code Reviewer | 程式碼品質審查與安全弱點檢查 |
-| Security Reviewer | SAST/SCA 安全掃描、威脅建模、Zero Trust 驗證 |
-| Test Generator | 產生全面的測試案例與安全測試 |
-| Doc Writer | 技術文件與 API 文件撰寫 |
-| DevOps | CI/CD 流水線與基礎設施管理 |
-| Planner | 需求分析與任務拆解 |
-| Project Manager | 專案進度追蹤與風險管理 |
-| Release | 版本發佈與變更管理 |
-| Reverse Engineer | 遺留系統分析與現代化評估 |
-| Incident Response | 安全事件應變與處理 |
+| Agent             | 說明                                           |
+| ----------------- | ---------------------------------------------- |
+| Orchestrator      | SSDLC 流程協調者，負責將任務分派給適當的 Agent |
+| Architect         | 系統架構設計、STRIDE 威脅建模、ADR 技術決策    |
+| Backend           | 後端開發，遵循安全編碼規範                     |
+| Frontend          | 前端開發，注重 XSS 防護與 CSP 設定             |
+| Code Reviewer     | 程式碼品質審查與安全弱點檢查                   |
+| Security Reviewer | SAST/SCA 安全掃描、威脅建模、Zero Trust 驗證   |
+| Test Generator    | 產生全面的測試案例與安全測試                   |
+| Doc Writer        | 技術文件與 API 文件撰寫                        |
+| DevOps            | CI/CD 流水線與基礎設施管理                     |
+| Planner           | 需求分析與任務拆解                             |
+| Project Manager   | 專案進度追蹤與風險管理                         |
+| Release           | 版本發佈與變更管理                             |
+| Reverse Engineer  | 遺留系統分析與現代化評估                       |
+| Incident Response | 安全事件應變與處理                             |
 
 ## 包含的 Skills
 
-| Skill | 說明 |
-|-------|------|
-| security-review | 執行 OWASP Top 10 安全審查，識別程式碼中的安全漏洞 |
-| api-reviewer | 審查 RESTful API 設計，確保符合企業 API 標準 |
-| doc-generator | 根據原始碼自動產生技術文件 |
-| junit-generator | 產生 JUnit 5 單元測試，遵循 AAA 模式 |
-| pr-checker | 檢查 PR 是否符合團隊規範 |
-| reverse-analysis | 分析遺留系統模組，產出架構文件與依賴圖 |
+| Skill            | 說明                                               |
+| ---------------- | -------------------------------------------------- |
+| security-review  | 執行 OWASP Top 10 安全審查，識別程式碼中的安全漏洞 |
+| api-reviewer     | 審查 RESTful API 設計，確保符合企業 API 標準       |
+| doc-generator    | 根據原始碼自動產生技術文件                         |
+| junit-generator  | 產生 JUnit 5 單元測試，遵循 AAA 模式               |
+| pr-checker       | 檢查 PR 是否符合團隊規範                           |
+| reverse-analysis | 分析遺留系統模組，產出架構文件與依賴圖             |
 
 ## 整合工具
 
-| 工具 | 類型 | 說明 |
-|------|------|------|
-| sonarqube-report | HTTP | 取得 SonarQube 程式碼品質指標 |
+| 工具             | 類型   | 說明                                      |
+| ---------------- | ------ | ----------------------------------------- |
+| sonarqube-report | HTTP   | 取得 SonarQube 程式碼品質指標             |
 | dependency-check | Script | 執行 OWASP Dependency Check 掃描 CVE 漏洞 |
-| secret-scanner | Script | 掃描程式碼中的硬編碼密鑰與敏感資訊 |
+| secret-scanner   | Script | 掃描程式碼中的硬編碼密鑰與敏感資訊        |
 
 ## 環境變數
 
@@ -72,12 +72,12 @@ SONAR_TOKEN=your-sonar-token
 
 此外掛預設的品質閘道標準：
 
-| 指標 | 門檻 |
-|------|------|
-| 測試覆蓋率 | ≥ 80% |
-| 分支覆蓋率 | ≥ 70% |
-| Critical 漏洞 | 0 |
-| High 漏洞 | 0 |
+| 指標          | 門檻  |
+| ------------- | ----- |
+| 測試覆蓋率    | ≥ 80% |
+| 分支覆蓋率    | ≥ 70% |
+| Critical 漏洞 | 0     |
+| High 漏洞     | 0     |
 
 ## 協作流程
 

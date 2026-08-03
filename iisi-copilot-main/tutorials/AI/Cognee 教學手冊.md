@@ -5,6 +5,7 @@ title = 'Cognee 教學手冊'
 tags = ['教學', 'AI開發']
 categories = ['教學']
 +++
+
 # Cognee 教學手冊
 
 > **副標題：** Enterprise AI Memory Platform & Knowledge Graph for AI Agents
@@ -61,17 +62,17 @@ categories = ['教學']
 
 依讀者角色不同，建議的閱讀路徑如下，不需要從頭到尾逐章閱讀：
 
-| 讀者角色 | 建議優先閱讀章節 |
-| --- | --- |
-| 初次評估導入可行性的技術主管 / 架構師 | 前言、[第一章](#第一章-cognee-介紹)、[第二十九章](#第二十九章-與其他方案比較)、[第三十章](#第三十章-企業導入建議) |
-| 負責安裝與環境建置的工程師 | [第七章](#第七章-installation)、[第八章](#第八章-configuration)、[第六章](#第六章-storage) |
-| AI 應用 / 後端工程師（日常開發） | [第九章](#第九章-cli)、[第十章](#第十章-python-api)、[第四章](#第四章-memory-architecture)、[第五章](#第五章-knowledge-graph) |
-| AI Coding 導入負責人（Claude Code／Copilot） | [第十一章](#第十一章-mcp-integration)、[第十五章](#第十五章-claude-code-integration)、[第十六章](#第十六章-github-copilot-integration)、[第二十章](#第二十章-ai-coding-workflow) |
-| Agent Framework 工程師（LangGraph／CrewAI／ADK） | [第十二章](#第十二章-langgraph-integration)、[第十三章](#第十三章-crewai-integration)、[第十四章](#第十四章-google-adk-integration) |
-| 負責舊系統現代化 / 框架升級的團隊 | [第十八章](#第十八章-legacy-system-reverse-engineering)、[第十九章](#第十九章-framework-升級)、[第二十八章](#第二十八章-case-study) |
-| 資安 / 合規負責人 | [第二十二章](#第二十二章-security)、[第三十章](#第三十章-企業導入建議) |
-| 維運 / SRE / 平台工程師 | [第二十三章](#第二十三章-performance-optimization)、[第二十四章](#第二十四章-monitoring)、[第二十五章](#第二十五章-troubleshooting) |
-| 企業知識管理 / AI Platform 建置負責人 | [第二十一章](#第二十一章-enterprise-knowledge-management)、[第三十一章](#第三十一章-建立-ai-agent-coding-platform) |
+| 讀者角色                                         | 建議優先閱讀章節                                                                                                                                                                 |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 初次評估導入可行性的技術主管 / 架構師            | 前言、[第一章](#第一章-cognee-介紹)、[第二十九章](#第二十九章-與其他方案比較)、[第三十章](#第三十章-企業導入建議)                                                                |
+| 負責安裝與環境建置的工程師                       | [第七章](#第七章-installation)、[第八章](#第八章-configuration)、[第六章](#第六章-storage)                                                                                       |
+| AI 應用 / 後端工程師（日常開發）                 | [第九章](#第九章-cli)、[第十章](#第十章-python-api)、[第四章](#第四章-memory-architecture)、[第五章](#第五章-knowledge-graph)                                                    |
+| AI Coding 導入負責人（Claude Code／Copilot）     | [第十一章](#第十一章-mcp-integration)、[第十五章](#第十五章-claude-code-integration)、[第十六章](#第十六章-github-copilot-integration)、[第二十章](#第二十章-ai-coding-workflow) |
+| Agent Framework 工程師（LangGraph／CrewAI／ADK） | [第十二章](#第十二章-langgraph-integration)、[第十三章](#第十三章-crewai-integration)、[第十四章](#第十四章-google-adk-integration)                                              |
+| 負責舊系統現代化 / 框架升級的團隊                | [第十八章](#第十八章-legacy-system-reverse-engineering)、[第十九章](#第十九章-framework-升級)、[第二十八章](#第二十八章-case-study)                                              |
+| 資安 / 合規負責人                                | [第二十二章](#第二十二章-security)、[第三十章](#第三十章-企業導入建議)                                                                                                           |
+| 維運 / SRE / 平台工程師                          | [第二十三章](#第二十三章-performance-optimization)、[第二十四章](#第二十四章-monitoring)、[第二十五章](#第二十五章-troubleshooting)                                              |
+| 企業知識管理 / AI Platform 建置負責人            | [第二十一章](#第二十一章-enterprise-knowledge-management)、[第三十一章](#第三十一章-建立-ai-agent-coding-platform)                                                               |
 
 > 無論何種角色，建議先讀過首頁的「⚠️ 版本快照提醒」——Cognee 的公開 API 在 v1.0 前後有明顯改版，本文所有具體事實查證截至 2026-07-15，實際導入前請以官方文件（[docs.cognee.ai](https://docs.cognee.ai)）再次核對。
 
@@ -104,13 +105,13 @@ Cognee 由 topoteretes 團隊發起，其研究脈絡可回溯到論文《Optimi
 
 ### 傳統 RAG 的限制
 
-| 限制 | 說明 | Cognee 的因應方式 |
-| --- | --- | --- |
-| 只有相似度、沒有關聯性 | 向量搜尋回傳「語意相近」的片段，但不理解片段之間「誰引用誰」「誰是誰的下屬」等結構關係 | 知識圖譜原生承載實體與關係，檢索可沿邊traversal |
-| Chunk 切分破壞上下文 | 固定長度切 chunk 容易把一句完整的因果關係切斷在兩個 chunk 中 | Cognify 階段做實體/關係抽取後以圖結構重組上下文，而非僅依賴 chunk 邊界 |
-| 無跨 session 記憶 | 多數 RAG pipeline 是「查詢時才檢索」，不會主動累積、更新記憶 | `remember` / `improve` 操作讓記憶隨時間持續演進，而非一次性索引 |
-| 多跳推理表現差 | 需要串接多筆事實才能回答的問題，向量相似度搜尋容易漏掉間接相關的片段 | Graph traversal + Hybrid Search 讓多跳查詢有明確路徑可循（詳見第五章） |
-| 缺乏遺忘機制 | 傳統向量索引一旦寫入很少設計「主動遺忘」 | 明確提供 `forget` 操作，支援依 dataset / scope 刪除記憶，呼應 GDPR 等合規需求 |
+| 限制                   | 說明                                                                                   | Cognee 的因應方式                                                             |
+| ---------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| 只有相似度、沒有關聯性 | 向量搜尋回傳「語意相近」的片段，但不理解片段之間「誰引用誰」「誰是誰的下屬」等結構關係 | 知識圖譜原生承載實體與關係，檢索可沿邊traversal                               |
+| Chunk 切分破壞上下文   | 固定長度切 chunk 容易把一句完整的因果關係切斷在兩個 chunk 中                           | Cognify 階段做實體/關係抽取後以圖結構重組上下文，而非僅依賴 chunk 邊界        |
+| 無跨 session 記憶      | 多數 RAG pipeline 是「查詢時才檢索」，不會主動累積、更新記憶                           | `remember` / `improve` 操作讓記憶隨時間持續演進，而非一次性索引               |
+| 多跳推理表現差         | 需要串接多筆事實才能回答的問題，向量相似度搜尋容易漏掉間接相關的片段                   | Graph traversal + Hybrid Search 讓多跳查詢有明確路徑可循（詳見第五章）        |
+| 缺乏遺忘機制           | 傳統向量索引一旦寫入很少設計「主動遺忘」                                               | 明確提供 `forget` 操作，支援依 dataset / scope 刪除記憶，呼應 GDPR 等合規需求 |
 
 ### 為什麼需要長期記憶
 
@@ -166,14 +167,14 @@ timeline
 
 ### 1.2 優缺點分析
 
-| 面向 | 優點 | 缺點 / 風險 |
-| --- | --- | --- |
-| 架構完整度 | 三層儲存 + 圖譜 + 向量原生整合，不需自行拼接多套系統 | 元件多，初期學習曲線比單純向量資料庫陡峭 |
-| 自架能力 | 全部元件皆可地端部署，資料主權完全掌握在企業手上 | 地端部署需要自行維運 PostgreSQL / Neo4j 等多個有狀態服務，維運成本不可忽視 |
-| API 穩定性 | v1.0 後 API 語意化、易懂 | 專案仍在快速迭代（v0.x → v1.0 曾有破壞性改版），企業導入需鎖定版本 |
-| 生態整合 | MCP、LangGraph、CrewAI、Claude Code 等整合齊全 | 部分整合（如 Google ADK、Strands）文件相對精簡，實務落地需自行補測試 |
-| 推理能力 | 知識圖譜天生適合多跳推理，優於純向量 RAG | Cognify（實體/關係抽取）依賴 LLM，抽取品質與成本會隨文件量線性甚至超線性成長 |
-| 社群成熟度 | GitHub 星數與活躍度高（27.9k ★，8,600+ commits） | 相較 Neo4j GraphRAG、LlamaIndex 等，企業級案例公開分享仍偏少，需自行累積內部最佳實務 |
+| 面向       | 優點                                                 | 缺點 / 風險                                                                          |
+| ---------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| 架構完整度 | 三層儲存 + 圖譜 + 向量原生整合，不需自行拼接多套系統 | 元件多，初期學習曲線比單純向量資料庫陡峭                                             |
+| 自架能力   | 全部元件皆可地端部署，資料主權完全掌握在企業手上     | 地端部署需要自行維運 PostgreSQL / Neo4j 等多個有狀態服務，維運成本不可忽視           |
+| API 穩定性 | v1.0 後 API 語意化、易懂                             | 專案仍在快速迭代（v0.x → v1.0 曾有破壞性改版），企業導入需鎖定版本                   |
+| 生態整合   | MCP、LangGraph、CrewAI、Claude Code 等整合齊全       | 部分整合（如 Google ADK、Strands）文件相對精簡，實務落地需自行補測試                 |
+| 推理能力   | 知識圖譜天生適合多跳推理，優於純向量 RAG             | Cognify（實體/關係抽取）依賴 LLM，抽取品質與成本會隨文件量線性甚至超線性成長         |
+| 社群成熟度 | GitHub 星數與活躍度高（27.9k ★，8,600+ commits）     | 相較 Neo4j GraphRAG、LlamaIndex 等，企業級案例公開分享仍偏少，需自行累積內部最佳實務 |
 
 ### 1.3 適用情境與不適用情境
 
@@ -193,12 +194,12 @@ timeline
 
 ### 1.4 與其他記憶方案的定位差異（前導）
 
-| 方案類型 | 代表 | 核心定位 |
-| --- | --- | --- |
-| 短期對話記憶框架 | Mem0、Zep、Letta | 專注對話層的短期/中期記憶管理，多數不強調自架知識圖譜 |
-| 純 GraphRAG 函式庫 | Neo4j GraphRAG、Microsoft GraphRAG | 提供圖譜建構與查詢能力，但通常不含完整的「記憶生命週期」（remember/forget/improve）語意 |
-| 通用 RAG 框架 | LlamaIndex、Haystack | 泛用資料連接與檢索框架，知識圖譜只是眾多檢索策略之一 |
-| Cognee | — | 同時具備「記憶生命週期 API」+「原生知識圖譜」+「三層儲存」+「MCP/Agent Framework 整合」，定位更接近完整記憶平台而非單一函式庫 |
+| 方案類型           | 代表                               | 核心定位                                                                                                                      |
+| ------------------ | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 短期對話記憶框架   | Mem0、Zep、Letta                   | 專注對話層的短期/中期記憶管理，多數不強調自架知識圖譜                                                                         |
+| 純 GraphRAG 函式庫 | Neo4j GraphRAG、Microsoft GraphRAG | 提供圖譜建構與查詢能力，但通常不含完整的「記憶生命週期」（remember/forget/improve）語意                                       |
+| 通用 RAG 框架      | LlamaIndex、Haystack               | 泛用資料連接與檢索框架，知識圖譜只是眾多檢索策略之一                                                                          |
+| Cognee             | —                                  | 同時具備「記憶生命週期 API」+「原生知識圖譜」+「三層儲存」+「MCP/Agent Framework 整合」，定位更接近完整記憶平台而非單一函式庫 |
 
 完整的逐項比較表請見第二十九章。
 
@@ -293,15 +294,15 @@ graph TD
 
 ### 2.2 各層職責說明
 
-| 層級 | 職責 | 對應章節 |
-| --- | --- | --- |
-| API / 整合層 | 提供 Python SDK、CLI、MCP Server、Agent Framework Adapter 等多種存取方式 | 第九～十六章 |
-| Memory Layer | 定義記憶生命週期語意：新增（remember）、查詢（recall）、刪除（forget）、精煉（improve） | 第四章 |
-| Knowledge Layer | 把原始資料轉換為 DataPoint，再抽取實體、關係，並可生成 Ontology（本體論結構） | 第五章 |
-| Graph / Vector Layer | 承載結構化圖譜（節點/邊）與語意向量索引，支援 Hybrid Search | 第五、六章 |
-| Storage Layer | 實際落地的資料庫（PostgreSQL、Neo4j、Qdrant 等） | 第六章 |
-| LLM Layer | 負責 Embedding 生成與 Cognify 階段的實體/關係抽取推理 | 第八、二十三章 |
-| Retrieval Layer | 橫跨 Graph/Vector Layer 之上的混合檢索邏輯，決定何時走圖譜、何時走向量 | 第五章 |
+| 層級                 | 職責                                                                                    | 對應章節       |
+| -------------------- | --------------------------------------------------------------------------------------- | -------------- |
+| API / 整合層         | 提供 Python SDK、CLI、MCP Server、Agent Framework Adapter 等多種存取方式                | 第九～十六章   |
+| Memory Layer         | 定義記憶生命週期語意：新增（remember）、查詢（recall）、刪除（forget）、精煉（improve） | 第四章         |
+| Knowledge Layer      | 把原始資料轉換為 DataPoint，再抽取實體、關係，並可生成 Ontology（本體論結構）           | 第五章         |
+| Graph / Vector Layer | 承載結構化圖譜（節點/邊）與語意向量索引，支援 Hybrid Search                             | 第五、六章     |
+| Storage Layer        | 實際落地的資料庫（PostgreSQL、Neo4j、Qdrant 等）                                        | 第六章         |
+| LLM Layer            | 負責 Embedding 生成與 Cognify 階段的實體/關係抽取推理                                   | 第八、二十三章 |
+| Retrieval Layer      | 橫跨 Graph/Vector Layer 之上的混合檢索邏輯，決定何時走圖譜、何時走向量                  | 第五章         |
 
 ### 2.3 Task / Pipeline / DataPoint：三個最基礎的抽象
 
@@ -379,12 +380,12 @@ graph LR
 
 Extract 階段負責把各種來源格式（PDF、Markdown、程式碼、資料庫紀錄、對話訊息、圖片等）統一轉換為 Cognee 可處理的原始內容單元。企業實務上常見的資料來源與對應處理策略：
 
-| 資料來源 | 常見處理方式 | 注意事項 |
-| --- | --- | --- |
-| 文件（PDF/Word/Markdown） | 文字抽取 + 結構保留（標題階層） | 掃描版 PDF 需先過 OCR，否則抽取為空 |
-| 程式碼庫 | 依檔案/函式為單位切分，保留檔案路徑作為 metadata | 大型 Monorepo 建議先依模組拆批匯入，避免單次 Pipeline 過重 |
-| 對話紀錄 | 依 session_id 分組，保留時間戳與角色（user/assistant） | 需注意 PII（個資）遮罩，詳見第二十二章 |
-| 資料庫紀錄 | 透過 dlt（data load tool）等連接器批次匯入 | 建議先做欄位篩選，避免把敏感欄位整表匯入知識圖譜 |
+| 資料來源                  | 常見處理方式                                           | 注意事項                                                   |
+| ------------------------- | ------------------------------------------------------ | ---------------------------------------------------------- |
+| 文件（PDF/Word/Markdown） | 文字抽取 + 結構保留（標題階層）                        | 掃描版 PDF 需先過 OCR，否則抽取為空                        |
+| 程式碼庫                  | 依檔案/函式為單位切分，保留檔案路徑作為 metadata       | 大型 Monorepo 建議先依模組拆批匯入，避免單次 Pipeline 過重 |
+| 對話紀錄                  | 依 session_id 分組，保留時間戳與角色（user/assistant） | 需注意 PII（個資）遮罩，詳見第二十二章                     |
+| 資料庫紀錄                | 透過 dlt（data load tool）等連接器批次匯入             | 建議先做欄位篩選，避免把敏感欄位整表匯入知識圖譜           |
 
 ### 3.3 Cognify：資料如何變成知識圖譜
 
@@ -454,13 +455,13 @@ Load 階段把 Cognify 產出的實體、關係、Embedding 分別寫入對應�
 
 Cognee 的記憶架構可以對應到認知科學常見的記憶分類方式來理解，但**必須清楚區分「官方明確定義的分層」與「概念性延伸類比」**——避免把類比誤讀為官方保證的架構規格：
 
-| 記憶類型 | 官方對應概念 | 說明 |
-| --- | --- | --- |
-| Session Memory（已查證） | Relational Store 中的 session-scoped 快取 | 依 `session_id` 隔離的短期上下文，非同步同步進永久圖譜 |
-| Permanent Graph（已查證） | Graph Store | 跨 session 持久保存的實體/關係知識 |
-| Vector Memory（已查證） | Vector Store | 語意 embedding，支援相似度檢索 |
-| Metadata（已查證） | Relational Store 中的 provenance 資訊 | 記錄知識來源、時間戳、scope 等脈絡 |
-| Working Memory（概念性延伸） | Pipeline 執行過程中的暫存狀態 | 非官方正式分層名詞，此處借用認知科學詞彙描述 Pipeline 執行期間的暫存資料，企業導入時不應假設有獨立可設定的「Working Memory」API |
+| 記憶類型                                 | 官方對應概念                                | 說明                                                                                                                                        |
+| ---------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Session Memory（已查證）                 | Relational Store 中的 session-scoped 快取   | 依 `session_id` 隔離的短期上下文，非同步同步進永久圖譜                                                                                      |
+| Permanent Graph（已查證）                | Graph Store                                 | 跨 session 持久保存的實體/關係知識                                                                                                          |
+| Vector Memory（已查證）                  | Vector Store                                | 語意 embedding，支援相似度檢索                                                                                                              |
+| Metadata（已查證）                       | Relational Store 中的 provenance 資訊       | 記錄知識來源、時間戳、scope 等脈絡                                                                                                          |
+| Working Memory（概念性延伸）             | Pipeline 執行過程中的暫存狀態               | 非官方正式分層名詞，此處借用認知科學詞彙描述 Pipeline 執行期間的暫存資料，企業導入時不應假設有獨立可設定的「Working Memory」API             |
 | Semantic / Episodic Memory（概念性延伸） | 知識圖譜中的概念節點 vs. 帶時間戳的事件節點 | Cognee 不強制區分這兩種記憶型態，但企業可以透過 DataPoint 的 metadata 設計（例如標記 `type: concept` vs `type: event`）自行實作這種語意分層 |
 
 ### 4.2 Long-term Memory 如何運作
@@ -543,12 +544,12 @@ sequenceDiagram
 
 ### 5.2 Nodes、Edges、Entity、Relationship
 
-| 概念 | 說明 | 範例 |
-| --- | --- | --- |
-| Entity（實體） | 具名的、可辨識的物件 | 「訂單服務」「王小明」「PostgreSQL 15」 |
-| Relationship（關係） | 兩個實體之間的具名連結 | 「訂單服務 —依賴→ 庫存服務」 |
-| Node（節點） | 實體在圖資料庫中的實際落地表示 | 對應 Entity 的 Graph Store 記錄 |
-| Edge（邊） | 關係在圖資料庫中的實際落地表示，通常帶方向與型別 | 對應 Relationship 的 Graph Store 記錄 |
+| 概念                 | 說明                                             | 範例                                    |
+| -------------------- | ------------------------------------------------ | --------------------------------------- |
+| Entity（實體）       | 具名的、可辨識的物件                             | 「訂單服務」「王小明」「PostgreSQL 15」 |
+| Relationship（關係） | 兩個實體之間的具名連結                           | 「訂單服務 —依賴→ 庫存服務」            |
+| Node（節點）         | 實體在圖資料庫中的實際落地表示                   | 對應 Entity 的 Graph Store 記錄         |
+| Edge（邊）           | 關係在圖資料庫中的實際落地表示，通常帶方向與型別 | 對應 Relationship 的 Graph Store 記錄   |
 
 ### 5.3 Traversal 與 Graph Query
 
@@ -565,12 +566,12 @@ graph LR
 
 ### 5.4 Graph Search、Semantic Search、Vector Search
 
-| 檢索方式 | 原理 | 適用場景 |
-| --- | --- | --- |
-| Vector Search | 計算 Query Embedding 與內容 Embedding 的相似度 | 模糊語意比對，如「找相關文件」 |
-| Semantic Search | 廣義詞，常指結合語意理解（而非純字面比對）的檢索，Cognee 中多以向量相似度為基礎實作 | 同 Vector Search，但強調語意而非關鍵字 |
-| Graph Search | 從指定實體出發，沿關係做結構化查詢 | 「找出 X 的所有下屬」「找出依賴 Y 服務的所有系統」等結構性問題 |
-| Hybrid Search | 融合前述多種策略的排序結果 | 大多數企業實務查詢，兼顧語意模糊比對與結構精確關聯 |
+| 檢索方式        | 原理                                                                                | 適用場景                                                       |
+| --------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Vector Search   | 計算 Query Embedding 與內容 Embedding 的相似度                                      | 模糊語意比對，如「找相關文件」                                 |
+| Semantic Search | 廣義詞，常指結合語意理解（而非純字面比對）的檢索，Cognee 中多以向量相似度為基礎實作 | 同 Vector Search，但強調語意而非關鍵字                         |
+| Graph Search    | 從指定實體出發，沿關係做結構化查詢                                                  | 「找出 X 的所有下屬」「找出依賴 Y 服務的所有系統」等結構性問題 |
+| Hybrid Search   | 融合前述多種策略的排序結果                                                          | 大多數企業實務查詢，兼顧語意模糊比對與結構精確關聯             |
 
 ### 5.5 GraphRAG 與 Knowledge Graph RAG
 
@@ -627,23 +628,23 @@ Cognee 提供高階自動路由（`recall` 的自動策略選擇），若需要�
 
 ### 6.1 支援的 Storage 總覽
 
-| 類型 | 支援選項 | 官方查證狀態 |
-| --- | --- | --- |
-| Relational / Cache | PostgreSQL、SQLite、Redis | 已於官方文件查證 |
-| Vector Store | pgvector、LanceDB（零安裝內建預設）、Qdrant、ChromaDB、Weaviate、Milvus、AWS Neptune Analytics | 已於官方文件查證 |
-| Graph Store | Kuzu（零安裝內建預設，嵌入式）、Neo4j、AWS Neptune（部分整合指南提及，導入前建議再核對原始碼）、FalkorDB（社群 adapter） | 已於官方 `.env.template` 與文件查證 |
-| 零安裝預設組合 | `DB_PROVIDER=sqlite` + `VECTOR_DB_PROVIDER=lancedb` + `GRAPH_DATABASE_PROVIDER=kuzu` | 官方套件安裝後未設定任何環境變數時的實際預設值，適合本機開發／PoC |
-| 生產環境推薦組合 | PostgreSQL 同時承擔 Relational + Vector（pgvector）角色，Graph 視規模選用 PostgreSQL 自家實作或獨立 Neo4j | 官方與社群實務常見的生產環境建議堆疊（需顯式於 `.env` 設定，不會自動套用） |
+| 類型               | 支援選項                                                                                                                 | 官方查證狀態                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| Relational / Cache | PostgreSQL、SQLite、Redis                                                                                                | 已於官方文件查證                                                           |
+| Vector Store       | pgvector、LanceDB（零安裝內建預設）、Qdrant、ChromaDB、Weaviate、Milvus、AWS Neptune Analytics                           | 已於官方文件查證                                                           |
+| Graph Store        | Kuzu（零安裝內建預設，嵌入式）、Neo4j、AWS Neptune（部分整合指南提及，導入前建議再核對原始碼）、FalkorDB（社群 adapter） | 已於官方 `.env.template` 與文件查證                                        |
+| 零安裝預設組合     | `DB_PROVIDER=sqlite` + `VECTOR_DB_PROVIDER=lancedb` + `GRAPH_DATABASE_PROVIDER=kuzu`                                     | 官方套件安裝後未設定任何環境變數時的實際預設值，適合本機開發／PoC          |
+| 生產環境推薦組合   | PostgreSQL 同時承擔 Relational + Vector（pgvector）角色，Graph 視規模選用 PostgreSQL 自家實作或獨立 Neo4j                | 官方與社群實務常見的生產環境建議堆疊（需顯式於 `.env` 設定，不會自動套用） |
 
 ### 6.2 各 Storage 優缺點與適用情境
 
-| Storage | 優點 | 缺點 | 適用情境 |
-| --- | --- | --- | --- |
-| SQLite | 零安裝、單檔案、適合快速原型 | 不支援高併發寫入、無法橫向擴展 | 本機開發、PoC、單機小型應用 |
-| PostgreSQL（+ pgvector） | 一套資料庫同時處理三種角色，維運複雜度低，生態成熟 | 圖譜查詢效能在超大規模、深度 traversal 場景不如專用圖資料庫 | 多數企業生產環境的預設首選 |
-| Neo4j | 專為圖查詢優化，Cypher 查詢語言成熟，社群與工具鏈完整 | 需額外維運一套獨立服務，授權模式（企業版）需評估成本 | 圖譜規模大、查詢複雜度高、需要進階圖演算法（如社群偵測）的場景 |
-| AWS Neptune | 全代管，與 AWS 生態整合佳，免除自行維運圖資料庫的負擔 | 綁定 AWS 生態，跨雲遷移成本高 | 已深度採用 AWS 的企業 |
-| Qdrant / Milvus / Weaviate / ChromaDB / LanceDB | 專用向量資料庫，各自在效能、擴展性、部署形式上有不同取捨（例如 LanceDB 為 embedded 型態） | 需額外維運獨立向量服務（LanceDB 除外），與 Relational/Graph Store 資料一致性需自行保證 | 向量檢索量體極大、或已有既定向量資料庫技術選型的企業 |
+| Storage                                         | 優點                                                                                      | 缺點                                                                                   | 適用情境                                                       |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| SQLite                                          | 零安裝、單檔案、適合快速原型                                                              | 不支援高併發寫入、無法橫向擴展                                                         | 本機開發、PoC、單機小型應用                                    |
+| PostgreSQL（+ pgvector）                        | 一套資料庫同時處理三種角色，維運複雜度低，生態成熟                                        | 圖譜查詢效能在超大規模、深度 traversal 場景不如專用圖資料庫                            | 多數企業生產環境的預設首選                                     |
+| Neo4j                                           | 專為圖查詢優化，Cypher 查詢語言成熟，社群與工具鏈完整                                     | 需額外維運一套獨立服務，授權模式（企業版）需評估成本                                   | 圖譜規模大、查詢複雜度高、需要進階圖演算法（如社群偵測）的場景 |
+| AWS Neptune                                     | 全代管，與 AWS 生態整合佳，免除自行維運圖資料庫的負擔                                     | 綁定 AWS 生態，跨雲遷移成本高                                                          | 已深度採用 AWS 的企業                                          |
+| Qdrant / Milvus / Weaviate / ChromaDB / LanceDB | 專用向量資料庫，各自在效能、擴展性、部署形式上有不同取捨（例如 LanceDB 為 embedded 型態） | 需額外維運獨立向量服務（LanceDB 除外），與 Relational/Graph Store 資料一致性需自行保證 | 向量檢索量體極大、或已有既定向量資料庫技術選型的企業           |
 
 ### 6.3 企業選型建議
 
@@ -815,61 +816,61 @@ Cognee 透過環境變數（或 `.env` 檔）驅動幾乎所有組態，以下�
 
 **LLM Provider：**
 
-| 變數 | 說明 | 預設值 |
-| --- | --- | --- |
-| `LLM_PROVIDER` | LLM 供應商，支援 `openai`／`azure`／`gemini`／`anthropic`／`ollama`／`mistral`／`bedrock`／`custom` | `openai` |
-| `LLM_MODEL` | 模型代號，格式為 `provider/model-name` | `openai/gpt-5-mini` |
-| `LLM_API_KEY` | LLM API 金鑰 | — |
-| `LLM_ENDPOINT` | 自訂端點（Ollama／vLLM 必填） | — |
-| `LLM_API_VERSION` | API 版本（Azure 必填） | — |
-| `LLM_TEMPERATURE` | 生成溫度，範圍 0.0–2.0 | `0.0` |
+| 變數              | 說明                                                                                                | 預設值              |
+| ----------------- | --------------------------------------------------------------------------------------------------- | ------------------- |
+| `LLM_PROVIDER`    | LLM 供應商，支援 `openai`／`azure`／`gemini`／`anthropic`／`ollama`／`mistral`／`bedrock`／`custom` | `openai`            |
+| `LLM_MODEL`       | 模型代號，格式為 `provider/model-name`                                                              | `openai/gpt-5-mini` |
+| `LLM_API_KEY`     | LLM API 金鑰                                                                                        | —                   |
+| `LLM_ENDPOINT`    | 自訂端點（Ollama／vLLM 必填）                                                                       | —                   |
+| `LLM_API_VERSION` | API 版本（Azure 必填）                                                                              | —                   |
+| `LLM_TEMPERATURE` | 生成溫度，範圍 0.0–2.0                                                                              | `0.0`               |
 
 **Embedding：**
 
-| 變數 | 說明 | 預設值 |
-| --- | --- | --- |
-| `EMBEDDING_PROVIDER` | 支援 `openai`／`ollama`／`fastembed`／`gemini`／`mistral`／`bedrock`／`custom` | `openai` |
-| `EMBEDDING_MODEL` | Embedding 模型代號 | `openai/text-embedding-3-large` |
-| `EMBEDDING_DIMENSIONS` | 向量維度，須與 Vector Store 設定相符 | `3072` |
-| `EMBEDDING_API_KEY` | 未設定時 fallback 至 `LLM_API_KEY` | — |
-| `EMBEDDING_BATCH_SIZE` | 批次處理大小 | — |
+| 變數                   | 說明                                                                           | 預設值                          |
+| ---------------------- | ------------------------------------------------------------------------------ | ------------------------------- |
+| `EMBEDDING_PROVIDER`   | 支援 `openai`／`ollama`／`fastembed`／`gemini`／`mistral`／`bedrock`／`custom` | `openai`                        |
+| `EMBEDDING_MODEL`      | Embedding 模型代號                                                             | `openai/text-embedding-3-large` |
+| `EMBEDDING_DIMENSIONS` | 向量維度，須與 Vector Store 設定相符                                           | `3072`                          |
+| `EMBEDDING_API_KEY`    | 未設定時 fallback 至 `LLM_API_KEY`                                             | —                               |
+| `EMBEDDING_BATCH_SIZE` | 批次處理大小                                                                   | —                               |
 
 **Vector / Graph / Relational Database：**
 
-| 變數 | 說明 | 預設值 |
-| --- | --- | --- |
-| `VECTOR_DB_PROVIDER` | 內建：`lancedb`／`pgvector`／`chromadb`／`neptune_analytics`；社群 adapter：`qdrant`／`redis`／`falkordb` | `lancedb` |
+| 變數                      | 說明                                                                                                                    | 預設值                                                                       |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `VECTOR_DB_PROVIDER`      | 內建：`lancedb`／`pgvector`／`chromadb`／`neptune_analytics`；社群 adapter：`qdrant`／`redis`／`falkordb`               | `lancedb`                                                                    |
 | `GRAPH_DATABASE_PROVIDER` | `kuzu`／`kuzu-remote`／`neo4j`／`falkordb`（社群 adapter，另有 `neptune` 見於部分整合指南，正式採用前建議再核對原始碼） | `kuzu`（Cognee 內建的嵌入式圖引擎，直接查證官方 `.env.template` 原始檔確認） |
-| `DB_PROVIDER` | 關聯式資料庫：`sqlite`／`postgres` | `sqlite` |
+| `DB_PROVIDER`             | 關聯式資料庫：`sqlite`／`postgres`                                                                                      | `sqlite`                                                                     |
 
 > **⚠️ 重要澄清**：Cognee 的預設組態（`lancedb` + `kuzu` + `sqlite`）是**針對零安裝快速上手優化的組合**，`kuzu` 是 Cognee 內建的嵌入式圖引擎（非需要另外部署的獨立服務；官方 `.env.template` 中 `GRAPH_DATABASE_PROVIDER` 的預設值即為 `"kuzu"`）。這與部分行銷文案強調的「單一 PostgreSQL 承擔三種角色」屬於**另一種生產環境建議組態**，兩者並不矛盾，但企業導入時務必明確在 `.env` 中顯式指定 `DB_PROVIDER=postgres`、`VECTOR_DB_PROVIDER=pgvector`、`GRAPH_DATABASE_PROVIDER=neo4j`（或維持 Postgres 圖實作，依第六章選型建議），不要依賴預設值直接上生產環境。
 
 **Storage & Logging：**
 
-| 變數 | 說明 | 預設值 |
-| --- | --- | --- |
-| `STORAGE_BACKEND` | `local`／`s3` | `local` |
-| `DATA_ROOT_DIRECTORY` | 使用者資料落地路徑 | `.data_storage` |
-| `LOG_LEVEL` | `DEBUG`／`INFO`／`WARNING`／`ERROR` | `INFO` |
-| `COGNEE_LOG_FILE` | 是否輸出檔案型日誌 | — |
+| 變數                  | 說明                                | 預設值          |
+| --------------------- | ----------------------------------- | --------------- |
+| `STORAGE_BACKEND`     | `local`／`s3`                       | `local`         |
+| `DATA_ROOT_DIRECTORY` | 使用者資料落地路徑                  | `.data_storage` |
+| `LOG_LEVEL`           | `DEBUG`／`INFO`／`WARNING`／`ERROR` | `INFO`          |
+| `COGNEE_LOG_FILE`     | 是否輸出檔案型日誌                  | —               |
 
 **Security / Access Control：**
 
-| 變數 | 說明 |
-| --- | --- |
-| `ENABLE_BACKEND_ACCESS_CONTROL` | 是否啟用後端存取控制 |
-| `REQUIRE_AUTHENTICATION` | 是否強制要求認證 |
-| `FASTAPI_USERS_JWT_SECRET` | JWT 簽章密鑰 |
-| `JWT_LIFETIME_SECONDS` | JWT 有效期 |
-| `ALLOW_CYPHER_QUERY` | 是否允許直接執行 Cypher 查詢（高風險，詳見第二十二章） |
+| 變數                            | 說明                                                   |
+| ------------------------------- | ------------------------------------------------------ |
+| `ENABLE_BACKEND_ACCESS_CONTROL` | 是否啟用後端存取控制                                   |
+| `REQUIRE_AUTHENTICATION`        | 是否強制要求認證                                       |
+| `FASTAPI_USERS_JWT_SECRET`      | JWT 簽章密鑰                                           |
+| `JWT_LIFETIME_SECONDS`          | JWT 有效期                                             |
+| `ALLOW_CYPHER_QUERY`            | 是否允許直接執行 Cypher 查詢（高風險，詳見第二十二章） |
 
 **Session / Cache：**
 
-| 變數 | 說明 | 預設值 |
-| --- | --- | --- |
-| `CACHING` | 是否啟用 Session 快取 | `true` |
-| `CACHE_BACKEND` | `fs`／`redis`／`tapes` | `fs` |
-| `SESSION_TTL_SECONDS` | Session 過期秒數 | `604800`（7 天） |
+| 變數                  | 說明                   | 預設值           |
+| --------------------- | ---------------------- | ---------------- |
+| `CACHING`             | 是否啟用 Session 快取  | `true`           |
+| `CACHE_BACKEND`       | `fs`／`redis`／`tapes` | `fs`             |
+| `SESSION_TTL_SECONDS` | Session 過期秒數       | `604800`（7 天） |
 
 ### 8.2 範例：生產環境 PostgreSQL 組態
 
@@ -966,19 +967,19 @@ cognee-cli -ui  # 啟動本地 Workspace UI（需要 Docker）
 
 ### 9.2 常用參數與範例
 
-| 指令 | 用途 | 範例 |
-| --- | --- | --- |
-| `cognee-cli remember "<內容>"` | 將內容寫入記憶（未指定 session 時直接進永久圖譜） | `cognee-cli remember "王小明負責訂單服務"` |
-| `cognee-cli remember "<內容>" --session-id <id>` | 寫入指定 Session 的短期快取 | `cognee-cli remember "使用者偏好英文回覆" --session-id chat_42` |
-| `cognee-cli recall "<查詢>"` | 查詢記憶，自動路由檢索策略 | `cognee-cli recall "誰負責訂單服務"` |
-| `cognee-cli improve` | 觸發記憶精煉（auto-distill／合併矛盾事實，詳見第四章 4.5） | `cognee-cli improve --dataset project_web_app` |
-| `cognee-cli forget --dataset <name>` | 刪除指定 dataset 的記憶 | `cognee-cli forget --dataset legacy_docs_2024` |
-| `cognee-cli forget --all` | 清空所有記憶（高風險操作） | — |
-| `cognee-cli cognify --ontology-file <path>` | 執行 Cognify 時顯式指定外部 RDF/SPARQL Ontology 檔案（詳見第三章 3.3） | `cognee-cli cognify --ontology-file ./ontologies/fibo.rdf` |
-| `cognee-cli config list` / `get <key>` / `set <key> <value>` / `unset <key>` | 查詢或調整本地儲存的 CLI 組態（等同於部分第八章環境變數的 CLI 介面） | `cognee-cli config set DB_PROVIDER postgres` |
-| `cognee-cli --api-url <url>` | 將指令委派至遠端 Cognee Server（而非操作本機資料），適合團隊共用中央部署 | `cognee-cli --api-url https://cognee.internal recall "..."` |
-| `cognee-cli -ui` | 啟動本地 Workspace UI，可視覺化瀏覽知識圖譜 | — |
-| `cognee-cli --version` | 顯示版本號 | — |
+| 指令                                                                         | 用途                                                                     | 範例                                                            |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------- |
+| `cognee-cli remember "<內容>"`                                               | 將內容寫入記憶（未指定 session 時直接進永久圖譜）                        | `cognee-cli remember "王小明負責訂單服務"`                      |
+| `cognee-cli remember "<內容>" --session-id <id>`                             | 寫入指定 Session 的短期快取                                              | `cognee-cli remember "使用者偏好英文回覆" --session-id chat_42` |
+| `cognee-cli recall "<查詢>"`                                                 | 查詢記憶，自動路由檢索策略                                               | `cognee-cli recall "誰負責訂單服務"`                            |
+| `cognee-cli improve`                                                         | 觸發記憶精煉（auto-distill／合併矛盾事實，詳見第四章 4.5）               | `cognee-cli improve --dataset project_web_app`                  |
+| `cognee-cli forget --dataset <name>`                                         | 刪除指定 dataset 的記憶                                                  | `cognee-cli forget --dataset legacy_docs_2024`                  |
+| `cognee-cli forget --all`                                                    | 清空所有記憶（高風險操作）                                               | —                                                               |
+| `cognee-cli cognify --ontology-file <path>`                                  | 執行 Cognify 時顯式指定外部 RDF/SPARQL Ontology 檔案（詳見第三章 3.3）   | `cognee-cli cognify --ontology-file ./ontologies/fibo.rdf`      |
+| `cognee-cli config list` / `get <key>` / `set <key> <value>` / `unset <key>` | 查詢或調整本地儲存的 CLI 組態（等同於部分第八章環境變數的 CLI 介面）     | `cognee-cli config set DB_PROVIDER postgres`                    |
+| `cognee-cli --api-url <url>`                                                 | 將指令委派至遠端 Cognee Server（而非操作本機資料），適合團隊共用中央部署 | `cognee-cli --api-url https://cognee.internal recall "..."`     |
+| `cognee-cli -ui`                                                             | 啟動本地 Workspace UI，可視覺化瀏覽知識圖譜                              | —                                                               |
+| `cognee-cli --version`                                                       | 顯示版本號                                                               | —                                                               |
 
 ### 9.3 CLI 在 CI/CD 中的應用
 
@@ -1015,10 +1016,10 @@ cognee-cli -ui  # 啟動本地 Workspace UI（需要 Docker）
 
 如第三章所述，Cognee 目前並存兩層公開 API，企業導入時應清楚選擇適合場景的層級：
 
-| 層級 | 核心函式 | 特性 | 適合場景 |
-| --- | --- | --- | --- |
-| Core API（ECL 對齊，官方明確標註為 legacy） | `cognee.add()`、`cognee.cognify()`、`cognee.search()`、`cognee.prune()` | 對 Pipeline 各階段有明確控制權，可拆分執行、除錯；官方文件保留其可用性，但已不作為新專案的建議起點 | 需要自訂 Pipeline 行為、精細控制 Cognify 階段的進階場景 |
-| Memory API（v1.0+，高階、新工作流程首選） | `cognee.remember()`、`cognee.recall()`、`cognee.forget()`、`cognee.improve()` | 語意化、易懂，內部自動完成 add+cognify+load | 一般應用開發、快速整合 |
+| 層級                                        | 核心函式                                                                      | 特性                                                                                               | 適合場景                                                |
+| ------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Core API（ECL 對齊，官方明確標註為 legacy） | `cognee.add()`、`cognee.cognify()`、`cognee.search()`、`cognee.prune()`       | 對 Pipeline 各階段有明確控制權，可拆分執行、除錯；官方文件保留其可用性，但已不作為新專案的建議起點 | 需要自訂 Pipeline 行為、精細控制 Cognify 階段的進階場景 |
+| Memory API（v1.0+，高階、新工作流程首選）   | `cognee.remember()`、`cognee.recall()`、`cognee.forget()`、`cognee.improve()` | 語意化、易懂，內部自動完成 add+cognify+load                                                        | 一般應用開發、快速整合                                  |
 
 > **⚠️ 精確度澄清**：Core API 並未被移除或棄用（deprecated），而是官方 `cognee-cli` 文件明確將其標註為 **legacy commands**——意即「保留可用、持續維護，但非新專案建議的預設起點」。企業若既有系統已大量使用 Core API，不需要因此感到急迫的遷移壓力；但新專案建議優先評估 Memory API 是否已能滿足需求。
 
@@ -1071,12 +1072,12 @@ asyncio.run(main())
 
 ### 10.4 SearchType 一覽
 
-| SearchType | 說明 |
-| --- | --- |
+| SearchType         | 說明                                                        |
+| ------------------ | ----------------------------------------------------------- |
 | `GRAPH_COMPLETION` | 結合完整圖譜上下文的 LLM 推理式問答，適合需要多跳推理的查詢 |
-| `RAG_COMPLETION` | 傳統以文件 chunk 為基礎的 RAG 問答 |
-| `CHUNKS` | 純語意相似度搜尋，回傳具體文字片段 |
-| `CODE` | 針對程式碼結構與邏輯的專用檢索模式 |
+| `RAG_COMPLETION`   | 傳統以文件 chunk 為基礎的 RAG 問答                          |
+| `CHUNKS`           | 純語意相似度搜尋，回傳具體文字片段                          |
+| `CODE`             | 針對程式碼結構與邏輯的專用檢索模式                          |
 
 ### 10.5 雲端模式：cognee.serve()
 
@@ -1090,12 +1091,12 @@ await cognee.serve(url="https://instance.cognee.ai", api_key="ck_...")
 
 除了 Python SDK 與第九章的 CLI，官方文件站（`docs.cognee.ai/api-reference`）另外記載了一套**獨立的 REST API**，適合非 Python 技術棧（例如 Java／Spring Boot 後端）直接整合 Cognee，而不需要透過 Python Process 呼叫。
 
-| 端點 | 用途 |
-| --- | --- |
-| `POST /api/v1/add` | 上傳/新增內容至指定 dataset（對應 Core API 的 `add()`） |
-| `POST /api/v1/cognify` | 觸發 Cognify Pipeline（對應 `cognify()`） |
-| `POST /api/v1/search` | 執行檢索查詢（對應 `search()`／`recall()`） |
-| `DELETE /api/v1/datasets` | 刪除指定 dataset（對應 `forget()`／`delete_dataset`） |
+| 端點                      | 用途                                                    |
+| ------------------------- | ------------------------------------------------------- |
+| `POST /api/v1/add`        | 上傳/新增內容至指定 dataset（對應 Core API 的 `add()`） |
+| `POST /api/v1/cognify`    | 觸發 Cognify Pipeline（對應 `cognify()`）               |
+| `POST /api/v1/search`     | 執行檢索查詢（對應 `search()`／`recall()`）             |
+| `DELETE /api/v1/datasets` | 刪除指定 dataset（對應 `forget()`／`delete_dataset`）   |
 
 **認證模式依部署型態而異**：
 
@@ -1211,11 +1212,11 @@ docker run -e TRANSPORT_MODE=sse --env-file ./.env -p 8000:8000 --rm -it cognee/
 
 ### 11.4 Transport 模式
 
-| Transport | 啟動方式 | 適用場景 |
-| --- | --- | --- |
-| stdio（預設） | `python src/server.py` | 單機本地整合，MCP Client 直接透過子程序 stdio 溝通 |
-| SSE | `python src/server.py --transport sse` | 需要串流回應、跨主機存取的場景 |
-| HTTP | `python src/server.py --transport http --host 127.0.0.1 --port 8000 --path /mcp` | 官方建議用於 Web 情境，適合部署為企業內部共用服務 |
+| Transport     | 啟動方式                                                                         | 適用場景                                           |
+| ------------- | -------------------------------------------------------------------------------- | -------------------------------------------------- |
+| stdio（預設） | `python src/server.py`                                                           | 單機本地整合，MCP Client 直接透過子程序 stdio 溝通 |
+| SSE           | `python src/server.py --transport sse`                                           | 需要串流回應、跨主機存取的場景                     |
+| HTTP          | `python src/server.py --transport http --host 127.0.0.1 --port 8000 --path /mcp` | 官方建議用於 Web 情境，適合部署為企業內部共用服務  |
 
 Docker 環境下請改用環境變數 `-e TRANSPORT_MODE=sse` 而非 CLI 旗標；Mac/Windows 上 API Mode 需連接 Docker 外部服務時使用 `host.docker.internal`，Linux 建議搭配 `--network host`。
 
@@ -1223,22 +1224,22 @@ Docker 環境下請改用環境變數 `-e TRANSPORT_MODE=sse` 而非 CLI 旗標�
 
 > **⚠️ 版本提醒**：MCP 工具清單隨 Cognee 版本迭代變動較快（v1.0 前後曾有一輪明顯改版）。以下依 `docs.cognee.ai/cognee-mcp/mcp-tools` 官方頁面直接查證的**當前（v1.3.0 系列）清單**為準，共 14 個工具，分為四類。若你參考的是較舊教學（例如仍列出 `add`、`codify`、`visualize_graph_ui`、`upload_file_ui`、`open_cognee_workspace` 等工具名稱），代表該教學對應的是官方改版前的舊清單，這些工具名稱在目前官方文件中已查無對應項目，企業導入前務必以官方當下頁面為準。
 
-| 分類 | 工具 | 用途 |
-| --- | --- | --- |
-| 記憶管理（v1.0+ 高階） | `remember` | 將內容寫入 Session 快取或永久圖譜 |
-| | `recall` | 自動路由檢索（先查 Session 快取、再查圖譜） |
-| | `forget` | 依 dataset 刪除，或清空目前使用者的全部記憶 |
-| | `improve` | 精煉既有知識圖譜／將 Session 記憶橋接進永久圖譜（含 auto-distill，詳見第四章 4.5） |
-| 記憶管理（Core，低階） | `cognify` | 將已匯入的資料轉為結構化知識圖譜 |
-| | `search` | 對知識圖譜執行明確指定策略的查詢（含 `GRAPH_COMPLETION` 等） |
-| | `prune` | 重置本地 MCP 管理的記憶儲存 |
-| 文件與 Chunk 查詢 | `get_document` | 取得來源文件本身與其對應的 chunk |
-| | `get_chunk_neighbors` | 取得同一文件中相鄰的 chunk，用於補足上下文 |
-| 互動沉澱 | `save_interaction` | 將使用者-助理互動保存，供後續處理為記憶或開發規則 |
-| 資料管理 | `list_data` | 列出目前使用者的 dataset 與資料項目 ID（供刪除操作使用） |
-| | `delete` | 刪除 dataset 中的特定資料項目 |
-| | `delete_dataset` | 依名稱刪除整個 dataset |
-| 執行狀態 | `cognify_status` | 查詢指定 dataset 目前/近期的 Cognify Pipeline 執行狀態 |
+| 分類                   | 工具                  | 用途                                                                               |
+| ---------------------- | --------------------- | ---------------------------------------------------------------------------------- |
+| 記憶管理（v1.0+ 高階） | `remember`            | 將內容寫入 Session 快取或永久圖譜                                                  |
+|                        | `recall`              | 自動路由檢索（先查 Session 快取、再查圖譜）                                        |
+|                        | `forget`              | 依 dataset 刪除，或清空目前使用者的全部記憶                                        |
+|                        | `improve`             | 精煉既有知識圖譜／將 Session 記憶橋接進永久圖譜（含 auto-distill，詳見第四章 4.5） |
+| 記憶管理（Core，低階） | `cognify`             | 將已匯入的資料轉為結構化知識圖譜                                                   |
+|                        | `search`              | 對知識圖譜執行明確指定策略的查詢（含 `GRAPH_COMPLETION` 等）                       |
+|                        | `prune`               | 重置本地 MCP 管理的記憶儲存                                                        |
+| 文件與 Chunk 查詢      | `get_document`        | 取得來源文件本身與其對應的 chunk                                                   |
+|                        | `get_chunk_neighbors` | 取得同一文件中相鄰的 chunk，用於補足上下文                                         |
+| 互動沉澱               | `save_interaction`    | 將使用者-助理互動保存，供後續處理為記憶或開發規則                                  |
+| 資料管理               | `list_data`           | 列出目前使用者的 dataset 與資料項目 ID（供刪除操作使用）                           |
+|                        | `delete`              | 刪除 dataset 中的特定資料項目                                                      |
+|                        | `delete_dataset`      | 依名稱刪除整個 dataset                                                             |
+| 執行狀態               | `cognify_status`      | 查詢指定 dataset 目前/近期的 Cognify Pipeline 執行狀態                             |
 
 **與舊版的主要差異**：`add`（新增記憶物件）目前保留在 REST API（見第十章新增小節）與 CLI 的 legacy 指令中，但**未列在目前的 MCP 工具清單**；`codify`（程式碼專屬圖譜）與三個 Workspace UI 工具（`visualize_graph_ui`／`upload_file_ui`／`open_cognee_workspace`）在當前官方 MCP 文件中已查無對應項目，可視覺化操作建議改用第 7.5 節 `docker compose --profile ui up` 啟動的獨立 Workspace UI。
 
@@ -1560,12 +1561,12 @@ Plugin 掛載後，`PostToolUse` 與 `SessionEnd` 會自動把「本次 Session 
 
 **步驟 3：跨 Session 記憶的實際效益**
 
-| 沒有 Cognee 的情境 | 導入 Cognee 後的情境 |
-| --- | --- |
-| 每次開新 Session，需要重新在 Prompt 中描述專案架構背景 | `SessionStart` 自動注入既有架構知識，Claude Code 立即具備專案脈絡 |
-| Bug 修復方式僅存在於已關閉的對話視窗中，難以追溯 | `remember`/`save_interaction` 沉澱修復脈絡，未來遇到類似 Bug 可透過 `recall` 找到歷史修復方式 |
-| 程式碼慣例（Coding Style）需要每次在 Prompt 中重複交代 | 慣例可沉澱為知識圖譜節點，`UserPromptSubmit` 階段自動補充相關慣例上下文 |
-| 架構決策的「為什麼這樣設計」隨時間被遺忘 | ADR 與決策脈絡持久保存在圖譜中，新加入的工程師（或新開的 Claude Code Session）皆可查詢 |
+| 沒有 Cognee 的情境                                     | 導入 Cognee 後的情境                                                                          |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| 每次開新 Session，需要重新在 Prompt 中描述專案架構背景 | `SessionStart` 自動注入既有架構知識，Claude Code 立即具備專案脈絡                             |
+| Bug 修復方式僅存在於已關閉的對話視窗中，難以追溯       | `remember`/`save_interaction` 沉澱修復脈絡，未來遇到類似 Bug 可透過 `recall` 找到歷史修復方式 |
+| 程式碼慣例（Coding Style）需要每次在 Prompt 中重複交代 | 慣例可沉澱為知識圖譜節點，`UserPromptSubmit` 階段自動補充相關慣例上下文                       |
+| 架構決策的「為什麼這樣設計」隨時間被遺忘               | ADR 與決策脈絡持久保存在圖譜中，新加入的工程師（或新開的 Claude Code Session）皆可查詢        |
 
 **步驟 4：Migration History 的記憶化**
 
@@ -1641,13 +1642,13 @@ docker run -e TRANSPORT_MODE=http --env-file ./.env -p 8000:8000 cognee/cognee-m
 
 ### 16.3 Workspace Memory 與 Project Knowledge 建立流程
 
-| 目標 | 作法 |
-| --- | --- |
-| Workspace Memory（工作區記憶） | 專案初始化時批次匯入 README、CONTRIBUTING、架構文件至專屬 dataset（如 `project_<repo_name>`） |
-| Project Knowledge（專案知識） | 開發過程中透過 Copilot Chat 明確要求呼叫 `remember` 沉澱重大決策，比照第十五章 Claude Code 的做法 |
+| 目標                            | 作法                                                                                                      |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Workspace Memory（工作區記憶）  | 專案初始化時批次匯入 README、CONTRIBUTING、架構文件至專屬 dataset（如 `project_<repo_name>`）             |
+| Project Knowledge（專案知識）   | 開發過程中透過 Copilot Chat 明確要求呼叫 `remember` 沉澱重大決策，比照第十五章 Claude Code 的做法         |
 | Coding Convention（程式碼慣例） | 將團隊 Style Guide、Lint 規則說明匯入知識圖譜，Copilot 回答風格問題時可 `recall` 取得團隊慣例而非泛用建議 |
-| Architecture Memory（架構記憶） | 匯入 ADR、系統設計文件，建立實體（服務、模組）與關係（依賴、負責團隊） |
-| Repository Memory（版控記憶） | 可透過 CI Hook（比照第九章 9.3 節）在重大 PR 合併時自動同步匯入 Cognee |
+| Architecture Memory（架構記憶） | 匯入 ADR、系統設計文件，建立實體（服務、模組）與關係（依賴、負責團隊）                                    |
+| Repository Memory（版控記憶）   | 可透過 CI Hook（比照第九章 9.3 節）在重大 PR 合併時自動同步匯入 Cognee                                    |
 
 ### 16.4 跨 Session 長期記憶的實務案例
 
@@ -1710,12 +1711,12 @@ graph TD
 
 ### 17.2 依架構風格的知識圖譜建模建議
 
-| 架構風格 | 建議的知識實體/關係設計 |
-| --- | --- |
-| Clean Architecture / Hexagonal Architecture | 以「Port」「Adapter」「Use Case」為實體，關係標註「哪個 Adapter 實作哪個 Port」，避免 AI 生成程式碼時誤把商業邏輯寫進 Adapter 層 |
-| DDD（Domain-Driven Design） | 以「Bounded Context」「Aggregate」「Domain Event」為核心實體，關係標註 Context 之間的整合方式（Anti-Corruption Layer、Shared Kernel 等） |
-| Microservices | 以「Service」為節點，「依賴」「呼叫」「共用資料庫」為邊，快速讓 AI Coding 工具理解服務間的耦合關係，避免建議出違反服務邊界的變更 |
-| Monolith（模組化單體） | 以「Module」「Package」為節點，標註模組間允許/禁止的依賴方向，輔助 AI 工具遵守既有的分層規範 |
+| 架構風格                                    | 建議的知識實體/關係設計                                                                                                                  |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Clean Architecture / Hexagonal Architecture | 以「Port」「Adapter」「Use Case」為實體，關係標註「哪個 Adapter 實作哪個 Port」，避免 AI 生成程式碼時誤把商業邏輯寫進 Adapter 層         |
+| DDD（Domain-Driven Design）                 | 以「Bounded Context」「Aggregate」「Domain Event」為核心實體，關係標註 Context 之間的整合方式（Anti-Corruption Layer、Shared Kernel 等） |
+| Microservices                               | 以「Service」為節點，「依賴」「呼叫」「共用資料庫」為邊，快速讓 AI Coding 工具理解服務間的耦合關係，避免建議出違反服務邊界的變更         |
+| Monolith（模組化單體）                      | 以「Module」「Package」為節點，標註模組間允許/禁止的依賴方向，輔助 AI 工具遵守既有的分層規範                                             |
 
 ### 17.3 實作步驟：建立 Web Application 專案知識庫
 
@@ -1912,14 +1913,14 @@ cognee-cli remember "模組 order-service 升級至 Spring Boot 3 時，javax.pe
 
 ### 19.3 各框架升級的知識建模重點
 
-| 框架 | 建議重點知識 |
-| --- | --- |
-| Java / Jakarta EE | `javax.*` → `jakarta.*` 命名空間遷移影響範圍、各模組使用的 Jakarta EE 規範版本 |
-| Spring Boot | 設定屬性（`application.yml`）變更、自動配置行為變更、相依套件版本相容矩陣 |
-| Vue 2 → Vue 3 | Composition API 遷移範圍、破壞性變更的元件清單、第三方套件相容性狀態 |
-| Angular | 各版本間的 Breaking Changes（如 Ivy 引擎、Standalone Components）、`ng update` 執行紀錄與人工修正項目 |
-| React | Class Component → Function Component + Hooks 遷移範圍、已棄用生命週期方法的使用清單 |
-| .NET | Framework → .NET Core/5+ 的 API 相容性分析、NuGet 套件遷移狀態 |
+| 框架              | 建議重點知識                                                                                          |
+| ----------------- | ----------------------------------------------------------------------------------------------------- |
+| Java / Jakarta EE | `javax.*` → `jakarta.*` 命名空間遷移影響範圍、各模組使用的 Jakarta EE 規範版本                        |
+| Spring Boot       | 設定屬性（`application.yml`）變更、自動配置行為變更、相依套件版本相容矩陣                             |
+| Vue 2 → Vue 3     | Composition API 遷移範圍、破壞性變更的元件清單、第三方套件相容性狀態                                  |
+| Angular           | 各版本間的 Breaking Changes（如 Ivy 引擎、Standalone Components）、`ng update` 執行紀錄與人工修正項目 |
+| React             | Class Component → Function Component + Hooks 遷移範圍、已棄用生命週期方法的使用清單                   |
+| .NET              | Framework → .NET Core/5+ 的 API 相容性分析、NuGet 套件遷移狀態                                        |
 
 ### 19.4 相依性分析與遷移策略
 
@@ -1978,17 +1979,17 @@ flowchart TD
 
 ### 20.2 各階段與 Cognee 的對應操作
 
-| 階段 | 對應 Cognee 操作 | 說明 |
-| --- | --- | --- |
-| Memory | `recall` | 檢索既有架構決策、程式碼慣例、歷史 Bug 修復經驗 |
-| Knowledge | `search`（`GRAPH_COMPLETION`） | 針對需求涉及的領域知識做多跳推理式查詢 |
-| Planning | LLM + 檢索結果 | AI Coding 工具基於已注入的上下文產出實作計畫 |
-| Coding | — | 一般程式碼生成，非 Cognee 直接負責範疇 |
-| Review | `search`（比對既有慣例） | 檢查生成程式碼是否符合已知架構邊界與慣例 |
-| Test | — | 一般測試工具負責範疇 |
-| Deploy | — | 一般 CI/CD 負責範疇 |
-| Learning | 人工/自動萃取重點 | 從本次開發過程萃取值得沉澱的新知識 |
-| Memory Update | `remember` / `improve` | 將新知識寫回知識圖譜，供下次開發迴圈使用 |
+| 階段          | 對應 Cognee 操作               | 說明                                            |
+| ------------- | ------------------------------ | ----------------------------------------------- |
+| Memory        | `recall`                       | 檢索既有架構決策、程式碼慣例、歷史 Bug 修復經驗 |
+| Knowledge     | `search`（`GRAPH_COMPLETION`） | 針對需求涉及的領域知識做多跳推理式查詢          |
+| Planning      | LLM + 檢索結果                 | AI Coding 工具基於已注入的上下文產出實作計畫    |
+| Coding        | —                              | 一般程式碼生成，非 Cognee 直接負責範疇          |
+| Review        | `search`（比對既有慣例）       | 檢查生成程式碼是否符合已知架構邊界與慣例        |
+| Test          | —                              | 一般測試工具負責範疇                            |
+| Deploy        | —                              | 一般 CI/CD 負責範疇                             |
+| Learning      | 人工/自動萃取重點              | 從本次開發過程萃取值得沉澱的新知識              |
+| Memory Update | `remember` / `improve`         | 將新知識寫回知識圖譜，供下次開發迴圈使用        |
 
 ### 20.3 為何「Memory Update」是常被忽略卻最關鍵的一步
 
@@ -2044,14 +2045,14 @@ graph TD
 
 ### 21.2 六大知識類型的治理建議
 
-| 知識類型 | dataset 命名建議 | 治理負責人 | 更新頻率 |
-| --- | --- | --- | --- |
-| Architecture Memory（架構記憶） | `org_architecture` | 架構治理委員會 / Principal Engineer | 重大決策發生時 |
-| Project Memory（專案記憶） | `project_<name>` | 各專案 Tech Lead | 持續（隨開發迴圈） |
-| Coding Memory（程式碼記憶） | `org_coding_conventions` | 工程實務委員會 | 季度審視 |
-| Operation Memory（維運記憶） | `org_operations` | SRE / 維運團隊 | 事件發生後即時 |
-| Troubleshooting Memory（疑難排解記憶） | `org_troubleshooting` | 各團隊值班工程師 | 事件發生後即時 |
-| Customer / Domain Knowledge（客戶/領域知識） | `org_customer_knowledge` | 業務 / 產品團隊 | 持續 |
+| 知識類型                                     | dataset 命名建議         | 治理負責人                          | 更新頻率           |
+| -------------------------------------------- | ------------------------ | ----------------------------------- | ------------------ |
+| Architecture Memory（架構記憶）              | `org_architecture`       | 架構治理委員會 / Principal Engineer | 重大決策發生時     |
+| Project Memory（專案記憶）                   | `project_<name>`         | 各專案 Tech Lead                    | 持續（隨開發迴圈） |
+| Coding Memory（程式碼記憶）                  | `org_coding_conventions` | 工程實務委員會                      | 季度審視           |
+| Operation Memory（維運記憶）                 | `org_operations`         | SRE / 維運團隊                      | 事件發生後即時     |
+| Troubleshooting Memory（疑難排解記憶）       | `org_troubleshooting`    | 各團隊值班工程師                    | 事件發生後即時     |
+| Customer / Domain Knowledge（客戶/領域知識） | `org_customer_knowledge` | 業務 / 產品團隊                     | 持續               |
 
 ### 21.3 治理流程設計
 
@@ -2099,11 +2100,11 @@ Cognee 主打 self-hosted 架構，這是它相較部分雲端記憶服務（如
 
 ### 22.3 Encryption（加密）
 
-| 層級 | 建議做法 |
-| --- | --- |
-| 傳輸中加密（In-Transit） | MCP Server／API 對外端點務必啟用 TLS（HTTPS/WSS），避免內網明文傳輸知識查詢內容 |
-| 靜態加密（At-Rest） | PostgreSQL／Neo4j 等底層資料庫應啟用資料庫層加密（如 PostgreSQL 的 TDE 方案或雲端代管服務內建的靜態加密） |
-| 金鑰管理 | `LLM_API_KEY`、`DB_PASSWORD`、`GRAPH_DATABASE_PASSWORD`、`FASTAPI_USERS_JWT_SECRET` 統一透過企業密鑰管理服務（Vault / AWS Secrets Manager / Azure Key Vault）管理 |
+| 層級                     | 建議做法                                                                                                                                                          |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 傳輸中加密（In-Transit） | MCP Server／API 對外端點務必啟用 TLS（HTTPS/WSS），避免內網明文傳輸知識查詢內容                                                                                   |
+| 靜態加密（At-Rest）      | PostgreSQL／Neo4j 等底層資料庫應啟用資料庫層加密（如 PostgreSQL 的 TDE 方案或雲端代管服務內建的靜態加密）                                                         |
+| 金鑰管理                 | `LLM_API_KEY`、`DB_PASSWORD`、`GRAPH_DATABASE_PASSWORD`、`FASTAPI_USERS_JWT_SECRET` 統一透過企業密鑰管理服務（Vault / AWS Secrets Manager / Azure Key Vault）管理 |
 
 ### 22.4 Permission、Secret、Credential 管理
 
@@ -2122,14 +2123,14 @@ Cognee 主打 self-hosted 架構，這是它相較部分雲端記憶服務（如
 
 ### 22.7 企業安全建議總表
 
-| 風險項目 | 建議控制措施 |
-| --- | --- |
-| API 端點未認證即可存取 | 啟用 `REQUIRE_AUTHENTICATION`，對外端點加上 API Gateway 認證層 |
-| 機敏資料誤入知識圖譜 | Extract 階段建立 PII 偵測與遮罩機制（詳見第三章） |
-| 過度授權的 Cypher 查詢 | 預設關閉 `ALLOW_CYPHER_QUERY`，僅限白名單服務帳號開啟 |
-| 多租戶資料外洩 | Storage 層設計租戶隔離（獨立 schema/實例），不僅依賴應用層過濾（詳見第六章） |
-| 密鑰硬編碼於版控 | 強制使用密鑰管理服務，並於 CI 中加入密鑰掃描（Secret Scanning） |
-| 缺乏刪除稽核 | 應用層記錄所有 `forget` 操作的發起者、範圍、時間 |
+| 風險項目               | 建議控制措施                                                                 |
+| ---------------------- | ---------------------------------------------------------------------------- |
+| API 端點未認證即可存取 | 啟用 `REQUIRE_AUTHENTICATION`，對外端點加上 API Gateway 認證層               |
+| 機敏資料誤入知識圖譜   | Extract 階段建立 PII 偵測與遮罩機制（詳見第三章）                            |
+| 過度授權的 Cypher 查詢 | 預設關閉 `ALLOW_CYPHER_QUERY`，僅限白名單服務帳號開啟                        |
+| 多租戶資料外洩         | Storage 層設計租戶隔離（獨立 schema/實例），不僅依賴應用層過濾（詳見第六章） |
+| 密鑰硬編碼於版控       | 強制使用密鑰管理服務，並於 CI 中加入密鑰掃描（Secret Scanning）              |
+| 缺乏刪除稽核           | 應用層記錄所有 `forget` 操作的發起者、範圍、時間                             |
 
 ### 22.8 Anti Pattern
 
@@ -2194,12 +2195,12 @@ Cognee 的效能瓶頸主要集中在 **Cognify 階段的 LLM 呼叫** 與 **大
 
 ### 23.8 效能建議總表
 
-| 場景 | 建議措施 |
-| --- | --- |
-| Cognify 成本過高 | 調整 Chunk 策略、批次處理、評估是否所有資料都需要完整 Cognify（低價值資料可考慮僅做輕量 Extract） |
-| recall 延遲過高 | 檢查 Traversal 深度、評估 Graph Store 索引策略、導入查詢結果快取 |
-| 高併發寫入拖慢查詢 | Session Memory 快取後端切換至 Redis，讀寫分離 |
-| 向量檢索延遲隨資料量成長惡化 | 評估索引策略升級（IVFFlat → HNSW）或遷移至專用向量資料庫 |
+| 場景                         | 建議措施                                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------------------- |
+| Cognify 成本過高             | 調整 Chunk 策略、批次處理、評估是否所有資料都需要完整 Cognify（低價值資料可考慮僅做輕量 Extract） |
+| recall 延遲過高              | 檢查 Traversal 深度、評估 Graph Store 索引策略、導入查詢結果快取                                  |
+| 高併發寫入拖慢查詢           | Session Memory 快取後端切換至 Redis，讀寫分離                                                     |
+| 向量檢索延遲隨資料量成長惡化 | 評估索引策略升級（IVFFlat → HNSW）或遷移至專用向量資料庫                                          |
 
 ### 23.9 Anti Pattern
 
@@ -2251,12 +2252,12 @@ Cognee 本身以 OpenTelemetry 為主要可觀測性介面，Prometheus 風格�
 
 生產環境建議針對以下面向建立健康檢查：
 
-| 檢查項目 | 建議做法 |
-| --- | --- |
-| API Server 存活 | 對 HTTP API 端點設定基本 liveness probe |
-| Storage 連線 | 定期驗證 PostgreSQL/Neo4j/Vector Store 連線是否正常 |
-| MCP Server 可用性 | 針對第十一章的中央 MCP Server 設定獨立健康檢查，避免影響所有連接的 AI Coding 工具 |
-| LLM Provider 可用性 | 監控 Cognify/Embedding 呼叫的錯誤率，及早發現 LLM Provider 端的服務異常 |
+| 檢查項目            | 建議做法                                                                          |
+| ------------------- | --------------------------------------------------------------------------------- |
+| API Server 存活     | 對 HTTP API 端點設定基本 liveness probe                                           |
+| Storage 連線        | 定期驗證 PostgreSQL/Neo4j/Vector Store 連線是否正常                               |
+| MCP Server 可用性   | 針對第十一章的中央 MCP Server 設定獨立健康檢查，避免影響所有連接的 AI Coding 工具 |
+| LLM Provider 可用性 | 監控 Cognify/Embedding 呼叫的錯誤率，及早發現 LLM Provider 端的服務異常           |
 
 ### 24.5 Alert 告警設計
 
@@ -2294,153 +2295,153 @@ Cognee 本身以 OpenTelemetry 為主要可觀測性介面，Prometheus 風格�
 
 ### 25.1 安裝與環境（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 1 | `pip install cognee` 安裝時原生依賴編譯失敗（Windows） | 部分向量/圖資料庫 driver 需要 C/C++ 編譯工具鏈 | 改用 WSL2 或安裝對應的 Visual C++ Build Tools（第七章 7.3） |
-| 2 | `import cognee` 報 ImportError | extras 未安裝（如需要 postgres 支援卻只裝了基礎套件） | `pip install "cognee[postgres]"` 安裝對應 extras |
-| 3 | Docker Compose 啟動後 API 無回應 | `.env` 未正確設定 `LLM_API_KEY` 導致啟動時初始化失敗 | 檢查容器日誌，確認 `.env` 已由 `.env.template` 正確複製並填值 |
-| 4 | `uv pip install cognee` 找不到 `uv` 指令 | 尚未安裝 uv 工具本身 | 先執行 `pip install uv` 或依官方安裝腳本安裝 |
-| 5 | 虛擬環境啟動後版本與預期不符 | 系統中存在多個 Python 版本，虛擬環境綁定錯誤版本 | 建立虛擬環境時明確指定 `python3.11 -m venv .venv` |
-| 6 | Docker 映像檔啟動後立即 Exit | 缺少必要環境變數導致啟動腳本 early exit | 檢查 `docker logs <container>` 詳細錯誤訊息，比對第八章必要變數清單 |
-| 7 | Poetry 專案加入 cognee 後解析相依衝突 | Poetry 的相依解析器與 cognee 部分 extras 版本區間衝突 | 明確釘選 cognee 版本並執行 `poetry lock --no-update` 排查衝突來源 |
-| 8 | WSL2 中 Docker 無法存取 Windows 檔案系統效能差 | WSL2 對 `/mnt/c` 路徑的 I/O 效能天生較低 | 將專案與資料目錄放在 WSL2 原生檔案系統內，而非 Windows 掛載路徑 |
-| 9 | `cognee-cli` 安裝後指令找不到（command not found） | CLI 進入點未加入 PATH，或安裝於非啟用中的虛擬環境 | 確認虛擬環境已啟用，或改用 `python -m cognee_cli` 呼叫 |
-| 10 | Docker Compose 多個 Profile 同時啟用互相衝突 | Profile 之間有埠號或服務命名衝突 | 逐一啟用 Profile 排查衝突來源，或調整 `docker-compose.override.yml` 埠號設定 |
+| #   | 問題                                                   | 原因分析                                              | 解決方式                                                                     |
+| --- | ------------------------------------------------------ | ----------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 1   | `pip install cognee` 安裝時原生依賴編譯失敗（Windows） | 部分向量/圖資料庫 driver 需要 C/C++ 編譯工具鏈        | 改用 WSL2 或安裝對應的 Visual C++ Build Tools（第七章 7.3）                  |
+| 2   | `import cognee` 報 ImportError                         | extras 未安裝（如需要 postgres 支援卻只裝了基礎套件） | `pip install "cognee[postgres]"` 安裝對應 extras                             |
+| 3   | Docker Compose 啟動後 API 無回應                       | `.env` 未正確設定 `LLM_API_KEY` 導致啟動時初始化失敗  | 檢查容器日誌，確認 `.env` 已由 `.env.template` 正確複製並填值                |
+| 4   | `uv pip install cognee` 找不到 `uv` 指令               | 尚未安裝 uv 工具本身                                  | 先執行 `pip install uv` 或依官方安裝腳本安裝                                 |
+| 5   | 虛擬環境啟動後版本與預期不符                           | 系統中存在多個 Python 版本，虛擬環境綁定錯誤版本      | 建立虛擬環境時明確指定 `python3.11 -m venv .venv`                            |
+| 6   | Docker 映像檔啟動後立即 Exit                           | 缺少必要環境變數導致啟動腳本 early exit               | 檢查 `docker logs <container>` 詳細錯誤訊息，比對第八章必要變數清單          |
+| 7   | Poetry 專案加入 cognee 後解析相依衝突                  | Poetry 的相依解析器與 cognee 部分 extras 版本區間衝突 | 明確釘選 cognee 版本並執行 `poetry lock --no-update` 排查衝突來源            |
+| 8   | WSL2 中 Docker 無法存取 Windows 檔案系統效能差         | WSL2 對 `/mnt/c` 路徑的 I/O 效能天生較低              | 將專案與資料目錄放在 WSL2 原生檔案系統內，而非 Windows 掛載路徑              |
+| 9   | `cognee-cli` 安裝後指令找不到（command not found）     | CLI 進入點未加入 PATH，或安裝於非啟用中的虛擬環境     | 確認虛擬環境已啟用，或改用 `python -m cognee_cli` 呼叫                       |
+| 10  | Docker Compose 多個 Profile 同時啟用互相衝突           | Profile 之間有埠號或服務命名衝突                      | 逐一啟用 Profile 排查衝突來源，或調整 `docker-compose.override.yml` 埠號設定 |
 
 ### 25.2 Configuration 與連線（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 11 | 啟動時報錯找不到 `LLM_API_KEY` | 環境變數未設定或 `.env` 未被正確載入 | 確認執行目錄下存在 `.env` 且格式正確，或改用 `os.environ` 顯式設定 |
-| 12 | PostgreSQL 連線逾時 | `DB_HOST`/`DB_PORT` 設定錯誤，或資料庫防火牆未開放來源 IP | 檢查連線字串與網路規則，使用 `psql` 手動測試連線 |
-| 13 | Neo4j 連線報認證失敗 | `GRAPH_DATABASE_USERNAME`/`GRAPH_DATABASE_PASSWORD` 錯誤或帳號權限不足 | 於 Neo4j Browser 手動驗證帳密，確認帳號具備讀寫權限 |
-| 14 | 切換 Embedding 模型後查詢結果全部異常 | `EMBEDDING_DIMENSIONS` 與既有向量索引維度不一致 | 重建向量索引，或維持與既有索引一致的 Embedding 模型 |
-| 15 | Azure OpenAI 設定後呼叫失敗 | 缺少 `LLM_API_VERSION`（Azure 為必填） | 依 Azure 官方文件補上對應 API 版本號 |
-| 16 | Ollama 本地模型無法連線 | `LLM_ENDPOINT` 未設定或指向錯誤的本地服務位址 | 確認 Ollama 服務已啟動並正確設定 `LLM_ENDPOINT` |
-| 17 | 多環境（dev/staging/prod）設定互相污染 | 共用同一份 `.env`，未依環境區隔 | 依環境拆分獨立設定檔或 Secrets 命名空間（第八章 8.6） |
-| 18 | `VECTOR_DB_PROVIDER=qdrant` 啟動失敗 | Qdrant 屬社群 adapter，可能未預裝對應相依套件 | 確認已安裝對應 extras，或改用官方內建 Provider |
-| 19 | `.env` 中密碼含特殊字元導致連線字串解析錯誤 | 特殊字元未做 URL Encode | 對連線字串中的密碼部分做適當跳脫或改用環境變數分離設定 |
-| 20 | 修改設定後服務未生效 | 服務未重啟，仍使用舊的環境變數快取 | 確認設定變更後已完整重啟服務程序，而非僅重新載入部分模組 |
+| #   | 問題                                        | 原因分析                                                               | 解決方式                                                           |
+| --- | ------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 11  | 啟動時報錯找不到 `LLM_API_KEY`              | 環境變數未設定或 `.env` 未被正確載入                                   | 確認執行目錄下存在 `.env` 且格式正確，或改用 `os.environ` 顯式設定 |
+| 12  | PostgreSQL 連線逾時                         | `DB_HOST`/`DB_PORT` 設定錯誤，或資料庫防火牆未開放來源 IP              | 檢查連線字串與網路規則，使用 `psql` 手動測試連線                   |
+| 13  | Neo4j 連線報認證失敗                        | `GRAPH_DATABASE_USERNAME`/`GRAPH_DATABASE_PASSWORD` 錯誤或帳號權限不足 | 於 Neo4j Browser 手動驗證帳密，確認帳號具備讀寫權限                |
+| 14  | 切換 Embedding 模型後查詢結果全部異常       | `EMBEDDING_DIMENSIONS` 與既有向量索引維度不一致                        | 重建向量索引，或維持與既有索引一致的 Embedding 模型                |
+| 15  | Azure OpenAI 設定後呼叫失敗                 | 缺少 `LLM_API_VERSION`（Azure 為必填）                                 | 依 Azure 官方文件補上對應 API 版本號                               |
+| 16  | Ollama 本地模型無法連線                     | `LLM_ENDPOINT` 未設定或指向錯誤的本地服務位址                          | 確認 Ollama 服務已啟動並正確設定 `LLM_ENDPOINT`                    |
+| 17  | 多環境（dev/staging/prod）設定互相污染      | 共用同一份 `.env`，未依環境區隔                                        | 依環境拆分獨立設定檔或 Secrets 命名空間（第八章 8.6）              |
+| 18  | `VECTOR_DB_PROVIDER=qdrant` 啟動失敗        | Qdrant 屬社群 adapter，可能未預裝對應相依套件                          | 確認已安裝對應 extras，或改用官方內建 Provider                     |
+| 19  | `.env` 中密碼含特殊字元導致連線字串解析錯誤 | 特殊字元未做 URL Encode                                                | 對連線字串中的密碼部分做適當跳脫或改用環境變數分離設定             |
+| 20  | 修改設定後服務未生效                        | 服務未重啟，仍使用舊的環境變數快取                                     | 確認設定變更後已完整重啟服務程序，而非僅重新載入部分模組           |
 
 ### 25.3 LLM / Embedding 相關（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 21 | Cognify 執行大量失敗，錯誤訊息與 Rate Limit 有關 | 並行度設定過高，超過 LLM Provider 的 QPS/TPM 限制 | 降低並行度並加入指數退避重試（Exponential Backoff） |
-| 22 | LLM 回應內容格式異常，實體抽取失敗 | 模型輸出未符合預期的結構化格式（如 JSON Schema） | 確認使用支援 Structured Output 的模型版本，必要時調整 Prompt |
-| 23 | Embedding 呼叫成本異常飆高 | 未使用批次呼叫，或重複對相同內容重新生成 Embedding | 導入內容去重（Deduplication）機制與批次呼叫 |
-| 24 | 自訂 `LLM_MODEL` 格式錯誤導致無法辨識 Provider | 未依 `provider/model-name` 格式填寫 | 依官方格式規範填寫，例如 `openai/gpt-5-mini` |
-| 25 | `LLM_TEMPERATURE` 設太高導致實體抽取結果不穩定 | 高溫度提升生成隨機性，不利結構化抽取任務 | Cognify 階段建議維持低溫度（預設 `0.0`），避免非必要的隨機性 |
-| 26 | Bedrock 模型呼叫權限錯誤 | AWS IAM 角色未授予對應 Bedrock 模型的呼叫權限 | 檢查 IAM Policy 是否包含目標模型 ARN 的 `bedrock:InvokeModel` 權限 |
-| 27 | 中文內容實體抽取品質不佳 | 所選模型對中文語意理解能力較弱 | 評估更換為中文表現較佳的模型，或調整 Prompt 加強語境提示 |
-| 28 | Embedding API 呼叫逾時 | 網路延遲或批次過大導致單次請求時間過長 | 縮小 `EMBEDDING_BATCH_SIZE`，並設定合理的請求逾時與重試 |
-| 29 | 混用多個 LLM Provider 導致行為不一致 | 不同 Provider 對同類型 Prompt 的抽取品質、格式穩定性有差異 | 生產環境建議固定單一 Provider/模型，變更前先做 A/B 品質驗證 |
-| 30 | LLM 呼叫費用無法歸因到特定專案/團隊 | 全公司共用單一 API Key，缺乏用量標記 | 依團隊/專案切分 API Key 或導入用量標記與計費歸因機制 |
+| #   | 問題                                             | 原因分析                                                   | 解決方式                                                           |
+| --- | ------------------------------------------------ | ---------------------------------------------------------- | ------------------------------------------------------------------ |
+| 21  | Cognify 執行大量失敗，錯誤訊息與 Rate Limit 有關 | 並行度設定過高，超過 LLM Provider 的 QPS/TPM 限制          | 降低並行度並加入指數退避重試（Exponential Backoff）                |
+| 22  | LLM 回應內容格式異常，實體抽取失敗               | 模型輸出未符合預期的結構化格式（如 JSON Schema）           | 確認使用支援 Structured Output 的模型版本，必要時調整 Prompt       |
+| 23  | Embedding 呼叫成本異常飆高                       | 未使用批次呼叫，或重複對相同內容重新生成 Embedding         | 導入內容去重（Deduplication）機制與批次呼叫                        |
+| 24  | 自訂 `LLM_MODEL` 格式錯誤導致無法辨識 Provider   | 未依 `provider/model-name` 格式填寫                        | 依官方格式規範填寫，例如 `openai/gpt-5-mini`                       |
+| 25  | `LLM_TEMPERATURE` 設太高導致實體抽取結果不穩定   | 高溫度提升生成隨機性，不利結構化抽取任務                   | Cognify 階段建議維持低溫度（預設 `0.0`），避免非必要的隨機性       |
+| 26  | Bedrock 模型呼叫權限錯誤                         | AWS IAM 角色未授予對應 Bedrock 模型的呼叫權限              | 檢查 IAM Policy 是否包含目標模型 ARN 的 `bedrock:InvokeModel` 權限 |
+| 27  | 中文內容實體抽取品質不佳                         | 所選模型對中文語意理解能力較弱                             | 評估更換為中文表現較佳的模型，或調整 Prompt 加強語境提示           |
+| 28  | Embedding API 呼叫逾時                           | 網路延遲或批次過大導致單次請求時間過長                     | 縮小 `EMBEDDING_BATCH_SIZE`，並設定合理的請求逾時與重試            |
+| 29  | 混用多個 LLM Provider 導致行為不一致             | 不同 Provider 對同類型 Prompt 的抽取品質、格式穩定性有差異 | 生產環境建議固定單一 Provider/模型，變更前先做 A/B 品質驗證        |
+| 30  | LLM 呼叫費用無法歸因到特定專案/團隊              | 全公司共用單一 API Key，缺乏用量標記                       | 依團隊/專案切分 API Key 或導入用量標記與計費歸因機制               |
 
 ### 25.4 Cognify / Pipeline 相關（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 31 | `cognify()` 執行時間過長且無進度回饋 | 大型 dataset 一次性執行，缺乏分批與進度追蹤 | 依模組/批次拆分執行，搭配第二十四章的 Tracing 觀察各 Task 耗時 |
-| 32 | 部分文件 Cognify 後查無對應知識節點 | 該文件 Extract 階段抽取失敗（如掃描版 PDF 未過 OCR） | 檢查 Extract 階段的原始內容是否為有效文字 |
-| 33 | 同一實體在圖譜中出現多個重複節點 | Ontology 未收斂，LLM 對同義詞抽取結果不一致 | 定期審視 Ontology，必要時透過 `improve()` 手動合併 |
-| 34 | Pipeline 執行到一半中斷，資料處於不一致狀態 | 未妥善處理異常中斷後的復原邏輯 | 確認批次處理具備冪等性（Idempotency），中斷後可安全重跑 |
-| 35 | 自訂 Task 加入 Pipeline 後整體流程失敗 | 自訂 Task 的輸入/輸出格式與既有 DataPoint 結構不相容 | 詳讀官方 Pipeline 開發文件，確認 Task 介面契約 |
-| 36 | Cognify 結果的關係抽取方向錯誤（主客體顛倒） | LLM 對特定語法結構的關係方向判斷失準 | 針對高重要性關係，考慮加入人工審核或後處理校正規則 |
-| 37 | 大量重複文件重複匯入，圖譜節點爆量 | 缺乏匯入前去重機制 | Extract 階段加入內容雜湊比對，避免重複匯入相同文件 |
-| 38 | Cognify 對表格型資料（Excel）抽取效果差 | 表格資料未先轉換為結構化描述即直接丟入純文字處理流程 | 匯入前先將表格轉為明確的欄位對應描述（如第三章 3.9 企業案例） |
-| 39 | Prune 操作後部分殘留資料未清除 | `prune_data()`／`prune_system()` 職責不同，僅執行其中一個 | 依實際需求同時執行資料與系統層級的 Prune |
-| 40 | Pipeline 在 CI 環境中的行為與本機不一致 | CI 環境變數設定與本機不同（如指向測試用資料庫） | 確認 CI Pipeline 明確設定獨立的測試環境變數，避免誤用生產設定 |
+| #   | 問題                                         | 原因分析                                                  | 解決方式                                                       |
+| --- | -------------------------------------------- | --------------------------------------------------------- | -------------------------------------------------------------- |
+| 31  | `cognify()` 執行時間過長且無進度回饋         | 大型 dataset 一次性執行，缺乏分批與進度追蹤               | 依模組/批次拆分執行，搭配第二十四章的 Tracing 觀察各 Task 耗時 |
+| 32  | 部分文件 Cognify 後查無對應知識節點          | 該文件 Extract 階段抽取失敗（如掃描版 PDF 未過 OCR）      | 檢查 Extract 階段的原始內容是否為有效文字                      |
+| 33  | 同一實體在圖譜中出現多個重複節點             | Ontology 未收斂，LLM 對同義詞抽取結果不一致               | 定期審視 Ontology，必要時透過 `improve()` 手動合併             |
+| 34  | Pipeline 執行到一半中斷，資料處於不一致狀態  | 未妥善處理異常中斷後的復原邏輯                            | 確認批次處理具備冪等性（Idempotency），中斷後可安全重跑        |
+| 35  | 自訂 Task 加入 Pipeline 後整體流程失敗       | 自訂 Task 的輸入/輸出格式與既有 DataPoint 結構不相容      | 詳讀官方 Pipeline 開發文件，確認 Task 介面契約                 |
+| 36  | Cognify 結果的關係抽取方向錯誤（主客體顛倒） | LLM 對特定語法結構的關係方向判斷失準                      | 針對高重要性關係，考慮加入人工審核或後處理校正規則             |
+| 37  | 大量重複文件重複匯入，圖譜節點爆量           | 缺乏匯入前去重機制                                        | Extract 階段加入內容雜湊比對，避免重複匯入相同文件             |
+| 38  | Cognify 對表格型資料（Excel）抽取效果差      | 表格資料未先轉換為結構化描述即直接丟入純文字處理流程      | 匯入前先將表格轉為明確的欄位對應描述（如第三章 3.9 企業案例）  |
+| 39  | Prune 操作後部分殘留資料未清除               | `prune_data()`／`prune_system()` 職責不同，僅執行其中一個 | 依實際需求同時執行資料與系統層級的 Prune                       |
+| 40  | Pipeline 在 CI 環境中的行為與本機不一致      | CI 環境變數設定與本機不同（如指向測試用資料庫）           | 確認 CI Pipeline 明確設定獨立的測試環境變數，避免誤用生產設定  |
 
 ### 25.5 Storage / Database 相關（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 41 | pgvector 查詢延遲隨資料量增長明顯上升 | 索引策略未隨資料規模調整（仍用預設 IVFFlat） | 評估升級為 HNSW 索引（第二十三章 23.7） |
-| 42 | Neo4j 記憶體不足導致查詢失敗 | Page Cache / Heap Size 設定過小，不適合實際圖譜規模 | 依圖譜規模調整 Neo4j 記憶體設定 |
-| 43 | SQLite 在高併發寫入下出現鎖定錯誤 | SQLite 天生不適合高併發寫入場景 | 生產環境高併發場景改用 PostgreSQL（第六章） |
-| 44 | 資料庫磁碟空間即將耗盡 | 缺乏資料保留政策，歷史記憶無限累積 | 依第二十一、二十二章建立 Retention Policy 並定期清理 |
-| 45 | 跨環境遷移資料後圖譜關係遺失 | 遷移腳本僅搬移 Relational 資料，未同步搬移 Graph/Vector Store | 遷移流程需涵蓋所有三層 Storage，並驗證關係完整性 |
-| 46 | 多租戶查詢效能因未分區而互相干擾 | 所有租戶資料落在同一張表/命名空間 | 依租戶規模評估獨立 Schema 或分區策略 |
-| 47 | AWS Neptune 連線出現間歇性逾時 | VPC 網路設定或安全群組規則限制連線 | 檢查 VPC Peering、Security Group 是否正確開放 |
-| 48 | 資料庫備份還原後應用程式無法正常查詢 | 還原流程未同步還原對應的索引結構 | 備份/還原 SOP 中明確涵蓋索引重建步驟 |
-| 49 | LanceDB（embedded 模式）在多程序併發存取時出現異常 | Embedded 型態資料庫通常不支援多程序同時寫入 | 高併發場景改用需要獨立服務的向量資料庫（Qdrant/pgvector 等） |
-| 50 | 資料庫連線池耗盡 | `POOL_ARGS`／`VECTOR_POOL_ARGS` 未依實際併發量調校 | 依生產流量評估並調整連線池大小 |
+| #   | 問題                                               | 原因分析                                                      | 解決方式                                                     |
+| --- | -------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------ |
+| 41  | pgvector 查詢延遲隨資料量增長明顯上升              | 索引策略未隨資料規模調整（仍用預設 IVFFlat）                  | 評估升級為 HNSW 索引（第二十三章 23.7）                      |
+| 42  | Neo4j 記憶體不足導致查詢失敗                       | Page Cache / Heap Size 設定過小，不適合實際圖譜規模           | 依圖譜規模調整 Neo4j 記憶體設定                              |
+| 43  | SQLite 在高併發寫入下出現鎖定錯誤                  | SQLite 天生不適合高併發寫入場景                               | 生產環境高併發場景改用 PostgreSQL（第六章）                  |
+| 44  | 資料庫磁碟空間即將耗盡                             | 缺乏資料保留政策，歷史記憶無限累積                            | 依第二十一、二十二章建立 Retention Policy 並定期清理         |
+| 45  | 跨環境遷移資料後圖譜關係遺失                       | 遷移腳本僅搬移 Relational 資料，未同步搬移 Graph/Vector Store | 遷移流程需涵蓋所有三層 Storage，並驗證關係完整性             |
+| 46  | 多租戶查詢效能因未分區而互相干擾                   | 所有租戶資料落在同一張表/命名空間                             | 依租戶規模評估獨立 Schema 或分區策略                         |
+| 47  | AWS Neptune 連線出現間歇性逾時                     | VPC 網路設定或安全群組規則限制連線                            | 檢查 VPC Peering、Security Group 是否正確開放                |
+| 48  | 資料庫備份還原後應用程式無法正常查詢               | 還原流程未同步還原對應的索引結構                              | 備份/還原 SOP 中明確涵蓋索引重建步驟                         |
+| 49  | LanceDB（embedded 模式）在多程序併發存取時出現異常 | Embedded 型態資料庫通常不支援多程序同時寫入                   | 高併發場景改用需要獨立服務的向量資料庫（Qdrant/pgvector 等） |
+| 50  | 資料庫連線池耗盡                                   | `POOL_ARGS`／`VECTOR_POOL_ARGS` 未依實際併發量調校            | 依生產流量評估並調整連線池大小                               |
 
 ### 25.6 Graph / Search / Retrieval 相關（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 51 | `recall()` 回傳結果與預期不相關 | 自動路由策略選擇的檢索方式不適合該類查詢 | 改用 `search()` 顯式指定 `SearchType`（第十章） |
-| 52 | `GRAPH_COMPLETION` 查詢回應速度慢 | Traversal 跳數過深或子圖範圍過大 | 限制 Traversal 深度，優化 Ontology 減少不必要的間接關係 |
-| 53 | 查詢結果包含明顯過期/矛盾的知識 | 長期未執行 `improve()`，舊知識未被更新或標記淘汰 | 建立定期知識圖譜健檢與更新機制（第四章 4.8） |
-| 54 | 向量相似度搜尋回傳語意不相關的結果 | Embedding 模型與內容語言/領域不匹配 | 評估更換更適合該領域/語言的 Embedding 模型 |
-| 55 | 圖譜查詢在稠密節點附近效能急遽下降 | 稠密節點（Super Node，如「公司」這類被大量引用的實體）造成 Traversal 組合爆炸 | 針對稠密節點設計特殊查詢策略或分層 Ontology 拆解 |
-| 56 | 混合檢索（Hybrid Search）排序結果不符合業務預期 | 自動融合排序權重不適合特定業務場景 | 透過 Python API 自訂排序邏輯（第五章 5.10） |
-| 57 | `CODE` 檢索模式對非主流語言支援度不佳 | 程式碼結構解析器對該語言的支援尚不成熟 | 確認語言支援清單，必要時搭配自訂 Task 補強解析 |
-| 58 | 查詢結果的來源脈絡（Provenance）無法追溯 | 匯入時未妥善保留來源 metadata | Extract 階段務必保留來源文件、時間戳等 metadata |
-| 59 | 相同查詢在不同時間得到不一致結果 | 圖譜持續在背景更新（非同步同步），查詢當下資料狀態不同 | 對一致性要求高的場景，評估是否需要查詢快照機制 |
-| 60 | 跨語言查詢（中文查詢英文知識庫）效果不佳 | Embedding 模型的跨語言對齊能力有限 | 評估支援多語言對齊較佳的 Embedding 模型，或建立雙語 Ontology 對照 |
+| #   | 問題                                            | 原因分析                                                                      | 解決方式                                                          |
+| --- | ----------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| 51  | `recall()` 回傳結果與預期不相關                 | 自動路由策略選擇的檢索方式不適合該類查詢                                      | 改用 `search()` 顯式指定 `SearchType`（第十章）                   |
+| 52  | `GRAPH_COMPLETION` 查詢回應速度慢               | Traversal 跳數過深或子圖範圍過大                                              | 限制 Traversal 深度，優化 Ontology 減少不必要的間接關係           |
+| 53  | 查詢結果包含明顯過期/矛盾的知識                 | 長期未執行 `improve()`，舊知識未被更新或標記淘汰                              | 建立定期知識圖譜健檢與更新機制（第四章 4.8）                      |
+| 54  | 向量相似度搜尋回傳語意不相關的結果              | Embedding 模型與內容語言/領域不匹配                                           | 評估更換更適合該領域/語言的 Embedding 模型                        |
+| 55  | 圖譜查詢在稠密節點附近效能急遽下降              | 稠密節點（Super Node，如「公司」這類被大量引用的實體）造成 Traversal 組合爆炸 | 針對稠密節點設計特殊查詢策略或分層 Ontology 拆解                  |
+| 56  | 混合檢索（Hybrid Search）排序結果不符合業務預期 | 自動融合排序權重不適合特定業務場景                                            | 透過 Python API 自訂排序邏輯（第五章 5.10）                       |
+| 57  | `CODE` 檢索模式對非主流語言支援度不佳           | 程式碼結構解析器對該語言的支援尚不成熟                                        | 確認語言支援清單，必要時搭配自訂 Task 補強解析                    |
+| 58  | 查詢結果的來源脈絡（Provenance）無法追溯        | 匯入時未妥善保留來源 metadata                                                 | Extract 階段務必保留來源文件、時間戳等 metadata                   |
+| 59  | 相同查詢在不同時間得到不一致結果                | 圖譜持續在背景更新（非同步同步），查詢當下資料狀態不同                        | 對一致性要求高的場景，評估是否需要查詢快照機制                    |
+| 60  | 跨語言查詢（中文查詢英文知識庫）效果不佳        | Embedding 模型的跨語言對齊能力有限                                            | 評估支援多語言對齊較佳的 Embedding 模型，或建立雙語 Ontology 對照 |
 
 ### 25.7 MCP / Agent Framework Integration 相關（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 61 | Claude Code 無法偵測到 Cognee Plugin | Plugin 未正確安裝或 Claude Code 版本過舊不支援 | 確認 `claude plugin install cognee-memory@cognee` 執行成功，並確認 Claude Code 版本 |
-| 62 | MCP Client 連不上 Cognee MCP Server（SSE 模式） | URL 設定錯誤或防火牆阻擋對應埠號 | 檢查 `mcpServers` 設定中的 URL 與埠號，並確認網路可達 |
-| 63 | GitHub Copilot 看不到 Cognee 提供的工具 | `.vscode/mcp.json` 設定格式錯誤或 VS Code 版本不支援該 MCP schema | 對照 VS Code 官方 MCP 文件核對設定檔格式 |
-| 64 | LangGraph Agent 呼叫 `add_tool` 後未見知識寫入 | 非同步呼叫未正確 `await`，或 dataset 名稱設定錯誤 | 檢查程式碼是否正確等待非同步呼叫完成，核對 dataset 命名 |
-| 65 | CrewAI 多個 Agent 寫入同一 dataset 造成衝突 | 缺乏寫入協調機制，多 Agent 併發寫入同一資源 | 規劃寫入責任分工，避免多 Agent 同時對同一實體做衝突性修改 |
-| 66 | Google ADK 的 `LongRunningFunctionTool` 逾時 | Cognify 處理時間超過工具預設逾時設定 | 調整逾時參數，或將大型內容拆分為多次較小的呼叫 |
-| 67 | MCP Server Docker 容器中 `TRANSPORT_MODE` 設定未生效 | 誤用 CLI 旗標而非環境變數（Docker 中應使用 `-e TRANSPORT_MODE=`） | 依第十一章 11.4 節說明改用環境變數設定 |
-| 68 | 多個 AI 工具（Claude Code + Copilot）看到不一致的知識 | 分別連接不同的 MCP Server 實例（Standalone 模式各自獨立） | 統一改接同一個 API Mode 中央 MCP Server |
-| 69 | MCP 工具呼叫回傳權限錯誤 | `REQUIRE_AUTHENTICATION` 啟用但 Client 未攜帶有效憑證 | 於 MCP Client 設定中補上對應的認證資訊 |
-| 70 | Docker Desktop（Mac/Windows）中 API Mode 無法連線本機服務 | 未使用 `host.docker.internal` 而誤用 `localhost` | 依第十一章說明，Mac/Windows 改用 `host.docker.internal` |
+| #   | 問題                                                      | 原因分析                                                          | 解決方式                                                                            |
+| --- | --------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 61  | Claude Code 無法偵測到 Cognee Plugin                      | Plugin 未正確安裝或 Claude Code 版本過舊不支援                    | 確認 `claude plugin install cognee-memory@cognee` 執行成功，並確認 Claude Code 版本 |
+| 62  | MCP Client 連不上 Cognee MCP Server（SSE 模式）           | URL 設定錯誤或防火牆阻擋對應埠號                                  | 檢查 `mcpServers` 設定中的 URL 與埠號，並確認網路可達                               |
+| 63  | GitHub Copilot 看不到 Cognee 提供的工具                   | `.vscode/mcp.json` 設定格式錯誤或 VS Code 版本不支援該 MCP schema | 對照 VS Code 官方 MCP 文件核對設定檔格式                                            |
+| 64  | LangGraph Agent 呼叫 `add_tool` 後未見知識寫入            | 非同步呼叫未正確 `await`，或 dataset 名稱設定錯誤                 | 檢查程式碼是否正確等待非同步呼叫完成，核對 dataset 命名                             |
+| 65  | CrewAI 多個 Agent 寫入同一 dataset 造成衝突               | 缺乏寫入協調機制，多 Agent 併發寫入同一資源                       | 規劃寫入責任分工，避免多 Agent 同時對同一實體做衝突性修改                           |
+| 66  | Google ADK 的 `LongRunningFunctionTool` 逾時              | Cognify 處理時間超過工具預設逾時設定                              | 調整逾時參數，或將大型內容拆分為多次較小的呼叫                                      |
+| 67  | MCP Server Docker 容器中 `TRANSPORT_MODE` 設定未生效      | 誤用 CLI 旗標而非環境變數（Docker 中應使用 `-e TRANSPORT_MODE=`） | 依第十一章 11.4 節說明改用環境變數設定                                              |
+| 68  | 多個 AI 工具（Claude Code + Copilot）看到不一致的知識     | 分別連接不同的 MCP Server 實例（Standalone 模式各自獨立）         | 統一改接同一個 API Mode 中央 MCP Server                                             |
+| 69  | MCP 工具呼叫回傳權限錯誤                                  | `REQUIRE_AUTHENTICATION` 啟用但 Client 未攜帶有效憑證             | 於 MCP Client 設定中補上對應的認證資訊                                              |
+| 70  | Docker Desktop（Mac/Windows）中 API Mode 無法連線本機服務 | 未使用 `host.docker.internal` 而誤用 `localhost`                  | 依第十一章說明，Mac/Windows 改用 `host.docker.internal`                             |
 
 ### 25.8 Performance 相關（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 71 | 首次匯入大量歷史文件耗時遠超預期 | 未採用批次與並行策略，逐筆處理 | 依第二十三章建立批次匯入策略 |
-| 72 | 高峰時段 recall 查詢延遲明顯上升 | Session Memory 快取後端在高併發下成為瓶頸 | 快取後端由 `fs` 切換至 `redis`，並評估水平擴展 |
-| 73 | Cognify 成本隨業務成長線性甚至超線性上升 | 未區分高低價值資料，統一做完整 Cognify | 依資料價值分級，低價值資料考慮僅做輕量 Extract |
-| 74 | 向量索引重建耗時過長影響服務可用性 | 重建索引未採滾動式（Rolling）策略，直接全量重建阻塞查詢 | 評估支援線上重建或藍綠部署的索引更新策略 |
-| 75 | 批次匯入偶發性大幅變慢 | 未設定重試與退避機制，個別請求逾時拖累整批進度 | 加入指數退避重試，並將逾時請求隔離重試而非阻塞整批 |
-| 76 | API Server 在流量尖峰時 CPU 使用率飆高 | 單一實例無法負荷實際流量，缺乏水平擴展 | 評估將 API Server 以多實例 + 負載平衡方式部署 |
-| 77 | 查詢延遲監控數據與使用者實際感受不符 | 監控僅涵蓋伺服器端處理時間，未計入網路延遲與前端渲染 | 建立端到端（End-to-End）延遲監控，而非僅監控後端處理時間 |
-| 78 | 大型知識圖譜的視覺化 UI 載入緩慢 | 一次性載入過大範圍的圖譜資料 | 視覺化介面採用漸進式載入或範圍限制查詢 |
-| 79 | 效能測試結果在正式環境無法重現 | 測試環境資料規模、硬體規格與生產環境差異過大 | 效能測試應盡量以貼近生產規模的資料集與硬體規格進行 |
-| 80 | 長時間運行後服務效能逐漸劣化 | 記憶體洩漏或連線池未正確釋放 | 監控長期執行下的記憶體與連線數趨勢，定期滾動重啟作為短期緩解 |
+| #   | 問題                                     | 原因分析                                                | 解決方式                                                     |
+| --- | ---------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------ |
+| 71  | 首次匯入大量歷史文件耗時遠超預期         | 未採用批次與並行策略，逐筆處理                          | 依第二十三章建立批次匯入策略                                 |
+| 72  | 高峰時段 recall 查詢延遲明顯上升         | Session Memory 快取後端在高併發下成為瓶頸               | 快取後端由 `fs` 切換至 `redis`，並評估水平擴展               |
+| 73  | Cognify 成本隨業務成長線性甚至超線性上升 | 未區分高低價值資料，統一做完整 Cognify                  | 依資料價值分級，低價值資料考慮僅做輕量 Extract               |
+| 74  | 向量索引重建耗時過長影響服務可用性       | 重建索引未採滾動式（Rolling）策略，直接全量重建阻塞查詢 | 評估支援線上重建或藍綠部署的索引更新策略                     |
+| 75  | 批次匯入偶發性大幅變慢                   | 未設定重試與退避機制，個別請求逾時拖累整批進度          | 加入指數退避重試，並將逾時請求隔離重試而非阻塞整批           |
+| 76  | API Server 在流量尖峰時 CPU 使用率飆高   | 單一實例無法負荷實際流量，缺乏水平擴展                  | 評估將 API Server 以多實例 + 負載平衡方式部署                |
+| 77  | 查詢延遲監控數據與使用者實際感受不符     | 監控僅涵蓋伺服器端處理時間，未計入網路延遲與前端渲染    | 建立端到端（End-to-End）延遲監控，而非僅監控後端處理時間     |
+| 78  | 大型知識圖譜的視覺化 UI 載入緩慢         | 一次性載入過大範圍的圖譜資料                            | 視覺化介面採用漸進式載入或範圍限制查詢                       |
+| 79  | 效能測試結果在正式環境無法重現           | 測試環境資料規模、硬體規格與生產環境差異過大            | 效能測試應盡量以貼近生產規模的資料集與硬體規格進行           |
+| 80  | 長時間運行後服務效能逐漸劣化             | 記憶體洩漏或連線池未正確釋放                            | 監控長期執行下的記憶體與連線數趨勢，定期滾動重啟作為短期緩解 |
 
 ### 25.9 Security / Permission 相關（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 81 | 內部人員可查詢到不屬於自己團隊的知識 | 缺乏 dataset 層級的存取控制 | 依第二十一、二十二章規劃 dataset 隔離與應用層權限檢查 |
-| 82 | 客戶個資意外出現於知識圖譜查詢結果中 | Extract 階段未做 PII 遮罩 | 建立標準化的 PII 偵測與遮罩流程 |
-| 83 | `.env` 檔案意外提交進版控 | 缺乏 CI 端的密鑰掃描機制 | 導入 Secret Scanning（如 GitHub Secret Scanning、gitleaks） |
-| 84 | 前員工帳號離職後仍可存取 MCP Server | 帳號/憑證未隨人員異動即時撤銷 | 將 Cognee 存取權限納入企業 IAM 生命週期管理流程 |
-| 85 | `forget` 操作缺乏紀錄，事後無法稽核是誰刪除了什麼 | 應用層未建立操作稽核紀錄 | 於 API Gateway/前置代理記錄所有刪除操作的發起者與範圍 |
-| 86 | Cypher 查詢被誘導執行超出預期範圍的操作 | `ALLOW_CYPHER_QUERY` 未妥善限制使用對象 | 預設關閉，僅限白名單服務帳號在受控環境下開啟 |
-| 87 | 多租戶 SaaS 場景中租戶 A 可查詢到租戶 B 的知識 | Storage 層未落實租戶隔離，僅靠應用層過濾 | 依第六章建議於 Storage 層設計獨立 Schema/實例隔離 |
-| 88 | API 金鑰外洩後難以快速輪替 | 缺乏金鑰輪替（Key Rotation）機制與流程 | 導入密鑰管理服務並建立定期/緊急輪替 SOP |
-| 89 | 稽核日誌本身缺乏完整性保護，可能被竄改 | 日誌儲存於可被應用程式自身修改的位置 | 稽核日誌應寫入獨立、具備防竄改機制的集中式日誌系統 |
-| 90 | 合規稽核時無法證明已依請求刪除特定使用者資料 | 缺乏刪除證明與留存機制 | `forget` 操作應留存「已刪除」的中繼資料證明（不含原始個資本身） |
+| #   | 問題                                              | 原因分析                                 | 解決方式                                                        |
+| --- | ------------------------------------------------- | ---------------------------------------- | --------------------------------------------------------------- |
+| 81  | 內部人員可查詢到不屬於自己團隊的知識              | 缺乏 dataset 層級的存取控制              | 依第二十一、二十二章規劃 dataset 隔離與應用層權限檢查           |
+| 82  | 客戶個資意外出現於知識圖譜查詢結果中              | Extract 階段未做 PII 遮罩                | 建立標準化的 PII 偵測與遮罩流程                                 |
+| 83  | `.env` 檔案意外提交進版控                         | 缺乏 CI 端的密鑰掃描機制                 | 導入 Secret Scanning（如 GitHub Secret Scanning、gitleaks）     |
+| 84  | 前員工帳號離職後仍可存取 MCP Server               | 帳號/憑證未隨人員異動即時撤銷            | 將 Cognee 存取權限納入企業 IAM 生命週期管理流程                 |
+| 85  | `forget` 操作缺乏紀錄，事後無法稽核是誰刪除了什麼 | 應用層未建立操作稽核紀錄                 | 於 API Gateway/前置代理記錄所有刪除操作的發起者與範圍           |
+| 86  | Cypher 查詢被誘導執行超出預期範圍的操作           | `ALLOW_CYPHER_QUERY` 未妥善限制使用對象  | 預設關閉，僅限白名單服務帳號在受控環境下開啟                    |
+| 87  | 多租戶 SaaS 場景中租戶 A 可查詢到租戶 B 的知識    | Storage 層未落實租戶隔離，僅靠應用層過濾 | 依第六章建議於 Storage 層設計獨立 Schema/實例隔離               |
+| 88  | API 金鑰外洩後難以快速輪替                        | 缺乏金鑰輪替（Key Rotation）機制與流程   | 導入密鑰管理服務並建立定期/緊急輪替 SOP                         |
+| 89  | 稽核日誌本身缺乏完整性保護，可能被竄改            | 日誌儲存於可被應用程式自身修改的位置     | 稽核日誌應寫入獨立、具備防竄改機制的集中式日誌系統              |
+| 90  | 合規稽核時無法證明已依請求刪除特定使用者資料      | 缺乏刪除證明與留存機制                   | `forget` 操作應留存「已刪除」的中繼資料證明（不含原始個資本身） |
 
 ### 25.10 CLI / API 使用相關（10 項）
 
-| # | 問題 | 原因分析 | 解決方式 |
-| --- | --- | --- | --- |
-| 91 | `cognee-cli remember` 在 Shell Script 中因特殊字元導致參數解析錯誤 | 內容含引號、換行等特殊字元未妥善跳脫 | 改用 Python API 或以檔案方式傳遞內容，避免 Shell 跳脫問題 |
-| 92 | Python API 呼叫回傳型別與文件描述不一致 | 版本升級後回傳型別有變動，文件未即時更新 | 以官方最新原始碼中的型別註記為準，必要時直接檢視原始碼 |
-| 93 | 非同步 API 呼叫未正確處理例外，錯誤被靜默吞掉 | `asyncio` 呼叫缺乏適當的例外處理 | 於所有 `await` 呼叫外層加上明確的 try/except 與日誌記錄 |
-| 94 | REST API 呼叫回傳 401 但本機 Python API 呼叫正常 | REST API 與 Python SDK 的認證機制不同 | 確認 REST API 呼叫已正確攜帶對應的認證 Header |
-| 95 | CLI 版本與 Python SDK 版本不一致導致行為差異 | 分開安裝/升級，未保持版本同步 | 統一透過同一套套件管理流程升級 CLI 與 SDK |
-| 96 | `search()` 的 `query_type` 參數值拼寫錯誤未報明確錯誤 | 部分版本對非法列舉值的錯誤訊息不夠明確 | 對照官方文件核對合法的 `SearchType` 列舉值 |
-| 97 | 大型回應內容在 CLI 輸出中被截斷 | 終端機緩衝區或 CLI 預設輸出長度限制 | 改用 Python API 取得完整回應，或將 CLI 輸出導向檔案 |
-| 98 | 自訂 Task/Pipeline 開發時型別檢查大量報錯 | 專案未同步安裝 cognee 對應版本的型別定義 | 確認開發環境的 cognee 版本與型別定義套件版本一致 |
-| 99 | API Server REST 端點文件與實際行為不符 | 文件版本與部署版本不一致 | 以 `/api/v1` 端點的當下版本 OpenAPI 規格（若提供）為準，而非僅憑文件網站 |
-| 100 | 升級 cognee 版本後既有整合程式碼大量失敗 | 遇到破壞性 API 變更（如 v0.x → v1.0） | 升級前詳閱 Release Notes，於獨立分支充分測試後才合併，必要時暫緩升級並鎖定舊版本 |
+| #   | 問題                                                               | 原因分析                                 | 解決方式                                                                         |
+| --- | ------------------------------------------------------------------ | ---------------------------------------- | -------------------------------------------------------------------------------- |
+| 91  | `cognee-cli remember` 在 Shell Script 中因特殊字元導致參數解析錯誤 | 內容含引號、換行等特殊字元未妥善跳脫     | 改用 Python API 或以檔案方式傳遞內容，避免 Shell 跳脫問題                        |
+| 92  | Python API 呼叫回傳型別與文件描述不一致                            | 版本升級後回傳型別有變動，文件未即時更新 | 以官方最新原始碼中的型別註記為準，必要時直接檢視原始碼                           |
+| 93  | 非同步 API 呼叫未正確處理例外，錯誤被靜默吞掉                      | `asyncio` 呼叫缺乏適當的例外處理         | 於所有 `await` 呼叫外層加上明確的 try/except 與日誌記錄                          |
+| 94  | REST API 呼叫回傳 401 但本機 Python API 呼叫正常                   | REST API 與 Python SDK 的認證機制不同    | 確認 REST API 呼叫已正確攜帶對應的認證 Header                                    |
+| 95  | CLI 版本與 Python SDK 版本不一致導致行為差異                       | 分開安裝/升級，未保持版本同步            | 統一透過同一套套件管理流程升級 CLI 與 SDK                                        |
+| 96  | `search()` 的 `query_type` 參數值拼寫錯誤未報明確錯誤              | 部分版本對非法列舉值的錯誤訊息不夠明確   | 對照官方文件核對合法的 `SearchType` 列舉值                                       |
+| 97  | 大型回應內容在 CLI 輸出中被截斷                                    | 終端機緩衝區或 CLI 預設輸出長度限制      | 改用 Python API 取得完整回應，或將 CLI 輸出導向檔案                              |
+| 98  | 自訂 Task/Pipeline 開發時型別檢查大量報錯                          | 專案未同步安裝 cognee 對應版本的型別定義 | 確認開發環境的 cognee 版本與型別定義套件版本一致                                 |
+| 99  | API Server REST 端點文件與實際行為不符                             | 文件版本與部署版本不一致                 | 以 `/api/v1` 端點的當下版本 OpenAPI 規格（若提供）為準，而非僅憑文件網站         |
+| 100 | 升級 cognee 版本後既有整合程式碼大量失敗                           | 遇到破壞性 API 變更（如 v0.x → v1.0）    | 升級前詳閱 Release Notes，於獨立分支充分測試後才合併，必要時暫緩升級並鎖定舊版本 |
 
 ### 25.11 Best Practice
 
@@ -2671,36 +2672,36 @@ Cognee 本身以 OpenTelemetry 為主要可觀測性介面，Prometheus 風格�
 
 ### 29.1 比較對象總覽
 
-| 方案 | 核心定位 | 授權/部署 |
-| --- | --- | --- |
-| 傳統 RAG（Chunk-based） | 文件切分 + 向量相似度檢索，泛用型基礎架構模式 | 依實作而定，通常為自建 |
-| GraphRAG（泛稱） | 以知識圖譜作為檢索來源的技術路線統稱 | 依實作而定 |
-| Mem0 | 對話記憶為主，Hybrid 向量+圖+Key-Value 儲存，社群採用度高（約 60.9K GitHub ★，查證於 2026-07-15） | 開源 + 雲端服務 |
-| Zep | 時序知識圖譜（Temporal Knowledge Graph），強調「事實如何隨時間變化」的推理（約 4.75K GitHub ★） | 開源 + 雲端服務 |
-| Letta | Agent 自行管理記憶的 OS 啟發式架構，記憶即 Agent Context 的一部分（約 23.8K GitHub ★） | 開源 + 雲端服務 |
-| LangMem | LangChain 生態原生的向量優先個人化記憶方案（約 1.56K GitHub ★） | 開源，深度綁定 LangChain |
-| Neo4j GraphRAG | 圖資料庫廠商官方提供的 GraphRAG 建構套件 | 開源套件 + Neo4j 商業授權 |
-| LlamaIndex | 泛用資料連接與檢索框架，知識圖譜為眾多檢索策略之一 | 開源 |
-| Haystack | 泛用 NLP/RAG Pipeline 框架 | 開源 |
-| Microsoft GraphRAG | 微軟研究院提出的 GraphRAG 方法論與參考實作 | 開源（研究導向） |
-| **Cognee** | 記憶生命週期 API + 原生知識圖譜 + 三層儲存 + MCP/Agent Framework 整合的完整記憶平台 | 開源（Apache-2.0）+ Cloud 代管 |
+| 方案                    | 核心定位                                                                                          | 授權/部署                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------ |
+| 傳統 RAG（Chunk-based） | 文件切分 + 向量相似度檢索，泛用型基礎架構模式                                                     | 依實作而定，通常為自建         |
+| GraphRAG（泛稱）        | 以知識圖譜作為檢索來源的技術路線統稱                                                              | 依實作而定                     |
+| Mem0                    | 對話記憶為主，Hybrid 向量+圖+Key-Value 儲存，社群採用度高（約 60.9K GitHub ★，查證於 2026-07-15） | 開源 + 雲端服務                |
+| Zep                     | 時序知識圖譜（Temporal Knowledge Graph），強調「事實如何隨時間變化」的推理（約 4.75K GitHub ★）   | 開源 + 雲端服務                |
+| Letta                   | Agent 自行管理記憶的 OS 啟發式架構，記憶即 Agent Context 的一部分（約 23.8K GitHub ★）            | 開源 + 雲端服務                |
+| LangMem                 | LangChain 生態原生的向量優先個人化記憶方案（約 1.56K GitHub ★）                                   | 開源，深度綁定 LangChain       |
+| Neo4j GraphRAG          | 圖資料庫廠商官方提供的 GraphRAG 建構套件                                                          | 開源套件 + Neo4j 商業授權      |
+| LlamaIndex              | 泛用資料連接與檢索框架，知識圖譜為眾多檢索策略之一                                                | 開源                           |
+| Haystack                | 泛用 NLP/RAG Pipeline 框架                                                                        | 開源                           |
+| Microsoft GraphRAG      | 微軟研究院提出的 GraphRAG 方法論與參考實作                                                        | 開源（研究導向）               |
+| **Cognee**              | 記憶生命週期 API + 原生知識圖譜 + 三層儲存 + MCP/Agent Framework 整合的完整記憶平台               | 開源（Apache-2.0）+ Cloud 代管 |
 
 ### 29.2 詳細功能比較表
 
-| 面向 | 傳統 RAG | Mem0 | Zep | Letta | Cognee |
-| --- | --- | --- | --- | --- | --- |
-| Memory 生命週期語意 | 無明確語意，多為一次性索引 | 有（新增/檢索為主） | 有（含時序更新） | 有（Agent 自管理） | 完整（remember/recall/forget/improve） |
-| 知識圖譜 | 無 | 部分支援（Hybrid） | 原生（時序圖譜） | 無（Context-based） | 原生（三層儲存） |
-| Hybrid Search | 無 | 有 | 有 | 不適用 | 有（Graph+Vector 融合） |
-| 長期記憶 | 弱 | 中 | 強（時序追蹤） | 強（Context 持久化） | 強（Permanent Graph） |
-| Multi-Agent 支援 | 不適用 | 部分 | 部分 | 部分 | 有（CrewAI Shared Memory 等） |
-| 企業自架能力 | 依實作 | 有 | 有 | 有 | 強（三層儲存皆可地端部署） |
-| 安全性（原生 RBAC 成熟度） | 依實作 | 依版本 | 依版本 | 依版本 | 需搭配第二十二章補強（自架版本） |
-| 生態整合 | 依實作 | 中 | 中 | 中 | 強（MCP + LangGraph + CrewAI + ADK + Claude Code） |
-| 學習能力（隨使用改善） | 無 | 有限 | 有（時序修正） | 有（Agent 自我管理） | 強調自我改善（`improve`，依評測描述表現突出） |
-| 部署複雜度 | 低 | 低-中 | 中 | 中 | 中-高（多元件架構） |
-| 效能（公開評測參考） | — | LongMemEval 約 49.0% | LongMemEval 約 63.8%（另有 LOCOMO 84%→75.14%→58.44% 的爭議修正過程） | 依場景而異 | 依第三方評測（如 particula.tech、theaiengineer 等）表現居前，惟各方評測方法論差異大，需審慎解讀 |
-| 適用場景 | 單次問答、簡單檢索 | 快速為既有 Agent 加上記憶 | 事實隨時間變化的場景（客服歷程、合約狀態追蹤） | 需要 Agent 自主管理記憶的長時間運行服務 | 需要完整知識圖譜 + 多元整合 + 企業自架的場景 |
+| 面向                       | 傳統 RAG                   | Mem0                      | Zep                                                                  | Letta                                   | Cognee                                                                                          |
+| -------------------------- | -------------------------- | ------------------------- | -------------------------------------------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Memory 生命週期語意        | 無明確語意，多為一次性索引 | 有（新增/檢索為主）       | 有（含時序更新）                                                     | 有（Agent 自管理）                      | 完整（remember/recall/forget/improve）                                                          |
+| 知識圖譜                   | 無                         | 部分支援（Hybrid）        | 原生（時序圖譜）                                                     | 無（Context-based）                     | 原生（三層儲存）                                                                                |
+| Hybrid Search              | 無                         | 有                        | 有                                                                   | 不適用                                  | 有（Graph+Vector 融合）                                                                         |
+| 長期記憶                   | 弱                         | 中                        | 強（時序追蹤）                                                       | 強（Context 持久化）                    | 強（Permanent Graph）                                                                           |
+| Multi-Agent 支援           | 不適用                     | 部分                      | 部分                                                                 | 部分                                    | 有（CrewAI Shared Memory 等）                                                                   |
+| 企業自架能力               | 依實作                     | 有                        | 有                                                                   | 有                                      | 強（三層儲存皆可地端部署）                                                                      |
+| 安全性（原生 RBAC 成熟度） | 依實作                     | 依版本                    | 依版本                                                               | 依版本                                  | 需搭配第二十二章補強（自架版本）                                                                |
+| 生態整合                   | 依實作                     | 中                        | 中                                                                   | 中                                      | 強（MCP + LangGraph + CrewAI + ADK + Claude Code）                                              |
+| 學習能力（隨使用改善）     | 無                         | 有限                      | 有（時序修正）                                                       | 有（Agent 自我管理）                    | 強調自我改善（`improve`，依評測描述表現突出）                                                   |
+| 部署複雜度                 | 低                         | 低-中                     | 中                                                                   | 中                                      | 中-高（多元件架構）                                                                             |
+| 效能（公開評測參考）       | —                          | LongMemEval 約 49.0%      | LongMemEval 約 63.8%（另有 LOCOMO 84%→75.14%→58.44% 的爭議修正過程） | 依場景而異                              | 依第三方評測（如 particula.tech、theaiengineer 等）表現居前，惟各方評測方法論差異大，需審慎解讀 |
+| 適用場景                   | 單次問答、簡單檢索         | 快速為既有 Agent 加上記憶 | 事實隨時間變化的場景（客服歷程、合約狀態追蹤）                       | 需要 Agent 自主管理記憶的長時間運行服務 | 需要完整知識圖譜 + 多元整合 + 企業自架的場景                                                    |
 
 > **⚠️ 評測數字使用提醒**：AI 記憶框架的公開評測（LongMemEval、LOCOMO 等）普遍存在「各家廠商各自發布對自己有利的評測結果」現象，且同一榜單不同機構重現的分數落差可能極大（如 Zep 的 LOCOMO 分數在不同來源分別被引用為 84%、75.14%、58.44%）。企業選型**不應僅憑公開評測排名**做決策，務必以自身實際資料與查詢場景做 POC（概念驗證）比較。
 
@@ -2783,15 +2784,15 @@ flowchart TD
 
 ### 30.8 產業導入優先順序總表
 
-| 產業 | 建議首波導入場景 | 關鍵風險控制點 |
-| --- | --- | --- |
-| 金融業 | 核心系統逆向工程、維運知識助理 | 稽核追溯、資料不可外流 |
-| 政府 | 跨部門規章查詢 | 部門資料隔離、資安評估程序 |
-| 醫療 | 臨床決策輔助（人工最終判斷） | PII 遮罩、知識時效性更新 |
-| 製造 | 設備維修知識庫 | 半結構化資料轉換品質 |
-| 零售 | 客服知識助理 | 即時性延遲、圖譜規模擴展規劃 |
-| 教育 | 課程/行政知識庫 | 成本控制、週期性知識更新 |
-| SaaS | 多租戶知識產品化 | 租戶隔離、用量計費歸因 |
+| 產業   | 建議首波導入場景               | 關鍵風險控制點               |
+| ------ | ------------------------------ | ---------------------------- |
+| 金融業 | 核心系統逆向工程、維運知識助理 | 稽核追溯、資料不可外流       |
+| 政府   | 跨部門規章查詢                 | 部門資料隔離、資安評估程序   |
+| 醫療   | 臨床決策輔助（人工最終判斷）   | PII 遮罩、知識時效性更新     |
+| 製造   | 設備維修知識庫                 | 半結構化資料轉換品質         |
+| 零售   | 客服知識助理                   | 即時性延遲、圖譜規模擴展規劃 |
+| 教育   | 課程/行政知識庫                | 成本控制、週期性知識更新     |
+| SaaS   | 多租戶知識產品化               | 租戶隔離、用量計費歸因       |
 
 ### 30.9 Checklist：產業導入前共通檢核
 
@@ -2867,13 +2868,13 @@ graph TD
 
 ### 31.4 平台成熟度模型
 
-| 成熟度階段 | 特徵 | 對應章節 |
-| --- | --- | --- |
-| Level 1：個人試點 | 個別工程師本機 Standalone 模式試用 | 第七、十五章 |
-| Level 2：團隊共用 | 團隊統一 API Mode MCP Server，手動匯入知識 | 第十一章 |
-| Level 3：自動化沉澱 | CI Hook 自動匯入 Git/CI/Incident 資料 | 第九、十七章 |
-| Level 4：平台化編排 | LangGraph 平台級 Agent Workflow 讀寫共用知識圖譜 | 第十二、二十章 |
-| Level 5：治理成熟 | 完整存取控制、稽核、可觀測性、多產業/多團隊治理框架 | 第二十一、二十二、二十四章 |
+| 成熟度階段          | 特徵                                                | 對應章節                   |
+| ------------------- | --------------------------------------------------- | -------------------------- |
+| Level 1：個人試點   | 個別工程師本機 Standalone 模式試用                  | 第七、十五章               |
+| Level 2：團隊共用   | 團隊統一 API Mode MCP Server，手動匯入知識          | 第十一章                   |
+| Level 3：自動化沉澱 | CI Hook 自動匯入 Git/CI/Incident 資料               | 第九、十七章               |
+| Level 4：平台化編排 | LangGraph 平台級 Agent Workflow 讀寫共用知識圖譜    | 第十二、二十章             |
+| Level 5：治理成熟   | 完整存取控制、稽核、可觀測性、多產業/多團隊治理框架 | 第二十一、二十二、二十四章 |
 
 ### 31.5 效能與安全性建議
 
@@ -2905,44 +2906,44 @@ graph TD
 
 ### 32.1 名詞解釋
 
-| 名詞 | 說明 |
-| --- | --- |
-| ECL Pipeline | Extract-Cognify-Load，Cognee 底層資料處理流程（第三章） |
-| DataPoint | 準備進入 Pipeline 處理的結構化資料單元（第二章） |
-| Cognify | 將原始內容轉為知識圖譜的核心處理步驟（第三章） |
-| GraphRAG | 以知識圖譜作為 RAG 檢索來源的技術路線統稱（第五章） |
-| Hybrid Search | 融合向量相似度與圖譜 Traversal 的混合檢索策略（第五章） |
-| Session Memory | 依 session_id 隔離的短期 SQL 快取層（第四章） |
-| Permanent Graph | 跨 session 持久保存的知識圖譜（第四章） |
-| MCP（Model Context Protocol） | AI 工具與資料源之間的標準化整合協定（第十一章） |
-| Ontology | 實體/關係的更高層次概念分類體系（第三章） |
-| Provenance | 知識的來源脈絡追蹤資訊（第三、四章） |
+| 名詞                          | 說明                                                    |
+| ----------------------------- | ------------------------------------------------------- |
+| ECL Pipeline                  | Extract-Cognify-Load，Cognee 底層資料處理流程（第三章） |
+| DataPoint                     | 準備進入 Pipeline 處理的結構化資料單元（第二章）        |
+| Cognify                       | 將原始內容轉為知識圖譜的核心處理步驟（第三章）          |
+| GraphRAG                      | 以知識圖譜作為 RAG 檢索來源的技術路線統稱（第五章）     |
+| Hybrid Search                 | 融合向量相似度與圖譜 Traversal 的混合檢索策略（第五章） |
+| Session Memory                | 依 session_id 隔離的短期 SQL 快取層（第四章）           |
+| Permanent Graph               | 跨 session 持久保存的知識圖譜（第四章）                 |
+| MCP（Model Context Protocol） | AI 工具與資料源之間的標準化整合協定（第十一章）         |
+| Ontology                      | 實體/關係的更高層次概念分類體系（第三章）               |
+| Provenance                    | 知識的來源脈絡追蹤資訊（第三、四章）                    |
 
 ### 32.2 官方整合總覽表
 
 Cognee 官方整合範例橫跨 Agent Framework、Coding Agent、No/Low-code、Agent IDE（透過 MCP）、Observability、Evaluation 等六大類，查證當下共 23 項。本手冊已針對其中六項建立專章（見下表「對應章節」欄），其餘項目簡述其定位，供企業依既有工具鏈評估延伸整合的可能性：
 
-| 分類 | 官方整合項目 | 定位／備註 | 對應章節 |
-| --- | --- | --- | --- |
-| Agent Framework | LangGraph | 圖狀態機編排的 Agent Framework | 第十二章 |
-| | CrewAI | 角色分工的 Multi-Agent 協作框架 | 第十三章 |
-| | Google ADK | Google 官方 Agent Development Kit | 第十四章 |
-| | Strands | AWS 生態的 Agent Framework | 本手冊未闢專章，整合方式與第十二章 LangGraph 類似（Tool-based 記憶掛載），可類推套用 |
-| | OpenAI Agent SDK | OpenAI 官方 Agent SDK，官方文件站有獨立整合頁面 | 本手冊未闢專章，概念與第十四章 ADK 整合模式相近 |
-| | Hermes Agent | 社群 Agent Framework 整合 | 未涵蓋，屬較小眾生態 |
-| | OpenClaw | 社群 Agent Framework 整合 | 未涵蓋，屬較小眾生態 |
-| Coding Agent | Claude Code | 官方 Plugin，深度掛載 Lifecycle Hooks | 第十五章 |
-| | Codex | OpenAI Codex CLI 整合 | 本手冊於第十一章 11.1 圖示中列為 MCP Client 之一，未另闢專章 |
-| No/Low-code | n8n | 視覺化工作流程平台的 Cognee 節點 | 未涵蓋，企業如已採用 n8n 做流程自動化可延伸評估 |
-| | Dify | LLM 應用開發平台整合 | 未涵蓋 |
-| Agent IDE（經 MCP） | Cursor / Continue / Cline | 皆透過第十一章 Cognee MCP Server 存取，無需個別專屬 Plugin | 第十一章 |
-| | GitHub Copilot | 同樣經 MCP 存取，官方未提供專屬 Plugin | 第十六章 |
-| Observability | OpenTelemetry | 官方主要可觀測性介面 | 第二十四章 |
-| | Keywords AI | LLM 可觀測性平台整合 | 未涵蓋 |
-| Evaluation | DeepEval | LLM/RAG 評測框架整合，適合驗證 Cognify/檢索品質 | 未涵蓋，適合與第二十三章效能驗證流程搭配使用 |
-| Cloud LLM | AWS Bedrock | 作為 `LLM_PROVIDER`／`EMBEDDING_PROVIDER` 選項之一 | 第八章環境變數已涵蓋 `bedrock` 選項 |
-| 資料擷取 | ScrapeGraphAI | 網頁爬取轉知識圖譜的資料來源整合 | 未涵蓋 |
-| | Gmail | 郵件內容轉記憶的資料來源整合 | 未涵蓋 |
+| 分類                | 官方整合項目              | 定位／備註                                                 | 對應章節                                                                             |
+| ------------------- | ------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Agent Framework     | LangGraph                 | 圖狀態機編排的 Agent Framework                             | 第十二章                                                                             |
+|                     | CrewAI                    | 角色分工的 Multi-Agent 協作框架                            | 第十三章                                                                             |
+|                     | Google ADK                | Google 官方 Agent Development Kit                          | 第十四章                                                                             |
+|                     | Strands                   | AWS 生態的 Agent Framework                                 | 本手冊未闢專章，整合方式與第十二章 LangGraph 類似（Tool-based 記憶掛載），可類推套用 |
+|                     | OpenAI Agent SDK          | OpenAI 官方 Agent SDK，官方文件站有獨立整合頁面            | 本手冊未闢專章，概念與第十四章 ADK 整合模式相近                                      |
+|                     | Hermes Agent              | 社群 Agent Framework 整合                                  | 未涵蓋，屬較小眾生態                                                                 |
+|                     | OpenClaw                  | 社群 Agent Framework 整合                                  | 未涵蓋，屬較小眾生態                                                                 |
+| Coding Agent        | Claude Code               | 官方 Plugin，深度掛載 Lifecycle Hooks                      | 第十五章                                                                             |
+|                     | Codex                     | OpenAI Codex CLI 整合                                      | 本手冊於第十一章 11.1 圖示中列為 MCP Client 之一，未另闢專章                         |
+| No/Low-code         | n8n                       | 視覺化工作流程平台的 Cognee 節點                           | 未涵蓋，企業如已採用 n8n 做流程自動化可延伸評估                                      |
+|                     | Dify                      | LLM 應用開發平台整合                                       | 未涵蓋                                                                               |
+| Agent IDE（經 MCP） | Cursor / Continue / Cline | 皆透過第十一章 Cognee MCP Server 存取，無需個別專屬 Plugin | 第十一章                                                                             |
+|                     | GitHub Copilot            | 同樣經 MCP 存取，官方未提供專屬 Plugin                     | 第十六章                                                                             |
+| Observability       | OpenTelemetry             | 官方主要可觀測性介面                                       | 第二十四章                                                                           |
+|                     | Keywords AI               | LLM 可觀測性平台整合                                       | 未涵蓋                                                                               |
+| Evaluation          | DeepEval                  | LLM/RAG 評測框架整合，適合驗證 Cognify/檢索品質            | 未涵蓋，適合與第二十三章效能驗證流程搭配使用                                         |
+| Cloud LLM           | AWS Bedrock               | 作為 `LLM_PROVIDER`／`EMBEDDING_PROVIDER` 選項之一         | 第八章環境變數已涵蓋 `bedrock` 選項                                                  |
+| 資料擷取            | ScrapeGraphAI             | 網頁爬取轉知識圖譜的資料來源整合                           | 未涵蓋                                                                               |
+|                     | Gmail                     | 郵件內容轉記憶的資料來源整合                               | 未涵蓋                                                                               |
 
 > 上述清單查證於 2026-07-15，Cognee 整合生態擴展速度快，企業導入前建議直接查閱 `docs.cognee.ai/integrations` 當下頁面確認是否有更新的官方整合項目。
 

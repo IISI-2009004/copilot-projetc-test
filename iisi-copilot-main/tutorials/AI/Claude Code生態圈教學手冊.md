@@ -19,7 +19,6 @@ categories = ['教學']
 > 📋 **基於官方文件**: [Claude Code Documentation](https://code.claude.com/docs/en/overview)  
 > 🆕 **v3.3 更新**: 排程任務新增三方比較（Routines/Desktop/Session）與 `loop.md` 自訂預設提示、Subagents 新增 Resume 機制與 `Agent(agent_type)` 子代理生成限制、Skills 新增 `maxSkillDescriptionChars` 與 compaction 後保留規則（5,000 token/25,000 budget）、Plugins 新增 `claude plugin init` 腳手架命令與 skills-directory plugins、Plugin Hints 推薦安裝機制、`settings.json` 預設設定與 background monitors、Hooks 新增 `if` 欄位進階篩選與 Stop Hook 阻擋上限機制
 
-
 ## 目錄
 
 - [第一部分：基礎概念 (Foundation)](#第一部分基礎概念-foundation)
@@ -256,7 +255,7 @@ graph TD
     A --> E[除錯協助]
     A --> F[文件生成]
     A --> G[測試生成]
-    
+
     style A fill:#6366f1,stroke:#4f46e5,color:#fff
     style B fill:#f0f9ff,stroke:#0ea5e9
     style C fill:#f0f9ff,stroke:#0ea5e9
@@ -268,12 +267,12 @@ graph TD
 
 #### 核心價值主張
 
-| 價值面向 | 說明 | 實際效益 |
-|---------|------|----------|
-| **開發效率** | 減少重複性工作，加速原型開發 | 效率提升 30-50% |
-| **程式品質** | 自動建議最佳實踐與設計模式 | 減少技術債 |
-| **知識傳承** | 協助解讀遺留程式碼 | 降低學習曲線 |
-| **協作增強** | 統一團隊程式風格 | 提升 Code Review 效率 |
+| 價值面向     | 說明                         | 實際效益              |
+| ------------ | ---------------------------- | --------------------- |
+| **開發效率** | 減少重複性工作，加速原型開發 | 效率提升 30-50%       |
+| **程式品質** | 自動建議最佳實踐與設計模式   | 減少技術債            |
+| **知識傳承** | 協助解讀遺留程式碼           | 降低學習曲線          |
+| **協作增強** | 統一團隊程式風格             | 提升 Code Review 效率 |
 
 #### ✨ 最佳實踐
 
@@ -292,7 +291,7 @@ graph TB
         DA["Desktop App<br/>macOS / Windows"]
         WEB["Web 介面<br/>claude.ai/code"]
     end
-    
+
     subgraph "擴展接入"
         SDK["Agent SDK<br/>Python / TypeScript"]
         CH["Channels<br/>Telegram / Discord / iMessage"]
@@ -300,7 +299,7 @@ graph TB
         CHROME["Chrome Extension<br/>@browser 整合"]
         SLACK["Slack 整合"]
     end
-    
+
     CLI --> CORE[Claude Code<br/>Core Engine]
     VSC --> CORE
     JB --> CORE
@@ -311,7 +310,7 @@ graph TB
     DISP --> CORE
     CHROME --> CORE
     SLACK --> CORE
-    
+
     style CORE fill:#6366f1,stroke:#4f46e5,color:#fff
     style DA fill:#10b981,stroke:#059669,color:#fff
     style WEB fill:#10b981,stroke:#059669,color:#fff
@@ -319,29 +318,29 @@ graph TB
     style DISP fill:#f59e0b,stroke:#d97706,color:#fff
 ```
 
-| 平台 | 適用場景 | 主要特色 | 系統需求 |
-|------|---------|---------|---------|
-| **Terminal CLI** | 日常開發、指令碼使用 | 完整功能、鍵盤導向 | macOS 13+ / Linux / Windows (Git Bash) |
-| **VS Code Extension** | IDE 整合開發 | @mentions、plan mode、checkpoints | VS Code 1.98.0+ |
-| **JetBrains Plugin** | Java/Kotlin 等 IDE 使用者 | 原生整合、Terminal 嵌入 | IntelliJ IDEA 等 |
-| **Desktop App** | 圖形化操作偏好 | 無需命令列、一鍵安裝 | macOS / Windows |
-| **Web 介面** | 雲端執行、無本機環境 | 瀏覽器即用、雲端沙箱 | 現代瀏覽器 |
-| **Agent SDK** | 自動化、CI/CD 整合 | Python/TypeScript API | Node.js 18+ 或 Python 3.10+ |
-| **Channels** | 外部事件推送 | Telegram / Discord / iMessage | MCP `claude/channel` 能力 |
-| **Dispatch** | 行動裝置遠端操控 | 手機發送指令到 Desktop | iOS / Android |
-| **Chrome Extension** | 網頁自動化 | @browser 截圖與互動 | Chrome 瀏覽器 |
-| **Slack 整合** | 團隊溝通協作 | 在 Slack 中直接操作 | Slack workspace |
+| 平台                  | 適用場景                  | 主要特色                          | 系統需求                               |
+| --------------------- | ------------------------- | --------------------------------- | -------------------------------------- |
+| **Terminal CLI**      | 日常開發、指令碼使用      | 完整功能、鍵盤導向                | macOS 13+ / Linux / Windows (Git Bash) |
+| **VS Code Extension** | IDE 整合開發              | @mentions、plan mode、checkpoints | VS Code 1.98.0+                        |
+| **JetBrains Plugin**  | Java/Kotlin 等 IDE 使用者 | 原生整合、Terminal 嵌入           | IntelliJ IDEA 等                       |
+| **Desktop App**       | 圖形化操作偏好            | 無需命令列、一鍵安裝              | macOS / Windows                        |
+| **Web 介面**          | 雲端執行、無本機環境      | 瀏覽器即用、雲端沙箱              | 現代瀏覽器                             |
+| **Agent SDK**         | 自動化、CI/CD 整合        | Python/TypeScript API             | Node.js 18+ 或 Python 3.10+            |
+| **Channels**          | 外部事件推送              | Telegram / Discord / iMessage     | MCP `claude/channel` 能力              |
+| **Dispatch**          | 行動裝置遠端操控          | 手機發送指令到 Desktop            | iOS / Android                          |
+| **Chrome Extension**  | 網頁自動化                | @browser 截圖與互動               | Chrome 瀏覽器                          |
+| **Slack 整合**        | 團隊溝通協作              | 在 Slack 中直接操作               | Slack workspace                        |
 
 #### 與傳統 IDE 的差異
 
-| 比較項目 | 傳統 IDE | Claude Code |
-|---------|----------|-------------|
-| **自動完成** | 基於語法與 API | 基於語意與上下文 |
-| **錯誤檢測** | 靜態規則 | 動態推理 + 意圖理解 |
-| **重構支援** | 預定義模式 | 智慧建議 + 解釋原因 |
-| **學習曲線** | 需熟悉快捷鍵 | 自然語言互動 |
-| **擴展性** | Plugin 架構 | Subagents + Skills + MCP + Plugins |
-| **多工處理** | 單一上下文 | Agent Teams 多代理並行 |
+| 比較項目     | 傳統 IDE       | Claude Code                        |
+| ------------ | -------------- | ---------------------------------- |
+| **自動完成** | 基於語法與 API | 基於語意與上下文                   |
+| **錯誤檢測** | 靜態規則       | 動態推理 + 意圖理解                |
+| **重構支援** | 預定義模式     | 智慧建議 + 解釋原因                |
+| **學習曲線** | 需熟悉快捷鍵   | 自然語言互動                       |
+| **擴展性**   | Plugin 架構    | Subagents + Skills + MCP + Plugins |
+| **多工處理** | 單一上下文     | Agent Teams 多代理並行             |
 
 ### 1.1.3 適用場景與限制
 
@@ -393,13 +392,13 @@ graph TB
 
 #### 系統需求
 
-| 項目 | 最低需求 | 建議配置 |
-|-----|---------|----------|
+| 項目         | 最低需求                                | 建議配置     |
+| ------------ | --------------------------------------- | ------------ |
 | **作業系統** | macOS 13+ / Ubuntu 20.04+ / Windows 10+ | 最新穩定版本 |
-| **記憶體** | 4 GB | 8 GB 以上 |
-| **網路** | 穩定連線 | 低延遲連線 |
-| **VS Code** | 1.98+ (如使用擴充) | 最新版本 |
-| **Git** | 需要 Git for Windows（原生 Windows） | 最新版本 |
+| **記憶體**   | 4 GB                                    | 8 GB 以上    |
+| **網路**     | 穩定連線                                | 低延遲連線   |
+| **VS Code**  | 1.98+ (如使用擴充)                      | 最新版本     |
+| **Git**      | 需要 Git for Windows（原生 Windows）    | 最新版本     |
 
 > 📌 **Windows 原生支援**: Claude Code 現已原生支援 Windows，透過 Git Bash 執行。不再強制需要 WSL2（但 WSL2 仍然支援）。
 
@@ -465,6 +464,7 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
 > 📝 **認證優先順序**：
+>
 > 1. 環境變數 `ANTHROPIC_API_KEY`（若已設定且核准）
 > 2. OAuth 登入（claude.ai 帳號 — Max / Team / Enterprise 方案）
 > 3. AWS Bedrock 認證（透過 AWS 環境變數）
@@ -505,16 +505,8 @@ Claude Code 使用**多層級配置系統**，從全域到專案層層覆蓋：
 ```json
 {
   "permissions": {
-    "allow": [
-      "Read(*)",
-      "Edit(*)",
-      "Bash(npm test)",
-      "Bash(npm run lint)"
-    ],
-    "deny": [
-      "Bash(rm -rf *)",
-      "Bash(git push --force)"
-    ]
+    "allow": ["Read(*)", "Edit(*)", "Bash(npm test)", "Bash(npm run lint)"],
+    "deny": ["Bash(rm -rf *)", "Bash(git push --force)"]
   },
   "env": {
     "NODE_ENV": "development",
@@ -529,21 +521,25 @@ Claude Code 使用**多層級配置系統**，從全域到專案層層覆蓋：
 # 專案指引
 
 ## 程式碼規範
+
 - 使用 TypeScript strict mode
 - 所有 public function 需要 JSDoc 註解
 - 遵循 ESLint 配置的規則
 
 ## 測試要求
+
 - 新功能必須有單元測試
 - 測試覆蓋率不低於 80%
 - 使用 vitest 作為測試框架
 
 ## 專案結構
+
 - src/ — 原始碼
 - tests/ — 測試檔案
 - docs/ — 文件
 
 ## 常用命令
+
 - `npm test` — 執行測試
 - `npm run build` — 建構專案
 - `npm run lint` — 程式碼檢查
@@ -573,7 +569,7 @@ graph TD
     E --> C
     C -->|否| F[生成回應]
     F --> G[呈現給使用者]
-    
+
     style A fill:#6366f1,stroke:#4f46e5,color:#fff
     style B fill:#8b5cf6,stroke:#7c3aed,color:#fff
     style D fill:#10b981,stroke:#059669,color:#fff
@@ -591,18 +587,18 @@ Claude Code 的核心執行模式是 **Read → Plan → Act → Verify** 循環
 
 Claude Code 擁有一組功能強大的內建工具，自動根據任務需求選擇使用：
 
-| 工具類別 | 工具 | 功能說明 |
-|---------|------|----------|
-| **檔案操作** | `Read` | 讀取檔案內容 |
-| | `Edit` | 編輯現有檔案 |
-| | `Write` | 建立新檔案 |
-| | `MultiEdit` | 批次編輯多個檔案 |
-| **搜尋** | `Grep` | 快速文字搜尋（ripgrep） |
-| | `Glob` | 檔案路徑搜尋 |
-| | `Search` | 語意搜尋 |
-| **命令** | `Bash` | 在 shell 中執行命令 |
-| **瀏覽** | `WebFetch` | 抓取網頁內容 |
-| **子代理** | `Subagent` | 啟動獨立子代理處理子任務 |
+| 工具類別     | 工具        | 功能說明                 |
+| ------------ | ----------- | ------------------------ |
+| **檔案操作** | `Read`      | 讀取檔案內容             |
+|              | `Edit`      | 編輯現有檔案             |
+|              | `Write`     | 建立新檔案               |
+|              | `MultiEdit` | 批次編輯多個檔案         |
+| **搜尋**     | `Grep`      | 快速文字搜尋（ripgrep）  |
+|              | `Glob`      | 檔案路徑搜尋             |
+|              | `Search`    | 語意搜尋                 |
+| **命令**     | `Bash`      | 在 shell 中執行命令      |
+| **瀏覽**     | `WebFetch`  | 抓取網頁內容             |
+| **子代理**   | `Subagent`  | 啟動獨立子代理處理子任務 |
 
 #### 上下文載入順序
 
@@ -664,10 +660,10 @@ Desktop App 提供與 Terminal CLI 完全相同的功能，但透過圖形化介
 
 **安裝方式**：
 
-| 平台 | 安裝方法 |
-|------|---------|
-| **macOS** | 從 [claude.ai](https://claude.ai) 下載 `.dmg` 安裝檔，拖拽到 Applications |
-| **Windows** | 從 [claude.ai](https://claude.ai) 下載 `.exe` 安裝檔，雙擊安裝 |
+| 平台        | 安裝方法                                                                  |
+| ----------- | ------------------------------------------------------------------------- |
+| **macOS**   | 從 [claude.ai](https://claude.ai) 下載 `.dmg` 安裝檔，拖拽到 Applications |
+| **Windows** | 從 [claude.ai](https://claude.ai) 下載 `.exe` 安裝檔，雙擊安裝            |
 
 **核心功能**：
 
@@ -722,7 +718,7 @@ graph LR
     WH[Webhook] -->|推送訊息| CH
     CH -->|注入 session| CC[Claude Code]
     CC -->|自動回應| CH
-    
+
     style CH fill:#f59e0b,stroke:#d97706,color:#fff
     style CC fill:#6366f1,stroke:#4f46e5,color:#fff
 ```
@@ -739,12 +735,12 @@ claude --channels
 
 **應用場景**：
 
-| 場景 | 說明 |
-|------|------|
+| 場景           | 說明                                                  |
+| -------------- | ----------------------------------------------------- |
 | CI/CD 失敗通知 | CI 失敗時自動推送到 Claude，Claude 分析錯誤並嘗試修復 |
-| 監控告警回應 | Sentry 異常推送到 Claude，Claude 自動診斷 |
-| 團隊訊息回應 | 在 Slack/Discord 中 @claude 即可觸發程式碼操作 |
-| Webhook 整合 | 外部服務透過 Webhook 觸發自動化任務 |
+| 監控告警回應   | Sentry 異常推送到 Claude，Claude 自動診斷             |
+| 團隊訊息回應   | 在 Slack/Discord 中 @claude 即可觸發程式碼操作        |
+| Webhook 整合   | 外部服務透過 Webhook 觸發自動化任務                   |
 
 #### Dispatch — 行動端控制
 
@@ -786,7 +782,7 @@ graph TB
         U --> SDK[Agent SDK / Headless]
         U --> CH[Channels / Dispatch]
     end
-    
+
     subgraph "Claude Code 核心引擎"
         CLI --> AL[Agentic Loop]
         VSC --> AL
@@ -795,23 +791,23 @@ graph TB
         WEB --> AL
         SDK --> AL
         CH --> AL
-        
+
         AL --> TM[Tool Manager]
         AL --> HM[Hook Manager]
         AL --> CM[Context Manager]
         AL --> PM[Plugin Manager]
-        
+
         TM --> BT[內建工具<br/>Read/Edit/Bash/Search]
         TM --> MCPc[MCP Client]
         TM --> SA[Subagent Spawner]
-        
+
         CM --> CLAUDE[CLAUDE.md / MEMORY.md<br/>指引與記憶]
         CM --> SETTINGS[settings.json<br/>設定載入]
         CM --> RULES[.claude/rules/*.md<br/>規則檔]
-        
+
         PM --> PLG[Plugins<br/>Skills + Agents + Hooks + MCP + LSP]
     end
-    
+
     subgraph "擴展層"
         MCPc --> MCP1[MCP Server A]
         MCPc --> MCP2[MCP Server B]
@@ -819,14 +815,14 @@ graph TB
         SA --> SA1[子代理 1]
         SA --> SA2[子代理 2]
     end
-    
+
     subgraph "外部服務"
         AL --> API[Anthropic API<br/>Claude Sonnet / Opus]
         MCP1 --> EXT1[GitHub API]
         MCP2 --> EXT2[資料庫]
         MCP3 --> EXT3[第三方服務]
     end
-    
+
     style AL fill:#6366f1,stroke:#4f46e5,color:#fff
     style MCPc fill:#10b981,stroke:#059669,color:#fff
     style API fill:#f59e0b,stroke:#d97706,color:#fff
@@ -849,7 +845,7 @@ graph LR
         MCP[MCP Servers] -->|提供外部工具| T
         CM[CLAUDE.md] -->|注入上下文| AL
     end
-    
+
     style S fill:#8b5cf6,stroke:#7c3aed
     style SK fill:#06b6d4,stroke:#0891b2
     style H fill:#f97316,stroke:#ea580c
@@ -860,14 +856,14 @@ graph LR
 
 #### 組件職責說明
 
-| 組件 | 職責 | 實際格式 |
-|-----|------|---------|
-| **Subagents** | 獨立 context 的子代理，處理子任務 | YAML frontmatter 的 Markdown 檔案 |
-| **Skills** | 可重用的技能指引，增強 Claude 能力 | SKILL.md 檔案 |
-| **Plugins** | 打包 skills + agents + hooks + MCP 的分發單元 | `.claude-plugin/` 目錄 |
-| **Hooks** | 事件驅動的自動化處理 | settings.json 中的 JSON 配置 |
-| **MCP** | 連接外部工具伺服器的協定 | .mcp.json 配置檔 |
-| **CLAUDE.md** | 專案指引與規範 | Markdown 檔案 |
+| 組件          | 職責                                          | 實際格式                          |
+| ------------- | --------------------------------------------- | --------------------------------- |
+| **Subagents** | 獨立 context 的子代理，處理子任務             | YAML frontmatter 的 Markdown 檔案 |
+| **Skills**    | 可重用的技能指引，增強 Claude 能力            | SKILL.md 檔案                     |
+| **Plugins**   | 打包 skills + agents + hooks + MCP 的分發單元 | `.claude-plugin/` 目錄            |
+| **Hooks**     | 事件驅動的自動化處理                          | settings.json 中的 JSON 配置      |
+| **MCP**       | 連接外部工具伺服器的協定                      | .mcp.json 配置檔                  |
+| **CLAUDE.md** | 專案指引與規範                                | Markdown 檔案                     |
 
 ### 1.2.3 資料流與執行流程
 
@@ -879,15 +875,15 @@ sequenceDiagram
     participant Tools as Tool Manager
     participant MCP as MCP Server
     participant API as Anthropic API
-    
+
     U->>CC: 發送請求 (Prompt)
     CC->>CC: 載入 CLAUDE.md + 上下文
     CC->>HM: 觸發 UserPromptSubmit Hook
     HM-->>CC: Hook 處理結果
-    
+
     CC->>API: 發送對話 + 上下文
     API-->>CC: Claude 回應（可能含工具呼叫）
-    
+
     loop Agentic Loop（直到任務完成）
         CC->>HM: 觸發 PreToolUse Hook
         HM-->>CC: 允許 / 拒絕
@@ -897,7 +893,7 @@ sequenceDiagram
         CC->>API: 發送工具結果
         API-->>CC: 下一步指令或最終回應
     end
-    
+
     CC->>HM: 觸發 Stop Hook
     CC-->>U: 返回最終結果
 ```
@@ -949,16 +945,16 @@ graph TD
         PM[Project Memory<br/>.claude/memories/]
         SM[Session Memory<br/>會話結束即清除]
     end
-    
+
     subgraph "設定層級（優先級由高到低）"
         MS[Managed Settings<br/>企業管理員強制]
         ES[Enterprise Policy<br/>組織政策]
         PS[Project Settings<br/>.claude/settings.json]
         US[User Settings<br/>~/.claude/settings.json]
     end
-    
+
     US --> PS --> ES --> MS
-    
+
     style MS fill:#ef4444,stroke:#dc2626,color:#fff
     style ES fill:#f97316,stroke:#ea580c,color:#fff
     style PS fill:#3b82f6,stroke:#2563eb,color:#fff
@@ -967,11 +963,11 @@ graph TD
 
 #### 記憶體系統
 
-| 層級 | 路徑 | 生命週期 | 用途 |
-|-----|------|---------|------|
-| **User Memory** | `~/.claude/memories/` | 永久（跨專案） | 使用者偏好、常用模式 |
-| **Project Memory** | `.claude/memories/` | 永久（專案內） | 專案慣例、架構決策 |
-| **Session Memory** | 記憶體（臨時） | 對話結束即清除 | 當前任務上下文 |
+| 層級               | 路徑                  | 生命週期       | 用途                 |
+| ------------------ | --------------------- | -------------- | -------------------- |
+| **User Memory**    | `~/.claude/memories/` | 永久（跨專案） | 使用者偏好、常用模式 |
+| **Project Memory** | `.claude/memories/`   | 永久（專案內） | 專案慣例、架構決策   |
+| **Session Memory** | 記憶體（臨時）        | 對話結束即清除 | 當前任務上下文       |
 
 ```bash
 # 記憶體管理命令
@@ -1021,7 +1017,7 @@ graph TD
         G -->|有 Hook| H[Hook 決定]
         G -->|無 Hook| I[🔔 互動式提示使用者]
     end
-    
+
     style D fill:#22c55e,stroke:#16a34a,color:#fff
     style F fill:#ef4444,stroke:#dc2626,color:#fff
     style I fill:#f59e0b,stroke:#d97706,color:#fff
@@ -1054,12 +1050,12 @@ graph TD
 
 #### 權限規則語法
 
-| 語法 | 說明 | 範例 |
-|-----|------|------|
-| `Tool(*)` | 允許工具的所有參數 | `Read(*)` — 讀取任何檔案 |
-| `Tool(pattern)` | 允許匹配 pattern 的參數 | `Edit(src/**)` — 只編輯 src/ 下的檔案 |
-| `mcp__server__tool` | MCP 工具權限 | `mcp__github__create_issue` |
-| `Tool(pattern1, pattern2)` | 多參數匹配 | `Bash(npm *, yarn *)` |
+| 語法                       | 說明                    | 範例                                  |
+| -------------------------- | ----------------------- | ------------------------------------- |
+| `Tool(*)`                  | 允許工具的所有參數      | `Read(*)` — 讀取任何檔案              |
+| `Tool(pattern)`            | 允許匹配 pattern 的參數 | `Edit(src/**)` — 只編輯 src/ 下的檔案 |
+| `mcp__server__tool`        | MCP 工具權限            | `mcp__github__create_issue`           |
+| `Tool(pattern1, pattern2)` | 多參數匹配              | `Bash(npm *, yarn *)`                 |
 
 #### 安全最佳實踐
 
@@ -1086,35 +1082,35 @@ Claude Code 透過內建工具（built-in tools）與外部工具（MCP tools）
 graph TB
     subgraph "Claude Code 工具系統"
         subgraph "檔案操作"
-            R[Read<br>讀取檔案] 
+            R[Read<br>讀取檔案]
             W[Write<br>寫入檔案]
             E[Edit<br>編輯檔案]
             ME[MultiEdit<br>批次編輯]
         end
-        
+
         subgraph "搜尋導航"
             G[Grep<br>文字搜尋]
             GL[Glob<br>檔名搜尋]
             LS[LS<br>列出目錄]
         end
-        
+
         subgraph "系統操作"
             B[Bash<br>Shell 命令]
             N[Notebook<br>Jupyter]
         end
-        
+
         subgraph "AI 運算"
             SA[SubAgent<br>子代理]
             TH[Think<br>推理]
         end
-        
+
         subgraph "MCP 工具"
             MCP1[GitHub]
             MCP2[Database]
             MCP3[Custom...]
         end
     end
-    
+
     style R fill:#dbeafe,stroke:#3b82f6
     style W fill:#dcfce7,stroke:#22c55e
     style E fill:#dcfce7,stroke:#22c55e
@@ -1128,19 +1124,19 @@ graph TB
 
 #### 工具詳細說明
 
-| 工具 | 動作 | 權限等級 | 說明 |
-|------|------|---------|------|
-| **Read** | 讀取檔案 | 唯讀 | 讀取指定檔案的全部或部分內容 |
-| **Write** | 建立/覆寫檔案 | 寫入 | 建立新檔案或完整覆寫現有檔案 |
-| **Edit** | 精確編輯 | 寫入 | 使用 search/replace 模式精確修改檔案片段 |
-| **MultiEdit** | 批次編輯 | 寫入 | 在一個操作中對同一檔案進行多處修改 |
-| **Grep** | 文字搜尋 | 唯讀 | 在專案中搜尋匹配正規表達式的文字 |
-| **Glob** | 檔名搜尋 | 唯讀 | 使用 glob pattern 搜尋檔案名稱 |
-| **LS** | 目錄列表 | 唯讀 | 列出目錄內容，顯示檔案和子目錄 |
-| **Bash** | 執行命令 | 危險 | 執行任意 Shell 命令（需額外權限確認） |
-| **Notebook** | Jupyter 操作 | 寫入 | 建立和編輯 Jupyter Notebook |
-| **SubAgent** | 建立子 Agent | 消耗 Token | 建立子 Agent 處理子任務 |
-| **Think** | 內部推理 | 無副作用 | Claude 的內部推理步驟（不產生外部操作） |
+| 工具          | 動作          | 權限等級   | 說明                                     |
+| ------------- | ------------- | ---------- | ---------------------------------------- |
+| **Read**      | 讀取檔案      | 唯讀       | 讀取指定檔案的全部或部分內容             |
+| **Write**     | 建立/覆寫檔案 | 寫入       | 建立新檔案或完整覆寫現有檔案             |
+| **Edit**      | 精確編輯      | 寫入       | 使用 search/replace 模式精確修改檔案片段 |
+| **MultiEdit** | 批次編輯      | 寫入       | 在一個操作中對同一檔案進行多處修改       |
+| **Grep**      | 文字搜尋      | 唯讀       | 在專案中搜尋匹配正規表達式的文字         |
+| **Glob**      | 檔名搜尋      | 唯讀       | 使用 glob pattern 搜尋檔案名稱           |
+| **LS**        | 目錄列表      | 唯讀       | 列出目錄內容，顯示檔案和子目錄           |
+| **Bash**      | 執行命令      | 危險       | 執行任意 Shell 命令（需額外權限確認）    |
+| **Notebook**  | Jupyter 操作  | 寫入       | 建立和編輯 Jupyter Notebook              |
+| **SubAgent**  | 建立子 Agent  | 消耗 Token | 建立子 Agent 處理子任務                  |
+| **Think**     | 內部推理      | 無副作用   | Claude 的內部推理步驟（不產生外部操作）  |
 
 #### 工具執行生命週期
 
@@ -1156,15 +1152,15 @@ sequenceDiagram
     C->>C: 分析需求，選擇工具
     C->>P: 權限檢查
     P-->>C: 允許/拒絕/需確認
-    
+
     alt 需要使用者確認
         C->>U: 顯示權限請求
         U->>C: 允許/拒絕
     end
-    
+
     C->>H: 觸發 PreToolUse Hook
     H-->>C: 通過/阻止
-    
+
     alt Hook 通過
         C->>T: 執行工具
         T-->>C: 回傳結果
@@ -1192,7 +1188,7 @@ graph TB
     EVAL -->|遇到錯誤| FIX[錯誤修復<br>調整策略]
     FIX --> SELECT
     EVAL -->|任務完成| OUTPUT[輸出結果<br>回覆使用者]
-    
+
     style START fill:#6366f1,stroke:#4f46e5,color:#fff
     style ANALYZE fill:#dbeafe,stroke:#3b82f6
     style PLAN fill:#dbeafe,stroke:#3b82f6
@@ -1205,13 +1201,13 @@ graph TB
 
 #### Agentic Loop 的關鍵特性
 
-| 特性 | 說明 | 示例 |
-|------|------|------|
-| **自主規劃** | Claude 不需要逐步指導，會自行分解任務 | 「新增使用者認證」→ 自動規劃 Model/Service/Controller/Test |
-| **錯誤恢復** | 遇到錯誤會自動嘗試修復 | 編譯失敗 → 讀取錯誤訊息 → 修正程式碼 → 重新編譯 |
-| **動態調整** | 會根據執行結果調整後續步驟 | 發現缺少依賴 → 安裝依賴 → 繼續原任務 |
-| **多工具組合** | 在一次任務中組合使用多種工具 | Grep(搜尋) → Read(讀取) → Edit(修改) → Bash(測試) |
-| **Context 累積** | 每步執行結果都加入 Context 供後續步驟參考 | 讀取檔案 A 的結果會影響對檔案 B 的修改決策 |
+| 特性             | 說明                                      | 示例                                                       |
+| ---------------- | ----------------------------------------- | ---------------------------------------------------------- |
+| **自主規劃**     | Claude 不需要逐步指導，會自行分解任務     | 「新增使用者認證」→ 自動規劃 Model/Service/Controller/Test |
+| **錯誤恢復**     | 遇到錯誤會自動嘗試修復                    | 編譯失敗 → 讀取錯誤訊息 → 修正程式碼 → 重新編譯            |
+| **動態調整**     | 會根據執行結果調整後續步驟                | 發現缺少依賴 → 安裝依賴 → 繼續原任務                       |
+| **多工具組合**   | 在一次任務中組合使用多種工具              | Grep(搜尋) → Read(讀取) → Edit(修改) → Bash(測試)          |
+| **Context 累積** | 每步執行結果都加入 Context 供後續步驟參考 | 讀取檔案 A 的結果會影響對檔案 B 的修改決策                 |
 
 #### Agentic Loop 範例：Bug 修復流程
 
@@ -1225,7 +1221,7 @@ Claude Code Agentic Loop:
 ├─ Step 2: Grep "getUserById" in src/
 │   → 找到相關呼叫位置
 │
-├─ Step 3: Read src/repositories/UserRepository.ts  
+├─ Step 3: Read src/repositories/UserRepository.ts
 │   → 發現 Repository 的查詢有問題
 │
 ├─ Step 4: Read tests/UserService.test.ts
@@ -1321,6 +1317,7 @@ Claude: 我先仔細分析專案結構...
 # My Web App
 
 ## 技術棧
+
 - Runtime: Node.js 20 LTS
 - Framework: Express.js 4.18
 - Language: TypeScript 5.4 (strict mode)
@@ -1329,6 +1326,7 @@ Claude: 我先仔細分析專案結構...
 - Linter: ESLint + Prettier
 
 ## 編碼規範
+
 - 使用 camelCase 命名變數和函式
 - 使用 PascalCase 命名類別和介面
 - 所有函式必須有明確的回傳型別
@@ -1336,6 +1334,7 @@ Claude: 我先仔細分析專案結構...
 - 錯誤處理使用自訂 AppError 類別
 
 ## 常用命令
+
 - `npm run dev` — 啟動開發伺服器
 - `npm run build` — 編譯 TypeScript
 - `npm test` — 執行全部測試
@@ -1344,12 +1343,14 @@ Claude: 我先仔細分析專案結構...
 - `npx prisma generate` — 重新生成 Prisma Client
 
 ## 架構規範
+
 - Controller 只負責解析請求和回傳回應
 - Service 處理業務邏輯，不直接操作 HTTP
 - Repository 模式封裝資料存取（透過 Prisma）
 - 中介軟體處理認證、日誌、錯誤處理
 
 ## 禁止事項
+
 - 不要修改 prisma/migrations/ 中的已存在遷移檔案
 - 不要在 Controller 中直接操作資料庫
 - 不要提交 .env 檔案
@@ -1457,16 +1458,16 @@ Claude: 我先分析 userService.ts 中的重複模式...
 
 ### 1.3.4 效率提升技巧
 
-| 技巧 | 說明 | 效果 |
-|------|------|------|
-| **提供明確上下文** | 告訴 Claude 要修改的具體檔案和需求 | 減少搜尋時間 50%+ |
-| **使用 `/compact`** | 長對話定期壓縮 | 避免 token 溢出 |
-| **善用 CLAUDE.md** | 把常見指令寫進去 | 不用每次重複說明 |
-| **建立 Custom Commands** | `/project:test`、`/project:deploy` | 一鍵執行複雜流程 |
-| **使用 Subagent** | 讓大任務自動拆解 | 處理大型重構 |
-| **限制範圍** | 「只修改 src/services/ 下的檔案」 | 避免不必要的變更 |
-| **先 Plan 後 Act** | 「先列出修改計畫，我確認後再執行」| 減少返工 |
-| **善用搜尋** | 「先搜尋所有使用這個函式的地方」| 掌握影響範圍 |
+| 技巧                     | 說明                               | 效果              |
+| ------------------------ | ---------------------------------- | ----------------- |
+| **提供明確上下文**       | 告訴 Claude 要修改的具體檔案和需求 | 減少搜尋時間 50%+ |
+| **使用 `/compact`**      | 長對話定期壓縮                     | 避免 token 溢出   |
+| **善用 CLAUDE.md**       | 把常見指令寫進去                   | 不用每次重複說明  |
+| **建立 Custom Commands** | `/project:test`、`/project:deploy` | 一鍵執行複雜流程  |
+| **使用 Subagent**        | 讓大任務自動拆解                   | 處理大型重構      |
+| **限制範圍**             | 「只修改 src/services/ 下的檔案」  | 避免不必要的變更  |
+| **先 Plan 後 Act**       | 「先列出修改計畫，我確認後再執行」 | 減少返工          |
+| **善用搜尋**             | 「先搜尋所有使用這個函式的地方」   | 掌握影響範圍      |
 
 ---
 
@@ -1498,21 +1499,21 @@ graph TB
     subgraph "主代理 (Main Agent)"
         MA[Claude Code<br/>完整 Context Window]
     end
-    
+
     subgraph "子代理層 (Subagents)"
         SA1[Subagent 1<br/>獨立 Context]
         SA2[Subagent 2<br/>獨立 Context]
         SA3[Subagent 3<br/>獨立 Context]
     end
-    
+
     MA -->|委派任務| SA1
     MA -->|委派任務| SA2
     MA -->|委派任務| SA3
-    
+
     SA1 -->|返回摘要結果| MA
     SA2 -->|返回摘要結果| MA
     SA3 -->|返回摘要結果| MA
-    
+
     style MA fill:#6366f1,stroke:#4f46e5,color:#fff
     style SA1 fill:#10b981,stroke:#059669,color:#fff
     style SA2 fill:#10b981,stroke:#059669,color:#fff
@@ -1521,14 +1522,14 @@ graph TB
 
 #### Subagent vs 主代理的差異
 
-| 特性 | 主代理 (Main Agent) | 子代理 (Subagent) |
-|-----|---------------------|-------------------|
-| **Context Window** | 共用對話 context | 獨立 context window |
-| **工具存取** | 完整工具集 | 預設受限（可配置） |
-| **生命週期** | 持續到對話結束 | 任務完成即結束 |
-| **使用者互動** | 直接與使用者對話 | 不與使用者互動 |
-| **結果傳遞** | N/A | 回傳摘要給主代理 |
-| **權限** | 依 settings.json | 繼承或可自訂限制 |
+| 特性               | 主代理 (Main Agent) | 子代理 (Subagent)   |
+| ------------------ | ------------------- | ------------------- |
+| **Context Window** | 共用對話 context    | 獨立 context window |
+| **工具存取**       | 完整工具集          | 預設受限（可配置）  |
+| **生命週期**       | 持續到對話結束      | 任務完成即結束      |
+| **使用者互動**     | 直接與使用者對話    | 不與使用者互動      |
+| **結果傳遞**       | N/A                 | 回傳摘要給主代理    |
+| **權限**           | 依 settings.json    | 繼承或可自訂限制    |
 
 #### 觸發時機
 
@@ -1559,12 +1560,12 @@ Claude Code 提供多種**內建子代理**，自動根據任務類型啟用：
 
 #### 內建代理總覽
 
-| 代理名稱 | 用途 | 模型 | 工具限制 |
-|---------|------|------|---------|
-| **Explore** | 快速程式碼探索、搜尋、閱讀 | Claude Haiku | 唯讀工具（Read, Grep, Glob, Search） |
-| **Haiku** | 輕量任務、快速回答 | Claude Haiku | 完整工具集 |
-| **Plan** | 規劃複雜任務、制定策略 | Claude Sonnet/Opus | 完整工具集 |
-| **General-purpose** | 通用子代理 | 與主代理相同 | 完整工具集 |
+| 代理名稱            | 用途                       | 模型               | 工具限制                             |
+| ------------------- | -------------------------- | ------------------ | ------------------------------------ |
+| **Explore**         | 快速程式碼探索、搜尋、閱讀 | Claude Haiku       | 唯讀工具（Read, Grep, Glob, Search） |
+| **Haiku**           | 輕量任務、快速回答         | Claude Haiku       | 完整工具集                           |
+| **Plan**            | 規劃複雜任務、制定策略     | Claude Sonnet/Opus | 完整工具集                           |
+| **General-purpose** | 通用子代理                 | 與主代理相同       | 完整工具集                           |
 
 #### Explore Agent — 快速探索
 
@@ -1642,6 +1643,7 @@ hooks:
 你是一位資深資安審查專家。你的任務是：
 
 ## 審查範圍
+
 1. 檢查 OWASP Top 10 漏洞
 2. 審查認證與授權邏輯
 3. 檢查敏感資料處理
@@ -1649,12 +1651,15 @@ hooks:
 5. 審查 SQL 注入和 XSS 防護
 
 ## 輸出格式
+
 使用以下格式回報：
+
 - 🔴 **嚴重**: [問題描述] — [修復建議]
-- 🟡 **警告**: [問題描述] — [修復建議]  
+- 🟡 **警告**: [問題描述] — [修復建議]
 - 🟢 **良好**: [已正確實作的部分]
 
 ## 規則
+
 - 不修改任何檔案，只產出審查報告
 - 優先檢查面向外部的 API 端點
 - 特別注意第三方依賴的已知漏洞
@@ -1664,25 +1669,25 @@ hooks:
 
 > 🆕 **v3.2 更新**：新增 `isolation`、`memory`、`initialPrompt`、`background`、`skills`、`mcpServers`、`disallowedTools`、`color` 等欄位
 
-| 參數 | 類型 | 必填 | 說明 |
-|-----|------|------|------|
-| `name` | string | ✅ | Agent 的唯一名稱 |
-| `description` | string | ✅ | Agent 的用途描述（用於匹配任務） |
-| `argument-hint` | string | ❌ | 呼叫時的參數提示 |
-| `model` | string | ❌ | 指定模型（預設繼承主代理） |
-| `effort` | string | ❌ | 推理投入程度：`low` / `medium` / `high` / `max` |
-| `allowed-tools` | string[] | ❌ | 限制可使用的工具（白名單模式） |
-| `disallowedTools` | string[] | ❌ | 🆕 禁止使用的工具（黑名單模式） |
-| `context` | string[] | ❌ | 自動載入的額外上下文檔案 |
-| `agent` | string | ❌ | 巢狀 Agent：指定此 Skill 應由哪個 Agent 執行 |
-| `hooks` | object | ❌ | Agent 專屬的 Hook 定義 |
-| `isolation` | string | ❌ | 🆕 隔離模式：`"worktree"` 使用 git worktree 獨立工作目錄 |
-| `memory` | string[] | ❌ | 🆕 記憶範圍：`"user"`、`"project"`、`"local"` |
-| `color` | string | ❌ | 🆕 終端顯示的主題色（如 `"#FF6B6B"`） |
-| `initialPrompt` | string | ❌ | 🆕 Agent 啟動時的初始 prompt |
-| `background` | boolean | ❌ | 🆕 設為 true 則 Agent 在背景執行 |
-| `skills` | string[] | ❌ | 🆕 預載入的 Skill 清單（相對路徑或名稱） |
-| `mcpServers` | string[] | ❌ | 🆕 此 Agent 專屬的 MCP Server 連線 |
+| 參數              | 類型     | 必填 | 說明                                                     |
+| ----------------- | -------- | ---- | -------------------------------------------------------- |
+| `name`            | string   | ✅   | Agent 的唯一名稱                                         |
+| `description`     | string   | ✅   | Agent 的用途描述（用於匹配任務）                         |
+| `argument-hint`   | string   | ❌   | 呼叫時的參數提示                                         |
+| `model`           | string   | ❌   | 指定模型（預設繼承主代理）                               |
+| `effort`          | string   | ❌   | 推理投入程度：`low` / `medium` / `high` / `max`          |
+| `allowed-tools`   | string[] | ❌   | 限制可使用的工具（白名單模式）                           |
+| `disallowedTools` | string[] | ❌   | 🆕 禁止使用的工具（黑名單模式）                          |
+| `context`         | string[] | ❌   | 自動載入的額外上下文檔案                                 |
+| `agent`           | string   | ❌   | 巢狀 Agent：指定此 Skill 應由哪個 Agent 執行             |
+| `hooks`           | object   | ❌   | Agent 專屬的 Hook 定義                                   |
+| `isolation`       | string   | ❌   | 🆕 隔離模式：`"worktree"` 使用 git worktree 獨立工作目錄 |
+| `memory`          | string[] | ❌   | 🆕 記憶範圍：`"user"`、`"project"`、`"local"`            |
+| `color`           | string   | ❌   | 🆕 終端顯示的主題色（如 `"#FF6B6B"`）                    |
+| `initialPrompt`   | string   | ❌   | 🆕 Agent 啟動時的初始 prompt                             |
+| `background`      | boolean  | ❌   | 🆕 設為 true 則 Agent 在背景執行                         |
+| `skills`          | string[] | ❌   | 🆕 預載入的 Skill 清單（相對路徑或名稱）                 |
+| `mcpServers`      | string[] | ❌   | 🆕 此 Agent 專屬的 MCP Server 連線                       |
 
 #### 使用 /agents 命令
 
@@ -1692,7 +1697,7 @@ hooks:
 
 # 輸出範例：
 # Available agents:
-#   explore         - Fast read-only codebase exploration  
+#   explore         - Fast read-only codebase exploration
 #   haiku           - Quick tasks using Haiku model
 #   plan            - Complex task planning
 #   security-reviewer - 專責安全審查的代理（自訂）
@@ -1724,6 +1729,7 @@ context:
 你是 API 設計專家，專門設計符合團隊標準的 RESTful API。
 
 ## 設計原則
+
 1. 遵循 RESTful 設計最佳實踐
 2. 使用 OpenAPI 3.0 規範
 3. 統一的錯誤回應格式
@@ -1731,19 +1737,22 @@ context:
 5. 使用 HTTP 標準狀態碼
 
 ## 命名慣例
+
 - 資源名稱使用複數形式（/users, /orders）
 - 使用 kebab-case（/order-items）
 - 查詢參數使用 camelCase（?pageSize=20）
 
 ## 回應格式
+
 統一使用：
 {
-  "data": { ... },
-  "meta": { "page": 1, "total": 100 },
-  "errors": []
+"data": { ... },
+"meta": { "page": 1, "total": 100 },
+"errors": []
 }
 
 ## 輸出要求
+
 1. OpenAPI YAML 定義
 2. 端點清單與說明
 3. 請求/回應範例
@@ -1762,7 +1771,7 @@ context:
 # → 使用 Grep 搜尋 Controller 中的 Repository/EntityManager 引用
 # → 使用 Read 讀取可疑檔案
 # → 回傳摘要結果給主代理
-# 
+#
 # 主代理根據摘要提供完整分析報告
 ```
 
@@ -1803,10 +1812,12 @@ context:
 ## Subagent 使用指引
 
 ### 搜尋策略
+
 - 搜尋超過 3 個檔案時，使用 subagent 進行探索
 - 大型程式碼分析任務優先使用 Explore agent
 
 ### Agent 分工
+
 - API 相關修改：使用 api-designer agent 先設計，再實作
 - 安全相關變更：完成後必須使用 security-reviewer agent 審查
 - 資料庫遷移：使用 Plan agent 先規劃遷移策略
@@ -1831,12 +1842,12 @@ allowed-tools:
 
 #### 技巧三：模型選擇策略
 
-| 任務類型 | 建議模型 | 原因 |
-|---------|---------|------|
-| 快速搜尋/探索 | `haiku` | 速度快、成本低 |
-| 程式碼生成/修改 | `sonnet` | 品質與速度的平衡 |
-| 架構設計/複雜推理 | `opus` | 最強推理能力 |
-| 安全審查 | `sonnet` 或 `opus` | 需要深度分析能力 |
+| 任務類型          | 建議模型           | 原因             |
+| ----------------- | ------------------ | ---------------- |
+| 快速搜尋/探索     | `haiku`            | 速度快、成本低   |
+| 程式碼生成/修改   | `sonnet`           | 品質與速度的平衡 |
+| 架構設計/複雜推理 | `opus`             | 最強推理能力     |
+| 安全審查          | `sonnet` 或 `opus` | 需要深度分析能力 |
 
 #### 技巧四：Subagent Hook 整合
 
@@ -1888,26 +1899,26 @@ mcpServers:
 ---
 ```
 
-| 欄位 | 類型 | 說明 |
-|------|------|------|
-| `maxTurns` | number | 限制 Subagent 的最大執行回合數，防止無限執行 |
-| `permissionMode` | string | 權限模式：`"auto"`（自動接受）、`"ask"`（詢問使用者）、`"deny"`（拒絕需授權操作） |
-| `context` | string | 設為 `"fork"` 則 Subagent 在完全隔離的 context 中執行 |
-| `effort` | string | 推理投入程度：`low` / `medium` / `high` / `max`（max 僅適用 Opus） |
-| `isolation` | string | 🆕 設為 `"worktree"` 使用 git worktree 讓 Agent 在獨立工作目錄中操作 |
-| `color` | string | 🆕 終端中此 Agent 的主題色，便於區分多個 Agent 的輸出 |
-| `background` | boolean | 🆕 設為 true 時 Agent 在背景執行，主代理可繼續其他工作 |
-| `skills` | string[] | 🆕 預載入的 Skill 名稱清單，Agent 啟動時自動載入這些 Skills |
-| `mcpServers` | string[] | 🆕 此 Agent 專屬的 MCP Server 連線名稱 |
-| `initialPrompt` | string | 🆕 Agent 啟動時自動注入的初始 prompt |
+| 欄位             | 類型     | 說明                                                                              |
+| ---------------- | -------- | --------------------------------------------------------------------------------- |
+| `maxTurns`       | number   | 限制 Subagent 的最大執行回合數，防止無限執行                                      |
+| `permissionMode` | string   | 權限模式：`"auto"`（自動接受）、`"ask"`（詢問使用者）、`"deny"`（拒絕需授權操作） |
+| `context`        | string   | 設為 `"fork"` 則 Subagent 在完全隔離的 context 中執行                             |
+| `effort`         | string   | 推理投入程度：`low` / `medium` / `high` / `max`（max 僅適用 Opus）                |
+| `isolation`      | string   | 🆕 設為 `"worktree"` 使用 git worktree 讓 Agent 在獨立工作目錄中操作              |
+| `color`          | string   | 🆕 終端中此 Agent 的主題色，便於區分多個 Agent 的輸出                             |
+| `background`     | boolean  | 🆕 設為 true 時 Agent 在背景執行，主代理可繼續其他工作                            |
+| `skills`         | string[] | 🆕 預載入的 Skill 名稱清單，Agent 啟動時自動載入這些 Skills                       |
+| `mcpServers`     | string[] | 🆕 此 Agent 專屬的 MCP Server 連線名稱                                            |
+| `initialPrompt`  | string   | 🆕 Agent 啟動時自動注入的初始 prompt                                              |
 
 #### 技巧六：前景與背景執行模式
 
 > 🆕 Subagent 支援兩種執行模式：
 
-| 模式 | 行為 | 適用場景 |
-|------|------|---------|
-| **前景（Foreground）** | 主代理等待 Subagent 完成後才繼續 | 需要 Subagent 結果才能進行下一步 |
+| 模式                   | 行為                                      | 適用場景                                   |
+| ---------------------- | ----------------------------------------- | ------------------------------------------ |
+| **前景（Foreground）** | 主代理等待 Subagent 完成後才繼續          | 需要 Subagent 結果才能進行下一步           |
 | **背景（Background）** | Subagent 在背景執行，主代理可繼續其他工作 | 獨立任務（如掃描、文件生成）不需要即時結果 |
 
 ```plaintext
@@ -1926,11 +1937,11 @@ Claude: 修改已完成。文件生成也在背景完成了，結果如下...
 
 > 🆕 Subagent 可以存取三層持久記憶：
 
-| 記憶範圍 | 路徑 | 說明 |
-|---------|------|------|
-| **使用者記憶** | `~/.claude/` | 跨所有專案持久保存的使用者偏好 |
-| **專案記憶** | `.claude/` | 專案級的記憶（提交到 Git） |
-| **本地記憶** | `.claude.local/` | 本地記憶（不提交到 Git） |
+| 記憶範圍       | 路徑             | 說明                           |
+| -------------- | ---------------- | ------------------------------ |
+| **使用者記憶** | `~/.claude/`     | 跨所有專案持久保存的使用者偏好 |
+| **專案記憶**   | `.claude/`       | 專案級的記憶（提交到 Git）     |
+| **本地記憶**   | `.claude.local/` | 本地記憶（不提交到 Git）       |
 
 Subagent 啟動時會自動載入這些記憶，確保 Subagent 了解專案的 context 和規範。
 
@@ -1942,7 +1953,7 @@ Subagent 啟動時會自動載入這些記憶，確保 Subagent 了解專案的 
 ```plaintext
 # 恢復之前的 Subagent 會話
 Claude 使用 SendMessage 工具：
-- target: "security-reviewer"  
+- target: "security-reviewer"
 - message: "請繼續檢查 controllers/ 目錄"
 → security-reviewer 在之前的 context 基礎上繼續工作
 ```
@@ -2021,7 +2032,7 @@ Claude 自動偵測可恢復的 Subagent，使用 SendMessage 工具重新連線
 
 ##### api-designer.md
 
-```markdown
+````markdown
 ---
 name: "api-designer"
 description: "設計 RESTful API 端點，產出 OpenAPI 規格"
@@ -2035,6 +2046,7 @@ allowed-tools:
 # API 設計專家
 
 ## 工作流程
+
 1. 分析需求描述
 2. 檢查現有 API 端點（src/routes/ 和 src/controllers/）
 3. 設計新的 API 端點，遵循現有命名慣例
@@ -2042,6 +2054,7 @@ allowed-tools:
 5. 撰寫 Controller 和 Route 程式碼
 
 ## 設計規範
+
 - URL 使用 kebab-case 命名
 - 使用 RESTful 動詞：GET（查詢）、POST（建立）、PUT（完整更新）、PATCH（部分更新）、DELETE（刪除）
 - 分頁使用 cursor-based pagination
@@ -2049,6 +2062,7 @@ allowed-tools:
 - 所有端點需要驗證 JWT Token
 
 ## 回應格式
+
 ```json
 {
   "方案摘要": "...",
@@ -2065,7 +2079,9 @@ allowed-tools:
   "OpenAPI 規格": "..."
 }
 ```
-```
+````
+
+````
 
 ##### test-writer.md
 
@@ -2099,7 +2115,7 @@ allowed-tools:
 - 行覆蓋率 > 80%
 - 分支覆蓋率 > 70%
 - 所有公開方法 100% 覆蓋
-```
+````
 
 ##### performance-analyzer.md
 
@@ -2117,15 +2133,17 @@ allowed-tools:
 # 效能分析專家
 
 ## 分析重點
+
 1. **資料庫查詢**：N+1 問題、缺少索引、不必要的 JOIN
 2. **記憶體使用**：大陣列操作、記憶體洩漏、不必要的物件複製
 3. **API 效能**：回應時間、Payload 大小、快取策略
 4. **前端效能**：Bundle 大小、渲染效能、圖片優化
 
 ## 輸出格式
-| 問題 | 位置 | 嚴重度 | 建議修復 | 預期改善 |
-|------|------|--------|---------|---------|
-| ... | file:line | 高/中/低 | ... | ~30% 改善 |
+
+| 問題 | 位置      | 嚴重度   | 建議修復 | 預期改善  |
+| ---- | --------- | -------- | -------- | --------- |
+| ...  | file:line | 高/中/低 | ...      | ~30% 改善 |
 ```
 
 #### 範例二：Subagent 工作流程編排
@@ -2140,26 +2158,32 @@ allowed-tools:
 當要開發新功能時，按以下順序執行：
 
 ### Step 1: 設計
+
 - 使用 `api-designer` agent 設計 API
 - 輸出 OpenAPI 規格和程式碼架構
 
 ### Step 2: 實作
+
 - 主 Agent 根據設計結果實作程式碼
 - 包含 Controller、Service、Repository、Model
 
 ### Step 3: 測試
+
 - 使用 `test-writer` agent 撰寫測試
 - 確保覆蓋率達標
 
 ### Step 4: 資料庫
+
 - 如需 DB 變更，使用 `db-migration` agent
 - 產出 migration 檔案
 
 ### Step 5: 安全審查
+
 - 使用 `security-reviewer` agent 進行安全掃描
 - 修復所有「高」嚴重度問題
 
 ### Step 6: 效能分析
+
 - 使用 `performance-analyzer` agent 分析效能
 - 修復所有效能瓶頸
 ```
@@ -2186,7 +2210,7 @@ flowchart TB
     DB --> INTEGRATE
     MAIN --> DONE[完成]
     INTEGRATE --> DONE
-    
+
     style START fill:#dbeafe,stroke:#3b82f6
     style EXPLORE fill:#fef3c7,stroke:#f59e0b
     style MAIN fill:#d1fae5,stroke:#10b981
@@ -2214,22 +2238,22 @@ flowchart TB
 graph TB
     subgraph "Agent Teams 架構"
         U[使用者] -->|claude --cowork| LA[Lead Agent<br>領導代理]
-        
+
         LA -->|建立 worktree 1| T1[Teammate 1<br>前端 API 整合]
         LA -->|建立 worktree 2| T2[Teammate 2<br>後端 Service 層]
         LA -->|建立 worktree 3| T3[Teammate 3<br>資料庫 Migration]
-        
+
         T1 -->|獨立 git worktree| W1[worktree-1/]
         T2 -->|獨立 git worktree| W2[worktree-2/]
         T3 -->|獨立 git worktree| W3[worktree-3/]
-        
+
         T1 -->|完成回報| LA
         T2 -->|完成回報| LA
         T3 -->|完成回報| LA
-        
+
         LA -->|合併結果| R[最終整合]
     end
-    
+
     style LA fill:#6366f1,stroke:#4f46e5,color:#fff
     style T1 fill:#dbeafe,stroke:#3b82f6
     style T2 fill:#dcfce7,stroke:#22c55e
@@ -2239,15 +2263,15 @@ graph TB
 
 #### Lead Agent 與 Teammate 的角色差異
 
-| 特性 | Lead Agent（領導代理） | Teammate Agent（隊友代理） |
-|------|----------------------|--------------------------|
-| **啟動方式** | `claude --cowork` | 由 Lead Agent 自動啟動 |
-| **工作目錄** | 主倉庫目錄 | 獨立 git worktree |
-| **職責** | 規劃任務、分配工作、整合結果 | 執行具體開發任務 |
-| **互動方式** | 與使用者互動 | 與 Lead Agent 溝通 |
-| **Git 操作** | 合併 worktree 分支 | 在自己的 worktree 中提交 |
-| **並行數量** | 1 個 | 多個同時運行 |
-| **生命週期** | 整個會話期間 | 任務完成後可釋放 |
+| 特性         | Lead Agent（領導代理）       | Teammate Agent（隊友代理） |
+| ------------ | ---------------------------- | -------------------------- |
+| **啟動方式** | `claude --cowork`            | 由 Lead Agent 自動啟動     |
+| **工作目錄** | 主倉庫目錄                   | 獨立 git worktree          |
+| **職責**     | 規劃任務、分配工作、整合結果 | 執行具體開發任務           |
+| **互動方式** | 與使用者互動                 | 與 Lead Agent 溝通         |
+| **Git 操作** | 合併 worktree 分支           | 在自己的 worktree 中提交   |
+| **並行數量** | 1 個                         | 多個同時運行               |
+| **生命週期** | 整個會話期間                 | 任務完成後可釋放           |
 
 ### 2.2.2 啟動與使用 Agent Teams
 
@@ -2305,11 +2329,11 @@ Lead Agent → [Mailbox] → Teammate 2
 
 Agent Teams 支援不同的視覺呈現方式：
 
-| 模式 | 工具 | 說明 |
-|------|------|------|
-| **In-process** | 預設 | Lead 與 Teammates 在同一終端中交替顯示 |
-| **Split Panes** | tmux | 🆕 透過 tmux 分割視窗，各 Agent 有獨立面板 |
-| **多視窗** | iTerm2 | 🆕 在 iTerm2 中為每個 Agent 開啟獨立分頁 |
+| 模式            | 工具   | 說明                                       |
+| --------------- | ------ | ------------------------------------------ |
+| **In-process**  | 預設   | Lead 與 Teammates 在同一終端中交替顯示     |
+| **Split Panes** | tmux   | 🆕 透過 tmux 分割視窗，各 Agent 有獨立面板 |
+| **多視窗**      | iTerm2 | 🆕 在 iTerm2 中為每個 Agent 開啟獨立分頁   |
 
 ```bash
 # 使用 tmux 分割面板顯示 (macOS/Linux)
@@ -2360,17 +2384,17 @@ Agent Teams 利用 git worktree 實現隔離的並行開發：
 ```mermaid
 graph LR
     subgraph "Git 倉庫結構"
-        M[主倉庫<br>main branch] 
-        
+        M[主倉庫<br>main branch]
+
         M -->|git worktree add| W1[.worktrees/task-1<br>branch: teammate-task-1]
         M -->|git worktree add| W2[.worktrees/task-2<br>branch: teammate-task-2]
         M -->|git worktree add| W3[.worktrees/task-3<br>branch: teammate-task-3]
-        
+
         W1 -->|merge| M
         W2 -->|merge| M
         W3 -->|merge| M
     end
-    
+
     style M fill:#6366f1,stroke:#4f46e5,color:#fff
     style W1 fill:#dbeafe,stroke:#3b82f6
     style W2 fill:#dcfce7,stroke:#22c55e
@@ -2394,22 +2418,22 @@ Lead Agent 使用智慧型任務分配，考量以下因素：
 flowchart TD
     T[使用者任務] --> A[分析任務依賴關係]
     A --> B{是否可並行?}
-    
+
     B -->|是| P[建立並行 worktree]
     B -->|否| S[建立序列工作流]
-    
+
     P --> P1[Teammate A<br>獨立任務 1]
     P --> P2[Teammate B<br>獨立任務 2]
-    
+
     S --> S1[Teammate C<br>前置任務]
     S1 -->|完成後| S2[Teammate D<br>依賴任務]
-    
+
     P1 --> M[Lead Agent 整合]
     P2 --> M
     S2 --> M
-    
+
     M --> V[驗證與合併]
-    
+
     style T fill:#6366f1,stroke:#4f46e5,color:#fff
     style M fill:#f0fdf4,stroke:#16a34a
     style V fill:#dcfce7,stroke:#22c55e
@@ -2419,11 +2443,11 @@ flowchart TD
 
 Teammate Agent 透過以下機制與 Lead Agent 通訊：
 
-| 機制 | 說明 | 用途 |
-|------|------|------|
-| **任務描述** | Lead 在建立 worktree 時提供的指令 | 初始任務說明 |
-| **檔案系統** | 透過共享的 git 物件 | 程式碼變更 |
-| **狀態回報** | Teammate 完成時返回摘要 | 進度追蹤 |
+| 機制          | 說明                                               | 用途         |
+| ------------- | -------------------------------------------------- | ------------ |
+| **任務描述**  | Lead 在建立 worktree 時提供的指令                  | 初始任務說明 |
+| **檔案系統**  | 透過共享的 git 物件                                | 程式碼變更   |
+| **狀態回報**  | Teammate 完成時返回摘要                            | 進度追蹤     |
 | **Hook 事件** | `TeammateIdle`、`WorktreeCreate`、`WorktreeRemove` | 生命週期管理 |
 
 #### 相關 Hook 事件
@@ -2516,13 +2540,13 @@ Lead Agent 計劃：
 
 #### 🆕 Agent Teams 專屬 Hook 事件
 
-| Hook 事件 | 觸發時機 | 用途 |
-|-----------|---------|------|
-| `TaskCreated` | Lead Agent 建立新任務時 | 記錄任務分配、通知相關人員 |
-| `TaskCompleted` | Teammate 完成任務時 | 觸發下一步任務、更新進度 |
-| `TeammateIdle` | Teammate Agent 閒置時 | Lead Agent 分配新任務 |
-| `WorktreeCreate` | 建立新 worktree 時 | 自動安裝依賴、設定環境 |
-| `WorktreeRemove` | 清理 worktree 時 | 清理暫存資料 |
+| Hook 事件        | 觸發時機                | 用途                       |
+| ---------------- | ----------------------- | -------------------------- |
+| `TaskCreated`    | Lead Agent 建立新任務時 | 記錄任務分配、通知相關人員 |
+| `TaskCompleted`  | Teammate 完成任務時     | 觸發下一步任務、更新進度   |
+| `TeammateIdle`   | Teammate Agent 閒置時   | Lead Agent 分配新任務      |
+| `WorktreeCreate` | 建立新 worktree 時      | 自動安裝依賴、設定環境     |
+| `WorktreeRemove` | 清理 worktree 時        | 清理暫存資料               |
 
 ### 2.2.5 Agent Teams 進階模式
 
@@ -2537,7 +2561,7 @@ graph LR
         T2 --> T3["Teammate 3<br>實作 Frontend"]
         T3 --> T4["Lead Agent<br>整合測試"]
     end
-    
+
     style T1 fill:#dbeafe,stroke:#3b82f6
     style T2 fill:#dcfce7,stroke:#22c55e
     style T3 fill:#fef3c7,stroke:#f59e0b
@@ -2562,12 +2586,12 @@ graph TB
     L --> T2[Teammate 2<br>檢查效能問題]
     L --> T3[Teammate 3<br>驗證程式風格]
     L --> T4[Teammate 4<br>分析測試覆蓋率]
-    
+
     T1 --> R[Lead Agent<br>彙整報告]
     T2 --> R
     T3 --> R
     T4 --> R
-    
+
     style L fill:#6366f1,stroke:#4f46e5,color:#fff
     style R fill:#10b981,stroke:#059669,color:#fff
 ```
@@ -2582,7 +2606,7 @@ You: 使用專家模式重新設計購物車系統
 Lead Agent 分配：
 ├── 架構師 Agent（使用 opus 模型）
 │   └── 設計整體架構、定義介面
-├── 後端專家 Agent  
+├── 後端專家 Agent
 │   └── 實作 API 和業務邏輯
 ├── 前端專家 Agent
 │   └── 實作 UI 元件和狀態管理
@@ -2594,12 +2618,12 @@ Lead Agent 分配：
 
 #### 模式選擇指南
 
-| 模式 | 適用場景 | 優勢 | 劣勢 |
-|------|---------|------|------|
-| **Pipeline** | 有明確依賴的任務 | 品質可控、循序漸進 | 速度較慢 |
-| **Fan-out/Fan-in** | 彼此獨立的分析任務 | 速度最快 | 無法處理依賴 |
-| **Specialist** | 需要多領域專業知識 | 專業且深入 | 成本較高 |
-| **混合** | 複雜專案 | 靈活組合 | 配置較複雜 |
+| 模式               | 適用場景           | 優勢               | 劣勢         |
+| ------------------ | ------------------ | ------------------ | ------------ |
+| **Pipeline**       | 有明確依賴的任務   | 品質可控、循序漸進 | 速度較慢     |
+| **Fan-out/Fan-in** | 彼此獨立的分析任務 | 速度最快           | 無法處理依賴 |
+| **Specialist**     | 需要多領域專業知識 | 專業且深入         | 成本較高     |
+| **混合**           | 複雜專案           | 靈活組合           | 配置較複雜   |
 
 ### 2.2.6 Agent Teams 搭配 Hooks
 
@@ -2667,20 +2691,20 @@ graph TB
     subgraph "Skills 系統架構"
         U[使用者請求] --> CC[Claude Code 核心]
         CC --> SD{Skill 匹配}
-        
+
         SD --> BS[內建 Skills<br>/simplify, /batch, /debug...]
         SD --> AS[Agent Skills<br>在 .agent.md 中定義]
         SD --> PS[Plugin Skills<br>在 .claude-plugin/ 中打包]
         SD --> CS[自訂 Skills<br>SKILL.md 檔案]
-        
+
         BS --> E[執行 Skill 邏輯]
         AS --> E
         PS --> E
         CS --> E
-        
+
         E --> R[回傳結果]
     end
-    
+
     style CC fill:#6366f1,stroke:#4f46e5,color:#fff
     style BS fill:#dbeafe,stroke:#3b82f6
     style AS fill:#dcfce7,stroke:#22c55e
@@ -2690,13 +2714,13 @@ graph TB
 
 #### Skill 類型總覽
 
-| 類型 | 位置 | 觸發方式 | 說明 |
-|------|------|---------|------|
-| **內建 Slash Commands** | Claude Code 內建 | `/command` 斜線命令 | 由 Anthropic 維護的預設 Skills |
-| **Agent Skills** | `.agent.md` YAML frontmatter | Agent 執行時自動載入 | 附加在特定 Agent 上的 Skills |
-| **Plugin Skills** | `.claude-plugin/skills/SKILL.md` | 安裝 Plugin 後可用 | 隨 Plugin 一起分發的 Skills |
-| **專案自訂 Skills** | `.claude/skills/SKILL.md` | 偵測專案上下文後匹配 | 團隊自定義的專案級 Skills |
-| **全域自訂 Skills** | `~/.claude/skills/SKILL.md` | 所有專案可用 | 使用者個人的全域 Skills |
+| 類型                    | 位置                             | 觸發方式             | 說明                           |
+| ----------------------- | -------------------------------- | -------------------- | ------------------------------ |
+| **內建 Slash Commands** | Claude Code 內建                 | `/command` 斜線命令  | 由 Anthropic 維護的預設 Skills |
+| **Agent Skills**        | `.agent.md` YAML frontmatter     | Agent 執行時自動載入 | 附加在特定 Agent 上的 Skills   |
+| **Plugin Skills**       | `.claude-plugin/skills/SKILL.md` | 安裝 Plugin 後可用   | 隨 Plugin 一起分發的 Skills    |
+| **專案自訂 Skills**     | `.claude/skills/SKILL.md`        | 偵測專案上下文後匹配 | 團隊自定義的專案級 Skills      |
+| **全域自訂 Skills**     | `~/.claude/skills/SKILL.md`      | 所有專案可用         | 使用者個人的全域 Skills        |
 
 ### 2.3.2 內建 Skills（Slash Commands）
 
@@ -2704,20 +2728,20 @@ graph TB
 
 Claude Code 內建了多個以斜線命令（Slash Command）形式提供的 Skills：
 
-| 命令 | 功能說明 | 使用場景 |
-|------|---------|---------|
-| **`/code-review`** | 🆕 程式碼審查，分析品質與風格問題 | 提交前進行程式碼審查 |
-| **`/batch`** | 對多個檔案執行批次相同操作 | 需要對多處程式碼做相同變更時 |
-| **`/debug`** | 系統化偵錯流程，分析錯誤原因 | 遇到難以排查的 bug 時 |
-| **`/loop`** | 反覆執行命令直到條件滿足 | 需要自動化 lint、test 修復迴圈時 |
-| **`/run`** | 🆕 執行指定的自訂 Skill 腳本 | 透過名稱直接觸發特定 Skill |
-| **`/verify`** | 🆕 驗證任務完成情況 | 確認程式碼變更符合預期 |
-| **`/run-skill-generator`** | 🆕 互動式生成 SKILL.md 檔案 | 快速建立新的自訂 Skill |
-| **`/claude-api`** | 查詢 Claude API 文件與範例 | 需要 API 整合說明時 |
-| **`/compact`** | 壓縮對話歷史以釋放 context 空間 | 對話過長、接近 token 上限時 |
-| **`/memory`** | 管理專案記憶（CLAUDE.md） | 新增或修改長期記憶項目 |
-| **`/skills`** | 列出可用的 Skills | 查看當前環境可用的所有 Skills |
-| **`/agents`** | 列出可用的 Agents | 查看當前環境可用的所有 Agents |
+| 命令                       | 功能說明                          | 使用場景                         |
+| -------------------------- | --------------------------------- | -------------------------------- |
+| **`/code-review`**         | 🆕 程式碼審查，分析品質與風格問題 | 提交前進行程式碼審查             |
+| **`/batch`**               | 對多個檔案執行批次相同操作        | 需要對多處程式碼做相同變更時     |
+| **`/debug`**               | 系統化偵錯流程，分析錯誤原因      | 遇到難以排查的 bug 時            |
+| **`/loop`**                | 反覆執行命令直到條件滿足          | 需要自動化 lint、test 修復迴圈時 |
+| **`/run`**                 | 🆕 執行指定的自訂 Skill 腳本      | 透過名稱直接觸發特定 Skill       |
+| **`/verify`**              | 🆕 驗證任務完成情況               | 確認程式碼變更符合預期           |
+| **`/run-skill-generator`** | 🆕 互動式生成 SKILL.md 檔案       | 快速建立新的自訂 Skill           |
+| **`/claude-api`**          | 查詢 Claude API 文件與範例        | 需要 API 整合說明時              |
+| **`/compact`**             | 壓縮對話歷史以釋放 context 空間   | 對話過長、接近 token 上限時      |
+| **`/memory`**              | 管理專案記憶（CLAUDE.md）         | 新增或修改長期記憶項目           |
+| **`/skills`**              | 列出可用的 Skills                 | 查看當前環境可用的所有 Skills    |
+| **`/agents`**              | 列出可用的 Agents                 | 查看當前環境可用的所有 Agents    |
 
 **使用範例**：
 
@@ -2759,6 +2783,7 @@ description: >
 ## 使用時機
 
 當使用者需要：
+
 - 從資料庫表結構生成 Java Entity
 - 建立新的 JPA 實體類
 - 將 DDL 轉換為 Java 程式碼
@@ -2791,24 +2816,24 @@ description: >
 
 > 🆕 **v3.2 更新**：新增 `when_to_use`、`disallowed-tools`、`arguments` 等 frontmatter 欄位
 
-| 參數 | 類型 | 必填 | 說明 |
-|------|------|------|------|
-| `name` | string | ✅ | Skill 的唯一識別名稱（同時作為 `/name` 斜線命令） |
-| `description` | string | ✅ | Skill 功能的詳細描述，用於 AI 匹配 |
-| `when_to_use` | string | | 🆕 描述此 Skill 應該在什麼情況下被觸發 |
-| `argument-hint` | string | | 提示使用者此 Skill 需要什麼參數（在自動完成時顯示） |
-| `arguments` | list | | 🆕 定義 Skill 接受的具名參數清單（非位置參數） |
-| `user-invocable` | boolean | | 是否可被使用者透過 `/name` 手動呼叫（預設 true） |
-| `disable-model-invocation` | boolean | | 設為 true 則 Claude 不會自動判斷使用此 Skill |
-| `allowed-tools` | list | | 限制此 Skill 可使用的工具，如 `Read`、`Edit`、`Bash(npm test*)` |
-| `disallowed-tools` | list | | 🆕 禁止此 Skill 使用的工具（黑名單模式） |
-| `model` | string | | 覆寫使用的模型：`sonnet` 或 `opus` |
-| `effort` | string | | 推理投入程度：`low` / `medium` / `high` / `max`（max 啟用 Opus 最強推理） |
-| `context` | string | | 設為 `fork` 則在獨立子代理中執行（隔離 context） |
-| `agent` | string | | 指定在哪個 agent 中執行此 Skill |
-| `hooks` | object | | Skill 專屬的 hooks 配置 |
-| `shell` | string | | 指定 `` !`command` `` 動態 context 使用的 shell（如 `bash`、`zsh`） |
-| `paths` | list | | 限制此 Skill 僅在特定路徑下的檔案操作時觸發 |
+| 參數                       | 類型    | 必填 | 說明                                                                      |
+| -------------------------- | ------- | ---- | ------------------------------------------------------------------------- |
+| `name`                     | string  | ✅   | Skill 的唯一識別名稱（同時作為 `/name` 斜線命令）                         |
+| `description`              | string  | ✅   | Skill 功能的詳細描述，用於 AI 匹配                                        |
+| `when_to_use`              | string  |      | 🆕 描述此 Skill 應該在什麼情況下被觸發                                    |
+| `argument-hint`            | string  |      | 提示使用者此 Skill 需要什麼參數（在自動完成時顯示）                       |
+| `arguments`                | list    |      | 🆕 定義 Skill 接受的具名參數清單（非位置參數）                            |
+| `user-invocable`           | boolean |      | 是否可被使用者透過 `/name` 手動呼叫（預設 true）                          |
+| `disable-model-invocation` | boolean |      | 設為 true 則 Claude 不會自動判斷使用此 Skill                              |
+| `allowed-tools`            | list    |      | 限制此 Skill 可使用的工具，如 `Read`、`Edit`、`Bash(npm test*)`           |
+| `disallowed-tools`         | list    |      | 🆕 禁止此 Skill 使用的工具（黑名單模式）                                  |
+| `model`                    | string  |      | 覆寫使用的模型：`sonnet` 或 `opus`                                        |
+| `effort`                   | string  |      | 推理投入程度：`low` / `medium` / `high` / `max`（max 啟用 Opus 最強推理） |
+| `context`                  | string  |      | 設為 `fork` 則在獨立子代理中執行（隔離 context）                          |
+| `agent`                    | string  |      | 指定在哪個 agent 中執行此 Skill                                           |
+| `hooks`                    | object  |      | Skill 專屬的 hooks 配置                                                   |
+| `shell`                    | string  |      | 指定 `` !`command` `` 動態 context 使用的 shell（如 `bash`、`zsh`）       |
+| `paths`                    | list    |      | 限制此 Skill 僅在特定路徑下的檔案操作時觸發                               |
 
 > **📌 核心概念**：SKILL.md 的 description 內容非常重要，Claude Code 使用它來判斷何時應該觸發此 Skill。描述越精確，匹配越準確。
 
@@ -2836,15 +2861,15 @@ shell: bash
 
 #### 🆕 特殊變數與替換
 
-| 變數 | 說明 |
-|------|------|
-| `$ARGUMENTS` | 使用者呼叫時提供的完整參數文字 |
-| `$ARGUMENTS[0]`、`$1` | 第一個位置參數（空格分隔） |
-| `$ARGUMENTS[1]`、`$2` | 第二個位置參數 |
-| `$name` | 🆕 `arguments` 中定義的具名參數 |
-| `${CLAUDE_SKILL_DIR}` | 此 SKILL.md 所在的目錄路徑 |
-| `${CLAUDE_SESSION_ID}` | 當前會話的唯一 ID |
-| `${CLAUDE_EFFORT}` | 🆕 當前設定的推理投入程度（`low`/`medium`/`high`/`max`） |
+| 變數                   | 說明                                                     |
+| ---------------------- | -------------------------------------------------------- |
+| `$ARGUMENTS`           | 使用者呼叫時提供的完整參數文字                           |
+| `$ARGUMENTS[0]`、`$1`  | 第一個位置參數（空格分隔）                               |
+| `$ARGUMENTS[1]`、`$2`  | 第二個位置參數                                           |
+| `$name`                | 🆕 `arguments` 中定義的具名參數                          |
+| `${CLAUDE_SKILL_DIR}`  | 此 SKILL.md 所在的目錄路徑                               |
+| `${CLAUDE_SESSION_ID}` | 當前會話的唯一 ID                                        |
+| `${CLAUDE_EFFORT}`     | 🆕 當前設定的推理投入程度（`low`/`medium`/`high`/`max`） |
 
 ```markdown
 ---
@@ -2854,7 +2879,7 @@ description: 為指定檔案生成測試
 
 # 為 $1 生成測試
 
-讀取 $1 的內容，並使用 ${CLAUDE_SKILL_DIR}/templates/test-template.ts 
+讀取 $1 的內容，並使用 ${CLAUDE_SKILL_DIR}/templates/test-template.ts
 作為模板生成對應的測試檔案。
 ```
 
@@ -2865,13 +2890,8 @@ description: 為指定檔案生成測試
 ```json
 {
   "permissions": {
-    "allow": [
-      "Skill(spring-migration)",
-      "Skill(security-review)"
-    ],
-    "deny": [
-      "Skill(dangerous-skill)"
-    ]
+    "allow": ["Skill(spring-migration)", "Skill(security-review)"],
+    "deny": ["Skill(dangerous-skill)"]
   }
 }
 ```
@@ -2899,8 +2919,11 @@ user-invocable: true
 
 使用者呼叫方式：
 ```
+
 /explain React useEffect 的 cleanup 機制
+
 ```
+
 ```
 
 #### !command 動態 Context
@@ -2946,6 +2969,7 @@ tools:
 # Security Reviewer Agent
 
 ## 審查流程
+
 1. 載入 owasp-checker 和 dependency-auditor Skills
 2. 掃描目標程式碼
 3. 依照 OWASP Top 10 逐項檢查
@@ -3019,6 +3043,7 @@ description: >
 ## 觸發條件
 
 當使用者請求以下操作時啟動：
+
 - 建立新的 REST API 端點
 - 為現有 Entity 新增 CRUD API
 - 生成 Spring Boot Controller + Service + Repository
@@ -3026,6 +3051,7 @@ description: >
 ## 生成規範
 
 ### Controller 層
+
 - 使用 @RestController 和 @RequestMapping
 - 實作標準 HTTP 方法（GET/POST/PUT/DELETE）
 - 加入 @Operation (Swagger) 註解
@@ -3033,22 +3059,26 @@ description: >
 - 回傳適當的 HTTP 狀態碼
 
 ### Service 層
+
 - 定義 Service 介面和實作類
 - 實作業務邏輯和資料轉換
 - 使用 @Transactional 管理交易
 - 處理業務例外
 
 ### Repository 層
+
 - 繼承 JpaRepository
 - 定義自訂查詢方法
 - 使用 @Query 處理複雜查詢
 
 ### DTO 層
+
 - 建立 Request/Response DTO
 - 使用 Jakarta Validation 註解
 - 實作 Entity ↔ DTO 轉換
 
 ## 命名規範
+
 - 遵循專案現有的命名慣例
 - Controller: XxxController
 - Service: XxxService / XxxServiceImpl
@@ -3073,6 +3103,7 @@ skills:
 ---
 
 # Backend Developer Agent
+
 （Agent 的詳細指引...）
 ```
 
@@ -3088,16 +3119,16 @@ graph LR
         P3[📐 範圍適中<br>不過大也不過小]
         P4[📝 範例豐富<br>提供輸入輸出範例]
     end
-    
+
     P1 --> P2 --> P3 --> P4
 ```
 
-| 原則 | 說明 | 範例 |
-|------|------|------|
-| **精確描述** | description 是 AI 匹配的關鍵，要包含具體的技術細節 | ❌ "生成程式碼" → ✅ "根據 OpenAPI 3.0 規範生成 TypeScript axios client" |
-| **步驟可執行** | 操作步驟要具體到 Claude 可以執行 | ❌ "分析程式碼" → ✅ "使用 grep 搜尋所有 @Deprecated 標記的方法" |
-| **範圍適中** | 一個 Skill 只解決一類問題 | ❌ "全端開發" → ✅ "Spring Boot Controller 生成" |
-| **範例豐富** | 提供 2-3 個典型的輸入輸出範例 | 包含簡單案例和複雜案例 |
+| 原則           | 說明                                               | 範例                                                                     |
+| -------------- | -------------------------------------------------- | ------------------------------------------------------------------------ |
+| **精確描述**   | description 是 AI 匹配的關鍵，要包含具體的技術細節 | ❌ "生成程式碼" → ✅ "根據 OpenAPI 3.0 規範生成 TypeScript axios client" |
+| **步驟可執行** | 操作步驟要具體到 Claude 可以執行                   | ❌ "分析程式碼" → ✅ "使用 grep 搜尋所有 @Deprecated 標記的方法"         |
+| **範圍適中**   | 一個 Skill 只解決一類問題                          | ❌ "全端開發" → ✅ "Spring Boot Controller 生成"                         |
+| **範例豐富**   | 提供 2-3 個典型的輸入輸出範例                      | 包含簡單案例和複雜案例                                                   |
 
 #### 🆕 Skill 內容生命週期與自動壓縮
 
@@ -3166,10 +3197,10 @@ Claude Code 會監視 SKILL.md 檔案的變更：
 }
 ```
 
-| 設定 | 說明 | 預設值 |
-|------|------|--------|
-| `skillListingBudgetFraction` | Skills 列表佔 context 總預算的比例 | `0.05`（5%） |
-| `maxSkillDescriptionChars` | 單一 Skill description 的最大顯示字元數 | 無限制 |
+| 設定                         | 說明                                    | 預設值       |
+| ---------------------------- | --------------------------------------- | ------------ |
+| `skillListingBudgetFraction` | Skills 列表佔 context 總預算的比例      | `0.05`（5%） |
+| `maxSkillDescriptionChars`   | 單一 Skill description 的最大顯示字元數 | 無限制       |
 
 > 📌 **調校建議**：若專案有超過 20 個 Skills，建議同時設定 `skillListingBudgetFraction: 0.08` 和 `maxSkillDescriptionChars: 150`，在列表可見性與 context 效率間取得平衡。
 
@@ -3225,16 +3256,19 @@ tools: read_file, grep_search, semantic_search
 ## 審查清單
 
 ### 安全性
+
 - 是否有資料遺失風險？（DROP TABLE, DROP COLUMN）
 - 大表變更是否使用 online DDL？
 - 是否需要資料回填（backfill）？
 
 ### 效能
+
 - 是否在大表上建立索引？（需要 CONCURRENTLY）
 - 是否有鎖表風險？
 - 預估執行時間
 
 ### 向後相容性
+
 - 新舊版本程式碼能否同時運行？
 - 是否需要分階段部署？
   1. 先部署相容的程式碼
@@ -3242,12 +3276,13 @@ tools: read_file, grep_search, semantic_search
   3. 部署使用新 schema 的程式碼
 
 ## 輸出格式
-| 項目 | 狀態 | 說明 |
-|------|------|------|
-| 資料安全 | ✅/⚠️/❌ | 詳細說明 |
-| 效能影響 | ✅/⚠️/❌ | 預估影響 |
+
+| 項目     | 狀態     | 說明       |
+| -------- | -------- | ---------- |
+| 資料安全 | ✅/⚠️/❌ | 詳細說明   |
+| 效能影響 | ✅/⚠️/❌ | 預估影響   |
 | 向後相容 | ✅/⚠️/❌ | 相容性分析 |
-| 回滾方案 | 有/無 | 如何回滾 |
+| 回滾方案 | 有/無    | 如何回滾   |
 ```
 
 #### Git Commit 訊息生成 Skill
@@ -3263,16 +3298,19 @@ tools: bash
 # Commit Message Generator
 
 ## 分析步驟
+
 1. 執行 `git diff --staged --stat` 查看變更摘要
 2. 執行 `git diff --staged` 查看詳細變更
 3. 根據變更內容判斷 commit 類型
 
 ## Commit 訊息格式
+
 type(scope): 簡短描述
 
 詳細說明（如果需要）
 
 ## 類型判斷規則
+
 - feat: 新功能
 - fix: Bug 修復
 - refactor: 重構（不改變功能）
@@ -3283,6 +3321,7 @@ type(scope): 簡短描述
 - style: 程式碼格式
 
 ## 範例
+
 feat(auth): 新增 OAuth 2.0 Google 登入支援
 
 - 實作 Google OAuth2 flow
@@ -3303,6 +3342,7 @@ tools: read_file, bash, write_file, grep_search
 # Dependency Upgrade Skill
 
 ## 升級流程
+
 1. 執行 `npm outdated` 或 `mvn versions:display-dependency-updates`
    了解哪些依賴有新版本
 2. 檢查每個依賴的 CHANGELOG 和 breaking changes
@@ -3311,13 +3351,15 @@ tools: read_file, bash, write_file, grep_search
 5. 每次升級後執行測試
 
 ## 優先順序
+
 1. 🔴 有已知 CVE 的依賴 → 立即升級
 2. 🟡 Major 版本落後 2+ 的依賴 → 規劃升級
 3. 🟢 Minor/Patch 更新 → 批量升級
 
 ## 輸出格式
+
 | 套件 | 目前版本 | 最新版本 | 類型 | Breaking Changes | 建議 |
-|------|---------|---------|------|-----------------|------|
+| ---- | -------- | -------- | ---- | ---------------- | ---- |
 ```
 
 ---
@@ -3334,20 +3376,20 @@ tools: read_file, bash, write_file, grep_search
 graph TB
     subgraph "Plugin 架構"
         P[Plugin 目錄<br>.claude-plugin/]
-        
+
         P --> M[plugin.json<br>清單檔]
         P --> A[agents/<br>Agent 定義]
         P --> S[skills/<br>SKILL.md 檔案]
         P --> C[commands/<br>Slash Commands]
         P --> I[CLAUDE.md<br>Plugin 指引]
-        
+
         M --> D[名稱、版本、描述<br>依賴、權限宣告]
         A --> A1[agent-1.md]
         A --> A2[agent-2.md]
         S --> S1[skill-1/SKILL.md]
         S --> S2[skill-2/SKILL.md]
     end
-    
+
     style P fill:#6366f1,stroke:#4f46e5,color:#fff
     style M fill:#dbeafe,stroke:#3b82f6
     style A fill:#dcfce7,stroke:#22c55e
@@ -3358,13 +3400,13 @@ graph TB
 
 #### Plugin vs 其他擴展機制比較
 
-| 特性 | Plugin | Agent | Skill | MCP Server |
-|------|--------|-------|-------|------------|
-| **封裝範圍** | 多個 Agent + Skill + Command | 單一代理角色 | 單一能力 | 外部工具 |
-| **目錄結構** | `.claude-plugin/` | `.claude/agents/*.md` | `.claude/skills/*/SKILL.md` | `.mcp.json` |
-| **分發方式** | 市場 / Git 倉庫 | 隨專案或全域 | 隨專案或全域 | 獨立服務 |
-| **安裝方式** | `/install-plugin` | 放入目錄即可 | 放入目錄即可 | `.mcp.json` 配置 |
-| **適用場景** | 完整功能包 | 特定角色 | 特定能力 | 外部服務整合 |
+| 特性         | Plugin                       | Agent                 | Skill                       | MCP Server       |
+| ------------ | ---------------------------- | --------------------- | --------------------------- | ---------------- |
+| **封裝範圍** | 多個 Agent + Skill + Command | 單一代理角色          | 單一能力                    | 外部工具         |
+| **目錄結構** | `.claude-plugin/`            | `.claude/agents/*.md` | `.claude/skills/*/SKILL.md` | `.mcp.json`      |
+| **分發方式** | 市場 / Git 倉庫              | 隨專案或全域          | 隨專案或全域                | 獨立服務         |
+| **安裝方式** | `/install-plugin`            | 放入目錄即可          | 放入目錄即可                | `.mcp.json` 配置 |
+| **適用場景** | 完整功能包                   | 特定角色              | 特定能力                    | 外部服務整合     |
 
 ### 2.4.2 Plugin 目錄結構
 
@@ -3380,7 +3422,7 @@ graph TB
   "author": "DevTeam",
   "license": "MIT",
   "repository": "https://github.com/example/claude-spring-boot-toolkit",
-  
+
   "agents": [
     {
       "name": "spring-boot-developer",
@@ -3393,7 +3435,7 @@ graph TB
       "description": "Spring Boot 測試撰寫代理"
     }
   ],
-  
+
   "skills": [
     {
       "name": "api-generator",
@@ -3406,7 +3448,7 @@ graph TB
       "description": "生成 JPA Entity 和 Repository"
     }
   ],
-  
+
   "commands": [
     {
       "name": "/spring-init",
@@ -3449,12 +3491,12 @@ my-plugin/
 
 > **📌 重要**：`plugin.json` 放在 `.claude-plugin/` 子目錄中，而 `settings.json`、`.mcp.json`、`.lsp.json` 放在 Plugin **根目錄**（非 `.claude-plugin/` 中）。
 
-| 目錄/檔案 | 說明 |
-|-----------|------|
-| `monitors/` | 🆕 背景監控腳本，Plugin 啟用時自動在背景執行 |
-| `bin/` | 🆕 Plugin 附帶的可執行工具，會被加入 `$PATH` |
-| `.lsp.json` | 🆕 LSP Server 配置，為特定語言提供增強的程式碼智能 |
-| `settings.json` | Plugin 的預設 settings（如 Hook 定義、權限等） |
+| 目錄/檔案       | 說明                                               |
+| --------------- | -------------------------------------------------- |
+| `monitors/`     | 🆕 背景監控腳本，Plugin 啟用時自動在背景執行       |
+| `bin/`          | 🆕 Plugin 附帶的可執行工具，會被加入 `$PATH`       |
+| `.lsp.json`     | 🆕 LSP Server 配置，為特定語言提供增強的程式碼智能 |
+| `settings.json` | Plugin 的預設 settings（如 Hook 定義、權限等）     |
 
 #### 🆕 Plugin MCP Server 配置
 
@@ -3475,9 +3517,9 @@ Plugin 可以自帶 MCP Server，使用特殊路徑變數：
 }
 ```
 
-| 變數 | 說明 |
-|------|------|
-| `${CLAUDE_PLUGIN_ROOT}` | 🆕 Plugin 安裝的根目錄路徑 |
+| 變數                    | 說明                         |
+| ----------------------- | ---------------------------- |
+| `${CLAUDE_PLUGIN_ROOT}` | 🆕 Plugin 安裝的根目錄路徑   |
 | `${CLAUDE_PLUGIN_DATA}` | 🆕 Plugin 的資料儲存目錄路徑 |
 
 #### 🆕 Plugin LSP Server 配置
@@ -3516,19 +3558,19 @@ Plugin 的 Skills 使用 `plugin-name:skill-name` 的命名空間格式，避免
 
 Claude Code 提供官方 Plugin Marketplace，分為**官方策展**和**社群貢獻**兩個頻道：
 
-| 頻道 | 倉庫 | 說明 |
-|------|------|------|
-| **官方策展** | `anthropics/claude-plugins-official` | 經 Anthropic 審核的高品質插件 |
-| **社群貢獻** | `anthropics/claude-plugins-community` | 社群開發者提交的插件 |
+| 頻道         | 倉庫                                  | 說明                          |
+| ------------ | ------------------------------------- | ----------------------------- |
+| **官方策展** | `anthropics/claude-plugins-official`  | 經 Anthropic 審核的高品質插件 |
+| **社群貢獻** | `anthropics/claude-plugins-community` | 社群開發者提交的插件          |
 
 > 🆕 **社群提交**：開發者可透過 `claude.ai/settings/plugins/submit` 提交自製 Plugin 到社群頻道。
 
-| 分類 | 說明 | 主要插件 |
-|------|------|---------|
-| **Code Intelligence** | 程式語言增強支援 | C/C++, C#, Go, Java, Kotlin, Lua, PHP, Python, Rust, Swift, TypeScript |
-| **External Integrations** | 外部服務整合 | GitHub, GitLab, Atlassian, Asana, Linear, Notion, Figma, Vercel, Firebase, Supabase, Slack, Sentry |
-| **Development Workflows** | 開發工作流程 | commit-commands, pr-review-toolkit, agent-sdk-dev, plugin-dev |
-| **Output Styles** | 輸出風格插件 | 各種自訂輸出格式 |
+| 分類                      | 說明             | 主要插件                                                                                           |
+| ------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
+| **Code Intelligence**     | 程式語言增強支援 | C/C++, C#, Go, Java, Kotlin, Lua, PHP, Python, Rust, Swift, TypeScript                             |
+| **External Integrations** | 外部服務整合     | GitHub, GitLab, Atlassian, Asana, Linear, Notion, Figma, Vercel, Firebase, Supabase, Slack, Sentry |
+| **Development Workflows** | 開發工作流程     | commit-commands, pr-review-toolkit, agent-sdk-dev, plugin-dev                                      |
+| **Output Styles**         | 輸出風格插件     | 各種自訂輸出格式                                                                                   |
 
 #### 發現 Plugins
 
@@ -3575,12 +3617,12 @@ claude --plugin-url https://github.com/example/my-plugin
 
 #### 🆕 安裝範圍（Installation Scopes）
 
-| 範圍 | 說明 | 持久性 |
-|------|------|--------|
-| **user** | 安裝到使用者全域，所有專案可用 | 持久 |
-| **project** | 安裝到當前專案（`.claude-plugins/`） | 持久（提交 Git） |
-| **local** | 安裝到本地（不提交 Git） | 持久 |
-| **managed** | 由管理員統一部署 | 持久（使用者不可移除） |
+| 範圍        | 說明                                 | 持久性                 |
+| ----------- | ------------------------------------ | ---------------------- |
+| **user**    | 安裝到使用者全域，所有專案可用       | 持久                   |
+| **project** | 安裝到當前專案（`.claude-plugins/`） | 持久（提交 Git）       |
+| **local**   | 安裝到本地（不提交 Git）             | 持久                   |
+| **managed** | 由管理員統一部署                     | 持久（使用者不可移除） |
 
 ```plaintext
 # 指定安裝範圍
@@ -3623,6 +3665,7 @@ claude
 ```
 
 Marketplace 來源支援：
+
 - **GitHub owner/repo**（公開倉庫）
 - **Git URL**（支援 SSH 和 HTTPS）
 - **本地路徑**（如 `/opt/company/claude-plugins`）
@@ -3642,16 +3685,10 @@ Marketplace 來源支援：
       "security-scanner",
       "code-quality-checker"
     ],
-    "blocked": [
-      "untrusted-plugin-*"
-    ],
-    "required": [
-      "company-code-standards"
-    ],
+    "blocked": ["untrusted-plugin-*"],
+    "required": ["company-code-standards"],
     "sources": {
-      "allowedRegistries": [
-        "https://plugins.company.internal"
-      ]
+      "allowedRegistries": ["https://plugins.company.internal"]
     }
   }
 }
@@ -3704,19 +3741,23 @@ claude --plugin-url https://example.com/plugins/my-plugin.zip
 #### 手動建立 Plugin 結構
 
 若需要更精細控制，也可手動建立 Plugin 結構：
+
 # 建立 Plugin 目錄
+
 mkdir -p .claude-plugin/{agents,skills,commands}
 
 # 建立 plugin.json
+
 cat > .claude-plugin/plugin.json << 'EOF'
 {
-  "name": "my-custom-plugin",
-  "version": "0.1.0",
-  "description": "我的自訂 Plugin",
-  "author": "My Team"
+"name": "my-custom-plugin",
+"version": "0.1.0",
+"description": "我的自訂 Plugin",
+"author": "My Team"
 }
 EOF
-```
+
+````
 
 #### 步驟二：加入 Agent 定義
 
@@ -3746,13 +3787,15 @@ tools:
 2. 搜尋相關程式碼
 3. 執行變更
 4. 驗證結果
-```
+````
 
 #### 步驟三：加入 SKILL.md
 
 ```markdown
 <!-- .claude-plugin/skills/my-skill/SKILL.md -->
+
 ---
+
 name: my-custom-skill
 description: 專門處理 [特定任務] 的能力模組
 ---
@@ -3760,9 +3803,11 @@ description: 專門處理 [特定任務] 的能力模組
 # My Custom Skill
 
 ## 使用時機
+
 （描述何時應該使用此 Skill）
 
 ## 操作步驟
+
 （詳細的操作指引）
 ```
 
@@ -3770,6 +3815,7 @@ description: 專門處理 [特定任務] 的能力模組
 
 ```markdown
 <!-- .claude-plugin/CLAUDE.md -->
+
 # My Custom Plugin 指引
 
 使用此 Plugin 時，請遵循以下原則：
@@ -3791,20 +3837,20 @@ flowchart TD
     V -->|官方市場| T1[✅ 已審核]
     V -->|Git 倉庫| T2[⚠️ 需人工審查]
     V -->|本地目錄| T3[✅ 使用者自行負責]
-    
+
     T1 --> P[權限審查]
     T2 --> P
     T3 --> P
-    
+
     P --> P1{要求哪些工具?}
     P1 -->|Read, Grep| L[低風險]
     P1 -->|Edit, Write| M[中風險]
     P1 -->|Bash| H[高風險 - 需確認]
-    
+
     L --> R[執行]
     M --> R
     H -->|使用者確認| R
-    
+
     style I fill:#6366f1,stroke:#4f46e5,color:#fff
     style L fill:#dcfce7,stroke:#22c55e
     style M fill:#fef3c7,stroke:#f59e0b
@@ -3813,13 +3859,13 @@ flowchart TD
 
 #### 最佳實踐
 
-| 面向 | 建議 |
-|------|------|
-| **Plugin 開發** | 遵循最小權限原則，只宣告必要的 tools |
-| **Plugin 安裝** | 安裝前審查 plugin.json 中的權限宣告 |
-| **企業管理** | 使用 managed-settings.json 控制允許的 Plugin |
-| **版本管理** | 固定 Plugin 版本號，避免意外更新 |
-| **程式碼審查** | 第三方 Plugin 安裝前審查其 Agent 和 Skill 定義 |
+| 面向            | 建議                                           |
+| --------------- | ---------------------------------------------- |
+| **Plugin 開發** | 遵循最小權限原則，只宣告必要的 tools           |
+| **Plugin 安裝** | 安裝前審查 plugin.json 中的權限宣告            |
+| **企業管理**    | 使用 managed-settings.json 控制允許的 Plugin   |
+| **版本管理**    | 固定 Plugin 版本號，避免意外更新               |
+| **程式碼審查**  | 第三方 Plugin 安裝前審查其 Agent 和 Skill 定義 |
 
 #### ⚠️ 注意事項
 
@@ -3840,11 +3886,11 @@ Plugin 可透過根目錄的 `settings.json` 為使用者提供**預設配置**�
 }
 ```
 
-| 欄位 | 說明 |
-|------|------|
-| `agent` | Plugin 安裝後預設使用的 Agent 名稱 |
-| `subagentStatusLine` | 是否在子代理執行時顯示狀態列 |
-| `model` | Plugin 建議使用的預設模型 |
+| 欄位                 | 說明                               |
+| -------------------- | ---------------------------------- |
+| `agent`              | Plugin 安裝後預設使用的 Agent 名稱 |
+| `subagentStatusLine` | 是否在子代理執行時顯示狀態列       |
+| `model`              | Plugin 建議使用的預設模型          |
 
 > 📌 使用者的個人 `settings.json` 設定會覆寫 Plugin 的預設值，確保使用者始終擁有最終控制權。
 
@@ -3866,11 +3912,11 @@ Plugin 開發者可為其 CLI 工具配置 **Plugin Hints**，當使用者的專
 
 發佈 Plugin 至社群 Marketplace 時，可透過以下入口提交：
 
-| 入口 | 網址 |
-|------|------|
-| **Claude.ai 提交** | `claude.ai/settings/plugins/submit` |
-| **Platform 提交** | `platform.claude.com/plugins/submit` |
-| **社群倉庫** | `@claude-community` GitHub organization |
+| 入口               | 網址                                    |
+| ------------------ | --------------------------------------- |
+| **Claude.ai 提交** | `claude.ai/settings/plugins/submit`     |
+| **Platform 提交**  | `platform.claude.com/plugins/submit`    |
+| **社群倉庫**       | `@claude-community` GitHub organization |
 
 #### 🆕 Background Monitors（背景監控器）
 
@@ -3939,31 +3985,37 @@ Plugin 可定義 `monitors/monitors.json` 配置背景監控器，持續觀察�
 # agents/spring-architect.md
 
 ---
+
 name: spring-architect
 description: Spring Boot 架構顧問，負責設計 API、規劃模組結構、審查架構決策
 model: claude-sonnet-4-20250514
 skills:
-  - ./skills/entity-design/
-  - ./skills/api-design/
-  - ./skills/security-config/
-tools:
-  - read_file
-  - grep_search
-  - semantic_search
-  - spring-init
-  - spring-test
+
+- ./skills/entity-design/
+- ./skills/api-design/
+- ./skills/security-config/
+  tools:
+- read_file
+- grep_search
+- semantic_search
+- spring-init
+- spring-test
+
 ---
 
 ## 角色
+
 你是一位 Spring Boot 架構師，精通 Spring 生態圈所有核心模組。
 
 ## 設計原則
+
 - 遵循 Clean Architecture / Hexagonal Architecture
 - API 設計遵循 RESTful 最佳實踐
 - 安全配置遵循 OWASP 指引
 - 資料庫設計遵循 Third Normal Form
 
 ## 輸出標準
+
 - 每個設計決策都要說明「為什麼」
 - 提供替代方案的比較
 - 附帶適當的 UML 圖（Mermaid 格式）
@@ -4045,35 +4097,35 @@ graph TB
         PL --> TL[Tools]
         PL --> MC[MCP Servers]
         PL --> PR[Prompts]
-        
+
         AG --> SK
         AG -->|使用| TL
         AG -->|使用| MC
         SK -->|參考| PR
     end
-    
+
     subgraph "Claude Code 核心"
         CC[Claude Code] --> PL
         CC --> HK[Hooks]
         CC --> CF[CLAUDE.md]
         CC --> ST[Settings]
-        
+
         HK -.- PL
         CF -.- PL
     end
-    
+
     style PL fill:#6366f1,stroke:#4f46e5,color:#fff
     style CC fill:#10b981,stroke:#059669,color:#fff
 ```
 
-| 機制 | Plugin 中的角色 | 說明 |
-|------|---------------|------|
-| **Agent** | 封裝在 Plugin 中 | Plugin 可包含多個專用 Agent |
-| **Skill** | 封裝在 Plugin 中 | Agent 引用 Plugin 內的 Skills |
-| **Tool** | Plugin 提供自訂工具 | 透過 shell script 實作 |
-| **MCP Server** | Plugin 可內建 MCP Server | 提供更複雜的工具能力 |
-| **Hook** | 透過 settings.json 配合 | Plugin 安裝後可建議 Hook 配置 |
-| **CLAUDE.md** | Plugin 可提供 CLAUDE.md 片段 | 自動附加到專案指引 |
+| 機制           | Plugin 中的角色              | 說明                          |
+| -------------- | ---------------------------- | ----------------------------- |
+| **Agent**      | 封裝在 Plugin 中             | Plugin 可包含多個專用 Agent   |
+| **Skill**      | 封裝在 Plugin 中             | Agent 引用 Plugin 內的 Skills |
+| **Tool**       | Plugin 提供自訂工具          | 透過 shell script 實作        |
+| **MCP Server** | Plugin 可內建 MCP Server     | 提供更複雜的工具能力          |
+| **Hook**       | 透過 settings.json 配合      | Plugin 安裝後可建議 Hook 配置 |
+| **CLAUDE.md**  | Plugin 可提供 CLAUDE.md 片段 | 自動附加到專案指引            |
 
 ---
 
@@ -4100,7 +4152,7 @@ graph LR
         H --> I[Stop Hook]
         I --> J[回傳結果]
     end
-    
+
     style B fill:#f59e0b,stroke:#d97706
     style D fill:#f59e0b,stroke:#d97706
     style H fill:#10b981,stroke:#059669
@@ -4115,73 +4167,73 @@ Claude Code 支援 **30 種 Hook 事件**，涵蓋整個會話生命週期：
 
 #### 會話生命週期事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 | 典型用途 |
-|----------|---------|-----------------|---------|
-| **`SessionStart`** | 會話開始或恢復時 | `startup`/`resume`/`clear`/`compact` | 環境初始化、載入設定 |
-| **`Setup`** | 🆕 使用 `--init-only` 啟動，或在 `-p` 模式下使用 `--init`/`--maintenance` | `init`/`maintenance` | CI/CD 一次性準備工作 |
-| **`InstructionsLoaded`** | CLAUDE.md 等指引載入後 | `session_start`/`nested_traversal`/`path_glob_match`/`include`/`compact` | 驗證指引完整性、動態注入指引 |
-| **`ConfigChange`** | 設定檔（settings.json）變更時 | `user_settings`/`project_settings`/`local_settings`/`policy_settings`/`skills` | 重新載入設定、稽核追蹤 |
-| **`SessionEnd`** | 會話結束時 | `clear`/`resume`/`logout`/`prompt_input_exit`/`bypass_permissions_disabled`/`other` | 清理暫存、生成報告 |
+| 事件名稱                 | 觸發時機                                                                  | Matcher 匹配欄位                                                                    | 典型用途                     |
+| ------------------------ | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------- |
+| **`SessionStart`**       | 會話開始或恢復時                                                          | `startup`/`resume`/`clear`/`compact`                                                | 環境初始化、載入設定         |
+| **`Setup`**              | 🆕 使用 `--init-only` 啟動，或在 `-p` 模式下使用 `--init`/`--maintenance` | `init`/`maintenance`                                                                | CI/CD 一次性準備工作         |
+| **`InstructionsLoaded`** | CLAUDE.md 等指引載入後                                                    | `session_start`/`nested_traversal`/`path_glob_match`/`include`/`compact`            | 驗證指引完整性、動態注入指引 |
+| **`ConfigChange`**       | 設定檔（settings.json）變更時                                             | `user_settings`/`project_settings`/`local_settings`/`policy_settings`/`skills`      | 重新載入設定、稽核追蹤       |
+| **`SessionEnd`**         | 會話結束時                                                                | `clear`/`resume`/`logout`/`prompt_input_exit`/`bypass_permissions_disabled`/`other` | 清理暫存、生成報告           |
 
 #### 使用者互動事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 | 典型用途 |
-|----------|---------|-----------------|---------|
-| **`UserPromptSubmit`** | 使用者送出 prompt 後 | 無（每次觸發） | 輸入過濾、日誌記錄 |
-| **`UserPromptExpansion`** | 🆕 使用者輸入的命令展開為 prompt 前 | 命令名稱 | 阻止特定命令展開、日誌 |
-| **`Notification`** | 系統通知觸發時 | `permission_prompt`/`idle_prompt`/`auth_success`/`elicitation_dialog`/`elicitation_complete`/`elicitation_response` | 桌面通知、轉發通知 |
-| **`MessageDisplay`** | 🆕 助理訊息文字顯示時 | 無（每次觸發） | 訊息監控、即時日誌 |
-| **`Stop`** | Claude 正常停止回應時 | 無（每次觸發） | 結果驗證、通知 |
-| **`StopFailure`** | Claude 異常停止時（API 錯誤） | `rate_limit`/`authentication_failed`/`oauth_org_not_allowed`/`billing_error`/`invalid_request`/`model_not_found`/`server_error`/`max_output_tokens`/`unknown` | 錯誤記錄、告警 |
+| 事件名稱                  | 觸發時機                            | Matcher 匹配欄位                                                                                                                                              | 典型用途               |
+| ------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| **`UserPromptSubmit`**    | 使用者送出 prompt 後                | 無（每次觸發）                                                                                                                                                | 輸入過濾、日誌記錄     |
+| **`UserPromptExpansion`** | 🆕 使用者輸入的命令展開為 prompt 前 | 命令名稱                                                                                                                                                      | 阻止特定命令展開、日誌 |
+| **`Notification`**        | 系統通知觸發時                      | `permission_prompt`/`idle_prompt`/`auth_success`/`elicitation_dialog`/`elicitation_complete`/`elicitation_response`                                           | 桌面通知、轉發通知     |
+| **`MessageDisplay`**      | 🆕 助理訊息文字顯示時               | 無（每次觸發）                                                                                                                                                | 訊息監控、即時日誌     |
+| **`Stop`**                | Claude 正常停止回應時               | 無（每次觸發）                                                                                                                                                | 結果驗證、通知         |
+| **`StopFailure`**         | Claude 異常停止時（API 錯誤）       | `rate_limit`/`authentication_failed`/`oauth_org_not_allowed`/`billing_error`/`invalid_request`/`model_not_found`/`server_error`/`max_output_tokens`/`unknown` | 錯誤記錄、告警         |
 
 #### 工具執行事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 | 典型用途 |
-|----------|---------|-----------------|---------|
-| **`PreToolUse`** | 工具執行前 | 工具名稱（如 `Bash`/`Edit\|Write`） | 安全檢查、權限驗證 |
-| **`PermissionRequest`** | 需要權限確認對話框時 | 工具名稱 | 自動審批/拒絕 |
-| **`PermissionDenied`** | 🆕 工具呼叫被自動模式分類器拒絕時 | 工具名稱 | 記錄拒絕事件、回傳 `{retry: true}` 允許重試 |
-| **`PostToolUse`** | 工具執行成功後 | 工具名稱 | 結果驗證、日誌、自動格式化 |
-| **`PostToolUseFailure`** | 工具執行失敗後 | 工具名稱 | 錯誤記錄、告警 |
-| **`PostToolBatch`** | 🆕 一整批並行工具呼叫完成後 | 無（每次觸發） | 批次結果驗證、下一輪前處理 |
+| 事件名稱                 | 觸發時機                          | Matcher 匹配欄位                    | 典型用途                                    |
+| ------------------------ | --------------------------------- | ----------------------------------- | ------------------------------------------- |
+| **`PreToolUse`**         | 工具執行前                        | 工具名稱（如 `Bash`/`Edit\|Write`） | 安全檢查、權限驗證                          |
+| **`PermissionRequest`**  | 需要權限確認對話框時              | 工具名稱                            | 自動審批/拒絕                               |
+| **`PermissionDenied`**   | 🆕 工具呼叫被自動模式分類器拒絕時 | 工具名稱                            | 記錄拒絕事件、回傳 `{retry: true}` 允許重試 |
+| **`PostToolUse`**        | 工具執行成功後                    | 工具名稱                            | 結果驗證、日誌、自動格式化                  |
+| **`PostToolUseFailure`** | 工具執行失敗後                    | 工具名稱                            | 錯誤記錄、告警                              |
+| **`PostToolBatch`**      | 🆕 一整批並行工具呼叫完成後       | 無（每次觸發）                      | 批次結果驗證、下一輪前處理                  |
 
 #### 檔案與環境事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 | 典型用途 |
-|----------|---------|-----------------|---------|
-| **`FileChanged`** | 監視的檔案被修改時 | 文字檔案名稱（如 `.envrc\|.env`） | 自動 lint、環境重新載入 |
-| **`CwdChanged`** | 工作目錄切換時 | 無（每次觸發） | 環境感知、重新載入 direnv 設定 |
+| 事件名稱          | 觸發時機           | Matcher 匹配欄位                  | 典型用途                       |
+| ----------------- | ------------------ | --------------------------------- | ------------------------------ |
+| **`FileChanged`** | 監視的檔案被修改時 | 文字檔案名稱（如 `.envrc\|.env`） | 自動 lint、環境重新載入        |
+| **`CwdChanged`**  | 工作目錄切換時     | 無（每次觸發）                    | 環境感知、重新載入 direnv 設定 |
 
 #### Subagent 事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 | 典型用途 |
-|----------|---------|-----------------|---------|
-| **`SubagentStart`** | Subagent 啟動時 | Agent 類型名稱 | 追蹤、日誌 |
-| **`SubagentStop`** | Subagent 完成時 | Agent 類型名稱 | 結果收集、品質檢查 |
+| 事件名稱            | 觸發時機        | Matcher 匹配欄位 | 典型用途           |
+| ------------------- | --------------- | ---------------- | ------------------ |
+| **`SubagentStart`** | Subagent 啟動時 | Agent 類型名稱   | 追蹤、日誌         |
+| **`SubagentStop`**  | Subagent 完成時 | Agent 類型名稱   | 結果收集、品質檢查 |
 
 #### Agent Teams 事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 | 典型用途 |
-|----------|---------|-----------------|---------|
-| **`TeammateIdle`** | Teammate 閒置時 | 無（每次觸發） | 任務重新分配 |
-| **`TaskCreated`** | 🆕 透過 TaskCreate 建立任務時 | 無（每次觸發） | 任務建立通知、日誌 |
-| **`TaskCompleted`** | 任務完成時 | 無（每次觸發） | 整合通知 |
-| **`WorktreeCreate`** | 建立 git worktree 時 | 無（每次觸發） | 取代預設 git 行為、環境初始化 |
-| **`WorktreeRemove`** | 移除 git worktree 時 | 無（每次觸發） | 資源清理 |
+| 事件名稱             | 觸發時機                      | Matcher 匹配欄位 | 典型用途                      |
+| -------------------- | ----------------------------- | ---------------- | ----------------------------- |
+| **`TeammateIdle`**   | Teammate 閒置時               | 無（每次觸發）   | 任務重新分配                  |
+| **`TaskCreated`**    | 🆕 透過 TaskCreate 建立任務時 | 無（每次觸發）   | 任務建立通知、日誌            |
+| **`TaskCompleted`**  | 任務完成時                    | 無（每次觸發）   | 整合通知                      |
+| **`WorktreeCreate`** | 建立 git worktree 時          | 無（每次觸發）   | 取代預設 git 行為、環境初始化 |
+| **`WorktreeRemove`** | 移除 git worktree 時          | 無（每次觸發）   | 資源清理                      |
 
 #### Context 管理事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 | 典型用途 |
-|----------|---------|-----------------|---------|
-| **`PreCompact`** | 執行 /compact 前 | `manual`/`auto` | 保存重要 context |
-| **`PostCompact`** | 執行 /compact 後 | `manual`/`auto` | 驗證壓縮結果、重新載入關鍵資訊 |
+| 事件名稱          | 觸發時機         | Matcher 匹配欄位 | 典型用途                       |
+| ----------------- | ---------------- | ---------------- | ------------------------------ |
+| **`PreCompact`**  | 執行 /compact 前 | `manual`/`auto`  | 保存重要 context               |
+| **`PostCompact`** | 執行 /compact 後 | `manual`/`auto`  | 驗證壓縮結果、重新載入關鍵資訊 |
 
 #### MCP 互動事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 | 典型用途 |
-|----------|---------|-----------------|---------|
-| **`Elicitation`** | MCP Server 請求使用者輸入時 | MCP Server 名稱 | 自動回應、日誌 |
-| **`ElicitationResult`** | 使用者回答 MCP 澄清問題後 | MCP Server 名稱 | 記錄回答、後續處理 |
+| 事件名稱                | 觸發時機                    | Matcher 匹配欄位 | 典型用途           |
+| ----------------------- | --------------------------- | ---------------- | ------------------ |
+| **`Elicitation`**       | MCP Server 請求使用者輸入時 | MCP Server 名稱  | 自動回應、日誌     |
+| **`ElicitationResult`** | 使用者回答 MCP 澄清問題後   | MCP Server 名稱  | 記錄回答、後續處理 |
 
 ### 2.5.3 Hook 類型（5 種）
 
@@ -4215,11 +4267,11 @@ Claude Code 支援 **30 種 Hook 事件**，涵蓋整個會話生命週期：
 
 **環境變數**：Hook 命令可使用 Claude Code 注入的環境變數：
 
-| 環境變數 | 說明 | 可用事件 |
-|---------|------|---------|
-| `$CLAUDE_PROJECT_DIR` | 專案根目錄路徑 | 所有事件 |
-| `$CLAUDE_ENV_FILE` | 環境變數檔案路徑 | SessionStart, CwdChanged |
-| `$SESSION_ID` | 會話 ID | 所有事件（透過 stdin JSON） |
+| 環境變數              | 說明             | 可用事件                    |
+| --------------------- | ---------------- | --------------------------- |
+| `$CLAUDE_PROJECT_DIR` | 專案根目錄路徑   | 所有事件                    |
+| `$CLAUDE_ENV_FILE`    | 環境變數檔案路徑 | SessionStart, CwdChanged    |
+| `$SESSION_ID`         | 會話 ID          | 所有事件（透過 stdin JSON） |
 
 #### 2. HTTP Hook（Webhook）
 
@@ -4328,13 +4380,13 @@ Claude Code 支援 **30 種 Hook 事件**，涵蓋整個會話生命週期：
 
 **Hook 類型 timeout 預設值摘要**：
 
-| Hook 類型 | 預設 Timeout | 說明 |
-|-----------|-------------|------|
-| `command` | 10 分鐘 | UserPromptSubmit 降至 30 秒 |
-| `http` | 10 分鐘 | UserPromptSubmit 降至 30 秒 |
-| `mcp_tool` | 10 分鐘 | UserPromptSubmit 降至 30 秒 |
-| `prompt` | 30 秒 | — |
-| `agent` | 60 秒 | 可透過 `timeout` 欄位覆寫 |
+| Hook 類型  | 預設 Timeout | 說明                        |
+| ---------- | ------------ | --------------------------- |
+| `command`  | 10 分鐘      | UserPromptSubmit 降至 30 秒 |
+| `http`     | 10 分鐘      | UserPromptSubmit 降至 30 秒 |
+| `mcp_tool` | 10 分鐘      | UserPromptSubmit 降至 30 秒 |
+| `prompt`   | 30 秒        | —                           |
+| `agent`    | 60 秒        | 可透過 `timeout` 欄位覆寫   |
 
 ### 2.5.4 Hook 配置詳解
 
@@ -4371,7 +4423,7 @@ Hooks 配置在 `settings.json` 中，支援多個層級：
         ]
       }
     ],
-    
+
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -4392,7 +4444,7 @@ Hooks 配置在 `settings.json` 中，支援多個層級：
         ]
       }
     ],
-    
+
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
@@ -4404,7 +4456,7 @@ Hooks 配置在 `settings.json` 中，支援多個層級：
         ]
       }
     ],
-    
+
     "Notification": [
       {
         "matcher": "",
@@ -4416,7 +4468,7 @@ Hooks 配置在 `settings.json` 中，支援多個層級：
         ]
       }
     ],
-    
+
     "Stop": [
       {
         "hooks": [
@@ -4427,7 +4479,7 @@ Hooks 配置在 `settings.json` 中，支援多個層級：
         ]
       }
     ],
-    
+
     "SessionEnd": [
       {
         "hooks": [
@@ -4475,13 +4527,13 @@ Hooks 配置在 `settings.json` 中，支援多個層級：
 
 `matcher` 欄位用於過濾特定工具或條件，支援正規表達式：
 
-| Matcher 範例 | 說明 |
-|-------------|------|
-| `"Bash"` | 僅匹配 Bash 工具 |
-| `"Write\|Edit"` | 匹配任一寫入工具 |
-| `"Read\|Grep\|Glob"` | 匹配任一讀取工具 |
-| `".*"` | 匹配所有工具 |
-| 不設定 matcher | 對該事件的所有觸發都執行 |
+| Matcher 範例         | 說明                     |
+| -------------------- | ------------------------ |
+| `"Bash"`             | 僅匹配 Bash 工具         |
+| `"Write\|Edit"`      | 匹配任一寫入工具         |
+| `"Read\|Grep\|Glob"` | 匹配任一讀取工具         |
+| `".*"`               | 匹配所有工具             |
+| 不設定 matcher       | 對該事件的所有觸發都執行 |
 
 > 📌 `matcher` 對非工具事件有不同的匹配欄位，詳見 2.5.2 各事件的「Matcher 匹配欄位」欄。
 
@@ -4498,11 +4550,11 @@ Hook 命令可以輸出結構化 JSON 到 stdout（而非純文字），讓 Clau
 }
 ```
 
-| `permissionDecision` 值 | 說明 |
-|------------------------|------|
-| `"allow"` | 允許工具執行（跳過使用者確認） |
-| `"deny"` | 拒絕工具執行 |
-| `"ask"` | 讓使用者決定是否允許 |
+| `permissionDecision` 值 | 說明                           |
+| ----------------------- | ------------------------------ |
+| `"allow"`               | 允許工具執行（跳過使用者確認） |
+| `"deny"`                | 拒絕工具執行                   |
+| `"ask"`                 | 讓使用者決定是否允許           |
 
 **範例：自動化權限決策 Hook**
 
@@ -4714,26 +4766,26 @@ flowchart TD
     IF -->|有且匹配| EX
     IF -->|有且不匹配| SK
     IF -->|無| EX
-    
+
     EX --> T{Hook 類型}
     T -->|command| CMD[執行 Shell 命令]
     T -->|http| HTTP[發送 HTTP POST]
     T -->|mcp_tool| MCP[呼叫 MCP 工具]
     T -->|prompt| PRM[單輪 LLM 評估]
     T -->|agent| AGT[多輪代理驗證]
-    
+
     CMD --> RC{退出碼}
     RC -->|0| NOOP[無決定 — 繼續]
     RC -->|2| BLK[❌ 阻止工具執行]
     RC -->|其他非 0| ERR[⚠️ Hook 錯誤]
-    
+
     HTTP --> RESP[解析 JSON 回應]
     MCP --> RESP
     PRM --> DECISION{ok: true?}
     AGT --> DECISION
     DECISION -->|true| OK[✅ 允許]
     DECISION -->|false| BLK
-    
+
     style E fill:#6366f1,stroke:#4f46e5,color:#fff
     style OK fill:#dcfce7,stroke:#22c55e
     style NOOP fill:#dcfce7,stroke:#22c55e
@@ -4743,14 +4795,14 @@ flowchart TD
 
 **關鍵規則**：
 
-| 規則 | 說明 |
-|------|------|
-| **Command 退出碼** | 0 = 無決定（繼續），2 = 阻止工具執行，其他非 0 = Hook 錯誤 |
-| **JSON stdout 回傳** | Command/HTTP Hook 可輸出 JSON 到 stdout 攜帶結構化結果 |
-| **多 Hook 執行順序** | 同一群組內的多個 Hook 按順序依次執行 |
-| **Hook 逾時** | Command/HTTP/MCP 預設 10 分鐘，Prompt 30 秒，Agent 60 秒 |
-| **錯誤隔離** | 單個 Hook 失敗不影響其他 Hook 執行 |
-| **安全限制** | Hook 不能修改 Claude Code 的核心行為，只能攔截或補充 |
+| 規則                 | 說明                                                       |
+| -------------------- | ---------------------------------------------------------- |
+| **Command 退出碼**   | 0 = 無決定（繼續），2 = 阻止工具執行，其他非 0 = Hook 錯誤 |
+| **JSON stdout 回傳** | Command/HTTP Hook 可輸出 JSON 到 stdout 攜帶結構化結果     |
+| **多 Hook 執行順序** | 同一群組內的多個 Hook 按順序依次執行                       |
+| **Hook 逾時**        | Command/HTTP/MCP 預設 10 分鐘，Prompt 30 秒，Agent 60 秒   |
+| **錯誤隔離**         | 單個 Hook 失敗不影響其他 Hook 執行                         |
+| **安全限制**         | Hook 不能修改 Claude Code 的核心行為，只能攔截或補充       |
 
 #### ⚠️ 注意事項
 
@@ -4972,13 +5024,13 @@ exit 0  # PostToolUse hook 不阻止操作
 
 #### Hook 架構比較
 
-| 模式 | 適用場景 | 複雜度 | 效能影響 |
-|------|---------|--------|---------|
-| **基本 Hook** | 個人開發、簡單格式化 | 低 | 極小 |
-| **多層防禦** | 團隊開發、安全要求高 | 中 | 小 |
-| **品質管道** | CI-like 品質管控 | 中高 | 中 |
-| **環境感知** | 多環境部署 | 中 | 小 |
-| **Webhook 整合** | 外部系統通知 | 中 | 依網路 |
+| 模式             | 適用場景             | 複雜度 | 效能影響 |
+| ---------------- | -------------------- | ------ | -------- |
+| **基本 Hook**    | 個人開發、簡單格式化 | 低     | 極小     |
+| **多層防禦**     | 團隊開發、安全要求高 | 中     | 小       |
+| **品質管道**     | CI-like 品質管控     | 中高   | 中       |
+| **環境感知**     | 多環境部署           | 中     | 小       |
+| **Webhook 整合** | 外部系統通知         | 中     | 依網路   |
 
 ### 2.5.8 Hook 進階控制機制
 
@@ -5010,10 +5062,10 @@ exit 0  # PostToolUse hook 不阻止操作
 }
 ```
 
-| 欄位 | 說明 |
-|------|------|
-| `updatedPermissions` | 動態新增或修改權限規則陣列，影響後續工具呼叫的自動審批 |
-| `setMode` | 將整個會話的權限模式切換為 `"auto"`（自動接受）或 `"ask"`（逐一詢問） |
+| 欄位                 | 說明                                                                  |
+| -------------------- | --------------------------------------------------------------------- |
+| `updatedPermissions` | 動態新增或修改權限規則陣列，影響後續工具呼叫的自動審批                |
+| `setMode`            | 將整個會話的權限模式切換為 `"auto"`（自動接受）或 `"ask"`（逐一詢問） |
 
 > ⚠️ **安全性考量**：`updatedPermissions` 和 `setMode` 具有很高的權限控制能力。在企業環境中，建議僅在 managed-settings.json 的 Hooks 中使用，避免專案級 Hooks 擅自擴大權限範圍。
 
@@ -5021,11 +5073,11 @@ exit 0  # PostToolUse hook 不阻止操作
 
 Stop Hook 可以透過回傳 `{ok: false}` 來阻止 Claude 停止工作，強制其繼續執行。但為防止無限迴圈，系統設有**阻擋上限**：
 
-| 機制 | 說明 |
-|------|------|
+| 機制             | 說明                                                      |
+| ---------------- | --------------------------------------------------------- |
 | **預設阻擋上限** | Stop Hook 最多可連續阻擋 **8 次**，超過後 Claude 強制停止 |
-| **環境變數調整** | 透過 `CLAUDE_CODE_STOP_HOOK_BLOCK_CAP=N` 自訂上限值 |
-| **重置條件** | 使用者手動輸入新的 prompt 後，阻擋計數器重置為 0 |
+| **環境變數調整** | 透過 `CLAUDE_CODE_STOP_HOOK_BLOCK_CAP=N` 自訂上限值       |
+| **重置條件**     | 使用者手動輸入新的 prompt 後，阻擋計數器重置為 0          |
 
 ```bash
 # 設定 Stop Hook 阻擋上限為 12 次
@@ -5079,21 +5131,21 @@ Hook 的 command 支援 **exec form**，以 JSON 陣列形式指定命令和參�
 ```mermaid
 graph TB
     subgraph "MCP 架構"
-        CC[Claude Code<br>MCP Client] 
-        
+        CC[Claude Code<br>MCP Client]
+
         CC <-->|MCP Protocol| S1[MCP Server<br>GitHub]
         CC <-->|MCP Protocol| S2[MCP Server<br>PostgreSQL]
         CC <-->|MCP Protocol| S3[MCP Server<br>Jira]
         CC <-->|MCP Protocol| S4[MCP Server<br>AWS]
         CC <-->|MCP Protocol| S5[MCP Server<br>自訂服務]
-        
+
         S1 --> T1[建立 PR / 搜尋 Issues]
         S2 --> T2[查詢資料 / 執行 SQL]
         S3 --> T3[建立工單 / 更新狀態]
         S4 --> T4[部署 / 監控]
         S5 --> T5[任意自訂功能]
     end
-    
+
     style CC fill:#6366f1,stroke:#4f46e5,color:#fff
     style S1 fill:#dbeafe,stroke:#3b82f6
     style S2 fill:#dcfce7,stroke:#22c55e
@@ -5104,13 +5156,13 @@ graph TB
 
 #### MCP 核心概念
 
-| 概念 | 說明 |
-|------|------|
-| **MCP Client** | Claude Code 本身，負責發現和呼叫 MCP Server 提供的工具 |
-| **MCP Server** | 外部工具伺服器，提供一組特定功能的工具 |
-| **Tools** | MCP Server 暴露的具體功能（如 `query_database`、`create_issue`） |
-| **Resources** | MCP Server 提供的靜態資源（如文件、範本） |
-| **Transport** | 通訊方式：`stdio`（本地程序）、`streamable-http`（🆕 推薦）、`sse`（⚠️ deprecated） |
+| 概念           | 說明                                                                                |
+| -------------- | ----------------------------------------------------------------------------------- |
+| **MCP Client** | Claude Code 本身，負責發現和呼叫 MCP Server 提供的工具                              |
+| **MCP Server** | 外部工具伺服器，提供一組特定功能的工具                                              |
+| **Tools**      | MCP Server 暴露的具體功能（如 `query_database`、`create_issue`）                    |
+| **Resources**  | MCP Server 提供的靜態資源（如文件、範本）                                           |
+| **Transport**  | 通訊方式：`stdio`（本地程序）、`streamable-http`（🆕 推薦）、`sse`（⚠️ deprecated） |
 
 ### 2.6.2 配置 MCP Server
 
@@ -5131,7 +5183,7 @@ MCP Server 透過專案根目錄的 `.mcp.json` 檔案配置：
         "GITHUB_TOKEN": "${GITHUB_TOKEN}"
       }
     },
-    
+
     "postgres": {
       "type": "stdio",
       "command": "npx",
@@ -5140,13 +5192,17 @@ MCP Server 透過專案根目錄的 `.mcp.json` 檔案配置：
         "DATABASE_URL": "${DATABASE_URL:-postgresql://localhost:5432/devdb}"
       }
     },
-    
+
     "filesystem": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/allowed/dir"
+      ]
     },
-    
+
     "custom-api": {
       "type": "sse",
       "url": "https://mcp.company.internal/api/sse",
@@ -5164,19 +5220,19 @@ MCP Server 透過專案根目錄的 `.mcp.json` 檔案配置：
 
 > 🆕 **v3.2 更新**：配置範圍細化為 5 層優先順序
 
-| 範圍 | 位置 | 說明 |
-|------|------|------|
-| **Local**（本地級） | `~/.claude.json` 中對應專案路徑 | 預設範圍，per-project per-user |
-| **Project**（專案級） | `.mcp.json`（專案根目錄） | 版控共享，團隊統一配置 |
-| **User**（使用者級） | `~/.claude.json`（global 區段） | 個人全域配置 |
-| **Plugin** | Plugin 目錄下的 `.mcp.json` | 隨 Plugin 分發 |
-| **Managed**（企業級） | `managed-mcp.json` | 管理員強制配置 |
+| 範圍                  | 位置                            | 說明                           |
+| --------------------- | ------------------------------- | ------------------------------ |
+| **Local**（本地級）   | `~/.claude.json` 中對應專案路徑 | 預設範圍，per-project per-user |
+| **Project**（專案級） | `.mcp.json`（專案根目錄）       | 版控共享，團隊統一配置         |
+| **User**（使用者級）  | `~/.claude.json`（global 區段） | 個人全域配置                   |
+| **Plugin**            | Plugin 目錄下的 `.mcp.json`     | 隨 Plugin 分發                 |
+| **Managed**（企業級） | `managed-mcp.json`              | 管理員強制配置                 |
 
 **優先順序**：Local > Project > User > Plugin-provided > claude.ai connectors
 
 > 📌 **`workspace` 保留名稱**（🆕 v3.2）：MCP Server 名稱 `workspace` 是保留名稱，Claude Code 內部使用。請勿將自訂 MCP Server 命名為 `workspace`。
 
-```
+````
 
 #### Transport 類型比較
 
@@ -5203,7 +5259,7 @@ MCP Server 透過專案根目錄的 `.mcp.json` 檔案配置：
 
 # 測試 MCP Server 連線
 > /mcp status
-```
+````
 
 #### 🆕 進階 MCP Server 配置欄位
 
@@ -5224,11 +5280,11 @@ MCP Server 透過專案根目錄的 `.mcp.json` 檔案配置：
 }
 ```
 
-| 欄位 | 類型 | 說明 |
-|------|------|------|
-| `alwaysLoad` | boolean | 🆕 設為 true 時，此 Server 的工具不受 Tool Search 延遲載入影響，始終載入到 context |
-| `timeout` | number | 🆕 Per-server 連線/請求逾時時間（毫秒），覆蓋全域預設值 |
-| `env.CLAUDE_PROJECT_DIR` | string | 🆕 Claude Code 自動注入的專案根目錄路徑環境變數 |
+| 欄位                     | 類型    | 說明                                                                               |
+| ------------------------ | ------- | ---------------------------------------------------------------------------------- |
+| `alwaysLoad`             | boolean | 🆕 設為 true 時，此 Server 的工具不受 Tool Search 延遲載入影響，始終載入到 context |
+| `timeout`                | number  | 🆕 Per-server 連線/請求逾時時間（毫秒），覆蓋全域預設值                            |
+| `env.CLAUDE_PROJECT_DIR` | string  | 🆕 Claude Code 自動注入的專案根目錄路徑環境變數                                    |
 
 > 📌 MCP Server 工具也可以在工具的 `anthropic` metadata 中設定 `alwaysLoad: true`，讓特定工具始終載入，即使其所屬 Server 未設定全域 `alwaysLoad`。
 
@@ -5264,11 +5320,11 @@ sequenceDiagram
 
 透過 `ENABLE_TOOL_SEARCH` 環境變數控制 Tool Search 的行為：
 
-| 模式 | 值 | 說明 |
-|------|-----|------|
-| **auto**（🆕 推薦） | `auto` | 工具數量少時直接載入，多時啟用延遲搜尋（deferred loading） |
-| **啟用** | `1` 或 `true` | 強制啟用 Tool Search，所有 MCP 工具都延遲載入 |
-| **停用** | `0` 或 `false` | 停用 Tool Search，所有工具在啟動時載入 |
+| 模式                | 值             | 說明                                                       |
+| ------------------- | -------------- | ---------------------------------------------------------- |
+| **auto**（🆕 推薦） | `auto`         | 工具數量少時直接載入，多時啟用延遲搜尋（deferred loading） |
+| **啟用**            | `1` 或 `true`  | 強制啟用 Tool Search，所有 MCP 工具都延遲載入              |
+| **停用**            | `0` 或 `false` | 停用 Tool Search，所有工具在啟動時載入                     |
 
 ```bash
 # 推薦：自動模式（根據工具數量自動決定）
@@ -5345,10 +5401,10 @@ claude mcp serve
 }
 ```
 
-| 欄位 | 說明 |
-|------|------|
+| 欄位                         | 說明                                                               |
+| ---------------------------- | ------------------------------------------------------------------ |
 | `auth.authServerMetadataUrl` | 🆕 OAuth Authorization Server Metadata URL，支援自動發現 endpoints |
-| `oauth.scopes` | 🆕 請求的 OAuth scope 清單（陣列格式），覆蓋 `auth.scope` |
+| `oauth.scopes`               | 🆕 請求的 OAuth scope 清單（陣列格式），覆蓋 `auth.scope`          |
 
 #### 環境變數安全
 
@@ -5447,43 +5503,33 @@ MCP Server 回傳 elicitation 請求
   },
   "policy": {
     "allowUserMcpServers": true,
-    "allowlist": [
-      "@anthropic/mcp-server-*",
-      "company-*"
-    ],
-    "denylist": [
-      "*torrent*",
-      "*proxy*",
-      "*bypass*"
-    ],
-    "requiredServers": [
-      "company-tools",
-      "security-scanner"
-    ]
+    "allowlist": ["@anthropic/mcp-server-*", "company-*"],
+    "denylist": ["*torrent*", "*proxy*", "*bypass*"],
+    "requiredServers": ["company-tools", "security-scanner"]
   }
 }
 ```
 
 **managed-mcp.json 的功能**：
 
-| 功能 | 說明 |
-|------|------|
-| **強制安裝** | `requiredServers` 中的 MCP Server 無法被使用者移除 |
-| **白名單** | `allowlist` 限制只能安裝符合 glob 模式的 MCP Server |
-| **黑名單** | `denylist` 阻止安裝符合 glob 模式的 MCP Server |
-| **統一配置** | 組織級的 MCP Server 自動套用到所有使用者 |
-| **OAuth 憑證** | 統一管理企業 OAuth 認證設定 |
+| 功能           | 說明                                                |
+| -------------- | --------------------------------------------------- |
+| **強制安裝**   | `requiredServers` 中的 MCP Server 無法被使用者移除  |
+| **白名單**     | `allowlist` 限制只能安裝符合 glob 模式的 MCP Server |
+| **黑名單**     | `denylist` 阻止安裝符合 glob 模式的 MCP Server      |
+| **統一配置**   | 組織級的 MCP Server 自動套用到所有使用者            |
+| **OAuth 憑證** | 統一管理企業 OAuth 認證設定                         |
 
 #### 🆕 Allowlist / Denylist 匹配類型
 
 `allowlist` 和 `denylist` 中的規則支援三種匹配維度：
 
-| 匹配類型 | 語法 | 說明 | 範例 |
-|---------|------|------|------|
-| **serverName** | `serverName:pattern` | 匹配 MCP Server 名稱 | `serverName:github*` |
-| **serverCommand** | `serverCommand:pattern` | 匹配啟動命令路徑 | `serverCommand:*/company/*` |
-| **serverUrl** | `serverUrl:pattern` | 匹配遠端 Server URL | `serverUrl:https://*.company.com/*` |
-| **簡寫** | `pattern` | 預設匹配 serverName | `@anthropic/*` |
+| 匹配類型          | 語法                    | 說明                 | 範例                                |
+| ----------------- | ----------------------- | -------------------- | ----------------------------------- |
+| **serverName**    | `serverName:pattern`    | 匹配 MCP Server 名稱 | `serverName:github*`                |
+| **serverCommand** | `serverCommand:pattern` | 匹配啟動命令路徑     | `serverCommand:*/company/*`         |
+| **serverUrl**     | `serverUrl:pattern`     | 匹配遠端 Server URL  | `serverUrl:https://*.company.com/*` |
+| **簡寫**          | `pattern`               | 預設匹配 serverName  | `@anthropic/*`                      |
 
 ```json
 {
@@ -5506,23 +5552,23 @@ MCP Server 回傳 elicitation 請求
 
 > 🆕 **v3.0 更新**：官方文件列出 **80+ 常用 MCP Server**，以下為精選分類推薦：
 
-| 分類 | MCP Server | 功能 | 安裝方式 |
-|------|-----------|------|---------|
-| **版本控制** | `@anthropic/mcp-server-github` | GitHub Issues、PR、搜尋 | `claude mcp add github -- npx -y @anthropic/mcp-server-github` |
-| | `@anthropic/mcp-server-gitlab` | GitLab MR、Issues | 同上模式 |
-| **資料庫** | `@anthropic/mcp-server-postgres` | PostgreSQL 查詢 | `claude mcp add postgres -- npx -y @anthropic/mcp-server-postgres` |
-| | `@anthropic/mcp-server-sqlite` | SQLite 操作 | 同上模式 |
-| **搜尋** | `@anthropic/mcp-server-brave-search` | Brave 搜尋引擎 | 同上模式 |
-| **記憶** | `@anthropic/mcp-server-memory` | 持久化知識圖譜 | 同上模式 |
-| **DevOps** | `@anthropic/mcp-server-kubernetes` | K8s 叢集管理 | 同上模式 |
-| | `@anthropic/mcp-server-docker` | Docker 容器管理 | 同上模式 |
-| **雲端** | `@anthropic/mcp-server-aws` | AWS 服務整合 | 同上模式 |
-| | `@anthropic/mcp-server-gcp` | GCP 服務整合 | 同上模式 |
-| **通訊** | `@anthropic/mcp-server-slack` | Slack 訊息與頻道 | 同上模式 |
-| **監控** | `@anthropic/mcp-server-sentry` | Sentry 錯誤追蹤 | 同上模式 |
-| | `@anthropic/mcp-server-datadog` | Datadog 監控 | 同上模式 |
-| **文件** | `@anthropic/mcp-server-notion` | Notion 頁面操作 | 同上模式 |
-| | `@anthropic/mcp-server-confluence` | Confluence Wiki | 同上模式 |
+| 分類         | MCP Server                           | 功能                    | 安裝方式                                                           |
+| ------------ | ------------------------------------ | ----------------------- | ------------------------------------------------------------------ |
+| **版本控制** | `@anthropic/mcp-server-github`       | GitHub Issues、PR、搜尋 | `claude mcp add github -- npx -y @anthropic/mcp-server-github`     |
+|              | `@anthropic/mcp-server-gitlab`       | GitLab MR、Issues       | 同上模式                                                           |
+| **資料庫**   | `@anthropic/mcp-server-postgres`     | PostgreSQL 查詢         | `claude mcp add postgres -- npx -y @anthropic/mcp-server-postgres` |
+|              | `@anthropic/mcp-server-sqlite`       | SQLite 操作             | 同上模式                                                           |
+| **搜尋**     | `@anthropic/mcp-server-brave-search` | Brave 搜尋引擎          | 同上模式                                                           |
+| **記憶**     | `@anthropic/mcp-server-memory`       | 持久化知識圖譜          | 同上模式                                                           |
+| **DevOps**   | `@anthropic/mcp-server-kubernetes`   | K8s 叢集管理            | 同上模式                                                           |
+|              | `@anthropic/mcp-server-docker`       | Docker 容器管理         | 同上模式                                                           |
+| **雲端**     | `@anthropic/mcp-server-aws`          | AWS 服務整合            | 同上模式                                                           |
+|              | `@anthropic/mcp-server-gcp`          | GCP 服務整合            | 同上模式                                                           |
+| **通訊**     | `@anthropic/mcp-server-slack`        | Slack 訊息與頻道        | 同上模式                                                           |
+| **監控**     | `@anthropic/mcp-server-sentry`       | Sentry 錯誤追蹤         | 同上模式                                                           |
+|              | `@anthropic/mcp-server-datadog`      | Datadog 監控            | 同上模式                                                           |
+| **文件**     | `@anthropic/mcp-server-notion`       | Notion 頁面操作         | 同上模式                                                           |
+|              | `@anthropic/mcp-server-confluence`   | Confluence Wiki         | 同上模式                                                           |
 
 > 📖 完整 MCP Server 清單請參考：[code.claude.com/docs/en/mcp](https://code.claude.com/docs/en/mcp)
 
@@ -5539,11 +5585,11 @@ graph LR
         S4 --> S5[測試]
         S5 --> S6[部署]
     end
-    
+
     S1 -.- N1["TypeScript SDK<br>Python SDK"]
     S4 -.- N4["stdio / SSE /<br>Streamable HTTP"]
     S6 -.- N6["npm publish /<br>Docker / 雲端"]
-    
+
     style S1 fill:#dbeafe,stroke:#3b82f6
     style S5 fill:#fef3c7,stroke:#f59e0b
     style S6 fill:#dcfce7,stroke:#22c55e
@@ -5580,7 +5626,7 @@ server.tool(
         },
       ],
     };
-  }
+  },
 );
 
 // 定義工具：查詢部署狀態
@@ -5597,13 +5643,14 @@ server.tool(
       content: [
         {
           type: "text",
-          text: `${app_name} (${environment}): ${status.state}\n` +
-                `版本: ${status.version}\n` +
-                `上次部署: ${status.lastDeployed}`,
+          text:
+            `${app_name} (${environment}): ${status.state}\n` +
+            `版本: ${status.version}\n` +
+            `上次部署: ${status.lastDeployed}`,
         },
       ],
     };
-  }
+  },
 );
 
 // 啟動 Server
@@ -5671,14 +5718,14 @@ Plugins（`.claude-plugin/`）可以包含內建的 MCP Server 配置。安裝 P
 
 #### 常見問題
 
-| 問題 | 原因 | 解決方式 |
-|------|------|---------|
-| MCP Server 連線失敗 | 指令路徑錯誤或套件未安裝 | 確認 `command` 和 `args` 正確，手動執行測試 |
-| 工具未出現在可用清單 | Server 啟動時發生錯誤 | 使用 `claude --mcp-debug` 查看詳細日誌 |
-| 環境變數未生效 | `.mcp.json` 中的 `env` 寫法錯誤 | 確認使用 `${VAR}` 語法引用環境變數 |
-| SSE 連線逾時 | 網路不穩定或遠端 Server 回應慢 | 檢查網路連線，增加 timeout 設定 |
-| 認證失敗 | Token 過期或權限不足 | 重新執行 OAuth flow 或更新 API Key |
-| Token 使用量過高 | 太多 MCP Server 或工具描述過長 | 減少 Server 數量，精簡 tool description |
+| 問題                 | 原因                            | 解決方式                                    |
+| -------------------- | ------------------------------- | ------------------------------------------- |
+| MCP Server 連線失敗  | 指令路徑錯誤或套件未安裝        | 確認 `command` 和 `args` 正確，手動執行測試 |
+| 工具未出現在可用清單 | Server 啟動時發生錯誤           | 使用 `claude --mcp-debug` 查看詳細日誌      |
+| 環境變數未生效       | `.mcp.json` 中的 `env` 寫法錯誤 | 確認使用 `${VAR}` 語法引用環境變數          |
+| SSE 連線逾時         | 網路不穩定或遠端 Server 回應慢  | 檢查網路連線，增加 timeout 設定             |
+| 認證失敗             | Token 過期或權限不足            | 重新執行 OAuth flow 或更新 API Key          |
+| Token 使用量過高     | 太多 MCP Server 或工具描述過長  | 減少 Server 數量，精簡 tool description     |
 
 #### 除錯命令
 
@@ -5717,11 +5764,11 @@ cat ~/.claude/logs/mcp-*.log
 
 #### 內建輸出風格
 
-| 風格 | 說明 | 適用場景 |
-|------|------|---------|
-| **Default** | 預設模式，平衡簡潔與詳細 | 一般開發工作 |
-| **Explanatory** | 解釋模式，提供更多原理說明 | 除錯、理解複雜邏輯 |
-| **Learning** | 教學模式，包含概念教學與範例。🆕 在此模式下，Claude 會在需要人工審核的地方插入 `TODO(human)` 標記，方便搜尋定位 | 學習新技術、新手引導 |
+| 風格            | 說明                                                                                                            | 適用場景             |
+| --------------- | --------------------------------------------------------------------------------------------------------------- | -------------------- |
+| **Default**     | 預設模式，平衡簡潔與詳細                                                                                        | 一般開發工作         |
+| **Explanatory** | 解釋模式，提供更多原理說明                                                                                      | 除錯、理解複雜邏輯   |
+| **Learning**    | 教學模式，包含概念教學與範例。🆕 在此模式下，Claude 會在需要人工審核的地方插入 `TODO(human)` 標記，方便搜尋定位 | 學習新技術、新手引導 |
 
 > 🆕 **快速切換**：可在會話中執行 `/config` 指令，從互動式選單中選擇 Output Style。選擇後的偏好自動儲存至 `.claude/settings.local.json`（不進 Git）。
 
@@ -5731,13 +5778,16 @@ cat ~/.claude/logs/mcp-*.log
 
 ```markdown
 <!-- ~/.claude/output-styles/enterprise-report.md -->
+
 ---
+
 name: enterprise-report
 description: 企業報告風格，正式語氣、結構化輸出
 keep-coding-instructions: true
 ---
 
 ## 輸出規範
+
 - 使用正式中文語氣
 - 每次回應以「摘要」開始
 - 使用表格呈現結構化資訊
@@ -5747,10 +5797,10 @@ keep-coding-instructions: true
 
 **自訂風格 frontmatter 欄位**：
 
-| 欄位 | 類型 | 說明 |
-|------|------|------|
-| `name` | string | 風格名稱（用於切換） |
-| `description` | string | 風格描述 |
+| 欄位                       | 類型    | 說明                                          |
+| -------------------------- | ------- | --------------------------------------------- |
+| `name`                     | string  | 風格名稱（用於切換）                          |
+| `description`              | string  | 風格描述                                      |
 | `keep-coding-instructions` | boolean | 是否保留 Claude 預設的寫程式指引（預設 true） |
 
 ### 2.7.2 配置 Output Styles
@@ -5760,7 +5810,7 @@ keep-coding-instructions: true
 ```json
 {
   "outputStyle": "concise",
-  
+
   "outputPreferences": {
     "codeComments": "minimal",
     "explanationLevel": "brief",
@@ -5775,6 +5825,7 @@ keep-coding-instructions: true
 # CLAUDE.md 中的輸出風格設定
 
 ## 輸出偏好
+
 - 回應請使用繁體中文
 - 程式碼註解使用英文
 - 優先展示程式碼，解釋放在後面
@@ -5808,11 +5859,11 @@ keep-coding-instructions: true
 
 進行程式碼審查時，請使用以下格式：
 
-| 嚴重度 | 位置 | 問題描述 | 建議修復 |
-|--------|------|---------|---------|
-| 🔴 高 | 檔案:行號 | 描述 | 修復方式 |
-| 🟡 中 | 檔案:行號 | 描述 | 修復方式 |
-| 🟢 低 | 檔案:行號 | 描述 | 修復方式 |
+| 嚴重度 | 位置      | 問題描述 | 建議修復 |
+| ------ | --------- | -------- | -------- |
+| 🔴 高  | 檔案:行號 | 描述     | 修復方式 |
+| 🟡 中  | 檔案:行號 | 描述     | 修復方式 |
+| 🟢 低  | 檔案:行號 | 描述     | 修復方式 |
 ```
 
 ### 2.7.4 場景化輸出風格
@@ -5825,6 +5876,7 @@ keep-coding-instructions: true
 # CLAUDE.md — PR Review 輸出風格
 
 ## 輸出偏好（PR Review 模式）
+
 - 先列出整體評估摘要（一段話）
 - 使用表格列出所有問題，按嚴重度排序
 - 對每個問題提供「修正前 vs 修正後」的對比程式碼
@@ -5832,12 +5884,13 @@ keep-coding-instructions: true
 - 統計數據：新增行數、刪除行數、影響的模組
 
 ## 嚴重度分類
-| 等級 | 定義 | 是否阻擋合併 |
-|------|------|-------------|
-| 🔴 Critical | 安全漏洞、資料遺失風險 | 是 |
-| 🟠 High | 效能問題、邏輯錯誤 | 是 |
-| 🟡 Medium | 程式風格、可讀性 | 否 |
-| 🟢 Low | 建議改善、最佳實踐 | 否 |
+
+| 等級        | 定義                   | 是否阻擋合併 |
+| ----------- | ---------------------- | ------------ |
+| 🔴 Critical | 安全漏洞、資料遺失風險 | 是           |
+| 🟠 High     | 效能問題、邏輯錯誤     | 是           |
+| 🟡 Medium   | 程式風格、可讀性       | 否           |
+| 🟢 Low      | 建議改善、最佳實踐     | 否           |
 ```
 
 #### 除錯專用風格
@@ -5846,6 +5899,7 @@ keep-coding-instructions: true
 # CLAUDE.md — 除錯模式輸出風格
 
 ## 輸出偏好（除錯模式）
+
 - 先重現問題：列出錯誤訊息和 stack trace
 - 分析根本原因（Root Cause Analysis）
 - 列出可能的原因（機率從高到低）
@@ -5862,6 +5916,7 @@ keep-coding-instructions: true
 # CLAUDE.md — 文件撰寫輸出風格
 
 ## 輸出偏好（文件撰寫模式）
+
 - 使用正式語氣
 - 包含目的、適用對象、前置條件
 - 步驟使用有序列表，每步搭配截圖說明佔位符
@@ -5877,14 +5932,14 @@ Output Styles 遵循多層級覆寫規則：
 ```mermaid
 graph TB
     subgraph "覆寫優先順序（高→低）"
-        L1["會話中即時指令<br>如：/output-style concise"] 
+        L1["會話中即時指令<br>如：/output-style concise"]
         L2["專案層 CLAUDE.md<br>outputPreferences 設定"]
         L3["使用者層 settings.json<br>~/.claude/settings.json"]
         L4["系統預設<br>normal 模式"]
     end
-    
+
     L1 --> L2 --> L3 --> L4
-    
+
     style L1 fill:#fee2e2,stroke:#ef4444
     style L2 fill:#fef3c7,stroke:#f59e0b
     style L3 fill:#dbeafe,stroke:#3b82f6
@@ -5893,12 +5948,12 @@ graph TB
 
 **覆寫規則說明**：
 
-| 情境 | 生效的設定 | 說明 |
-|------|----------|------|
-| 未做任何設定 | 系統預設（normal） | 標準輸出模式 |
-| 只設 settings.json | 使用者層設定 | 影響所有專案 |
-| settings.json + CLAUDE.md | CLAUDE.md 優先 | 專案覆寫使用者設定 |
-| 全部都設 + 即時指令 | 即時指令優先 | 當次會話臨時調整 |
+| 情境                      | 生效的設定         | 說明               |
+| ------------------------- | ------------------ | ------------------ |
+| 未做任何設定              | 系統預設（normal） | 標準輸出模式       |
+| 只設 settings.json        | 使用者層設定       | 影響所有專案       |
+| settings.json + CLAUDE.md | CLAUDE.md 優先     | 專案覆寫使用者設定 |
+| 全部都設 + 即時指令       | 即時指令優先       | 當次會話臨時調整   |
 
 ### 2.7.6 與 Agent/Skill 結合
 
@@ -5908,15 +5963,18 @@ graph TB
 # agents/senior-reviewer.md
 
 ---
+
 name: senior-reviewer
 description: 資深程式碼審查者，用嚴格標準檢查程式碼
 output-style: detailed
 ---
 
 ## 角色定義
+
 你是一位具有 15 年經驗的資深軟體工程師...
 
 ## 輸出風格要求
+
 - 使用專業語氣，引用具體 RFC 或規範
 - 問題描述包含「為什麼這是問題」的解釋
 - 提供 benchmark 數據（如適用）
@@ -5929,6 +5987,7 @@ output-style: detailed
 # CLAUDE.md
 
 ## Subagent 風格配置
+
 呼叫 code-reviewer agent 時，使用 detailed 檢查模式。
 呼叫 quick-fix agent 時，使用 concise 模式，僅輸出修改的檔案和行號。
 呼叫 documentation agent 時，使用 pedagogical 教學模式，附帶完整範例。
@@ -5944,33 +6003,34 @@ output-style: detailed
 
 **Scheduled Tasks** 讓你可以設定 Claude Code 定期自動執行特定任務。v3.3 提供三種排程方式，適用於不同場景：
 
-| 排程方式 | 適用場景 | 需要 | 特性 |
-|---------|---------|------|------|
-| **Cloud Routines（雲端常規任務）** | 長期自動化任務 | Max 訂閱 | 雲端執行，不需本機開啟 |
-| **Desktop Scheduled Tasks（桌面排程）** | 本機定期任務 | Desktop App | Desktop App 開啟時執行 |
-| **Session `/loop`（會話迴圈）** | 當前會話中反覆執行 | 任意版本 | 會話結束即停止，7 天過期 |
+| 排程方式                                | 適用場景           | 需要        | 特性                     |
+| --------------------------------------- | ------------------ | ----------- | ------------------------ |
+| **Cloud Routines（雲端常規任務）**      | 長期自動化任務     | Max 訂閱    | 雲端執行，不需本機開啟   |
+| **Desktop Scheduled Tasks（桌面排程）** | 本機定期任務       | Desktop App | Desktop App 開啟時執行   |
+| **Session `/loop`（會話迴圈）**         | 當前會話中反覆執行 | 任意版本    | 會話結束即停止，7 天過期 |
 
 #### 🆕 三方排程機制深度比較
 
 以下從執行環境、持久性、功能限制等維度對三種排程機制做完整比較：
 
-| 比較維度 | Cloud Routines | Desktop Scheduled Tasks | Session `/loop` |
-|---------|---------------|------------------------|-----------------|
-| **執行環境** | Anthropic 雲端 | 本機 Desktop App | 本機 CLI 會話 |
-| **持久性** | ✅ 持久化，帳號級別 | ✅ 持久化，App 重啟後恢復 | ❌ 會話結束即停止 |
-| **離線執行** | ✅ 不需本機開啟 | ❌ 需 Desktop App 運行 | ❌ 需 CLI 會話存活 |
-| **排程語法** | Cron 表達式 | Cron 表達式 | 自然語言 / 間隔語法 |
-| **任務上限** | 依方案而定 | 依裝置設定 | 50 個 / 使用者 |
-| **過期機制** | 無 | 無 | 7 天未觸發自動刪除 |
-| **自訂預設行為** | ❌ | ❌ | ✅ 支援 `loop.md` |
-| **觸發時間精度** | 精確 | 精確 | 含 jitter 抖動 |
-| **動態間隔** | ❌ | ❌ | ✅ Claude 可自行決定頻率 |
-| **訂閱需求** | Max 方案 | Desktop App 授權 | 無限制 |
-| **適用情境** | CI/CD、長期監控 | 日常開發輔助 | 臨時性監控、TDD 修復迴圈 |
+| 比較維度         | Cloud Routines      | Desktop Scheduled Tasks   | Session `/loop`          |
+| ---------------- | ------------------- | ------------------------- | ------------------------ |
+| **執行環境**     | Anthropic 雲端      | 本機 Desktop App          | 本機 CLI 會話            |
+| **持久性**       | ✅ 持久化，帳號級別 | ✅ 持久化，App 重啟後恢復 | ❌ 會話結束即停止        |
+| **離線執行**     | ✅ 不需本機開啟     | ❌ 需 Desktop App 運行    | ❌ 需 CLI 會話存活       |
+| **排程語法**     | Cron 表達式         | Cron 表達式               | 自然語言 / 間隔語法      |
+| **任務上限**     | 依方案而定          | 依裝置設定                | 50 個 / 使用者           |
+| **過期機制**     | 無                  | 無                        | 7 天未觸發自動刪除       |
+| **自訂預設行為** | ❌                  | ❌                        | ✅ 支援 `loop.md`        |
+| **觸發時間精度** | 精確                | 精確                      | 含 jitter 抖動           |
+| **動態間隔**     | ❌                  | ❌                        | ✅ Claude 可自行決定頻率 |
+| **訂閱需求**     | Max 方案            | Desktop App 授權          | 無限制                   |
+| **適用情境**     | CI/CD、長期監控     | 日常開發輔助              | 臨時性監控、TDD 修復迴圈 |
 
 > 📌 **選型建議**：
+>
 > - **需要 7×24 無人值守**的自動化監控 → 選擇 **Cloud Routines**
-> - **開發期間固定頻率**的本機任務（如每小時跑測試）→ 選擇 **Desktop Scheduled Tasks**  
+> - **開發期間固定頻率**的本機任務（如每小時跑測試）→ 選擇 **Desktop Scheduled Tasks**
 > - **當前工作階段**的臨時性反覆檢查 → 選擇 **Session `/loop`**
 
 #### /loop 技能（Session 排程）
@@ -5991,13 +6051,13 @@ Claude 會：
 
 `/loop` 支援多種時間間隔格式：
 
-| 語法 | 說明 | 範例 |
-|------|------|------|
-| `Ns` | 秒 | `/loop every 30s check health` |
-| `Nm` | 分鐘 | `/loop every 5m run tests` |
-| `Nh` | 小時 | `/loop every 2h scan dependencies` |
-| `Nd` | 天 | `/loop every 1d generate report` |
-| 自然語言 | 自動解析 | `/loop 每 30 分鐘檢查測試` |
+| 語法     | 說明     | 範例                               |
+| -------- | -------- | ---------------------------------- |
+| `Ns`     | 秒       | `/loop every 30s check health`     |
+| `Nm`     | 分鐘     | `/loop every 5m run tests`         |
+| `Nh`     | 小時     | `/loop every 2h scan dependencies` |
+| `Nd`     | 天       | `/loop every 1d generate report`   |
+| 自然語言 | 自動解析 | `/loop 每 30 分鐘檢查測試`         |
 
 ```plaintext
 # 使用精確間隔語法
@@ -6018,7 +6078,9 @@ Claude 會：
 
 ```markdown
 <!-- loop.md -->
+
 每 15 分鐘執行以下檢查：
+
 1. 執行 `npm test` 確認所有單元測試通過
 2. 執行 `npm run lint` 檢查程式碼風格
 3. 若有測試失敗或 lint 錯誤，嘗試自動修復
@@ -6046,7 +6108,7 @@ Claude Code 內建排程管理工具：
 
 Claude 會呼叫 CronCreate 工具：
 - name: "daily-security-scan"
-- schedule: "0 9 * * *"  
+- schedule: "0 9 * * *"
 - prompt: "執行 OWASP Top 10 安全掃描..."
 
 # 列出所有排程
@@ -6059,6 +6121,7 @@ Claude 會呼叫 CronCreate 工具：
 ```
 
 > **⚠️ Session 排程限制**：
+>
 > - 透過 `/loop` 建立的 Session 排程有 **7 天過期時間**（recurring task 超過 7 天未觸發即自動刪除）
 > - 排程觸發時間會加入 **jitter（隨機抖動）**：為 period 的 10%，且上限為 15 分鐘（例如：間隔 1 小時 → jitter 上限 6 分鐘；間隔 3 小時 → jitter 上限 15 分鐘）
 > - 排程為 **session-scoped**：關閉會話或終端即停止，不會在背景持續執行
@@ -6102,22 +6165,22 @@ Claude 會呼叫 CronCreate 工具：
 
 使用標準 cron 表達式：
 
-| 欄位 | 說明 | 值範圍 |
-|------|------|--------|
-| 分鐘 | 第幾分鐘 | 0-59 |
-| 小時 | 第幾小時 | 0-23 |
-| 日 | 月中第幾天 | 1-31 |
-| 月 | 第幾月 | 1-12 |
-| 週 | 週幾 | 0-6（0=週日） |
+| 欄位 | 說明       | 值範圍        |
+| ---- | ---------- | ------------- |
+| 分鐘 | 第幾分鐘   | 0-59          |
+| 小時 | 第幾小時   | 0-23          |
+| 日   | 月中第幾天 | 1-31          |
+| 月   | 第幾月     | 1-12          |
+| 週   | 週幾       | 0-6（0=週日） |
 
 **常用範例**：
 
-| Cron 表達式 | 說明 |
-|------------|------|
-| `0 9 * * 1` | 每週一早上 9:00 |
-| `0 6 * * *` | 每天早上 6:00 |
+| Cron 表達式  | 說明             |
+| ------------ | ---------------- |
+| `0 9 * * 1`  | 每週一早上 9:00  |
+| `0 6 * * *`  | 每天早上 6:00    |
 | `0 10 * * 5` | 每週五早上 10:00 |
-| `0 0 1 * *` | 每月一號凌晨 |
+| `0 0 1 * *`  | 每月一號凌晨     |
 
 ### 2.8.3 應用場景
 
@@ -6234,7 +6297,7 @@ graph LR
         N --> L
         A --> L
     end
-    
+
     style T fill:#dbeafe,stroke:#3b82f6
     style R fill:#fef3c7,stroke:#f59e0b
     style A fill:#fee2e2,stroke:#ef4444
@@ -6242,35 +6305,35 @@ graph LR
 
 #### 通知整合方式
 
-| 通知管道 | 適用場景 | 設定方式 |
-|---------|---------|---------|
-| **Slack** | 團隊即時通知 | Webhook URL |
-| **Email** | 正式報告、管理層通知 | SMTP 設定 |
-| **Microsoft Teams** | 企業通訊整合 | Incoming Webhook |
-| **PagerDuty** | 緊急事件升級 | Integration Key |
-| **GitHub Issues** | 追蹤需修復的問題 | GitHub Token |
+| 通知管道            | 適用場景             | 設定方式         |
+| ------------------- | -------------------- | ---------------- |
+| **Slack**           | 團隊即時通知         | Webhook URL      |
+| **Email**           | 正式報告、管理層通知 | SMTP 設定        |
+| **Microsoft Teams** | 企業通訊整合         | Incoming Webhook |
+| **PagerDuty**       | 緊急事件升級         | Integration Key  |
+| **GitHub Issues**   | 追蹤需修復的問題     | GitHub Token     |
 
 #### 報告歸檔建議
 
-| 報告類型 | 保留期限 | 歸檔位置 |
-|---------|---------|---------|
-| 安全掃描 | 1 年 | `.claude/reports/security/` |
-| 依賴檢查 | 6 個月 | `.claude/reports/deps/` |
-| 品質報告 | 3 個月 | `.claude/reports/quality/` |
-| 週報 | 1 年 | `.claude/reports/weekly/` |
+| 報告類型 | 保留期限 | 歸檔位置                    |
+| -------- | -------- | --------------------------- |
+| 安全掃描 | 1 年     | `.claude/reports/security/` |
+| 依賴檢查 | 6 個月   | `.claude/reports/deps/`     |
+| 品質報告 | 3 個月   | `.claude/reports/quality/`  |
+| 週報     | 1 年     | `.claude/reports/weekly/`   |
 
 ### 2.8.6 排程任務最佳實踐
 
-| 實踐 | 說明 |
-|------|------|
-| **避免尖峰時段** | 排程在離峰時間執行，避免影響團隊日常工作 |
-| **設定 Timeout** | 為每個任務設定合理的超時時間，避免無限等待 |
-| **錯誤重試** | 設定重試次數和間隔，應對暫時性失敗 |
-| **成本監控** | 追蹤每個排程任務的 token 使用量，設定預算上限 |
-| **結果驗證** | 自動檢查輸出檔案是否為空或格式異常 |
-| **版本控制** | 將排程設定檔納入版本控制 |
-| **權限最小化** | 排程任務的執行帳號應使用最小權限原則 |
-| **日誌輪替** | 設定日誌檔案的自動輪替和壓縮 |
+| 實踐             | 說明                                          |
+| ---------------- | --------------------------------------------- |
+| **避免尖峰時段** | 排程在離峰時間執行，避免影響團隊日常工作      |
+| **設定 Timeout** | 為每個任務設定合理的超時時間，避免無限等待    |
+| **錯誤重試**     | 設定重試次數和間隔，應對暫時性失敗            |
+| **成本監控**     | 追蹤每個排程任務的 token 使用量，設定預算上限 |
+| **結果驗證**     | 自動檢查輸出檔案是否為空或格式異常            |
+| **版本控制**     | 將排程設定檔納入版本控制                      |
+| **權限最小化**   | 排程任務的執行帳號應使用最小權限原則          |
+| **日誌輪替**     | 設定日誌檔案的自動輪替和壓縮                  |
 
 > **⚠️ 注意事項**
 >
@@ -6317,12 +6380,12 @@ claude --install-vscode
 
 VS Code 整合最顯著的功能是在編輯器旁的 **Spark（✨）圖示**，點擊即可啟動 Claude Code 對話：
 
-| 功能 | 觸發方式 | 說明 |
-|------|---------|------|
-| **內嵌對話** | 點擊 ✨ 圖示 | 在編輯器中直接開啟 AI 對話 |
-| **選取程式碼** | 選取後右鍵 → Claude Code | 對選取的程式碼進行操作 |
-| **@-mention** | 在聊天中輸入 `@file` | 引用特定檔案作為 context |
-| **Plan 模式** | 切換到 Plan 模式 | 只規劃不執行，待確認後再實施 |
+| 功能           | 觸發方式                 | 說明                         |
+| -------------- | ------------------------ | ---------------------------- |
+| **內嵌對話**   | 點擊 ✨ 圖示             | 在編輯器中直接開啟 AI 對話   |
+| **選取程式碼** | 選取後右鍵 → Claude Code | 對選取的程式碼進行操作       |
+| **@-mention**  | 在聊天中輸入 `@file`     | 引用特定檔案作為 context     |
+| **Plan 模式**  | 切換到 Plan 模式         | 只規劃不執行，待確認後再實施 |
 
 #### @-mention 語法
 
@@ -6345,11 +6408,7 @@ VS Code 整合最顯著的功能是在編輯器旁的 **Spark（✨）圖示**�
 // VS Code settings.json
 {
   "claude-code.autoAccept": true,
-  "claude-code.autoAcceptPatterns": [
-    "*.test.ts",
-    "*.spec.ts",
-    "*.md"
-  ]
+  "claude-code.autoAcceptPatterns": ["*.test.ts", "*.spec.ts", "*.md"]
 }
 ```
 
@@ -6367,9 +6426,9 @@ graph LR
     E2 --> C3[Checkpoint 3]
     C3 --> E3[Claude 修改<br>測試]
     E3 --> C4[Checkpoint 4<br>當前狀態]
-    
+
     C3 -.->|回滾| RB[回到 Checkpoint 3]
-    
+
     style C1 fill:#dbeafe,stroke:#3b82f6
     style C4 fill:#dcfce7,stroke:#22c55e
     style RB fill:#fee2e2,stroke:#ef4444
@@ -6413,12 +6472,12 @@ sequenceDiagram
 
 #### Worktree 管理最佳實踐
 
-| 操作 | 命令 | 說明 |
-|------|------|------|
-| **建立 Worktree** | `git worktree add ../feature-1 -b feature-1` | 在父目錄建立新 worktree |
-| **列出 Worktrees** | `git worktree list` | 查看所有 worktree 狀態 |
-| **移除 Worktree** | `git worktree remove ../feature-1` | 移除已完成的 worktree |
-| **清理 Worktree** | `git worktree prune` | 清理已刪除目錄的 worktree 參照 |
+| 操作               | 命令                                         | 說明                           |
+| ------------------ | -------------------------------------------- | ------------------------------ |
+| **建立 Worktree**  | `git worktree add ../feature-1 -b feature-1` | 在父目錄建立新 worktree        |
+| **列出 Worktrees** | `git worktree list`                          | 查看所有 worktree 狀態         |
+| **移除 Worktree**  | `git worktree remove ../feature-1`           | 移除已完成的 worktree          |
+| **清理 Worktree**  | `git worktree prune`                         | 清理已刪除目錄的 worktree 參照 |
 
 > **💡 提示**：使用 Agent Teams 時，Claude Code 會自動管理 worktree 的建立和清除。使用者不需手動操作，但了解底層機制有助於排查問題。
 
@@ -6431,7 +6490,7 @@ VS Code Extension 支援配置第三方 AI Provider：
 {
   "claude-code.provider": "anthropic",
   "claude-code.model": "claude-sonnet-4-20250514",
-  
+
   // 或使用第三方 Provider
   "claude-code.provider": "custom",
   "claude-code.apiEndpoint": "https://api.custom-provider.com/v1",
@@ -6441,12 +6500,12 @@ VS Code Extension 支援配置第三方 AI Provider：
 
 #### 支援的 Provider
 
-| Provider | 設定值 | 說明 |
-|----------|--------|------|
-| **Anthropic** | `anthropic` | 官方直連 Anthropic API（預設） |
-| **Amazon Bedrock** | `bedrock` | 透過 AWS Bedrock 存取 Claude 模型 |
-| **Google Vertex AI** | `vertex` | 透過 GCP Vertex AI 存取 Claude 模型 |
-| **Custom** | `custom` | 自訂 API 端點（企業內部代理等） |
+| Provider             | 設定值      | 說明                                |
+| -------------------- | ----------- | ----------------------------------- |
+| **Anthropic**        | `anthropic` | 官方直連 Anthropic API（預設）      |
+| **Amazon Bedrock**   | `bedrock`   | 透過 AWS Bedrock 存取 Claude 模型   |
+| **Google Vertex AI** | `vertex`    | 透過 GCP Vertex AI 存取 Claude 模型 |
+| **Custom**           | `custom`    | 自訂 API 端點（企業內部代理等）     |
 
 #### 使用 Amazon Bedrock
 
@@ -6477,13 +6536,13 @@ gcloud auth application-default login
 
 #### 核心快捷鍵
 
-| 快捷鍵 (macOS) | 快捷鍵 (Windows/Linux) | 功能 |
-|----------------|----------------------|------|
-| `Cmd+Esc` | `Ctrl+Esc` | 開啟/切換 Claude Code 面板 |
-| `Cmd+Shift+P` → "Claude" | `Ctrl+Shift+P` → "Claude" | 搜尋 Claude Code 命令 |
-| `Cmd+I` | `Ctrl+I` | 行內 AI 建議（Spark 模式） |
-| `Cmd+L` | `Ctrl+L` | 選取目前行並傳送到 Claude |
-| `Cmd+Shift+L` | `Ctrl+Shift+L` | 選取全部並傳送到 Claude |
+| 快捷鍵 (macOS)           | 快捷鍵 (Windows/Linux)    | 功能                       |
+| ------------------------ | ------------------------- | -------------------------- |
+| `Cmd+Esc`                | `Ctrl+Esc`                | 開啟/切換 Claude Code 面板 |
+| `Cmd+Shift+P` → "Claude" | `Ctrl+Shift+P` → "Claude" | 搜尋 Claude Code 命令      |
+| `Cmd+I`                  | `Ctrl+I`                  | 行內 AI 建議（Spark 模式） |
+| `Cmd+L`                  | `Ctrl+L`                  | 選取目前行並傳送到 Claude  |
+| `Cmd+Shift+L`            | `Ctrl+Shift+L`            | 選取全部並傳送到 Claude    |
 
 #### VS Code 命令面板命令
 
@@ -6516,7 +6575,7 @@ graph TB
         G --> C
         E --> H[完成]
     end
-    
+
     style A fill:#dbeafe,stroke:#3b82f6
     style D fill:#fef3c7,stroke:#f59e0b
     style E fill:#dcfce7,stroke:#22c55e
@@ -6525,14 +6584,14 @@ graph TB
 
 #### Plan Mode 使用場景
 
-| 場景 | 建議模式 | 原因 |
-|------|---------|------|
-| **大型重構** | Plan Mode | 變更範圍大，需要先確認策略 |
-| **資料庫 Schema 變更** | Plan Mode | 不可逆操作，需要謹慎確認 |
-| **刪除/移動檔案** | Plan Mode | 避免誤刪重要檔案 |
-| **小修小補** | Auto Mode | 修改範圍小，可以直接執行 |
-| **新增測試** | Auto Mode | 風險低，可以快速迭代 |
-| **文件更新** | Auto Mode | 低風險，直接執行效率更高 |
+| 場景                   | 建議模式  | 原因                       |
+| ---------------------- | --------- | -------------------------- |
+| **大型重構**           | Plan Mode | 變更範圍大，需要先確認策略 |
+| **資料庫 Schema 變更** | Plan Mode | 不可逆操作，需要謹慎確認   |
+| **刪除/移動檔案**      | Plan Mode | 避免誤刪重要檔案           |
+| **小修小補**           | Auto Mode | 修改範圍小，可以直接執行   |
+| **新增測試**           | Auto Mode | 風險低，可以快速迭代       |
+| **文件更新**           | Auto Mode | 低風險，直接執行效率更高   |
 
 #### Plan Mode 輸出格式
 
@@ -6540,21 +6599,25 @@ graph TB
 ## 執行計畫
 
 ### 步驟 1：分析現有程式碼結構
+
 - 讀取 `src/services/UserService.ts`
 - 讀取 `src/models/User.ts`
 - 讀取 `src/tests/UserService.test.ts`
 
 ### 步驟 2：重構 UserService
+
 - 將認證邏輯抽取到 `AuthService`
 - 修改 `UserService` 移除認證相關程式碼
 - 更新導入路徑
 
 ### 步驟 3：更新測試
+
 - 新增 `AuthService.test.ts`
 - 更新 `UserService.test.ts` 移除認證測試
 - 確保覆蓋率不下降
 
 ### 影響範圍
+
 - 修改：3 個檔案
 - 新增：2 個檔案
 - 刪除：0 個檔案
@@ -6585,12 +6648,12 @@ vscode://anthropic.claude-code/open?skill=code-review&prompt=Review%20this%20PR
 
 🆕 VS Code Extension 提供圖形化的 Plugin 管理介面：
 
-| 功能 | 說明 |
-|------|------|
+| 功能                   | 說明                                                        |
+| ---------------------- | ----------------------------------------------------------- |
 | **已安裝 Plugin 列表** | 顯示所有已安裝的 Plugin，含版本、範圍（user/project/local） |
-| **Marketplace 瀏覽** | 直接瀏覽、搜尋、安裝 Plugin，無需命令列 |
-| **Plugin 設定** | 圖形化編輯 Plugin 的 settings.json 和 .mcp.json |
-| **啟用/停用** | 一鍵切換 Plugin 啟用狀態 |
+| **Marketplace 瀏覽**   | 直接瀏覽、搜尋、安裝 Plugin，無需命令列                     |
+| **Plugin 設定**        | 圖形化編輯 Plugin 的 settings.json 和 .mcp.json             |
+| **啟用/停用**          | 一鍵切換 Plugin 啟用狀態                                    |
 
 ### 3.1.9 VS Code 多實例與 Terminal 整合
 
@@ -6606,11 +6669,11 @@ graph LR
         T1[Terminal 1<br>前端 dev server]
         T2[Terminal 2<br>後端 server]
     end
-    
+
     subgraph "VS Code 視窗 2（Worktree）"
         P3[Claude Code 面板 3<br>Feature 開發]
     end
-    
+
     style P1 fill:#dbeafe,stroke:#3b82f6
     style P2 fill:#ddd6fe,stroke:#8b5cf6
     style P3 fill:#dcfce7,stroke:#22c55e
@@ -6622,12 +6685,12 @@ graph LR
 
 Claude Code 與 VS Code 內建終端機深度整合：
 
-| 功能 | 說明 |
-|------|------|
-| **自動偵測** | Claude Code 可以自動讀取終端機的錯誤輸出 |
+| 功能         | 說明                                      |
+| ------------ | ----------------------------------------- |
+| **自動偵測** | Claude Code 可以自動讀取終端機的錯誤輸出  |
 | **命令執行** | Claude Code 可以在 VS Code 終端中執行命令 |
-| **環境感知** | 自動偵測目前工作目錄和環境變數 |
-| **歷史引用** | 使用 `@terminal` 可以引用終端的歷史輸出 |
+| **環境感知** | 自動偵測目前工作目錄和環境變數            |
+| **歷史引用** | 使用 `@terminal` 可以引用終端的歷史輸出   |
 
 #### VS Code Settings 完整參考
 
@@ -6637,24 +6700,24 @@ Claude Code 與 VS Code 內建終端機深度整合：
   "claude-code.enable": true,
   "claude-code.provider": "anthropic",
   "claude-code.model": "claude-sonnet-4-20250514",
-  
+
   // === 行為設定 ===
   "claude-code.autoAccept": false,
   "claude-code.planMode": false,
   "claude-code.showSpark": true,
   "claude-code.inlineSuggestions": true,
-  
+
   // === 顯示設定 ===
   "claude-code.panelPosition": "right",
   "claude-code.fontSize": 14,
   "claude-code.theme": "auto",
-  
+
   // === 進階設定 ===
   "claude-code.maxTokens": 200000,
   "claude-code.timeout": 300,
   "claude-code.debugMode": false,
   "claude-code.telemetry": true,
-  
+
   // === Terminal 整合 ===
   "claude-code.terminal.autoDetect": true,
   "claude-code.terminal.shell": "default"
@@ -6675,7 +6738,7 @@ graph LR
         EXT[外部程式<br>腳本/IDE/Web UI] <-->|WebSocket| API[Claude Code<br>WebSocket API]
         API <--> CC[Claude Code<br>核心引擎]
     end
-    
+
     style EXT fill:#fef3c7,stroke:#f59e0b
     style API fill:#dbeafe,stroke:#3b82f6
     style CC fill:#6366f1,stroke:#4f46e5,color:#fff
@@ -6698,12 +6761,12 @@ claude --remote-control
 
 透過 WebSocket 可以執行以下操作：
 
-| 操作 | 說明 | 範例 |
-|------|------|------|
-| **send_message** | 傳送訊息給 Claude | 自動化腳本送出任務指令 |
-| **get_status** | 取得目前會話狀態 | 監控 Claude 是否在執行中 |
-| **list_conversations** | 列出對話歷史 | 建立自訂 UI |
-| **execute_command** | 執行 slash command | 自動化工作流程 |
+| 操作                   | 說明               | 範例                     |
+| ---------------------- | ------------------ | ------------------------ |
+| **send_message**       | 傳送訊息給 Claude  | 自動化腳本送出任務指令   |
+| **get_status**         | 取得目前會話狀態   | 監控 Claude 是否在執行中 |
+| **list_conversations** | 列出對話歷史       | 建立自訂 UI              |
+| **execute_command**    | 執行 slash command | 自動化工作流程           |
 
 ```python
 # Python 範例：透過 WebSocket 控制 Claude Code
@@ -6719,7 +6782,7 @@ async def control_claude():
             "type": "send_message",
             "message": "幫我找出所有未處理的 TODO 註解並建立 issue 清單"
         }))
-        
+
         # 接收回應
         while True:
             response = json.loads(await ws.recv())
@@ -6733,17 +6796,17 @@ asyncio.run(control_claude())
 
 ### 3.2.4 應用場景
 
-| 場景 | 說明 |
-|------|------|
-| **自動化腳本** | 透過腳本批次控制 Claude Code 執行任務 |
-| **自訂 IDE 整合** | 在非官方 IDE（如 IntelliJ、Sublime）中整合 |
-| **Web Dashboard** | 建立 Web 介面監控和控制多個 Claude Code 實例 |
-| **CI/CD Pipeline** | 在 CI/CD 流程中透過 API 呼叫 Claude Code |
+| 場景               | 說明                                         |
+| ------------------ | -------------------------------------------- |
+| **自動化腳本**     | 透過腳本批次控制 Claude Code 執行任務        |
+| **自訂 IDE 整合**  | 在非官方 IDE（如 IntelliJ、Sublime）中整合   |
+| **Web Dashboard**  | 建立 Web 介面監控和控制多個 Claude Code 實例 |
+| **CI/CD Pipeline** | 在 CI/CD 流程中透過 API 呼叫 Claude Code     |
 
 #### 範例：Node.js Remote Control Client
 
 ```javascript
-const WebSocket = require('ws');
+const WebSocket = require("ws");
 
 class ClaudeRemoteClient {
   constructor(url) {
@@ -6754,37 +6817,39 @@ class ClaudeRemoteClient {
   async connect() {
     return new Promise((resolve, reject) => {
       this.ws = new WebSocket(this.url);
-      this.ws.on('open', resolve);
-      this.ws.on('error', reject);
+      this.ws.on("open", resolve);
+      this.ws.on("error", reject);
     });
   }
 
   async sendMessage(message) {
     return new Promise((resolve, reject) => {
       const responses = [];
-      
-      this.ws.on('message', (data) => {
+
+      this.ws.on("message", (data) => {
         const parsed = JSON.parse(data);
-        if (parsed.type === 'response') {
+        if (parsed.type === "response") {
           responses.push(parsed.content);
-        } else if (parsed.type === 'done') {
-          resolve(responses.join('\n'));
+        } else if (parsed.type === "done") {
+          resolve(responses.join("\n"));
         }
       });
 
-      this.ws.send(JSON.stringify({
-        type: 'send_message',
-        message: message
-      }));
+      this.ws.send(
+        JSON.stringify({
+          type: "send_message",
+          message: message,
+        }),
+      );
     });
   }
 
   async getStatus() {
     return new Promise((resolve) => {
-      this.ws.on('message', (data) => {
+      this.ws.on("message", (data) => {
         resolve(JSON.parse(data));
       });
-      this.ws.send(JSON.stringify({ type: 'get_status' }));
+      this.ws.send(JSON.stringify({ type: "get_status" }));
     });
   }
 
@@ -6795,19 +6860,19 @@ class ClaudeRemoteClient {
 
 // 使用範例
 async function main() {
-  const client = new ClaudeRemoteClient('ws://localhost:PORT/ws');
+  const client = new ClaudeRemoteClient("ws://localhost:PORT/ws");
   await client.connect();
-  
+
   // 檢查狀態
   const status = await client.getStatus();
-  console.log('Claude Code 狀態:', status);
-  
+  console.log("Claude Code 狀態:", status);
+
   // 傳送任務
   const result = await client.sendMessage(
-    '分析 src/services/ 目錄下所有 Service 的依賴關係，繪製 Mermaid 圖'
+    "分析 src/services/ 目錄下所有 Service 的依賴關係，繪製 Mermaid 圖",
   );
-  console.log('結果:', result);
-  
+  console.log("結果:", result);
+
   client.disconnect();
 }
 
@@ -6825,7 +6890,7 @@ import json
 class ClaudeDashboard:
     def __init__(self):
         self.instances = {}
-    
+
     async def add_instance(self, name, url):
         """新增一個 Claude Code 實例到監控"""
         ws = await websockets.connect(url)
@@ -6834,7 +6899,7 @@ class ClaudeDashboard:
             'url': url,
             'status': 'connected'
         }
-    
+
     async def monitor_all(self):
         """監控所有實例狀態"""
         while True:
@@ -6853,19 +6918,19 @@ class ClaudeDashboard:
                 except Exception as e:
                     instance['status'] = 'disconnected'
                     print(f"[{name}] 連線中斷: {e}")
-            
+
             await asyncio.sleep(10)  # 每 10 秒檢查一次
 ```
 
 #### Remote Control 安全注意事項
 
-| 項目 | 說明 | 建議 |
-|------|------|------|
-| **綁定地址** | 預設綁定 `localhost` | 勿改為 `0.0.0.0` 除非在受保護網路 |
-| **連線認證** | WebSocket 無內建認證 | 在前端增加 Token 驗證 |
-| **命令注入** | 外部輸入可能含惡意指令 | 對使用者輸入進行清理 |
-| **日誌記錄** | Remote Control 操作不自動記錄 | 在客戶端記錄所有操作 |
-| **超時機制** | 長時間運行可能超時 | 設定合理的 timeout |
+| 項目         | 說明                          | 建議                              |
+| ------------ | ----------------------------- | --------------------------------- |
+| **綁定地址** | 預設綁定 `localhost`          | 勿改為 `0.0.0.0` 除非在受保護網路 |
+| **連線認證** | WebSocket 無內建認證          | 在前端增加 Token 驗證             |
+| **命令注入** | 外部輸入可能含惡意指令        | 對使用者輸入進行清理              |
+| **日誌記錄** | Remote Control 操作不自動記錄 | 在客戶端記錄所有操作              |
+| **超時機制** | 長時間運行可能超時            | 設定合理的 timeout                |
 
 ### 3.2.5 Remote Control 進階整合模式
 
@@ -6882,15 +6947,15 @@ import subprocess
 
 class EventDrivenAutomation:
     """基於 Claude Code 事件的自動化觸發器"""
-    
+
     def __init__(self, ws_url, handlers=None):
         self.ws_url = ws_url
         self.handlers = handlers or {}
-    
+
     def on(self, event_type, handler):
         """註冊事件處理器"""
         self.handlers[event_type] = handler
-    
+
     async def start(self):
         """啟動事件監聽"""
         async with websockets.connect(self.ws_url) as ws:
@@ -6899,11 +6964,11 @@ class EventDrivenAutomation:
                 "type": "subscribe",
                 "events": ["tool_use", "file_change", "error", "done"]
             }))
-            
+
             while True:
                 message = json.loads(await ws.recv())
                 event_type = message.get("type", "unknown")
-                
+
                 if event_type in self.handlers:
                     await self.handlers[event_type](message)
 
@@ -6914,7 +6979,7 @@ async def on_file_change(event):
     """檔案變更時自動執行測試"""
     changed_files = event.get("files", [])
     test_files = [f for f in changed_files if "test" in f or "spec" in f]
-    
+
     if test_files:
         print(f"偵測到測試檔變更: {test_files}")
         # 自動觸發相關測試
@@ -6947,11 +7012,11 @@ from collections import deque
 
 class ClaudeLoadBalancer:
     """在多個 Claude Code 實例之間分配任務"""
-    
+
     def __init__(self):
         self.instances = {}  # name -> {ws, status, current_task}
         self.task_queue = deque()
-    
+
     async def register_instance(self, name, url):
         """註冊一個 Claude Code 實例"""
         ws = await websockets.connect(url)
@@ -6962,19 +7027,19 @@ class ClaudeLoadBalancer:
             "current_task": None
         }
         print(f"已註冊實例: {name}")
-    
+
     def get_idle_instance(self):
         """取得一個閒置的實例"""
         for name, inst in self.instances.items():
             if inst["status"] == "idle":
                 return name
         return None
-    
+
     async def submit_task(self, task):
         """提交任務到佇列"""
         self.task_queue.append(task)
         await self._dispatch()
-    
+
     async def _dispatch(self):
         """分配佇列中的任務給閒置實例"""
         while self.task_queue:
@@ -6982,18 +7047,18 @@ class ClaudeLoadBalancer:
             if not name:
                 print("所有實例忙碌中，任務排隊等待")
                 break
-            
+
             task = self.task_queue.popleft()
             inst = self.instances[name]
             inst["status"] = "busy"
             inst["current_task"] = task["id"]
-            
+
             print(f"分配任務 [{task['id']}] 到 {name}")
             await inst["ws"].send(json.dumps({
                 "type": "send_message",
                 "message": task["message"]
             }))
-    
+
     async def get_status_report(self):
         """取得所有實例的狀態報告"""
         report = []
@@ -7008,12 +7073,12 @@ class ClaudeLoadBalancer:
 # 使用範例
 async def main():
     lb = ClaudeLoadBalancer()
-    
+
     # 註冊多個實例
     await lb.register_instance("worker-1", "ws://localhost:3001/ws")
     await lb.register_instance("worker-2", "ws://localhost:3002/ws")
     await lb.register_instance("worker-3", "ws://localhost:3003/ws")
-    
+
     # 批次提交任務
     tasks = [
         {"id": "review-1", "message": "Review src/auth/ 所有檔案的安全性"},
@@ -7022,10 +7087,10 @@ async def main():
         {"id": "test-1", "message": "為 src/services/OrderService.ts 撰寫完整單元測試"},
         {"id": "doc-1", "message": "為 src/api/ 所有 controller 生成 OpenAPI 文件"},
     ]
-    
+
     for task in tasks:
         await lb.submit_task(task)
-    
+
     # 查看狀態
     status = await lb.get_status_report()
     for s in status:
@@ -7038,59 +7103,61 @@ async def main():
 
 ```javascript
 // web-ui-integration.js - 將 Claude Code 嵌入自訂 Web 應用
-const express = require('express');
-const WebSocket = require('ws');
+const express = require("express");
+const WebSocket = require("ws");
 const app = express();
 
 // Claude Code WebSocket 連線池
 const claudeConnections = new Map();
 
 // REST API 端點，讓前端透過 HTTP 與 Claude Code 互動
-app.post('/api/claude/task', express.json(), async (req, res) => {
+app.post("/api/claude/task", express.json(), async (req, res) => {
   const { instanceId, message } = req.body;
-  
+
   let ws = claudeConnections.get(instanceId);
   if (!ws || ws.readyState !== WebSocket.OPEN) {
     ws = new WebSocket(`ws://localhost:${3000 + parseInt(instanceId)}/ws`);
-    await new Promise((resolve) => ws.on('open', resolve));
+    await new Promise((resolve) => ws.on("open", resolve));
     claudeConnections.set(instanceId, ws);
   }
-  
+
   const responses = [];
-  
+
   return new Promise((resolve) => {
-    ws.on('message', (data) => {
+    ws.on("message", (data) => {
       const parsed = JSON.parse(data);
-      if (parsed.type === 'response') {
+      if (parsed.type === "response") {
         responses.push(parsed.content);
-      } else if (parsed.type === 'done') {
-        res.json({ success: true, result: responses.join('\n') });
+      } else if (parsed.type === "done") {
+        res.json({ success: true, result: responses.join("\n") });
         resolve();
       }
     });
 
-    ws.send(JSON.stringify({
-      type: 'send_message',
-      message: message
-    }));
+    ws.send(
+      JSON.stringify({
+        type: "send_message",
+        message: message,
+      }),
+    );
   });
 });
 
 // 取得所有實例狀態
-app.get('/api/claude/status', async (req, res) => {
+app.get("/api/claude/status", async (req, res) => {
   const statuses = [];
   for (const [id, ws] of claudeConnections) {
     statuses.push({
       id,
       connected: ws.readyState === WebSocket.OPEN,
-      url: `ws://localhost:${3000 + parseInt(id)}/ws`
+      url: `ws://localhost:${3000 + parseInt(id)}/ws`,
     });
   }
   res.json(statuses);
 });
 
 app.listen(8080, () => {
-  console.log('Claude Code Web UI API 啟動於 port 8080');
+  console.log("Claude Code Web UI API 啟動於 port 8080");
 });
 ```
 
@@ -7106,7 +7173,7 @@ graph TD
     B -->|CI/CD 整合| G{需要即時互動?}
     G -->|否| C
     G -->|是| D
-    
+
     style A fill:#dbeafe,stroke:#3b82f6
     style C fill:#dcfce7,stroke:#22c55e
     style D fill:#fef3c7,stroke:#f59e0b
@@ -7114,12 +7181,12 @@ graph TD
     style F fill:#e0e7ff,stroke:#6366f1
 ```
 
-| 模式 | 適用場景 | 複雜度 | 效能 |
-|------|---------|--------|------|
-| **直接 WebSocket** | 簡單自動化腳本 | 低 | 高 |
-| **Event-Driven** | 監控、自動觸發 | 中 | 高 |
-| **Load Balancer** | 大量任務批次處理 | 高 | 中 |
-| **REST API 包裝** | Web UI、跨平台整合 | 中 | 中 |
+| 模式               | 適用場景           | 複雜度 | 效能 |
+| ------------------ | ------------------ | ------ | ---- |
+| **直接 WebSocket** | 簡單自動化腳本     | 低     | 高   |
+| **Event-Driven**   | 監控、自動觸發     | 中     | 高   |
+| **Load Balancer**  | 大量任務批次處理   | 高     | 中   |
+| **REST API 包裝**  | Web UI、跨平台整合 | 中     | 中   |
 
 ---
 
@@ -7192,22 +7259,22 @@ claude -p "分析" --bare --plugin-dir ./my-plugin/
 
 #### 輸出格式比較
 
-| 格式 | 參數 | 說明 |
-|------|------|------|
-| **text** | `--output-format text` | 純文字輸出（預設） |
-| **json** | `--output-format json` | 完整 JSON 結果物件 |
+| 格式            | 參數                          | 說明                 |
+| --------------- | ----------------------------- | -------------------- |
+| **text**        | `--output-format text`        | 純文字輸出（預設）   |
+| **json**        | `--output-format json`        | 完整 JSON 結果物件   |
 | **stream-json** | `--output-format stream-json` | 🆕 每個事件一行 JSON |
 
 #### 🆕 stream-json 事件類型
 
-| 事件類型 | 說明 | 範例內容 |
-|----------|------|---------|
-| `system` | 系統訊息（啟動、配置載入） | `{"type":"system","message":"Session started"}` |
-| `text` | Claude 回應文字片段 | `{"type":"text","content":"分析結果..."}` |
-| `tool_use` | 工具呼叫開始 | `{"type":"tool_use","tool":"Read","input":{"file":"src/app.ts"}}` |
-| `tool_result` | 工具執行結果 | `{"type":"tool_result","output":"..."}` |
-| `api_retry` | API 重試事件（速率限制等） | `{"type":"api_retry","attempt":2,"delay_ms":1000}` |
-| `done` | 完成事件，含成本摘要 | `{"type":"done","cost":{"input_tokens":1200,"output_tokens":500}}` |
+| 事件類型      | 說明                       | 範例內容                                                           |
+| ------------- | -------------------------- | ------------------------------------------------------------------ |
+| `system`      | 系統訊息（啟動、配置載入） | `{"type":"system","message":"Session started"}`                    |
+| `text`        | Claude 回應文字片段        | `{"type":"text","content":"分析結果..."}`                          |
+| `tool_use`    | 工具呼叫開始               | `{"type":"tool_use","tool":"Read","input":{"file":"src/app.ts"}}`  |
+| `tool_result` | 工具執行結果               | `{"type":"tool_result","output":"..."}`                            |
+| `api_retry`   | API 重試事件（速率限制等） | `{"type":"api_retry","attempt":2,"delay_ms":1000}`                 |
+| `done`        | 完成事件，含成本摘要       | `{"type":"done","cost":{"input_tokens":1200,"output_tokens":500}}` |
 
 #### 🆕 結構化輸出（Structured Output）
 
@@ -7233,15 +7300,15 @@ claude -p "列出所有 API endpoints" \
 
 #### Headless vs 互動式模式
 
-| 特性 | 互動式模式 | Headless 模式 |
-|------|-----------|--------------|
-| **啟動方式** | `claude` | `claude -p "prompt"` |
-| **使用者互動** | 即時對話 | 無互動，直接執行 |
-| **權限確認** | 逐一確認 | `--permission-mode` 控制 |
-| **權限模式** | N/A | `dontAsk`（拒絕）/ `acceptEdits`（接受編輯） |
-| **適用環境** | 終端機 | CI/CD、腳本、排程 |
-| **輸出方式** | 互動式終端 | stdout / 檔案 |
-| **對話延續** | 自動保存 | `--continue` / `--resume` |
+| 特性           | 互動式模式 | Headless 模式                                |
+| -------------- | ---------- | -------------------------------------------- |
+| **啟動方式**   | `claude`   | `claude -p "prompt"`                         |
+| **使用者互動** | 即時對話   | 無互動，直接執行                             |
+| **權限確認**   | 逐一確認   | `--permission-mode` 控制                     |
+| **權限模式**   | N/A        | `dontAsk`（拒絕）/ `acceptEdits`（接受編輯） |
+| **適用環境**   | 終端機     | CI/CD、腳本、排程                            |
+| **輸出方式**   | 互動式終端 | stdout / 檔案                                |
+| **對話延續**   | 自動保存   | `--continue` / `--resume`                    |
 
 ### 3.3.2 Agent SDK 整合
 
@@ -7250,7 +7317,7 @@ claude -p "列出所有 API endpoints" \
 #### TypeScript SDK
 
 ```typescript
-import { ClaudeCode } from '@anthropic-ai/claude-code';
+import { ClaudeCode } from "@anthropic-ai/claude-code";
 
 // 建立 Claude Code 實例
 const claude = new ClaudeCode({
@@ -7292,7 +7359,7 @@ print(result.output)
 SDK 支援多輪對話模式，適用於需要多步驟互動的場景：
 
 ```typescript
-import { ClaudeCode, Conversation } from '@anthropic-ai/claude-code';
+import { ClaudeCode, Conversation } from "@anthropic-ai/claude-code";
 
 const claude = new ClaudeCode({
   apiKey: process.env.CLAUDE_API_KEY,
@@ -7305,21 +7372,15 @@ const conversation = claude.createConversation({
 });
 
 // 第一輪：分析程式碼結構
-const step1 = await conversation.send(
-  "分析 src/services/ 的程式碼結構"
-);
+const step1 = await conversation.send("分析 src/services/ 的程式碼結構");
 console.log("結構分析:", step1.output);
 
 // 第二輪：基於第一輪結果，深入分析
-const step2 = await conversation.send(
-  "針對你發現的問題，提供具體的重構建議"
-);
+const step2 = await conversation.send("針對你發現的問題，提供具體的重構建議");
 console.log("重構建議:", step2.output);
 
 // 第三輪：執行重構
-const step3 = await conversation.send(
-  "請執行第一項重構建議"
-);
+const step3 = await conversation.send("請執行第一項重構建議");
 console.log("重構結果:", step3.output);
 
 // 結束對話
@@ -7340,17 +7401,17 @@ const stream = claude.stream({
 
 for await (const chunk of stream) {
   switch (chunk.type) {
-    case 'text':
+    case "text":
       process.stdout.write(chunk.content);
       break;
-    case 'tool_use':
+    case "tool_use":
       console.log(`\n[工具呼叫] ${chunk.tool}: ${chunk.input}`);
       break;
-    case 'tool_result':
+    case "tool_result":
       console.log(`[工具結果] ${chunk.output.substring(0, 100)}...`);
       break;
-    case 'done':
-      console.log('\n完成');
+    case "done":
+      console.log("\n完成");
       break;
   }
 }
@@ -7358,11 +7419,11 @@ for await (const chunk of stream) {
 
 #### 輸出格式選項
 
-| 格式 | 參數 | 說明 | 適用場景 |
-|------|------|------|---------|
-| **text** | `--output-format text` | 純文字輸出 | 人類閱讀、日誌 |
-| **json** | `--output-format json` | JSON 結構化輸出 | 程式解析、API 整合 |
-| **stream-json** | `--output-format stream-json` | 串流 JSON | 即時處理、大量輸出 |
+| 格式            | 參數                          | 說明            | 適用場景           |
+| --------------- | ----------------------------- | --------------- | ------------------ |
+| **text**        | `--output-format text`        | 純文字輸出      | 人類閱讀、日誌     |
+| **json**        | `--output-format json`        | JSON 結構化輸出 | 程式解析、API 整合 |
+| **stream-json** | `--output-format stream-json` | 串流 JSON       | 即時處理、大量輸出 |
 
 ```bash
 # JSON 輸出範例
@@ -7384,19 +7445,19 @@ claude -p "列出 src/ 下的所有 TODO" --output-format json
 
 ### 3.3.3 應用場景
 
-| 場景 | 模式 | 說明 |
-|------|------|------|
-| **GitHub Actions** | Headless | 在 PR 中自動執行程式碼審查 |
-| **GitLab CI/CD** | Headless | 在 Pipeline 中自動執行品質檢查 |
-| **排程任務** | Headless | 搭配 cron 定期執行安全掃描 |
-| **自訂工具** | SDK | 在內部工具中嵌入 AI 輔助功能 |
-| **ChatOps** | SDK | 在 Slack Bot 中整合 Claude Code |
+| 場景               | 模式     | 說明                            |
+| ------------------ | -------- | ------------------------------- |
+| **GitHub Actions** | Headless | 在 PR 中自動執行程式碼審查      |
+| **GitLab CI/CD**   | Headless | 在 Pipeline 中自動執行品質檢查  |
+| **排程任務**       | Headless | 搭配 cron 定期執行安全掃描      |
+| **自訂工具**       | SDK      | 在內部工具中嵌入 AI 輔助功能    |
+| **ChatOps**        | SDK      | 在 Slack Bot 中整合 Claude Code |
 
 #### 場景實作：Slack ChatOps Bot
 
 ```typescript
-import { App } from '@slack/bolt';
-import { ClaudeCode } from '@anthropic-ai/claude-code';
+import { App } from "@slack/bolt";
+import { ClaudeCode } from "@anthropic-ai/claude-code";
 
 const slackApp = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -7408,14 +7469,14 @@ const claude = new ClaudeCode({
 });
 
 // 監聽 Slack 命令
-slackApp.command('/claude', async ({ command, ack, respond }) => {
+slackApp.command("/claude", async ({ command, ack, respond }) => {
   await ack();
 
   // 使用 Claude Code 執行任務
   const result = await claude.run({
     prompt: command.text,
-    workingDirectory: '/path/to/project',
-    outputFormat: 'text',
+    workingDirectory: "/path/to/project",
+    outputFormat: "text",
   });
 
   await respond({
@@ -7424,16 +7485,16 @@ slackApp.command('/claude', async ({ command, ack, respond }) => {
 });
 
 // 監聽 PR 審查請求
-slackApp.event('app_mention', async ({ event, say }) => {
-  if (event.text.includes('review PR')) {
+slackApp.event("app_mention", async ({ event, say }) => {
+  if (event.text.includes("review PR")) {
     const prNumber = event.text.match(/PR #(\d+)/)?.[1];
     if (prNumber) {
       const result = await claude.run({
         prompt: `Review PR #${prNumber}. Focus on security and code quality.`,
-        workingDirectory: '/path/to/project',
-        outputFormat: 'json',
+        workingDirectory: "/path/to/project",
+        outputFormat: "json",
       });
-      
+
       await say({
         text: `PR #${prNumber} 審查完成:\n${result.output}`,
         thread_ts: event.ts,
@@ -7488,15 +7549,15 @@ fi
 
 #### Headless 模式最佳實踐
 
-| 最佳實踐 | 說明 |
-|----------|------|
-| **明確的提示** | Headless 模式無法追問，提示必須足夠明確 |
-| **指定輸出格式** | 始終使用 `--output-format` 以便程式解析 |
-| **設定超時** | 使用 `--timeout` 避免無限等待 |
-| **錯誤處理** | 在腳本中處理非零退出碼 |
-| **日誌記錄** | 將輸出重定向到日誌檔案以便追蹤 |
-| **Token 預算** | 使用 `--max-tokens` 控制成本 |
-| **安全配置** | 在 CI/CD 中使用 `--allowedTools` 限制可用工具 |
+| 最佳實踐         | 說明                                          |
+| ---------------- | --------------------------------------------- |
+| **明確的提示**   | Headless 模式無法追問，提示必須足夠明確       |
+| **指定輸出格式** | 始終使用 `--output-format` 以便程式解析       |
+| **設定超時**     | 使用 `--timeout` 避免無限等待                 |
+| **錯誤處理**     | 在腳本中處理非零退出碼                        |
+| **日誌記錄**     | 將輸出重定向到日誌檔案以便追蹤                |
+| **Token 預算**   | 使用 `--max-tokens` 控制成本                  |
+| **安全配置**     | 在 CI/CD 中使用 `--allowedTools` 限制可用工具 |
 
 ### 3.3.4 Headless 模式進階用法
 
@@ -7629,56 +7690,56 @@ def stream_claude(prompt: str, project_dir: str):
         stderr=subprocess.PIPE,
         text=True
     )
-    
+
     full_response = []
-    
+
     for line in process.stdout:
         line = line.strip()
         if not line:
             continue
-            
+
         try:
             event = json.loads(line)
             event_type = event.get('type', '')
-            
+
             if event_type == 'assistant':
                 # Claude 回應文字
                 content = event.get('content', '')
                 print(content, end='', flush=True)
                 full_response.append(content)
-                
+
             elif event_type == 'tool_use':
                 # 工具呼叫
                 tool = event.get('tool', '')
                 print(f"\n🔧 使用工具: {tool}", flush=True)
-                
+
             elif event_type == 'tool_result':
                 # 工具執行結果
                 status = event.get('status', '')
                 print(f"   結果: {status}", flush=True)
-                
+
             elif event_type == 'error':
                 # 錯誤
                 error = event.get('message', '')
                 print(f"\n❌ 錯誤: {error}", file=sys.stderr)
-                
+
             elif event_type == 'done':
                 # 完成
                 cost = event.get('cost', {})
                 print(f"\n\n💰 費用: ${cost.get('total', 0):.4f}")
                 print(f"📊 Input tokens: {cost.get('input_tokens', 0)}")
                 print(f"📊 Output tokens: {cost.get('output_tokens', 0)}")
-                
+
         except json.JSONDecodeError:
             continue
-    
+
     process.wait()
     return ''.join(full_response), process.returncode
 
 if __name__ == '__main__':
     prompt = sys.argv[1] if len(sys.argv) > 1 else "分析專案架構"
     project = sys.argv[2] if len(sys.argv) > 2 else "."
-    
+
     response, code = stream_claude(prompt, project)
     sys.exit(code)
 ```
@@ -7708,9 +7769,9 @@ FAILED=0
 while IFS= read -r task; do
     CURRENT=$((CURRENT + 1))
     echo "[$CURRENT/$TOTAL] 執行: ${task:0:50}..."
-    
+
     OUTPUT_FILE="$RESULT_DIR/task-$CURRENT.md"
-    
+
     if claude -p "$task" --output-format text > "$OUTPUT_FILE" 2>&1; then
         echo "  ✓ 成功"
         SUCCESS=$((SUCCESS + 1))
@@ -7747,7 +7808,7 @@ graph TB
         D --> E[程式碼審查]
         E --> F[部署發布]
     end
-    
+
     subgraph "Claude Code 整合"
         A --- A1["claude -p 'analyze requirements'<br>Headless 模式"]
         B --- B1["Agent: architect<br>搭配 MCP 取得文件"]
@@ -7756,7 +7817,7 @@ graph TB
         E --- E1["claude -p 'review PR'<br>GitHub Actions"]
         F --- F1["Hooks: PostSession<br>自動部署"]
     end
-    
+
     style A fill:#dbeafe,stroke:#3b82f6
     style C fill:#ddd6fe,stroke:#8b5cf6
     style D fill:#dcfce7,stroke:#22c55e
@@ -7769,31 +7830,41 @@ graph TB
 # 開發工作流程
 
 ## 需求分析
+
 當收到新需求時：
+
 1. 先查閱 /docs/requirements/ 中的現有文件
 2. 建立 User Story 並寫入 /docs/stories/
 3. 產生 Acceptance Criteria
 
 ## 架構設計
+
 設計新功能時：
+
 1. 遵循 /docs/architecture/ 中的架構決策記錄 (ADR)
 2. 使用 Mermaid 繪製架構圖
 3. 考慮現有模組的相容性
 
 ## 程式碼開發
+
 實作程式碼時：
+
 1. 遵循 /docs/coding-standards.md 中的編碼規範
 2. 寫程式碼前先寫測試（TDD）
 3. 每個功能建立獨立分支
 
 ## 測試驗證
+
 完成開發後：
+
 1. 確保所有現有測試通過
 2. 新增功能的測試覆蓋率 > 80%
 3. 執行整合測試
 
 ## 程式碼審查
+
 提交 PR 前：
+
 1. 自我審查所有變更
 2. 確認 CHANGELOG 已更新
 3. 檢查是否有安全疑慮
@@ -7863,7 +7934,7 @@ claude -p "
   2. Test coverage
   3. Security vulnerabilities
   4. Performance implications
-  
+
   Output your review as structured JSON.
 " --output-format json
 ```
@@ -7879,7 +7950,7 @@ Lead Agent：「將單體應用拆分為微服務」
 
 # Lead Agent 自動建立 git worktree 並分配 Teammate
 # Teammate 1: 拆分 UserService → user-service/
-# Teammate 2: 拆分 OrderService → order-service/  
+# Teammate 2: 拆分 OrderService → order-service/
 # Teammate 3: 拆分 PaymentService → payment-service/
 
 # 每個 Teammate 在獨立 worktree 中工作
@@ -7916,6 +7987,7 @@ project-root/
 # MyProject
 
 ## 技術棧
+
 - Language: TypeScript 5.x
 - Runtime: Node.js 20
 - Framework: Express.js
@@ -7923,12 +7995,14 @@ project-root/
 - ORM: Prisma
 
 ## 開發規範
+
 - 使用 ESLint + Prettier
 - 測試框架：Vitest
 - 提交訊息遵循 Conventional Commits
 - 分支策略：Git Flow
 
 ## 禁止事項
+
 - 不要修改 prisma/migrations/ 中的已有遷移檔案
 - 不要在 production 環境直接修改資料庫
 - 不要在程式碼中硬編碼密碼或 API key
@@ -7956,15 +8030,15 @@ sequenceDiagram
     participant CC as Claude Code
     participant GH as GitHub (MCP)
     participant CI as CI/CD
-    
+
     U->>CC: 幫我處理 Issue #42
     CC->>GH: 讀取 Issue #42 詳細內容
     GH-->>CC: Bug: 使用者編輯資料後未即時更新
-    
+
     CC->>CC: 分析 codebase 定位問題
     CC->>CC: 建立修復計畫
     CC-->>U: 分析結果和修復計畫
-    
+
     U->>CC: 計畫 OK，開始修復
     CC->>CC: git checkout -b fix/issue-42
     CC->>CC: 修改程式碼
@@ -7972,10 +8046,10 @@ sequenceDiagram
     CC->>CC: 執行測試確認
     CC->>CC: git commit（Conventional Commit）
     CC->>GH: 建立 PR（引用 Issue #42）
-    
+
     GH->>CI: 觸發 CI Pipeline
     CI-->>GH: 測試通過 ✅
-    
+
     CC-->>U: PR 已建立，CI 通過
 ```
 
@@ -8013,7 +8087,7 @@ Claude: 正在透過 MCP 讀取 Issue #42...
 
 You: 好，開始
 
-Claude: 
+Claude:
 [Bash] git checkout -b fix/issue-42-profile-update
 [Edit] src/hooks/useProfile.ts    # 加入 cache invalidation
 [Edit] src/pages/settings/Profile.tsx  # 加入 loading 狀態
@@ -8147,18 +8221,21 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 # 團隊開發規範
 
 ## 程式碼風格
+
 - 使用 Prettier 格式化（設定見 .prettierrc）
 - 使用 ESLint 檢查（設定見 .eslintrc.js）
 - 每個檔案不超過 300 行
 - 每個方法不超過 30 行
 
 ## Git 規範
+
 - 提交訊息遵循 Conventional Commits
 - 分支策略：main → develop → feature/*
 - PR 必須有至少一個 Reviewer
 - Squash merge 到 main
 
 ## 架構規範
+
 - Service 層不直接存取資料庫，透過 Repository
 - Controller 不包含業務邏輯
 - 使用 DTO 進行資料轉換
@@ -8172,10 +8249,7 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 ```json
 {
   "permissions": {
-    "deny": [
-      "mcp tool edit in directory /prod/",
-      "shell command rm -rf"
-    ]
+    "deny": ["mcp tool edit in directory /prod/", "shell command rm -rf"]
   },
   "hooks": {
     "PostToolUse": [
@@ -8199,18 +8273,20 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 
 對於大型功能開發，團隊可以使用 Cowork 模式讓多個 Agent 並行工作：
 
-| 角色 | 負責範圍 | 工具 |
-|------|---------|------|
-| **Lead Agent** | 整體協調、任務分派、整合 | `/agents` 啟動 Cowork |
-| **Teammate: Frontend** | 前端 UI 元件開發 | 獨立 git worktree |
-| **Teammate: Backend** | 後端 API 和商業邏輯 | 獨立 git worktree |
-| **Teammate: Testing** | 測試案例撰寫 | 獨立 git worktree |
+| 角色                   | 負責範圍                 | 工具                  |
+| ---------------------- | ------------------------ | --------------------- |
+| **Lead Agent**         | 整體協調、任務分派、整合 | `/agents` 啟動 Cowork |
+| **Teammate: Frontend** | 前端 UI 元件開發         | 獨立 git worktree     |
+| **Teammate: Backend**  | 後端 API 和商業邏輯      | 獨立 git worktree     |
+| **Teammate: Testing**  | 測試案例撰寫             | 獨立 git worktree     |
 
 #### 使用 Git 分支保護避免衝突
 
 ```markdown
 # CLAUDE.md 中的分支規範
+
 ## Git 分支保護
+
 - 不要直接推送到 main 或 develop
 - 所有變更透過 PR 合併
 - PR 標題格式：[類型] 描述（如 [feat] 新增使用者認證）
@@ -8224,18 +8300,22 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 # 專案知識庫
 
 ## 系統架構
+
 本系統採用微服務架構，包含以下服務：
+
 - user-service: 使用者管理（Port 8081）
 - order-service: 訂單管理（Port 8082）
 - payment-service: 支付處理（Port 8083）
 - notification-service: 通知服務（Port 8084）
 
 ## 常見問題
+
 - 連線 Redis 逾時：檢查 VPN 是否連線
 - 測試資料庫 schema 不同步：執行 npm run db:push
 - Docker build 失敗：確認 Node.js 版本 >= 20
 
 ## API 設計慣例
+
 - 分頁用 cursor-based pagination
 - 錯誤回應用 RFC 7807（Problem Details）
 - 認證用 JWT，透過 Authorization: Bearer 標頭
@@ -8249,7 +8329,9 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 ## Custom Commands
 
 ### /project:setup
+
 初始化開發環境：
+
 1. npm install
 2. cp .env.example .env
 3. docker compose up -d
@@ -8257,7 +8339,9 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 5. npm run db:seed
 
 ### /project:review
+
 執行完整的程式碼審查：
+
 1. 檢查所有修改的檔案
 2. 執行 npm run lint
 3. 執行 npm run test
@@ -8267,13 +8351,13 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 
 ### 3.5.4 新人入職（Onboarding）工作流程
 
-| 步驟 | 操作 | Claude Code 協助 |
-|------|------|-----------------|
-| **1. 環境設定** | 執行 `/project:setup` | 自動安裝依賴、啟動服務 |
-| **2. 架構理解** | 詢問 Claude 專案架構 | 根據 CLAUDE.md 說明系統架構 |
-| **3. 程式碼導覽** | 逐模組查看程式碼 | 使用 Explore Agent 快速搜尋 |
-| **4. 第一個 Bug Fix** | 使用 Claude 輔助修復 Bug | 提供修改建議和測試 |
-| **5. 第一個 Feature** | 使用 Plan Mode 規劃 | 產出實施計畫、逐步執行 |
+| 步驟                  | 操作                     | Claude Code 協助            |
+| --------------------- | ------------------------ | --------------------------- |
+| **1. 環境設定**       | 執行 `/project:setup`    | 自動安裝依賴、啟動服務      |
+| **2. 架構理解**       | 詢問 Claude 專案架構     | 根據 CLAUDE.md 說明系統架構 |
+| **3. 程式碼導覽**     | 逐模組查看程式碼         | 使用 Explore Agent 快速搜尋 |
+| **4. 第一個 Bug Fix** | 使用 Claude 輔助修復 Bug | 提供修改建議和測試          |
+| **5. 第一個 Feature** | 使用 Plan Mode 規劃      | 產出實施計畫、逐步執行      |
 
 #### Onboarding CLAUDE.md 範本
 
@@ -8281,9 +8365,11 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 # 新人入職指南
 
 ## 專案簡介
+
 本專案是 [產品名稱] 的後端服務，提供 RESTful API 給前端和行動端使用。
 
 ## 技術棧速覽
+
 - **語言**：Java 17 + Spring Boot 3.2
 - **資料庫**：PostgreSQL 16（主資料庫）、Redis 7（快取）
 - **訊息佇列**：RabbitMQ 3.12
@@ -8291,29 +8377,34 @@ Claude Code 支援團隊層級的共享配置，確保團隊成員使用一致�
 - **CI/CD**：GitHub Actions
 
 ## 核心模組
-| 模組 | 路徑 | 說明 |
-|------|------|------|
-| 認證 | src/auth/ | OAuth2 + JWT 認證 |
-| 使用者 | src/user/ | 使用者 CRUD + 權限管理 |
-| 訂單 | src/order/ | 訂單處理與狀態機 |
-| 支付 | src/payment/ | 第三方支付整合 |
+
+| 模組   | 路徑         | 說明                   |
+| ------ | ------------ | ---------------------- |
+| 認證   | src/auth/    | OAuth2 + JWT 認證      |
+| 使用者 | src/user/    | 使用者 CRUD + 權限管理 |
+| 訂單   | src/order/   | 訂單處理與狀態機       |
+| 支付   | src/payment/ | 第三方支付整合         |
 
 ## 常用命令
+
 - `./gradlew bootRun` - 啟動開發伺服器
 - `./gradlew test` - 執行測試
 - `./gradlew spotlessApply` - 格式化程式碼
 - `docker compose up -d` - 啟動相依服務
 
 ## 環境變數
+
 參見 `.env.example` 檔案
 
 ## 分支策略
+
 - `main` - 生產環境
 - `develop` - 開發環境
 - `feature/*` - 功能分支
 - `hotfix/*` - 緊急修復
 
 ## 新人常見問題
+
 1. Redis 連線失敗 → 執行 `docker compose up -d redis`
 2. 資料庫 migration 失敗 → 執行 `./gradlew flywayRepair`
 3. 測試資料不存在 → 執行 `./gradlew seedTestData`
@@ -8367,21 +8458,21 @@ sequenceDiagram
 
 Claude Code 在進行程式碼審查時，可以根據以下 checklist 進行檢查：
 
-| 類別 | 檢查項目 | 優先級 |
-|------|---------|--------|
-| **安全性** | SQL Injection 防護 | 🔴 高 |
-| **安全性** | XSS 防護 | 🔴 高 |
-| **安全性** | 認證/授權檢查 | 🔴 高 |
-| **安全性** | 敏感資料加密 | 🔴 高 |
-| **程式碼品質** | 方法長度 < 30 行 | 🟡 中 |
-| **程式碼品質** | 迴圈複雜度 < 10 | 🟡 中 |
-| **程式碼品質** | 無重複程式碼 | 🟡 中 |
-| **測試** | 單元測試覆蓋率 > 80% | 🟡 中 |
-| **測試** | 邊界條件測試 | 🟡 中 |
-| **文件** | 公開 API 有文件 | 🟢 低 |
-| **文件** | 複雜邏輯有註解 | 🟢 低 |
-| **效能** | 無 N+1 查詢 | 🟡 中 |
-| **效能** | 適當使用快取 | 🟢 低 |
+| 類別           | 檢查項目             | 優先級 |
+| -------------- | -------------------- | ------ |
+| **安全性**     | SQL Injection 防護   | 🔴 高  |
+| **安全性**     | XSS 防護             | 🔴 高  |
+| **安全性**     | 認證/授權檢查        | 🔴 高  |
+| **安全性**     | 敏感資料加密         | 🔴 高  |
+| **程式碼品質** | 方法長度 < 30 行     | 🟡 中  |
+| **程式碼品質** | 迴圈複雜度 < 10      | 🟡 中  |
+| **程式碼品質** | 無重複程式碼         | 🟡 中  |
+| **測試**       | 單元測試覆蓋率 > 80% | 🟡 中  |
+| **測試**       | 邊界條件測試         | 🟡 中  |
+| **文件**       | 公開 API 有文件      | 🟢 低  |
+| **文件**       | 複雜邏輯有註解       | 🟢 低  |
+| **效能**       | 無 N+1 查詢          | 🟡 中  |
+| **效能**       | 適當使用快取         | 🟢 低  |
 
 ### 3.5.6 團隊開發標準化流程
 
@@ -8394,30 +8485,30 @@ graph TD
         A2 --> A3[產出技術方案]
         A3 --> A4[團隊審核方案]
     end
-    
+
     subgraph "Phase 2: 開發"
         B1[建立 feature branch] --> B2[Claude Code 輔助開發]
         B2 --> B3[撰寫單元測試]
         B3 --> B4[執行 /project:review]
     end
-    
+
     subgraph "Phase 3: 審查"
         C1[建立 PR] --> C2[GitHub Action 自動審查]
         C2 --> C3[人工 Code Review]
         C3 --> C4[修改回饋]
         C4 --> C3
     end
-    
+
     subgraph "Phase 4: 交付"
         D1[合併到 develop] --> D2[自動化測試]
         D2 --> D3[合併到 main]
         D3 --> D4[自動部署]
     end
-    
+
     A4 --> B1
     B4 --> C1
     C3 -->|核准| D1
-    
+
     style A1 fill:#dbeafe,stroke:#3b82f6
     style B2 fill:#dcfce7,stroke:#22c55e
     style C2 fill:#fef3c7,stroke:#f59e0b
@@ -8426,13 +8517,13 @@ graph TD
 
 #### 團隊角色與 Claude Code 使用策略
 
-| 角色 | 主要使用方式 | 推薦配置 |
-|------|------------|---------|
-| **Tech Lead** | 架構設計、Code Review、技術決策 | Plan Mode 為主，配合 Explore Agent |
-| **Senior Dev** | 核心功能開發、重構 | Agent Teams (Cowork)、Subagents |
-| **Junior Dev** | 功能開發、Bug 修復、學習 | 標準模式 + CLAUDE.md 規範引導 |
-| **QA Engineer** | 測試案例撰寫、驗證 | Custom Commands、Headless 模式 |
-| **DevOps** | CI/CD 配置、部署腳本 | Hooks + CI 模式 + MCP 整合 |
+| 角色            | 主要使用方式                    | 推薦配置                           |
+| --------------- | ------------------------------- | ---------------------------------- |
+| **Tech Lead**   | 架構設計、Code Review、技術決策 | Plan Mode 為主，配合 Explore Agent |
+| **Senior Dev**  | 核心功能開發、重構              | Agent Teams (Cowork)、Subagents    |
+| **Junior Dev**  | 功能開發、Bug 修復、學習        | 標準模式 + CLAUDE.md 規範引導      |
+| **QA Engineer** | 測試案例撰寫、驗證              | Custom Commands、Headless 模式     |
+| **DevOps**      | CI/CD 配置、部署腳本            | Hooks + CI 模式 + MCP 整合         |
 
 #### 衝突解決最佳實踐
 
@@ -8442,12 +8533,15 @@ graph TD
 # CLAUDE.md 衝突預防策略
 
 ## 檔案鎖定規則
+
 - 同一 Sprint 中，每個 Service 檔案只由一個工程師負責修改
 - Schema migration 檔案由 DBA 角色統一管理
 - 共用工具函式修改需在 Stand-up 會議中提出
 
 ## Agent Teams 衝突預防
+
 使用 Cowork 模式時：
+
 1. Lead Agent 先進行模組切分
 2. 每個 Teammate 只在指定的目錄工作
 3. 公共介面的變更必須經過 Lead Agent 確認
@@ -8464,19 +8558,19 @@ graph LR
         I3[架構決策] --> KB
         I4[除錯經驗] --> KB
     end
-    
+
     subgraph "知識使用"
         KB --> U1[新人 Onboarding]
         KB --> U2[Claude Code 自動參考]
         KB --> U3[Custom Commands]
         KB --> U4[Code Review 規範]
     end
-    
+
     subgraph "知識更新"
         U2 --> F1[開發回饋] --> KB
         U4 --> F2[審查回饋] --> KB
     end
-    
+
     style KB fill:#fef3c7,stroke:#f59e0b
     style I1 fill:#dbeafe,stroke:#3b82f6
     style U1 fill:#dcfce7,stroke:#22c55e
@@ -8484,32 +8578,33 @@ graph LR
 
 **Knowledge Base 維護排程**：
 
-| 頻率 | 項目 | 負責人 |
-|------|------|--------|
-| **每次 Sprint** | 更新常見問題 | 全體 |
-| **每月** | 審核架構規範 | Tech Lead |
-| **每季** | 更新技術棧資訊 | 架構師 |
-| **每次 Retrospective** | 新增除錯經驗 | 全體 |
-| **人員異動** | 更新 Onboarding 指南 | HR + Tech Lead |
+| 頻率                   | 項目                 | 負責人         |
+| ---------------------- | -------------------- | -------------- |
+| **每次 Sprint**        | 更新常見問題         | 全體           |
+| **每月**               | 審核架構規範         | Tech Lead      |
+| **每季**               | 更新技術棧資訊       | 架構師         |
+| **每次 Retrospective** | 新增除錯經驗         | 全體           |
+| **人員異動**           | 更新 Onboarding 指南 | HR + Tech Lead |
 
 #### 團隊導入 Claude Code 評估矩陣
 
 在組織引入 Claude Code 前，可利用以下評估矩陣：
 
-| 評估維度 | 評估項目 | 分數（1-5） | 備註 |
-|---------|---------|------------|------|
-| **技術就緒** | 團隊對 AI 工具的熟悉度 | | |
-| **技術就緒** | 現有 CI/CD 成熟度 | | |
-| **技術就緒** | 版本控制規範完整度 | | |
-| **安全合規** | 程式碼機密性要求 | | |
-| **安全合規** | 資料分類政策 | | |
-| **安全合規** | 第三方工具使用政策 | | |
-| **組織文化** | 對自動化的接受度 | | |
-| **組織文化** | 持續學習的意願 | | |
-| **投資報酬** | 預期生產力提升 | | |
-| **投資報酬** | 導入和培訓成本 | | |
+| 評估維度     | 評估項目               | 分數（1-5） | 備註 |
+| ------------ | ---------------------- | ----------- | ---- |
+| **技術就緒** | 團隊對 AI 工具的熟悉度 |             |      |
+| **技術就緒** | 現有 CI/CD 成熟度      |             |      |
+| **技術就緒** | 版本控制規範完整度     |             |      |
+| **安全合規** | 程式碼機密性要求       |             |      |
+| **安全合規** | 資料分類政策           |             |      |
+| **安全合規** | 第三方工具使用政策     |             |      |
+| **組織文化** | 對自動化的接受度       |             |      |
+| **組織文化** | 持續學習的意願         |             |      |
+| **投資報酬** | 預期生產力提升         |             |      |
+| **投資報酬** | 導入和培訓成本         |             |      |
 
 > **評分指南**：
+>
 > - 4-5 分：立即導入，可快速看到效益
 > - 3 分：建議先在小團隊試行
 > - 1-2 分：需要額外準備或培訓
@@ -8526,15 +8621,19 @@ Claude Code 的主要成本來自 Token 使用。以下是優化 Token 消耗的
 
 ```markdown
 # 不建議：過度冗長的指令
+
 這個專案是一個使用 TypeScript 開發的網路應用程式，
 我們使用了很多現代的開發工具和框架...
 （大量描述性文字）
 
 # 建議：精準的指令
+
 ## 技術棧
+
 TypeScript 5.x | Node.js 20 | Express | PostgreSQL | Prisma
 
 ## 規範
+
 - Conventional Commits
 - 測試覆蓋率 > 80%
 - 不允許 any 型別
@@ -8643,14 +8742,14 @@ claude -p "為重構後的 UserService 更新測試"
 ```mermaid
 graph TB
     subgraph "Token 消耗分佈"
-        A[Context Window<br>200K tokens] 
+        A[Context Window<br>200K tokens]
         A --> B[System Prompt<br>~5%]
         A --> C[CLAUDE.md<br>~10-15%]
         A --> D[File Contents<br>~40-50%]
         A --> E[Conversation<br>~20-30%]
         A --> F[Tool Results<br>~10-15%]
     end
-    
+
     style A fill:#dbeafe,stroke:#3b82f6
     style D fill:#fee2e2,stroke:#ef4444
     style E fill:#fef3c7,stroke:#f59e0b
@@ -8658,26 +8757,26 @@ graph TB
 
 #### 成本估算表
 
-| 操作類型 | 預估 Token | 預估成本 (USD) | 說明 |
-|---------|-----------|---------------|------|
-| **簡單問答** | 1K-5K | $0.01-0.05 | 解釋程式碼、回答問題 |
-| **Bug 修復** | 10K-30K | $0.05-0.30 | 讀取+分析+修改+驗證 |
-| **小功能開發** | 20K-50K | $0.10-0.50 | 完整的 feature 開發 |
-| **大型重構** | 50K-200K | $0.50-2.00 | 跨檔案重構 |
-| **專案初始化** | 100K-300K | $1.00-3.00 | 建立完整專案架構 |
-| **Agent Teams** | 200K-500K+ | $2.00-5.00+ | 多 Agent 平行工作 |
+| 操作類型        | 預估 Token | 預估成本 (USD) | 說明                 |
+| --------------- | ---------- | -------------- | -------------------- |
+| **簡單問答**    | 1K-5K      | $0.01-0.05     | 解釋程式碼、回答問題 |
+| **Bug 修復**    | 10K-30K    | $0.05-0.30     | 讀取+分析+修改+驗證  |
+| **小功能開發**  | 20K-50K    | $0.10-0.50     | 完整的 feature 開發  |
+| **大型重構**    | 50K-200K   | $0.50-2.00     | 跨檔案重構           |
+| **專案初始化**  | 100K-300K  | $1.00-3.00     | 建立完整專案架構     |
+| **Agent Teams** | 200K-500K+ | $2.00-5.00+    | 多 Agent 平行工作    |
 
 #### 降低成本的實用技巧
 
-| 技巧 | 節省幅度 | 說明 |
-|------|---------|------|
-| **使用 .claudeignore** | 20-40% | 排除 node_modules、build 等大型目錄 |
-| **精簡 CLAUDE.md** | 10-15% | 移除不必要的冗長說明 |
-| **使用 /compact** | 30-50% | 壓縮歷史對話，釋放 context 空間 |
-| **分段提交任務** | 15-25% | 避免一次載入過多檔案 |
-| **選擇適當模型** | 30-50% | 簡單任務使用 Haiku 模型 |
-| **善用 Cache** | 50-80% | Claude 的 prompt caching 自動降低重複 token 成本 |
-| **使用 Explore Agent** | 10-20% | 比主 Agent 更輕量的搜尋操作 |
+| 技巧                   | 節省幅度 | 說明                                             |
+| ---------------------- | -------- | ------------------------------------------------ |
+| **使用 .claudeignore** | 20-40%   | 排除 node_modules、build 等大型目錄              |
+| **精簡 CLAUDE.md**     | 10-15%   | 移除不必要的冗長說明                             |
+| **使用 /compact**      | 30-50%   | 壓縮歷史對話，釋放 context 空間                  |
+| **分段提交任務**       | 15-25%   | 避免一次載入過多檔案                             |
+| **選擇適當模型**       | 30-50%   | 簡單任務使用 Haiku 模型                          |
+| **善用 Cache**         | 50-80%   | Claude 的 prompt caching 自動降低重複 token 成本 |
+| **使用 Explore Agent** | 10-20%   | 比主 Agent 更輕量的搜尋操作                      |
 
 #### Prompt Caching 最佳化
 
@@ -8705,58 +8804,58 @@ Claude Code 支援 **Prompt Caching**，相同的 context（如 CLAUDE.md、常�
 
 #### 安裝問題
 
-| 問題 | 原因 | 解決方案 |
-|------|------|---------|
-| **Claude Code 無法啟動** | Node.js 版本過低 | 確認 Node.js >= 18，建議 >= 20 |
-| **Windows 執行失敗** | 🆕 缺少 Git Bash | 安裝 Git for Windows，或設定 `CLAUDE_CODE_GIT_BASH_PATH` 指向 bash.exe |
-| **Linux 安裝卡住** | 🆕 Docker 環境中安裝 hanging | 使用 `--ignore-scripts` 安裝，或改用預建映像 |
-| **musl/glibc 錯誤** | 🆕 Alpine Linux 使用 musl | 改用 glibc-based 映像（如 Debian/Ubuntu） |
-| **低記憶體安裝失敗** | 記憶體不足 | 至少 4GB RAM，或增加 swap |
-| **🆕 看到 HTML 而非安裝腳本** | curl 被企業 proxy 攔截 | 檢查 proxy 設定，嘗試 `curl -fsSL --tlsv1.2` |
-| **🆕 curl TLS 握手失敗** | 舊版 curl 不支援 TLS 1.2+ | 升級 curl，或使用 `wget` 替代 |
-| **🆕 多個 Claude 安裝衝突** | npm global + Homebrew 同時安裝 | 執行 `which -a claude` 找出所有安裝路徑，保留一個 |
-| **🆕 二進制驗證失敗** | 下載不完整或遭竄改 | 移除後重新安裝：`npm uninstall -g @anthropic-ai/claude-code && npm install -g @anthropic-ai/claude-code` |
+| 問題                          | 原因                           | 解決方案                                                                                                 |
+| ----------------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| **Claude Code 無法啟動**      | Node.js 版本過低               | 確認 Node.js >= 18，建議 >= 20                                                                           |
+| **Windows 執行失敗**          | 🆕 缺少 Git Bash               | 安裝 Git for Windows，或設定 `CLAUDE_CODE_GIT_BASH_PATH` 指向 bash.exe                                   |
+| **Linux 安裝卡住**            | 🆕 Docker 環境中安裝 hanging   | 使用 `--ignore-scripts` 安裝，或改用預建映像                                                             |
+| **musl/glibc 錯誤**           | 🆕 Alpine Linux 使用 musl      | 改用 glibc-based 映像（如 Debian/Ubuntu）                                                                |
+| **低記憶體安裝失敗**          | 記憶體不足                     | 至少 4GB RAM，或增加 swap                                                                                |
+| **🆕 看到 HTML 而非安裝腳本** | curl 被企業 proxy 攔截         | 檢查 proxy 設定，嘗試 `curl -fsSL --tlsv1.2`                                                             |
+| **🆕 curl TLS 握手失敗**      | 舊版 curl 不支援 TLS 1.2+      | 升級 curl，或使用 `wget` 替代                                                                            |
+| **🆕 多個 Claude 安裝衝突**   | npm global + Homebrew 同時安裝 | 執行 `which -a claude` 找出所有安裝路徑，保留一個                                                        |
+| **🆕 二進制驗證失敗**         | 下載不完整或遭竄改             | 移除後重新安裝：`npm uninstall -g @anthropic-ai/claude-code && npm install -g @anthropic-ai/claude-code` |
 
 #### 🆕 WSL2 特定問題
 
-| 問題 | 原因 | 解決方案 |
-|------|------|---------|
+| 問題                           | 原因                             | 解決方案                                                                                              |
+| ------------------------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | **WSL2 中 OAuth 瀏覽器未開啟** | WSL2 無法自動開啟 Windows 瀏覽器 | 手動複製認證 URL 到 Windows 瀏覽器，或設定 `BROWSER` 環境變數指向 `wslview` (`sudo apt install wslu`) |
-| **WSL2 檔案系統效能慢** | 跨 FS 存取 `/mnt/c/` 效能差 | 將專案放在 WSL2 原生檔案系統（`~/projects/`）中 |
-| **WSL2 權限問題** | Windows/Linux 權限模型不同 | 在 `/etc/wsl.conf` 中設定 `[automount] options = "metadata"` |
+| **WSL2 檔案系統效能慢**        | 跨 FS 存取 `/mnt/c/` 效能差      | 將專案放在 WSL2 原生檔案系統（`~/projects/`）中                                                       |
+| **WSL2 權限問題**              | Windows/Linux 權限模型不同       | 在 `/etc/wsl.conf` 中設定 `[automount] options = "metadata"`                                          |
 
 #### 🆕 Docker 安裝問題
 
-| 問題 | 原因 | 解決方案 |
-|------|------|---------|
+| 問題                          | 原因                    | 解決方案                                                         |
+| ----------------------------- | ----------------------- | ---------------------------------------------------------------- |
 | **Docker 容器內安裝 hanging** | 互動式 postinstall 腳本 | 使用 `npm install -g @anthropic-ai/claude-code --ignore-scripts` |
-| **Alpine 映像報錯** | musl libc 不相容 | 改用 `node:20-slim`（Debian-based）映像 |
-| **容器內無 Git** | 基礎映像未包含 Git | `apt-get install -y git` 或使用包含 Git 的映像 |
+| **Alpine 映像報錯**           | musl libc 不相容        | 改用 `node:20-slim`（Debian-based）映像                          |
+| **容器內無 Git**              | 基礎映像未包含 Git      | `apt-get install -y git` 或使用包含 Git 的映像                   |
 
 #### 🆕 JetBrains IDE 問題
 
-| 問題 | 原因 | 解決方案 |
-|------|------|---------|
-| **JetBrains 未偵測到 WSL2** | Plugin 未正確偵測 WSL 環境 | 在 JetBrains Terminal 中手動執行 `claude`，確認 WSL2 中的 Node.js 路徑正確 |
-| **Escape 鍵衝突** | Escape 鍵同時被 IDE 和 Claude Code 捕捉 | 在 JetBrains Keymap 設定中修改 Claude Code 的快捷鍵，或使用 `Ctrl+C` 替代 |
+| 問題                        | 原因                                    | 解決方案                                                                   |
+| --------------------------- | --------------------------------------- | -------------------------------------------------------------------------- |
+| **JetBrains 未偵測到 WSL2** | Plugin 未正確偵測 WSL 環境              | 在 JetBrains Terminal 中手動執行 `claude`，確認 WSL2 中的 Node.js 路徑正確 |
+| **Escape 鍵衝突**           | Escape 鍵同時被 IDE 和 Claude Code 捕捉 | 在 JetBrains Keymap 設定中修改 Claude Code 的快捷鍵，或使用 `Ctrl+C` 替代  |
 
 #### 認證問題
 
-| 問題 | 原因 | 解決方案 |
-|------|------|---------|
-| **OAuth 認證失敗** | Token 過期 | 🆕 執行 `claude auth login` 重新認證 |
-| **API Key 衝突** | 🆕 同時設定 OAuth 和 API Key | 確認認證優先順序：OAuth > `ANTHROPIC_API_KEY` > API Key 設定 |
-| **Bedrock/Vertex 認證錯誤** | 雲端憑證配置錯誤 | 確認 AWS/GCP 憑證已正確設定 |
+| 問題                        | 原因                         | 解決方案                                                     |
+| --------------------------- | ---------------------------- | ------------------------------------------------------------ |
+| **OAuth 認證失敗**          | Token 過期                   | 🆕 執行 `claude auth login` 重新認證                         |
+| **API Key 衝突**            | 🆕 同時設定 OAuth 和 API Key | 確認認證優先順序：OAuth > `ANTHROPIC_API_KEY` > API Key 設定 |
+| **Bedrock/Vertex 認證錯誤** | 雲端憑證配置錯誤             | 確認 AWS/GCP 憑證已正確設定                                  |
 
 #### 執行時問題
 
-| 問題 | 原因 | 解決方案 |
-|------|------|---------|
-| **MCP Server 連線失敗** | 路徑錯誤或 Server 未安裝 | 檢查 `.mcp.json` 配置 |
-| **Hook 未觸發** | matcher 不匹配 | 使用 `claude --debug` 檢查 |
-| **Agent 回應品質差** | CLAUDE.md 指令不足 | 增加更具體的專案 context |
-| **Token 使用過高** | Context 過大 | 使用 `.claudeignore`、`/compact` |
-| **VS Code 擴充套件無反應** | 🆕 VS Code 版本過低 | 更新至 VS Code **1.98.0** 或以上 |
+| 問題                       | 原因                     | 解決方案                         |
+| -------------------------- | ------------------------ | -------------------------------- |
+| **MCP Server 連線失敗**    | 路徑錯誤或 Server 未安裝 | 檢查 `.mcp.json` 配置            |
+| **Hook 未觸發**            | matcher 不匹配           | 使用 `claude --debug` 檢查       |
+| **Agent 回應品質差**       | CLAUDE.md 指令不足       | 增加更具體的專案 context         |
+| **Token 使用過高**         | Context 過大             | 使用 `.claudeignore`、`/compact` |
+| **VS Code 擴充套件無反應** | 🆕 VS Code 版本過低      | 更新至 VS Code **1.98.0** 或以上 |
 
 ### 3.7.2 診斷方法
 
@@ -8781,18 +8880,18 @@ Claude Code Doctor 診斷結果：
 
 > 🆕 v3.0 設定檔完整路徑參考：
 
-| 設定類型 | 路徑 | 用途 |
-|---------|------|------|
-| **專案設定** | `.claude/settings.json` | 專案級 hooks、權限、偏好 |
-| **使用者設定** | `~/.claude/settings.json` | 使用者級設定 |
-| **企業設定** | `managed-settings.json` | 組織級強制設定 |
-| **MCP 配置** | `.mcp.json` | 專案級 MCP Server |
-| **企業 MCP** | `managed-mcp.json` | 組織級 MCP Server |
-| **專案記憶** | `.claude/CLAUDE.md` | 專案級指引 |
-| **全域記憶** | `~/.claude/CLAUDE.md` | 全域指引 |
-| **自動記憶** | `.claude/MEMORY.md` | 🆕 Claude 自動維護的記憶 |
-| **輸出風格** | `~/.claude/output-styles/*.md` | 🆕 自訂輸出風格 |
-| **日誌** | `~/.claude/logs/` | 執行日誌和 MCP 日誌 |
+| 設定類型       | 路徑                           | 用途                     |
+| -------------- | ------------------------------ | ------------------------ |
+| **專案設定**   | `.claude/settings.json`        | 專案級 hooks、權限、偏好 |
+| **使用者設定** | `~/.claude/settings.json`      | 使用者級設定             |
+| **企業設定**   | `managed-settings.json`        | 組織級強制設定           |
+| **MCP 配置**   | `.mcp.json`                    | 專案級 MCP Server        |
+| **企業 MCP**   | `managed-mcp.json`             | 組織級 MCP Server        |
+| **專案記憶**   | `.claude/CLAUDE.md`            | 專案級指引               |
+| **全域記憶**   | `~/.claude/CLAUDE.md`          | 全域指引                 |
+| **自動記憶**   | `.claude/MEMORY.md`            | 🆕 Claude 自動維護的記憶 |
+| **輸出風格**   | `~/.claude/output-styles/*.md` | 🆕 自訂輸出風格          |
+| **日誌**       | `~/.claude/logs/`              | 執行日誌和 MCP 日誌      |
 
 #### 使用 Debug 模式
 
@@ -8812,14 +8911,14 @@ claude --verbose
 
 #### 常用診斷 Slash Commands
 
-| 命令 | 說明 |
-|------|------|
-| `/config` | 顯示目前的配置狀態 |
+| 命令      | 說明                             |
+| --------- | -------------------------------- |
+| `/config` | 顯示目前的配置狀態               |
 | `/memory` | 顯示已載入的 Memory 和 CLAUDE.md |
-| `/cost` | 顯示目前會話的 Token 使用和成本 |
-| `/status` | 顯示 Claude Code 的運行狀態 |
-| `/doctor` | 執行診斷檢查 |
-| `/bug` | 回報問題給 Anthropic |
+| `/cost`   | 顯示目前會話的 Token 使用和成本  |
+| `/status` | 顯示 Claude Code 的運行狀態      |
+| `/doctor` | 執行診斷檢查                     |
+| `/bug`    | 回報問題給 Anthropic             |
 
 ### 3.7.3 效能問題排查
 
@@ -8827,12 +8926,12 @@ claude --verbose
 
 如果 Claude Code 頻繁進行 auto compaction（壓縮對話），導致 CPU 使用率升高或回應速度變慢：
 
-| 症狀 | 原因 | 解決方案 |
-|------|------|---------|
-| **頻繁出現 "Compacting conversation..."** | Context window 接近上限，壓縮後又快速填滿 | 使用 `.claudeignore` 排除大型檔案，精簡 CLAUDE.md |
-| **CPU 持續高負載** | 大量 MCP 工具描述佔用 context | 減少 MCP Server 數量，啟用 `ENABLE_TOOL_SEARCH=auto` |
-| **壓縮後遺失重要 context** | 壓縮時未保留關鍵資訊 | 使用 PreCompact Hook 注入保留指示 |
-| **WSL2 搜尋效能差** | 跨 FS 存取 `/mnt/c/` | 將專案放在 WSL2 原生檔案系統 `~/` |
+| 症狀                                      | 原因                                      | 解決方案                                             |
+| ----------------------------------------- | ----------------------------------------- | ---------------------------------------------------- |
+| **頻繁出現 "Compacting conversation..."** | Context window 接近上限，壓縮後又快速填滿 | 使用 `.claudeignore` 排除大型檔案，精簡 CLAUDE.md    |
+| **CPU 持續高負載**                        | 大量 MCP 工具描述佔用 context             | 減少 MCP Server 數量，啟用 `ENABLE_TOOL_SEARCH=auto` |
+| **壓縮後遺失重要 context**                | 壓縮時未保留關鍵資訊                      | 使用 PreCompact Hook 注入保留指示                    |
+| **WSL2 搜尋效能差**                       | 跨 FS 存取 `/mnt/c/`                      | 將專案放在 WSL2 原生檔案系統 `~/`                    |
 
 ```bash
 # 手動觸發壓縮（帶保留指示）
@@ -8847,11 +8946,11 @@ claude --verbose
 
 #### 🆕 Markdown 格式化問題
 
-| 問題 | 解決方案 |
-|------|---------|
-| 回應中的 Markdown 表格顯示異常 | 使用 `/output-style` 切換到 Explanatory 風格 |
-| 程式碼區塊未正確高亮 | 確認 VS Code 版本 >= 1.98.0 |
-| Mermaid 圖表無法渲染 | 檢查 Hugo/VS Code 的 Mermaid 擴充是否正確配置 |
+| 問題                           | 解決方案                                      |
+| ------------------------------ | --------------------------------------------- |
+| 回應中的 Markdown 表格顯示異常 | 使用 `/output-style` 切換到 Explanatory 風格  |
+| 程式碼區塊未正確高亮           | 確認 VS Code 版本 >= 1.98.0                   |
+| Mermaid 圖表無法渲染           | 檢查 Hugo/VS Code 的 Mermaid 擴充是否正確配置 |
 
 #### Token 使用分析
 
@@ -8890,13 +8989,13 @@ cat .mcp.json | python -m json.tool
 
 #### MCP Server 常見錯誤
 
-| 錯誤訊息 | 原因 | 解決方案 |
-|---------|------|---------|
-| `Failed to start MCP server` | npx 找不到套件 | 確認套件名稱正確，試用 `npx -y <package>` |
-| `Connection refused` | Server 未啟動或端口錯誤 | 檢查 server 是否正常運行 |
-| `Authentication failed` | API Token 無效 | 更新 `.mcp.json` 中的 env 設定 |
-| `Timeout waiting for server` | Server 啟動太慢 | 增加 timeout 設定或改用本地 server |
-| `Tool not found` | 工具名稱不匹配 | 使用 `/mcp` 列出可用工具 |
+| 錯誤訊息                     | 原因                    | 解決方案                                  |
+| ---------------------------- | ----------------------- | ----------------------------------------- |
+| `Failed to start MCP server` | npx 找不到套件          | 確認套件名稱正確，試用 `npx -y <package>` |
+| `Connection refused`         | Server 未啟動或端口錯誤 | 檢查 server 是否正常運行                  |
+| `Authentication failed`      | API Token 無效          | 更新 `.mcp.json` 中的 env 設定            |
+| `Timeout waiting for server` | Server 啟動太慢         | 增加 timeout 設定或改用本地 server        |
+| `Tool not found`             | 工具名稱不匹配          | 使用 `/mcp` 列出可用工具                  |
 
 #### Hook 問題排查
 
@@ -8916,13 +9015,13 @@ claude --debug
 
 #### Agent 和 Skill 問題排查
 
-| 問題 | 排查步驟 |
-|------|---------|
-| **Agent 未被列出** | 檢查 `.claude/agents/` 或 `.claude-plugin/agents/` 目錄和檔案格式 |
-| **Skill 未被觸發** | 檢查 SKILL.md 的 YAML frontmatter 中的 `description` 是否準確 |
-| **Agent 回應品質差** | 加強 Agent Markdown 中的指令明確度和範例 |
-| **Plugin 安裝失敗** | 確認 `plugin.json` 格式正確，所有參照的檔案存在 |
-| **工具未被授權** | 檢查 `settings.json` 的 `permissions.allow` |
+| 問題                 | 排查步驟                                                          |
+| -------------------- | ----------------------------------------------------------------- |
+| **Agent 未被列出**   | 檢查 `.claude/agents/` 或 `.claude-plugin/agents/` 目錄和檔案格式 |
+| **Skill 未被觸發**   | 檢查 SKILL.md 的 YAML frontmatter 中的 `description` 是否準確     |
+| **Agent 回應品質差** | 加強 Agent Markdown 中的指令明確度和範例                          |
+| **Plugin 安裝失敗**  | 確認 `plugin.json` 格式正確，所有參照的檔案存在                   |
+| **工具未被授權**     | 檢查 `settings.json` 的 `permissions.allow`                       |
 
 ### 3.7.4 取得幫助
 
@@ -8943,43 +9042,49 @@ claude run --help
 
 #### 有用的線上資源
 
-| 資源 | 網址 | 說明 |
-|------|------|------|
-| **官方文件** | docs.anthropic.com/en/docs/claude-code | 完整官方文件 |
-| **GitHub Repo** | github.com/anthropics/claude-code | 原始碼和 Issue Tracker |
-| **GitHub Discussions** | github.com/anthropics/claude-code/discussions | 社群討論區 |
-| **Discord** | Anthropic 官方 Discord | 即時技術支援 |
-| **Blog** | anthropic.com/blog | 官方公告和深度文章 |
-| **Changelog** | docs.anthropic.com/en/docs/claude-code/changelog | 版本更新日誌 |
-| **MCP 官網** | modelcontextprotocol.io | MCP 協定官方文件 |
-| **MCP Servers 目錄** | github.com/modelcontextprotocol/servers | 可用的 MCP Servers 清單 |
+| 資源                   | 網址                                             | 說明                    |
+| ---------------------- | ------------------------------------------------ | ----------------------- |
+| **官方文件**           | docs.anthropic.com/en/docs/claude-code           | 完整官方文件            |
+| **GitHub Repo**        | github.com/anthropics/claude-code                | 原始碼和 Issue Tracker  |
+| **GitHub Discussions** | github.com/anthropics/claude-code/discussions    | 社群討論區              |
+| **Discord**            | Anthropic 官方 Discord                           | 即時技術支援            |
+| **Blog**               | anthropic.com/blog                               | 官方公告和深度文章      |
+| **Changelog**          | docs.anthropic.com/en/docs/claude-code/changelog | 版本更新日誌            |
+| **MCP 官網**           | modelcontextprotocol.io                          | MCP 協定官方文件        |
+| **MCP Servers 目錄**   | github.com/modelcontextprotocol/servers          | 可用的 MCP Servers 清單 |
 
 #### 問題回報模板
 
 當需要向社群或 Anthropic 回報問題時，請提供以下資訊：
 
-```markdown
+````markdown
 ## 環境資訊
+
 - Claude Code 版本: [claude --version]
 - Node.js 版本: [node --version]
 - 作業系統: [macOS/Linux/Windows WSL]
 - IDE: [VS Code 版本 / Terminal]
 
 ## 問題描述
+
 [清楚描述問題]
 
 ## 重現步驟
+
 1. [步驟 1]
 2. [步驟 2]
 3. [觀察到的結果]
 
 ## 預期行為
+
 [預期應該發生什麼]
 
 ## 實際行為
+
 [實際發生了什麼]
 
 ## 相關配置
+
 ```json
 // settings.json
 {}
@@ -8987,12 +9092,15 @@ claude run --help
 // .mcp.json
 {}
 ```
+````
 
 ## 日誌輸出
+
 ```
 [claude --debug 的輸出]
 ```
-```
+
+````
 
 ---
 
@@ -9010,43 +9118,43 @@ graph TB
         S1[單人 + Claude Code]
         S2[使用 Subagent 委派子任務]
     end
-    
+
     subgraph "雙人層 (Pair)"
         P1[開發者 A + Claude Code]
         P2[開發者 B + Claude Code]
         P1 -.->|共享 CLAUDE.md| P2
         P1 -.->|共享 .mcp.json| P2
     end
-    
+
     subgraph "團隊層 (Team)"
         T1[Agent Teams<br/>Lead + Teammates]
         T2[Plugin Marketplace<br/>共享工具與技能]
         T3[CI/CD 整合<br/>自動化協作]
     end
-    
+
     subgraph "組織層 (Org)"
         O1[Managed Settings<br/>企業統一配置]
         O2[Team Marketplaces<br/>內部插件分發]
         O3[Channels / Dispatch<br/>跨平台協作]
     end
-    
+
     S1 --> P1
     P1 --> T1
     T1 --> O1
-    
+
     style T1 fill:#6366f1,stroke:#4f46e5,color:#fff
     style O1 fill:#f59e0b,stroke:#d97706,color:#fff
-```
+````
 
-| 協同模式 | 適用場景 | 核心機制 |
-|---------|---------|---------|
-| **Solo + Subagents** | 個人多任務開發 | Subagent delegation、background tasks |
-| **Shared Config** | 多人開發同一專案 | CLAUDE.md、.mcp.json、.claude/settings.json |
-| **Agent Teams** | 複雜任務並行開發 | Lead-Teammate 架構、task list、mailbox |
-| **Plugin Marketplace** | 跨團隊知識共享 | 公司內部 marketplace、plugin distribution |
-| **Remote Control** | 遠端協助與監控 | Server mode、API 操作 |
-| **Channels + Dispatch** | 跨平台即時協作 | 外部訊息推送、行動端操控 |
-| **CI/CD Integration** | 自動化協作 | GitHub Actions、GitLab CI/CD |
+| 協同模式                | 適用場景         | 核心機制                                    |
+| ----------------------- | ---------------- | ------------------------------------------- |
+| **Solo + Subagents**    | 個人多任務開發   | Subagent delegation、background tasks       |
+| **Shared Config**       | 多人開發同一專案 | CLAUDE.md、.mcp.json、.claude/settings.json |
+| **Agent Teams**         | 複雜任務並行開發 | Lead-Teammate 架構、task list、mailbox      |
+| **Plugin Marketplace**  | 跨團隊知識共享   | 公司內部 marketplace、plugin distribution   |
+| **Remote Control**      | 遠端協助與監控   | Server mode、API 操作                       |
+| **Channels + Dispatch** | 跨平台即時協作   | 外部訊息推送、行動端操控                    |
+| **CI/CD Integration**   | 自動化協作       | GitHub Actions、GitLab CI/CD                |
 
 ### 3.8.2 團隊共享 CLAUDE.md 策略
 
@@ -9080,30 +9188,35 @@ graph TB
 # 專案指引 — 電商平台
 
 ## 🏗️ 架構決策
+
 - 前端使用 Next.js 14 App Router
 - 後端使用 NestJS + Prisma
 - 資料庫使用 PostgreSQL 16
 - 快取使用 Redis 7
 
 ## 📐 編碼規範
+
 - TypeScript strict mode，禁止 any
 - 使用 ESLint flat config
 - CSS 使用 Tailwind CSS
 - 所有 API 需有 OpenAPI 文件
 
 ## 🧪 測試要求
+
 - 單元測試覆蓋率 ≥ 80%
 - 使用 Vitest + Testing Library
 - E2E 測試使用 Playwright
 - 執行 `npm test` 確認所有測試通過
 
 ## 🔒 安全規範
+
 - 禁止 hardcode 任何密鑰
 - SQL 必須使用 parameterized query
 - API 必須驗證 JWT token
 - 禁止 `eval()` 和 `innerHTML`
 
 ## 📦 常用命令
+
 - `npm test` — 執行測試
 - `npm run build` — 建構
 - `npm run lint` — 風格檢查
@@ -9136,7 +9249,7 @@ sequenceDiagram
     participant GIT as Git Repository
     participant BE_CC as BE Claude Code
     participant BE as 後端開發者
-    
+
     par 前端開發
         FE->>FE_CC: 實作 UI 元件
         FE_CC->>FE_CC: 讀取 CLAUDE.md (前端規範)
@@ -9146,7 +9259,7 @@ sequenceDiagram
         BE_CC->>BE_CC: 讀取 CLAUDE.md (後端規範)
         BE_CC->>GIT: 提交 PR
     end
-    
+
     GIT->>GIT: GitHub Actions @claude review
     GIT-->>FE: Review 結果
     GIT-->>BE: Review 結果
@@ -9260,12 +9373,12 @@ claude --server --spawn
 
 **適用場景**：
 
-| 場景 | 操作方式 |
-|------|---------|
+| 場景                 | 操作方式                                           |
+| -------------------- | -------------------------------------------------- |
 | **Pair Programming** | 一人操作，另一人透過 Remote Control 觀看與發送指令 |
-| **Code Review** | 資深開發者透過 Remote Control 引導初級開發者 |
-| **On-call 緊急修復** | 在手機上透過 Dispatch 發送修復指令到公司電腦 |
-| **教學演示** | 講師透過 Web 介面展示操作 |
+| **Code Review**      | 資深開發者透過 Remote Control 引導初級開發者       |
+| **On-call 緊急修復** | 在手機上透過 Dispatch 發送修復指令到公司電腦       |
+| **教學演示**         | 講師透過 Web 介面展示操作                          |
 
 ### 3.8.7 Channels 與 Dispatch 即時協作
 
@@ -9276,28 +9389,28 @@ graph TD
         DEV2[開發者 B<br/>VS Code]
         DEV3[開發者 C<br/>Terminal CLI]
     end
-    
+
     subgraph "通訊平台"
         SLACK[Slack]
         TG[Telegram]
         DC[Discord]
     end
-    
+
     subgraph "CI/CD"
         GHA[GitHub Actions]
         GL[GitLab CI]
     end
-    
+
     SLACK -->|@claude 訊息| CH[Channel Hub]
     TG -->|訊息推送| CH
     DC -->|指令觸發| CH
     GHA -->|CI 結果| CH
     GL -->|Pipeline 狀態| CH
-    
+
     CH -->|路由| DEV1
     CH -->|路由| DEV2
     CH -->|路由| DEV3
-    
+
     style CH fill:#f59e0b,stroke:#d97706,color:#fff
 ```
 
@@ -9305,28 +9418,27 @@ graph TD
 
 #### ✅ 最佳實踐
 
-| 實踐 | 說明 |
-|------|------|
-| **統一 CLAUDE.md** | 將團隊規範寫入 CLAUDE.md 並提交 Git |
-| **共享 .mcp.json** | MCP Server 配置用環境變數處理成員差異 |
-| **規範 Plugin 來源** | 使用 `extraKnownMarketplaces` 限制插件來源 |
-| **CI/CD 自動化** | 設定 `@claude` 自動 review PR |
-| **Agent Teams 任務明確** | 每個 teammate 負責一個明確的子任務 |
-| **定期 /compact** | 長對話定期壓縮，保持上下文品質 |
+| 實踐                     | 說明                                       |
+| ------------------------ | ------------------------------------------ |
+| **統一 CLAUDE.md**       | 將團隊規範寫入 CLAUDE.md 並提交 Git        |
+| **共享 .mcp.json**       | MCP Server 配置用環境變數處理成員差異      |
+| **規範 Plugin 來源**     | 使用 `extraKnownMarketplaces` 限制插件來源 |
+| **CI/CD 自動化**         | 設定 `@claude` 自動 review PR              |
+| **Agent Teams 任務明確** | 每個 teammate 負責一個明確的子任務         |
+| **定期 /compact**        | 長對話定期壓縮，保持上下文品質             |
 
 #### ⚠️ 常見陷阱
 
-| 陷阱 | 解決方案 |
-|------|---------|
+| 陷阱                          | 解決方案                                |
+| ----------------------------- | --------------------------------------- |
 | CLAUDE.md 太長（超過 200 行） | 將重要規則放前 200 行，其餘用 `@import` |
-| MCP Server 認證衝突 | 使用 `.mcp.json` 環境變數展開：`${VAR}` |
-| Agent Teams worktree 衝突 | 確保每個 teammate 操作不同的檔案 |
-| 多人同時修改同一檔案 | 使用 Git 分支策略，搭配 lock 機制 |
-| Hooks 在不同環境行為不同 | 使用 `$CLAUDE_PROJECT_DIR` 參照腳本路徑 |
-| Plugin 版本不一致 | 啟用 marketplace 自動更新 |
+| MCP Server 認證衝突           | 使用 `.mcp.json` 環境變數展開：`${VAR}` |
+| Agent Teams worktree 衝突     | 確保每個 teammate 操作不同的檔案        |
+| 多人同時修改同一檔案          | 使用 Git 分支策略，搭配 lock 機制       |
+| Hooks 在不同環境行為不同      | 使用 `$CLAUDE_PROJECT_DIR` 參照腳本路徑 |
+| Plugin 版本不一致             | 啟用 marketplace 自動更新               |
 
 ---
-
 
 # 第四部分：進階主題
 
@@ -9341,20 +9453,20 @@ graph TB
     subgraph "企業 Claude Code 管理架構"
         Admin[IT 管理員] --> MS[managed-settings.json<br>集中設定部署]
         Admin --> MM[managed-mcp.json<br>MCP Server 管理]
-        
+
         MS --> D1[開發者 A<br>自動套用設定]
         MS --> D2[開發者 B<br>自動套用設定]
         MS --> D3[開發者 C<br>自動套用設定]
-        
+
         MM --> D1
         MM --> D2
         MM --> D3
-        
+
         D1 --> CC1[Claude Code 實例]
         D2 --> CC2[Claude Code 實例]
         D3 --> CC3[Claude Code 實例]
     end
-    
+
     style Admin fill:#ef4444,stroke:#dc2626,color:#fff
     style MS fill:#dbeafe,stroke:#3b82f6
     style MM fill:#dbeafe,stroke:#3b82f6
@@ -9440,25 +9552,25 @@ graph TB
         L2 --> L3[CLAUDE.md<br>專案層級]
         L3 --> L4[使用者互動<br>即時授權]
     end
-    
+
     L1 ---|"deny 規則最優先<br>不可被覆蓋"| Note1[安全底線]
     L2 ---|"專案特定設定<br>補充管理員設定"| Note2[專案需求]
     L3 ---|"開發規範<br>Context 指令"| Note3[團隊共識]
-    
+
     style L1 fill:#fee2e2,stroke:#ef4444
     style Note1 fill:#fee2e2,stroke:#ef4444
 ```
 
 #### 資料保護最佳實踐
 
-| 策略 | 實作方式 | 說明 |
-|------|---------|------|
-| **API Key 管理** | 環境變數 + Secret Manager | 不在程式碼中硬編碼 |
-| **審計日誌** | PostSession Hook | 記錄所有 Claude Code 會話 |
-| **檔案存取限制** | permissions.deny | 禁止存取敏感目錄 |
-| **網路限制** | 防火牆 + deny 規則 | 限制外部連線 |
-| **資料外洩防護** | .claudeignore + deny | 排除機密檔案 |
-| **合規報告** | Hook + 外部工具 | 自動生成合規報告 |
+| 策略             | 實作方式                  | 說明                      |
+| ---------------- | ------------------------- | ------------------------- |
+| **API Key 管理** | 環境變數 + Secret Manager | 不在程式碼中硬編碼        |
+| **審計日誌**     | PostSession Hook          | 記錄所有 Claude Code 會話 |
+| **檔案存取限制** | permissions.deny          | 禁止存取敏感目錄          |
+| **網路限制**     | 防火牆 + deny 規則        | 限制外部連線              |
+| **資料外洩防護** | .claudeignore + deny      | 排除機密檔案              |
+| **合規報告**     | Hook + 外部工具           | 自動生成合規報告          |
 
 #### .claudeignore 安全設定
 
@@ -9479,12 +9591,12 @@ config/production.yaml
 
 Claude Code 支援多種認證方式：
 
-| 認證方式 | 說明 | 適用場景 |
-|---------|------|---------|
-| **API Key** | 直接使用 Anthropic API Key | 個人開發 |
-| **OAuth 2.0** | 瀏覽器授權流程 | 團隊/企業環境 |
-| **Enterprise SSO** | 透過企業 IdP 認證 | 大型企業 |
-| **API Gateway** | 透過企業 API Gateway | 自建基礎設施 |
+| 認證方式           | 說明                       | 適用場景      |
+| ------------------ | -------------------------- | ------------- |
+| **API Key**        | 直接使用 Anthropic API Key | 個人開發      |
+| **OAuth 2.0**      | 瀏覽器授權流程             | 團隊/企業環境 |
+| **Enterprise SSO** | 透過企業 IdP 認證          | 大型企業      |
+| **API Gateway**    | 透過企業 API Gateway       | 自建基礎設施  |
 
 ```bash
 # 設定企業 OAuth
@@ -9512,7 +9624,7 @@ graph LR
         L --> S2[Cloud Storage<br>長期保存]
         L --> S3[Dashboard<br>即時監控]
     end
-    
+
     style CC fill:#dbeafe,stroke:#3b82f6
     style L fill:#ddd6fe,stroke:#8b5cf6
     style S1 fill:#fee2e2,stroke:#ef4444
@@ -9552,16 +9664,16 @@ graph LR
 
 #### 合規性檢核清單
 
-| 合規框架 | 相關控制項 | Claude Code 對應措施 |
-|---------|----------|---------------------|
-| **SOC 2** | CC6.1 存取控制 | managed-settings.json 權限控制 |
-| **SOC 2** | CC7.2 系統監控 | Hook 稽核日誌 |
-| **GDPR** | 資料最小化 | .claudeignore 排除個資檔案 |
-| **GDPR** | 資料處理紀錄 | 稽核日誌記錄所有操作 |
-| **ISO 27001** | A.9 存取控制 | deny/allow 權限清單 |
-| **ISO 27001** | A.12 操作安全 | Hook 自動安全檢查 |
-| **HIPAA** | 技術保障措施 | SSO + API Gateway + 加密傳輸 |
-| **PCI DSS** | 要求 10 追蹤監控 | 完整稽核日誌 |
+| 合規框架      | 相關控制項       | Claude Code 對應措施           |
+| ------------- | ---------------- | ------------------------------ |
+| **SOC 2**     | CC6.1 存取控制   | managed-settings.json 權限控制 |
+| **SOC 2**     | CC7.2 系統監控   | Hook 稽核日誌                  |
+| **GDPR**      | 資料最小化       | .claudeignore 排除個資檔案     |
+| **GDPR**      | 資料處理紀錄     | 稽核日誌記錄所有操作           |
+| **ISO 27001** | A.9 存取控制     | deny/allow 權限清單            |
+| **ISO 27001** | A.12 操作安全    | Hook 自動安全檢查              |
+| **HIPAA**     | 技術保障措施     | SSO + API Gateway + 加密傳輸   |
+| **PCI DSS**   | 要求 10 追蹤監控 | 完整稽核日誌                   |
 
 ### 4.1.5 企業部署架構模式
 
@@ -9572,7 +9684,7 @@ graph LR
     DEV[開發者<br>Claude Code] -->|HTTPS| API[Anthropic API<br>api.anthropic.com]
     ADM[管理員] -->|部署| MS[managed-settings.json<br>企業配置中心]
     MS -->|下發| DEV
-    
+
     style DEV fill:#dbeafe,stroke:#3b82f6
     style API fill:#6366f1,stroke:#4f46e5,color:#fff
     style ADM fill:#fef3c7,stroke:#f59e0b
@@ -9586,7 +9698,7 @@ graph LR
     GW -->|HTTPS| API[Anthropic API]
     GW -->|日誌| LOG[日誌系統]
     ADM[管理員] -->|管理| GW
-    
+
     style DEV fill:#dbeafe,stroke:#3b82f6
     style GW fill:#fef3c7,stroke:#f59e0b
     style API fill:#6366f1,stroke:#4f46e5,color:#fff
@@ -9600,7 +9712,7 @@ graph LR
     DEV2[開發者<br>Claude Code] -->|GCP SDK| VX[Google Vertex AI]
     BR --> IAM[AWS IAM<br>權限管理]
     VX --> GCP[GCP IAM<br>權限管理]
-    
+
     style DEV fill:#dbeafe,stroke:#3b82f6
     style DEV2 fill:#dbeafe,stroke:#3b82f6
     style BR fill:#fef3c7,stroke:#f59e0b
@@ -9609,14 +9721,14 @@ graph LR
 
 #### 模式比較
 
-| 特性 | 直連 API | API Gateway | Bedrock / Vertex |
-|------|---------|-------------|-----------------|
-| **設定複雜度** | ⭐ | ⭐⭐⭐ | ⭐⭐ |
-| **安全控制力** | 低 | 高 | 高 |
-| **成本管理** | 按用量計費 | 可限制用量 | 雲端帳單整合 |
-| **合規性** | 需額外措施 | 完整控制 | 雲端合規認證 |
-| **網路需求** | 外網存取 | 可內網隔離 | 雲端 VPC |
-| **認證方式** | API Key | 企業 SSO | Cloud IAM |
+| 特性           | 直連 API   | API Gateway | Bedrock / Vertex |
+| -------------- | ---------- | ----------- | ---------------- |
+| **設定複雜度** | ⭐         | ⭐⭐⭐      | ⭐⭐             |
+| **安全控制力** | 低         | 高          | 高               |
+| **成本管理**   | 按用量計費 | 可限制用量  | 雲端帳單整合     |
+| **合規性**     | 需額外措施 | 完整控制    | 雲端合規認證     |
+| **網路需求**   | 外網存取   | 可內網隔離  | 雲端 VPC         |
+| **認證方式**   | API Key    | 企業 SSO    | Cloud IAM        |
 
 ### 4.1.6 企業級配置管理策略
 
@@ -9701,10 +9813,7 @@ sequenceDiagram
       "shell command git",
       "shell command docker compose"
     ],
-    "deny": [
-      "shell command rm -rf /",
-      "shell command sudo"
-    ]
+    "deny": ["shell command rm -rf /", "shell command sudo"]
   },
   "api": {
     "provider": "anthropic",
@@ -9715,24 +9824,24 @@ sequenceDiagram
 
 #### 企業安全 Checklist
 
-| 分類 | 檢查項目 | 狀態 |
-|------|---------|------|
-| **存取控制** | API Key 使用組織統一管理 | ☐ |
-| **存取控制** | 已設定 managed-settings.json deny 規則 | ☐ |
-| **存取控制** | 敏感目錄已加入 .claudeignore | ☐ |
-| **網路安全** | 已設定 API Gateway 或 Bedrock/Vertex | ☐ |
-| **網路安全** | 已停用非必要流量（DISABLE_NONESSENTIAL_TRAFFIC） | ☐ |
-| **網路安全** | 已設定 HTTP_PROXY（如有需要） | ☐ |
-| **稽核追蹤** | 已設定 PostToolUse 稽核 Hook | ☐ |
-| **稽核追蹤** | 稽核日誌已接入 SIEM 系統 | ☐ |
-| **稽核追蹤** | 定期檢閱稽核日誌 | ☐ |
-| **配置管理** | managed-settings.json 已納入版本控制 | ☐ |
-| **配置管理** | 配置變更需要 PR 審核 | ☐ |
-| **配置管理** | 配置分發已自動化 | ☐ |
-| **教育訓練** | 開發團隊已完成安全培訓 | ☐ |
-| **教育訓練** | 已建立 CLAUDE.md 使用規範 | ☐ |
-| **事件回應** | 已定義安全事件處理流程 | ☐ |
-| **事件回應** | 已測試 Hook 攔截機制 | ☐ |
+| 分類         | 檢查項目                                         | 狀態 |
+| ------------ | ------------------------------------------------ | ---- |
+| **存取控制** | API Key 使用組織統一管理                         | ☐    |
+| **存取控制** | 已設定 managed-settings.json deny 規則           | ☐    |
+| **存取控制** | 敏感目錄已加入 .claudeignore                     | ☐    |
+| **網路安全** | 已設定 API Gateway 或 Bedrock/Vertex             | ☐    |
+| **網路安全** | 已停用非必要流量（DISABLE_NONESSENTIAL_TRAFFIC） | ☐    |
+| **網路安全** | 已設定 HTTP_PROXY（如有需要）                    | ☐    |
+| **稽核追蹤** | 已設定 PostToolUse 稽核 Hook                     | ☐    |
+| **稽核追蹤** | 稽核日誌已接入 SIEM 系統                         | ☐    |
+| **稽核追蹤** | 定期檢閱稽核日誌                                 | ☐    |
+| **配置管理** | managed-settings.json 已納入版本控制             | ☐    |
+| **配置管理** | 配置變更需要 PR 審核                             | ☐    |
+| **配置管理** | 配置分發已自動化                                 | ☐    |
+| **教育訓練** | 開發團隊已完成安全培訓                           | ☐    |
+| **教育訓練** | 已建立 CLAUDE.md 使用規範                        | ☐    |
+| **事件回應** | 已定義安全事件處理流程                           | ☐    |
+| **事件回應** | 已測試 Hook 攔截機制                             | ☐    |
 
 ---
 
@@ -9773,7 +9882,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -9784,7 +9893,7 @@ jobs:
             2. Potential bugs
             3. Security vulnerabilities
             4. Test coverage
-            
+
             Provide actionable suggestions as PR comments.
 ```
 
@@ -9816,7 +9925,7 @@ jobs:
           prompt: |
             Perform a thorough code review.
             Check for OWASP Top 10 security issues.
-            
+
   # 回應 PR 中的 @claude 提及
   respond-to-mention:
     if: >
@@ -9937,12 +10046,14 @@ claude -p "Summarize all changes since the last tag." \
 # CLAUDE.md - CI 環境特別指令
 
 ## CI 環境注意事項
+
 - 這是 CI 環境，不要嘗試開啟瀏覽器或互動式界面
 - 所有輸出應該是結構化的（JSON 或 Markdown）
 - 不要修改 .github/ 或 .gitlab-ci.yml
 - 測試失敗時提供詳細的錯誤分析，不要嘗試修復
 
 ## 審查標準
+
 - 依照 /docs/code-review-checklist.md 的清單
 - 安全問題標記為 CRITICAL
 - 效能問題標記為 WARNING
@@ -9963,14 +10074,14 @@ graph TB
         R3 --> R4[Stage 4:<br>變更摘要]
         R4 --> OUT[輸出:<br>PR Comment]
     end
-    
+
     subgraph "Quality Gates"
         R1 -->|CRITICAL| FAIL[❌ 阻擋合併]
         R2 -->|CRITICAL| FAIL
         R1 -->|WARNING| WARN[⚠️ 需要人工確認]
         R1 -->|INFO| PASS[✅ 通過]
     end
-    
+
     style PR fill:#dbeafe,stroke:#3b82f6
     style FAIL fill:#fee2e2,stroke:#ef4444
     style WARN fill:#fef3c7,stroke:#f59e0b
@@ -9981,24 +10092,24 @@ graph TB
 
 在 CI/CD 環境中使用 Claude Code 需要特別注意安全性：
 
-| 注意事項 | 說明 | 建議 |
-|---------|------|------|
-| **API Key 管理** | 不要在程式碼中硬編碼 | 使用 GitHub Secrets / GitLab CI Variables |
-| **網路存取** | Claude Code 會存取外網 | 設定網路政策限制出站流量 |
-| **工具限制** | CI 中應限制可用工具 | 使用 `--allowedTools` 限制為唯讀操作 |
-| **超時設定** | CI 任務可能超時 | 設定合理的 `--timeout` |
-| **成本控制** | CI 觸發頻率可能很高 | 只在特定事件觸發，設定每日預算 |
-| **輸出過濾** | 避免洩漏敏感資訊 | 審查 Claude 的輸出是否包含敏感資料 |
+| 注意事項         | 說明                   | 建議                                      |
+| ---------------- | ---------------------- | ----------------------------------------- |
+| **API Key 管理** | 不要在程式碼中硬編碼   | 使用 GitHub Secrets / GitLab CI Variables |
+| **網路存取**     | Claude Code 會存取外網 | 設定網路政策限制出站流量                  |
+| **工具限制**     | CI 中應限制可用工具    | 使用 `--allowedTools` 限制為唯讀操作      |
+| **超時設定**     | CI 任務可能超時        | 設定合理的 `--timeout`                    |
+| **成本控制**     | CI 觸發頻率可能很高    | 只在特定事件觸發，設定每日預算            |
+| **輸出過濾**     | 避免洩漏敏感資訊       | 審查 Claude 的輸出是否包含敏感資料        |
 
 #### CI 觸發策略
 
-| 觸發事件 | 建議的 Claude Code 操作 | 頻率 |
-|---------|----------------------|------|
-| **PR 建立** | 完整程式碼審查 + 安全掃描 | 每次 PR |
-| **PR 更新** | 差異審查（只看新增/修改的檔案） | 每次推送 |
-| **定時排程** | 全面安全掃描 + 依賴檢查 | 每日/每週 |
-| **Tag 建立** | 產生 Release Notes | 每次 release |
-| **Issue 建立** | 分析 Issue 並建議修復方案 | 每個 Issue |
+| 觸發事件       | 建議的 Claude Code 操作         | 頻率         |
+| -------------- | ------------------------------- | ------------ |
+| **PR 建立**    | 完整程式碼審查 + 安全掃描       | 每次 PR      |
+| **PR 更新**    | 差異審查（只看新增/修改的檔案） | 每次推送     |
+| **定時排程**   | 全面安全掃描 + 依賴檢查         | 每日/每週    |
+| **Tag 建立**   | 產生 Release Notes              | 每次 release |
+| **Issue 建立** | 分析 Issue 並建議修復方案       | 每個 Issue   |
 
 ### 4.2.5 進階 CI/CD 場景
 
@@ -10010,7 +10121,7 @@ name: Auto Release Notes
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   release-notes:
@@ -10021,11 +10132,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - name: Get previous tag
         id: prev_tag
         run: echo "tag=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo '')" >> $GITHUB_OUTPUT
-          
+
       - name: Generate Release Notes with Claude
         uses: anthropics/claude-code-action@v1
         with:
@@ -10033,20 +10144,20 @@ jobs:
           prompt: |
             Generate release notes for ${{ github.ref_name }}.
             Compare changes since ${{ steps.prev_tag.outputs.tag }}.
-            
+
             Format:
             ## What's New
             - Feature descriptions with PR references
-            
+
             ## Bug Fixes
             - Bug fix descriptions
-            
+
             ## Breaking Changes
             - Any breaking changes (highlight clearly)
-            
+
             ## Contributors
             - List contributors
-            
+
             Write in both English and Traditional Chinese (繁體中文).
           timeout_minutes: 5
 ```
@@ -10068,7 +10179,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -10076,14 +10187,14 @@ jobs:
             Analyze issue #${{ github.event.issue.number }}:
             Title: ${{ github.event.issue.title }}
             Body: ${{ github.event.issue.body }}
-            
+
             Tasks:
             1. Identify the type (bug/feature/question)
             2. If bug: locate likely affected files and suggest a fix
             3. If feature: suggest implementation approach
             4. Estimate complexity (low/medium/high)
             5. Suggest labels
-            
+
             Output as a helpful comment on the issue.
           trigger_phrase: "auto-analyze"
 ```
@@ -10096,12 +10207,12 @@ name: Dependency Security Review
 on:
   pull_request:
     paths:
-      - 'package.json'
-      - 'package-lock.json'
-      - 'pom.xml'
-      - 'build.gradle'
-      - 'requirements.txt'
-      - 'go.mod'
+      - "package.json"
+      - "package-lock.json"
+      - "pom.xml"
+      - "build.gradle"
+      - "requirements.txt"
+      - "go.mod"
 
 jobs:
   review-deps:
@@ -10112,25 +10223,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Get changed dependency files
         id: deps
         run: |
           echo "files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} -- | grep -E '(package\.json|pom\.xml|build\.gradle|requirements\.txt|go\.mod)' | tr '\n' ' ')" >> $GITHUB_OUTPUT
-      
+
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           model: claude-sonnet-4-20250514
           prompt: |
             Review dependency changes in files: ${{ steps.deps.outputs.files }}
-            
+
             For each changed dependency:
             1. Check if it's a known vulnerable version
             2. Verify the version bump is appropriate (major/minor/patch)
             3. Check license compatibility
             4. Flag any dependencies with known security issues
-            
+
             Rate overall risk: LOW / MEDIUM / HIGH / CRITICAL
 ```
 
@@ -10140,7 +10251,7 @@ jobs:
 # bitbucket-pipelines.yml
 pipelines:
   pull-requests:
-    '**':
+    "**":
       - step:
           name: Claude Code Review
           image: node:20
@@ -10189,16 +10300,16 @@ pr:
       - develop
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '20.x'
-    displayName: 'Install Node.js'
+      versionSpec: "20.x"
+    displayName: "Install Node.js"
 
   - script: npm install -g @anthropic-ai/claude-code
-    displayName: 'Install Claude Code'
+    displayName: "Install Claude Code"
 
   - script: |
       claude -p "
@@ -10211,27 +10322,27 @@ steps:
         3. Security review
         4. Suggestions for improvement
       " --output-format text > $(Build.ArtifactStagingDirectory)/review.md
-    displayName: 'Claude Code Review'
+    displayName: "Claude Code Review"
     env:
       ANTHROPIC_API_KEY: $(ANTHROPIC_API_KEY)
 
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/review.md'
-      ArtifactName: 'claude-review'
-    displayName: 'Publish Review'
+      PathtoPublish: "$(Build.ArtifactStagingDirectory)/review.md"
+      ArtifactName: "claude-review"
+    displayName: "Publish Review"
 ```
 
 #### CI/CD 平台整合比較
 
-| 平台 | 整合方式 | 官方支援 | 建議用法 |
-|------|---------|---------|---------|
-| **GitHub Actions** | claude-code-action@v1 | ✅ 官方 Action | PR 審查、Issue 分析、Release Notes |
-| **GitLab CI** | Headless Mode (claude -p) | ❌ 需自行設定 | MR 審查、安全掃描 |
-| **Bitbucket Pipelines** | Headless Mode (claude -p) | ❌ 需自行設定 | PR 審查、程式碼掃描 |
-| **Azure DevOps** | Headless Mode (claude -p) | ❌ 需自行設定 | PR 審查、品質報告 |
-| **Jenkins** | Headless Mode (claude -p) | ❌ 需自行設定 | 自訂管道整合 |
-| **CircleCI** | Headless Mode (claude -p) | ❌ 需自行設定 | 輕量審查 |
+| 平台                    | 整合方式                  | 官方支援       | 建議用法                           |
+| ----------------------- | ------------------------- | -------------- | ---------------------------------- |
+| **GitHub Actions**      | claude-code-action@v1     | ✅ 官方 Action | PR 審查、Issue 分析、Release Notes |
+| **GitLab CI**           | Headless Mode (claude -p) | ❌ 需自行設定  | MR 審查、安全掃描                  |
+| **Bitbucket Pipelines** | Headless Mode (claude -p) | ❌ 需自行設定  | PR 審查、程式碼掃描                |
+| **Azure DevOps**        | Headless Mode (claude -p) | ❌ 需自行設定  | PR 審查、品質報告                  |
+| **Jenkins**             | Headless Mode (claude -p) | ❌ 需自行設定  | 自訂管道整合                       |
+| **CircleCI**            | Headless Mode (claude -p) | ❌ 需自行設定  | 輕量審查                           |
 
 ---
 
@@ -10266,28 +10377,32 @@ server.tool(
       `https://jira.company.com/rest/api/2/issue/${issueKey}`,
       {
         headers: {
-          "Authorization": `Bearer ${process.env.JIRA_TOKEN}`,
+          Authorization: `Bearer ${process.env.JIRA_TOKEN}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     const issue = await response.json();
-    
+
     return {
       content: [
         {
           type: "text",
-          text: JSON.stringify({
-            key: issue.key,
-            summary: issue.fields.summary,
-            status: issue.fields.status.name,
-            assignee: issue.fields.assignee?.displayName,
-            description: issue.fields.description,
-          }, null, 2),
+          text: JSON.stringify(
+            {
+              key: issue.key,
+              summary: issue.fields.summary,
+              status: issue.fields.status.name,
+              assignee: issue.fields.assignee?.displayName,
+              description: issue.fields.description,
+            },
+            null,
+            2,
+          ),
         },
       ],
     };
-  }
+  },
 );
 
 // 定義工具：搜尋 Confluence 文件
@@ -10301,18 +10416,18 @@ server.tool(
   async ({ query, spaceKey }) => {
     const cql = spaceKey
       ? `space = "${spaceKey}" AND text ~ "${query}"`
-      : `text ~ "${query}"`; 
-    
+      : `text ~ "${query}"`;
+
     const response = await fetch(
       `https://confluence.company.com/rest/api/content/search?cql=${encodeURIComponent(cql)}`,
       {
         headers: {
-          "Authorization": `Bearer ${process.env.CONFLUENCE_TOKEN}`,
+          Authorization: `Bearer ${process.env.CONFLUENCE_TOKEN}`,
         },
-      }
+      },
     );
     const results = await response.json();
-    
+
     return {
       content: [
         {
@@ -10324,12 +10439,12 @@ server.tool(
               excerpt: r.excerpt,
             })),
             null,
-            2
+            2,
           ),
         },
       ],
     };
-  }
+  },
 );
 
 // 啟動 Server
@@ -10371,13 +10486,13 @@ graph TB
         D3 --> D4[4. 迭代改善]
         D4 --> D5[5. 團隊共享]
     end
-    
+
     D1 -.- N1["確定使用場景<br>和觸發條件"]
     D2 -.- N2["撰寫描述和<br>操作步驟"]
     D3 -.- N3["在對話中測試<br>觸發和品質"]
     D4 -.- N4["根據結果調整<br>指令和範例"]
     D5 -.- N5["放入 Plugin 或<br>共享倉庫"]
-    
+
     style D2 fill:#dbeafe,stroke:#3b82f6
     style D5 fill:#dcfce7,stroke:#22c55e
 ```
@@ -10394,6 +10509,7 @@ tools: read_file, grep_search, semantic_search
 # Security Review Skill
 
 ## 審查流程
+
 1. 讀取目標檔案
 2. 檢查以下安全問題：
    - SQL Injection
@@ -10406,7 +10522,9 @@ tools: read_file, grep_search, semantic_search
    - Broken Access Control
 
 ## 輸出格式
+
 以 Markdown 表格輸出，包含：
+
 - 檔案名稱
 - 行號
 - 漏洞類型
@@ -10414,6 +10532,7 @@ tools: read_file, grep_search, semantic_search
 - 建議修正方式
 
 ## 注意事項
+
 - 只報告確認的漏洞，避免誤報
 - 對於不確定的問題，標記為「建議審查」
 - 提供具體的修正程式碼範例
@@ -10433,6 +10552,7 @@ tools: read_file, grep_search, semantic_search
 # Performance Review Skill
 
 ## 檢查項目
+
 1. **資料庫**
    - N+1 查詢模式
    - 缺少索引的查詢
@@ -10449,8 +10569,9 @@ tools: read_file, grep_search, semantic_search
    - 不必要的字串拼接
 
 ## 輸出格式
+
 | 檔案 | 行號 | 問題類型 | 影響程度 | 建議 |
-|------|------|---------|---------|------|
+| ---- | ---- | -------- | -------- | ---- |
 ```
 
 **範例：API Documentation Skill**
@@ -10465,11 +10586,13 @@ tools: read_file, grep_search, write_file
 # API Documentation Generator
 
 ## 支援格式
+
 - OpenAPI 3.0 (Swagger)
 - Markdown
 - API Blueprint
 
 ## 生成流程
+
 1. 掃描 Controller/Route 定義
 2. 提取：HTTP Method, Path, Parameters, Request Body, Response
 3. 從程式碼註解提取描述
@@ -10477,21 +10600,22 @@ tools: read_file, grep_search, write_file
 5. 產生人類可讀的 Markdown 文件
 
 ## 輸出位置
+
 - OpenAPI: `docs/api/openapi.yaml`
 - Markdown: `docs/api/README.md`
 ```
 
 #### Skill 品質檢查清單
 
-| 項目 | 說明 | 重要性 |
-|------|------|--------|
-| **描述準確** | `description` 能準確觸發 Skill | 🔴 高 |
-| **工具列表** | `tools` 列出所有需要的工具 | 🔴 高 |
-| **步驟清晰** | 操作步驟具體且可執行 | 🔴 高 |
-| **有範例** | 包含輸入/輸出範例 | 🟡 中 |
-| **有限制** | 說明什麼不做 | 🟡 中 |
-| **格式指定** | 明確定義輸出格式 | 🟡 中 |
-| **錯誤處理** | 說明異常情況的處理方式 | 🟢 低 |
+| 項目         | 說明                           | 重要性 |
+| ------------ | ------------------------------ | ------ |
+| **描述準確** | `description` 能準確觸發 Skill | 🔴 高  |
+| **工具列表** | `tools` 列出所有需要的工具     | 🔴 高  |
+| **步驟清晰** | 操作步驟具體且可執行           | 🔴 高  |
+| **有範例**   | 包含輸入/輸出範例              | 🟡 中  |
+| **有限制**   | 說明什麼不做                   | 🟡 中  |
+| **格式指定** | 明確定義輸出格式               | 🟡 中  |
+| **錯誤處理** | 說明異常情況的處理方式         | 🟢 低  |
 
 ### 4.3.3 開發自訂 Plugin
 
@@ -10506,7 +10630,7 @@ graph LR
         P4 --> P5[本地測試]
         P5 --> P6[發布/共享]
     end
-    
+
     style P1 fill:#dbeafe,stroke:#3b82f6
     style P5 fill:#fef3c7,stroke:#f59e0b
     style P6 fill:#dcfce7,stroke:#22c55e
@@ -10639,12 +10763,12 @@ fi
 
 #### Plugin 安全與信任
 
-| 安全層級 | 說明 | 使用者動作 |
-|---------|------|----------|
-| **首方 Plugin** | Anthropic 官方提供 | 自動信任 |
-| **組織 Plugin** | 組織內部開發 | 管理員核准即可 |
-| **第三方 Plugin** | 社群或第三方開發 | 需使用者明確核准 |
-| **未知 Plugin** | 未經審查的 Plugin | 顯示警告，需手動確認 |
+| 安全層級          | 說明               | 使用者動作           |
+| ----------------- | ------------------ | -------------------- |
+| **首方 Plugin**   | Anthropic 官方提供 | 自動信任             |
+| **組織 Plugin**   | 組織內部開發       | 管理員核准即可       |
+| **第三方 Plugin** | 社群或第三方開發   | 需使用者明確核准     |
+| **未知 Plugin**   | 未經審查的 Plugin  | 顯示警告，需手動確認 |
 
 > **⚠️ 安全提醒**：安裝第三方 Plugin 前，請務必檢查其原始碼和權限需求。Plugin 的工具腳本可以執行任意命令。
 
@@ -10695,7 +10819,9 @@ fi
 
 ```markdown
 <!-- .claude/skills/hipaa-check/SKILL.md -->
+
 ---
+
 name: hipaa-compliance-check
 description: 檢查程式碼是否符合 HIPAA 法規要求，包括 PHI 保護、存取控制、稽核日誌
 tools: read_file, grep_search, semantic_search
@@ -10704,6 +10830,7 @@ tools: read_file, grep_search, semantic_search
 # HIPAA 合規檢查
 
 ## 檢查項目
+
 1. **PHI 處理**
    - 所有 PHI 欄位是否加密儲存
    - 傳輸中是否使用 TLS
@@ -10720,8 +10847,9 @@ tools: read_file, grep_search, semantic_search
    - 是否有定期審查機制
 
 ## 輸出格式
+
 | 規則 | 狀態 | 檔案 | 行號 | 說明 |
-|------|------|------|------|------|
+| ---- | ---- | ---- | ---- | ---- |
 ```
 
 #### 模式二：多語言專案統一管理
@@ -10734,21 +10862,25 @@ tools: read_file, grep_search, semantic_search
 # 全端專案開發規範
 
 ## 各子系統 CLAUDE.md 架構
+
 本專案包含多個子系統，各自有獨立的 CLAUDE.md：
 
 ### 前端（frontend/CLAUDE.md）
+
 - React 18 + TypeScript 5.5
 - 使用 Tailwind CSS
 - 測試用 Vitest + Testing Library
 - 分支策略：feature/* → develop → main
 
-### 後端（backend/CLAUDE.md）  
+### 後端（backend/CLAUDE.md）
+
 - Go 1.23 + Gin Framework
 - PostgreSQL 16 + Redis 7
 - 測試用 go test + testify
 - API 規範：RESTful + OpenAPI 3.1
 
 ### 基礎設施（infra/CLAUDE.md）
+
 - Terraform 1.9 + AWS
 - Kubernetes 1.31
 - ArgoCD + GitOps
@@ -10757,7 +10889,9 @@ tools: read_file, grep_search, semantic_search
 ## 跨系統 Custom Commands
 
 ### /project:fullstack-feature
+
 開發完整的全端功能：
+
 1. 在 backend/ 建立 API endpoint
 2. 在 frontend/ 建立對應的 UI 元件
 3. 撰寫前後端的測試
@@ -10765,7 +10899,9 @@ tools: read_file, grep_search, semantic_search
 5. 建立 database migration（如需要）
 
 ### /project:deploy-check
+
 跨系統部署前檢查：
+
 1. 後端 API 相容性檢查
 2. 前端 bundle size 檢查
 3. Database migration 向後相容性
@@ -10775,9 +10911,11 @@ tools: read_file, grep_search, semantic_search
 
 #### 模式三：測試自動化框架
 
-```markdown
+````markdown
 <!-- .claude/skills/test-framework/SKILL.md -->
+
 ---
+
 name: comprehensive-test-generator
 description: 產生全面的測試案例，包括單元測試、整合測試、E2E 測試
 tools: read_file, write_file, grep_search, run_terminal_command
@@ -10786,11 +10924,12 @@ tools: read_file, write_file, grep_search, run_terminal_command
 # 全面測試生成框架
 
 ## 測試層次
+
 1. **單元測試**（target: 80%+ 覆蓋率）
    - Happy path
    - Edge cases（null、空值、邊界值）
    - Error cases（exception、timeout）
-   
+
 2. **整合測試**
    - API endpoint 測試
    - Database query 測試
@@ -10802,15 +10941,18 @@ tools: read_file, write_file, grep_search, run_terminal_command
    - 交易流程
 
 ## 測試命名規範
+
 - 格式：should_[預期行為]_when_[條件]
 - 範例：should_return_404_when_user_not_found
 
 ## 測試資料策略
+
 - 使用 Factory Pattern 建立測試資料
 - 每個測試獨立的資料隔離
 - 不依賴外部服務（使用 stub/mock）
 
 ## 輸出結構
+
 ```plaintext
 tests/
 ├── unit/           ← 單元測試（映射 src/ 結構）
@@ -10818,7 +10960,9 @@ tests/
 ├── e2e/           ← E2E 測試
 └── fixtures/       ← 測試資料 factory
 ```
-```
+````
+
+````
 
 #### 自訂開發成熟度模型
 
@@ -10836,13 +10980,13 @@ graph LR
     L2 --> L3[L3 進階<br>+Skills +Hooks]
     L3 --> L4[L4 平台<br>+MCP +Plugins]
     L4 --> L5[L5 生態<br>+Agent Teams]
-    
+
     style L1 fill:#f3f4f6,stroke:#9ca3af
     style L2 fill:#dbeafe,stroke:#3b82f6
     style L3 fill:#dcfce7,stroke:#22c55e
     style L4 fill:#fef3c7,stroke:#f59e0b
     style L5 fill:#fce7f3,stroke:#ec4899
-```
+````
 
 ---
 
@@ -10862,32 +11006,32 @@ graph TB
         WH[Webhook Endpoint]
         CI[CI/CD Pipeline]
     end
-    
+
     subgraph "Channel MCP Server"
         direction TB
         CAP["宣告能力:<br/>claude/channel"]
         RECV[接收外部事件]
         PUSH[推送到 session]
     end
-    
+
     subgraph "Claude Code Session"
         Q[訊息佇列]
         AL[Agentic Loop]
         RESP[產生回應]
     end
-    
+
     TG --> RECV
     DC --> RECV
     WH --> RECV
     CI --> RECV
-    
+
     RECV --> PUSH
     PUSH --> Q
     Q --> AL
     AL --> RESP
     RESP -->|回傳| TG
     RESP -->|回傳| DC
-    
+
     style CAP fill:#f59e0b,stroke:#d97706
     style AL fill:#6366f1,stroke:#4f46e5,color:#fff
 ```
@@ -10903,13 +11047,13 @@ claude --channels
 
 ### 4.4.2 支援的通訊管道
 
-| 通訊管道 | 類型 | 說明 |
-|---------|------|------|
-| **Telegram** | 官方支援 | 透過 Telegram Bot 雙向溝通 |
-| **Discord** | 官方支援 | 透過 Discord Bot 在頻道中互動 |
-| **iMessage** | 官方支援 | macOS 上的 iMessage 整合 |
-| **Slack** | MCP 整合 | 透過 Slack MCP Server |
-| **Webhook** | 自訂 | 接收任意 HTTP Webhook 事件 |
+| 通訊管道     | 類型     | 說明                          |
+| ------------ | -------- | ----------------------------- |
+| **Telegram** | 官方支援 | 透過 Telegram Bot 雙向溝通    |
+| **Discord**  | 官方支援 | 透過 Discord Bot 在頻道中互動 |
+| **iMessage** | 官方支援 | macOS 上的 iMessage 整合      |
+| **Slack**    | MCP 整合 | 透過 Slack MCP Server         |
+| **Webhook**  | 自訂     | 接收任意 HTTP Webhook 事件    |
 
 ### 4.4.3 Dispatch 行動端整合
 
@@ -10924,13 +11068,13 @@ Dispatch 讓你從手機發送指令到 Claude Code Desktop App，無需坐在�
 
 **Dispatch vs Remote Control vs Channels 比較**：
 
-| 特性 | Dispatch | Remote Control | Channels |
-|------|---------|---------------|----------|
-| **方向** | 手機 → Desktop | 任意客戶端 → server | 外部事件 → session |
-| **需要** | Claude app | API client | MCP Server |
-| **即時性** | 即時 | 即時 | 事件驅動 |
-| **執行環境** | 本機 Desktop | 本機（任意）| 當前 session |
-| **認證** | QR Code / claude.ai | Token auth | MCP 連線 |
+| 特性         | Dispatch            | Remote Control      | Channels           |
+| ------------ | ------------------- | ------------------- | ------------------ |
+| **方向**     | 手機 → Desktop      | 任意客戶端 → server | 外部事件 → session |
+| **需要**     | Claude app          | API client          | MCP Server         |
+| **即時性**   | 即時                | 即時                | 事件驅動           |
+| **執行環境** | 本機 Desktop        | 本機（任意）        | 當前 session       |
+| **認證**     | QR Code / claude.ai | Token auth          | MCP 連線           |
 
 ### 4.4.4 自建 Channel MCP Server
 
@@ -11019,19 +11163,19 @@ $ARGUMENTS 會被替換為使用者提供的參數。
 
 **可用的 frontmatter 欄位**：
 
-| 欄位 | 類型 | 說明 |
-|------|------|------|
-| `name` | string | 技能名稱（用於 `/name` 呼叫） |
-| `description` | string | 描述，用於自動判斷何時使用 |
-| `user-invocable` | boolean | 是否可被使用者手動呼叫 |
-| `disable-model-invocation` | boolean | 是否禁止 Claude 自動判斷使用 |
-| `allowed-tools` | list | 此技能可使用的工具列表 |
-| `model` | string | 覆寫使用的模型（sonnet / opus） |
-| `effort` | string | 推理投入程度（low / medium / high） |
-| `context` | string | 設為 `fork` 則在獨立子代理中執行 |
-| `agent` | string | 指定在哪個 agent 中執行此技能 |
-| `hooks` | object | 技能專屬的 hooks 配置 |
-| `shell` | string | 指定 `!` 指令`` ` 使用的 shell |
+| 欄位                       | 類型    | 說明                                |
+| -------------------------- | ------- | ----------------------------------- |
+| `name`                     | string  | 技能名稱（用於 `/name` 呼叫）       |
+| `description`              | string  | 描述，用於自動判斷何時使用          |
+| `user-invocable`           | boolean | 是否可被使用者手動呼叫              |
+| `disable-model-invocation` | boolean | 是否禁止 Claude 自動判斷使用        |
+| `allowed-tools`            | list    | 此技能可使用的工具列表              |
+| `model`                    | string  | 覆寫使用的模型（sonnet / opus）     |
+| `effort`                   | string  | 推理投入程度（low / medium / high） |
+| `context`                  | string  | 設為 `fork` 則在獨立子代理中執行    |
+| `agent`                    | string  | 指定在哪個 agent 中執行此技能       |
+| `hooks`                    | object  | 技能專屬的 hooks 配置               |
+| `shell`                    | string  | 指定 `!` 指令`` ` 使用的 shell      |
 
 ### 4.5.3 跨工具互通性
 
@@ -11053,6 +11197,7 @@ Claude Code          VS Code Copilot      其他 AI Editor
 - **企業 Skills**: 內部開發的領域特定 skills
 
 > 📖 **相關資源**:
+>
 > - Agent Skills 規範: [agentskills.io](https://agentskills.io)
 > - Claude Code Skills 文件: [code.claude.com/docs/en/skills](https://code.claude.com/docs/en/skills)
 
@@ -11116,27 +11261,27 @@ claude --verbose
 
 ### A.2 Slash Commands（互動式模式）
 
-| 命令 | 說明 |
-|------|------|
-| `/help` | 顯示所有可用命令 |
-| `/compact` | 壓縮對話歷史以節省 Token |
-| `/compact [指示]` | 帶自訂指示的壓縮 |
-| `/config` | 顯示目前配置 |
-| `/cost` | 顯示目前會話的 Token 使用量和花費 |
-| `/doctor` | 🆕 執行一站式診斷檢查 |
-| `/memory` | 顯示已載入的 Memory（CLAUDE.md）|
-| `/status` | 顯示系統狀態 |
-| `/bug` | 回報 Bug 給 Anthropic |
-| `/agents` | 啟動 Agent Teams（Cowork）模式 |
-| `/mcp` | 管理 MCP Server 連線 |
-| `/skills` | 🆕 列出所有可用 Skills |
-| `/loop` | 🆕 啟動反覆執行排程 |
-| `/output-style` | 🆕 切換輸出風格 |
-| `/install-github-app` | 🆕 安裝 GitHub App 整合 |
-| `/clear` | 清除對話歷史 |
-| `/login` | 重新登入 |
-| `/logout` | 登出 |
-| `/vim` | 切換 vim 編輯模式 |
+| 命令                  | 說明                              |
+| --------------------- | --------------------------------- |
+| `/help`               | 顯示所有可用命令                  |
+| `/compact`            | 壓縮對話歷史以節省 Token          |
+| `/compact [指示]`     | 帶自訂指示的壓縮                  |
+| `/config`             | 顯示目前配置                      |
+| `/cost`               | 顯示目前會話的 Token 使用量和花費 |
+| `/doctor`             | 🆕 執行一站式診斷檢查             |
+| `/memory`             | 顯示已載入的 Memory（CLAUDE.md）  |
+| `/status`             | 顯示系統狀態                      |
+| `/bug`                | 回報 Bug 給 Anthropic             |
+| `/agents`             | 啟動 Agent Teams（Cowork）模式    |
+| `/mcp`                | 管理 MCP Server 連線              |
+| `/skills`             | 🆕 列出所有可用 Skills            |
+| `/loop`               | 🆕 啟動反覆執行排程               |
+| `/output-style`       | 🆕 切換輸出風格                   |
+| `/install-github-app` | 🆕 安裝 GitHub App 整合           |
+| `/clear`              | 清除對話歷史                      |
+| `/login`              | 重新登入                          |
+| `/logout`             | 登出                              |
+| `/vim`                | 切換 vim 編輯模式                 |
 
 ### A.3 Custom Slash Commands
 
@@ -11146,12 +11291,15 @@ claude --verbose
 ## Custom Commands
 
 ### /project:setup
+
 執行專案初始化步驟...
 
 ### /project:test
+
 執行完整測試套件...
 
 ### /project:deploy
+
 執行部署流程...
 ```
 
@@ -11224,36 +11372,36 @@ claude -p "prompt" --bare --plugin-dir ./my-plugin/
 
 ### A.6 CLI 環境變數
 
-| 環境變數 | 說明 | 預設值 |
-|---------|------|--------|
-| `ANTHROPIC_API_KEY` | Anthropic API 金鑰 | （必要） |
-| `CLAUDE_CODE_USE_BEDROCK` | 使用 AWS Bedrock | `0` |
-| `CLAUDE_CODE_USE_VERTEX` | 使用 GCP Vertex AI | `0` |
-| `AWS_REGION` | Bedrock 區域 | `us-east-1` |
-| `ANTHROPIC_MODEL` | 預設模型 | `claude-sonnet-4-20250514` |
-| `CLAUDE_CODE_MAX_TOKENS` | 最大回應 Token 數 | 模型限制 |
-| `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` | 停用遙測 | `0` |
-| `CLAUDE_CODE_API_BASE_URL` | API 基礎 URL | `https://api.anthropic.com` |
-| `CLAUDE_CODE_GIT_BASH_PATH` | 🆕 Windows Git Bash 路徑 | 自動偵測 |
-| `ENABLE_TOOL_SEARCH` | 🆕 啟用 MCP Tool Search（`1` 或 `auto`） | `0` |
-| `MAX_MCP_OUTPUT_TOKENS` | 🆕 MCP 工具回傳最大 Token 數 | `25000` |
-| `CLAUDE_CODE_DISABLE_CRON` | 🆕 停用排程任務功能 | `0` |
-| `FORCE_AUTOUPDATE_PLUGINS` | 🆕 強制自動更新所有 Plugin | `0` |
-| `SLASH_COMMAND_TOOL_CHAR_BUDGET` | 🆕 Skill 輸出字元預算 | - |
-| `HTTP_PROXY` / `HTTPS_PROXY` | 代理伺服器 | -  |
-| `CLAUDE_CODE_CONFIG_DIR` | 自訂配置路徑 | `~/.claude` |
-| `CLAUDE_CODE_SKIP_OOBE` | 跳過首次使用體驗 | `0` |
+| 環境變數                                   | 說明                                     | 預設值                      |
+| ------------------------------------------ | ---------------------------------------- | --------------------------- |
+| `ANTHROPIC_API_KEY`                        | Anthropic API 金鑰                       | （必要）                    |
+| `CLAUDE_CODE_USE_BEDROCK`                  | 使用 AWS Bedrock                         | `0`                         |
+| `CLAUDE_CODE_USE_VERTEX`                   | 使用 GCP Vertex AI                       | `0`                         |
+| `AWS_REGION`                               | Bedrock 區域                             | `us-east-1`                 |
+| `ANTHROPIC_MODEL`                          | 預設模型                                 | `claude-sonnet-4-20250514`  |
+| `CLAUDE_CODE_MAX_TOKENS`                   | 最大回應 Token 數                        | 模型限制                    |
+| `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` | 停用遙測                                 | `0`                         |
+| `CLAUDE_CODE_API_BASE_URL`                 | API 基礎 URL                             | `https://api.anthropic.com` |
+| `CLAUDE_CODE_GIT_BASH_PATH`                | 🆕 Windows Git Bash 路徑                 | 自動偵測                    |
+| `ENABLE_TOOL_SEARCH`                       | 🆕 啟用 MCP Tool Search（`1` 或 `auto`） | `0`                         |
+| `MAX_MCP_OUTPUT_TOKENS`                    | 🆕 MCP 工具回傳最大 Token 數             | `25000`                     |
+| `CLAUDE_CODE_DISABLE_CRON`                 | 🆕 停用排程任務功能                      | `0`                         |
+| `FORCE_AUTOUPDATE_PLUGINS`                 | 🆕 強制自動更新所有 Plugin               | `0`                         |
+| `SLASH_COMMAND_TOOL_CHAR_BUDGET`           | 🆕 Skill 輸出字元預算                    | -                           |
+| `HTTP_PROXY` / `HTTPS_PROXY`               | 代理伺服器                               | -                           |
+| `CLAUDE_CODE_CONFIG_DIR`                   | 自訂配置路徑                             | `~/.claude`                 |
+| `CLAUDE_CODE_SKIP_OOBE`                    | 跳過首次使用體驗                         | `0`                         |
 
 ### A.7 退出碼（Exit Codes）
 
-| 退出碼 | 含義 | 說明 |
-|--------|------|------|
-| `0` | 成功 | 正常完成 |
-| `1` | 一般錯誤 | 執行中發生錯誤 |
-| `2` | 使用者取消 | 使用者手動中止 |
-| `3` | 權限拒絕 | 缺少必要權限 |
-| `4` | API 錯誤 | API 通訊失敗 |
-| `5` | 配置錯誤 | 配置檔案語法錯誤或缺少必要設定 |
+| 退出碼 | 含義       | 說明                           |
+| ------ | ---------- | ------------------------------ |
+| `0`    | 成功       | 正常完成                       |
+| `1`    | 一般錯誤   | 執行中發生錯誤                 |
+| `2`    | 使用者取消 | 使用者手動中止                 |
+| `3`    | 權限拒絕   | 缺少必要權限                   |
+| `4`    | API 錯誤   | API 通訊失敗                   |
+| `5`    | 配置錯誤   | 配置檔案語法錯誤或缺少必要設定 |
 
 ### A.8 CLI 使用範例集
 
@@ -11355,14 +11503,14 @@ claude -p "分析 $(git diff --name-only --diff-filter=U) 中的合併衝突，�
 
 ### B.1 配置檔案一覽
 
-| 檔案 | 位置 | 用途 | 優先級 |
-|------|------|------|--------|
-| `managed-settings.json` | `~/.claude/` | 管理員強制設定（最高） | 1（最高）|
-| `settings.json`（Enterprise） | `~/.claude/` | 企業使用者設定 | 2 |
-| `settings.json`（Project） | `.claude/` | 專案設定 | 3 |
-| `CLAUDE.md` | 各目錄 | 開發指令、規範 | 4 |
-| `.mcp.json` | 專案根目錄 | MCP Server 配置 | - |
-| `.claudeignore` | 專案根目錄 | 排除檔案（類似 .gitignore） | - |
+| 檔案                          | 位置         | 用途                        | 優先級    |
+| ----------------------------- | ------------ | --------------------------- | --------- |
+| `managed-settings.json`       | `~/.claude/` | 管理員強制設定（最高）      | 1（最高） |
+| `settings.json`（Enterprise） | `~/.claude/` | 企業使用者設定              | 2         |
+| `settings.json`（Project）    | `.claude/`   | 專案設定                    | 3         |
+| `CLAUDE.md`                   | 各目錄       | 開發指令、規範              | 4         |
+| `.mcp.json`                   | 專案根目錄   | MCP Server 配置             | -         |
+| `.claudeignore`               | 專案根目錄   | 排除檔案（類似 .gitignore） | -         |
 
 ### B.2 settings.json 完整結構
 
@@ -11375,10 +11523,7 @@ claude -p "分析 $(git diff --name-only --diff-filter=U) 中的合併衝突，�
       "Bash(npm run *)",
       "mcp tool server_name tool_name"
     ],
-    "deny": [
-      "Bash(rm -rf *)",
-      "mcp tool edit in directory /production/"
-    ]
+    "deny": ["Bash(rm -rf *)", "mcp tool edit in directory /production/"]
   },
   "hooks": {
     "PreToolUse": [
@@ -11443,21 +11588,27 @@ claude -p "分析 $(git diff --name-only --diff-filter=U) 中的合併衝突，�
 # 專案名稱
 
 ## 技術棧
+
 （列出語言、框架、資料庫等）
 
 ## 編碼規範
+
 （列出命名慣例、格式規範等）
 
 ## 架構說明
+
 （描述專案架構、目錄結構等）
 
 ## 常用命令
+
 （列出 build、test、deploy 等命令）
 
 ## 禁止事項
+
 （列出 Claude Code 不應該做的事情）
 
 ## Custom Commands
+
 （定義專案特定的 slash commands）
 ```
 
@@ -11571,14 +11722,14 @@ logs/
 
 **建議排除的檔案類型**：
 
-| 類型 | 原因 | 範例 |
-|------|------|------|
-| **二進位檔** | Claude 無法解讀 | `*.exe`, `*.dll`, `*.so` |
-| **大型資料** | 佔用過多 token | `*.csv`, `*.json`(大型) |
-| **建置產物** | 非原始碼 | `dist/`, `build/`, `target/` |
-| **框架快取** | 無分析價值 | `node_modules/`, `.gradle/` |
-| **媒體檔案** | 非程式碼 | `*.jpg`, `*.mp4` |
-| **密鑰檔案** | 安全考量 | `*.pem`, `*.key`, `.env` |
+| 類型         | 原因            | 範例                         |
+| ------------ | --------------- | ---------------------------- |
+| **二進位檔** | Claude 無法解讀 | `*.exe`, `*.dll`, `*.so`     |
+| **大型資料** | 佔用過多 token  | `*.csv`, `*.json`(大型)      |
+| **建置產物** | 非原始碼        | `dist/`, `build/`, `target/` |
+| **框架快取** | 無分析價值      | `node_modules/`, `.gradle/`  |
+| **媒體檔案** | 非程式碼        | `*.jpg`, `*.mp4`             |
+| **密鑰檔案** | 安全考量        | `*.pem`, `*.key`, `.env`     |
 
 ### B.8 配置優先級完整圖
 
@@ -11592,9 +11743,9 @@ graph TB
         M5["CLAUDE.md (各層級)<br>(指引與摘要)"]
         M6[".mcp.json<br>(專案 MCP 配置)"]
     end
-    
+
     M1 --> M2 --> M3 --> M4 --> M5 --> M6
-    
+
     style M1 fill:#fee2e2,stroke:#ef4444
     style M2 fill:#fef3c7,stroke:#f59e0b
     style M3 fill:#dbeafe,stroke:#3b82f6
@@ -11611,58 +11762,58 @@ graph TB
 
 ### C.1 所有事件
 
-| 事件名稱 | 觸發時機 | Matcher 匹配欄位 |
-|---------|---------|-----------------|
-| **SessionStart** | 會話開始或恢復時 | `startup`/`resume`/`clear`/`compact` |
-| **Setup** | 🆕 `--init-only` 啟動或 `-p` 模式 `--init`/`--maintenance` | `init`/`maintenance` |
-| **InstructionsLoaded** | CLAUDE.md 等指引載入後 | `session_start`/`nested_traversal`/`path_glob_match`/`include`/`compact` |
-| **ConfigChange** | settings.json 變更時 | `user_settings`/`project_settings`/`local_settings`/`policy_settings`/`skills` |
-| **UserPromptSubmit** | 使用者送出 prompt 後 | 無 |
-| **UserPromptExpansion** | 🆕 命令展開為 prompt 前 | 命令名稱 |
-| **PreToolUse** | 工具執行前 | 工具名稱 |
-| **PermissionRequest** | 需要權限確認對話框時 | 工具名稱 |
-| **PermissionDenied** | 🆕 工具呼叫被自動模式分類器拒絕時 | 工具名稱 |
-| **PostToolUse** | 工具執行成功後 | 工具名稱 |
-| **PostToolUseFailure** | 工具執行失敗後 | 工具名稱 |
-| **PostToolBatch** | 🆕 一整批並行工具呼叫完成後 | 無 |
-| **FileChanged** | 監視的檔案被修改時 | 文字檔案名稱（如 `.envrc\|.env`） |
-| **CwdChanged** | 工作目錄切換時 | 無 |
-| **Notification** | 系統通知觸發時 | `permission_prompt`/`idle_prompt`/`auth_success`/`elicitation_dialog`/`elicitation_complete`/`elicitation_response` |
-| **MessageDisplay** | 🆕 助理訊息文字顯示時 | 無 |
-| **Stop** | Claude 正常停止回應時 | 無 |
-| **StopFailure** | Claude 異常停止時 | `rate_limit`/`authentication_failed`/`oauth_org_not_allowed`/`billing_error`/`invalid_request`/`model_not_found`/`server_error`/`max_output_tokens`/`unknown` |
-| **SubagentStart** | Subagent 啟動時 | Agent 類型名稱 |
-| **SubagentStop** | Subagent 完成時 | Agent 類型名稱 |
-| **TeammateIdle** | Teammate 閒置時 | 無 |
-| **TaskCreated** | 🆕 透過 TaskCreate 建立任務時 | 無 |
-| **TaskCompleted** | 任務完成時 | 無 |
-| **WorktreeCreate** | 建立 git worktree 時 | 無 |
-| **WorktreeRemove** | 移除 git worktree 時 | 無 |
-| **PreCompact** | 執行 /compact 前 | `manual`/`auto` |
-| **PostCompact** | 執行 /compact 後 | `manual`/`auto` |
-| **Elicitation** | MCP Server 請求使用者輸入時 | MCP Server 名稱 |
-| **ElicitationResult** | 使用者回答 MCP 澄清問題後 | MCP Server 名稱 |
-| **SessionEnd** | 會話結束時 | `clear`/`resume`/`logout`/`prompt_input_exit`/`bypass_permissions_disabled`/`other` |
+| 事件名稱                | 觸發時機                                                   | Matcher 匹配欄位                                                                                                                                              |
+| ----------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SessionStart**        | 會話開始或恢復時                                           | `startup`/`resume`/`clear`/`compact`                                                                                                                          |
+| **Setup**               | 🆕 `--init-only` 啟動或 `-p` 模式 `--init`/`--maintenance` | `init`/`maintenance`                                                                                                                                          |
+| **InstructionsLoaded**  | CLAUDE.md 等指引載入後                                     | `session_start`/`nested_traversal`/`path_glob_match`/`include`/`compact`                                                                                      |
+| **ConfigChange**        | settings.json 變更時                                       | `user_settings`/`project_settings`/`local_settings`/`policy_settings`/`skills`                                                                                |
+| **UserPromptSubmit**    | 使用者送出 prompt 後                                       | 無                                                                                                                                                            |
+| **UserPromptExpansion** | 🆕 命令展開為 prompt 前                                    | 命令名稱                                                                                                                                                      |
+| **PreToolUse**          | 工具執行前                                                 | 工具名稱                                                                                                                                                      |
+| **PermissionRequest**   | 需要權限確認對話框時                                       | 工具名稱                                                                                                                                                      |
+| **PermissionDenied**    | 🆕 工具呼叫被自動模式分類器拒絕時                          | 工具名稱                                                                                                                                                      |
+| **PostToolUse**         | 工具執行成功後                                             | 工具名稱                                                                                                                                                      |
+| **PostToolUseFailure**  | 工具執行失敗後                                             | 工具名稱                                                                                                                                                      |
+| **PostToolBatch**       | 🆕 一整批並行工具呼叫完成後                                | 無                                                                                                                                                            |
+| **FileChanged**         | 監視的檔案被修改時                                         | 文字檔案名稱（如 `.envrc\|.env`）                                                                                                                             |
+| **CwdChanged**          | 工作目錄切換時                                             | 無                                                                                                                                                            |
+| **Notification**        | 系統通知觸發時                                             | `permission_prompt`/`idle_prompt`/`auth_success`/`elicitation_dialog`/`elicitation_complete`/`elicitation_response`                                           |
+| **MessageDisplay**      | 🆕 助理訊息文字顯示時                                      | 無                                                                                                                                                            |
+| **Stop**                | Claude 正常停止回應時                                      | 無                                                                                                                                                            |
+| **StopFailure**         | Claude 異常停止時                                          | `rate_limit`/`authentication_failed`/`oauth_org_not_allowed`/`billing_error`/`invalid_request`/`model_not_found`/`server_error`/`max_output_tokens`/`unknown` |
+| **SubagentStart**       | Subagent 啟動時                                            | Agent 類型名稱                                                                                                                                                |
+| **SubagentStop**        | Subagent 完成時                                            | Agent 類型名稱                                                                                                                                                |
+| **TeammateIdle**        | Teammate 閒置時                                            | 無                                                                                                                                                            |
+| **TaskCreated**         | 🆕 透過 TaskCreate 建立任務時                              | 無                                                                                                                                                            |
+| **TaskCompleted**       | 任務完成時                                                 | 無                                                                                                                                                            |
+| **WorktreeCreate**      | 建立 git worktree 時                                       | 無                                                                                                                                                            |
+| **WorktreeRemove**      | 移除 git worktree 時                                       | 無                                                                                                                                                            |
+| **PreCompact**          | 執行 /compact 前                                           | `manual`/`auto`                                                                                                                                               |
+| **PostCompact**         | 執行 /compact 後                                           | `manual`/`auto`                                                                                                                                               |
+| **Elicitation**         | MCP Server 請求使用者輸入時                                | MCP Server 名稱                                                                                                                                               |
+| **ElicitationResult**   | 使用者回答 MCP 澄清問題後                                  | MCP Server 名稱                                                                                                                                               |
+| **SessionEnd**          | 會話結束時                                                 | `clear`/`resume`/`logout`/`prompt_input_exit`/`bypass_permissions_disabled`/`other`                                                                           |
 
 ### C.2 Hook 類型
 
-| 類型 | 格式 | 說明 |
-|------|------|------|
-| **command** | `{"type": "command", "command": "shell command"}` | 執行 Shell 命令，stdin 接收事件 JSON |
-| **http** | `{"type": "http", "url": "https://..."}` | 發送 HTTP POST 請求 |
-| **mcp_tool** | 🆕 `{"type": "mcp_tool", "server": "name", "tool": "name"}` | 呼叫 MCP Server 工具 |
-| **prompt** | `{"type": "prompt", "prompt": "指令文字"}` | 單輪 LLM 評估（預設 Haiku） |
-| **agent** | `{"type": "agent", "prompt": "任務描述"}` | ⚠️ 實驗性：多輪代理驗證 |
+| 類型         | 格式                                                        | 說明                                 |
+| ------------ | ----------------------------------------------------------- | ------------------------------------ |
+| **command**  | `{"type": "command", "command": "shell command"}`           | 執行 Shell 命令，stdin 接收事件 JSON |
+| **http**     | `{"type": "http", "url": "https://..."}`                    | 發送 HTTP POST 請求                  |
+| **mcp_tool** | 🆕 `{"type": "mcp_tool", "server": "name", "tool": "name"}` | 呼叫 MCP Server 工具                 |
+| **prompt**   | `{"type": "prompt", "prompt": "指令文字"}`                  | 單輪 LLM 評估（預設 Haiku）          |
+| **agent**    | `{"type": "agent", "prompt": "任務描述"}`                   | ⚠️ 實驗性：多輪代理驗證              |
 
 ### C.3 環境變數
 
 在 Hook command 中可使用的環境變數：
 
-| 變數 | 說明 |
-|------|------|
+| 變數                 | 說明                           |
+| -------------------- | ------------------------------ |
 | `CLAUDE_PROJECT_DIR` | 專案根目錄路徑（所有事件可用） |
-| `CLAUDE_ENV_FILE` | 環境變數持久化檔案路徑 |
-| `CLAUDE_SESSION_ID` | 當前會話 ID（透過 stdin JSON）|
+| `CLAUDE_ENV_FILE`    | 環境變數持久化檔案路徑         |
+| `CLAUDE_SESSION_ID`  | 當前會話 ID（透過 stdin JSON） |
 
 > 📌 **v3.2 注意**：Hook 主要透過 **stdin JSON** 接收事件資料（包含 `tool_input`、`tool_output`、`session_id` 等欄位），而非環境變數。使用 `jq` 解析 stdin JSON 是推薦的做法。
 
@@ -11996,7 +12147,7 @@ flowchart TB
     K --> O[完成]
     M --> O
     N --> O
-    
+
     style A fill:#dbeafe,stroke:#3b82f6
     style M fill:#fee2e2,stroke:#ef4444
     style K fill:#d1fae5,stroke:#10b981
@@ -12005,23 +12156,23 @@ flowchart TB
 
 #### Hook 錯誤處理規則
 
-| 事件類別 | Hook 失敗行為 | 說明 |
-|---------|-------------|------|
-| **PreToolUse** | 阻止工具執行 | stderr 輸出的 `BLOCK:` 開頭訊息會顯示給使用者 |
-| **PostToolUse** | 記錄錯誤並繼續 | 不影響已完成的工具操作 |
-| **Notification** | 靜默失敗 | 通知失敗不應中斷工作流程 |
-| **Stop/PostSession** | 記錄錯誤 | Agent 已停止，Hook 失敗不影響結果 |
-| **PreCompact** | 記錄錯誤並繼續壓縮 | 壓縮操作不應被 Hook 失敗阻止 |
-| **Worktree 事件** | 記錄錯誤 | Worktree 操作已完成，Hook 失敗不影響 |
+| 事件類別             | Hook 失敗行為      | 說明                                          |
+| -------------------- | ------------------ | --------------------------------------------- |
+| **PreToolUse**       | 阻止工具執行       | stderr 輸出的 `BLOCK:` 開頭訊息會顯示給使用者 |
+| **PostToolUse**      | 記錄錯誤並繼續     | 不影響已完成的工具操作                        |
+| **Notification**     | 靜默失敗           | 通知失敗不應中斷工作流程                      |
+| **Stop/PostSession** | 記錄錯誤           | Agent 已停止，Hook 失敗不影響結果             |
+| **PreCompact**       | 記錄錯誤並繼續壓縮 | 壓縮操作不應被 Hook 失敗阻止                  |
+| **Worktree 事件**    | 記錄錯誤           | Worktree 操作已完成，Hook 失敗不影響          |
 
 #### Hook 超時與效能
 
-| 配置 | 預設值 | 說明 |
-|------|-------|------|
-| **command 超時** | 60 秒 | Shell 命令超過此時間自動終止 |
-| **http 超時** | 30 秒 | HTTP 請求超過此時間自動終止 |
-| **並行執行** | 否 | 同一事件的多個 Hook 依序執行 |
-| **失敗重試** | 否 | Hook 失敗不會自動重試 |
+| 配置             | 預設值 | 說明                         |
+| ---------------- | ------ | ---------------------------- |
+| **command 超時** | 60 秒  | Shell 命令超過此時間自動終止 |
+| **http 超時**    | 30 秒  | HTTP 請求超過此時間自動終止  |
+| **並行執行**     | 否     | 同一事件的多個 Hook 依序執行 |
+| **失敗重試**     | 否     | Hook 失敗不會自動重試        |
 
 > **⚠️ 注意**：Hook 命令應該輕量且快速。避免在 Hook 中執行耗時操作（如完整測試套件），否則會嚴重影響 Claude Code 的回應速度。
 
@@ -12033,42 +12184,42 @@ flowchart TB
 
 ### D.1 官方 MCP Servers
 
-| Server | 套件名稱 | 用途 |
-|--------|---------|------|
-| **GitHub** | `@modelcontextprotocol/server-github` | GitHub Issues、PR、程式碼搜尋 |
-| **GitLab** | `@modelcontextprotocol/server-gitlab` | GitLab 專案管理 |
-| **Filesystem** | `@modelcontextprotocol/server-filesystem` | 檔案系統操作 |
-| **PostgreSQL** | `@modelcontextprotocol/server-postgres` | PostgreSQL 查詢 |
-| **SQLite** | `@modelcontextprotocol/server-sqlite` | SQLite 資料庫查詢 |
-| **Slack** | `@modelcontextprotocol/server-slack` | Slack 訊息收發 |
-| **Google Drive** | `@modelcontextprotocol/server-gdrive` | Google Drive 檔案存取 |
-| **Puppeteer** | `@modelcontextprotocol/server-puppeteer` | 網頁自動化與截圖 |
-| **Brave Search** | `@modelcontextprotocol/server-brave-search` | Brave 搜尋引擎 |
-| **Memory** | `@modelcontextprotocol/server-memory` | 持久化知識圖譜記憶 |
-| **Fetch** | `@modelcontextprotocol/server-fetch` | HTTP 請求與網頁擷取 |
-| **Sentry** | `@modelcontextprotocol/server-sentry` | 錯誤追蹤與監控 |
-| **Linear** | `@modelcontextprotocol/server-linear` | Linear 專案管理 |
-| **Google Maps** | `@modelcontextprotocol/server-google-maps` | Google Maps API |
-| **EverArt** | `@modelcontextprotocol/server-everart` | AI 圖片生成 |
+| Server           | 套件名稱                                    | 用途                          |
+| ---------------- | ------------------------------------------- | ----------------------------- |
+| **GitHub**       | `@modelcontextprotocol/server-github`       | GitHub Issues、PR、程式碼搜尋 |
+| **GitLab**       | `@modelcontextprotocol/server-gitlab`       | GitLab 專案管理               |
+| **Filesystem**   | `@modelcontextprotocol/server-filesystem`   | 檔案系統操作                  |
+| **PostgreSQL**   | `@modelcontextprotocol/server-postgres`     | PostgreSQL 查詢               |
+| **SQLite**       | `@modelcontextprotocol/server-sqlite`       | SQLite 資料庫查詢             |
+| **Slack**        | `@modelcontextprotocol/server-slack`        | Slack 訊息收發                |
+| **Google Drive** | `@modelcontextprotocol/server-gdrive`       | Google Drive 檔案存取         |
+| **Puppeteer**    | `@modelcontextprotocol/server-puppeteer`    | 網頁自動化與截圖              |
+| **Brave Search** | `@modelcontextprotocol/server-brave-search` | Brave 搜尋引擎                |
+| **Memory**       | `@modelcontextprotocol/server-memory`       | 持久化知識圖譜記憶            |
+| **Fetch**        | `@modelcontextprotocol/server-fetch`        | HTTP 請求與網頁擷取           |
+| **Sentry**       | `@modelcontextprotocol/server-sentry`       | 錯誤追蹤與監控                |
+| **Linear**       | `@modelcontextprotocol/server-linear`       | Linear 專案管理               |
+| **Google Maps**  | `@modelcontextprotocol/server-google-maps`  | Google Maps API               |
+| **EverArt**      | `@modelcontextprotocol/server-everart`      | AI 圖片生成                   |
 
 ### D.2 社群熱門 MCP Servers
 
-| Server  | 用途 | 分類 |
-|---------|------|------|
-| **mcp-server-docker** | Docker 容器管理 | DevOps |
-| **mcp-server-kubernetes** | Kubernetes 叢集管理 | DevOps |
-| **mcp-server-aws** | AWS 服務操作 | 雲端 |
-| **mcp-server-azure** | Azure 服務操作 | 雲端 |
-| **mcp-server-notion** | Notion 頁面讀寫 | 生產力 |
-| **mcp-server-jira** | Jira 專案管理 | 專案管理 |
-| **mcp-server-confluence** | Confluence 文件管理 | 文件 |
-| **mcp-server-mysql** | MySQL 資料庫 | 資料庫 |
-| **mcp-server-mongodb** | MongoDB 資料庫 | 資料庫 |
-| **mcp-server-redis** | Redis 快取操作 | 資料庫 |
-| **mcp-server-elasticsearch** | Elasticsearch 搜尋 | 搜尋 |
-| **mcp-server-playwright** | Playwright 瀏覽器自動化 | 測試 |
-| **mcp-server-obsidian** | Obsidian 筆記管理 | 生產力 |
-| **mcp-server-todoist** | Todoist 任務管理 | 生產力 |
+| Server                       | 用途                    | 分類     |
+| ---------------------------- | ----------------------- | -------- |
+| **mcp-server-docker**        | Docker 容器管理         | DevOps   |
+| **mcp-server-kubernetes**    | Kubernetes 叢集管理     | DevOps   |
+| **mcp-server-aws**           | AWS 服務操作            | 雲端     |
+| **mcp-server-azure**         | Azure 服務操作          | 雲端     |
+| **mcp-server-notion**        | Notion 頁面讀寫         | 生產力   |
+| **mcp-server-jira**          | Jira 專案管理           | 專案管理 |
+| **mcp-server-confluence**    | Confluence 文件管理     | 文件     |
+| **mcp-server-mysql**         | MySQL 資料庫            | 資料庫   |
+| **mcp-server-mongodb**       | MongoDB 資料庫          | 資料庫   |
+| **mcp-server-redis**         | Redis 快取操作          | 資料庫   |
+| **mcp-server-elasticsearch** | Elasticsearch 搜尋      | 搜尋     |
+| **mcp-server-playwright**    | Playwright 瀏覽器自動化 | 測試     |
+| **mcp-server-obsidian**      | Obsidian 筆記管理       | 生產力   |
+| **mcp-server-todoist**       | Todoist 任務管理        | 生產力   |
 
 ### D.3 依場景選擇 MCP Server
 
@@ -12083,7 +12234,7 @@ graph TB
         S6[溝通] --> M6["Slack / Teams"]
         S7[測試] --> M7["Puppeteer / Playwright"]
     end
-    
+
     style S1 fill:#dbeafe,stroke:#3b82f6
     style S2 fill:#dcfce7,stroke:#22c55e
     style S3 fill:#fef3c7,stroke:#f59e0b
@@ -12116,7 +12267,12 @@ graph TB
     },
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/docs", "/specs"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/docs",
+        "/specs"
+      ]
     }
   }
 }
@@ -12167,7 +12323,7 @@ import {
 
 const server = new Server(
   { name: "my-custom-server", version: "1.0.0" },
-  { capabilities: { tools: {} } }
+  { capabilities: { tools: {} } },
 );
 
 // 定義可用工具
@@ -12183,11 +12339,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           environment: {
             type: "string",
             enum: ["dev", "staging", "prod"],
-            description: "環境"
-          }
+            description: "環境",
+          },
         },
-        required: ["service"]
-      }
+        required: ["service"],
+      },
     },
     {
       name: "search_wiki",
@@ -12196,12 +12352,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         type: "object",
         properties: {
           query: { type: "string", description: "搜尋關鍵字" },
-          category: { type: "string", description: "分類過濾" }
+          category: { type: "string", description: "分類過濾" },
         },
-        required: ["query"]
-      }
-    }
-  ]
+        required: ["query"],
+      },
+    },
+  ],
 }));
 
 // 實作工具邏輯
@@ -12214,14 +12370,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const service = (args as any).service;
       // 實際查詢內部 API（此處為範例）
       const response = await fetch(
-        `https://api.internal.company.com/${env}/services/${encodeURIComponent(service)}/status`
+        `https://api.internal.company.com/${env}/services/${encodeURIComponent(service)}/status`,
       );
       const data = await response.json();
       return {
-        content: [{
-          type: "text",
-          text: JSON.stringify(data, null, 2)
-        }]
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(data, null, 2),
+          },
+        ],
       };
     }
 
@@ -12231,16 +12389,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const params = new URLSearchParams({ q: query });
       if (category) params.append("category", category);
       const response = await fetch(
-        `https://wiki.internal.company.com/api/search?${params}`
+        `https://wiki.internal.company.com/api/search?${params}`,
       );
       const results = await response.json();
       return {
-        content: [{
-          type: "text",
-          text: results.items.map((item: any) =>
-            `### ${item.title}\n${item.summary}\n[連結](${item.url})`
-          ).join("\n\n")
-        }]
+        content: [
+          {
+            type: "text",
+            text: results.items
+              .map(
+                (item: any) =>
+                  `### ${item.title}\n${item.summary}\n[連結](${item.url})`,
+              )
+              .join("\n\n"),
+          },
+        ],
       };
     }
 
@@ -12312,15 +12475,15 @@ claude mcp get server-name # 查看特定 Server 狀態
 
 #### 常見問題排解
 
-| 問題 | 可能原因 | 解決方案 |
-|------|---------|---------|
-| **Server 無回應** | 進程啟動失敗 | 確認 `command` 路徑正確，手動執行測試 |
-| **工具不顯示** | `ListTools` handler 未實作 | 確認 `setRequestHandler(ListToolsRequestSchema, ...)` 已註冊 |
-| **JSON 解析錯誤** | stdout 輸出非 JSON | 確保 Server 只透過 stdout 輸出 JSON-RPC 訊息 |
-| **環境變數未載入** | env 配置遺漏 | 檢查 `.mcp.json` 中的 `env` 欄位 |
-| **timeout 錯誤** | Server 處理過慢 | 優化 API 呼叫或增加 timeout 設定 |
-| **權限錯誤** | Token 過期或無效 | 更新環境變數中的 Token |
-| **多次啟動** | 舊 process 未關閉 | 使用 `claude mcp reset server-name` 重啟 |
+| 問題               | 可能原因                   | 解決方案                                                     |
+| ------------------ | -------------------------- | ------------------------------------------------------------ |
+| **Server 無回應**  | 進程啟動失敗               | 確認 `command` 路徑正確，手動執行測試                        |
+| **工具不顯示**     | `ListTools` handler 未實作 | 確認 `setRequestHandler(ListToolsRequestSchema, ...)` 已註冊 |
+| **JSON 解析錯誤**  | stdout 輸出非 JSON         | 確保 Server 只透過 stdout 輸出 JSON-RPC 訊息                 |
+| **環境變數未載入** | env 配置遺漏               | 檢查 `.mcp.json` 中的 `env` 欄位                             |
+| **timeout 錯誤**   | Server 處理過慢            | 優化 API 呼叫或增加 timeout 設定                             |
+| **權限錯誤**       | Token 過期或無效           | 更新環境變數中的 Token                                       |
+| **多次啟動**       | 舊 process 未關閉          | 使用 `claude mcp reset server-name` 重啟                     |
 
 #### MCP Server 效能監控腳本
 
@@ -12337,10 +12500,10 @@ echo ""
 for server in "${MCP_SERVERS[@]}"; do
     # 檢查 Server 狀態
     status=$(claude mcp get "$server" 2>&1)
-    
+
     if echo "$status" | grep -q "connected"; then
         echo "✅ $server: 運行中"
-        
+
         # 測試工具列舉
         tool_count=$(echo "$status" | grep -c "tool:")
         echo "   工具數量: $tool_count"
@@ -12358,16 +12521,16 @@ echo "提示: 使用 'claude mcp list' 查看完整列表"
 
 ### D.7 MCP Server 安全最佳實踐
 
-| 實踐 | 說明 | 實作方式 |
-|------|------|---------|
-| **最小權限** | Server 只申請必要的權限 | 限定 API scope、資料庫只讀連線 |
-| **Token 隔離** | 每個 Server 使用獨立 Token | 在 env 中分別設定，不共用 |
-| **網路限制** | 限制 Server 的網路存取範圍 | 使用防火牆規則或 Docker 網路 |
-| **日誌審計** | 記錄所有 MCP 呼叫 | Server 端實作 logging middleware |
-| **Input 驗證** | 驗證所有工具呼叫參數 | 在 handler 中使用 schema validation |
-| **超時控制** | 設定合理的執行超時 | 實作 AbortController、timeout wrapper |
-| **錯誤處理** | 不洩露內部錯誤細節 | 回傳通用錯誤訊息，內部記錄詳細資訊 |
-| **版本管理** | 鎖定 Server 版本 | 使用確切版本號而非 latest |
+| 實踐           | 說明                       | 實作方式                              |
+| -------------- | -------------------------- | ------------------------------------- |
+| **最小權限**   | Server 只申請必要的權限    | 限定 API scope、資料庫只讀連線        |
+| **Token 隔離** | 每個 Server 使用獨立 Token | 在 env 中分別設定，不共用             |
+| **網路限制**   | 限制 Server 的網路存取範圍 | 使用防火牆規則或 Docker 網路          |
+| **日誌審計**   | 記錄所有 MCP 呼叫          | Server 端實作 logging middleware      |
+| **Input 驗證** | 驗證所有工具呼叫參數       | 在 handler 中使用 schema validation   |
+| **超時控制**   | 設定合理的執行超時         | 實作 AbortController、timeout wrapper |
+| **錯誤處理**   | 不洩露內部錯誤細節         | 回傳通用錯誤訊息，內部記錄詳細資訊    |
+| **版本管理**   | 鎖定 Server 版本           | 使用確切版本號而非 latest             |
 
 #### 安全配置範例
 
@@ -12377,10 +12540,7 @@ echo "提示: 使用 'claude mcp list' 查看完整列表"
   "mcpServers": {
     "database": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-postgres@1.2.3"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-postgres@1.2.3"],
       "env": {
         "DATABASE_URL": "${DB_READONLY_URL}"
       }
@@ -12393,14 +12553,8 @@ echo "提示: 使用 'claude mcp list' 查看完整列表"
 // .claude/settings.json - 限制 MCP 工具的權限
 {
   "permissions": {
-    "allow": [
-      "mcp__database__query",
-      "mcp__database__describe_table"
-    ],
-    "deny": [
-      "mcp__database__execute",
-      "mcp__database__drop_table"
-    ]
+    "allow": ["mcp__database__query", "mcp__database__describe_table"],
+    "deny": ["mcp__database__execute", "mcp__database__drop_table"]
   }
 }
 ```
@@ -12413,84 +12567,84 @@ echo "提示: 使用 'claude mcp list' 查看完整列表"
 
 > 🆕 **v3.2 更新**：新增 mcp_tool Hook、streamable-http、alwaysLoad、CLAUDE_PROJECT_DIR、/fork、skillOverrides 等術語
 
-| 術語 | 英文 | 說明 |
-|------|------|------|
-| **Agentic Loop** | Agentic Loop | Claude Code 的核心執行迴圈：接收指令 → 分析 → 選擇工具 → 執行 → 評估結果 → 重複 |
-| **Agent Skills** | Agent Skills | 🆕 開放標準（agentskills.io），定義跨 AI 編輯器的技能可移植格式 |
-| **Agent Teams** | Agent Teams / Cowork | 多個 Claude Code Agent 透過 git worktree 並行協作的模式 |
-| **alwaysLoad** | alwaysLoad | 🆕 MCP Server 配置欄位，設為 true 可跳過 Tool Search 延遲載入，始終載入工具 |
-| **Channels** | Channels | 🆕 基於 MCP 的事件推送機制，讓外部事件（Telegram/Discord/Webhook）可注入 Claude Code session |
-| **Checkpoint** | Checkpoint | VS Code 中 Claude Code 每次變更前自動建立的還原點 |
-| **CLAUDE.md** | CLAUDE.md | Claude Code 的指令檔案，類似 README 但專為 AI 撰寫 |
-| **CLAUDE_PROJECT_DIR** | CLAUDE_PROJECT_DIR | 🆕 Claude Code 自動注入的環境變數，指向專案根目錄路徑 |
-| **Compact** | Compact | 壓縮對話歷史以釋放 Token 空間的操作 |
-| **Context Window** | Context Window | 模型一次可處理的最大 Token 數量（約 200K tokens） |
-| **Desktop App** | Desktop App | 🆕 Claude Code 桌面應用程式（macOS/Windows），支援排程任務和 Dispatch |
-| **Dispatch** | Dispatch | 🆕 從手機端控制 Desktop App 的遠端功能 |
-| **Elicitation** | Elicitation | 🆕 MCP Server 向使用者發起互動式確認的機制 |
-| **headersHelper** | headersHelper | 🆕 MCP 配置中動態產生認證 header 的命令 |
-| **Headless Mode** | Headless Mode | 無互動式 UI 的 Claude Code 執行模式（`claude -p`） |
-| **Hook** | Hook | 在特定事件觸發時自動執行的腳本或動作 |
-| **Lead Agent** | Lead Agent | Agent Teams 中負責分配任務和協調的主要 Agent |
-| **managed-settings.json** | managed-settings.json | 管理員部署的強制設定檔，優先級最高 |
-| **MCP** | Model Context Protocol | 連接外部工具和資料來源的標準協議 |
-| **MCP Server** | MCP Server | 實作 MCP 協議、提供特定工具和資源存取的服務程式 |
-| **mcp_tool** | mcp_tool Hook | 🆕 Hook 類型之一，直接呼叫 MCP Server 工具的 Hook |
-| **MEMORY.md** | MEMORY.md | 🆕 Claude Code 自動維護的記憶檔案（`.claude/MEMORY.md`） |
-| **Output Style** | Output Style | 控制 Claude Code 回應格式的預設風格 |
-| **Permission** | Permission | Claude Code 的權限控制，使用 allow/deny 規則 |
-| **Plugin** | Plugin | 透過 `.claude-plugin/` 目錄安裝的工具擴充 |
-| **Plugin Marketplace** | Plugin Marketplace | 🆕 Claude Code 官方插件市集（claude.com/plugins） |
-| **Remote Control** | Remote Control | 透過 WebSocket API 從外部程式控制 Claude Code |
-| **Scheduled Task** | Scheduled Task | 使用 cron 語法排程的自動執行任務 |
-| **settings.json** | settings.json | Claude Code 的核心配置檔案 |
-| **Skill** | Skill | 透過 SKILL.md 定義的可重複使用的專業能力 |
-| **Slash Command** | Slash Command | 以 `/` 開頭的互動式命令（如 `/help`、`/compact`） |
-| **skillOverrides** | skillOverrides | 🆕 在 settings.json 中覆蓋特定 Skill 設定的機制 |
-| **streamable-http** | Streamable HTTP | 🆕 MCP 推薦的遠端傳輸方式，取代已 deprecated 的 SSE |
-| **Subagent** | Subagent | Claude Code 在背景建立的子 Agent，用於平行處理子任務 |
-| **Teammate** | Teammate | Agent Teams 中在獨立 worktree 工作的協作 Agent |
-| **Token** | Token | 語言模型處理的基本文字單位（中文約 1-2 字/token） |
-| **Tool** | Tool | Claude Code 可呼叫的內建功能（如 read_file、write_file、bash） |
-| **Tool Search** | Tool Search | MCP 工具的延遲載入機制，需要時才搜尋和載入 |
-| **Worktree** | Git Worktree | Git 的工作樹功能，允許一個 repo 有多個工作目錄 |
-| **--bare** | --bare mode | 🆕 跳過自動發現的極速啟動模式 |
-| **--json-schema** | --json-schema | 🆕 Headless 模式中指定 JSON Schema 結構化輸出 |
-| **--permission-mode** | --permission-mode | 🆕 Headless 模式的權限控制：`dontAsk`（拒絕）或 `acceptEdits`（接受編輯） |
-| **--resume** | --resume | 🆕 恢復指定 session-id 的歷史對話 |
-| **/doctor** | /doctor | 🆕 一站式診斷命令，自動檢測常見問題 |
-| **/fork** | /fork | 🆕 從目前對話分支出新的 Subagent 會話 |
-| **/loop** | /loop | 🆕 反覆執行排程的內建 Skill，支援 s/m/h/d 間隔語法 |
-| **list_changed** | list_changed | 🆕 MCP Server 動態更新工具列表的通知機制 |
-| **watchPaths** | watchPaths | 🆕 FileChanged Hook 的路徑過濾，使用 glob 語法 |
-| **@-mention** | @-mention | 在 VS Code 中使用 `@` 符號引用檔案或符號，將其加入 Context |
-| **Anthropic Console** | Anthropic Console | Anthropic 官方管理平台，用於管理 API Key、監控用量 |
-| **API Key** | API Key | 用於驗證 Claude API 呼叫的金鑰 |
-| **Auto Compact** | Auto Compact | 當 Context 使用率超過閾值時自動壓縮對話的功能 |
-| **AWS Bedrock** | AWS Bedrock | Amazon 的 AI 模型託管服務，可作為 Claude Code 的替代 API 端點 |
-| **Cache Read / Write** | Cache Read / Write | Prompt Caching 中的讀取與寫入操作，Cache Read 僅計費 10% |
-| **CI Mode** | CI Mode | Claude Code 在 CI/CD 環境中的無互動執行模式 |
-| **claude-code-action** | claude-code-action | Claude Code 官方 GitHub Action，用於自動化 PR 審查等任務 |
-| **Custom Command** | Custom Command | 透過 CLAUDE.md 定義的自訂 Slash Command |
-| **Deny Rule** | Deny Rule | 在 permissions 中禁止特定工具或操作的規則 |
-| **Explore Agent** | Explore Agent | Claude Code 內建的輕量搜尋子代理，用於快速程式碼搜尋 |
-| **Fan-out Pattern** | Fan-out/Fan-in | Agent Teams 的協作模式：Lead Agent 分派任務，多 Teammate 並行，最後彙整結果 |
-| **GCP Vertex AI** | GCP Vertex AI | Google Cloud 的 AI 模型託管服務，可作為替代 API 端點 |
-| **JSON Output** | JSON Output | Headless 模式的結構化輸出格式（`--output-format json`） |
-| **matcher** | matcher | Hook 配置中用於匹配特定工具或事件的條件字串 |
-| **Memory** | Memory | Claude Code 載入的 CLAUDE.md 指令和專案上下文 |
-| **Model Selection** | Model Selection | 使用 `--model` 參數選擇不同的 Claude 模型（Haiku/Sonnet/Opus） |
-| **OAuth** | OAuth | 企業版 Claude Code 支援的授權協議 |
-| **Pipeline Pattern** | Pipeline | Agent Teams 的協作模式：任務按順序在不同 Teammate 間流轉 |
-| **Plan Mode** | Plan Mode | Claude Code 的規劃模式（Shift+Tab 切換），只分析不執行 |
-| **Prompt Caching** | Prompt Caching | Claude API 的快取機制，相同 context 在同會話中只計費一次 |
-| **Prompt Injection** | Prompt Injection | 惡意輸入企圖操控 AI 行為的安全攻擊方式 |
-| **SAML SSO** | SAML SSO | 企業版支援的單一登入（Single Sign-On）協議 |
-| **Specialist Pattern** | Specialist | Agent Teams 的協作模式：每個 Teammate 專注於特定領域 |
-| **Streaming** | Streaming | Headless 模式的串流輸出，即時接收回應（`--output-format stream-json`） |
-| **System Prompt** | System Prompt | Claude Code 的系統級指令，包含核心行為定義 |
-| **Timeout** | Timeout | Claude Code 各種操作的超時設定（秒為單位） |
-| **WebSocket** | WebSocket | Remote Control 使用的雙向通訊協議 |
+| 術語                      | 英文                   | 說明                                                                                         |
+| ------------------------- | ---------------------- | -------------------------------------------------------------------------------------------- |
+| **Agentic Loop**          | Agentic Loop           | Claude Code 的核心執行迴圈：接收指令 → 分析 → 選擇工具 → 執行 → 評估結果 → 重複              |
+| **Agent Skills**          | Agent Skills           | 🆕 開放標準（agentskills.io），定義跨 AI 編輯器的技能可移植格式                              |
+| **Agent Teams**           | Agent Teams / Cowork   | 多個 Claude Code Agent 透過 git worktree 並行協作的模式                                      |
+| **alwaysLoad**            | alwaysLoad             | 🆕 MCP Server 配置欄位，設為 true 可跳過 Tool Search 延遲載入，始終載入工具                  |
+| **Channels**              | Channels               | 🆕 基於 MCP 的事件推送機制，讓外部事件（Telegram/Discord/Webhook）可注入 Claude Code session |
+| **Checkpoint**            | Checkpoint             | VS Code 中 Claude Code 每次變更前自動建立的還原點                                            |
+| **CLAUDE.md**             | CLAUDE.md              | Claude Code 的指令檔案，類似 README 但專為 AI 撰寫                                           |
+| **CLAUDE_PROJECT_DIR**    | CLAUDE_PROJECT_DIR     | 🆕 Claude Code 自動注入的環境變數，指向專案根目錄路徑                                        |
+| **Compact**               | Compact                | 壓縮對話歷史以釋放 Token 空間的操作                                                          |
+| **Context Window**        | Context Window         | 模型一次可處理的最大 Token 數量（約 200K tokens）                                            |
+| **Desktop App**           | Desktop App            | 🆕 Claude Code 桌面應用程式（macOS/Windows），支援排程任務和 Dispatch                        |
+| **Dispatch**              | Dispatch               | 🆕 從手機端控制 Desktop App 的遠端功能                                                       |
+| **Elicitation**           | Elicitation            | 🆕 MCP Server 向使用者發起互動式確認的機制                                                   |
+| **headersHelper**         | headersHelper          | 🆕 MCP 配置中動態產生認證 header 的命令                                                      |
+| **Headless Mode**         | Headless Mode          | 無互動式 UI 的 Claude Code 執行模式（`claude -p`）                                           |
+| **Hook**                  | Hook                   | 在特定事件觸發時自動執行的腳本或動作                                                         |
+| **Lead Agent**            | Lead Agent             | Agent Teams 中負責分配任務和協調的主要 Agent                                                 |
+| **managed-settings.json** | managed-settings.json  | 管理員部署的強制設定檔，優先級最高                                                           |
+| **MCP**                   | Model Context Protocol | 連接外部工具和資料來源的標準協議                                                             |
+| **MCP Server**            | MCP Server             | 實作 MCP 協議、提供特定工具和資源存取的服務程式                                              |
+| **mcp_tool**              | mcp_tool Hook          | 🆕 Hook 類型之一，直接呼叫 MCP Server 工具的 Hook                                            |
+| **MEMORY.md**             | MEMORY.md              | 🆕 Claude Code 自動維護的記憶檔案（`.claude/MEMORY.md`）                                     |
+| **Output Style**          | Output Style           | 控制 Claude Code 回應格式的預設風格                                                          |
+| **Permission**            | Permission             | Claude Code 的權限控制，使用 allow/deny 規則                                                 |
+| **Plugin**                | Plugin                 | 透過 `.claude-plugin/` 目錄安裝的工具擴充                                                    |
+| **Plugin Marketplace**    | Plugin Marketplace     | 🆕 Claude Code 官方插件市集（claude.com/plugins）                                            |
+| **Remote Control**        | Remote Control         | 透過 WebSocket API 從外部程式控制 Claude Code                                                |
+| **Scheduled Task**        | Scheduled Task         | 使用 cron 語法排程的自動執行任務                                                             |
+| **settings.json**         | settings.json          | Claude Code 的核心配置檔案                                                                   |
+| **Skill**                 | Skill                  | 透過 SKILL.md 定義的可重複使用的專業能力                                                     |
+| **Slash Command**         | Slash Command          | 以 `/` 開頭的互動式命令（如 `/help`、`/compact`）                                            |
+| **skillOverrides**        | skillOverrides         | 🆕 在 settings.json 中覆蓋特定 Skill 設定的機制                                              |
+| **streamable-http**       | Streamable HTTP        | 🆕 MCP 推薦的遠端傳輸方式，取代已 deprecated 的 SSE                                          |
+| **Subagent**              | Subagent               | Claude Code 在背景建立的子 Agent，用於平行處理子任務                                         |
+| **Teammate**              | Teammate               | Agent Teams 中在獨立 worktree 工作的協作 Agent                                               |
+| **Token**                 | Token                  | 語言模型處理的基本文字單位（中文約 1-2 字/token）                                            |
+| **Tool**                  | Tool                   | Claude Code 可呼叫的內建功能（如 read_file、write_file、bash）                               |
+| **Tool Search**           | Tool Search            | MCP 工具的延遲載入機制，需要時才搜尋和載入                                                   |
+| **Worktree**              | Git Worktree           | Git 的工作樹功能，允許一個 repo 有多個工作目錄                                               |
+| **--bare**                | --bare mode            | 🆕 跳過自動發現的極速啟動模式                                                                |
+| **--json-schema**         | --json-schema          | 🆕 Headless 模式中指定 JSON Schema 結構化輸出                                                |
+| **--permission-mode**     | --permission-mode      | 🆕 Headless 模式的權限控制：`dontAsk`（拒絕）或 `acceptEdits`（接受編輯）                    |
+| **--resume**              | --resume               | 🆕 恢復指定 session-id 的歷史對話                                                            |
+| **/doctor**               | /doctor                | 🆕 一站式診斷命令，自動檢測常見問題                                                          |
+| **/fork**                 | /fork                  | 🆕 從目前對話分支出新的 Subagent 會話                                                        |
+| **/loop**                 | /loop                  | 🆕 反覆執行排程的內建 Skill，支援 s/m/h/d 間隔語法                                           |
+| **list_changed**          | list_changed           | 🆕 MCP Server 動態更新工具列表的通知機制                                                     |
+| **watchPaths**            | watchPaths             | 🆕 FileChanged Hook 的路徑過濾，使用 glob 語法                                               |
+| **@-mention**             | @-mention              | 在 VS Code 中使用 `@` 符號引用檔案或符號，將其加入 Context                                   |
+| **Anthropic Console**     | Anthropic Console      | Anthropic 官方管理平台，用於管理 API Key、監控用量                                           |
+| **API Key**               | API Key                | 用於驗證 Claude API 呼叫的金鑰                                                               |
+| **Auto Compact**          | Auto Compact           | 當 Context 使用率超過閾值時自動壓縮對話的功能                                                |
+| **AWS Bedrock**           | AWS Bedrock            | Amazon 的 AI 模型託管服務，可作為 Claude Code 的替代 API 端點                                |
+| **Cache Read / Write**    | Cache Read / Write     | Prompt Caching 中的讀取與寫入操作，Cache Read 僅計費 10%                                     |
+| **CI Mode**               | CI Mode                | Claude Code 在 CI/CD 環境中的無互動執行模式                                                  |
+| **claude-code-action**    | claude-code-action     | Claude Code 官方 GitHub Action，用於自動化 PR 審查等任務                                     |
+| **Custom Command**        | Custom Command         | 透過 CLAUDE.md 定義的自訂 Slash Command                                                      |
+| **Deny Rule**             | Deny Rule              | 在 permissions 中禁止特定工具或操作的規則                                                    |
+| **Explore Agent**         | Explore Agent          | Claude Code 內建的輕量搜尋子代理，用於快速程式碼搜尋                                         |
+| **Fan-out Pattern**       | Fan-out/Fan-in         | Agent Teams 的協作模式：Lead Agent 分派任務，多 Teammate 並行，最後彙整結果                  |
+| **GCP Vertex AI**         | GCP Vertex AI          | Google Cloud 的 AI 模型託管服務，可作為替代 API 端點                                         |
+| **JSON Output**           | JSON Output            | Headless 模式的結構化輸出格式（`--output-format json`）                                      |
+| **matcher**               | matcher                | Hook 配置中用於匹配特定工具或事件的條件字串                                                  |
+| **Memory**                | Memory                 | Claude Code 載入的 CLAUDE.md 指令和專案上下文                                                |
+| **Model Selection**       | Model Selection        | 使用 `--model` 參數選擇不同的 Claude 模型（Haiku/Sonnet/Opus）                               |
+| **OAuth**                 | OAuth                  | 企業版 Claude Code 支援的授權協議                                                            |
+| **Pipeline Pattern**      | Pipeline               | Agent Teams 的協作模式：任務按順序在不同 Teammate 間流轉                                     |
+| **Plan Mode**             | Plan Mode              | Claude Code 的規劃模式（Shift+Tab 切換），只分析不執行                                       |
+| **Prompt Caching**        | Prompt Caching         | Claude API 的快取機制，相同 context 在同會話中只計費一次                                     |
+| **Prompt Injection**      | Prompt Injection       | 惡意輸入企圖操控 AI 行為的安全攻擊方式                                                       |
+| **SAML SSO**              | SAML SSO               | 企業版支援的單一登入（Single Sign-On）協議                                                   |
+| **Specialist Pattern**    | Specialist             | Agent Teams 的協作模式：每個 Teammate 專注於特定領域                                         |
+| **Streaming**             | Streaming              | Headless 模式的串流輸出，即時接收回應（`--output-format stream-json`）                       |
+| **System Prompt**         | System Prompt          | Claude Code 的系統級指令，包含核心行為定義                                                   |
+| **Timeout**               | Timeout                | Claude Code 各種操作的超時設定（秒為單位）                                                   |
+| **WebSocket**             | WebSocket              | Remote Control 使用的雙向通訊協議                                                            |
 
 ---
 
@@ -12646,35 +12800,35 @@ A: (1) 不要在 CLAUDE.md 中引用不信任的外部內容 (2) 使用 PreToolU
 ```mermaid
 graph TB
     START[開始使用 Claude Code] --> ROLE{您的角色？}
-    
+
     ROLE -->|個人開發者| IND[個人開發者路徑]
     IND --> IND1[1.1 安裝設定]
     IND1 --> IND2[1.3 快速上手]
     IND2 --> IND3[2.5 Hooks 自動化]
     IND3 --> IND4[2.6 MCP 擴充]
     IND4 --> IND5[3.6 效能優化]
-    
+
     ROLE -->|團隊技術主管| LEAD[技術主管路徑]
     LEAD --> LEAD1[1.2 核心架構]
     LEAD1 --> LEAD2[2.2 Agent Teams]
     LEAD2 --> LEAD3[3.5 團隊協作]
     LEAD3 --> LEAD4[4.1 企業部署]
     LEAD4 --> LEAD5[4.2 CI/CD 整合]
-    
+
     ROLE -->|DevOps 工程師| OPS[DevOps 路徑]
     OPS --> OPS1[4.2 CI/CD 整合]
     OPS1 --> OPS2[3.3 Headless 模式]
     OPS2 --> OPS3[2.8 排程任務]
     OPS3 --> OPS4[4.1 企業部署]
     OPS4 --> OPS5[2.5 Hooks 自動化]
-    
+
     ROLE -->|平台工程師| PLAT[平台工程師路徑]
     PLAT --> PLAT1[2.3 Skills 開發]
     PLAT1 --> PLAT2[2.4 Plugins 開發]
     PLAT2 --> PLAT3[2.6 MCP Server 開發]
     PLAT3 --> PLAT4[4.3 自訂開發]
     PLAT4 --> PLAT5[3.2 Remote Control]
-    
+
     style START fill:#6366f1,stroke:#4f46e5,color:#fff
     style IND fill:#10b981,stroke:#059669
     style LEAD fill:#f59e0b,stroke:#d97706
@@ -12686,13 +12840,13 @@ graph TB
 
 Claude Code 持續快速演進。建議：
 
-| 資源 | 頻率 | 說明 |
-|------|------|------|
-| **Changelog** | 每週 | 追蹤 Claude Code 的版本更新 |
-| **GitHub Discussions** | 有需要時 | 社群討論最佳實踐和疑問 |
-| **Anthropic Blog** | 每月 | 了解 Claude 模型和功能的重大更新 |
-| **MCP Servers 目錄** | 每月 | 發掘新的 MCP Server 工具 |
-| **本手冊** | 每季度 | 隨 Claude Code 更新而持續維護 |
+| 資源                   | 頻率     | 說明                             |
+| ---------------------- | -------- | -------------------------------- |
+| **Changelog**          | 每週     | 追蹤 Claude Code 的版本更新      |
+| **GitHub Discussions** | 有需要時 | 社群討論最佳實踐和疑問           |
+| **Anthropic Blog**     | 每月     | 了解 Claude 模型和功能的重大更新 |
+| **MCP Servers 目錄**   | 每月     | 發掘新的 MCP Server 工具         |
+| **本手冊**             | 每季度   | 隨 Claude Code 更新而持續維護    |
 
 ```mermaid
 graph LR
@@ -12700,7 +12854,7 @@ graph LR
     B --> C[整合實踐<br>Part 3]
     C --> D[進階主題<br>Part 4]
     D --> E[附錄參考<br>Part 5]
-    
+
     style A fill:#6366f1,stroke:#4f46e5,color:#fff
     style B fill:#10b981,stroke:#059669
     style C fill:#f59e0b,stroke:#d97706
@@ -12709,6 +12863,7 @@ graph LR
 ```
 
 **官方資源**：
+
 - Anthropic 官方文件：[https://docs.anthropic.com/en/docs/claude-code](https://docs.anthropic.com/en/docs/claude-code)
 - MCP 協議規範：[https://modelcontextprotocol.io](https://modelcontextprotocol.io)
 - MCP Servers 目錄：[https://github.com/modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers)
@@ -12716,6 +12871,6 @@ graph LR
 
 ---
 
-*最後更新：2026 年 5 月 29日*
+_最後更新：2026 年 5 月 29日_
 
-*版本：3.1*
+_版本：3.1_

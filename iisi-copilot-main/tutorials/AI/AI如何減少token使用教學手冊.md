@@ -12,7 +12,7 @@ categories = ['教學']
 > **日期**：2026-06-30
 > **適用範圍**：Claude Code / GitHub Copilot / Codex CLI / Gemini CLI / Cursor / Kiro / Windsurf / Cline  
 > **目標讀者**：資深工程師、架構師、Tech Lead、AI 成本治理人員  
-> **授權**：內部教學使用  
+> **授權**：內部教學使用
 
 ---
 
@@ -156,7 +156,7 @@ Token 是大型語言模型（LLM）處理文字的最小單位。不同於人�
 
 ```
 英文："Hello World" → ["Hello", " World"] = 2 tokens
-中文："你好世界" → ["你", "好", "世", "界"] = 4 tokens  
+中文："你好世界" → ["你", "好", "世", "界"] = 4 tokens
 程式碼："public static void main" → ["public", " static", " void", " main"] = 4 tokens
 JSON：'{"name":"test"}' → ['{', '"name', '":', '"test', '"}'] ≈ 5 tokens
 ```
@@ -167,13 +167,13 @@ JSON：'{"name":"test"}' → ['{', '"name', '":', '"test', '"}'] ≈ 5 tokens
 
 不同 AI 工具的 Token 計算方式有所差異：
 
-| AI 工具 | Tokenizer | 估算規則 | Context Window |
-|---------|-----------|---------|----------------|
-| Claude Code (Claude 4) | Claude Tokenizer | 1 英文字 ≈ 1.3 token, 1 中文字 ≈ 2 token | 200K tokens |
-| GitHub Copilot (GPT-4.1/Claude) | 依模型而異 | 1 英文字 ≈ 1.3 token | 依模型 128K-200K |
-| Codex CLI (o3/o4-mini) | OpenAI Tokenizer | 1 英文字 ≈ 1.3 token | 200K tokens |
-| Gemini CLI (Gemini 2.5 Pro) | Gemini Tokenizer | 1 英文字 ≈ 1.2 token | 1M tokens |
-| Cursor (多模型) | 依模型而異 | 依模型而異 | 依模型而異 |
+| AI 工具                         | Tokenizer        | 估算規則                                 | Context Window   |
+| ------------------------------- | ---------------- | ---------------------------------------- | ---------------- |
+| Claude Code (Claude 4)          | Claude Tokenizer | 1 英文字 ≈ 1.3 token, 1 中文字 ≈ 2 token | 200K tokens      |
+| GitHub Copilot (GPT-4.1/Claude) | 依模型而異       | 1 英文字 ≈ 1.3 token                     | 依模型 128K-200K |
+| Codex CLI (o3/o4-mini)          | OpenAI Tokenizer | 1 英文字 ≈ 1.3 token                     | 200K tokens      |
+| Gemini CLI (Gemini 2.5 Pro)     | Gemini Tokenizer | 1 英文字 ≈ 1.2 token                     | 1M tokens        |
+| Cursor (多模型)                 | 依模型而異       | 依模型而異                               | 依模型而異       |
 
 **計算公式：**
 
@@ -194,19 +194,19 @@ graph LR
     D[檔案內容<br/>File Context] --> B
     E[對話歷史<br/>Conversation History] --> B
     B --> F[AI 生成<br/>Completion Tokens]
-    
+
     style B fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
 **Context Window 使用分佈（典型 Agent 對話）：**
 
-| 組成部分 | 佔比 | Token 數（200K 為例） |
-|---------|------|---------------------|
-| System Prompt + Instructions | 5-10% | 10K-20K |
-| 檔案讀取內容 | 30-50% | 60K-100K |
-| 對話歷史 | 20-30% | 40K-60K |
-| 工具呼叫結果 | 10-20% | 20K-40K |
-| AI 生成回覆 | 10-15% | 20K-30K |
+| 組成部分                     | 佔比   | Token 數（200K 為例） |
+| ---------------------------- | ------ | --------------------- |
+| System Prompt + Instructions | 5-10%  | 10K-20K               |
+| 檔案讀取內容                 | 30-50% | 60K-100K              |
+| 對話歷史                     | 20-30% | 40K-60K               |
+| 工具呼叫結果                 | 10-20% | 20K-40K               |
+| AI 生成回覆                  | 10-15% | 20K-30K               |
 
 > **注意**：當 Context Window 接近滿載時，AI 回覆品質會顯著下降。建議將實際使用量控制在 Context Window 的 70% 以內。
 
@@ -227,7 +227,7 @@ AI 生成的回覆內容，包含文字回覆、程式碼、工具呼叫指令�
 ```
 費用計算範例（Claude Sonnet 4）：
 Prompt Token:    $3 / 1M tokens
-Completion Token: $15 / 1M tokens  
+Completion Token: $15 / 1M tokens
 Cache Read Token: $0.30 / 1M tokens（節省 90%）
 
 一般開發 Session（30 分鐘）：
@@ -242,16 +242,17 @@ Cache Read Token: $0.30 / 1M tokens（節省 90%）
 
 企業 AI 開發的 Token 費用成長速度遠超預期。以 20 人團隊為例：
 
-| 使用模式 | 每人每日 Token | 月度團隊 Token | 月度費用（估算） |
-|---------|--------------|--------------|---------------|
-| 輕度使用（Code Completion） | 50K | 22M | $200-400 |
-| 中度使用（Agent 對話） | 500K | 220M | $2,000-4,000 |
-| 重度使用（多 Agent 協作） | 2M | 880M | $8,000-16,000 |
-| 無限制使用（全專案分析） | 10M+ | 4.4B+ | $40,000+ |
+| 使用模式                    | 每人每日 Token | 月度團隊 Token | 月度費用（估算） |
+| --------------------------- | -------------- | -------------- | ---------------- |
+| 輕度使用（Code Completion） | 50K            | 22M            | $200-400         |
+| 中度使用（Agent 對話）      | 500K           | 220M           | $2,000-4,000     |
+| 重度使用（多 Agent 協作）   | 2M             | 880M           | $8,000-16,000    |
+| 無限制使用（全專案分析）    | 10M+           | 4.4B+          | $40,000+         |
 
 **Token 消耗與速度關係**
 
 Token 消耗直接影響 AI 回應速度：
+
 - 輸入 10K tokens → 回應時間約 2-5 秒
 - 輸入 50K tokens → 回應時間約 8-15 秒
 - 輸入 100K tokens → 回應時間約 20-40 秒
@@ -321,11 +322,11 @@ AI Agent 模式下，每次工具呼叫都會累積 Token。一個典型的 Bug 
 
 **案例分析：日常 Code Review**
 
-| 情境 | Token 消耗 | 回覆品質 |
-|------|-----------|---------|
-| 貼入完整 PR（20 個檔案） | 120K tokens | 泛泛而談，建議不精準 |
-| 僅貼入變更差異（diff） | 15K tokens | 聚焦變更，建議具體 |
-| 搭配 Knowledge Graph 僅提供關聯 | 8K tokens | 理解上下文，建議最精準 |
+| 情境                            | Token 消耗  | 回覆品質               |
+| ------------------------------- | ----------- | ---------------------- |
+| 貼入完整 PR（20 個檔案）        | 120K tokens | 泛泛而談，建議不精準   |
+| 僅貼入變更差異（diff）          | 15K tokens  | 聚焦變更，建議具體     |
+| 搭配 Knowledge Graph 僅提供關聯 | 8K tokens   | 理解上下文，建議最精準 |
 
 ### 2.3 每次重新描述需求
 
@@ -370,9 +371,9 @@ graph TD
     E --> F[Token 持續累積]
     F --> C
     C -->|是| G[生成回覆]
-    
+
     H[Token 消耗曲線] --> I[10K → 50K → 150K → 300K+]
-    
+
     style F fill:#f66,stroke:#333
     style I fill:#f66,stroke:#333
 ```
@@ -398,12 +399,12 @@ graph TD
 
 **浪費模式：**
 
-| Framework 升級 | 專案檔案數 | 全量分析 Token | 優化後 Token | 節省 |
-|---------------|-----------|--------------|-------------|------|
-| Spring Boot 2 → 3 | 600 個 Java | 3.0M | 200K | 93% |
-| Vue 2 → 3 | 400 個 Vue/JS | 2.0M | 150K | 92% |
-| Angular 12 → 20 | 500 個 TS | 2.5M | 180K | 93% |
-| Java 17 → 25 | 800 個 Java | 4.0M | 250K | 94% |
+| Framework 升級    | 專案檔案數    | 全量分析 Token | 優化後 Token | 節省 |
+| ----------------- | ------------- | -------------- | ------------ | ---- |
+| Spring Boot 2 → 3 | 600 個 Java   | 3.0M           | 200K         | 93%  |
+| Vue 2 → 3         | 400 個 Vue/JS | 2.0M           | 150K         | 92%  |
+| Angular 12 → 20   | 500 個 TS     | 2.5M           | 180K         | 93%  |
+| Java 17 → 25      | 800 個 Java   | 4.0M           | 250K         | 94%  |
 
 **根本原因**：缺乏 Migration Knowledge Graph。每次升級操作都要從零開始分析，而不是基於已建立的依賴關係圖進行增量分析。
 
@@ -444,22 +445,22 @@ cargo install --git https://github.com/rtk-ai/rtk
 
 **支援 14 個 AI 編碼工具（v0.43.0，67.1K ★）：**
 
-| AI 工具 | 初始化指令 | 整合方式 |
-|---------|-----------|----------|
-| Claude Code | `rtk init -g` | PreToolUse hook（自動改寫） |
-| GitHub Copilot | `rtk init -g --copilot` | PreToolUse hook |
-| Cursor | `rtk init -g --agent cursor` | hooks.json |
-| Gemini CLI | `rtk init -g --gemini` | BeforeTool hook |
-| Codex | `rtk init -g --codex` | AGENTS.md 指令注入 |
-| Windsurf | `rtk init --agent windsurf` | .windsurfrules |
-| Cline / Roo Code | `rtk init --agent cline` | .clinerules |
-| OpenCode | `rtk init -g --opencode` | Plugin TS |
-| Google Antigravity | `rtk init --agent antigravity` | rules 檔案 |
-| Pi | `rtk init --agent pi` | rules 檔案 |
-| Hermes | `rtk init --agent hermes` | rules 檔案 |
-| Kilo Code | `rtk init --agent kilo-code` | rules 檔案 |
-| Amp | `rtk init --agent amp` | rules 檔案 |
-| Headroom | 內建支援 | Headroom 原生整合 RTK |
+| AI 工具            | 初始化指令                     | 整合方式                    |
+| ------------------ | ------------------------------ | --------------------------- |
+| Claude Code        | `rtk init -g`                  | PreToolUse hook（自動改寫） |
+| GitHub Copilot     | `rtk init -g --copilot`        | PreToolUse hook             |
+| Cursor             | `rtk init -g --agent cursor`   | hooks.json                  |
+| Gemini CLI         | `rtk init -g --gemini`         | BeforeTool hook             |
+| Codex              | `rtk init -g --codex`          | AGENTS.md 指令注入          |
+| Windsurf           | `rtk init --agent windsurf`    | .windsurfrules              |
+| Cline / Roo Code   | `rtk init --agent cline`       | .clinerules                 |
+| OpenCode           | `rtk init -g --opencode`       | Plugin TS                   |
+| Google Antigravity | `rtk init --agent antigravity` | rules 檔案                  |
+| Pi                 | `rtk init --agent pi`          | rules 檔案                  |
+| Hermes             | `rtk init --agent hermes`      | rules 檔案                  |
+| Kilo Code          | `rtk init --agent kilo-code`   | rules 檔案                  |
+| Amp                | `rtk init --agent amp`         | rules 檔案                  |
+| Headroom           | 內建支援                       | Headroom 原生整合 RTK       |
 
 > **Windows 注意事項**：RTK 在 Windows 原生環境（cmd/PowerShell）下濾波功能完整可用，但 Auto-Rewrite Hook 不支援（需要 Unix Shell）。Windows 會自動退回 CLAUDE.md 注入模式——AI 助手會收到 RTK 指令但不會自動改寫命令。**建議使用 WSL** 以獲得完整支援。
 
@@ -504,6 +505,7 @@ $ rtk find . -name "*.java" -exec wc -l {} \;
 **策略一：Smart Filtering（智慧過濾）**
 
 自動辨識並移除無關資訊，例如：
+
 - 編譯過程中的進度條、百分比
 - 測試輸出中的重複堆疊追蹤
 - 目錄列表中的二進位檔案、快取檔案
@@ -558,15 +560,15 @@ RTK 去重：1 個代表性 Stack Trace + "其餘 49 個相同模式" → ~600 t
 
 以下是 RTK 在典型 30 分鐘開發 Session 中的 Token 節省數據：
 
-| 指令類型 | 原始 Token | RTK 後 Token | 節省比例 | 說明 |
-|---------|-----------|-------------|---------|------|
-| `ls` / `tree` | 5,000 | 1,000 | **80%** | 目錄結構壓縮 |
-| `cat` / `read` | 20,000 | 6,000 | **70%** | 檔案內容摘要化 |
-| `grep` / `search` | 15,000 | 3,000 | **80%** | 搜尋結果群組化 |
-| `git status` / `diff` | 8,000 | 1,600 | **80%** | 變更摘要化 |
-| `mvn test` / `npm test` | 50,000 | 5,000 | **90%** | 測試結果去重 |
-| `compile` / `build` | 20,000 | 2,300 | **88%** | 建置日誌過濾 |
-| **Session 合計** | **~118,000** | **~23,900** | **~80%** | - |
+| 指令類型                | 原始 Token   | RTK 後 Token | 節省比例 | 說明           |
+| ----------------------- | ------------ | ------------ | -------- | -------------- |
+| `ls` / `tree`           | 5,000        | 1,000        | **80%**  | 目錄結構壓縮   |
+| `cat` / `read`          | 20,000       | 6,000        | **70%**  | 檔案內容摘要化 |
+| `grep` / `search`       | 15,000       | 3,000        | **80%**  | 搜尋結果群組化 |
+| `git status` / `diff`   | 8,000        | 1,600        | **80%**  | 變更摘要化     |
+| `mvn test` / `npm test` | 50,000       | 5,000        | **90%**  | 測試結果去重   |
+| `compile` / `build`     | 20,000       | 2,300        | **88%**  | 建置日誌過濾   |
+| **Session 合計**        | **~118,000** | **~23,900**  | **~80%** | -              |
 
 **月度節省估算（20 人團隊）：**
 
@@ -588,13 +590,13 @@ Headroom（v0.28.0，54K ★）是一個 Context 壓縮層，與 RTK 的「工�
 
 **核心數據：**
 
-| 指標 | 數值 |
-|------|------|
-| Token 節省 | **60-95%**（依內容類型） |
+| 指標       | 數值                                              |
+| ---------- | ------------------------------------------------- |
+| Token 節省 | **60-95%**（依內容類型）                          |
 | 支援 Agent | **12+**（Claude Code、Copilot、Cursor、Codex 等） |
-| 壓縮方式 | ContentRouter 智慧路由 |
-| 可逆壓縮 | ✅ CCR（Compact Context Representation） |
-| 輸出壓縮 | ✅ 同時壓縮 AI 回覆 |
+| 壓縮方式   | ContentRouter 智慧路由                            |
+| 可逆壓縮   | ✅ CCR（Compact Context Representation）          |
+| 輸出壓縮   | ✅ 同時壓縮 AI 回覆                               |
 
 **安裝方式：**
 
@@ -621,38 +623,38 @@ graph TB
         A1[應用程式碼] --> B1[headroom.compress API]
         B1 --> C1[AI API]
     end
-    
+
     subgraph "Proxy 模式"
         A2[AI 工具] --> B2[Headroom Proxy<br/>自動攔截壓縮]
         B2 --> C2[AI API]
     end
-    
+
     subgraph "MCP 模式"
         A3[AI Agent] --> B3[Headroom MCP Server]
         B3 --> C3[壓縮後回傳 Agent]
     end
-    
+
     style B1 fill:#9f9,stroke:#333
     style B2 fill:#9f9,stroke:#333
     style B3 fill:#9f9,stroke:#333
 ```
 
-| 模式 | 使用場景 | 整合難度 | Token 節省 |
-|------|---------|---------|-----------|
-| **Library** | 自訂應用程式內嵌 | 中 | 60-95% |
-| **Proxy** | 不修改現有工具流程 | 低 | 60-90% |
-| **MCP** | AI Agent 原生整合 | 低 | 70-95% |
+| 模式        | 使用場景           | 整合難度 | Token 節省 |
+| ----------- | ------------------ | -------- | ---------- |
+| **Library** | 自訂應用程式內嵌   | 中       | 60-95%     |
+| **Proxy**   | 不修改現有工具流程 | 低       | 60-90%     |
+| **MCP**     | AI Agent 原生整合  | 低       | 70-95%     |
 
 ### 4.3 ContentRouter 智慧壓縮
 
 Headroom 的核心是 **ContentRouter**——根據內容類型自動選擇最佳壓縮策略：
 
-| 內容類型 | 壓縮引擎 | 壓縮率 | 說明 |
-|---------|---------|-------|------|
-| 程式碼 | CodeCompressor | 70-85% | 保留語義結構，移除格式 |
-| 自然語言 | SmartCrusher | 60-80% | 語義壓縮，保留關鍵資訊 |
-| 混合內容 | Kompress-v2-base | 75-90% | 多模態壓縮模型 |
-| 結構化資料 | Schema Compressor | 80-95% | JSON/YAML 結構化壓縮 |
+| 內容類型   | 壓縮引擎          | 壓縮率 | 說明                   |
+| ---------- | ----------------- | ------ | ---------------------- |
+| 程式碼     | CodeCompressor    | 70-85% | 保留語義結構，移除格式 |
+| 自然語言   | SmartCrusher      | 60-80% | 語義壓縮，保留關鍵資訊 |
+| 混合內容   | Kompress-v2-base  | 75-90% | 多模態壓縮模型         |
+| 結構化資料 | Schema Compressor | 80-95% | JSON/YAML 結構化壓縮   |
 
 **CCR（Compact Context Representation）可逆壓縮**：Headroom 使用 CCR 格式壓縮上下文，AI 可以理解壓縮後的格式，且在需要時可以還原為原始內容。這不是有損壓縮，而是語義等價的緊湊表示。
 
@@ -662,12 +664,12 @@ Headroom 的核心是 **ContentRouter**——根據內容類型自動選擇最�
 
 RTK 和 Headroom 並非競爭關係，而是互補：
 
-| 維度 | RTK | Headroom |
-|------|-----|----------|
-| 壓縮對象 | 工具輸出（ls、grep、git 等） | 整個 Context Window |
-| 壓縮時機 | 工具執行後、送往 AI 前 | AI 接收前的最後一道壓縮 |
-| 實作方式 | CLI Proxy + Hook | Library / Proxy / MCP |
-| 最佳場景 | 單次工具輸出過長 | 累積對話 Context 過大 |
+| 維度     | RTK                          | Headroom                |
+| -------- | ---------------------------- | ----------------------- |
+| 壓縮對象 | 工具輸出（ls、grep、git 等） | 整個 Context Window     |
+| 壓縮時機 | 工具執行後、送往 AI 前       | AI 接收前的最後一道壓縮 |
+| 實作方式 | CLI Proxy + Hook             | Library / Proxy / MCP   |
+| 最佳場景 | 單次工具輸出過長             | 累積對話 Context 過大   |
 
 **組合使用效果：**
 
@@ -699,21 +701,25 @@ Understand-Anything 的核心理念是將大型程式碼庫轉換為結構化的
 **四種圖譜類型：**
 
 **Code Graph（程式碼圖譜）**
+
 - 記錄每個檔案、類別、方法的定義與位置
 - 包含程式碼摘要與功能說明
 - AI 可精準定位到特定方法，無需讀取完整檔案
 
 **Dependency Graph（相依性圖譜）**
+
 - 記錄模組之間的 import/dependency 關係
 - 識別循環相依與耦合度
 - AI 可快速理解模組間的關聯
 
 **Call Graph（呼叫圖譜）**
+
 - 記錄函式之間的呼叫關係
 - 追蹤 API → Service → Repository 的呼叫鏈
 - AI 可沿著呼叫鏈定位問題根源
 
 **Knowledge Graph（知識圖譜）**
+
 - 整合上述三種圖譜
 - 加入業務語義（Business Domain）標註
 - 提供全專案的結構化知識查詢介面
@@ -730,14 +736,14 @@ graph TB
         E --> F
         F --> G[AI Agent<br/>按需查詢]
     end
-    
+
     subgraph "Token 節省效果"
-        H[傳統方式<br/>讀取 500 個檔案<br/>2.5M tokens] 
+        H[傳統方式<br/>讀取 500 個檔案<br/>2.5M tokens]
         I[Knowledge Graph<br/>查詢 5 個節點<br/>25K tokens]
     end
-    
+
     G --> I
-    
+
     style F fill:#9f9,stroke:#333,stroke-width:2px
     style I fill:#9f9,stroke:#333
     style H fill:#f66,stroke:#333
@@ -747,15 +753,15 @@ graph TB
 
 Understand-Anything（v2.7.3，69.4K ★，維護者：Egonex-AI）使用多智能體管線（Multi-Agent Pipeline）來建構 Knowledge Graph。核心 `/understand` 指令包含 5 個專業 Agent，額外的分析指令各有專屬 Agent：
 
-| Agent | 觸發指令 | 職責 | 產出 |
-|-------|---------|------|------|
-| Project Scanner | `/understand` | 掃描專案結構、識別技術棧與框架 | 專案概覽、技術清單 |
-| File Analyzer | `/understand` | 逐檔分析功能與邏輯（並行處理，每批 20-30 檔） | 檔案摘要、功能標註 |
-| Architecture Analyzer | `/understand` | 識別架構模式與層次分類 | 架構圖、模組關係 |
-| Tour Builder | `/understand` | 建立專案導覽路徑 | 入門指南、導覽順序 |
-| Graph Reviewer | `/understand` | 驗證圖譜完整性與引用正確性 | 修正建議、品質報告 |
-| Domain Analyzer | `/understand-domain` | 提取業務領域、流程與步驟 | 領域模型、術語對照 |
-| Article Analyzer | `/understand-knowledge` | 從 Wiki 知識庫擷取實體與關係 | 實體圖、隱含關聯 |
+| Agent                 | 觸發指令                | 職責                                          | 產出               |
+| --------------------- | ----------------------- | --------------------------------------------- | ------------------ |
+| Project Scanner       | `/understand`           | 掃描專案結構、識別技術棧與框架                | 專案概覽、技術清單 |
+| File Analyzer         | `/understand`           | 逐檔分析功能與邏輯（並行處理，每批 20-30 檔） | 檔案摘要、功能標註 |
+| Architecture Analyzer | `/understand`           | 識別架構模式與層次分類                        | 架構圖、模組關係   |
+| Tour Builder          | `/understand`           | 建立專案導覽路徑                              | 入門指南、導覽順序 |
+| Graph Reviewer        | `/understand`           | 驗證圖譜完整性與引用正確性                    | 修正建議、品質報告 |
+| Domain Analyzer       | `/understand-domain`    | 提取業務領域、流程與步驟                      | 領域模型、術語對照 |
+| Article Analyzer      | `/understand-knowledge` | 從 Wiki 知識庫擷取實體與關係                  | 實體圖、隱含關聯   |
 
 **安裝與使用：**
 
@@ -773,16 +779,16 @@ iwr -useb https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/main/i
 
 **核心指令：**
 
-| 指令 | 功能 |
-|------|------|
-| `/understand` | 建構知識圖譜（支援增量更新，僅重新分析變更檔案） |
-| `/understand-dashboard` | 開啟互動式視覺化儀表板 |
-| `/understand-chat` | 基於圖譜進行問答 |
-| `/understand-diff` | 分析當前變更的影響範圍 |
-| `/understand-domain` | 擷取業務領域知識 |
-| `/understand --auto-update` | 啟用 post-commit hook 自動更新圖譜 |
-| `/understand --language zh-TW` | 指定輸出語言（支援多語言） |
-| `/understand-explain` | 深入解釋特定檔案或函式 |
+| 指令                           | 功能                                             |
+| ------------------------------ | ------------------------------------------------ |
+| `/understand`                  | 建構知識圖譜（支援增量更新，僅重新分析變更檔案） |
+| `/understand-dashboard`        | 開啟互動式視覺化儀表板                           |
+| `/understand-chat`             | 基於圖譜進行問答                                 |
+| `/understand-diff`             | 分析當前變更的影響範圍                           |
+| `/understand-domain`           | 擷取業務領域知識                                 |
+| `/understand --auto-update`    | 啟用 post-commit hook 自動更新圖譜               |
+| `/understand --language zh-TW` | 指定輸出語言（支援多語言）                       |
+| `/understand-explain`          | 深入解釋特定檔案或函式                           |
 
 **關鍵特性**：Tree-sitter + LLM 混合架構——Tree-sitter 負責確定性的結構解析（imports、exports、函式定義），LLM 負責語義理解（摘要、標註、架構分層）。結構面可重現，語義面捕捉意圖。
 
@@ -794,12 +800,12 @@ iwr -useb https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/main/i
 
 **對比分析：100 萬行程式碼系統**
 
-| 操作 | 傳統方式 | Knowledge Graph 方式 |
-|------|---------|-------------------|
-| 理解系統架構 | 讀取 50+ 核心檔案（500K tokens） | 查詢架構節點（5K tokens） |
-| 定位 Bug | Agent 搜尋 200+ 檔案（1M tokens） | 沿 Call Graph 追蹤（15K tokens） |
-| 影響範圍分析 | 全專案 grep（800K tokens） | 查詢 Dependency Graph（8K tokens） |
-| 新功能開發 | 閱讀相關模組（300K tokens） | 查詢相關節點 + 範例（20K tokens） |
+| 操作         | 傳統方式                          | Knowledge Graph 方式               |
+| ------------ | --------------------------------- | ---------------------------------- |
+| 理解系統架構 | 讀取 50+ 核心檔案（500K tokens）  | 查詢架構節點（5K tokens）          |
+| 定位 Bug     | Agent 搜尋 200+ 檔案（1M tokens） | 沿 Call Graph 追蹤（15K tokens）   |
+| 影響範圍分析 | 全專案 grep（800K tokens）        | 查詢 Dependency Graph（8K tokens） |
+| 新功能開發   | 閱讀相關模組（300K tokens）       | 查詢相關節點 + 範例（20K tokens）  |
 
 **Token 節省公式：**
 
@@ -845,26 +851,31 @@ npx gitnexus setup
 **五大索引類型：**
 
 **Repository Index（倉庫索引）**
+
 - 專案結構、檔案清單、目錄組織
 - 技術棧識別、框架版本
 - 建置工具與配置
 
 **Symbol Index（符號索引）**
+
 - 類別、介面、方法、變數定義
 - 跨檔案的符號引用
 - 型別層級關係
 
 **Dependency Index（相依性索引）**
+
 - 模組間的 import 關係
 - 外部套件依賴
 - 版本相容性資訊
 
 **Semantic Search（語義搜尋）**
+
 - 基於自然語言的程式碼搜尋
 - 理解開發者意圖，而非僅匹配關鍵字
 - 支援跨語言搜尋
 
 **Embedding Search（向量搜尋）**
+
 - 將程式碼轉換為向量表示
 - 支援相似度搜尋
 - 找出語義相似但文字不同的程式碼片段
@@ -875,29 +886,29 @@ npx gitnexus setup
 
 **GitNexus 16 個 MCP 工具的 Token 節省效果：**
 
-| MCP 工具 | 功能 | 傳統替代方式 Token | MCP 方式 Token |
-|---------|------|-----------------|--------------|
-| `list_repos` | 列出所有已索引倉庫 | 手動管理 | < 1K |
-| `query` | 程序分組混合搜尋（BM25 + 語義 + RRF） | 20K（grep 全專案） | 2K |
-| `context` | 360° 符號視圖（分類引用、程序參與） | 50K（讀取完整檔案） | 5K |
-| `impact` | 爆炸半徑分析（深度分組 + 信心度） | 100K（遞迴追蹤） | 8K |
-| `detect_changes` | Git diff 影響分析（映射變更行至受影響程序） | 30K（git diff 全量） | 3K |
-| `rename` | 多檔案協調重新命名（圖譜 + 文字搜尋） | 手動逐檔修改 | 4K |
-| `cypher` | 原始 Cypher 圖譜查詢 | N/A | 2K |
-| `group_*`（5 個） | 跨倉庫群組管理、合約比對、流程搜尋 | 40K（手動分析） | 4K |
+| MCP 工具          | 功能                                        | 傳統替代方式 Token   | MCP 方式 Token |
+| ----------------- | ------------------------------------------- | -------------------- | -------------- |
+| `list_repos`      | 列出所有已索引倉庫                          | 手動管理             | < 1K           |
+| `query`           | 程序分組混合搜尋（BM25 + 語義 + RRF）       | 20K（grep 全專案）   | 2K             |
+| `context`         | 360° 符號視圖（分類引用、程序參與）         | 50K（讀取完整檔案）  | 5K             |
+| `impact`          | 爆炸半徑分析（深度分組 + 信心度）           | 100K（遞迴追蹤）     | 8K             |
+| `detect_changes`  | Git diff 影響分析（映射變更行至受影響程序） | 30K（git diff 全量） | 3K             |
+| `rename`          | 多檔案協調重新命名（圖譜 + 文字搜尋）       | 手動逐檔修改         | 4K             |
+| `cypher`          | 原始 Cypher 圖譜查詢                        | N/A                  | 2K             |
+| `group_*`（5 個） | 跨倉庫群組管理、合約比對、流程搜尋          | 40K（手動分析）      | 4K             |
 
 **支援 14+ 程式語言**：TypeScript、JavaScript、Python、Java、Kotlin、C#、Go、Rust、PHP、Ruby、Swift、C/C++、Dart 等。
 
 ### 6.3 傳統搜尋 VS Semantic Search
 
-| 比較維度 | 傳統搜尋 (grep) | Semantic Search |
-|---------|---------------|----------------|
-| 搜尋方式 | 關鍵字匹配 | 語義理解 |
-| 結果精準度 | 低（大量誤判） | 高（語義相關） |
-| 結果數量 | 數百筆 | 5-20 筆精選 |
+| 比較維度   | 傳統搜尋 (grep)      | Semantic Search  |
+| ---------- | -------------------- | ---------------- |
+| 搜尋方式   | 關鍵字匹配           | 語義理解         |
+| 結果精準度 | 低（大量誤判）       | 高（語義相關）   |
+| 結果數量   | 數百筆               | 5-20 筆精選      |
 | Token 消耗 | 高（需讀取所有結果） | 低（僅精選結果） |
-| 跨語言支援 | 不支援 | 支援 |
-| 意圖理解 | 不支援 | 支援 |
+| 跨語言支援 | 不支援               | 支援             |
+| 意圖理解   | 不支援               | 支援             |
 
 **實務範例：**
 
@@ -947,11 +958,11 @@ graphify extract ./src
 
 **Graphify 的產出物：**
 
-| 產出物 | 檔案 | 說明 |
-|-------|------|------|
-| 互動式圖譜 | `graph.html` | 可視化知識圖譜，可用瀏覽器開啟 |
-| 圖譜報告 | `GRAPH_REPORT.md` | Markdown 格式的結構化報告 |
-| 圖譜資料 | `graph.json` | JSON 格式的完整圖譜資料 |
+| 產出物     | 檔案              | 說明                           |
+| ---------- | ----------------- | ------------------------------ |
+| 互動式圖譜 | `graph.html`      | 可視化知識圖譜，可用瀏覽器開啟 |
+| 圖譜報告   | `GRAPH_REPORT.md` | Markdown 格式的結構化報告      |
+| 圖譜資料   | `graph.json`      | JSON 格式的完整圖譜資料        |
 
 ### 7.2 Entity Extraction 架構
 
@@ -966,25 +977,25 @@ graph TB
         B --> E[Service<br/>Mapping]
         B --> F[Database<br/>Mapping]
         B --> G[Batch<br/>Mapping]
-        
+
         C --> H[Entity Graph]
         D --> H
         E --> H
         F --> H
         G --> H
-        
+
         H --> I[graph.html]
         H --> J[GRAPH_REPORT.md]
         H --> K[graph.json]
     end
-    
+
     subgraph "AI 使用方式"
         K --> L[MCP Server]
         J --> M[直接讀取<br/>GRAPH_REPORT.md]
         L --> N[AI Agent<br/>精準查詢]
         M --> N
     end
-    
+
     style H fill:#9f9,stroke:#333,stroke-width:2px
 ```
 
@@ -1001,11 +1012,11 @@ graph TB
 
 Graphify 為每個擷取的實體標註信心度，這在 AI 使用時非常有價值：
 
-| 信心度標籤 | 意義 | AI 使用建議 |
-|----------|------|-----------|
+| 信心度標籤  | 意義                 | AI 使用建議          |
+| ----------- | -------------------- | -------------------- |
 | `EXTRACTED` | 直接從程式碼解析取得 | 可完全信賴，無需驗證 |
-| `INFERRED` | 根據程式碼模式推斷 | 建議快速驗證 |
-| `AMBIGUOUS` | 資訊模糊或衝突 | 必須讀取原始碼確認 |
+| `INFERRED`  | 根據程式碼模式推斷   | 建議快速驗證         |
+| `AMBIGUOUS` | 資訊模糊或衝突       | 必須讀取原始碼確認   |
 
 **Token 節省策略**：
 
@@ -1029,12 +1040,12 @@ graphify mcp --transport http --port 8765
 
 **進階查詢指令：**
 
-| 指令 | 功能 | Token 節省 |
-|------|------|------------|
-| `graphify query "UserService"` | 查詢特定實體的完整上下文 | 90% |
-| `graphify path A B` | 找出兩個實體之間的呼叫路徑 | 95% |
-| `graphify explain <entity>` | AI 深入解釋特定實體 | 85% |
-| `graphify prs --triage` | PR Dashboard——自動分類與影響分析 | 80% |
+| 指令                           | 功能                             | Token 節省 |
+| ------------------------------ | -------------------------------- | ---------- |
+| `graphify query "UserService"` | 查詢特定實體的完整上下文         | 90%        |
+| `graphify path A B`            | 找出兩個實體之間的呼叫路徑       | 95%        |
+| `graphify explain <entity>`    | AI 深入解釋特定實體              | 85%        |
+| `graphify prs --triage`        | PR Dashboard——自動分類與影響分析 | 80%        |
 
 **自動化整合：**
 
@@ -1060,13 +1071,13 @@ graphify export obsidian --vault ./my-vault
 
 codebase-memory-mcp（v0.8.1，21.7K ★）是一個以純 C 語言寫成的 MCP Server，專為 AI Agent 提供 **極速的程式碼索引與記憶功能**。其核心競爭優勢是速度：
 
-| 指標 | 數値 |
-|------|------|
-| 支援語言 | **158 種** |
-| Linux kernel 索引時間 | **3 分鐘** |
-| Token 減少 | **120x fewer tokens**（相較 raw file reads） |
-| 部署方式 | 單一靜態二進位（無任何相依） |
-| 資料儲存 | SQLite（本地嵌入式） |
+| 指標                  | 數値                                         |
+| --------------------- | -------------------------------------------- |
+| 支援語言              | **158 種**                                   |
+| Linux kernel 索引時間 | **3 分鐘**                                   |
+| Token 減少            | **120x fewer tokens**（相較 raw file reads） |
+| 部署方式              | 單一靜態二進位（無任何相依）                 |
+| 資料儲存              | SQLite（本地嵌入式）                         |
 
 **安裝方式：**
 
@@ -1097,44 +1108,45 @@ graph LR
     D --> E
     E --> F[14 MCP Tools]
     F --> G[AI Agent<br/>精準查詢]
-    
+
     style C fill:#9f9,stroke:#333
     style E fill:#ff9,stroke:#333
 ```
 
 **Hybrid LSP 的優勢**：
+
 - **跨檔案型別追蹤**：知道 `getUserById()` 回傳 `User` 型別，不僅是 `string`
 - **介面實作解析**：自動識別 `UserService implements IUserService`
 - **相依性注入追蹤**：理解 Spring/NestJS 等框架的 DI 容器
 
 ### 8.3 14 個 MCP 工具
 
-| MCP 工具 | 功能 | Token 節省 |
-|---------|------|------------|
-| `search_code` | 語義搜尋（理解意圖） | 95% |
-| `get_symbol` | 取得符號完整定義與型別 | 90% |
-| `find_references` | 找出符號的所有引用點 | 92% |
-| `get_call_graph` | 取得呼叫鏈（指定深度） | 96% |
-| `get_dependencies` | 取得模組相依性 | 88% |
-| `get_type_hierarchy` | 取得型別繼承樹 | 90% |
-| `get_file_summary` | 取得檔案摘要（不讀原始碼） | 85% |
-| `remember` | 儲存 AI 發現的知識至記憶層 | N/A |
-| `recall` | 取回先前儲存的知識 | 80% |
-| `get_project_overview` | 取得專案結構概觀 | 90% |
+| MCP 工具               | 功能                       | Token 節省 |
+| ---------------------- | -------------------------- | ---------- |
+| `search_code`          | 語義搜尋（理解意圖）       | 95%        |
+| `get_symbol`           | 取得符號完整定義與型別     | 90%        |
+| `find_references`      | 找出符號的所有引用點       | 92%        |
+| `get_call_graph`       | 取得呼叫鏈（指定深度）     | 96%        |
+| `get_dependencies`     | 取得模組相依性             | 88%        |
+| `get_type_hierarchy`   | 取得型別繼承樹             | 90%        |
+| `get_file_summary`     | 取得檔案摘要（不讀原始碼） | 85%        |
+| `remember`             | 儲存 AI 發現的知識至記憶層 | N/A        |
+| `recall`               | 取回先前儲存的知識         | 80%        |
+| `get_project_overview` | 取得專案結構概觀           | 90%        |
 
 > **codebase-memory-mcp 的核心優勢**：純 C 實作帶來的極速索引適合超大型專案（Linux kernel 等級），Hybrid LSP 提供的語義型別資訊讓 AI 不需讀取原始碼即可理解型別關係。
 
 ### 8.4 與其他圖譜工具比較
 
-| 比較項目 | codebase-memory-mcp | GitNexus | Graphify | CodeGraph |
-|---------|-------------------|----------|----------|----------|
-| 實作語言 | C | TypeScript | Python | TypeScript |
-| 支援語言數 | 158 | 14+ | 36 | 20+ |
-| 索引速度 | 極快（C 原生） | 快 | 中等 | 快 |
-| 型別解析 | Hybrid LSP | Cypher 查詢 | Tree-sitter | 完整型別 |
-| 記憶功能 | ✅ remember/recall | ❌ | ❌ | ❌ |
-| MCP Server | ✅ | ✅ | ✅ | ✅ |
-| 適合場景 | 超大型專案、多語言 | 多倉庫、語義搜尋 | 多媒體、可視化 | 自動同步、框架感知 |
+| 比較項目   | codebase-memory-mcp | GitNexus         | Graphify       | CodeGraph          |
+| ---------- | ------------------- | ---------------- | -------------- | ------------------ |
+| 實作語言   | C                   | TypeScript       | Python         | TypeScript         |
+| 支援語言數 | 158                 | 14+              | 36             | 20+                |
+| 索引速度   | 極快（C 原生）      | 快               | 中等           | 快                 |
+| 型別解析   | Hybrid LSP          | Cypher 查詢      | Tree-sitter    | 完整型別           |
+| 記憶功能   | ✅ remember/recall  | ❌               | ❌             | ❌                 |
+| MCP Server | ✅                  | ✅               | ✅             | ✅                 |
+| 適合場景   | 超大型專案、多語言  | 多倉庫、語義搜尋 | 多媒體、可視化 | 自動同步、框架感知 |
 
 ---
 
@@ -1146,12 +1158,12 @@ CodeGraph（v1.1.6，56.1K ★）是一個以 TypeScript 開發的程式碼知�
 
 **核心特性：**
 
-| 特性 | 說明 |
-|------|------|
-| 支援語言 | **20+ 種**（含 TypeScript、Python、Java、Go、Rust、Swift、Kotlin 等） |
-| Auto-Sync | 檔案變更自動增量更新圖譜，無需重建 |
-| Framework-Aware | 理解 Next.js Routes、React Native Bridges、Express Middleware 等 |
-| Mixed Project | 支援 iOS + React Native + Expo bridging 混合專案 |
+| 特性            | 說明                                                                  |
+| --------------- | --------------------------------------------------------------------- |
+| 支援語言        | **20+ 種**（含 TypeScript、Python、Java、Go、Rust、Swift、Kotlin 等） |
+| Auto-Sync       | 檔案變更自動增量更新圖譜，無需重建                                    |
+| Framework-Aware | 理解 Next.js Routes、React Native Bridges、Express Middleware 等      |
+| Mixed Project   | 支援 iOS + React Native + Expo bridging 混合專案                      |
 
 **安裝與使用：**
 
@@ -1189,11 +1201,11 @@ AI 直接呼叫 codegraph_explore(查詢參數)
 
 CodeGraph 官方 Benchmark 數據：
 
-| 指標 | 數値 |
-|------|------|
-| Tool Calls 減少 | **58%**（相較傳統多工具方式） |
-| 任務完成速度 | **22% 更快** |
-| Context Window 使用率 | 減少 40% |
+| 指標                  | 數値                          |
+| --------------------- | ----------------------------- |
+| Tool Calls 減少       | **58%**（相較傳統多工具方式） |
+| 任務完成速度          | **22% 更快**                  |
+| Context Window 使用率 | 減少 40%                      |
 
 > **CodeGraph 思維的核心啟示**：「讓圖譜跟著程式碼走」——Auto-Sync 確保圖譜始終是最新的，開發者不需記得手動更新。單一工具哲學減少 AI 的決策成本，58% fewer tool calls 直接轉化為 Token 節省。
 
@@ -1224,15 +1236,15 @@ Ponytail 思維：
 
 Ponytail 的 YAGNI Ladder 包含七個檢查層級：
 
-| 級別 | 檢查問題 | 動作 |
-|------|---------|------|
-| L1 | Does this need to exist? | 判斷功能是否真正需要 |
-| L2 | Can it be simpler? | 簡化設計方案 |
-| L3 | Does this abstraction earn its keep? | 移除不必要的抽象層 |
-| L4 | Is this the minimum that works? | 確保最小可行實作 |
-| L5 | Are edge cases real or imagined? | 移除假設性邊界處理 |
-| L6 | Will this be needed in 30 days? | 移除「未來可能需要」的程式碼 |
-| L7 | Safety: never compromise | 安全性相關程式碼不在節省範圍內 |
+| 級別 | 檢查問題                             | 動作                           |
+| ---- | ------------------------------------ | ------------------------------ |
+| L1   | Does this need to exist?             | 判斷功能是否真正需要           |
+| L2   | Can it be simpler?                   | 簡化設計方案                   |
+| L3   | Does this abstraction earn its keep? | 移除不必要的抽象層             |
+| L4   | Is this the minimum that works?      | 確保最小可行實作               |
+| L5   | Are edge cases real or imagined?     | 移除假設性邊界處理             |
+| L6   | Will this be needed in 30 days?      | 移除「未來可能需要」的程式碼   |
+| L7   | Safety: never compromise             | 安全性相關程式碼不在節省範圍內 |
 
 > **重要：L7 安全性不妥協**——Ponytail 永遠不會刪減安全性相關的程式碼（認證、授權、輸入驗證、加密等）。
 
@@ -1254,12 +1266,12 @@ curl -fsSL https://github.com/DietrichGebert/ponytail/releases/latest/download/i
 
 ### 10.3 Benchmark 數據
 
-| 指標 | 數値 |
-|------|------|
-| 程式碼減少 | **-54%**（平均） |
+| 指標           | 數値                          |
+| -------------- | ----------------------------- |
+| 程式碼減少     | **-54%**（平均）              |
 | Token 成本降低 | **-20%**（Completion Tokens） |
-| 測試通過率 | 維持不變（不犧牲功能） |
-| 安全性檢查 | 100% 保留 |
+| 測試通過率     | 維持不變（不犧牲功能）        |
+| 安全性檢查     | 100% 保留                     |
 
 **Token 節省原理：**
 
@@ -1290,14 +1302,14 @@ graph LR
     D --> E[Deployment<br/>部署]
     E --> F[Maintenance<br/>維護]
     F --> A
-    
+
     A -.-> A1[Token 節省<br/>40-60%]
     B -.-> B1[Token 節省<br/>50-70%]
     C -.-> C1[Token 節省<br/>60-80%]
     D -.-> D1[Token 節省<br/>70-90%]
     E -.-> E1[Token 節省<br/>30-50%]
     F -.-> F1[Token 節省<br/>50-70%]
-    
+
     style A1 fill:#9f9,stroke:#333
     style B1 fill:#9f9,stroke:#333
     style C1 fill:#9f9,stroke:#333
@@ -1309,11 +1321,13 @@ graph LR
 ### 11.1 Requirement 階段
 
 **Token 浪費點：**
+
 - 反覆向 AI 描述業務背景
 - 每次 User Story 拆分都要重新說明系統全貌
 - 需求文件格式不一致，AI 需要額外理解
 
 **Token 優化方式：**
+
 - 建立 `requirements-memory.md`，包含系統業務背景、術語表、使用者角色
 - 使用標準化 User Story 模板，減少 AI 理解成本
 - 將需求 Backlog 結構化為 YAML/JSON 格式
@@ -1336,11 +1350,13 @@ graph LR
 ### 11.2 Design 階段
 
 **Token 浪費點：**
+
 - 要求 AI 從頭設計架構，未提供現有架構資訊
 - 多次迭代設計方案，每次都重新描述約束條件
 - 設計決策未記錄，後續開發階段重複討論
 
 **Token 優化方式：**
+
 - 建立 `architecture-memory.md`，記錄系統架構、技術選型、設計約束
 - 將 ADR（Architecture Decision Record）存檔供 AI 參考
 - 使用 Knowledge Graph 提供模組關係圖
@@ -1366,11 +1382,13 @@ UserController 有 30 個 API。我們使用 Spring Boot 3.4，
 ### 11.3 Development 階段
 
 **Token 浪費點：**
+
 - Agent 搜尋大量檔案尋找程式碼範例
 - 重複生成相似的 CRUD 程式碼
 - 未使用 Coding Standard Memory，每次都要求特定程式碼風格
 
 **Token 優化方式：**
+
 - 建立 `coding-standards.md`，記錄命名慣例、程式碼模板、錯誤處理方式
 - 提供相關模組的 Knowledge Graph 節點，而非完整檔案
 - 使用 Sub Agent 進行範圍限定的任務
@@ -1380,7 +1398,7 @@ UserController 有 30 個 API。我們使用 Spring Boot 3.4，
 ```markdown
 ❌ 原始 Prompt（~2,000 tokens）：
 "請參考 UserController.java、UserService.java、
-UserRepository.java 的寫法，幫我新增一個 
+UserRepository.java 的寫法，幫我新增一個
 NotificationController、NotificationService、
 NotificationRepository..."
 [附上三個完整檔案的程式碼]
@@ -1389,18 +1407,20 @@ NotificationRepository..."
 "參考 coding-standards.md 中的 Controller/Service/Repository 模板。
 新增 Notification 模組的三層架構。
 Entity 欄位：id, userId, type, content, status, createdAt。
-API：POST /notifications, GET /notifications/{id}, 
-     PUT /notifications/{id}/read。"
+API：POST /notifications, GET /notifications/{id},
+PUT /notifications/{id}/read。"
 ```
 
 ### 11.4 Testing 階段
 
 **Token 浪費點：**
+
 - 讓 AI 讀取完整的被測試類別來撰寫測試
 - 測試失敗時貼入完整的測試報告
 - 重複描述測試框架和工具配置
 
 **Token 優化方式：**
+
 - 提供方法簽名與 JavaDoc 即可生成測試，無需完整實作
 - 僅提供失敗的測試案例和相關 Stack Trace
 - 建立 `testing-standards.md` 記錄測試慣例
@@ -1414,21 +1434,24 @@ API：POST /notifications, GET /notifications/{id},
 
 ✅ 優化 Prompt（~600 tokens）：
 "為以下方法撰寫 JUnit 5 + Mockito 測試：
+
 - UserService.createUser(CreateUserDTO): User
   - 驗證必填欄位、Email 格式、重複帳號
 - UserService.updateUser(Long, UpdateUserDTO): User
   - 驗證使用者存在、權限檢查
-參考 testing-standards.md 的測試命名慣例。"
+    參考 testing-standards.md 的測試命名慣例。"
 ```
 
 ### 11.5 Deployment 階段
 
 **Token 浪費點：**
+
 - 每次部署問題排查都重新描述環境配置
 - CI/CD Pipeline 日誌全量傳給 AI 分析
 - 容器配置與基礎設施即程式碼的重複說明
 
 **Token 優化方式：**
+
 - 建立 `deployment-memory.md` 記錄環境配置、部署流程
 - 僅擷取 Pipeline 的錯誤段落
 - 使用 RTK 思維壓縮部署日誌
@@ -1436,11 +1459,13 @@ API：POST /notifications, GET /notifications/{id},
 ### 11.6 Maintenance 階段
 
 **Token 浪費點：**
+
 - 問題排查時讀取大量日誌
 - 效能調校時分析大量 Metrics
 - 每次 On-Call 事件都要重新理解系統架構
 
 **Token 優化方式：**
+
 - 建立 `ops-runbook.md` 記錄常見問題與解決方案
 - 日誌分析使用 RTK 思維，僅提供關鍵片段
 - Knowledge Graph 加速系統理解
@@ -1468,7 +1493,7 @@ graph TB
         S --> R
         R --> RE[Release Agent<br/>發佈管理]
     end
-    
+
     subgraph "Token 分配"
         P1[Planner: 5K tokens]
         A1[Architect: 15K tokens]
@@ -1478,37 +1503,37 @@ graph TB
         R1[Reviewer: 10K tokens]
         RE1[Release: 5K tokens]
     end
-    
+
     style P fill:#ff9,stroke:#333
     style D fill:#9f9,stroke:#333
 ```
 
 ### 12.2 各 Agent 職責與 Token 策略
 
-| Agent | 職責 | Context 需求 | Token 策略 |
-|-------|------|-------------|-----------|
-| **Planner Agent** | 任務拆分、優先排序 | 需求文件、架構概覽 | 僅載入 Memory 檔案，不讀原始碼 |
-| **Architect Agent** | 架構設計、技術選型 | 架構圖、技術約束 | 載入 Knowledge Graph 架構節點 |
-| **BA Agent** | 需求分析、User Story | 業務規則、使用者流程 | 載入 Requirement Memory |
-| **Developer Agent** | 程式碼實作 | 相關模組程式碼、Coding Standard | 僅載入目標模組 + 介面定義 |
-| **Test Agent** | 測試案例撰寫 | 方法簽名、業務規則 | 僅載入方法簽名，不讀完整實作 |
-| **Security Agent** | 安全漏洞掃描 | OWASP 規則、敏感操作 | 僅載入安全相關程式碼路徑 |
-| **Reviewer Agent** | Code Review | 變更差異、品質標準 | 僅載入 diff + Coding Standard |
-| **Release Agent** | 發佈管理 | 版本資訊、Changelog | 僅載入版本記錄 |
-| **Reverse Engineering Agent** | 遺留系統分析 | Architecture Graph | 載入 Knowledge Graph |
-| **Doc Writer Agent** | 文件撰寫 | 程式碼摘要、API 規格 | 載入圖譜節點摘要 |
+| Agent                         | 職責                 | Context 需求                    | Token 策略                     |
+| ----------------------------- | -------------------- | ------------------------------- | ------------------------------ |
+| **Planner Agent**             | 任務拆分、優先排序   | 需求文件、架構概覽              | 僅載入 Memory 檔案，不讀原始碼 |
+| **Architect Agent**           | 架構設計、技術選型   | 架構圖、技術約束                | 載入 Knowledge Graph 架構節點  |
+| **BA Agent**                  | 需求分析、User Story | 業務規則、使用者流程            | 載入 Requirement Memory        |
+| **Developer Agent**           | 程式碼實作           | 相關模組程式碼、Coding Standard | 僅載入目標模組 + 介面定義      |
+| **Test Agent**                | 測試案例撰寫         | 方法簽名、業務規則              | 僅載入方法簽名，不讀完整實作   |
+| **Security Agent**            | 安全漏洞掃描         | OWASP 規則、敏感操作            | 僅載入安全相關程式碼路徑       |
+| **Reviewer Agent**            | Code Review          | 變更差異、品質標準              | 僅載入 diff + Coding Standard  |
+| **Release Agent**             | 發佈管理             | 版本資訊、Changelog             | 僅載入版本記錄                 |
+| **Reverse Engineering Agent** | 遺留系統分析         | Architecture Graph              | 載入 Knowledge Graph           |
+| **Doc Writer Agent**          | 文件撰寫             | 程式碼摘要、API 規格            | 載入圖譜節點摘要               |
 
 ### 12.3 單 Agent VS 多 Agent 比較
 
-| 比較維度 | 單 Agent 模式 | 多 Agent（Agent Team）模式 |
-|---------|-------------|------------------------|
-| **Context 載入** | 載入所有相關資訊（100K+ tokens） | 每個 Agent 僅載入專職資訊（5-25K tokens） |
-| **單次任務 Token** | 100K-300K tokens | 總計 80K-120K tokens |
-| **Context 溢出風險** | 高（單一 Context Window 承載所有） | 低（任務分散在多個 Context Window） |
-| **回覆品質** | 中等（注意力分散） | 高（每個 Agent 專注） |
-| **執行速度** | 慢（串行處理所有子任務） | 快（可並行執行） |
-| **錯誤回復** | 需重新執行整個任務 | 僅需重新執行失敗的 Agent |
-| **Token 節省** | 基準線 | **節省 40-60%** |
+| 比較維度             | 單 Agent 模式                      | 多 Agent（Agent Team）模式                |
+| -------------------- | ---------------------------------- | ----------------------------------------- |
+| **Context 載入**     | 載入所有相關資訊（100K+ tokens）   | 每個 Agent 僅載入專職資訊（5-25K tokens） |
+| **單次任務 Token**   | 100K-300K tokens                   | 總計 80K-120K tokens                      |
+| **Context 溢出風險** | 高（單一 Context Window 承載所有） | 低（任務分散在多個 Context Window）       |
+| **回覆品質**         | 中等（注意力分散）                 | 高（每個 Agent 專注）                     |
+| **執行速度**         | 慢（串行處理所有子任務）           | 快（可並行執行）                          |
+| **錯誤回復**         | 需重新執行整個任務                 | 僅需重新執行失敗的 Agent                  |
+| **Token 節省**       | 基準線                             | **節省 40-60%**                           |
 
 **Token 節省原理：**
 
@@ -1561,6 +1586,7 @@ graph TB
 # Architecture Memory
 
 ## 技術棧
+
 - Backend: Spring Boot 3.4, Java 21, Maven
 - Frontend: Vue 3.5, TypeScript, Vite
 - Database: Oracle 19c (主庫), Redis 7 (快取)
@@ -1568,6 +1594,7 @@ graph TB
 - Auth: SSO + JWT
 
 ## 模組架構
+
 - gateway-service: API Gateway, 路由、限流
 - user-service: 使用者管理, 認證授權
 - account-service: 帳戶管理, 餘額查詢
@@ -1576,8 +1603,9 @@ graph TB
 - batch-service: 批次作業, 日終結算
 
 ## 分層架構
+
 Controller → Service → Repository → Database
-           ↗ DTO/VO     ↗ Entity
+↗ DTO/VO ↗ Entity
 ```
 
 **Coding Standard Memory（編碼規範記憶）**
@@ -1586,18 +1614,21 @@ Controller → Service → Repository → Database
 # Coding Standards
 
 ## Controller 模板
+
 - 使用 @RestController + @RequestMapping
 - 方法命名：動詞 + 名詞（createUser, getAccount）
 - 回傳統一使用 ResponseEntity<ApiResponse<T>>
 - 使用 @Valid 進行參數驗證
 
 ## Service 模板
+
 - 使用 @Service + @Transactional
 - 方法不超過 30 行
 - 複雜邏輯拆分為 private method
 - 使用 Optional 處理可能為 null 的回傳值
 
 ## 例外處理
+
 - 業務例外使用 BusinessException(ErrorCode)
 - 統一由 GlobalExceptionHandler 處理
 - 不允許 catch 後吞掉例外
@@ -1609,11 +1640,12 @@ Controller → Service → Repository → Database
 # API Memory
 
 ## User API
-| Method | Path | 說明 | Auth |
-|--------|------|------|------|
-| POST | /api/v1/users | 建立使用者 | ADMIN |
-| GET | /api/v1/users/{id} | 查詢使用者 | USER |
-| PUT | /api/v1/users/{id} | 更新使用者 | USER |
+
+| Method | Path               | 說明       | Auth  |
+| ------ | ------------------ | ---------- | ----- |
+| POST   | /api/v1/users      | 建立使用者 | ADMIN |
+| GET    | /api/v1/users/{id} | 查詢使用者 | USER  |
+| PUT    | /api/v1/users/{id} | 更新使用者 | USER  |
 | DELETE | /api/v1/users/{id} | 停用使用者 | ADMIN |
 ```
 
@@ -1623,11 +1655,12 @@ Controller → Service → Repository → Database
 # Database Memory
 
 ## 核心資料表
-| Table | 說明 | 主要欄位 | 索引 |
-|-------|------|---------|------|
-| T_USER | 使用者 | user_id, name, email | PK, UK_email |
-| T_ACCOUNT | 帳戶 | account_id, user_id, balance | PK, FK_user |
-| T_TRANSACTION | 交易 | tx_id, from_acct, to_acct, amount | PK, IDX_date |
+
+| Table         | 說明   | 主要欄位                          | 索引         |
+| ------------- | ------ | --------------------------------- | ------------ |
+| T_USER        | 使用者 | user_id, name, email              | PK, UK_email |
+| T_ACCOUNT     | 帳戶   | account_id, user_id, balance      | PK, FK_user  |
+| T_TRANSACTION | 交易   | tx_id, from_acct, to_acct, amount | PK, IDX_date |
 ```
 
 **Business Rules Memory（業務規則記憶）**
@@ -1636,6 +1669,7 @@ Controller → Service → Repository → Database
 # Business Rules
 
 ## 轉帳規則
+
 - 單筆限額：500 萬
 - 日累計限額：2,000 萬
 - 跨行轉帳需雙重驗證
@@ -1647,13 +1681,13 @@ Controller → Service → Repository → Database
 
 **建立 Memory 前後對比：**
 
-| 開發任務 | 無 Memory（Token） | 有 Memory（Token） | 節省 |
-|---------|-------------------|-------------------|------|
-| 新增一個 API | 80K | 15K | 81% |
-| 修復 Bug | 120K | 25K | 79% |
-| Code Review | 60K | 12K | 80% |
-| 撰寫測試 | 90K | 18K | 80% |
-| 架構設計 | 150K | 30K | 80% |
+| 開發任務     | 無 Memory（Token） | 有 Memory（Token） | 節省 |
+| ------------ | ------------------ | ------------------ | ---- |
+| 新增一個 API | 80K                | 15K                | 81%  |
+| 修復 Bug     | 120K               | 25K                | 79%  |
+| Code Review  | 60K                | 12K                | 80%  |
+| 撰寫測試     | 90K                | 18K                | 80%  |
+| 架構設計     | 150K               | 30K                | 80%  |
 
 > **實務建議**：建立 System Knowledge Base 的時間投資約 4-8 小時，但可以為後續每個開發任務節省 60-80% 的 Token。對於 6 個月以上的專案，ROI 非常顯著。
 
@@ -1667,43 +1701,43 @@ Framework 升級是 Token 消耗最密集的場景之一，因為需要理解大
 
 **Spring Boot 2 → Spring Boot 4**
 
-| 升級項目 | 影響範圍 | 典型變更數 |
-|---------|---------|----------|
+| 升級項目             | 影響範圍            | 典型變更數     |
+| -------------------- | ------------------- | -------------- |
 | Jakarta EE namespace | 所有 javax.* import | 200-500 個檔案 |
-| Spring Security 配置 | SecurityConfig | 5-15 個檔案 |
-| 資料存取層 | Repository/JPA 變更 | 30-80 個檔案 |
-| Actuator 端點 | 監控配置 | 3-10 個檔案 |
-| Properties 變更 | application.yml | 5-20 個設定項 |
+| Spring Security 配置 | SecurityConfig      | 5-15 個檔案    |
+| 資料存取層           | Repository/JPA 變更 | 30-80 個檔案   |
+| Actuator 端點        | 監控配置            | 3-10 個檔案    |
+| Properties 變更      | application.yml     | 5-20 個設定項  |
 
 **Java 17 → Java 25**
 
-| 升級項目 | 影響範圍 | 典型變更數 |
-|---------|---------|----------|
-| Record 替換 POJO | DTO/VO 類別 | 50-200 個檔案 |
-| Pattern Matching | instanceof 檢查 | 30-100 處 |
-| Sealed Classes | 繼承階層 | 10-30 個類別 |
-| Virtual Threads | 執行緒管理 | 5-20 處 |
-| 已棄用 API 移除 | 各種 | 20-100 處 |
+| 升級項目         | 影響範圍        | 典型變更數    |
+| ---------------- | --------------- | ------------- |
+| Record 替換 POJO | DTO/VO 類別     | 50-200 個檔案 |
+| Pattern Matching | instanceof 檢查 | 30-100 處     |
+| Sealed Classes   | 繼承階層        | 10-30 個類別  |
+| Virtual Threads  | 執行緒管理      | 5-20 處       |
+| 已棄用 API 移除  | 各種            | 20-100 處     |
 
 **Vue 2 → Vue 3**
 
-| 升級項目 | 影響範圍 | 典型變更數 |
-|---------|---------|----------|
-| Composition API | 所有 Component | 100-400 個檔案 |
-| Vuex → Pinia | 狀態管理 | 20-50 個檔案 |
-| Vue Router 4 | 路由配置 | 10-30 個檔案 |
-| Template 語法變更 | v-model、事件 | 50-200 處 |
-| Build 工具遷移 | Webpack → Vite | 5-15 個配置檔 |
+| 升級項目          | 影響範圍       | 典型變更數     |
+| ----------------- | -------------- | -------------- |
+| Composition API   | 所有 Component | 100-400 個檔案 |
+| Vuex → Pinia      | 狀態管理       | 20-50 個檔案   |
+| Vue Router 4      | 路由配置       | 10-30 個檔案   |
+| Template 語法變更 | v-model、事件  | 50-200 處      |
+| Build 工具遷移    | Webpack → Vite | 5-15 個配置檔  |
 
 **Angular 12 → Angular 20**
 
-| 升級項目 | 影響範圍 | 典型變更數 |
-|---------|---------|----------|
-| Standalone Components | 所有 Module 宣告 | 100-300 個檔案 |
-| Signals | RxJS 替換 | 50-200 處 |
-| Control Flow (@if/@for) | Template 語法 | 100-500 處 |
-| Router 變更 | 路由配置 | 10-30 個檔案 |
-| HttpClient 變更 | HTTP 呼叫 | 30-100 處 |
+| 升級項目                | 影響範圍         | 典型變更數     |
+| ----------------------- | ---------------- | -------------- |
+| Standalone Components   | 所有 Module 宣告 | 100-300 個檔案 |
+| Signals                 | RxJS 替換        | 50-200 處      |
+| Control Flow (@if/@for) | Template 語法    | 100-500 處     |
+| Router 變更             | 路由配置         | 10-30 個檔案   |
+| HttpClient 變更         | HTTP 呼叫        | 30-100 處      |
 
 ### 14.2 Migration Knowledge Graph
 
@@ -1715,18 +1749,21 @@ Framework 升級是 Token 消耗最密集的場景之一，因為需要理解大
 # Migration Knowledge Graph
 
 ## 1. Breaking Changes Registry
-| 變更 ID | 類型 | 描述 | 影響檔案 | 優先序 |
-|---------|------|------|---------|--------|
-| BC-001 | Namespace | javax.* → jakarta.* | 450 個檔案 | P1 |
-| BC-002 | Security | WebSecurityConfigurerAdapter 移除 | 3 個檔案 | P1 |
-| BC-003 | JPA | Query 語法變更 | 25 個檔案 | P2 |
+
+| 變更 ID | 類型      | 描述                              | 影響檔案   | 優先序 |
+| ------- | --------- | --------------------------------- | ---------- | ------ |
+| BC-001  | Namespace | javax.* → jakarta.*               | 450 個檔案 | P1     |
+| BC-002  | Security  | WebSecurityConfigurerAdapter 移除 | 3 個檔案   | P1     |
+| BC-003  | JPA       | Query 語法變更                    | 25 個檔案  | P2     |
 
 ## 2. Dependency Impact Map
+
 spring-boot-starter-web → 影響 Controller 層
 spring-boot-starter-data-jpa → 影響 Repository 層
 spring-boot-starter-security → 影響 Security 配置
 
 ## 3. Migration Order
+
 Phase 1: 基礎設施（pom.xml, 配置檔）
 Phase 2: Namespace 遷移（全域 javax → jakarta）
 Phase 3: Security 配置重寫
@@ -1745,7 +1782,7 @@ Phase 6: 效能驗證
 有 Migration Graph 的升級流程：
   每個檔案修改前 → AI 查詢 Graph 取得變更清單 + 僅讀取相關方法
   450 個檔案 × (查詢 0.5K + 讀取 0.5K) = 450K tokens
-  
+
   節省：87.5%
 ```
 
@@ -1757,14 +1794,17 @@ Phase 6: 效能驗證
 # Spring Boot Migration Checklist
 
 ## 已完成
+
 - [x] pom.xml: Spring Boot 2.7.x → 4.0.x
 - [x] javax.servlet → jakarta.servlet（450 個檔案）
 - [x] SecurityConfig 重寫
 
-## 進行中  
+## 進行中
+
 - [ ] Repository 層 JPA 調整（25 個檔案，已完成 10 個）
 
 ## 待處理
+
 - [ ] Actuator 端點遷移
 - [ ] 測試修復
 ```
@@ -1775,7 +1815,7 @@ Phase 6: 效能驗證
 ❌ 逐檔詢問："請將 UserController.java 中的 javax 改為 jakarta"
    → 每次都要描述變更規則 → 450 次 × 1K tokens = 450K tokens
 
-✅ 批次處理："請將以下 10 個 Controller 中的 javax.servlet 改為 
+✅ 批次處理："請將以下 10 個 Controller 中的 javax.servlet 改為
    jakarta.servlet（僅需修改 import 區段）：
    [10 個檔案的 import 區段]"
    → 45 次 × 3K tokens = 135K tokens
@@ -1804,13 +1844,13 @@ Reverse Engineering（逆向工程）是企業 AI 開發中 Token 消耗最高�
 
 **典型 Legacy System 技術棧：**
 
-| 技術 | 挑戰 | Token 影響 |
-|------|------|-----------|
-| **JSP** | 混合 HTML/Java/CSS/JS | 每個檔案 Token 消耗是純 Java 的 3-5 倍 |
-| **Struts** | 複雜的 XML 配置 | struts-config.xml 單檔可達 10K+ tokens |
-| **EJB** | 大量 Boilerplate | Home/Remote Interface 重複定義 |
-| **Lotus Notes** | 專有 Formula 語言 | AI 訓練資料不足，需大量範例 |
-| **COBOL** | 固定格式、大量 COPYBOOK | 每行 Token 效率低 |
+| 技術            | 挑戰                    | Token 影響                             |
+| --------------- | ----------------------- | -------------------------------------- |
+| **JSP**         | 混合 HTML/Java/CSS/JS   | 每個檔案 Token 消耗是純 Java 的 3-5 倍 |
+| **Struts**      | 複雜的 XML 配置         | struts-config.xml 單檔可達 10K+ tokens |
+| **EJB**         | 大量 Boilerplate        | Home/Remote Interface 重複定義         |
+| **Lotus Notes** | 專有 Formula 語言       | AI 訓練資料不足，需大量範例            |
+| **COBOL**       | 固定格式、大量 COPYBOOK | 每行 Token 效率低                      |
 
 ### 15.2 四層 Graph 架構
 
@@ -1823,7 +1863,7 @@ graph TB
         B --> C[Business Graph<br/>業務邏輯圖]
         C --> D[Database Graph<br/>資料庫關聯圖]
     end
-    
+
     subgraph "建構成本（一次性）"
         A1[Architecture: 50K tokens]
         B1[Sequence: 80K tokens]
@@ -1831,14 +1871,14 @@ graph TB
         D1[Database: 30K tokens]
         E1[總計: 260K tokens]
     end
-    
+
     subgraph "使用效益（每次查詢）"
         A2[查詢架構: 2K tokens]
         B2[查詢流程: 3K tokens]
         C2[查詢業務: 5K tokens]
         D2[查詢資料: 2K tokens]
     end
-    
+
     style E1 fill:#ff9,stroke:#333
     style A2 fill:#9f9,stroke:#333
     style B2 fill:#9f9,stroke:#333
@@ -1854,6 +1894,7 @@ graph TB
 # Architecture Graph - Legacy Banking System
 
 ## 模組清單
+
 - WebTier: JSP 2.3 + Struts 1.3 (IBM WAS 9.0)
 - BusinessTier: EJB 3.1 + Spring 4.3
 - DataTier: JDBC + MyBatis 3.4
@@ -1862,6 +1903,7 @@ graph TB
 - Batch: Spring Batch 4.3
 
 ## 模組相依性
+
 WebTier → BusinessTier → DataTier → DB2/Oracle
 WebTier → MQ (非同步通知)
 Batch → DataTier → DB2 (日終結算)
@@ -1873,6 +1915,7 @@ Batch → DataTier → DB2 (日終結算)
 
 ```markdown
 # Sequence: 轉帳流程
+
 1. TransferAction (Struts) → 接收表單
 2. TransferValidator → 參數驗證
 3. TransferService (EJB) → 業務邏輯
@@ -1889,6 +1932,7 @@ Batch → DataTier → DB2 (日終結算)
 
 ```markdown
 # Business Rules: 轉帳
+
 - 單筆限額：依客戶等級 (A: 1000萬, B: 500萬, C: 100萬)
 - 跨行轉帳：需經 FISC 清算
 - 即時轉帳：金額 < 5萬免手續費
@@ -1902,11 +1946,12 @@ Batch → DataTier → DB2 (日終結算)
 
 ```markdown
 # Database Schema
-T_CUSTOMER (customer_id PK) 
-  → T_ACCOUNT (account_id PK, customer_id FK)
-    → T_TRANSACTION (tx_id PK, from_account FK, to_account FK)
-    → T_BALANCE_HISTORY (balance_id PK, account_id FK)
-  → T_CUSTOMER_GRADE (grade_id PK, customer_id FK)
+
+T_CUSTOMER (customer_id PK)
+→ T_ACCOUNT (account_id PK, customer_id FK)
+→ T_TRANSACTION (tx_id PK, from_account FK, to_account FK)
+→ T_BALANCE_HISTORY (balance_id PK, account_id FK)
+→ T_CUSTOMER_GRADE (grade_id PK, customer_id FK)
 ```
 
 ### 15.3 降低 Token 方法
@@ -1964,7 +2009,7 @@ Week 4: 補充資料庫 Database Graph
 
 ```
 ❌ 原始 Prompt（~1,500 tokens）：
-"我們有一個大型的企業級 Web Application，使用 Spring Boot 3.4 
+"我們有一個大型的企業級 Web Application，使用 Spring Boot 3.4
 作為後端框架，前端使用 Vue 3.5 搭配 TypeScript 和 Tailwind CSS。
 資料庫是 Oracle 19c，快取用 Redis 7，訊息佇列用 Kafka 3.6。
 整個系統有 800 個 Java 檔案，400 個 Vue 檔案，50 個 API 控制器...
@@ -1991,7 +2036,7 @@ Week 4: 補充資料庫 Database Graph
 
 ✅ 優化 Prompt（~300 tokens）：
 "參考 Knowledge Graph 的 dependency 節點。
-找出 user-service、account-service、transaction-service 
+找出 user-service、account-service、transaction-service
 之間的循環依賴，並建議解耦方案。"
 
 💰 節省：85%
@@ -2024,7 +2069,7 @@ DELETE /api/users/deleteUser/{id} → 應改為？
 
 ✅ 優化 Prompt（~400 tokens）：
 "以下 SQL 在 Oracle 19c 上執行耗時 15 秒（資料量 500 萬筆）：
-SELECT * FROM T_TRANSACTION 
+SELECT * FROM T_TRANSACTION
 WHERE customer_id = ? AND tx_date BETWEEN ? AND ?
 ORDER BY tx_date DESC
 
@@ -2422,44 +2467,45 @@ Component：UserListComponent（有 NgModule 宣告）
 ```
 
 > **Prompt Engineering 的核心原則**：
+>
 > 1. **Reference, Don't Repeat**（引用，不要重複）——引用 Memory 檔案，不要每次都重新描述背景
 > 2. **Scope, Don't Sprawl**（限定，不要擴散）——明確限定分析範圍和輸出格式
 > 3. **Structure, Don't Narrate**（結構化，不要敘述）——使用結構化的輸入格式，而非自然語言敘述
 
-*(以上共列出 26 個範例，第 27-54 個範例涵蓋更多子類別的同等模式，因篇幅考量以精選代表性範例呈現。完整的 Prompt 範例庫建議團隊以 YAML 格式維護，可參考附錄。)*
+_(以上共列出 26 個範例，第 27-54 個範例涵蓋更多子類別的同等模式，因篇幅考量以精選代表性範例呈現。完整的 Prompt 範例庫建議團隊以 YAML 格式維護，可參考附錄。)_
 
 **補充範例摘要（第 27-54 個）：**
 
-| 編號 | 類別 | 場景 | 節省比例 |
-|------|------|------|---------|
-| 27 | 架構分析 | 微服務通訊模式選擇 | 85% |
-| 28 | 架構分析 | 資料庫分庫分表策略 | 83% |
-| 29 | 程式碼分析 | 多執行緒安全審查 | 88% |
-| 30 | 程式碼分析 | 記憶體洩漏檢測 | 86% |
-| 31 | 程式碼分析 | 效能熱點定位 | 90% |
-| 32 | Bug 修復 | Deadlock 分析 | 89% |
-| 33 | Bug 修復 | Memory Leak 修復 | 87% |
-| 34 | Bug 修復 | 交易一致性問題 | 91% |
-| 35 | SSDLC | Threat Modeling | 84% |
-| 36 | SSDLC | 安全需求分析 | 82% |
-| 37 | SSDLC | 部署檢查清單 | 80% |
-| 38 | Security | XSS 防護審查 | 91% |
-| 39 | Security | CSRF 防護審查 | 89% |
-| 40 | Security | JWT 安全審查 | 88% |
-| 41 | Security | 密碼策略審查 | 86% |
-| 42 | Unit Test | Repository 測試 | 89% |
-| 43 | Unit Test | Exception 測試 | 87% |
-| 44 | Unit Test | Async 方法測試 | 85% |
-| 45 | Refactoring | 神物件拆分 | 90% |
-| 46 | Refactoring | 職責分離 | 88% |
-| 47 | Refactoring | API 版本化 | 86% |
-| 48 | Framework Upgrade | Jakarta EE 遷移 | 92% |
-| 49 | Framework Upgrade | JUnit 4 → 5 遷移 | 90% |
-| 50 | Framework Upgrade | Webpack → Vite 遷移 | 87% |
-| 51 | Reverse Engineering | COBOL 程式理解 | 93% |
-| 52 | Reverse Engineering | Struts Action 對映 | 91% |
-| 53 | Reverse Engineering | EJB 轉 Spring 分析 | 89% |
-| 54 | Reverse Engineering | DB Schema 逆向 | 88% |
+| 編號 | 類別                | 場景                | 節省比例 |
+| ---- | ------------------- | ------------------- | -------- |
+| 27   | 架構分析            | 微服務通訊模式選擇  | 85%      |
+| 28   | 架構分析            | 資料庫分庫分表策略  | 83%      |
+| 29   | 程式碼分析          | 多執行緒安全審查    | 88%      |
+| 30   | 程式碼分析          | 記憶體洩漏檢測      | 86%      |
+| 31   | 程式碼分析          | 效能熱點定位        | 90%      |
+| 32   | Bug 修復            | Deadlock 分析       | 89%      |
+| 33   | Bug 修復            | Memory Leak 修復    | 87%      |
+| 34   | Bug 修復            | 交易一致性問題      | 91%      |
+| 35   | SSDLC               | Threat Modeling     | 84%      |
+| 36   | SSDLC               | 安全需求分析        | 82%      |
+| 37   | SSDLC               | 部署檢查清單        | 80%      |
+| 38   | Security            | XSS 防護審查        | 91%      |
+| 39   | Security            | CSRF 防護審查       | 89%      |
+| 40   | Security            | JWT 安全審查        | 88%      |
+| 41   | Security            | 密碼策略審查        | 86%      |
+| 42   | Unit Test           | Repository 測試     | 89%      |
+| 43   | Unit Test           | Exception 測試      | 87%      |
+| 44   | Unit Test           | Async 方法測試      | 85%      |
+| 45   | Refactoring         | 神物件拆分          | 90%      |
+| 46   | Refactoring         | 職責分離            | 88%      |
+| 47   | Refactoring         | API 版本化          | 86%      |
+| 48   | Framework Upgrade   | Jakarta EE 遷移     | 92%      |
+| 49   | Framework Upgrade   | JUnit 4 → 5 遷移    | 90%      |
+| 50   | Framework Upgrade   | Webpack → Vite 遷移 | 87%      |
+| 51   | Reverse Engineering | COBOL 程式理解      | 93%      |
+| 52   | Reverse Engineering | Struts Action 對映  | 91%      |
+| 53   | Reverse Engineering | EJB 轉 Spring 分析  | 89%      |
+| 54   | Reverse Engineering | DB Schema 逆向      | 88%      |
 
 ---
 
@@ -2475,24 +2521,28 @@ Component：UserListComponent（有 NgModule 宣告）
 # CLAUDE.md
 
 ## 專案概覽
+
 - 名稱：Enterprise Banking Platform
 - 技術棧：Spring Boot 3.4 + Vue 3.5 + Oracle 19c
 - 架構：Clean Architecture + Microservices
 
 ## 編碼規範
+
 - Java：Google Java Style Guide
 - Vue：Composition API + <script setup>
 - 測試：JUnit 5 + Mockito（Coverage > 80%）
 
 ## 目錄結構
+
 src/main/java/com/bank/
-├── controller/   # REST API（@RestController）
-├── service/      # 業務邏輯（@Service）
-├── repository/   # 資料存取（JPA Repository）
-├── model/        # Entity + DTO + VO
-└── config/       # Spring 配置
+├── controller/ # REST API（@RestController）
+├── service/ # 業務邏輯（@Service）
+├── repository/ # 資料存取（JPA Repository）
+├── model/ # Entity + DTO + VO
+└── config/ # Spring 配置
 
 ## AI 工作指引
+
 - 修改前先確認影響範圍
 - 新增 API 需同步更新 api-memory.md
 - 所有公開方法需有 JavaDoc
@@ -2500,6 +2550,7 @@ src/main/java/com/bank/
 ```
 
 **Token 節省效果**：
+
 - 無 CLAUDE.md：每次對話手動描述背景 ~2,000 tokens × 20 sessions/天 = 40K tokens/天
 - 有 CLAUDE.md：自動注入 ~500 tokens（含 Cache Token 優惠）× 20 sessions/天 = 10K tokens/天
 - **每日節省 30K tokens（75%）**
@@ -2508,11 +2559,11 @@ src/main/java/com/bank/
 
 Claude Code 支援多層 Memory 機制：
 
-| Memory 層級 | 儲存位置 | 生命週期 | 適用內容 |
-|------------|---------|---------|---------|
-| Project Memory | `CLAUDE.md` | 永久 | 專案配置、編碼規範 |
-| User Memory | `~/.claude/memory` | 跨專案 | 使用者偏好、通用規則 |
-| Session Memory | 對話內 | 單次 Session | 當次任務上下文 |
+| Memory 層級    | 儲存位置           | 生命週期     | 適用內容             |
+| -------------- | ------------------ | ------------ | -------------------- |
+| Project Memory | `CLAUDE.md`        | 永久         | 專案配置、編碼規範   |
+| User Memory    | `~/.claude/memory` | 跨專案       | 使用者偏好、通用規則 |
+| Session Memory | 對話內             | 單次 Session | 當次任務上下文       |
 
 **Memory 策略建議：**
 
@@ -2559,17 +2610,17 @@ Claude Code 的 Sub Agent（子代理）機制可有效分割 Context Window：
 主 Agent（Orchestrator）：
   - 載入任務描述 + 架構概覽
   - Token：15K
-  
+
 Sub Agent 1（分析）：
   - 載入 Knowledge Graph + 目標模組
   - Token：20K
   - 輸出：分析報告（2K tokens）
-  
+
 Sub Agent 2（實作）：
   - 載入分析報告 + 程式碼模板
   - Token：15K
   - 輸出：程式碼（5K tokens）
-  
+
 Sub Agent 3（測試）：
   - 載入方法簽名 + 測試標準
   - Token：10K
@@ -2584,12 +2635,12 @@ MCP（Model Context Protocol）讓 Claude Code 可透過標準化協定存取外
 
 **Token 節省的 MCP 工具：**
 
-| MCP 工具 | 功能 | Token 節省方式 |
-|---------|------|--------------|
+| MCP 工具            | 功能               | Token 節省方式       |
+| ------------------- | ------------------ | -------------------- |
 | Knowledge Graph MCP | 查詢程式碼知識圖譜 | 精準查詢取代全量讀取 |
-| Database MCP | 查詢資料庫 Schema | 按需查詢取代貼入 DDL |
-| Git MCP | 查詢版本歷史 | 精準取得相關 commit |
-| Search MCP | 語義搜尋程式碼 | 精準結果取代 grep |
+| Database MCP        | 查詢資料庫 Schema  | 按需查詢取代貼入 DDL |
+| Git MCP             | 查詢版本歷史       | 精準取得相關 commit  |
+| Search MCP          | 語義搜尋程式碼     | 精準結果取代 grep    |
 
 > **Claude Code Token 優化的關鍵**：將 CLAUDE.md 視為「AI 的長期記憶」，將 Knowledge Graph 視為「AI 的外部知識庫」，將 Sub Agent 視為「AI 的專職團隊」。三者結合可將 Token 消耗降低 60-80%。
 
@@ -2605,19 +2656,23 @@ GitHub Copilot 透過 `.github/copilot-instructions.md` 提供專案級指令，
 # .github/copilot-instructions.md
 
 ## 專案背景
+
 Java 教學專案，使用 Maven + JUnit 5 + Log4j2。
 
 ## 程式碼風格
+
 - 使用 JavaDoc 格式撰寫註解
 - 類別名稱使用 PascalCase
 - 方法和變數使用 camelCase
 - 常數使用 UPPER_SNAKE_CASE
 
 ## 測試規範
+
 - 每個主要類別都應有對應的 JUnit 測試
 - 測試方法命名：should_Expected_When_Condition
 
 ## AI 工作指引
+
 - 回覆使用繁體中文
 - 優先使用現有的 Utility 類別
 - 遵循 Clean Architecture 分層
@@ -2629,24 +2684,29 @@ Copilot 的 `.prompt.md` 檔案是可重複使用的 Prompt 模板，大幅減�
 
 ```markdown
 # .github/prompts/code-review.prompt.md
+
 ---
+
 mode: agent
 tools: ["read_file", "grep_search"]
 ---
 
 請對以下程式碼進行 Code Review：
+
 1. 檢查是否符合 copilot-instructions.md 中的編碼規範
 2. 檢查安全漏洞（OWASP Top 10）
 3. 檢查效能問題
 4. 檢查測試覆蓋率
 
 輸出格式：
+
 - 🔴 Critical：必須修復
 - 🟡 Warning：建議修復
 - 🟢 Info：可選優化
 ```
 
 **Token 節省效果**：
+
 - 手動輸入 Review 需求：每次 ~500 tokens × 10 次/天 = 5K tokens/天
 - 使用 Prompt File：每次 ~50 tokens（僅需指定檔案）× 10 次/天 = 500 tokens/天
 - **節省 90%**
@@ -2661,7 +2721,7 @@ Copilot Agent Mode 的 Token 優化策略：
 ❌ "請修復這個 Bug"
    → Agent 搜尋整個專案
 
-✅ "請修復 src/main/java/com/service/UserService.java 
+✅ "請修復 src/main/java/com/service/UserService.java
    第 45 行的 NullPointerException"
    → Agent 僅讀取相關檔案
 ```
@@ -2682,14 +2742,17 @@ Copilot Agent Mode 的 Token 優化策略：
 ## 任務：新增定期轉帳 API
 
 ### 需求
+
 - POST /api/recurring-transfers
 - Body: { fromAccount, toAccount, amount, frequency, startDate }
 
 ### 參考
+
 - 現有 TransferService 的 transfer() 方法
 - coding-standards.md 的 Controller 模板
 
 ### 產出
+
 1. RecurringTransferController.java
 2. RecurringTransferService.java
 3. RecurringTransferDTO.java
@@ -2757,19 +2820,19 @@ graph TB
         B --> D[AI Agent Policy<br/>Agent 政策]
         B --> E[AI Security Policy<br/>安全政策]
         B --> F[AI Cost Policy<br/>成本政策]
-        
+
         A --> G[Monitoring Layer<br/>監控層]
         G --> H[Token Dashboard<br/>Token 儀表板]
         G --> I[Cost Analytics<br/>成本分析]
         G --> J[Usage Tracking<br/>使用追蹤]
-        
+
         A --> K[Optimization Layer<br/>優化層]
         K --> L[Knowledge Graph<br/>知識圖譜]
         K --> M[Memory System<br/>記憶系統]
         K --> N[Agent Team<br/>Agent 團隊]
         K --> O[Prompt Templates<br/>Prompt 模板]
     end
-    
+
     style A fill:#ff9,stroke:#333,stroke-width:2px
 ```
 
@@ -2777,12 +2840,12 @@ graph TB
 
 **成本分級管理：**
 
-| 等級 | 月度 Token 消耗 | 管理策略 | 核准層級 |
-|------|---------------|---------|---------|
-| **Green** | < 100M tokens | 自主管理 | 團隊自行管理 |
+| 等級       | 月度 Token 消耗  | 管理策略 | 核准層級       |
+| ---------- | ---------------- | -------- | -------------- |
+| **Green**  | < 100M tokens    | 自主管理 | 團隊自行管理   |
 | **Yellow** | 100M-500M tokens | 週報審查 | Tech Lead 審核 |
-| **Orange** | 500M-1B tokens | 日報追蹤 | 部門主管核准 |
-| **Red** | > 1B tokens | 即時告警 | CTO/CIO 核准 |
+| **Orange** | 500M-1B tokens   | 日報追蹤 | 部門主管核准   |
+| **Red**    | > 1B tokens      | 即時告警 | CTO/CIO 核准   |
 
 **成本分攤模型：**
 
@@ -2803,13 +2866,13 @@ Burst Buffer：專案高峰期額外 20% 彈性配額
 
 **監控指標：**
 
-| 指標 | 計算方式 | 告警閾值 | 說明 |
-|------|---------|---------|------|
-| Daily Token Usage | 每日 Token 總消耗 | > 日均 150% | 異常使用偵測 |
-| Token per Task | 每個任務的 Token 消耗 | > 100K tokens/task | 任務效率監控 |
-| Cache Hit Rate | Cache Token / Total Prompt Token | < 30% | Cache 利用率 |
-| Agent Efficiency | 完成任務數 / Token 消耗 | < 0.5 tasks/100K | Agent 效率 |
-| Waste Ratio | 重試/失敗 Token / 總 Token | > 20% | 浪費比率 |
+| 指標              | 計算方式                         | 告警閾值           | 說明         |
+| ----------------- | -------------------------------- | ------------------ | ------------ |
+| Daily Token Usage | 每日 Token 總消耗                | > 日均 150%        | 異常使用偵測 |
+| Token per Task    | 每個任務的 Token 消耗            | > 100K tokens/task | 任務效率監控 |
+| Cache Hit Rate    | Cache Token / Total Prompt Token | < 30%              | Cache 利用率 |
+| Agent Efficiency  | 完成任務數 / Token 消耗          | < 0.5 tasks/100K   | Agent 效率   |
+| Waste Ratio       | 重試/失敗 Token / 總 Token       | > 20%              | 浪費比率     |
 
 **監控儀表板設計要素：**
 
@@ -2841,17 +2904,20 @@ AI Token Dashboard
 # AI 使用政策
 
 ## 允許
+
 - 使用 AI 進行程式碼生成、Bug 修復、Code Review
 - 使用 AI 撰寫測試案例、文件
 - 使用 AI 分析架構、設計方案
 
 ## 限制
+
 - 禁止將客戶個資傳送給 AI
 - 禁止將密碼、API Key 等機密資訊傳送給 AI
 - 單次 Agent 對話 Token 上限：500K
 - 禁止使用 AI 生成的程式碼直接上線（需 Code Review）
 
 ## 要求
+
 - 所有 AI 生成的程式碼必須通過 Code Review
 - 安全相關程式碼必須經 Security Agent 審查
 - 使用 AI 時必須建立 Memory 檔案，避免 Token 浪費
@@ -2863,16 +2929,19 @@ AI Token Dashboard
 # AI Agent 政策
 
 ## Agent 執行限制
+
 - 單次 Agent Session 最長執行時間：30 分鐘
 - 單次 Agent 最大工具呼叫次數：50 次
 - Agent 搜尋範圍限制：僅限指定模組
 
 ## Agent Team 使用規範
+
 - 需事先定義 Agent Team 的組成與職責
 - 每個 Agent 須有明確的 Input/Output 契約
 - Agent 間通訊透過結構化文件，不直接傳遞原始碼
 
 ## Agent 權限控管
+
 - 唯讀 Agent：Analyzer、Reviewer（不可修改檔案）
 - 寫入 Agent：Developer、Refactorer（可修改指定範圍）
 - 管理 Agent：Release、Deployer（需人工審核確認）
@@ -2884,17 +2953,20 @@ AI Token Dashboard
 # AI 安全政策
 
 ## 資料保護
+
 - 禁止傳送 PII（個人可識別資訊）
 - 禁止傳送金融交易資料
 - 禁止傳送密碼、Token、API Key
 - 程式碼傳送前須移除硬編碼的機密資訊
 
 ## Prompt Injection 防護
+
 - AI 生成的程式碼須進行安全掃描
 - 禁止使用 AI 生成的輸入驗證邏輯未經審查即部署
 - 定期審查 CLAUDE.md 和 Instructions 檔案
 
 ## 稽核
+
 - AI 使用日誌保留 90 天
 - 每月安全審查 AI 生成的程式碼
 - 季度 AI 安全合規檢查
@@ -2914,27 +2986,27 @@ graph TB
             P2[Prompt Templates<br/>.prompt.md 模板庫]
             P3[Prompt Optimizer<br/>自動優化 Prompt]
         end
-        
+
         subgraph "Cache Layer（快取層）"
             C1[Prompt Cache<br/>重複上下文快取]
             C2[Response Cache<br/>常見回答快取]
             C3[Embedding Cache<br/>向量搜尋快取]
         end
-        
+
         subgraph "Memory Layer（記憶層）"
             M1[Architecture Memory<br/>架構記憶]
             M2[Coding Standard<br/>編碼規範記憶]
             M3[Business Rules<br/>業務規則記憶]
             M4[API/DB Memory<br/>API/資料庫記憶]
         end
-        
+
         subgraph "Knowledge Graph Layer（知識圖譜層）"
             K1[Code Graph<br/>程式碼圖譜]
             K2[Dependency Graph<br/>相依性圖譜]
             K3[Call Graph<br/>呼叫圖譜]
             K4[Business Graph<br/>業務圖譜]
         end
-        
+
         subgraph "Agent Layer（Agent 層）"
             A1[Planner Agent]
             A2[Architect Agent]
@@ -2943,13 +3015,13 @@ graph TB
             A5[Security Agent]
             A6[Reviewer Agent]
         end
-        
+
         subgraph "Workflow Layer（工作流程層）"
             W1[SSDLC Workflow<br/>安全開發流程]
             W2[Agent Orchestration<br/>Agent 編排]
             W3[Task Pipeline<br/>任務管線]
         end
-        
+
         subgraph "Governance Layer（治理層）"
             G1[Token Monitoring<br/>Token 監控]
             G2[Cost Management<br/>成本管理]
@@ -2957,7 +3029,7 @@ graph TB
             G4[Compliance Audit<br/>合規稽核]
         end
     end
-    
+
     P1 & P2 & P3 --> C1 & C2 & C3
     C1 & C2 & C3 --> M1 & M2 & M3 & M4
     M1 & M2 & M3 & M4 --> K1 & K2 & K3 & K4
@@ -2968,15 +3040,15 @@ graph TB
 
 ### 20.2 七層架構設計
 
-| 層級 | 名稱 | 職責 | Token 節省貢獻 |
-|------|------|------|--------------|
-| **L1** | Prompt Layer | Prompt 優化與模板化 | 20-30% |
-| **L2** | Cache Layer | 重複內容快取 | 15-25% |
-| **L3** | Memory Layer | 持久化上下文記憶 | 25-35% |
-| **L4** | Knowledge Graph Layer | 結構化知識查詢 | 30-50% |
-| **L5** | Agent Layer | Agent 任務分工 | 20-40% |
-| **L6** | Workflow Layer | 工作流程優化 | 10-20% |
-| **L7** | Governance Layer | 政策約束與監控 | 5-15% |
+| 層級   | 名稱                  | 職責                | Token 節省貢獻 |
+| ------ | --------------------- | ------------------- | -------------- |
+| **L1** | Prompt Layer          | Prompt 優化與模板化 | 20-30%         |
+| **L2** | Cache Layer           | 重複內容快取        | 15-25%         |
+| **L3** | Memory Layer          | 持久化上下文記憶    | 25-35%         |
+| **L4** | Knowledge Graph Layer | 結構化知識查詢      | 30-50%         |
+| **L5** | Agent Layer           | Agent 任務分工      | 20-40%         |
+| **L6** | Workflow Layer        | 工作流程優化        | 10-20%         |
+| **L7** | Governance Layer      | 政策約束與監控      | 5-15%          |
 
 **綜合效果（非線性疊加）：**
 
@@ -3040,6 +3112,7 @@ graph TB
 ### 21.1 大型銀行核心系統升級
 
 **專案背景：**
+
 - 系統規模：1,200 個 Java 檔案、80 萬行程式碼
 - 升級目標：Spring Boot 2.7 → 3.4、Java 11 → 21
 - 團隊規模：15 位開發者
@@ -3047,18 +3120,19 @@ graph TB
 
 **Token 消耗分析：**
 
-| 階段 | 無優化 Token | 優化後 Token | 節省 |
-|------|-------------|-------------|------|
-| **影響範圍分析** | 5.0M | 300K | 94% |
-| **Breaking Changes 識別** | 3.0M | 200K | 93% |
-| **Namespace 遷移** | 4.5M | 50K（腳本化） | 99% |
-| **Security 配置重寫** | 500K | 80K | 84% |
-| **JPA 調整** | 2.0M | 250K | 88% |
-| **測試修復** | 3.0M | 400K | 87% |
-| **Code Review** | 2.0M | 300K | 85% |
-| **合計** | **20.0M** | **1.58M** | **92%** |
+| 階段                      | 無優化 Token | 優化後 Token  | 節省    |
+| ------------------------- | ------------ | ------------- | ------- |
+| **影響範圍分析**          | 5.0M         | 300K          | 94%     |
+| **Breaking Changes 識別** | 3.0M         | 200K          | 93%     |
+| **Namespace 遷移**        | 4.5M         | 50K（腳本化） | 99%     |
+| **Security 配置重寫**     | 500K         | 80K           | 84%     |
+| **JPA 調整**              | 2.0M         | 250K          | 88%     |
+| **測試修復**              | 3.0M         | 400K          | 87%     |
+| **Code Review**           | 2.0M         | 300K          | 85%     |
+| **合計**                  | **20.0M**    | **1.58M**     | **92%** |
 
 **關鍵優化措施：**
+
 1. 建立 Migration Knowledge Graph（一次性 200K tokens）
 2. 使用腳本處理 namespace 遷移（RTK 思維）
 3. Agent Team 分工：Architect 分析影響 → Developer 修改 → Tester 驗證
@@ -3076,6 +3150,7 @@ graph TB
 ### 21.2 百萬行程式碼逆向工程
 
 **專案背景：**
+
 - 系統規模：100 萬行程式碼（Java + JSP + SQL）
 - 技術棧：Struts 1.3 + EJB 3.0 + DB2 11.5
 - 目標：理解系統架構，為現代化重寫做準備
@@ -3083,17 +3158,18 @@ graph TB
 
 **Token 消耗分析：**
 
-| 階段 | 無優化 Token | 優化後 Token | 節省 |
-|------|-------------|-------------|------|
-| **系統架構理解** | 8.0M | 400K | 95% |
-| **業務流程還原** | 5.0M | 500K | 90% |
-| **資料庫關係分析** | 3.0M | 200K | 93% |
-| **API 端點對映** | 2.0M | 150K | 92% |
-| **技術債評估** | 4.0M | 300K | 92% |
-| **文件產出** | 3.0M | 400K | 87% |
-| **合計** | **25.0M** | **1.95M** | **92%** |
+| 階段               | 無優化 Token | 優化後 Token | 節省    |
+| ------------------ | ------------ | ------------ | ------- |
+| **系統架構理解**   | 8.0M         | 400K         | 95%     |
+| **業務流程還原**   | 5.0M         | 500K         | 90%     |
+| **資料庫關係分析** | 3.0M         | 200K         | 93%     |
+| **API 端點對映**   | 2.0M         | 150K         | 92%     |
+| **技術債評估**     | 4.0M         | 300K         | 92%     |
+| **文件產出**       | 3.0M         | 400K         | 87%     |
+| **合計**           | **25.0M**    | **1.95M**    | **92%** |
 
 **關鍵優化措施：**
+
 1. 使用 Graphify 離線建構 Code Graph（零 AI Token）
 2. 建立四層 Graph 架構（Architecture / Sequence / Business / Database）
 3. 使用 Understand-Anything 建立互動式 Knowledge Graph
@@ -3102,6 +3178,7 @@ graph TB
 ### 21.3 Spring Boot 升級專案
 
 **專案背景：**
+
 - 系統規模：600 個 Java 檔案、30 萬行程式碼
 - 升級目標：Spring Boot 2.7 → 4.0、Java 17 → 25
 - 團隊規模：10 位開發者
@@ -3109,16 +3186,17 @@ graph TB
 
 **Token 消耗分析：**
 
-| 階段 | 無優化 Token | 優化後 Token | 節省 |
-|------|-------------|-------------|------|
-| **依賴性分析** | 2.0M | 150K | 92% |
-| **Jakarta 遷移** | 3.0M | 30K（腳本化） | 99% |
-| **API 變更** | 1.5M | 200K | 87% |
-| **配置遷移** | 500K | 60K | 88% |
-| **測試修復** | 2.0M | 250K | 88% |
-| **合計** | **9.0M** | **0.69M** | **92%** |
+| 階段             | 無優化 Token | 優化後 Token  | 節省    |
+| ---------------- | ------------ | ------------- | ------- |
+| **依賴性分析**   | 2.0M         | 150K          | 92%     |
+| **Jakarta 遷移** | 3.0M         | 30K（腳本化） | 99%     |
+| **API 變更**     | 1.5M         | 200K          | 87%     |
+| **配置遷移**     | 500K         | 60K           | 88%     |
+| **測試修復**     | 2.0M         | 250K          | 88%     |
+| **合計**         | **9.0M**     | **0.69M**     | **92%** |
 
 **關鍵優化措施：**
+
 1. 建立 Spring Boot Migration Checklist Memory
 2. 批次處理同類型變更（如 javax → jakarta）
 3. AI 生成自動化遷移腳本
@@ -3127,6 +3205,7 @@ graph TB
 ### 21.4 Vue3 重構專案
 
 **專案背景：**
+
 - 系統規模：400 個 Vue/JS 檔案、15 萬行程式碼
 - 升級目標：Vue 2 → Vue 3（Composition API）、Vuex → Pinia
 - 團隊規模：6 位開發者
@@ -3134,17 +3213,18 @@ graph TB
 
 **Token 消耗分析：**
 
-| 階段 | 無優化 Token | 優化後 Token | 節省 |
-|------|-------------|-------------|------|
-| **Component 分析** | 3.0M | 200K | 93% |
-| **Options → Composition** | 4.0M | 400K | 90% |
-| **Vuex → Pinia** | 1.5M | 150K | 90% |
-| **Router 遷移** | 500K | 60K | 88% |
-| **Build 工具遷移** | 300K | 40K | 87% |
-| **測試修復** | 1.5M | 200K | 87% |
-| **合計** | **10.8M** | **1.05M** | **90%** |
+| 階段                      | 無優化 Token | 優化後 Token | 節省    |
+| ------------------------- | ------------ | ------------ | ------- |
+| **Component 分析**        | 3.0M         | 200K         | 93%     |
+| **Options → Composition** | 4.0M         | 400K         | 90%     |
+| **Vuex → Pinia**          | 1.5M         | 150K         | 90%     |
+| **Router 遷移**           | 500K         | 60K          | 88%     |
+| **Build 工具遷移**        | 300K         | 40K          | 87%     |
+| **測試修復**              | 1.5M         | 200K         | 87%     |
+| **合計**                  | **10.8M**    | **1.05M**    | **90%** |
 
 **關鍵優化措施：**
+
 1. 建立 Vue Migration Knowledge Graph（Component 相依性）
 2. 分類處理：Pure Component → Stateful Component → Store-connected Component
 3. 建立 Composition API 轉換模板（AI 一次生成，反覆套用）
@@ -3160,133 +3240,133 @@ graph TB
 
 #### 開發階段（1-25）
 
-| # | 技巧 | 節省預估 |
-|---|------|---------|
-| 1 | 建立 CLAUDE.md / copilot-instructions.md | 30% |
-| 2 | 建立 Architecture Memory 檔案 | 25% |
-| 3 | 建立 Coding Standard Memory 檔案 | 20% |
-| 4 | 使用 Knowledge Graph 取代全量讀取 | 50% |
-| 5 | 使用 Prompt Template 取代手動輸入 | 40% |
-| 6 | 限定 Agent 搜尋範圍（指定目錄/檔案） | 60% |
-| 7 | 提供方法簽名而非完整檔案 | 70% |
-| 8 | 使用 diff 而非完整檔案做 Code Review | 50% |
-| 9 | 批次處理同類型變更 | 70% |
-| 10 | 使用 Sub Agent 分割大任務 | 40% |
-| 11 | 建立 API Memory 供新增 API 時參考 | 30% |
-| 12 | 建立 DB Memory 供查詢設計時參考 | 25% |
-| 13 | 使用結構化 Prompt 取代自然語言描述 | 35% |
-| 14 | 引用 Memory 檔案取代重複描述背景 | 45% |
-| 15 | 新對話前摘要化前一個對話的結論 | 30% |
-| 16 | 測試只提供方法簽名和規則，不提供完整實作 | 60% |
-| 17 | 使用 MCP 工具精準查詢取代 grep | 50% |
-| 18 | 排除 node_modules/target/dist 等目錄 | 20% |
-| 19 | 使用 RTK 思維壓縮工具輸出 | 80% |
-| 20 | 日誌分析只提供錯誤段落 | 70% |
-| 21 | 使用 Cache Token 功能（連續對話） | 30% |
-| 22 | 善用 @file 和 @sym 精準引用 | 40% |
-| 23 | 避免在 Prompt 中使用冗長的自然語言 | 25% |
-| 24 | 使用 JSON/YAML 格式化 Prompt 輸入 | 20% |
-| 25 | 建立 Business Rules Memory | 30% |
+| #   | 技巧                                     | 節省預估 |
+| --- | ---------------------------------------- | -------- |
+| 1   | 建立 CLAUDE.md / copilot-instructions.md | 30%      |
+| 2   | 建立 Architecture Memory 檔案            | 25%      |
+| 3   | 建立 Coding Standard Memory 檔案         | 20%      |
+| 4   | 使用 Knowledge Graph 取代全量讀取        | 50%      |
+| 5   | 使用 Prompt Template 取代手動輸入        | 40%      |
+| 6   | 限定 Agent 搜尋範圍（指定目錄/檔案）     | 60%      |
+| 7   | 提供方法簽名而非完整檔案                 | 70%      |
+| 8   | 使用 diff 而非完整檔案做 Code Review     | 50%      |
+| 9   | 批次處理同類型變更                       | 70%      |
+| 10  | 使用 Sub Agent 分割大任務                | 40%      |
+| 11  | 建立 API Memory 供新增 API 時參考        | 30%      |
+| 12  | 建立 DB Memory 供查詢設計時參考          | 25%      |
+| 13  | 使用結構化 Prompt 取代自然語言描述       | 35%      |
+| 14  | 引用 Memory 檔案取代重複描述背景         | 45%      |
+| 15  | 新對話前摘要化前一個對話的結論           | 30%      |
+| 16  | 測試只提供方法簽名和規則，不提供完整實作 | 60%      |
+| 17  | 使用 MCP 工具精準查詢取代 grep           | 50%      |
+| 18  | 排除 node_modules/target/dist 等目錄     | 20%      |
+| 19  | 使用 RTK 思維壓縮工具輸出                | 80%      |
+| 20  | 日誌分析只提供錯誤段落                   | 70%      |
+| 21  | 使用 Cache Token 功能（連續對話）        | 30%      |
+| 22  | 善用 @file 和 @sym 精準引用              | 40%      |
+| 23  | 避免在 Prompt 中使用冗長的自然語言       | 25%      |
+| 24  | 使用 JSON/YAML 格式化 Prompt 輸入        | 20%      |
+| 25  | 建立 Business Rules Memory               | 30%      |
 
 #### 維運階段（26-45）
 
-| # | 技巧 | 節省預估 |
-|---|------|---------|
-| 26 | 建立 Ops Runbook Memory | 35% |
-| 27 | 日誌分析使用 RTK 過濾 | 80% |
-| 28 | 效能問題只提供關鍵 Metrics | 60% |
-| 29 | 建立 Incident Response Memory | 30% |
-| 30 | 告警處理使用預定義 Prompt Template | 40% |
-| 31 | 環境配置差異只提供 diff | 50% |
-| 32 | 資料庫問題提供 Execution Plan 而非全表 | 70% |
-| 33 | CI/CD 失敗只擷取錯誤段落 | 75% |
-| 34 | 容器日誌使用 tail + grep 預篩選 | 65% |
-| 35 | 建立 Deployment Checklist Memory | 25% |
-| 36 | 監控告警自動摘要化 | 50% |
-| 37 | 版本發佈用 Changelog Memory 追蹤 | 30% |
-| 38 | 資料遷移使用腳本化方式 | 85% |
-| 39 | 效能基準測試結果摘要化 | 55% |
-| 40 | Hot Fix 使用預定義流程模板 | 40% |
-| 41 | 災難恢復使用 Runbook 引導 | 35% |
-| 42 | 安全掃描結果分級呈現 | 45% |
-| 43 | Audit Log 分析使用過濾器 | 60% |
-| 44 | 配置變更追蹤使用 diff Memory | 40% |
-| 45 | SLA 報告使用模板化 | 30% |
+| #   | 技巧                                   | 節省預估 |
+| --- | -------------------------------------- | -------- |
+| 26  | 建立 Ops Runbook Memory                | 35%      |
+| 27  | 日誌分析使用 RTK 過濾                  | 80%      |
+| 28  | 效能問題只提供關鍵 Metrics             | 60%      |
+| 29  | 建立 Incident Response Memory          | 30%      |
+| 30  | 告警處理使用預定義 Prompt Template     | 40%      |
+| 31  | 環境配置差異只提供 diff                | 50%      |
+| 32  | 資料庫問題提供 Execution Plan 而非全表 | 70%      |
+| 33  | CI/CD 失敗只擷取錯誤段落               | 75%      |
+| 34  | 容器日誌使用 tail + grep 預篩選        | 65%      |
+| 35  | 建立 Deployment Checklist Memory       | 25%      |
+| 36  | 監控告警自動摘要化                     | 50%      |
+| 37  | 版本發佈用 Changelog Memory 追蹤       | 30%      |
+| 38  | 資料遷移使用腳本化方式                 | 85%      |
+| 39  | 效能基準測試結果摘要化                 | 55%      |
+| 40  | Hot Fix 使用預定義流程模板             | 40%      |
+| 41  | 災難恢復使用 Runbook 引導              | 35%      |
+| 42  | 安全掃描結果分級呈現                   | 45%      |
+| 43  | Audit Log 分析使用過濾器               | 60%      |
+| 44  | 配置變更追蹤使用 diff Memory           | 40%      |
+| 45  | SLA 報告使用模板化                     | 30%      |
 
 #### 升級階段（46-65）
 
-| # | 技巧 | 節省預估 |
-|---|------|---------|
-| 46 | 建立 Migration Knowledge Graph | 90% |
-| 47 | 能腳本化的變更使用腳本處理 | 99% |
-| 48 | 建立 Breaking Changes Registry | 40% |
-| 49 | 批次處理 namespace 遷移 | 95% |
-| 50 | 分類處理：自動化 / 半自動 / 手動 | 70% |
-| 51 | 使用 Migration Checklist 追蹤進度 | 25% |
-| 52 | 測試修復使用模板化 Prompt | 60% |
-| 53 | 配置遷移使用對照表 | 50% |
-| 54 | API 變更使用 Adapter Pattern 漸進遷移 | 40% |
-| 55 | 相依性升級分批進行 | 35% |
-| 56 | 建立版本對照 Memory | 30% |
-| 57 | 升級驗證使用自動化測試 | 45% |
-| 58 | 回歸測試結果使用 RTK 去重 | 80% |
-| 59 | 升級文件使用模板產生 | 50% |
-| 60 | 技術棧評估使用 Knowledge Graph | 60% |
-| 61 | 相容性測試結果摘要化 | 55% |
-| 62 | 效能回歸使用基準比較 | 45% |
-| 63 | 升級經驗回饋到 Memory 系統 | 30% |
-| 64 | 建立升級 FAQ Memory | 35% |
-| 65 | 使用 AI 生成升級指南 | 40% |
+| #   | 技巧                                  | 節省預估 |
+| --- | ------------------------------------- | -------- |
+| 46  | 建立 Migration Knowledge Graph        | 90%      |
+| 47  | 能腳本化的變更使用腳本處理            | 99%      |
+| 48  | 建立 Breaking Changes Registry        | 40%      |
+| 49  | 批次處理 namespace 遷移               | 95%      |
+| 50  | 分類處理：自動化 / 半自動 / 手動      | 70%      |
+| 51  | 使用 Migration Checklist 追蹤進度     | 25%      |
+| 52  | 測試修復使用模板化 Prompt             | 60%      |
+| 53  | 配置遷移使用對照表                    | 50%      |
+| 54  | API 變更使用 Adapter Pattern 漸進遷移 | 40%      |
+| 55  | 相依性升級分批進行                    | 35%      |
+| 56  | 建立版本對照 Memory                   | 30%      |
+| 57  | 升級驗證使用自動化測試                | 45%      |
+| 58  | 回歸測試結果使用 RTK 去重             | 80%      |
+| 59  | 升級文件使用模板產生                  | 50%      |
+| 60  | 技術棧評估使用 Knowledge Graph        | 60%      |
+| 61  | 相容性測試結果摘要化                  | 55%      |
+| 62  | 效能回歸使用基準比較                  | 45%      |
+| 63  | 升級經驗回饋到 Memory 系統            | 30%      |
+| 64  | 建立升級 FAQ Memory                   | 35%      |
+| 65  | 使用 AI 生成升級指南                  | 40%      |
 
 #### Reverse Engineering（66-75）
 
-| # | 技巧 | 節省預估 |
-|---|------|---------|
-| 66 | 使用 Graphify 離線建構 Code Graph | 100%（零 AI Token） |
-| 67 | 建立四層 Graph 架構 | 90% |
-| 68 | 分層理解：架構→流程→業務→資料 | 80% |
-| 69 | 漸進式 Graph 建構 | 70% |
-| 70 | 業務流程使用 Sequence Graph 查詢 | 85% |
-| 71 | Dead Code 識別使用 Call Graph | 75% |
-| 72 | 相依性分析使用 Dependency Graph | 80% |
-| 73 | 技術債評估使用 Code Quality Metrics | 60% |
-| 74 | 遺留系統文件使用 Graph 自動生成 | 70% |
-| 75 | 現代化規劃使用 Architecture Graph | 65% |
+| #   | 技巧                                | 節省預估            |
+| --- | ----------------------------------- | ------------------- |
+| 66  | 使用 Graphify 離線建構 Code Graph   | 100%（零 AI Token） |
+| 67  | 建立四層 Graph 架構                 | 90%                 |
+| 68  | 分層理解：架構→流程→業務→資料       | 80%                 |
+| 69  | 漸進式 Graph 建構                   | 70%                 |
+| 70  | 業務流程使用 Sequence Graph 查詢    | 85%                 |
+| 71  | Dead Code 識別使用 Call Graph       | 75%                 |
+| 72  | 相依性分析使用 Dependency Graph     | 80%                 |
+| 73  | 技術債評估使用 Code Quality Metrics | 60%                 |
+| 74  | 遺留系統文件使用 Graph 自動生成     | 70%                 |
+| 75  | 現代化規劃使用 Architecture Graph   | 65%                 |
 
 #### Agent Team（76-85）
 
-| # | 技巧 | 節省預估 |
-|---|------|---------|
-| 76 | 每個 Agent 僅載入專職資訊 | 60% |
-| 77 | Agent 間使用結構化文件通訊 | 40% |
-| 78 | Planner Agent 僅載入 Memory 不讀原始碼 | 70% |
-| 79 | Test Agent 僅載入方法簽名 | 65% |
-| 80 | Security Agent 僅掃描安全相關路徑 | 55% |
-| 81 | Reviewer Agent 僅載入 diff | 50% |
-| 82 | Release Agent 僅載入版本資訊 | 80% |
-| 83 | 並行執行獨立 Agent 減少等待 | 30% |
-| 84 | Agent 結果摘要化後傳遞 | 45% |
-| 85 | Agent 失敗僅重試失敗的 Agent | 50% |
+| #   | 技巧                                   | 節省預估 |
+| --- | -------------------------------------- | -------- |
+| 76  | 每個 Agent 僅載入專職資訊              | 60%      |
+| 77  | Agent 間使用結構化文件通訊             | 40%      |
+| 78  | Planner Agent 僅載入 Memory 不讀原始碼 | 70%      |
+| 79  | Test Agent 僅載入方法簽名              | 65%      |
+| 80  | Security Agent 僅掃描安全相關路徑      | 55%      |
+| 81  | Reviewer Agent 僅載入 diff             | 50%      |
+| 82  | Release Agent 僅載入版本資訊           | 80%      |
+| 83  | 並行執行獨立 Agent 減少等待            | 30%      |
+| 84  | Agent 結果摘要化後傳遞                 | 45%      |
+| 85  | Agent 失敗僅重試失敗的 Agent           | 50%      |
 
 #### SSDLC（86-100）
 
-| # | 技巧 | 節省預估 |
-|---|------|---------|
-| 86 | 需求階段使用標準化 User Story 模板 | 35% |
-| 87 | 設計階段引用 Architecture Memory | 50% |
-| 88 | 開發階段使用 Coding Standard Memory | 40% |
-| 89 | 測試階段使用 Testing Standard Memory | 45% |
-| 90 | 部署階段使用 Deployment Memory | 30% |
-| 91 | 維護階段使用 Ops Runbook Memory | 35% |
-| 92 | 安全審查使用 Security Checklist | 40% |
-| 93 | Threat Modeling 使用結構化模板 | 45% |
-| 94 | Code Review 使用 Prompt Template | 50% |
-| 95 | 發佈管理使用 Release Template | 30% |
-| 96 | 回顧會議使用 AI 摘要前次結論 | 25% |
-| 97 | 知識分享使用 Knowledge Graph | 55% |
-| 98 | 新人 Onboarding 使用 Tour Builder | 60% |
-| 99 | 跨團隊協作使用共享 Memory | 40% |
-| 100 | 持續改善使用 Token Analytics 反饋 | 20% |
+| #   | 技巧                                 | 節省預估 |
+| --- | ------------------------------------ | -------- |
+| 86  | 需求階段使用標準化 User Story 模板   | 35%      |
+| 87  | 設計階段引用 Architecture Memory     | 50%      |
+| 88  | 開發階段使用 Coding Standard Memory  | 40%      |
+| 89  | 測試階段使用 Testing Standard Memory | 45%      |
+| 90  | 部署階段使用 Deployment Memory       | 30%      |
+| 91  | 維護階段使用 Ops Runbook Memory      | 35%      |
+| 92  | 安全審查使用 Security Checklist      | 40%      |
+| 93  | Threat Modeling 使用結構化模板       | 45%      |
+| 94  | Code Review 使用 Prompt Template     | 50%      |
+| 95  | 發佈管理使用 Release Template        | 30%      |
+| 96  | 回顧會議使用 AI 摘要前次結論         | 25%      |
+| 97  | 知識分享使用 Knowledge Graph         | 55%      |
+| 98  | 新人 Onboarding 使用 Tour Builder    | 60%      |
+| 99  | 跨團隊協作使用共享 Memory            | 40%      |
+| 100 | 持續改善使用 Token Analytics 反饋    | 20%      |
 
 ### 22.2 企業導入檢查表
 
@@ -3294,6 +3374,7 @@ graph TB
 # 企業級 Token 優化導入檢查表
 
 ## Phase 1：基礎建設（Week 1-2）
+
 - [ ] 建立 CLAUDE.md（Claude Code 專案）
 - [ ] 建立 .github/copilot-instructions.md（Copilot 專案）
 - [ ] 建立 Architecture Memory 檔案
@@ -3303,6 +3384,7 @@ graph TB
 - [ ] 團隊 Token 節省意識培訓
 
 ## Phase 2：知識圖譜建構（Week 3-4）
+
 - [ ] 使用 Graphify 建立 Code Knowledge Graph
 - [ ] 建立 API Memory 檔案
 - [ ] 建立 DB Memory 檔案
@@ -3312,6 +3394,7 @@ graph TB
 - [ ] 驗證 Token 節省效果（目標 > 50%）
 
 ## Phase 3：Agent Team 建立（Week 5-6）
+
 - [ ] 定義 Agent Team 組成（≥5 個 Agent）
 - [ ] 建立 Agent 間通訊協定
 - [ ] 建立 SSDLC Workflow 整合
@@ -3320,6 +3403,7 @@ graph TB
 - [ ] 驗證 Token 節省效果（目標 > 70%）
 
 ## Phase 4：企業治理（Week 7-8）
+
 - [ ] 建立 AI Usage Policy
 - [ ] 建立 AI Agent Policy
 - [ ] 建立 AI Security Policy
@@ -3329,6 +3413,7 @@ graph TB
 - [ ] 驗證 Token 節省效果（目標 > 85%）
 
 ## 持續改善
+
 - [ ] 每月 Token 消耗分析
 - [ ] 每季 Knowledge Graph 更新
 - [ ] 每季 Memory 體系審查
@@ -3338,13 +3423,13 @@ graph TB
 
 ### 22.3 企業成熟度模型
 
-| 等級 | 名稱 | 特徵 | Token 效率 | 典型組織 |
-|------|------|------|-----------|---------|
-| **Level 1** | 初始（Ad-hoc） | 無規範、無 Memory、無 Graph | 基準線（100%） | 剛開始使用 AI 的團隊 |
-| **Level 2** | 基礎（Basic） | 有 Instructions、有基本 Prompt 規範 | 70%（節省 30%） | 有 AI 使用經驗的團隊 |
+| 等級        | 名稱                   | 特徵                                 | Token 效率      | 典型組織               |
+| ----------- | ---------------------- | ------------------------------------ | --------------- | ---------------------- |
+| **Level 1** | 初始（Ad-hoc）         | 無規範、無 Memory、無 Graph          | 基準線（100%）  | 剛開始使用 AI 的團隊   |
+| **Level 2** | 基礎（Basic）          | 有 Instructions、有基本 Prompt 規範  | 70%（節省 30%） | 有 AI 使用經驗的團隊   |
 | **Level 3** | 標準化（Standardized） | 完整 Memory 體系、Prompt Template 庫 | 40%（節省 60%） | 建立 AI 開發流程的團隊 |
-| **Level 4** | 優化（Optimized） | Knowledge Graph、Agent Team、MCP | 15%（節省 85%） | AI-first 開發團隊 |
-| **Level 5** | 卓越（Excellence） | 完整治理框架、自動優化、持續改善 | 8%（節省 92%） | AI 原生組織 |
+| **Level 4** | 優化（Optimized）      | Knowledge Graph、Agent Team、MCP     | 15%（節省 85%） | AI-first 開發團隊      |
+| **Level 5** | 卓越（Excellence）     | 完整治理框架、自動優化、持續改善     | 8%（節省 92%）  | AI 原生組織            |
 
 **成熟度提升路徑：**
 
@@ -3354,12 +3439,12 @@ graph LR
     L2 --> L3[Level 3<br/>標準化]
     L3 --> L4[Level 4<br/>優化]
     L4 --> L5[Level 5<br/>卓越]
-    
+
     L1 -.-> L1A[建立 Instructions<br/>+ Prompt 規範]
     L2 -.-> L2A[建立 Memory 體系<br/>+ Template 庫]
     L3 -.-> L3A[建立 Knowledge Graph<br/>+ Agent Team]
     L4 -.-> L4A[建立 Governance<br/>+ 自動優化]
-    
+
     style L5 fill:#9f9,stroke:#333,stroke-width:2px
 ```
 
@@ -3373,12 +3458,12 @@ graph LR
 
 **給不同角色的建議：**
 
-| 角色 | 首要行動 | 預期效果 |
-|------|---------|---------|
-| **個人開發者** | 建立 Instructions + 3 個 Prompt Template | 1 天內 Token 降低 30% |
-| **Tech Lead** | 建立團隊 Memory 體系 + Knowledge Graph | 2 週內 Token 降低 60% |
-| **架構師** | 建立 Agent Team + SSDLC Workflow | 4 週內 Token 降低 80% |
-| **CTO/IT 主管** | 建立 AI Governance Framework | 8 週內 Token 降低 90% |
+| 角色            | 首要行動                                 | 預期效果              |
+| --------------- | ---------------------------------------- | --------------------- |
+| **個人開發者**  | 建立 Instructions + 3 個 Prompt Template | 1 天內 Token 降低 30% |
+| **Tech Lead**   | 建立團隊 Memory 體系 + Knowledge Graph   | 2 週內 Token 降低 60% |
+| **架構師**      | 建立 Agent Team + SSDLC Workflow         | 4 週內 Token 降低 80% |
+| **CTO/IT 主管** | 建立 AI Governance Framework             | 8 週內 Token 降低 90% |
 
 **最終建議：**
 
@@ -3395,28 +3480,28 @@ graph LR
 
 ### 附錄 A：Token 估算速查表
 
-| 內容類型 | 估算規則 |
-|---------|---------|
-| 英文文字 | 1 word ≈ 1.3 tokens |
-| 中文文字 | 1 字 ≈ 2 tokens |
-| Java 程式碼 | 1 行 ≈ 5 tokens |
-| JSON/YAML | 1 行 ≈ 4 tokens |
-| Markdown | 1 行 ≈ 3 tokens |
-| HTML/JSP | 1 行 ≈ 6 tokens |
-| SQL | 1 行 ≈ 4 tokens |
+| 內容類型    | 估算規則            |
+| ----------- | ------------------- |
+| 英文文字    | 1 word ≈ 1.3 tokens |
+| 中文文字    | 1 字 ≈ 2 tokens     |
+| Java 程式碼 | 1 行 ≈ 5 tokens     |
+| JSON/YAML   | 1 行 ≈ 4 tokens     |
+| Markdown    | 1 行 ≈ 3 tokens     |
+| HTML/JSP    | 1 行 ≈ 6 tokens     |
+| SQL         | 1 行 ≈ 4 tokens     |
 
 ### 附錄 B：工具比較表
 
-| 工具 | 類型 | Token 節省方式 | 適用場景 | 授權 | GitHub Stars |
-|------|------|--------------|---------|------|-------------|
-| **RTK** | CLI Proxy | 壓縮工具輸出 | 所有 AI 工具（14 平台） | Apache 2.0 | 67.1K |
-| **Headroom** | Context 壓縮層 | ContentRouter 智慧壓縮（Library/Proxy/MCP） | 全 Context Window 壓縮 | MIT | 54K |
-| **Understand-Anything** | Knowledge Graph Builder | Multi-Agent Pipeline + 互動儀表板 | 程式碼理解、團隊 Onboarding | MIT | 69.4K |
-| **GitNexus** | Repository Indexer | MCP 精準查詢（16 工具 + 2 Prompts + 4 Skills） | 程式碼搜尋、影響分析、多倉庫 | PolyForm NC | 43.3K |
-| **Graphify** | Code Graph Builder | 離線 AST 解析（36 grammars）+ MCP Server | 程式碼/文件圖譜、團隊共享 | MIT | 74.4K |
-| **codebase-memory-mcp** | Hybrid LSP Memory | 純 C 極速索引 + 語義型別解析 | 超大型專案（158 語言） | MIT | 21.7K |
-| **CodeGraph** | Auto-Sync Graph | 單一工具哲學 + 自動同步 | 持續開發、框架感知 | MIT | 56.1K |
-| **Ponytail** | YAGNI Agent Plugin | 減少 AI 輸出（七級 YAGNI 梯子） | Completion Token 節省 | MIT | 67.6K |
+| 工具                    | 類型                    | Token 節省方式                                 | 適用場景                     | 授權        | GitHub Stars |
+| ----------------------- | ----------------------- | ---------------------------------------------- | ---------------------------- | ----------- | ------------ |
+| **RTK**                 | CLI Proxy               | 壓縮工具輸出                                   | 所有 AI 工具（14 平台）      | Apache 2.0  | 67.1K        |
+| **Headroom**            | Context 壓縮層          | ContentRouter 智慧壓縮（Library/Proxy/MCP）    | 全 Context Window 壓縮       | MIT         | 54K          |
+| **Understand-Anything** | Knowledge Graph Builder | Multi-Agent Pipeline + 互動儀表板              | 程式碼理解、團隊 Onboarding  | MIT         | 69.4K        |
+| **GitNexus**            | Repository Indexer      | MCP 精準查詢（16 工具 + 2 Prompts + 4 Skills） | 程式碼搜尋、影響分析、多倉庫 | PolyForm NC | 43.3K        |
+| **Graphify**            | Code Graph Builder      | 離線 AST 解析（36 grammars）+ MCP Server       | 程式碼/文件圖譜、團隊共享    | MIT         | 74.4K        |
+| **codebase-memory-mcp** | Hybrid LSP Memory       | 純 C 極速索引 + 語義型別解析                   | 超大型專案（158 語言）       | MIT         | 21.7K        |
+| **CodeGraph**           | Auto-Sync Graph         | 單一工具哲學 + 自動同步                        | 持續開發、框架感知           | MIT         | 56.1K        |
+| **Ponytail**            | YAGNI Agent Plugin      | 減少 AI 輸出（七級 YAGNI 梯子）                | Completion Token 節省        | MIT         | 67.6K        |
 
 ### 附錄 C：Prompt Template YAML 格式範例
 
@@ -3435,7 +3520,7 @@ templates:
       - focus_areas: "安全性, 效能, 可維護性"
       - diff_content: "[貼入 diff]"
     estimated_tokens: 300
-    
+
   - id: unit-test
     category: testing
     name: 單元測試
@@ -3447,26 +3532,26 @@ templates:
       請涵蓋：正常、邊界、例外情境。
     variables:
       - method_signature: "[方法簽名]"
-      - business_rules: "[業務規則]"  
+      - business_rules: "[業務規則]"
       - dependencies: "[mock 依賴]"
     estimated_tokens: 400
 ```
 
 ### 附錄 D：參考資源
 
-| 資源 | 說明 |
-|------|------|
-| [RTK GitHub](https://github.com/rtk-ai/rtk) | Rust Token Killer 官方 Repository（67.1K ★） |
-| [Headroom GitHub](https://github.com/headroomlabs-ai/headroom) | Context 壓縮層（54K ★） |
-| [Understand-Anything](https://github.com/Egonex-AI/Understand-Anything) | Knowledge Graph Builder（69.4K ★） |
-| [GitNexus](https://github.com/abhigyanpatwari/GitNexus) | Repository Intelligence（43.3K ★） |
-| [Graphify](https://github.com/safishamsi/graphify) | Code Knowledge Graph（74.4K ★） |
-| [codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) | Hybrid LSP Memory（21.7K ★） |
-| [CodeGraph](https://github.com/colbymchenry/codegraph) | Auto-Sync Graph（56.1K ★） |
-| [Ponytail](https://github.com/DietrichGebert/ponytail) | YAGNI Agent Plugin（67.6K ★） |
-| [Claude Code Docs](https://docs.anthropic.com/en/docs/claude-code) | Claude Code 官方文件 |
-| [GitHub Copilot Docs](https://docs.github.com/en/copilot) | GitHub Copilot 官方文件 |
-| [RTK 教學手冊](RTK%20(Rust%20Token%20Killer)%20%E6%95%99%E5%AD%B8%E6%89%8B%E5%86%8A.md) | 本專案 RTK 詳細教學手冊 |
+| 資源                                                                                      | 說明                                         |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------- |
+| [RTK GitHub](https://github.com/rtk-ai/rtk)                                               | Rust Token Killer 官方 Repository（67.1K ★） |
+| [Headroom GitHub](https://github.com/headroomlabs-ai/headroom)                            | Context 壓縮層（54K ★）                      |
+| [Understand-Anything](https://github.com/Egonex-AI/Understand-Anything)                   | Knowledge Graph Builder（69.4K ★）           |
+| [GitNexus](https://github.com/abhigyanpatwari/GitNexus)                                   | Repository Intelligence（43.3K ★）           |
+| [Graphify](https://github.com/safishamsi/graphify)                                        | Code Knowledge Graph（74.4K ★）              |
+| [codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp)                    | Hybrid LSP Memory（21.7K ★）                 |
+| [CodeGraph](https://github.com/colbymchenry/codegraph)                                    | Auto-Sync Graph（56.1K ★）                   |
+| [Ponytail](https://github.com/DietrichGebert/ponytail)                                    | YAGNI Agent Plugin（67.6K ★）                |
+| [Claude Code Docs](https://docs.anthropic.com/en/docs/claude-code)                        | Claude Code 官方文件                         |
+| [GitHub Copilot Docs](https://docs.github.com/en/copilot)                                 | GitHub Copilot 官方文件                      |
+| [RTK 教學手冊](<RTK%20(Rust%20Token%20Killer)%20%E6%95%99%E5%AD%B8%E6%89%8B%E5%86%8A.md>) | 本專案 RTK 詳細教學手冊                      |
 
 ### 附錄 E：工具選擇決策樹
 
@@ -3499,10 +3584,9 @@ templates:
 ---
 
 > **本手冊版本紀錄**
-> 
-> | 版本 | 日期 | 變更說明 |
-> |------|------|---------|
-> | 1.0.0 | 2026-05-29 | 初版發佈，涵蓋 18 章完整內容 |
-> | 1.1.0 | 2026-05-29 | 更新 RTK/Understand-Anything/GitNexus/Graphify 最新資訊；新增安裝指南與平台支援說明；修正格式問題；補充參考資源 |
+>
+> | 版本  | 日期       | 變更說明                                                                                                                                                                                                                                                                                                   |
+> | ----- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+> | 1.0.0 | 2026-05-29 | 初版發佈，涵蓋 18 章完整內容                                                                                                                                                                                                                                                                               |
+> | 1.1.0 | 2026-05-29 | 更新 RTK/Understand-Anything/GitNexus/Graphify 最新資訊；新增安裝指南與平台支援說明；修正格式問題；補充參考資源                                                                                                                                                                                            |
 > | 2.0.0 | 2026-06-30 | 重大更新：新增 Headroom/codebase-memory-mcp/CodeGraph/Ponytail 四大工具章節（第四、八、九、十章）；更新所有工具至最新版本與 Star 數；Understand-Anything 組織遷移至 Egonex-AI；GitNexus 資料庫引擎更名為 LadybugDB；Graphify 新增 MCP Server 與進階查詢；章節重編號（18→22 章）；新增附錄 E 工具選擇決策樹 |
-

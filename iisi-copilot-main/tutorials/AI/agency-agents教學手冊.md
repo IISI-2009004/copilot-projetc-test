@@ -5,6 +5,7 @@ title = 'Agency Agents教學手冊'
 tags = ['教學', 'AI開發']
 categories = ['教學']
 +++
+
 # agency-agents 教學手冊（Enterprise Guide）
 
 > **版本**：v3.1 ｜ **最後更新**：2026-07-01
@@ -38,18 +39,18 @@ categories = ['教學']
 
 agency-agents（又稱 **The Agency**）是由社群驅動的開源 AI 虛擬團隊框架，目前擁有 **232 個專業化 AI Agent 角色**，橫跨 **16 個部門**，由 **90+ 位貢獻者**共同維護。每個 Agent 不是簡單的 Prompt 模板，而是一份具備完整人設（Persona）、工作流程（Workflow）、溝通風格（Communication Style）、KPI 與成功指標的 Markdown 定義檔。該專案起源於 Reddit 社群的一篇討論，經過數月迭代，已成為 GitHub 上最受歡迎的 AI Agent 人設定義框架之一。專案現已推出**原生桌面應用程式**（macOS / Linux / Windows），使用者可透過圖形介面一鍵瀏覽完整 Agent 名冊、安裝到各工具，並自動更新。
 
-| 項目 | 說明 |
-|------|------|
-| **GitHub** | [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) |
-| **Stars** | 121k+（截至 2026-07） |
-| **Forks** | 19.8k+ |
-| **貢獻者** | 90+ |
-| **授權** | MIT License |
-| **Agent 數量** | 232（持續增長中） |
-| **程式碼行數** | 10,000+ 行人設、流程與範例 |
-| **部門數量** | 16（Engineering / Design / Marketing / Product / Sales / Testing / Support / Game Dev / Finance / Paid Media / Spatial Computing / Specialized / Project Management / Academic / Security / GIS） |
-| **支援工具** | Claude Code / GitHub Copilot / Antigravity / Gemini CLI / OpenCode / OpenClaw / Cursor / Aider / Windsurf / Qwen Code / Kimi Code / Codex / Osaurus / Hermes |
-| **桌面 App** | [Agency Agents App](https://agencyagents.app/)（macOS / Linux / Windows 原生桌面應用） |
+| 項目           | 說明                                                                                                                                                                                              |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **GitHub**     | [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents)                                                                                                                       |
+| **Stars**      | 121k+（截至 2026-07）                                                                                                                                                                             |
+| **Forks**      | 19.8k+                                                                                                                                                                                            |
+| **貢獻者**     | 90+                                                                                                                                                                                               |
+| **授權**       | MIT License                                                                                                                                                                                       |
+| **Agent 數量** | 232（持續增長中）                                                                                                                                                                                 |
+| **程式碼行數** | 10,000+ 行人設、流程與範例                                                                                                                                                                        |
+| **部門數量**   | 16（Engineering / Design / Marketing / Product / Sales / Testing / Support / Game Dev / Finance / Paid Media / Spatial Computing / Specialized / Project Management / Academic / Security / GIS） |
+| **支援工具**   | Claude Code / GitHub Copilot / Antigravity / Gemini CLI / OpenCode / OpenClaw / Cursor / Aider / Windsurf / Qwen Code / Kimi Code / Codex / Osaurus / Hermes                                      |
+| **桌面 App**   | [Agency Agents App](https://agencyagents.app/)（macOS / Linux / Windows 原生桌面應用）                                                                                                            |
 
 ## 1.2 核心設計理念
 
@@ -67,24 +68,24 @@ agency-agents 的設計哲學源自實戰經驗：
 
 ### 與泛用 Prompt 的差異
 
-| 面向 | 泛用 AI Prompt | agency-agents |
-|------|---------------|---------------|
-| **角色深度** | ❌ "Act as a developer" | ✅ 深度專業化 + 獨特人格 |
-| **交付物** | ❌ 模糊建議 | ✅ 具體程式碼、文件、流程 |
-| **可複製性** | ❌ 一次性 Prompt | ✅ 完整系統 + 工作流 |
-| **可客製** | ❌ 黑箱工具 | ✅ 透明、可 Fork、可調整 |
+| 面向         | 泛用 AI Prompt          | agency-agents             |
+| ------------ | ----------------------- | ------------------------- |
+| **角色深度** | ❌ "Act as a developer" | ✅ 深度專業化 + 獨特人格  |
+| **交付物**   | ❌ 模糊建議             | ✅ 具體程式碼、文件、流程 |
+| **可複製性** | ❌ 一次性 Prompt        | ✅ 完整系統 + 工作流      |
+| **可客製**   | ❌ 黑箱工具             | ✅ 透明、可 Fork、可調整  |
 
 ## 1.3 與傳統開發模式差異
 
-| 面向 | 傳統模式 | agency-agents 模式 |
-|------|---------|-------------------|
-| **角色分配** | 人力招聘、培訓 | AI Agent 即插即用 |
-| **專業知識** | 受限於團隊成員經驗 | 232 專家隨時可用 |
-| **擴展性** | 需增加人力 | 同時啟用多個 Agent |
-| **一致性** | 因人而異 | 標準化流程與產出 |
-| **成本** | 人事成本高 | Token / API 成本 |
-| **工時** | 受限工作時間 | 7×24 可用 |
-| **知識傳承** | 人員流動風險 | Agent 定義持久化 |
+| 面向         | 傳統模式           | agency-agents 模式 |
+| ------------ | ------------------ | ------------------ |
+| **角色分配** | 人力招聘、培訓     | AI Agent 即插即用  |
+| **專業知識** | 受限於團隊成員經驗 | 232 專家隨時可用   |
+| **擴展性**   | 需增加人力         | 同時啟用多個 Agent |
+| **一致性**   | 因人而異           | 標準化流程與產出   |
+| **成本**     | 人事成本高         | Token / API 成本   |
+| **工時**     | 受限工作時間       | 7×24 可用          |
+| **知識傳承** | 人員流動風險       | Agent 定義持久化   |
 
 ## 1.4 適用場景
 
@@ -114,26 +115,26 @@ agency-agents 已形成活躍的社群生態：
 
 ### 社群資源
 
-| 資源 | 說明 | 連結 |
-|------|------|------|
-| **GitHub Discussions** | 分享使用心得與成功案例 | [Discussions](https://github.com/msitarzewski/agency-agents/discussions) |
-| **GitHub Issues** | 回報問題與功能請求 | [Issues](https://github.com/msitarzewski/agency-agents/issues) |
-| **Reddit** | r/ClaudeAI 社群討論 | Reddit r/ClaudeAI |
-| **Twitter/X** | #TheAgency 標籤 | Twitter |
-| **安全政策** | SECURITY.md 漏洞回報流程 | [SECURITY.md](https://github.com/msitarzewski/agency-agents/blob/main/SECURITY.md) |
+| 資源                   | 說明                     | 連結                                                                               |
+| ---------------------- | ------------------------ | ---------------------------------------------------------------------------------- |
+| **GitHub Discussions** | 分享使用心得與成功案例   | [Discussions](https://github.com/msitarzewski/agency-agents/discussions)           |
+| **GitHub Issues**      | 回報問題與功能請求       | [Issues](https://github.com/msitarzewski/agency-agents/issues)                     |
+| **Reddit**             | r/ClaudeAI 社群討論      | Reddit r/ClaudeAI                                                                  |
+| **Twitter/X**          | #TheAgency 標籤          | Twitter                                                                            |
+| **安全政策**           | SECURITY.md 漏洞回報流程 | [SECURITY.md](https://github.com/msitarzewski/agency-agents/blob/main/SECURITY.md) |
 
 ### 社群翻譯版本
 
-| 語言 | 維護者 | 專案連結 | 說明 |
-|------|--------|---------|------|
-| 🇨🇳 简体中文 | @jnMetaCode | [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) | 141 個翻譯 Agent + 46 個中國市場原創 Agent |
-| 🇨🇳 简体中文 | @dsclca12 | [agent-teams](https://github.com/dsclca12/agent-teams) | 獨立翻譯版，含 Bilibili、微信、小紅書在地化 |
-| 🇧🇷 Português brasileiro | @jnMetaCode | [agency-agents-pt-BR](https://github.com/jnMetaCode/agency-agents-pt-BR) | 184 個上游 Agent 翻譯；巴西市場 PR 歡迎 |
-| 🇷🇺 Русский | @jnMetaCode | [agency-agents-ru](https://github.com/jnMetaCode/agency-agents-ru) | 184 個上游 Agent 翻譯；俄羅斯市場 PR 歡迎 |
-| 🇮🇩 Bahasa Indonesia | @jnMetaCode | [agency-agents-id](https://github.com/jnMetaCode/agency-agents-id) | 184 個上游 Agent 翻譯；印尼市場 PR 歡迎 |
-| 🇸🇦 العربية | @jnMetaCode | [agency-agents-ar](https://github.com/jnMetaCode/agency-agents-ar) | 184 個上游 Agent 翻譯；阿拉伯市場 PR 歡迎 |
-| 🇰🇷 한국어 | @jnMetaCode | [agency-agents-ko](https://github.com/jnMetaCode/agency-agents-ko) | 184 個上游 Agent 完整翻譯；韓國市場 PR 歡迎 |
-| 🇯🇵 日本語 | @sscodeai | [agency-agents-ja](https://github.com/sscodeai/agency-agents-ja) | 281 個日本在地化 Agent + 97 個日本市場原創 + 27 個工作流 |
+| 語言                    | 維護者      | 專案連結                                                                 | 說明                                                     |
+| ----------------------- | ----------- | ------------------------------------------------------------------------ | -------------------------------------------------------- |
+| 🇨🇳 简体中文             | @jnMetaCode | [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh)       | 141 個翻譯 Agent + 46 個中國市場原創 Agent               |
+| 🇨🇳 简体中文             | @dsclca12   | [agent-teams](https://github.com/dsclca12/agent-teams)                   | 獨立翻譯版，含 Bilibili、微信、小紅書在地化              |
+| 🇧🇷 Português brasileiro | @jnMetaCode | [agency-agents-pt-BR](https://github.com/jnMetaCode/agency-agents-pt-BR) | 184 個上游 Agent 翻譯；巴西市場 PR 歡迎                  |
+| 🇷🇺 Русский              | @jnMetaCode | [agency-agents-ru](https://github.com/jnMetaCode/agency-agents-ru)       | 184 個上游 Agent 翻譯；俄羅斯市場 PR 歡迎                |
+| 🇮🇩 Bahasa Indonesia     | @jnMetaCode | [agency-agents-id](https://github.com/jnMetaCode/agency-agents-id)       | 184 個上游 Agent 翻譯；印尼市場 PR 歡迎                  |
+| 🇸🇦 العربية              | @jnMetaCode | [agency-agents-ar](https://github.com/jnMetaCode/agency-agents-ar)       | 184 個上游 Agent 翻譯；阿拉伯市場 PR 歡迎                |
+| 🇰🇷 한국어               | @jnMetaCode | [agency-agents-ko](https://github.com/jnMetaCode/agency-agents-ko)       | 184 個上游 Agent 完整翻譯；韓國市場 PR 歡迎              |
+| 🇯🇵 日本語               | @sscodeai   | [agency-agents-ja](https://github.com/sscodeai/agency-agents-ja)         | 281 個日本在地化 Agent + 97 個日本市場原創 + 27 個工作流 |
 
 ### 衍生專案
 
@@ -165,18 +166,18 @@ timeline
 
 ### 路線圖（Roadmap）
 
-| 狀態 | 計畫項目 |
-|------|--------|
-| ✅ 完成 | 多 Agent 工作流範例（見 `examples/` 目錄） |
-| ✅ 完成 | 多工具整合腳本（14 個工具） |
-| ✅ 完成 | 原生桌面 App（macOS / Linux / Windows） |
-| ✅ 完成 | Security Division 獨立部門（10 agents） |
-| ✅ 完成 | GIS Division 獨立部門（13 agents） |
-| 📋 計畫中 | 互動式 Agent 選擇器 Web 工具 |
-| 📋 計畫中 | Agent 設計影片教學 |
-| 📋 計畫中 | 社群 Agent 市集 |
-| 📋 計畫中 | Agent 「性格測驗」專案配對工具 |
-| 📋 計畫中 | 「每週 Agent」展示系列 |
+| 狀態      | 計畫項目                                   |
+| --------- | ------------------------------------------ |
+| ✅ 完成   | 多 Agent 工作流範例（見 `examples/` 目錄） |
+| ✅ 完成   | 多工具整合腳本（14 個工具）                |
+| ✅ 完成   | 原生桌面 App（macOS / Linux / Windows）    |
+| ✅ 完成   | Security Division 獨立部門（10 agents）    |
+| ✅ 完成   | GIS Division 獨立部門（13 agents）         |
+| 📋 計畫中 | 互動式 Agent 選擇器 Web 工具               |
+| 📋 計畫中 | Agent 設計影片教學                         |
+| 📋 計畫中 | 社群 Agent 市集                            |
+| 📋 計畫中 | Agent 「性格測驗」專案配對工具             |
+| 📋 計畫中 | 「每週 Agent」展示系列                     |
 
 ---
 
@@ -269,36 +270,36 @@ graph TB
 
 每個 Agent 是一個 `.md` 檔案，定義了：
 
-| 元素 | 說明 | 範例 |
-|------|------|------|
-| **Frontmatter** | YAML 格式的基本資訊 | `name`, `description`, `color`, `emoji` |
-| **Identity & Memory** | 人設、記憶、性格 | "我是注重效能的後端架構師" |
-| **Core Mission** | 核心任務 | "設計可擴展的 API 與資料庫架構" |
-| **Critical Rules** | 領域規則 | "所有 API 必須有 rate limiting" |
-| **Technical Deliverables** | 技術交付物 | 程式碼範例、架構圖 |
-| **Workflow Process** | 工作流程 | 需求分析 → 設計 → 實作 → 驗證 |
-| **Success Metrics** | 成功指標 | "API 回應時間 < 200ms" |
+| 元素                       | 說明                | 範例                                    |
+| -------------------------- | ------------------- | --------------------------------------- |
+| **Frontmatter**            | YAML 格式的基本資訊 | `name`, `description`, `color`, `emoji` |
+| **Identity & Memory**      | 人設、記憶、性格    | "我是注重效能的後端架構師"              |
+| **Core Mission**           | 核心任務            | "設計可擴展的 API 與資料庫架構"         |
+| **Critical Rules**         | 領域規則            | "所有 API 必須有 rate limiting"         |
+| **Technical Deliverables** | 技術交付物          | 程式碼範例、架構圖                      |
+| **Workflow Process**       | 工作流程            | 需求分析 → 設計 → 實作 → 驗證           |
+| **Success Metrics**        | 成功指標            | "API 回應時間 < 200ms"                  |
 
 ### Tool Layer（工具整合層）
 
 agency-agents 透過腳本將 Agent 定義轉換為各工具的原生格式：
 
-| 工具 | Agent 格式 | 安裝路徑 | 轉換需求 |
-|------|-----------|---------|----------|
-| Claude Code | `.md` | `~/.claude/agents/` | 無（原生支援） |
-| GitHub Copilot | `.md` | `~/.github/agents/` + `~/.copilot/agents/` | 無（原生支援） |
-| Antigravity | `SKILL.md` | `~/.gemini/antigravity/skills/` | 需 `convert.sh` |
-| Gemini CLI | `.md` | `~/.gemini/agents/` | 需 `convert.sh` |
-| OpenCode | `.md` | `.opencode/agents/` | 無 |
-| OpenClaw | `SOUL.md` + `AGENTS.md` + `IDENTITY.md` | `~/.openclaw/agency-agents/` | 需 `convert.sh` |
-| Cursor | `.mdc` | `.cursor/rules/` | 需 `convert.sh` |
-| Aider | `CONVENTIONS.md` | `./CONVENTIONS.md` | 需 `convert.sh`（合併為單檔） |
-| Windsurf | `.windsurfrules` | `./.windsurfrules` | 需 `convert.sh`（合併為單檔） |
-| Qwen Code | `.md` SubAgent | `~/.qwen/agents/` | 需 `convert.sh` |
-| Kimi Code | YAML agent specs | `~/.config/kimi/agents/` | 需 `convert.sh` |
-| Codex | TOML custom agents | `~/.codex/agents/` | 需 `convert.sh` |
-| Osaurus | `SKILL.md` | `~/.osaurus/skills/` | 需 `convert.sh` |
-| Hermes | lazy-router plugin | `~/.hermes/plugins/` | 需 `convert.sh` |
+| 工具           | Agent 格式                              | 安裝路徑                                   | 轉換需求                      |
+| -------------- | --------------------------------------- | ------------------------------------------ | ----------------------------- |
+| Claude Code    | `.md`                                   | `~/.claude/agents/`                        | 無（原生支援）                |
+| GitHub Copilot | `.md`                                   | `~/.github/agents/` + `~/.copilot/agents/` | 無（原生支援）                |
+| Antigravity    | `SKILL.md`                              | `~/.gemini/antigravity/skills/`            | 需 `convert.sh`               |
+| Gemini CLI     | `.md`                                   | `~/.gemini/agents/`                        | 需 `convert.sh`               |
+| OpenCode       | `.md`                                   | `.opencode/agents/`                        | 無                            |
+| OpenClaw       | `SOUL.md` + `AGENTS.md` + `IDENTITY.md` | `~/.openclaw/agency-agents/`               | 需 `convert.sh`               |
+| Cursor         | `.mdc`                                  | `.cursor/rules/`                           | 需 `convert.sh`               |
+| Aider          | `CONVENTIONS.md`                        | `./CONVENTIONS.md`                         | 需 `convert.sh`（合併為單檔） |
+| Windsurf       | `.windsurfrules`                        | `./.windsurfrules`                         | 需 `convert.sh`（合併為單檔） |
+| Qwen Code      | `.md` SubAgent                          | `~/.qwen/agents/`                          | 需 `convert.sh`               |
+| Kimi Code      | YAML agent specs                        | `~/.config/kimi/agents/`                   | 需 `convert.sh`               |
+| Codex          | TOML custom agents                      | `~/.codex/agents/`                         | 需 `convert.sh`               |
+| Osaurus        | `SKILL.md`                              | `~/.osaurus/skills/`                       | 需 `convert.sh`               |
+| Hermes         | lazy-router plugin                      | `~/.hermes/plugins/`                       | 需 `convert.sh`               |
 
 ### tools.json — 工具安裝機制的單一真實來源
 
@@ -321,11 +322,11 @@ agency-agents 透過腳本將 Agent 定義轉換為各工具的原生格式：
 }
 ```
 
-| installKind | 說明 | 適用工具 |
-|-------------|------|---------|
-| `copy` | 直接複製 `.md` 檔案，無需格式轉換 | Claude Code、Copilot、OpenCode |
-| `generate` | 需先由 `convert.sh` 生成目標格式後再安裝 | Cursor、Antigravity、Gemini CLI、OpenClaw、Qwen、Kimi、Codex、Osaurus、Hermes |
-| `merge` | 將多個 Agent 合併為單一檔案 | Aider、Windsurf |
+| installKind | 說明                                     | 適用工具                                                                      |
+| ----------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `copy`      | 直接複製 `.md` 檔案，無需格式轉換        | Claude Code、Copilot、OpenCode                                                |
+| `generate`  | 需先由 `convert.sh` 生成目標格式後再安裝 | Cursor、Antigravity、Gemini CLI、OpenClaw、Qwen、Kimi、Codex、Osaurus、Hermes |
+| `merge`     | 將多個 Agent 合併為單一檔案              | Aider、Windsurf                                                               |
 
 CI 流程（`.github/workflows/check-tools.yml`）會自動驗證 `tools.json` 與 `scripts/install.sh` 中的工具清單一致，確保任何新增工具都被正確宣告。
 
@@ -357,7 +358,7 @@ sequenceDiagram
     ARCH->>ARCH: 設計系統架構
     ARCH->>DEV: 交付 API 設計 + DB Schema
     ARCH->>FE: 交付 UI 架構 + API 規格
-    
+
     par 平行開發
         DEV->>DEV: 開發 Backend API
         FE->>FE: 開發 Frontend UI
@@ -415,13 +416,13 @@ graph LR
 
 ## 3.1 前置需求
 
-| 工具 | 最低版本 | 用途 |
-|------|---------|------|
-| Git | 2.30+ | 版本控管 |
-| Bash / Zsh | - | 執行安裝腳本 |
-| Claude Code | 最新版 | 主要 AI 工具（推薦） |
-| VS Code | 最新版 | IDE |
-| GitHub Copilot | 最新版 | AI 輔助開發 |
+| 工具           | 最低版本 | 用途                 |
+| -------------- | -------- | -------------------- |
+| Git            | 2.30+    | 版本控管             |
+| Bash / Zsh     | -        | 執行安裝腳本         |
+| Claude Code    | 最新版   | 主要 AI 工具（推薦） |
+| VS Code        | 最新版   | IDE                  |
+| GitHub Copilot | 最新版   | AI 輔助開發          |
 
 > **Windows 用戶**：建議使用 Git Bash 或 WSL2 執行安裝腳本。
 
@@ -652,6 +653,7 @@ ls ~/.github/agents/ | head -20
 ```
 
 > **💡 實務建議**：
+>
 > - 初次安裝建議使用互動式模式，確認每個工具的安裝路徑
 > - 團隊統一使用時，建議 Fork 後維護自己的版本
 > - Windows 環境建議使用 WSL2 或 Git Bash 執行腳本
@@ -664,7 +666,7 @@ ls ~/.github/agents/ | head -20
 
 每個 Agent 都是一個 `.md` 檔案，結構如下：
 
-```markdown
+````markdown
 ---
 name: "Frontend Developer"
 description: "React/Vue/Angular, UI implementation, performance"
@@ -702,30 +704,29 @@ deliver exceptional user experiences.
 
 ​```tsx
 interface ButtonProps {
-  variant: 'primary' | 'secondary' | 'danger';
-  size: 'sm' | 'md' | 'lg';
-  isLoading?: boolean;
-  children: React.ReactNode;
-  onClick?: () => void;
+variant: 'primary' | 'secondary' | 'danger';
+size: 'sm' | 'md' | 'lg';
+isLoading?: boolean;
+children: React.ReactNode;
+onClick?: () => void;
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  variant,
-  size,
-  isLoading = false,
-  children,
-  onClick,
+variant,
+size,
+isLoading = false,
+children,
+onClick,
 }) => {
-  return (
-    <button
-      className={cn(baseStyles, variantStyles[variant], sizeStyles[size])}
-      disabled={isLoading}
-      onClick={onClick}
-      aria-busy={isLoading}
-    >
-      {isLoading ? <Spinner size={size} /> : children}
-    </button>
-  );
+return (
+<button
+className={cn(baseStyles, variantStyles[variant], sizeStyles[size])}
+disabled={isLoading}
+onClick={onClick}
+aria-busy={isLoading} >
+{isLoading ? <Spinner size={size} /> : children}
+</button>
+);
 };
 ​```
 
@@ -752,18 +753,18 @@ export const Button: React.FC<ButtonProps> = ({
 - 以程式碼說話
 - 注重實用性而非理論
 - 主動提出效能與可維護性建議
-```
+````
 
 ## 4.2 Frontmatter 欄位說明
 
-| 欄位 | 必要 | 說明 | 範例 |
-|------|------|------|------|
-| `name` | ✅ | Agent 名稱 | `"Frontend Developer"` |
-| `description` | ✅ | 一行描述 | `"React/Vue/Angular, UI..."` |
-| `emoji` | ✅ | 代表 Emoji | `"🎨"` |
-| `color` | ✅ | 代表色（HEX 或顏色名稱） | `"#61DAFB"` |
-| `vibe` | ❌ | 一句個性 hook — 讓 Agent 令人印象深刻 | `"Pixel-perfect perfectionist..."` |
-| `services` | ❌ | 依賴的外部服務（API、平台、SaaS） | 見下方說明 |
+| 欄位          | 必要 | 說明                                  | 範例                               |
+| ------------- | ---- | ------------------------------------- | ---------------------------------- |
+| `name`        | ✅   | Agent 名稱                            | `"Frontend Developer"`             |
+| `description` | ✅   | 一行描述                              | `"React/Vue/Angular, UI..."`       |
+| `emoji`       | ✅   | 代表 Emoji                            | `"🎨"`                             |
+| `color`       | ✅   | 代表色（HEX 或顏色名稱）              | `"#61DAFB"`                        |
+| `vibe`        | ❌   | 一句個性 hook — 讓 Agent 令人印象深刻 | `"Pixel-perfect perfectionist..."` |
+| `services`    | ❌   | 依賴的外部服務（API、平台、SaaS）     | 見下方說明                         |
 
 ### `services` 欄位詳細說明
 
@@ -773,10 +774,11 @@ export const Button: React.FC<ButtonProps> = ({
 services:
   - name: Service Name
     url: https://service-url.com
-    tier: free          # free, freemium, 或 paid
+    tier: free # free, freemium, 或 paid
 ```
 
 **設計原則**：
+
 - Agent 必須獨立可用 — 移除 API 呼叫後仍應有有價值的 persona、workflow 和專業知識
 - 不要複製供應商文件 — 引用即可，不需要複製 getting-started 指南
 - 優先選擇有免費方案的服務，以便貢獻者測試
@@ -830,12 +832,12 @@ graph LR
 
 每個 Workflow 步驟需定義：
 
-| 項目 | 說明 |
-|------|------|
-| **輸入（Input）** | 這一步需要什麼資訊 |
-| **動作（Action）** | 具體做什麼 |
-| **輸出（Output）** | 產出什麼交付物 |
-| **品質標準** | 如何判斷完成 |
+| 項目               | 說明               |
+| ------------------ | ------------------ |
+| **輸入（Input）**  | 這一步需要什麼資訊 |
+| **動作（Action）** | 具體做什麼         |
+| **輸出（Output）** | 產出什麼交付物     |
+| **品質標準**       | 如何判斷完成       |
 
 ## 4.5 任務輸入 / 輸出格式
 
@@ -847,16 +849,19 @@ graph LR
 請使用 Backend Architect Agent 設計以下功能的 API：
 
 ### 需求
+
 - 使用者登入功能
 - 支援 JWT Token
 - 支援 OAuth2.0（Google / GitHub）
 
 ### 技術限制
+
 - Spring Boot 3.5
 - PostgreSQL 16
 - Redis 7（Session Cache）
 
 ### 非功能需求
+
 - 回應時間 < 200ms
 - 支援 1000 RPS
 ```
@@ -891,6 +896,7 @@ moment, not a gatekeeping ceremony. You always explain WHY, not just WHAT.
 ## Core Mission
 
 Ensure every PR that passes your review is:
+
 - Secure (no OWASP Top 10 violations)
 - Maintainable (future developers will thank you)
 - Performant (no obvious bottlenecks)
@@ -923,6 +929,7 @@ Ensure every PR that passes your review is:
 ```
 
 > **💡 實務建議**：
+>
 > - 每個部門選 2-3 個核心 Agent 開始使用
 > - 建議優先使用：Backend Architect、Frontend Developer、Code Reviewer、Security Engineer
 > - 客製 Agent 時，保持 Frontmatter 格式一致，方便腳本轉換
@@ -952,7 +959,7 @@ cp design/*.md ~/.claude/agents/
 在 Claude Code 會話中，直接透過 Prompt 啟用：
 
 ```
-Hey Claude, activate Backend Architect mode and help me design 
+Hey Claude, activate Backend Architect mode and help me design
 a REST API for user authentication.
 ```
 
@@ -965,10 +972,10 @@ I need help building a web application. Let's work together:
 1. First, activate Product Manager mode — analyze these requirements:
    [貼上需求文件]
 
-2. Then, activate Backend Architect mode — design the API based on 
+2. Then, activate Backend Architect mode — design the API based on
    the PM's analysis.
 
-3. Finally, activate Security Engineer mode — review the architecture 
+3. Finally, activate Security Engineer mode — review the architecture
    for security issues.
 ```
 
@@ -1007,7 +1014,7 @@ Please review the following Spring Boot controller for:
 ```
 Activate Agents Orchestrator mode.
 
-I'm building a CRM system. Please coordinate the following agents 
+I'm building a CRM system. Please coordinate the following agents
 in sequence:
 
 1. Product Manager: Define user stories for contact management
@@ -1091,19 +1098,23 @@ cp engineering/*.md ~/.copilot/agents/
 # Copilot 指引
 
 ## 使用 Agency Agents
+
 本專案使用 agency-agents 框架，以下為常用 Agent 角色：
 
 ### Backend Architect
+
 - 設計 Clean Architecture
 - API 設計遵循 RESTful 原則
 - 所有 API 需有 input validation
 
 ### Security Engineer
+
 - 所有 PR 需通過安全審查
 - 遵循 OWASP Top 10
 - 敏感資料需加密
 
 ### Code Reviewer
+
 - 程式碼必須有單元測試
 - 命名需符合團隊規範
 - 無 magic numbers
@@ -1139,14 +1150,14 @@ cp engineering/*.md ~/.copilot/agents/
 在 Cursor 的 AI Chat 中：
 
 ```
-Use the Backend Architect rules to design a microservices 
+Use the Backend Architect rules to design a microservices
 architecture for an e-commerce system with:
 - Order service
-- Payment service  
+- Payment service
 - Inventory service
 - User service
 
-Include: API contracts, event-driven communication (Kafka), 
+Include: API contracts, event-driven communication (Kafka),
 and database-per-service pattern.
 ```
 
@@ -1211,12 +1222,12 @@ aider --model claude-3-opus
 
 ### Antigravity vs Gemini CLI 差異
 
-| 項目 | Antigravity | Gemini CLI |
-|------|-------------|-----------|
-| **格式** | `SKILL.md`（技能式） | `.md`（原生 subagent） |
-| **安裝路徑** | `~/.gemini/antigravity/skills/` | `~/.gemini/agents/` |
-| **互動方式** | 技能引用（`@agency-xxx`） | CLI subagent 委派 |
-| **適用場景** | Gemini 圖形介面、VS Code 擴充 | 終端機 CLI 互動 |
+| 項目         | Antigravity                     | Gemini CLI             |
+| ------------ | ------------------------------- | ---------------------- |
+| **格式**     | `SKILL.md`（技能式）            | `.md`（原生 subagent） |
+| **安裝路徑** | `~/.gemini/antigravity/skills/` | `~/.gemini/agents/`    |
+| **互動方式** | 技能引用（`@agency-xxx`）       | CLI subagent 委派      |
+| **適用場景** | Gemini 圖形介面、VS Code 擴充   | 終端機 CLI 互動        |
 
 ### 使用方式
 
@@ -1443,15 +1454,15 @@ hermes --agent backend-architect "Design a database schema for a CRM system"
 
 ## 5.13 工具整合比較
 
-| 功能 | Claude Code | Copilot | Cursor | Aider | Windsurf | Antigravity | OpenCode | OpenClaw | Qwen Code | Kimi Code | Codex | Osaurus | Hermes |
-|------|------------|---------|--------|-------|----------|-------------|----------|----------|-----------|-----------|-------|---------|--------|
-| **原生格式** | `.md` | `.md` | `.mdc` | 合併檔 | 合併檔 | `SKILL.md` | `.md` | 多檔案 | `.md` | YAML | TOML | `SKILL.md` | plugin |
-| **多 Agent** | ✅ | ✅ | ✅ | ⚠️ | ⚠️ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **動態切換** | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **自動路由** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| **需轉換** | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **安裝難度** | 低 | 低 | 中 | 低 | 低 | 中 | 低 | 中 | 中 | 中 | 低 | 中 | 低 |
-| **推薦指數** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| 功能         | Claude Code | Copilot    | Cursor   | Aider  | Windsurf | Antigravity | OpenCode | OpenClaw | Qwen Code | Kimi Code | Codex    | Osaurus    | Hermes   |
+| ------------ | ----------- | ---------- | -------- | ------ | -------- | ----------- | -------- | -------- | --------- | --------- | -------- | ---------- | -------- |
+| **原生格式** | `.md`       | `.md`      | `.mdc`   | 合併檔 | 合併檔   | `SKILL.md`  | `.md`    | 多檔案   | `.md`     | YAML      | TOML     | `SKILL.md` | plugin   |
+| **多 Agent** | ✅          | ✅         | ✅       | ⚠️     | ⚠️       | ✅          | ✅       | ✅       | ✅        | ✅        | ✅       | ✅         | ✅       |
+| **動態切換** | ✅          | ✅         | ✅       | ❌     | ❌       | ✅          | ✅       | ✅       | ✅        | ✅        | ✅       | ✅         | ✅       |
+| **自動路由** | ❌          | ❌         | ❌       | ❌     | ❌       | ❌          | ❌       | ❌       | ❌        | ❌        | ❌       | ❌         | ✅       |
+| **需轉換**   | ❌          | ❌         | ✅       | ✅     | ✅       | ✅          | ❌       | ✅       | ✅        | ✅        | ✅       | ✅         | ✅       |
+| **安裝難度** | 低          | 低         | 中       | 低     | 低       | 中          | 低       | 中       | 中        | 中        | 低       | 中         | 低       |
+| **推薦指數** | ⭐⭐⭐⭐⭐  | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐   | ⭐⭐⭐⭐    | ⭐⭐⭐⭐ | ⭐⭐⭐   | ⭐⭐⭐    | ⭐⭐⭐    | ⭐⭐⭐⭐ | ⭐⭐⭐⭐   | ⭐⭐⭐⭐ |
 
 ### 工具選擇建議
 
@@ -1476,6 +1487,7 @@ graph TD
 ```
 
 > **💡 實務建議**：
+>
 > - **最快上手**推薦使用桌面 App（無需 clone、無需終端機）
 > - **主力開發**推薦使用 Claude Code 或 GitHub Copilot
 > - **多工具並行**時，使用 `convert.sh` 一次生成所有格式
@@ -1490,12 +1502,12 @@ agency-agents 專案提供了 MCP（Model Context Protocol）記憶體整合指�
 
 ### 為什麼需要 MCP Memory
 
-| 問題 | 無記憶的 Agent | 有 MCP Memory 的 Agent |
-|------|--------------|----------------------|
-| **專案脈絡** | 每次對話重新理解 | 記住架構決策與技術棧 |
-| **學習累積** | 每次重犯相同錯誤 | 從過去錯誤中學習 |
-| **偏好追蹤** | 每次重新設定偏好 | 記住團隊編碼風格 |
-| **長期專案** | 跨 Sprint 資訊斷裂 | 持續追蹤專案演進 |
+| 問題         | 無記憶的 Agent     | 有 MCP Memory 的 Agent |
+| ------------ | ------------------ | ---------------------- |
+| **專案脈絡** | 每次對話重新理解   | 記住架構決策與技術棧   |
+| **學習累積** | 每次重犯相同錯誤   | 從過去錯誤中學習       |
+| **偏好追蹤** | 每次重新設定偏好   | 記住團隊編碼風格       |
+| **長期專案** | 跨 Sprint 資訊斷裂 | 持續追蹤專案演進       |
 
 ### 架構概念
 
@@ -1548,11 +1560,13 @@ graph LR
 ## 🔄 Learning & Memory
 
 When available, use the MCP memory tool to:
+
 - **Store**: Architecture decisions, team conventions, recurring patterns
 - **Recall**: Previous project context, past errors and fixes
 - **Update**: Evolving best practices, deprecated patterns
 
 ### Memory Categories
+
 - `project/<name>`: 專案特定知識（架構、技術棧、約束）
 - `patterns/<domain>`: 領域模式（成功與失敗的模式）
 - `preferences/<team>`: 團隊偏好（命名規範、工具選擇）
@@ -1564,7 +1578,7 @@ When available, use the MCP memory tool to:
 Activate Backend Architect mode.
 
 ## Context
-Recall any previous architecture decisions for the CRM project 
+Recall any previous architecture decisions for the CRM project
 from memory. Then design the notification service considering:
 - Previous decisions on message queue choice
 - Team's coding conventions
@@ -1575,14 +1589,15 @@ After designing, store the key decisions in memory for future reference.
 
 ### 適用場景
 
-| 場景 | 記憶內容 | 效益 |
-|------|---------|------|
-| **長期專案開發** | 架構決策、技術債清單 | 避免重複討論已決議事項 |
-| **團隊知識傳承** | 編碼規範、過去的踩坑經驗 | 新人快速上手 |
-| **迭代優化** | Agent 的成功/失敗模式 | 持續改善 Prompt 品質 |
-| **跨 Sprint 追蹤** | 需求變更歷程、里程碑 | 保持一致性 |
+| 場景               | 記憶內容                 | 效益                   |
+| ------------------ | ------------------------ | ---------------------- |
+| **長期專案開發**   | 架構決策、技術債清單     | 避免重複討論已決議事項 |
+| **團隊知識傳承**   | 編碼規範、過去的踩坑經驗 | 新人快速上手           |
+| **迭代優化**       | Agent 的成功/失敗模式    | 持續改善 Prompt 品質   |
+| **跨 Sprint 追蹤** | 需求變更歷程、里程碑     | 保持一致性             |
 
 > **💡 實務建議**：
+>
 > - MCP Memory 為選配功能，Agent 在沒有 Memory Server 時仍可正常運作
 > - 建議為每個專案建立獨立的記憶命名空間（`project/<name>`）
 > - 定期清理過時的記憶條目，避免干擾 Agent 判斷
@@ -1598,13 +1613,13 @@ After designing, store the key decisions in memory for future reference.
 
 ### 系統需求
 
-| 模組 | 功能 |
-|------|------|
-| **客戶管理** | 客戶資料 CRUD、分類、標籤 |
+| 模組         | 功能                         |
+| ------------ | ---------------------------- |
+| **客戶管理** | 客戶資料 CRUD、分類、標籤    |
 | **聯繫記錄** | 通話記錄、郵件記錄、會議記錄 |
-| **商機管理** | 銷售漏斗、預測、報表 |
-| **權限控管** | RBAC、資料隔離（多租戶） |
-| **通知系統** | 郵件通知、站內通知 |
+| **商機管理** | 銷售漏斗、預測、報表         |
+| **權限控管** | RBAC、資料隔離（多租戶）     |
+| **通知系統** | 郵件通知、站內通知           |
 
 ### 技術棧
 
@@ -1662,14 +1677,17 @@ graph TD
 Activate Product Manager mode.
 
 ## 背景
+
 我們需要為公司開發一個企業級 CRM（客戶關係管理）系統。
 
 ## 目標用戶
+
 - 業務人員（Sales Rep）
 - 業務主管（Sales Manager）
 - 系統管理員（Admin）
 
 ## 核心功能需求
+
 1. 客戶管理：新增/編輯/搜尋客戶資料
 2. 聯繫記錄：追蹤所有與客戶的互動
 3. 商機管理：銷售漏斗管理
@@ -1677,7 +1695,9 @@ Activate Product Manager mode.
 5. 通知：重要事件提醒
 
 ## 交付物
+
 請產出：
+
 1. User Story（含 Acceptance Criteria）
 2. 功能優先級矩陣（MoSCoW）
 3. MVP 範圍定義
@@ -1690,11 +1710,13 @@ Activate Product Manager mode.
 ## User Story 範例
 
 ### US-001: 客戶資料管理
+
 **As a** 業務人員
 **I want to** 新增與編輯客戶資料
 **So that** 我能維護完整的客戶資訊
 
 **Acceptance Criteria:**
+
 - [ ] 可輸入：公司名稱、聯絡人、電話、Email、地址
 - [ ] 支援客戶分類（A/B/C 級）
 - [ ] 支援自訂標籤
@@ -1703,14 +1725,14 @@ Activate Product Manager mode.
 
 ### 優先級矩陣
 
-| 功能 | 優先級 | Sprint |
-|------|--------|--------|
-| 客戶 CRUD | Must Have | Sprint 1 |
-| JWT 認證 | Must Have | Sprint 1 |
-| 聯繫記錄 | Must Have | Sprint 2 |
-| 商機管理 | Should Have | Sprint 3 |
-| 報表 | Should Have | Sprint 4 |
-| 通知系統 | Could Have | Sprint 5 |
+| 功能      | 優先級      | Sprint   |
+| --------- | ----------- | -------- |
+| 客戶 CRUD | Must Have   | Sprint 1 |
+| JWT 認證  | Must Have   | Sprint 1 |
+| 聯繫記錄  | Must Have   | Sprint 2 |
+| 商機管理  | Should Have | Sprint 3 |
+| 報表      | Should Have | Sprint 4 |
+| 通知系統  | Could Have  | Sprint 5 |
 ```
 
 ## 6.4 Phase 2：Architect Agent 設計架構
@@ -1721,10 +1743,12 @@ Activate Product Manager mode.
 Activate Backend Architect mode.
 
 ## 需求來源
+
 以下是 PM Agent 產出的 User Story 和需求規格：
 [貼上 PM Agent 的產出]
 
 ## 技術限制
+
 - Java 21 + Spring Boot 3.5
 - Clean Architecture（必須使用）
 - PostgreSQL 16
@@ -1732,7 +1756,9 @@ Activate Backend Architect mode.
 - Kafka（事件驅動）
 
 ## 交付物
+
 請產出：
+
 1. 系統架構圖（層次說明）
 2. API 設計（OpenAPI 格式）
 3. DB Schema（DDL）
@@ -1742,12 +1768,12 @@ Activate Backend Architect mode.
 
 ### Architect Agent 預期產出
 
-```markdown
+````markdown
 ## 系統分層架構
 
 ### Clean Architecture 層次
 
-​```
+​`
 ┌─────────────────────────────────┐
 │        Presentation Layer       │
 │    (Controller / DTO / Mapper)  │
@@ -1761,42 +1787,39 @@ Activate Backend Architect mode.
 │       Infrastructure Layer      │
 │  (JPA / Redis / Kafka / HTTP)   │
 └─────────────────────────────────┘
-​```
+​`
 
 ## API 設計（部分）
 
 ​```yaml
 openapi: 3.0.3
 info:
-  title: CRM API
-  version: 1.0.0
+title: CRM API
+version: 1.0.0
 
 paths:
-  /api/v1/customers:
-    get:
-      summary: 查詢客戶列表
-      parameters:
-        - name: keyword
-          in: query
-          schema:
-            type: string
-        - name: page
-          in: query
-          schema:
-            type: integer
-            default: 0
-        - name: size
-          in: query
-          schema:
-            type: integer
-            default: 20
-      responses:
-        '200':
-          description: 成功
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedCustomerResponse'
+/api/v1/customers:
+get:
+summary: 查詢客戶列表
+parameters: - name: keyword
+in: query
+schema:
+type: string - name: page
+in: query
+schema:
+type: integer
+default: 0 - name: size
+in: query
+schema:
+type: integer
+default: 20
+responses:
+'200':
+description: 成功
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/PagedCustomerResponse'
     post:
       summary: 新增客戶
       requestBody:
@@ -1804,33 +1827,33 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateCustomerRequest'
-      responses:
-        '201':
-          description: 建立成功
+responses:
+'201':
+description: 建立成功
 ​```
 
 ## DB Schema
 
 ​```sql
 CREATE TABLE customers (
-    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    company     VARCHAR(200) NOT NULL,
-    contact     VARCHAR(100) NOT NULL,
-    email       VARCHAR(200),
-    phone       VARCHAR(50),
-    grade       VARCHAR(1) DEFAULT 'C' CHECK (grade IN ('A','B','C')),
-    tags        TEXT[],
-    created_by  UUID NOT NULL REFERENCES users(id),
-    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    version     INTEGER DEFAULT 1
+id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+company VARCHAR(200) NOT NULL,
+contact VARCHAR(100) NOT NULL,
+email VARCHAR(200),
+phone VARCHAR(50),
+grade VARCHAR(1) DEFAULT 'C' CHECK (grade IN ('A','B','C')),
+tags TEXT[],
+created_by UUID NOT NULL REFERENCES users(id),
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+version INTEGER DEFAULT 1
 );
 
 CREATE INDEX idx_customers_company ON customers USING gin(company gin_trgm_ops);
 CREATE INDEX idx_customers_contact ON customers USING gin(contact gin_trgm_ops);
 CREATE INDEX idx_customers_grade ON customers(grade);
 ​```
-```
+````
 
 ## 6.5 Phase 3：Backend Agent 開發 API
 
@@ -1840,9 +1863,11 @@ CREATE INDEX idx_customers_grade ON customers(grade);
 Activate Backend Architect mode (implementation focus).
 
 ## 架構設計
+
 [貼上 Architect Agent 的產出]
 
 ## 任務
+
 請實作客戶管理模組（Customer Module），使用 Clean Architecture：
 
 1. Domain Layer: Customer Entity, CustomerRepository Port
@@ -1851,6 +1876,7 @@ Activate Backend Architect mode (implementation focus).
 4. Presentation Layer: CustomerController, CustomerDTO
 
 ## 規範
+
 - Java 21 + Spring Boot 3.5
 - 使用 Record 作為 DTO
 - 使用 Spring Data JPA
@@ -1942,9 +1968,11 @@ public class CustomerController {
 Activate Frontend Developer mode.
 
 ## API 規格
+
 [貼上 Backend Agent 的 API 設計]
 
 ## 任務
+
 請實作客戶管理的前端頁面：
 
 1. 客戶列表頁（搜尋 + 分頁 + 篩選）
@@ -1952,6 +1980,7 @@ Activate Frontend Developer mode.
 3. 客戶詳情頁
 
 ## 技術棧
+
 - Vue 3 + Composition API + TypeScript
 - Tailwind CSS
 - Pinia（狀態管理）
@@ -1959,6 +1988,7 @@ Activate Frontend Developer mode.
 - VueRouter
 
 ## 規範
+
 - 元件需可重用
 - 響應式設計（Mobile First）
 - 需有 Loading / Error 狀態處理
@@ -1972,18 +2002,23 @@ Activate Frontend Developer mode.
 Activate Reality Checker mode.
 
 ## 系統資訊
+
 - CRM 系統的客戶管理模組
 - Backend: Spring Boot 3.5 REST API
 - Frontend: Vue 3 + TypeScript
 
 ## 需求規格
+
 [貼上 PM Agent 的 User Story]
 
 ## 程式碼
+
 [貼上 Backend + Frontend 的關鍵程式碼]
 
 ## 任務
+
 請產出：
+
 1. 測試計畫（Test Plan）
 2. 測試案例（Test Cases）— 含正向/負向/邊界
 3. API 測試腳本（JUnit 5）
@@ -1999,18 +2034,23 @@ Activate Reality Checker mode.
 Activate Security Engineer mode.
 
 ## 系統資訊
+
 - CRM 系統（客戶關係管理）
 - 包含敏感客戶資料（PII）
 - 使用 JWT 認證 + RBAC
 
 ## 程式碼
+
 [貼上所有關鍵程式碼]
 
 ## 架構
+
 [貼上架構設計]
 
 ## 任務
+
 請執行安全審查：
+
 1. OWASP Top 10 檢查
 2. 認證/授權機制審查
 3. 資料保護（PII 處理）
@@ -2026,27 +2066,28 @@ Activate Security Engineer mode.
 
 ### 🔴 高風險
 
-| # | 問題 | 位置 | 建議修復 |
-|---|------|------|---------|
-| S-001 | SQL Injection 風險 | CustomerRepository | 使用參數化查詢 |
+| #     | 問題               | 位置               | 建議修復          |
+| ----- | ------------------ | ------------------ | ----------------- |
+| S-001 | SQL Injection 風險 | CustomerRepository | 使用參數化查詢    |
 | S-002 | 缺少 Rate Limiting | CustomerController | 加入 @RateLimiter |
 
 ### 🟡 中風險
 
-| # | 問題 | 位置 | 建議修復 |
-|---|------|------|---------|
+| #     | 問題                 | 位置           | 建議修復                |
+| ----- | -------------------- | -------------- | ----------------------- |
 | S-003 | JWT Token 無過期設定 | SecurityConfig | 設定 expiration = 15min |
-| S-004 | 缺少 CORS 設定 | WebConfig | 明確指定允許的 Origin |
+| S-004 | 缺少 CORS 設定       | WebConfig      | 明確指定允許的 Origin   |
 
 ### 🟢 建議改善
 
-| # | 問題 | 建議 |
-|---|------|------|
-| S-005 | 缺少 Audit Log | 加入操作審計日誌 |
-| S-006 | PII 未加密 | Email/Phone 使用欄位加密 |
+| #     | 問題           | 建議                     |
+| ----- | -------------- | ------------------------ |
+| S-005 | 缺少 Audit Log | 加入操作審計日誌         |
+| S-006 | PII 未加密     | Email/Phone 使用欄位加密 |
 ```
 
 > **💡 實務建議**：
+>
 > - 大型專案建議使用 **Agents Orchestrator** 統一協調多個 Agent
 > - 每個 Phase 的產出應存檔，作為下一個 Phase 的輸入
 > - 可建立專案級的 `AGENTS_WORKFLOW.md` 記錄協作流程
@@ -2058,16 +2099,16 @@ Activate Security Engineer mode.
 
 ### 參與 Agent
 
-| Agent | 部門 | 負責項目 |
-|-------|------|---------|
-| 🔍 Trend Researcher | Product | 市場驗證與競品分析 |
-| 🏗️ Backend Architect | Engineering | 技術架構設計 |
-| 🎭 Brand Guardian | Design | 品牌策略定義 |
-| 🚀 Growth Hacker | Marketing | 進入市場策略 |
-| 💬 Support Responder | Support | 支援系統規劃 |
-| 🔍 UX Researcher | Design | 使用者研究計畫 |
-| 🐑 Project Shepherd | Project Mgmt | 專案執行計畫 |
-| 🏗️ XR Interface Architect | Spatial | 空間 UI 設計 |
+| Agent                     | 部門         | 負責項目           |
+| ------------------------- | ------------ | ------------------ |
+| 🔍 Trend Researcher       | Product      | 市場驗證與競品分析 |
+| 🏗️ Backend Architect      | Engineering  | 技術架構設計       |
+| 🎭 Brand Guardian         | Design       | 品牌策略定義       |
+| 🚀 Growth Hacker          | Marketing    | 進入市場策略       |
+| 💬 Support Responder      | Support      | 支援系統規劃       |
+| 🔍 UX Researcher          | Design       | 使用者研究計畫     |
+| 🐑 Project Shepherd       | Project Mgmt | 專案執行計畫       |
+| 🏗️ XR Interface Architect | Spatial      | 空間 UI 設計       |
 
 ### Prompt 範例
 
@@ -2075,10 +2116,12 @@ Activate Security Engineer mode.
 Activate Agents Orchestrator mode.
 
 ## Mission
-Conduct a full product discovery for a new spatial computing 
+
+Conduct a full product discovery for a new spatial computing
 collaboration tool. Deploy all divisions simultaneously.
 
 ## Divisions & Assignments
+
 1. Product: Market validation and competitive landscape
 2. Engineering: Technical feasibility and architecture
 3. Design: Brand identity and spatial UX
@@ -2087,6 +2130,7 @@ collaboration tool. Deploy all divisions simultaneously.
 6. Project Management: Execution timeline
 
 ## Deliverables
+
 Each division produces a section of a unified product blueprint.
 Coordinate to ensure consistency across all outputs.
 ```
@@ -2094,6 +2138,7 @@ Coordinate to ensure consistency across all outputs.
 ### 預期產出
 
 **統一產品藍圖**涵蓋：
+
 - 市場驗證報告（Trend Researcher）
 - 技術架構文件（Backend Architect）
 - 品牌策略指南（Brand Guardian）
@@ -2143,14 +2188,17 @@ graph LR
 Activate Security Engineer mode.
 
 ## 任務
+
 針對以下需求進行安全需求分析：
 
 ### 功能需求
+
 - 使用者登入（帳號密碼 + OAuth2）
 - 客戶資料管理（含 PII）
 - 檔案上傳功能
 
 ### 請產出
+
 1. 安全需求清單（Security Requirements）
 2. 資料分類（Public / Internal / Confidential / Restricted）
 3. 合規要求（個資法 / GDPR 如適用）
@@ -2166,6 +2214,7 @@ Activate Security Engineer mode.
 ## 任務：STRIDE 威脅建模
 
 ### 系統元件
+
 1. Web Frontend（Vue 3）
 2. API Gateway
 3. Backend Service（Spring Boot）
@@ -2174,6 +2223,7 @@ Activate Security Engineer mode.
 6. Kafka MQ
 
 ### 請使用 STRIDE 方法進行威脅建模
+
 - Spoofing（假冒）
 - Tampering（竄改）
 - Repudiation（否認）
@@ -2182,6 +2232,7 @@ Activate Security Engineer mode.
 - Elevation of Privilege（權限提升）
 
 ### 交付物
+
 1. 威脅清單（含風險等級）
 2. 對應緩解措施
 3. 資料流程圖（DFD）
@@ -2189,13 +2240,13 @@ Activate Security Engineer mode.
 
 ### 預期產出：威脅建模表
 
-| 威脅類型 | 元件 | 威脅描述 | 風險等級 | 緩解措施 |
-|---------|------|---------|---------|---------|
-| Spoofing | API Gateway | 偽造 JWT Token | 🔴 高 | Token 簽章驗證 + 短期過期 |
-| Tampering | Frontend | XSS 注入 | 🔴 高 | CSP Header + 輸出編碼 |
-| Info Disclosure | Database | SQL Injection | 🔴 高 | 參數化查詢 + ORM |
-| DoS | API | 大量請求攻擊 | 🟡 中 | Rate Limiting + WAF |
-| Elevation | Backend | IDOR 越權 | 🔴 高 | 物件級授權檢查 |
+| 威脅類型        | 元件        | 威脅描述       | 風險等級 | 緩解措施                  |
+| --------------- | ----------- | -------------- | -------- | ------------------------- |
+| Spoofing        | API Gateway | 偽造 JWT Token | 🔴 高    | Token 簽章驗證 + 短期過期 |
+| Tampering       | Frontend    | XSS 注入       | 🔴 高    | CSP Header + 輸出編碼     |
+| Info Disclosure | Database    | SQL Injection  | 🔴 高    | 參數化查詢 + ORM          |
+| DoS             | API         | 大量請求攻擊   | 🟡 中    | Rate Limiting + WAF       |
+| Elevation       | Backend     | IDOR 越權      | 🔴 高    | 物件級授權檢查            |
 
 ### 開發階段 — 安全編碼
 
@@ -2205,9 +2256,11 @@ Activate Security Engineer mode.
 Activate Code Reviewer mode with security focus.
 
 ## 安全檢查清單
+
 請檢查以下程式碼是否符合：
 
 ### OWASP Top 10 (2021)
+
 - [ ] A01: Broken Access Control — 越權存取
 - [ ] A02: Cryptographic Failures — 加密失敗
 - [ ] A03: Injection — 注入攻擊（SQL / NoSQL / OS / LDAP）
@@ -2230,13 +2283,17 @@ Activate Security Engineer mode.
 ## 任務：安全測試計畫
 
 ### SAST（Static Application Security Testing）
+
 請建議：
+
 1. 適合 Java/Spring Boot 的 SAST 工具
 2. 掃描規則設定
 3. CI/CD 整合方式
 
 ### DAST（Dynamic Application Security Testing）
+
 請建議：
+
 1. API 安全測試（OWASP ZAP）
 2. 測試案例設計
 3. 自動化腳本
@@ -2250,11 +2307,14 @@ Activate Security Engineer mode.
 Activate Security Engineer mode.
 
 ## 合規需求
+
 我們的 CRM 系統處理客戶 PII（個人識別資訊），需符合：
+
 1. 台灣個人資料保護法
 2. GDPR（如有歐盟客戶）
 
 ## 請提供
+
 1. 資料處理合規檢查清單
 2. 資料加密策略
 3. 資料保留與刪除政策
@@ -2302,11 +2362,12 @@ jobs:
       - name: Trivy Container Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'crm-api'
-          severity: 'HIGH,CRITICAL'
+          image-ref: "crm-api"
+          severity: "HIGH,CRITICAL"
 ```
 
 > **💡 實務建議**：
+>
 > - 每次 Sprint 結束前，使用 Security Engineer Agent 執行安全審查
 > - 將安全掃描整合到 CI/CD，確保每個 PR 都通過安全檢查
 > - 定期更新 Agent 的安全規則，反映最新的威脅情報
@@ -2317,16 +2378,16 @@ jobs:
 
 不同安全場景適合使用不同的 Agent 組合：
 
-| 場景 | 主要 Agent | 輔助 Agent | 產出 |
-|------|-----------|-----------|------|
-| **威脅建模** | Security Engineer | Backend Architect | STRIDE 分析表、DFD |
-| **程式碼安全審查** | Code Reviewer | Security Engineer | 漏洞報告、修復建議 |
-| **依賴項安全** | Security Engineer | DevOps Automator | CVE 報告、升級計畫 |
-| **合規審查** | Legal Compliance Checker | Security Engineer | 合規檢查清單 |
-| **事件應變** | Incident Response Commander | SRE | 事件報告、事後分析 |
-| **威脅偵測** | Threat Detection Engineer | Security Engineer | SIEM 規則、ATT&CK 對照 |
-| **智能合約安全** | Blockchain Security Auditor | Solidity Engineer | 合約審計報告 |
-| **無障礙合規** | Accessibility Auditor | UX Researcher | WCAG 審計報告 |
+| 場景               | 主要 Agent                  | 輔助 Agent        | 產出                   |
+| ------------------ | --------------------------- | ----------------- | ---------------------- |
+| **威脅建模**       | Security Engineer           | Backend Architect | STRIDE 分析表、DFD     |
+| **程式碼安全審查** | Code Reviewer               | Security Engineer | 漏洞報告、修復建議     |
+| **依賴項安全**     | Security Engineer           | DevOps Automator  | CVE 報告、升級計畫     |
+| **合規審查**       | Legal Compliance Checker    | Security Engineer | 合規檢查清單           |
+| **事件應變**       | Incident Response Commander | SRE               | 事件報告、事後分析     |
+| **威脅偵測**       | Threat Detection Engineer   | Security Engineer | SIEM 規則、ATT&CK 對照 |
+| **智能合約安全**   | Blockchain Security Auditor | Solidity Engineer | 合約審計報告           |
+| **無障礙合規**     | Accessibility Auditor       | UX Researcher     | WCAG 審計報告          |
 
 ---
 
@@ -2407,6 +2468,7 @@ graph LR
 #### check-tools.yml（工具合約）
 
 此 CI workflow 確保：
+
 - `tools.json` 中宣告的每個工具在 `scripts/install.sh` 中都有對應處理邏輯
 - `scripts/install.sh` 中處理的每個工具在 `tools.json` 中都有宣告
 - `installKind` 欄位值合法（`copy` / `generate` / `merge`）
@@ -2415,12 +2477,12 @@ graph LR
 
 `divisions.json` 是部門定義的**單一真實來源**，CI 通過 `scripts/check-divisions.sh` 驗證以下一致性：
 
-| 驗證項目 | 說明 |
-|---------|------|
-| 目錄存在 | `divisions.json` 中每個 division 都有對應的檔案系統目錄 |
-| 至少一個 Agent | 每個 division 目錄至少包含一個 `.md` Agent 檔案 |
-| 腳本同步 | `scripts/convert.sh` 和 `scripts/lint-agents.sh` 的 `AGENT_DIRS` 陣列包含所有 division |
-| 排除非 Agent 目錄 | `strategy/`（playbooks）和 `integrations/`（生成產物）不得出現在 division 清單 |
+| 驗證項目          | 說明                                                                                   |
+| ----------------- | -------------------------------------------------------------------------------------- |
+| 目錄存在          | `divisions.json` 中每個 division 都有對應的檔案系統目錄                                |
+| 至少一個 Agent    | 每個 division 目錄至少包含一個 `.md` Agent 檔案                                        |
+| 腳本同步          | `scripts/convert.sh` 和 `scripts/lint-agents.sh` 的 `AGENT_DIRS` 陣列包含所有 division |
+| 排除非 Agent 目錄 | `strategy/`（playbooks）和 `integrations/`（生成產物）不得出現在 division 清單         |
 
 #### 企業團隊如何利用此機制
 
@@ -2439,6 +2501,7 @@ mkdir custom-division/
 ```
 
 > **💡 實務建議**：
+>
 > - 在企業 Fork 中複製此 CI 機制，確保客製化不會破壞工具整合
 > - 每次新增工具或部門後，在本地先執行驗證腳本再推送
 
@@ -2459,13 +2522,13 @@ graph LR
 
 ### 常見優化方向
 
-| 問題 | 可能原因 | 優化方式 |
-|------|---------|---------|
-| 產出太籠統 | Persona 不夠具體 | 加入更多領域知識與限制 |
-| 忽略規範 | Critical Rules 不明確 | 加入明確的 DO/DON'T 清單 |
-| 格式不一致 | 缺少輸出範例 | 在 Deliverables 中加入範例 |
-| 效能不佳的程式碼 | 缺少效能要求 | 在 Success Metrics 中加入效能指標 |
-| 安全漏洞 | 缺少安全規則 | 在 Critical Rules 中加入 OWASP 檢查 |
+| 問題             | 可能原因              | 優化方式                            |
+| ---------------- | --------------------- | ----------------------------------- |
+| 產出太籠統       | Persona 不夠具體      | 加入更多領域知識與限制              |
+| 忽略規範         | Critical Rules 不明確 | 加入明確的 DO/DON'T 清單            |
+| 格式不一致       | 缺少輸出範例          | 在 Deliverables 中加入範例          |
+| 效能不佳的程式碼 | 缺少效能要求          | 在 Success Metrics 中加入效能指標   |
+| 安全漏洞         | 缺少安全規則          | 在 Critical Rules 中加入 OWASP 檢查 |
 
 ### Prompt 版本記錄
 
@@ -2487,13 +2550,13 @@ changelog:
 
 ### Token 使用監控
 
-| 操作 | 預估 Token 數 | 成本控制建議 |
-|------|-------------|-------------|
-| 啟用 Agent（Context） | 2,000 - 5,000 | 只載入需要的 Agent |
-| 程式碼生成 | 5,000 - 20,000 | 明確指定範圍 |
-| Code Review | 3,000 - 10,000 | 提供關鍵程式碼而非全量 |
-| 架構設計 | 5,000 - 15,000 | 分階段進行 |
-| 安全審查 | 5,000 - 15,000 | 聚焦高風險區域 |
+| 操作                  | 預估 Token 數  | 成本控制建議           |
+| --------------------- | -------------- | ---------------------- |
+| 啟用 Agent（Context） | 2,000 - 5,000  | 只載入需要的 Agent     |
+| 程式碼生成            | 5,000 - 20,000 | 明確指定範圍           |
+| Code Review           | 3,000 - 10,000 | 提供關鍵程式碼而非全量 |
+| 架構設計              | 5,000 - 15,000 | 分階段進行             |
+| 安全審查              | 5,000 - 15,000 | 聚焦高風險區域         |
 
 ### 成本優化策略
 
@@ -2507,13 +2570,13 @@ changelog:
 
 ### 常見問題與解法
 
-| 問題 | 原因 | 解決方式 |
-|------|------|---------|
-| Agent 未被識別 | 檔案路徑錯誤 | 確認安裝路徑正確 |
-| 產出與預期不符 | Prompt 不夠明確 | 加入更多 Context 和範例 |
-| 格式轉換失敗 | 腳本版本不相容 | 更新 `scripts/` 目錄 |
-| 多 Agent 衝突 | 同時啟用衝突角色 | 使用 Orchestrator 管理 |
-| Token 超出限制 | 輸入太大 | 精簡 Context，分批處理 |
+| 問題           | 原因             | 解決方式                |
+| -------------- | ---------------- | ----------------------- |
+| Agent 未被識別 | 檔案路徑錯誤     | 確認安裝路徑正確        |
+| 產出與預期不符 | Prompt 不夠明確  | 加入更多 Context 和範例 |
+| 格式轉換失敗   | 腳本版本不相容   | 更新 `scripts/` 目錄    |
+| 多 Agent 衝突  | 同時啟用衝突角色 | 使用 Orchestrator 管理  |
+| Token 超出限制 | 輸入太大         | 精簡 Context，分批處理  |
 
 ### 錯誤排除流程
 
@@ -2532,6 +2595,7 @@ graph TD
 ```
 
 > **💡 實務建議**：
+>
 > - 建立團隊共用的「Agent 使用日誌」，記錄問題與解法
 > - 每月檢視 Token 使用量，調整使用策略
 > - 指派一位「Agent 維護者」負責更新與優化
@@ -2628,6 +2692,7 @@ agency-agents/
 # overrides/engineering/backend-architect.md
 
 ---
+
 name: "Backend Architect (Enterprise Override)"
 extends: "engineering/backend-architect"
 version: "1.0.0"
@@ -2645,13 +2710,13 @@ version: "1.0.0"
 
 ## 企業技術棧限制
 
-| 類別 | 允許 | 禁止 |
-|------|------|------|
-| DB | Oracle 19c / PostgreSQL 16 | MySQL / MongoDB |
-| Cache | Redis 7 | Memcached |
-| MQ | Kafka 3.x | RocketMQ |
-| HTTP Client | WebClient / RestClient | RestTemplate |
-| JSON | Jackson | Gson |
+| 類別        | 允許                       | 禁止            |
+| ----------- | -------------------------- | --------------- |
+| DB          | Oracle 19c / PostgreSQL 16 | MySQL / MongoDB |
+| Cache       | Redis 7                    | Memcached       |
+| MQ          | Kafka 3.x                  | RocketMQ        |
+| HTTP Client | WebClient / RestClient     | RestTemplate    |
+| JSON        | Jackson                    | Gson            |
 ```
 
 ## 9.3 版本控管策略
@@ -2678,12 +2743,12 @@ gitGraph
 
 ### 分支策略
 
-| 分支 | 用途 | 來源 |
-|------|------|------|
-| `main` | 生產版本（已安裝到工具） | 合併自其他分支 |
-| `upstream-sync` | 同步上游更新 | `upstream/main` |
-| `custom-agents` | 開發客製 Agent | `main` |
-| `feature/*` | 特定 Agent 開發 | `custom-agents` |
+| 分支            | 用途                     | 來源            |
+| --------------- | ------------------------ | --------------- |
+| `main`          | 生產版本（已安裝到工具） | 合併自其他分支  |
+| `upstream-sync` | 同步上游更新             | `upstream/main` |
+| `custom-agents` | 開發客製 Agent           | `main`          |
+| `feature/*`     | 特定 Agent 開發          | `custom-agents` |
 
 ### 自動化同步（GitHub Actions）
 
@@ -2693,7 +2758,7 @@ name: Sync Upstream
 
 on:
   schedule:
-    - cron: '0 9 * * 1'  # 每週一早上 9 點
+    - cron: "0 9 * * 1" # 每週一早上 9 點
   workflow_dispatch:
 
 jobs:
@@ -2703,19 +2768,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Add upstream
         run: git remote add upstream https://github.com/msitarzewski/agency-agents.git
-      
+
       - name: Fetch upstream
         run: git fetch upstream
-      
+
       - name: Check for updates
         id: check
         run: |
           DIFF=$(git log --oneline main..upstream/main | wc -l)
           echo "updates=$DIFF" >> $GITHUB_OUTPUT
-      
+
       - name: Create sync PR
         if: steps.check.outputs.updates > 0
         run: |
@@ -2731,6 +2796,7 @@ jobs:
 ```
 
 > **💡 實務建議**：
+>
 > - 客製 Agent 放在 `custom/` 目錄，永遠不修改上游目錄
 > - 每月至少同步一次上游更新
 > - 升級前先在個人環境測試，確認無問題再推送給團隊
@@ -2788,6 +2854,7 @@ agency-agents 提供 `scripts/check-agent-originality.sh` 腳本，在提交前�
 ```
 
 **原創性標準**：
+
 - 新 Agent 不應是現有 Agent 的 find-replace 版本（僅替換國家/語言/平台名稱）
 - 真正的在地化 Agent 需要有**不同的平台、戰術和範例**，而非表面替換
 - CI 會自動執行此腳本，未通過的 PR 將被自動拒絕
@@ -2802,64 +2869,81 @@ agency-agents 提供 `scripts/check-agent-originality.sh` 腳本，在提交前�
 ## Prompt 結構
 
 ### 1. 角色啟用
+
 Activate [Agent Name] mode.
 
 ### 2. 背景提供
+
 ## Background
+
 [提供系統背景、技術棧、限制條件]
 
 ### 3. 任務定義
+
 ## Task
+
 [明確描述需要做什麼]
 
 ### 4. 輸入資料
+
 ## Input
+
 [提供相關資料、程式碼、文件]
 
 ### 5. 產出要求
+
 ## Expected Output
+
 [明確指定交付物格式]
 
 ### 6. 品質標準
+
 ## Quality Criteria
+
 [定義什麼算「完成」]
 ```
 
 ### Prompt 優化技巧
 
-| 技巧 | 說明 | 範例 |
-|------|------|------|
-| **具體化** | 避免模糊描述 | ❌ "設計 API" → ✅ "設計 RESTful API，含 CRUD + 分頁 + 篩選" |
-| **限制範圍** | 明確指定範圍 | ✅ "僅處理 CustomerController，不要修改 Service" |
-| **提供範例** | 給出期望格式 | ✅ "API 回應格式如下：`{code, message, data}`" |
-| **分步驟** | 複雜任務拆解 | ✅ "Step 1: 設計 Schema → Step 2: 實作 Entity" |
-| **設定約束** | 技術限制 | ✅ "使用 Java 21、不使用 Lombok、Record 作為 DTO" |
+| 技巧         | 說明         | 範例                                                         |
+| ------------ | ------------ | ------------------------------------------------------------ |
+| **具體化**   | 避免模糊描述 | ❌ "設計 API" → ✅ "設計 RESTful API，含 CRUD + 分頁 + 篩選" |
+| **限制範圍** | 明確指定範圍 | ✅ "僅處理 CustomerController，不要修改 Service"             |
+| **提供範例** | 給出期望格式 | ✅ "API 回應格式如下：`{code, message, data}`"               |
+| **分步驟**   | 複雜任務拆解 | ✅ "Step 1: 設計 Schema → Step 2: 實作 Entity"               |
+| **設定約束** | 技術限制     | ✅ "使用 Java 21、不使用 Lombok、Record 作為 DTO"            |
 
 ### 避免常見的 Prompt 錯誤
 
 ```markdown
 ## ❌ 不良 Prompt
+
 "幫我寫一個好的 API"
 
 ## ✅ 改善後的 Prompt
+
 Activate Backend Architect mode.
 
 ## Task
+
 設計客戶管理 API endpoint。
 
 ## Requirements
+
 - CRUD 操作（GET/POST/PUT/DELETE）
 - 支援分頁（page + size）
 - 支援關鍵字搜尋
 - 回應使用統一格式：{ code, message, data, timestamp }
 
 ## Constraints
+
 - Spring Boot 3.5 + Java 21
 - 使用 Record 作為 DTO
 - 遵循 RESTful 設計原則
 - URL 使用複數名詞（/api/v1/customers）
 
 ## Output
+
 1. Controller 程式碼
 2. DTO 定義（Request + Response）
 3. OpenAPI 文件片段
@@ -2910,6 +2994,7 @@ Agents Orchestrator → 自動分派任務 → 收集各 Agent 產出 → 統一
 **適用場景**：大型專案探索、跨部門產品設計、全面性技術評估
 
 使用 `specialized/agents-orchestrator.md` 定義的 Orchestrator Agent，可自動：
+
 1. 分析任務需求，決定需要哪些 Agent
 2. 排定執行順序（串行或平行）
 3. 將前一個 Agent 的產出傳遞給下一個
@@ -2926,43 +3011,45 @@ Agents Orchestrator → 自動分派任務 → 收集各 Agent 產出 → 統一
 
 以下為經實戰驗證的 Agent 組合建議，可依專案規模與需求快速組建虛擬團隊：
 
-| 場景 | 推薦 Agent 組合 | 協作模式 | 預期產出 |
-|------|----------------|---------|---------|
-| **前端功能開發** | Frontend Dev → UI Designer → Code Reviewer | 線性 | 元件程式碼 + 設計一致性 + 程式碼品質 |
-| **後端 API 開發** | Backend Architect → Code Reviewer → Security Engineer | 線性 | API 設計 + 品質審查 + 安全報告 |
-| **全端 MVP** | PM → Backend Architect + Frontend Dev → Reality Checker | 平行 | 需求 → 前後端同時開發 → 測試驗證 |
-| **安全強化** | Security Architect → AppSec Engineer → Penetration Tester | 線性 | 威脅模型 → 安全編碼 → 滲透報告 |
-| **效能優化** | Performance Benchmarker → Backend Architect → SRE | 審查迴圈 | 瓶頸分析 → 優化方案 → 可觀測性 |
-| **技術債清理** | Code Reviewer → Software Architect → Senior Developer | 專家會診 | 債務清單 → 重構策略 → 實作 |
-| **新人 Onboarding** | Codebase Onboarding Engineer → Technical Writer | 線性 | 程式碼導覽 → 文件產出 |
-| **DevOps 建置** | DevOps Automator → SRE → Security Engineer | 線性 | CI/CD Pipeline + 監控 + 安全加固 |
-| **產品探索** | Trend Researcher → PM → UX Researcher → Brand Guardian | 線性 | 市場分析 → PRD → 用戶研究 → 品牌定位 |
-| **遊戲開發** | Game Designer → Unity/Unreal Engineer → Technical Artist → Game Audio | 平行 | GDD → 系統實作 → 視覺效果 → 音效 |
-| **GIS 數位孿生** | Technical Consultant → BIM/GIS Specialist → Web GIS Developer → GIS QA | 線性 | 策略 → 模型轉換 → 可視化 → 品質驗證 |
-| **行銷活動** | Content Creator → SEO Specialist + Social Media → Analytics Reporter | 平行 | 內容 → 多通路推廣 → 成效分析 |
-| **合規審查** | Legal Compliance Checker → Security Engineer → Compliance Auditor | 專家會診 | 法規要求 → 技術落實 → 審計報告 |
+| 場景                | 推薦 Agent 組合                                                        | 協作模式 | 預期產出                             |
+| ------------------- | ---------------------------------------------------------------------- | -------- | ------------------------------------ |
+| **前端功能開發**    | Frontend Dev → UI Designer → Code Reviewer                             | 線性     | 元件程式碼 + 設計一致性 + 程式碼品質 |
+| **後端 API 開發**   | Backend Architect → Code Reviewer → Security Engineer                  | 線性     | API 設計 + 品質審查 + 安全報告       |
+| **全端 MVP**        | PM → Backend Architect + Frontend Dev → Reality Checker                | 平行     | 需求 → 前後端同時開發 → 測試驗證     |
+| **安全強化**        | Security Architect → AppSec Engineer → Penetration Tester              | 線性     | 威脅模型 → 安全編碼 → 滲透報告       |
+| **效能優化**        | Performance Benchmarker → Backend Architect → SRE                      | 審查迴圈 | 瓶頸分析 → 優化方案 → 可觀測性       |
+| **技術債清理**      | Code Reviewer → Software Architect → Senior Developer                  | 專家會診 | 債務清單 → 重構策略 → 實作           |
+| **新人 Onboarding** | Codebase Onboarding Engineer → Technical Writer                        | 線性     | 程式碼導覽 → 文件產出                |
+| **DevOps 建置**     | DevOps Automator → SRE → Security Engineer                             | 線性     | CI/CD Pipeline + 監控 + 安全加固     |
+| **產品探索**        | Trend Researcher → PM → UX Researcher → Brand Guardian                 | 線性     | 市場分析 → PRD → 用戶研究 → 品牌定位 |
+| **遊戲開發**        | Game Designer → Unity/Unreal Engineer → Technical Artist → Game Audio  | 平行     | GDD → 系統實作 → 視覺效果 → 音效     |
+| **GIS 數位孿生**    | Technical Consultant → BIM/GIS Specialist → Web GIS Developer → GIS QA | 線性     | 策略 → 模型轉換 → 可視化 → 品質驗證  |
+| **行銷活動**        | Content Creator → SEO Specialist + Social Media → Analytics Reporter   | 平行     | 內容 → 多通路推廣 → 成效分析         |
+| **合規審查**        | Legal Compliance Checker → Security Engineer → Compliance Auditor      | 專家會診 | 法規要求 → 技術落實 → 審計報告       |
 
 > **💡 使用提示**：
+>
 > - 小型任務（< 2 小時）使用 1-2 個 Agent 即可
 > - 中型任務（2-8 小時）使用 3-4 個 Agent 線性協作
 > - 大型任務（> 1 天）使用 Agents Orchestrator 統籌 5+ 個 Agent
 
 ## 10.4 避免常見錯誤
 
-| # | 錯誤 | 後果 | 正確做法 |
-|---|------|------|---------|
-| 1 | 盲目信任 Agent 產出 | 生產環境出問題 | 所有產出需人工審查 |
-| 2 | 一次載入所有 Agent | Context 過大、品質下降 | 按需載入 2-3 個 Agent |
-| 3 | 不提供技術限制 | 產出不符合專案規範 | 明確列出技術棧與限制 |
-| 4 | 跳過安全檢查 | 安全漏洞 | 每次開發都使用 Security Agent |
-| 5 | 不記錄使用經驗 | 重複踩坑 | 維護團隊 Prompt 庫 |
-| 6 | 忽略 Agent 版本 | 行為不一致 | 鎖定 Agent 版本 |
-| 7 | 缺乏 Governance | 團隊使用混亂 | 建立使用規範 |
-| 8 | 將敏感資料傳入 Agent | 資料外洩風險 | 脫敏處理後再輸入 |
-| 9 | 修改 Agent 後未重新生成 | 各工具行為不一致 | 執行 `convert.sh --parallel` |
-| 10 | 未遵循 CONTRIBUTING.md 格式 | 客製 Agent 品質參差 | 使用官方模板建立 Agent |
+| #   | 錯誤                        | 後果                   | 正確做法                      |
+| --- | --------------------------- | ---------------------- | ----------------------------- |
+| 1   | 盲目信任 Agent 產出         | 生產環境出問題         | 所有產出需人工審查            |
+| 2   | 一次載入所有 Agent          | Context 過大、品質下降 | 按需載入 2-3 個 Agent         |
+| 3   | 不提供技術限制              | 產出不符合專案規範     | 明確列出技術棧與限制          |
+| 4   | 跳過安全檢查                | 安全漏洞               | 每次開發都使用 Security Agent |
+| 5   | 不記錄使用經驗              | 重複踩坑               | 維護團隊 Prompt 庫            |
+| 6   | 忽略 Agent 版本             | 行為不一致             | 鎖定 Agent 版本               |
+| 7   | 缺乏 Governance             | 團隊使用混亂           | 建立使用規範                  |
+| 8   | 將敏感資料傳入 Agent        | 資料外洩風險           | 脫敏處理後再輸入              |
+| 9   | 修改 Agent 後未重新生成     | 各工具行為不一致       | 執行 `convert.sh --parallel`  |
+| 10  | 未遵循 CONTRIBUTING.md 格式 | 客製 Agent 品質參差    | 使用官方模板建立 Agent        |
 
 > **💡 實務建議**：
+>
 > - 建立團隊的「黃金 Prompt」庫，收集最佳實踐
 > - 每個 Sprint 回顧時，討論 Agent 使用經驗
 > - 定期更新 Agent 的 Critical Rules，反映專案演進
@@ -2999,13 +3086,13 @@ gantt
 
 ### Phase 1：試點（8-10 週）
 
-| 週次 | 活動 | 產出 |
-|------|------|------|
-| 1-2 | 評估 agency-agents 是否適合團隊 | 評估報告 |
-| 3 | 建置環境、安裝 Agent | 環境就緒 |
-| 4-5 | 核心團隊培訓（3-5 人） | 培訓紀錄 |
-| 6-9 | 選定一個小型專案試用 | 試點報告 |
-| 10 | 試點檢討、決定是否擴展 | 決策文件 |
+| 週次 | 活動                            | 產出     |
+| ---- | ------------------------------- | -------- |
+| 1-2  | 評估 agency-agents 是否適合團隊 | 評估報告 |
+| 3    | 建置環境、安裝 Agent            | 環境就緒 |
+| 4-5  | 核心團隊培訓（3-5 人）          | 培訓紀錄 |
+| 6-9  | 選定一個小型專案試用            | 試點報告 |
+| 10   | 試點檢討、決定是否擴展          | 決策文件 |
 
 ### Phase 2：擴展（8-10 週）
 
@@ -3024,12 +3111,12 @@ gantt
 
 ### 培訓課程設計
 
-| 課程 | 對象 | 時長 | 內容 |
-|------|------|------|------|
-| **入門課** | 全體開發人員 | 2 小時 | agency-agents 概念、基本使用 |
-| **實戰課** | 開發團隊 | 4 小時 | 多 Agent 協作、Prompt Engineering |
-| **進階課** | Tech Lead | 4 小時 | 客製 Agent、架構整合、SSDLC |
-| **管理課** | 主管 | 1 小時 | 效益評估、成本控制、Governance |
+| 課程       | 對象         | 時長   | 內容                              |
+| ---------- | ------------ | ------ | --------------------------------- |
+| **入門課** | 全體開發人員 | 2 小時 | agency-agents 概念、基本使用      |
+| **實戰課** | 開發團隊     | 4 小時 | 多 Agent 協作、Prompt Engineering |
+| **進階課** | Tech Lead    | 4 小時 | 客製 Agent、架構整合、SSDLC       |
+| **管理課** | 主管         | 1 小時 | 效益評估、成本控制、Governance    |
 
 ### 培訓資料準備
 
@@ -3037,21 +3124,25 @@ gantt
 ## 入門課大綱
 
 ### Module 1: What is agency-agents?（30 min）
+
 - 概念介紹
 - Demo 展示
 - 與傳統開發的差異
 
 ### Module 2: 快速上手（45 min）
+
 - 安裝環境
 - 啟用第一個 Agent
 - Hands-on Lab：使用 Backend Architect 設計 API
 
 ### Module 3: 實務技巧（30 min）
+
 - Prompt 撰寫技巧
 - 常見問題排除
 - Q&A
 
 ### Module 4: 團隊實踐（15 min）
+
 - 團隊使用規範
 - 溝通與回報管道
 ```
@@ -3064,6 +3155,7 @@ gantt
 ## agency-agents 團隊使用規範
 
 ### 允許的使用場景
+
 ✅ 程式碼生成（需人工審查後才能 commit）
 ✅ 程式碼審查輔助（最終判斷由人類負責）
 ✅ 架構設計參考（需經架構審查會議確認）
@@ -3071,17 +3163,20 @@ gantt
 ✅ 文件撰寫輔助
 
 ### 禁止的使用場景
+
 ❌ 直接使用 Agent 產出而不審查
 ❌ 將敏感資料（密碼、金鑰）傳入 Agent
 ❌ 使用 Agent 繞過程式碼審查流程
 ❌ 未經授權修改生產環境設定
 
 ### 品質保證
+
 - 所有 Agent 產出的程式碼必須通過 CI/CD
 - 安全相關程式碼必須經 Security Agent + 人工雙重審查
 - 架構決策必須經架構審查會議確認
 
 ### 成本管理
+
 - 每月 Token 預算由部門主管審批
 - 超出預算需提出說明
 - 鼓勵重用已有的 Prompt 和產出
@@ -3089,34 +3184,34 @@ gantt
 
 ### 角色與責任
 
-| 角色 | 責任 |
-|------|------|
-| **Agent 管理員** | 維護 Agent 版本、管理安裝、同步更新 |
-| **Prompt 管理員** | 維護團隊 Prompt 庫、品質審查 |
-| **安全審查員** | 確保 Agent 產出符合安全規範 |
-| **團隊導師** | 協助新人上手、解答使用問題 |
-| **效益分析師** | 追蹤與量化 Agent 使用效益 |
+| 角色              | 責任                                |
+| ----------------- | ----------------------------------- |
+| **Agent 管理員**  | 維護 Agent 版本、管理安裝、同步更新 |
+| **Prompt 管理員** | 維護團隊 Prompt 庫、品質審查        |
+| **安全審查員**    | 確保 Agent 產出符合安全規範         |
+| **團隊導師**      | 協助新人上手、解答使用問題          |
+| **效益分析師**    | 追蹤與量化 Agent 使用效益           |
 
 ## 11.4 KPI 設計
 
 ### 效率指標
 
-| KPI | 定義 | 目標值 | 計算方式 |
-|-----|------|--------|---------|
-| **開發速度提升** | 相同功能的開發時間減少比例 | > 30% | (舊耗時 - 新耗時) / 舊耗時 |
-| **程式碼品質** | SonarQube 品質分數 | A 級 | SonarQube Report |
-| **Bug 密度** | 每千行程式碼的 Bug 數 | < 2 | Bug 數 / KLOC |
-| **測試覆蓋率** | 程式碼測試覆蓋比例 | > 80% | JaCoCo Report |
-| **安全漏洞** | 上線前安全漏洞數 | 0 Critical | SAST/DAST Report |
+| KPI              | 定義                       | 目標值     | 計算方式                   |
+| ---------------- | -------------------------- | ---------- | -------------------------- |
+| **開發速度提升** | 相同功能的開發時間減少比例 | > 30%      | (舊耗時 - 新耗時) / 舊耗時 |
+| **程式碼品質**   | SonarQube 品質分數         | A 級       | SonarQube Report           |
+| **Bug 密度**     | 每千行程式碼的 Bug 數      | < 2        | Bug 數 / KLOC              |
+| **測試覆蓋率**   | 程式碼測試覆蓋比例         | > 80%      | JaCoCo Report              |
+| **安全漏洞**     | 上線前安全漏洞數           | 0 Critical | SAST/DAST Report           |
 
 ### 使用指標
 
-| KPI | 定義 | 追蹤方式 |
-|-----|------|---------|
-| **Agent 使用率** | 團隊成員使用 Agent 的比例 | 問卷調查 |
-| **Prompt 成功率** | Prompt 一次產出合格結果的比例 | 使用日誌 |
-| **Token 效率** | 每 Token 產出的有效程式碼行數 | Token Log / LOC |
-| **滿意度** | 團隊對 Agent 的滿意度 | 季度問卷 |
+| KPI               | 定義                          | 追蹤方式        |
+| ----------------- | ----------------------------- | --------------- |
+| **Agent 使用率**  | 團隊成員使用 Agent 的比例     | 問卷調查        |
+| **Prompt 成功率** | Prompt 一次產出合格結果的比例 | 使用日誌        |
+| **Token 效率**    | 每 Token 產出的有效程式碼行數 | Token Log / LOC |
+| **滿意度**        | 團隊對 Agent 的滿意度         | 季度問卷        |
 
 ### KPI 儀表板範例
 
@@ -3124,24 +3219,27 @@ gantt
 ## agency-agents 月度報告 — 2026 年 4 月
 
 ### 效率指標
-| 指標 | 本月 | 上月 | 趨勢 |
-|------|------|------|------|
-| 開發速度提升 | 35% | 28% | ⬆️ |
-| 程式碼品質 | A | A | ➡️ |
-| Bug 密度 | 1.2/KLOC | 1.8/KLOC | ⬆️ |
-| 測試覆蓋率 | 82% | 75% | ⬆️ |
-| 安全漏洞 | 0 Critical | 1 Critical | ⬆️ |
+
+| 指標         | 本月       | 上月       | 趨勢 |
+| ------------ | ---------- | ---------- | ---- |
+| 開發速度提升 | 35%        | 28%        | ⬆️   |
+| 程式碼品質   | A          | A          | ➡️   |
+| Bug 密度     | 1.2/KLOC   | 1.8/KLOC   | ⬆️   |
+| 測試覆蓋率   | 82%        | 75%        | ⬆️   |
+| 安全漏洞     | 0 Critical | 1 Critical | ⬆️   |
 
 ### 使用指標
-| 指標 | 本月 |
-|------|------|
-| 使用人數 | 15/20 (75%) |
-| 總 Token 使用 | 2.5M |
-| 最常用 Agent | Backend Architect (45%) |
-| Prompt 成功率 | 72% |
+
+| 指標          | 本月                    |
+| ------------- | ----------------------- |
+| 使用人數      | 15/20 (75%)             |
+| 總 Token 使用 | 2.5M                    |
+| 最常用 Agent  | Backend Architect (45%) |
+| Prompt 成功率 | 72%                     |
 ```
 
 > **💡 實務建議**：
+>
 > - 導入初期不要強制使用，以自願參與為原則
 > - 先從「痛點」切入（如 Code Review 人力不足）
 > - 定期分享成功案例，激勵團隊採用
@@ -3159,16 +3257,21 @@ gantt
 Activate Product Manager mode.
 
 ## Context
+
 [專案背景與目標]
 
 ## Stakeholders
+
 [利害關係人列表]
 
 ## Requirements
+
 [高層級需求描述]
 
 ## Deliverables
+
 Please produce:
+
 1. User Stories with Acceptance Criteria
 2. MoSCoW priority matrix
 3. MVP scope definition
@@ -3181,18 +3284,22 @@ Please produce:
 Activate Backend Architect mode.
 
 ## Context
+
 [系統背景、技術棧]
 
 ## Functional Requirements
+
 [功能需求列表]
 
 ## Constraints
+
 - Language: Java 21
 - Framework: Spring Boot 3.5
 - Architecture: Clean Architecture
 - Database: [指定 DB]
 
 ## Deliverables
+
 1. API endpoint list (RESTful)
 2. Request/Response DTOs (Java Record)
 3. Database Schema (DDL)
@@ -3206,14 +3313,17 @@ Activate Backend Architect mode.
 Activate Code Reviewer mode.
 
 ## Context
+
 This PR implements [功能描述].
 
 ## Code to Review
-​```java
+
+​`java
 [貼上程式碼]
-​```
+​`
 
 ## Review Focus
+
 1. Security (OWASP Top 10)
 2. Performance
 3. Maintainability
@@ -3221,7 +3331,9 @@ This PR implements [功能描述].
 5. Naming conventions
 
 ## Output Format
+
 Please categorize findings as:
+
 - 🔴 Critical (must fix before merge)
 - 🟡 Warning (should fix)
 - 🟢 Suggestion (nice to have)
@@ -3234,12 +3346,15 @@ Please categorize findings as:
 Activate Security Engineer mode.
 
 ## System Description
+
 [系統描述、架構、資料流]
 
 ## Code/Config to Review
+
 [貼上程式碼或設定]
 
 ## Review Scope
+
 1. OWASP Top 10 compliance
 2. Authentication & Authorization
 3. Data protection (PII handling)
@@ -3247,6 +3362,7 @@ Activate Security Engineer mode.
 5. Dependency vulnerabilities
 
 ## Output
+
 - Security findings table (severity + description + remediation)
 - Risk rating (Critical / High / Medium / Low)
 - Compliance checklist
@@ -3258,12 +3374,15 @@ Activate Security Engineer mode.
 Activate Reality Checker mode.
 
 ## System Under Test
+
 [系統描述、功能、API]
 
 ## Requirements
+
 [需求/User Story]
 
 ## Test Scope
+
 1. Unit tests (JUnit 5)
 2. Integration tests
 3. API tests
@@ -3271,12 +3390,14 @@ Activate Reality Checker mode.
 5. Error scenarios
 
 ## Tech Stack
+
 - Java 21 + Spring Boot 3.5
 - JUnit 5 + Mockito
 - AssertJ
 - Testcontainers (if needed)
 
 ## Deliverables
+
 1. Test plan
 2. Test cases (positive + negative + boundary)
 3. Test code
@@ -3324,9 +3445,9 @@ Your communication style is [style description].
 
 ### [Deliverable Category 1]
 
-​```[language]
+​`[language]
 [Code example]
-​```
+​`
 
 ### [Deliverable Category 2]
 
@@ -3356,24 +3477,24 @@ Your communication style is [style description].
 
 ## 12.3 Agent 部門速查表
 
-| 部門 | 核心 Agent | 適用場景 |
-|------|-----------|---------|
-| 💻 Engineering | Frontend Dev, Backend Architect, DevOps, SRE, Network Engineer | 程式開發、架構設計、維運 |
-| 🎨 Design | UI Designer, UX Researcher, Brand Guardian, Persona Walkthrough | 介面設計、用戶研究 |
-| 📢 Marketing | Growth Hacker, Content Creator, SEO Specialist, AEO Architect | 行銷策略、內容產出、AI 可見度 |
-| 📊 Product | Product Manager, Sprint Prioritizer, Trend Researcher | 需求管理、產品規劃 |
-| 🎬 Project Mgmt | Senior PM, Project Shepherd, Meeting Notes Specialist | 專案管理、任務追蹤 |
-| 🧪 Testing | Reality Checker, Performance Benchmarker, API Tester, Accessibility Auditor | 測試、品質保證、無障礙 |
-| 🔒 Security | Security Architect, AppSec Engineer, Penetration Tester, Incident Responder | 安全架構、滲透測試、事件應變 |
-| 🛟 Support | Analytics Reporter, Legal Compliance Checker, Support Responder | 營運支援、合規 |
-| 💼 Sales | Outbound Strategist, Deal Strategist, Offer & Lead Gen | 銷售策略 |
-| 💵 Finance | Financial Analyst, Tax Strategist, FP&A Analyst | 財務分析、稅務 |
-| 💰 Paid Media | PPC Campaign Strategist, Search Query Analyst, Tracking Specialist | 付費廣告投放 |
-| 🎮 Game Dev | Unity/Unreal/Godot/Blender/Roblox 系列 | 遊戲開發 |
-| 🥽 Spatial | XR Interface Architect, visionOS Engineer | AR/VR/XR 開發 |
-| 🎯 Specialized | Agents Orchestrator, MCP Builder, Blockchain Security Auditor | 特殊任務 |
-| 📚 Academic | Anthropologist, Historian, Narratologist, Psychologist | 學術研究、世界觀建構 |
-| 🌍 GIS | Technical Consultant, GeoAI/ML Engineer, Web GIS Developer, BIM/GIS Specialist | 地理資訊、空間分析、數位孿生 |
+| 部門            | 核心 Agent                                                                     | 適用場景                      |
+| --------------- | ------------------------------------------------------------------------------ | ----------------------------- |
+| 💻 Engineering  | Frontend Dev, Backend Architect, DevOps, SRE, Network Engineer                 | 程式開發、架構設計、維運      |
+| 🎨 Design       | UI Designer, UX Researcher, Brand Guardian, Persona Walkthrough                | 介面設計、用戶研究            |
+| 📢 Marketing    | Growth Hacker, Content Creator, SEO Specialist, AEO Architect                  | 行銷策略、內容產出、AI 可見度 |
+| 📊 Product      | Product Manager, Sprint Prioritizer, Trend Researcher                          | 需求管理、產品規劃            |
+| 🎬 Project Mgmt | Senior PM, Project Shepherd, Meeting Notes Specialist                          | 專案管理、任務追蹤            |
+| 🧪 Testing      | Reality Checker, Performance Benchmarker, API Tester, Accessibility Auditor    | 測試、品質保證、無障礙        |
+| 🔒 Security     | Security Architect, AppSec Engineer, Penetration Tester, Incident Responder    | 安全架構、滲透測試、事件應變  |
+| 🛟 Support      | Analytics Reporter, Legal Compliance Checker, Support Responder                | 營運支援、合規                |
+| 💼 Sales        | Outbound Strategist, Deal Strategist, Offer & Lead Gen                         | 銷售策略                      |
+| 💵 Finance      | Financial Analyst, Tax Strategist, FP&A Analyst                                | 財務分析、稅務                |
+| 💰 Paid Media   | PPC Campaign Strategist, Search Query Analyst, Tracking Specialist             | 付費廣告投放                  |
+| 🎮 Game Dev     | Unity/Unreal/Godot/Blender/Roblox 系列                                         | 遊戲開發                      |
+| 🥽 Spatial      | XR Interface Architect, visionOS Engineer                                      | AR/VR/XR 開發                 |
+| 🎯 Specialized  | Agents Orchestrator, MCP Builder, Blockchain Security Auditor                  | 特殊任務                      |
+| 📚 Academic     | Anthropologist, Historian, Narratologist, Psychologist                         | 學術研究、世界觀建構          |
+| 🌍 GIS          | Technical Consultant, GeoAI/ML Engineer, Web GIS Developer, BIM/GIS Specialist | 地理資訊、空間分析、數位孿生  |
 
 ## 12.4 FAQ
 
@@ -3396,6 +3517,7 @@ Your communication style is [style description].
 ### Q5: Agent 的品質如何保證？
 
 **A**：
+
 1. 社群維護（90+ 貢獻者、持續 PR 審查）
 2. 遵循統一的 `CONTRIBUTING.md` 模板
 3. 使用前建議小範圍測試
@@ -3412,6 +3534,7 @@ Your communication style is [style description].
 ### Q8: 如何處理 Agent 產出的衝突？
 
 **A**：當不同 Agent 給出矛盾建議時：
+
 1. 以安全性為最高優先
 2. 參考團隊技術規範
 3. 由 Tech Lead 做最終決策
@@ -3424,6 +3547,7 @@ Your communication style is [style description].
 ### Q10: 如何為專案貢獻新 Agent？
 
 **A**：
+
 1. Fork 專案並建立新分支
 2. 參考 `CONTRIBUTING.md` 的 Agent 模板格式
 3. 在對應部門目錄建立 Markdown 檔案
@@ -3433,6 +3557,7 @@ Your communication style is [style description].
 ### Q11: Finance 和 Academic 部門有哪些 Agent？
 
 **A**：
+
 - **Finance**（💵）：Bookkeeper & Controller、Financial Analyst、FP&A Analyst、Investment Researcher、Tax Strategist，適用財務建模、稅務規劃、投資研究
 - **Academic**（📚）：Anthropologist、Geographer、Historian、Narratologist、Psychologist，適用世界觀建構、敘事設計、角色心理學
 
@@ -3451,6 +3576,7 @@ Your communication style is [style description].
 ### Q15: Security Division 和 GIS Division 是新增的嗎？
 
 **A**：
+
 - **Security Division**（🔒）：於 2026 年 6 月從 Engineering 獨立為正式部門（[RFC #438](https://github.com/msitarzewski/agency-agents/discussions/438)），包含 10 個 Agent：Security Architect、AppSec Engineer、Penetration Tester、Cloud Security Architect、Incident Responder、Threat Intelligence Analyst、Threat Detection Engineer、Senior SecOps Engineer、Compliance Auditor、Blockchain Security Auditor
 - **GIS Division**（🌍）：於 2026 年 6 月新增，包含 13 個 Agent 橫跨 4 層級（Strategy / Delivery / Specialist / Quality），涵蓋地理資訊系統完整工作流
 
@@ -3505,48 +3631,48 @@ Your communication style is [style description].
 
 ## 14.1 官方資源
 
-| 資源 | 連結 | 說明 |
-|------|------|------|
-| **GitHub 專案** | [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) | 原始碼、Agent 定義、安裝腳本 |
-| **桌面 App** | [agencyagents.app](https://agencyagents.app/) | 原生桌面應用程式（macOS / Linux / Windows） |
-| **App 下載** | [GitHub Releases](https://github.com/msitarzewski/agency-agents-app/releases/latest) | 最新版本下載 |
-| **README** | [README.md](https://github.com/msitarzewski/agency-agents/blob/main/README.md) | 專案總覽與快速開始 |
-| **CONTRIBUTING** | [CONTRIBUTING.md](https://github.com/msitarzewski/agency-agents/blob/main/CONTRIBUTING.md) | 貢獻指南與 Agent 模板 |
-| **SECURITY** | [SECURITY.md](https://github.com/msitarzewski/agency-agents/blob/main/SECURITY.md) | 安全漏洞回報政策 |
-| **中文貢獻指南** | [CONTRIBUTING_zh-CN.md](https://github.com/msitarzewski/agency-agents/blob/main/CONTRIBUTING_zh-CN.md) | 簡體中文貢獻指南 |
-| **部門定義** | [divisions.json](https://github.com/msitarzewski/agency-agents/blob/main/divisions.json) | 16 部門的結構化定義 |
-| **工具定義** | [tools.json](https://github.com/msitarzewski/agency-agents/blob/main/tools.json) | 14 工具的安裝機制定義（含 `installKind`） |
-| **授權** | MIT License | 自由使用、修改、分發 |
+| 資源             | 連結                                                                                                   | 說明                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
+| **GitHub 專案**  | [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents)                            | 原始碼、Agent 定義、安裝腳本                |
+| **桌面 App**     | [agencyagents.app](https://agencyagents.app/)                                                          | 原生桌面應用程式（macOS / Linux / Windows） |
+| **App 下載**     | [GitHub Releases](https://github.com/msitarzewski/agency-agents-app/releases/latest)                   | 最新版本下載                                |
+| **README**       | [README.md](https://github.com/msitarzewski/agency-agents/blob/main/README.md)                         | 專案總覽與快速開始                          |
+| **CONTRIBUTING** | [CONTRIBUTING.md](https://github.com/msitarzewski/agency-agents/blob/main/CONTRIBUTING.md)             | 貢獻指南與 Agent 模板                       |
+| **SECURITY**     | [SECURITY.md](https://github.com/msitarzewski/agency-agents/blob/main/SECURITY.md)                     | 安全漏洞回報政策                            |
+| **中文貢獻指南** | [CONTRIBUTING_zh-CN.md](https://github.com/msitarzewski/agency-agents/blob/main/CONTRIBUTING_zh-CN.md) | 簡體中文貢獻指南                            |
+| **部門定義**     | [divisions.json](https://github.com/msitarzewski/agency-agents/blob/main/divisions.json)               | 16 部門的結構化定義                         |
+| **工具定義**     | [tools.json](https://github.com/msitarzewski/agency-agents/blob/main/tools.json)                       | 14 工具的安裝機制定義（含 `installKind`）   |
+| **授權**         | MIT License                                                                                            | 自由使用、修改、分發                        |
 
 ## 14.2 社群管道
 
-| 管道 | 用途 | 加入方式 |
-|------|------|---------|
+| 管道                   | 用途               | 加入方式              |
+| ---------------------- | ------------------ | --------------------- |
 | **GitHub Discussions** | 技術討論、使用問題 | 專案 Discussions 頁面 |
-| **GitHub Issues** | Bug 回報、功能建議 | 開 Issue |
-| **Pull Requests** | 貢獻新 Agent、修復 | Fork → PR |
-| **X（Twitter）** | 專案動態與社群互動 | 搜尋 `#agencyagents` |
+| **GitHub Issues**      | Bug 回報、功能建議 | 開 Issue              |
+| **Pull Requests**      | 貢獻新 Agent、修復 | Fork → PR             |
+| **X（Twitter）**       | 專案動態與社群互動 | 搜尋 `#agencyagents`  |
 
 ## 14.3 延伸閱讀
 
 ### AI Agent 設計原則
 
-| 主題 | 推薦資源 |
-|------|---------|
+| 主題               | 推薦資源                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- |
 | Prompt Engineering | [Anthropic Prompt Engineering Guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering) |
-| AI Agent 設計模式 | [LangChain Agent Documentation](https://python.langchain.com/docs/modules/agents/) |
-| LLM 安全 | [OWASP Top 10 for LLM](https://owasp.org/www-project-top-10-for-large-language-model-applications/) |
-| 程式碼助理比較 | [AI Code Assistants Benchmark](https://github.com/features/copilot) |
+| AI Agent 設計模式  | [LangChain Agent Documentation](https://python.langchain.com/docs/modules/agents/)                            |
+| LLM 安全           | [OWASP Top 10 for LLM](https://owasp.org/www-project-top-10-for-large-language-model-applications/)           |
+| 程式碼助理比較     | [AI Code Assistants Benchmark](https://github.com/features/copilot)                                           |
 
 ### 相關專案
 
-| 專案 | 說明 | 連結 |
-|------|------|------|
-| Claude Code | Anthropic 官方 CLI 工具 | [claude.ai](https://claude.ai/) |
+| 專案           | 說明                    | 連結                                              |
+| -------------- | ----------------------- | ------------------------------------------------- |
+| Claude Code    | Anthropic 官方 CLI 工具 | [claude.ai](https://claude.ai/)                   |
 | GitHub Copilot | Microsoft AI 程式碼助理 | [copilot.github.com](https://copilot.github.com/) |
-| Cursor | AI 優先程式碼編輯器 | [cursor.sh](https://cursor.sh/) |
-| Aider | 開源 AI 配對程式設計 | [aider.chat](https://aider.chat/) |
-| Windsurf | Codeium AI 程式碼助理 | [windsurf.com](https://windsurf.com/) |
+| Cursor         | AI 優先程式碼編輯器     | [cursor.sh](https://cursor.sh/)                   |
+| Aider          | 開源 AI 配對程式設計    | [aider.chat](https://aider.chat/)                 |
+| Windsurf       | Codeium AI 程式碼助理   | [windsurf.com](https://windsurf.com/)             |
 
 ## 14.4 企業內部資源
 
@@ -3623,9 +3749,10 @@ Your communication style is [style description].
 > **最後更新**：2026-07-01 ｜ **版本**：v3.1
 >
 > **變更紀錄**：
-> | 版本 | 日期 | 變更內容 |
-> |------|------|---------|
-> | v1.0 | 2026-04-22 | 初版發佈 |
-> | v1.1 | 2026-04-22 | 更新至 147+ Agents、14 部門、11 工具；新增第 14 章 |
-> | v3.0 | 2026-07-01 | 全面更新至 232 Agents、16 部門、14 工具；新增 Security / GIS 獨立部門；新增桌面 App；新增 Codex / Osaurus / Hermes 整合；新增 `divisions.json` / `tools.json` 說明；更新社群翻譯（9 語系）；更新 Frontmatter 規範（`vibe` / `services` 欄位） |
+>
+> | 版本 | 日期       | 變更內容                                                                                                                                                                                                                                                        |
+> | ---- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+> | v1.0 | 2026-04-22 | 初版發佈                                                                                                                                                                                                                                                        |
+> | v1.1 | 2026-04-22 | 更新至 147+ Agents、14 部門、11 工具；新增第 14 章                                                                                                                                                                                                              |
+> | v3.0 | 2026-07-01 | 全面更新至 232 Agents、16 部門、14 工具；新增 Security / GIS 獨立部門；新增桌面 App；新增 Codex / Osaurus / Hermes 整合；新增 `divisions.json` / `tools.json` 說明；更新社群翻譯（9 語系）；更新 Frontmatter 規範（`vibe` / `services` 欄位）                   |
 > | v3.1 | 2026-07-01 | 新增 §5.14 MCP Memory Integration；新增 §5.5.1 Gemini CLI 原生 Subagents；新增 CI 工具合約驗證（§8.1）；新增 Agent 原創性檢查說明（§10.1）；新增常見工作流組合速查表（§10.3）；補充 `tools.json` installKind 說明（§2.2）；數據更新（121k Stars / 19.8k Forks） |

@@ -43,7 +43,10 @@
       "auth": "bearer",
       "input_schema": {
         "component": { "type": "string", "description": "SonarQube 專案 Key" },
-        "metricKeys": { "type": "string", "description": "指標名稱，逗號分隔（如 bugs,vulnerabilities,coverage）" }
+        "metricKeys": {
+          "type": "string",
+          "description": "指標名稱，逗號分隔（如 bugs,vulnerabilities,coverage）"
+        }
       }
     },
     {

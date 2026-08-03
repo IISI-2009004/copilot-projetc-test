@@ -1,6 +1,6 @@
 ---
-applyTo: '**'
-description: '基於 OWASP Top 10 2025 的全面安全編碼標準，包含 55 多個反模式、檢測正規表示式、針對現代 Web 和後端框架的框架特定修復以及 AI/LLM 安全指南。'
+applyTo: "**"
+description: "基於 OWASP Top 10 2025 的全面安全編碼標準，包含 55 多個反模式、檢測正規表示式、針對現代 Web 和後端框架的框架特定修復以及 AI/LLM 安全指南。"
 ---
 
 # Security Standards 安全標準
@@ -17,24 +17,24 @@ description: '基於 OWASP Top 10 2025 的全面安全編碼標準，包含 55 �
 
 ## OWASP Top 10 — 2025 Quick Reference ,OWASP 前 10 名 — 2025 快速參考
 
-| # | Category | Key Mitigation |
-|---|----------|----------------|
-| A01 | Broken Access Control | 每個端點都啟用身份驗證中間件、基於角色的存取控制 (RBAC) 和所有權檢查 |
-| A02 | Security Misconfiguration | 安全標頭、在生產環境中禁用調試、無預設憑證 |
-| A03 | Software Supply Chain Failures *(NEW)* | `npm audit`、鎖定檔完整性、SBOM、SLSA 來源 |
-| A04 | Cryptographic Failures | 密碼使用 Argon2id/bcrypt、全程 TLS、代碼中不存放秘密 |
-| A05 | Injection | 參數化查詢、輸入驗證、禁止使用用戶輸入的原始 HTML |
-| A06 | Insecure Design | 威脅建模、安全設計模式、濫用案例測試 |
-| A07 | Authentication Failures | 登入速率限制、安全的會話管理、多因素認證 (MFA) |
-| A08 | Software or Data Integrity Failures | CDN 腳本使用 SRI、簽名工件、禁止不安全的反序列化 |
-| A09 | Security Logging and Alerting Failures | 記錄安全事件、日誌中不包含 PII、關聯 ID、主動警報 |
-| A10 | Mishandling of Exceptional Conditions *(NEW)* | 處理所有錯誤、在生產環境中不顯示堆疊追蹤、失敗安全 |
+| #   | Category                                      | Key Mitigation                                                       |
+| --- | --------------------------------------------- | -------------------------------------------------------------------- |
+| A01 | Broken Access Control                         | 每個端點都啟用身份驗證中間件、基於角色的存取控制 (RBAC) 和所有權檢查 |
+| A02 | Security Misconfiguration                     | 安全標頭、在生產環境中禁用調試、無預設憑證                           |
+| A03 | Software Supply Chain Failures _(NEW)_        | `npm audit`、鎖定檔完整性、SBOM、SLSA 來源                           |
+| A04 | Cryptographic Failures                        | 密碼使用 Argon2id/bcrypt、全程 TLS、代碼中不存放秘密                 |
+| A05 | Injection                                     | 參數化查詢、輸入驗證、禁止使用用戶輸入的原始 HTML                    |
+| A06 | Insecure Design                               | 威脅建模、安全設計模式、濫用案例測試                                 |
+| A07 | Authentication Failures                       | 登入速率限制、安全的會話管理、多因素認證 (MFA)                       |
+| A08 | Software or Data Integrity Failures           | CDN 腳本使用 SRI、簽名工件、禁止不安全的反序列化                     |
+| A09 | Security Logging and Alerting Failures        | 記錄安全事件、日誌中不包含 PII、關聯 ID、主動警報                    |
+| A10 | Mishandling of Exceptional Conditions _(NEW)_ | 處理所有錯誤、在生產環境中不顯示堆疊追蹤、失敗安全                   |
 
 ---
 
-## Injection Anti-Patterns (I1-I8)  注入反模式 (I1-I8)
+## Injection Anti-Patterns (I1-I8) 注入反模式 (I1-I8)
 
-### I1: SQL Injection via String Concatenation  SQL 注入通過字符串連接
+### I1: SQL Injection via String Concatenation SQL 注入通過字符串連接
 
 - **Severity**: CRITICAL
 - **Detection**: `\$\{.*\}.*(?:SELECT|INSERT|UPDATE|DELETE|FROM|WHERE)`
@@ -45,10 +45,12 @@ description: '基於 OWASP Top 10 2025 的全面安全編碼標準，包含 55 �
 const unsafeResult = await db.query(`SELECT * FROM users WHERE id = ${userId}`);
 
 // GOOD — parameterized query
-const safeResult = await db.query('SELECT * FROM users WHERE id = $1', [userId]);
+const safeResult = await db.query("SELECT * FROM users WHERE id = $1", [
+  userId,
+]);
 ```
 
-### I2: NoSQL Injection (MongoDB Operator Injection)  NoSQL 注入 (MongoDB 操作符注入)
+### I2: NoSQL Injection (MongoDB Operator Injection) NoSQL 注入 (MongoDB 操作符注入)
 
 - **Severity**: CRITICAL
 - **Detection**: `\{\s*\$(?:gt|gte|lt|lte|ne|in|nin|regex|where|exists)`
@@ -56,13 +58,16 @@ const safeResult = await db.query('SELECT * FROM users WHERE id = $1', [userId])
 
 ```typescript
 // BAD — attacker sends { "password": { "$gt": "" } }
-const user = await User.findOne({ username: req.body.username, password: req.body.password });
+const user = await User.findOne({
+  username: req.body.username,
+  password: req.body.password,
+});
 
 // GOOD — validate and cast input types
 const username = String(req.body.username);
 const password = String(req.body.password);
 const user = await User.findOne({ username });
-const valid = user && await verifyPassword(user.passwordHash, password);
+const valid = user && (await verifyPassword(user.passwordHash, password));
 ```
 
 ### I3: Command Injection (exec with User Input) 命令注入（使用用户输入的 exec）
@@ -73,24 +78,24 @@ const valid = user && await verifyPassword(user.passwordHash, password);
 
 ```typescript
 // BAD — shell interpolation, sync call blocks the event loop
-import { execFileSync } from 'node:child_process';
-const unsafeOutput = execFileSync('sh', ['-c', `ls -la ${req.query.dir}`]);
+import { execFileSync } from "node:child_process";
+const unsafeOutput = execFileSync("sh", ["-c", `ls -la ${req.query.dir}`]);
 
 // GOOD — async execFile, arguments array, no shell, bounded time/output
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 const pExecFile = promisify(execFile);
 
-const dir = String(req.query.dir ?? '');
-if (!dir || dir.startsWith('-')) throw new Error('Invalid directory');
-const { stdout: safeOutput } = await pExecFile('ls', ['-la', '--', dir], {
-  timeout: 5_000,      // fail fast on hung processes
-  maxBuffer: 1 << 20,  // 1 MiB cap to prevent memory exhaustion
+const dir = String(req.query.dir ?? "");
+if (!dir || dir.startsWith("-")) throw new Error("Invalid directory");
+const { stdout: safeOutput } = await pExecFile("ls", ["-la", "--", dir], {
+  timeout: 5_000, // fail fast on hung processes
+  maxBuffer: 1 << 20, // 1 MiB cap to prevent memory exhaustion
 });
 
 // BEST — allowlist validation on top of the async, bounded call above
-const allowedDirs = ['/data', '/public'];
-if (!allowedDirs.includes(dir)) throw new Error('Invalid directory');
+const allowedDirs = ["/data", "/public"];
+if (!allowedDirs.includes(dir)) throw new Error("Invalid directory");
 ```
 
 Prefer async `execFile`/`spawn` over `execFileSync` in server handlers: the sync variant blocks Node's event loop and can amplify DoS impact. Always pass a `timeout` and `maxBuffer` to bound execution.
@@ -109,7 +114,7 @@ Prefer async `execFile`/`spawn` over `execFileSync` in server handlers: the sync
 
 ```typescript
 // GOOD — sanitize with DOMPurify before rendering any raw HTML
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 const clean = DOMPurify.sanitize(userContent);
 
 // BEST — use text interpolation when HTML is not needed
@@ -129,30 +134,39 @@ const clean = DOMPurify.sanitize(userContent);
 const data = await fetch(req.body.url);
 
 // GOOD — scheme allowlist + hostname allowlist + DNS/IP validation (see TOCTOU note)
-import { promises as dns } from 'node:dns';
+import { promises as dns } from "node:dns";
 
 function isPrivateIP(ip: string): boolean {
   // Normalize IPv4-mapped IPv6 (e.g., ::ffff:127.0.0.1 → 127.0.0.1)
-  const normalized = ip.startsWith('::ffff:') ? ip.slice(7) : ip;
+  const normalized = ip.startsWith("::ffff:") ? ip.slice(7) : ip;
   // IPv4 private/reserved/loopback ranges
-  if (/^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.|0\.|169\.254\.)/.test(normalized)) return true;
+  if (
+    /^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.|0\.|169\.254\.)/.test(
+      normalized,
+    )
+  )
+    return true;
   // IPv6 loopback, link-local (fe80::/10), and unique-local
   if (/^(::1|fe[89ab]|fc|fd)/i.test(normalized)) return true;
   return false;
 }
 
 const parsed = new URL(req.body.url);
-if (parsed.protocol !== 'https:') throw new Error('Only HTTPS allowed');
-const allowedHosts = ['api.example.com', 'cdn.example.com'];
-if (!allowedHosts.includes(parsed.hostname)) throw new Error('Host not allowed');
+if (parsed.protocol !== "https:") throw new Error("Only HTTPS allowed");
+const allowedHosts = ["api.example.com", "cdn.example.com"];
+if (!allowedHosts.includes(parsed.hostname))
+  throw new Error("Host not allowed");
 // Resolve all A/AAAA records to prevent DNS rebinding via multiple IPs
 const resolved = await dns.lookup(parsed.hostname, { all: true });
-if (resolved.length === 0 || resolved.some(({ address }) => isPrivateIP(address))) {
-  throw new Error('Private or reserved IPs not allowed');
+if (
+  resolved.length === 0 ||
+  resolved.some(({ address }) => isPrivateIP(address))
+) {
+  throw new Error("Private or reserved IPs not allowed");
 }
 // Note: for production, pin the resolved IP in the HTTP client to prevent
 // TOCTOU rebinding between this check and fetch(). See undici Agent docs.
-const data = await fetch(parsed.toString(), { redirect: 'error' });
+const data = await fetch(parsed.toString(), { redirect: "error" });
 ```
 
 ### I6: Path Traversal in File Operations ,文件操作中的路径遍歷
@@ -166,10 +180,11 @@ const data = await fetch(parsed.toString(), { redirect: 'error' });
 const file = fs.readFileSync(`/data/${req.params.filename}`);
 
 // GOOD — resolve and validate within allowed directory
-import path from 'path';
-const basePath = '/data';
+import path from "path";
+const basePath = "/data";
 const filePath = path.resolve(basePath, req.params.filename);
-if (!filePath.startsWith(basePath + path.sep)) throw new Error('Path traversal detected');
+if (!filePath.startsWith(basePath + path.sep))
+  throw new Error("Path traversal detected");
 const file = fs.readFileSync(filePath);
 ```
 
@@ -184,7 +199,9 @@ const file = fs.readFileSync(filePath);
 const html = ejs.render(req.body.template, data);
 
 // GOOD — predefined templates, user input only as data
-const html = ejs.renderFile('./templates/page.ejs', { content: req.body.content });
+const html = ejs.renderFile("./templates/page.ejs", {
+  content: req.body.content,
+});
 ```
 
 ### I8: XXE Injection (XML External Entity) ,XXE 注入（XML 外部實體）
@@ -195,7 +212,7 @@ const html = ejs.renderFile('./templates/page.ejs', { content: req.body.content 
 
 ```typescript
 // GOOD — disable external entities in XML parser
-import { XMLParser } from 'fast-xml-parser';
+import { XMLParser } from "fast-xml-parser";
 const parser = new XMLParser({
   allowBooleanAttributes: true,
   processEntities: false,
@@ -219,7 +236,7 @@ const result = parser.parse(req.body.xml);
 const decoded = jwt.verify(token, secret);
 
 // GOOD — enforce specific algorithm
-const decoded = jwt.verify(token, publicKey, { algorithms: ['RS256'] });
+const decoded = jwt.verify(token, publicKey, { algorithms: ["RS256"] });
 ```
 
 ### AU2: JWT Without Expiration Check JWT 缺少過期檢查
@@ -233,7 +250,7 @@ const decoded = jwt.verify(token, publicKey, { algorithms: ['RS256'] });
 const token = jwt.sign({ userId: user.id }, secret);
 
 // GOOD — short-lived token
-const token = jwt.sign({ userId: user.id }, secret, { expiresIn: '15m' });
+const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "15m" });
 ```
 
 ### AU3: JWT Stored in localStorage JWT 存儲在 localStorage 中
@@ -244,10 +261,14 @@ const token = jwt.sign({ userId: user.id }, secret, { expiresIn: '15m' });
 
 ```typescript
 // BAD — accessible via XSS
-localStorage.setItem('accessToken', token);
+localStorage.setItem("accessToken", token);
 
 // GOOD — httpOnly cookie set by server
-res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "strict",
+});
 ```
 
 ### AU4: Plaintext / Fast Hash for Passwords (MD5/SHA-1/SHA-256) 明文 / 快速哈希密碼 (MD5/SHA-1/SHA-256)
@@ -258,11 +279,15 @@ res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' })
 
 ```typescript
 // BAD — fast hash, no salt
-const sha256Hash = crypto.createHash('sha256').update(password).digest('hex');
+const sha256Hash = crypto.createHash("sha256").update(password).digest("hex");
 
 // GOOD — Argon2id (OWASP recommended)
-import { hash as argon2Hash, argon2id } from 'argon2';
-const hashed = await argon2Hash(password, { type: argon2id, memoryCost: 65536, timeCost: 3 });
+import { hash as argon2Hash, argon2id } from "argon2";
+const hashed = await argon2Hash(password, {
+  type: argon2id,
+  memoryCost: 65536,
+  timeCost: 3,
+});
 ```
 
 ### AU5: Missing Brute-Force Protection on Login 登錄缺少暴力破解保護
@@ -273,12 +298,12 @@ const hashed = await argon2Hash(password, { type: argon2id, memoryCost: 65536, t
 
 ```typescript
 // BAD — no rate limiting
-app.post('/api/auth/login', loginHandler);
+app.post("/api/auth/login", loginHandler);
 
 // GOOD
-import rateLimit from 'express-rate-limit';
+import rateLimit from "express-rate-limit";
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5 });
-app.post('/api/auth/login', authLimiter, loginHandler);
+app.post("/api/auth/login", authLimiter, loginHandler);
 ```
 
 ### AU6: Missing Session Regeneration on Login (Session Fixation) 登錄缺少會話再生 (會話固定)
@@ -306,7 +331,7 @@ req.session.regenerate((err) => {
 
 ```typescript
 // GOOD — include state parameter for CSRF protection
-const state = crypto.randomBytes(32).toString('hex');
+const state = crypto.randomBytes(32).toString("hex");
 session.oauthState = state;
 const authUrl = `https://provider.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
 ```
@@ -331,10 +356,10 @@ const authUrl = `https://provider.com/authorize?client_id=${clientId}&redirect_u
 
 ```typescript
 // BAD
-router.delete('/api/users/:id', deleteUser);
+router.delete("/api/users/:id", deleteUser);
 
 // GOOD
-router.delete('/api/users/:id', authenticate, authorize('admin'), deleteUser);
+router.delete("/api/users/:id", authenticate, authorize("admin"), deleteUser);
 ```
 
 ### AZ2: Client-Side Only Authorization 客戶端僅授權
@@ -353,16 +378,16 @@ Frontend guards are UX only. ALWAYS verify on server.
 
 ```typescript
 // GOOD — verify ownership
-router.get('/api/orders/:orderId', authenticate, async (req, res) => {
+router.get("/api/orders/:orderId", authenticate, async (req, res) => {
   const order = await Order.findById(req.params.orderId);
   if (!order || order.userId !== req.user.id) {
-    return res.status(404).json({ error: 'Not found' });
+    return res.status(404).json({ error: "Not found" });
   }
   res.json(order);
 });
 ```
 
-### AZ4: Mass Assignment  大量賦值
+### AZ4: Mass Assignment 大量賦值
 
 - **Severity**: CRITICAL
 - **Detection**: `(?:create|update|findOneAndUpdate)\s*\(\s*req\.body\s*\)`
@@ -386,7 +411,7 @@ await User.findByIdAndUpdate(id, { name, email, avatar });
 ```typescript
 // GOOD — ignore role from input
 const { name, email, password } = req.body;
-const user = await User.create({ name, email, password, role: 'user' });
+const user = await User.create({ name, email, password, role: "user" });
 ```
 
 ### AZ6: Missing Re-Authentication for Sensitive Operations 敏感操作缺少重新身份驗證
@@ -399,7 +424,7 @@ const user = await User.create({ name, email, password, role: 'user' });
 
 ---
 
-## Secrets Anti-Patterns (S1-S6)  秘密反模式 (S1-S6)
+## Secrets Anti-Patterns (S1-S6) 秘密反模式 (S1-S6)
 
 ### S1: Hardcoded API Keys / Tokens 硬編碼的 API 金鑰/令牌
 
@@ -409,7 +434,7 @@ const user = await User.create({ name, email, password, role: 'user' });
 
 ```typescript
 // BAD
-const API_KEY = 'sk_live_abc123def456';
+const API_KEY = "sk_live_abc123def456";
 
 // GOOD
 const API_KEY = process.env.API_KEY;
@@ -473,9 +498,9 @@ Angular：不要將金鑰放在打包到客戶端的 `environment.ts` 檔案中�
 // GOOD — generic error to client, details only in logs
 app.use((err, req, res, _next) => {
   logger.error({ err, path: req.path, method: req.method });
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = process.env.NODE_ENV === "development";
   res.status(500).json({
-    error: 'Internal Server Error',
+    error: "Internal Server Error",
     ...(isDev && { message: err.message }),
   });
 });
@@ -545,10 +570,12 @@ Value: `max-age=31536000; includeSubDomains; preload`
 
 ```typescript
 // GOOD
-app.use(cors({
-  origin: ['https://app.example.com', 'https://staging.example.com'],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: ["https://app.example.com", "https://staging.example.com"],
+    credentials: true,
+  }),
+);
 ```
 
 ---
@@ -578,8 +605,8 @@ app.use(cors({
 - **OWASP**: A01
 
 ```typescript
-window.addEventListener('message', (event) => {
-  if (event.origin !== 'https://trusted.example.com') return;
+window.addEventListener("message", (event) => {
+  if (event.origin !== "https://trusted.example.com") return;
   processData(event.data);
 });
 ```
@@ -600,8 +627,8 @@ window.addEventListener('message', (event) => {
 
 ```typescript
 // GOOD — relative paths only
-const redirect = new URLSearchParams(window.location.search).get('redirect');
-if (redirect?.startsWith('/') && !redirect.startsWith('//')) {
+const redirect = new URLSearchParams(window.location.search).get("redirect");
+if (redirect?.startsWith("/") && !redirect.startsWith("//")) {
   window.location.href = redirect;
 }
 ```
@@ -680,11 +707,11 @@ Use httpOnly cookies for tokens.
 - **OWASP**: A05
 
 ```typescript
-import depthLimit from 'graphql-depth-limit';
+import depthLimit from "graphql-depth-limit";
 const server = new ApolloServer({
   schema,
   validationRules: [depthLimit(5)],
-  introspection: process.env.NODE_ENV !== 'production',
+  introspection: process.env.NODE_ENV !== "production",
 });
 ```
 
@@ -696,10 +723,10 @@ const server = new ApolloServer({
 
 ```typescript
 const upload = multer({
-  dest: 'uploads/',
+  dest: "uploads/",
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+    const allowed = ["image/jpeg", "image/png", "image/webp"];
     cb(null, allowed.includes(file.mimetype));
   },
 });
@@ -725,7 +752,7 @@ const upload = multer({
 - **OWASP**: A05
 
 ```typescript
-app.use(express.json({ limit: '100kb' }));
+app.use(express.json({ limit: "100kb" }));
 ```
 
 ---
@@ -744,7 +771,8 @@ const response = await llm.complete(`Summarize this: ${userInput}`);
 
 // GOOD — structured input with system/user message separation
 const response = await llm.complete({
-  system: "You are a summarization assistant. Only summarize the provided text.",
+  system:
+    "You are a summarization assistant. Only summarize the provided text.",
   user: userInput,
 });
 ```
@@ -782,8 +810,10 @@ N永遠不要將 LLM 的輸出視為安全資料。應將其視為不可信的�
 - **OWASP**: A09
 
 ```typescript
-import pino from 'pino';
-const logger = pino({ redact: ['req.headers.authorization', 'req.body.password'] });
+import pino from "pino";
+const logger = pino({
+  redact: ["req.headers.authorization", "req.body.password"],
+});
 ```
 
 ### L3: Missing Trace IDs 缺少跟踪 ID
@@ -809,11 +839,12 @@ const logger = pino({ redact: ['req.headers.authorization', 'req.body.password']
 - **OWASP**: A01
 
 ```typescript
-'use server';
-import { auth } from '@/auth';
+"use server";
+import { auth } from "@/auth";
 export async function deleteUser(id: string) {
   const session = await auth();
-  if (!session?.user || session.user.role !== 'admin') throw new Error('Unauthorized');
+  if (!session?.user || session.user.role !== "admin")
+    throw new Error("Unauthorized");
   await db.user.delete({ where: { id } });
 }
 ```
@@ -873,9 +904,9 @@ export async function deleteUser(id: string) {
 - **OWASP**: A02
 
 ```typescript
-import helmet from 'helmet';
+import helmet from "helmet";
 app.use(helmet());
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 ```
 
 ### EX2: express.json() Without Body Size Limit ,express.json() 沒有設置請求體大小限制
@@ -884,7 +915,7 @@ app.disable('x-powered-by');
 - **OWASP**: A05
 
 ```typescript
-app.use(express.json({ limit: '100kb' }));
+app.use(express.json({ limit: "100kb" }));
 ```
 
 ### EX3: Cookie Without Secure Flags
@@ -893,8 +924,12 @@ app.use(express.json({ limit: '100kb' }));
 - **OWASP**: A07
 
 ```typescript
-res.cookie('session', value, {
-  httpOnly: true, secure: true, sameSite: 'strict', maxAge: 3600000, path: '/',
+res.cookie("session", value, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "strict",
+  maxAge: 3600000,
+  path: "/",
 });
 ```
 
@@ -917,7 +952,7 @@ res.cookie('session', value, {
 
 使用 crypto/rand 取得加密安全的隨機值。
 
-### GO2: TLS InsecureSkipVerify 
+### GO2: TLS InsecureSkipVerify
 
 - **Severity**: CRITICAL
 - **Detection**: `InsecureSkipVerify:\s*true`
@@ -943,31 +978,33 @@ db.Where("id = ?", userID).Find(&user)
 ### helmet.js (Express)
 
 ```typescript
-import helmet from 'helmet';
+import helmet from "helmet";
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      fontSrc: ["'self'"],
-      connectSrc: ["'self'"],
-      frameAncestors: ["'none'"],
-      objectSrc: ["'none'"],
-      baseUri: ["'self'"],
-      formAction: ["'self'"],
-      upgradeInsecureRequests: [],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        fontSrc: ["'self'"],
+        connectSrc: ["'self'"],
+        frameAncestors: ["'none'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+        upgradeInsecureRequests: [],
+      },
     },
-  },
-  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
-  frameguard: { action: 'deny' },
-  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
-  crossOriginOpenerPolicy: { policy: 'same-origin' },
-  crossOriginResourcePolicy: { policy: 'same-origin' },
-}));
-app.disable('x-powered-by');
+    hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+    frameguard: { action: "deny" },
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+    crossOriginOpenerPolicy: { policy: "same-origin" },
+    crossOriginResourcePolicy: { policy: "same-origin" },
+  }),
+);
+app.disable("x-powered-by");
 ```
 
 ---
@@ -992,20 +1029,21 @@ app.disable('x-powered-by');
 Set-Cookie: session=value; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3600
 ```
 
-| Flag | Purpose | When to use |
-|------|---------|-------------|
-| `HttpOnly` | 無法透過 JavaScript 存取（防止 XSS 令牌竊取） | Always |
-| `Secure` | 僅通過 HTTPS 發送 | Always |
-| `SameSite=Strict` | 僅在同站請求中發送（最強的 CSRF 防護） | Auth/session cookies |
-| `SameSite=Lax` | 在頂層導航中發送（中等 CSRF 防護） | 需要跨站頂層導航的 Cookie（例如 OAuth 返回） |
-| `Path=/` | 限制 Cookie 範圍 | Always |
-| `Max-Age` | 明確的過期時間（優先於 `Expires`） | Always |
+| Flag              | Purpose                                       | When to use                                  |
+| ----------------- | --------------------------------------------- | -------------------------------------------- |
+| `HttpOnly`        | 無法透過 JavaScript 存取（防止 XSS 令牌竊取） | Always                                       |
+| `Secure`          | 僅通過 HTTPS 發送                             | Always                                       |
+| `SameSite=Strict` | 僅在同站請求中發送（最強的 CSRF 防護）        | Auth/session cookies                         |
+| `SameSite=Lax`    | 在頂層導航中發送（中等 CSRF 防護）            | 需要跨站頂層導航的 Cookie（例如 OAuth 返回） |
+| `Path=/`          | 限制 Cookie 範圍                              | Always                                       |
+| `Max-Age`         | 明確的過期時間（優先於 `Expires`）            | Always                                       |
 
 ---
 
 ## Security Checklist 安全檢查清單
 
 ### Authentication and Sessions 認證與會話
+
 - [ ] 密碼使用 Argon2id 或 bcrypt 雜湊（成本 >= 12）
 - [ ] JWT 使用 RS256/ES256 簽名，驗證時強制演算法
 - [ ] 存取令牌過期時間 <= 15 分鐘
@@ -1015,6 +1053,7 @@ Set-Cookie: session=value; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=36
 - [ ] 特權帳戶可用多因素認證（MFA）
 
 ### Authorization 授權
+
 - [ ] 每個 API 端點都有授權中間件
 - [ ] 所有資源訪問都有所有權檢查（防止 IDOR）
 - [ ] 伺服器端授權（前端守衛僅為 UX）
@@ -1022,19 +1061,22 @@ Set-Cookie: session=value; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=36
 - [ ] 敏感操作需要重新認證
 
 ### Input and Output 輸入與輸出
+
 - [ ] 所有用戶輸入在伺服器端驗證（zod/joi/class-validator）
 - [ ] 所有數據庫操作使用參數化查詢
 - [ ] 渲染用戶內容時對 HTML 輸出進行清理（DOMPurify）
 - [ ] 錯誤響應在生產環境中不暴露堆棧追蹤
 
 ### Secrets 秘密
+
 - [ ] 不在源代碼中硬編碼秘密
 - [ ] `.env` 文件在 `.gitignore` 中
 - [ ] 伺服器秘密不暴露給客戶端（秘密上不使用 NEXT_PUBLIC_）
 - [ ] 啟動時驗證環境變量
 
 ### Headers 標頭
-- [ ] 配置 Content-Security-Policy（優先使用 nonce-based） 
+
+- [ ] 配置 Content-Security-Policy（優先使用 nonce-based）
 - [ ] Strict-Transport-Security 與 preload
 - [ ] X-Content-Type-Options: nosniff
 - [ ] X-Frame-Options: DENY
@@ -1043,12 +1085,14 @@ Set-Cookie: session=value; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=36
 - [ ] CORS restricted to known origins
 
 ### Dependencies 依賴
+
 - [ ] `npm audit` （或等效方法）在 CI 中透過過濾已知漏洞
 - [ ] Lockfile 提交並使用 `npm ci` 驗證
 - [ ] 新依賴審查以防止 typosquatting 和 postinstall 腳本
 - [ ] 生產環境中不使用通配符或 "latest" 版本
 
 ### Logging 日誌
+
 - [ ] 安全事件日誌（認證失敗、訪問被拒、速率限制）
 - [ ] 日誌中不包含敏感數據（密碼、令牌、個人識別信息）
 - [ ] 使用結構化日誌並包含關聯 ID

@@ -31,13 +31,13 @@ tags: ["專案管理", "範本", "軟體工程", "版本管理"]
 
 ### 📝 範本
 
-| 項目 | 內容 |
-|------|------|
-| **文件名稱** | CHANGELOG.md |
-| **位置** | 專案根目錄 |
-| **格式** | Markdown（Keep a Changelog 格式） |
-| **維護者** | {Release Manager / 開發團隊} |
-| **更新時機** | 每次版本發布（Release） |
+| 項目         | 內容                              |
+| ------------ | --------------------------------- |
+| **文件名稱** | CHANGELOG.md                      |
+| **位置**     | 專案根目錄                        |
+| **格式**     | Markdown（Keep a Changelog 格式） |
+| **維護者**   | {Release Manager / 開發團隊}      |
+| **更新時機** | 每次版本發布（Release）           |
 
 ### 📖 使用說明
 
@@ -75,26 +75,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - {新功能描述}
 
 ## [{版本號}] - {YYYY-MM-DD}
 
 ### Added
+
 - {新增功能}
 
 ### Changed
+
 - {變更項目}
 
 ### Deprecated
+
 - {即將移除的功能}
 
 ### Removed
+
 - {已移除的功能}
 
 ### Fixed
+
 - {修復的問題}
 
 ### Security
+
 - {安全性修復}
 
 [Unreleased]: {repo-url}/compare/v{版本}...HEAD
@@ -118,14 +125,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 📝 範本
 
-| 類別 | 英文 | 定義 | 使用時機 |
-|------|------|------|---------|
-| **Added** | 新增 | 新功能 | 全新的功能或能力 |
-| **Changed** | 變更 | 既有功能的行為變更 | 修改既有功能的行為（可能不向下相容） |
-| **Deprecated** | 棄用 | 即將移除的功能 | 預告未來版本將移除 |
-| **Removed** | 移除 | 已移除的功能 | 功能已不存在 |
-| **Fixed** | 修復 | Bug 修復 | 修正不正確的行為 |
-| **Security** | 安全 | 安全性相關修復 | CVE 修復、安全漏洞修補 |
+| 類別           | 英文 | 定義               | 使用時機                             |
+| -------------- | ---- | ------------------ | ------------------------------------ |
+| **Added**      | 新增 | 新功能             | 全新的功能或能力                     |
+| **Changed**    | 變更 | 既有功能的行為變更 | 修改既有功能的行為（可能不向下相容） |
+| **Deprecated** | 棄用 | 即將移除的功能     | 預告未來版本將移除                   |
+| **Removed**    | 移除 | 已移除的功能       | 功能已不存在                         |
+| **Fixed**      | 修復 | Bug 修復           | 修正不正確的行為                     |
+| **Security**   | 安全 | 安全性相關修復     | CVE 修復、安全漏洞修補               |
 
 ### 📖 使用說明
 
@@ -136,14 +143,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 💡 範例
 
-| 變更描述 | 歸類為 |
-|---------|--------|
-| 新增批次請假匯入功能 | Added |
-| 修改薪資計算邏輯（不含加班費） | Changed |
+| 變更描述                                      | 歸類為     |
+| --------------------------------------------- | ---------- |
+| 新增批次請假匯入功能                          | Added      |
+| 修改薪資計算邏輯（不含加班費）                | Changed    |
 | 舊版報表 API `/api/v1/reports` 將在 v2.0 移除 | Deprecated |
-| 移除已棄用的 `/api/v1/legacy-auth` 端點 | Removed |
-| 修復跨月請假天數計算錯誤 | Fixed |
-| 修補 JWT Token 未驗證過期時間的漏洞 | Security |
+| 移除已棄用的 `/api/v1/legacy-auth` 端點       | Removed    |
+| 修復跨月請假天數計算錯誤                      | Fixed      |
+| 修補 JWT Token 未驗證過期時間的漏洞           | Security   |
 
 ---
 
@@ -157,19 +164,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 MAJOR.MINOR.PATCH
 ```
 
-| 欄位 | 遞增時機 | 範例 |
-|------|---------|------|
+| 欄位      | 遞增時機              | 範例          |
+| --------- | --------------------- | ------------- |
 | **MAJOR** | 不向下相容的 API 變更 | 1.0.0 → 2.0.0 |
-| **MINOR** | 向下相容的新功能 | 1.0.0 → 1.1.0 |
-| **PATCH** | 向下相容的 Bug 修復 | 1.0.0 → 1.0.1 |
+| **MINOR** | 向下相容的新功能      | 1.0.0 → 1.1.0 |
+| **PATCH** | 向下相容的 Bug 修復   | 1.0.0 → 1.0.1 |
 
 #### Pre-release 版本
 
-| 格式 | 用途 | 範例 |
-|------|------|------|
+| 格式                | 用途       | 範例          |
+| ------------------- | ---------- | ------------- |
 | {version}-alpha.{N} | 內部測試版 | 1.1.0-alpha.1 |
-| {version}-beta.{N} | 公測版 | 1.1.0-beta.1 |
-| {version}-rc.{N} | 候選發布版 | 1.1.0-rc.1 |
+| {version}-beta.{N}  | 公測版     | 1.1.0-beta.1  |
+| {version}-rc.{N}    | 候選發布版 | 1.1.0-rc.1    |
 
 ### 📖 使用說明
 
@@ -180,12 +187,12 @@ MAJOR.MINOR.PATCH
 
 ### 💡 範例
 
-| 情境 | 版本變化 | 說明 |
-|------|---------|------|
-| 新增員工自助查詢功能 | 1.0.0 → 1.1.0 | 新功能，向下相容 |
-| 修復薪資計算錯誤 | 1.1.0 → 1.1.1 | Bug 修復 |
-| 修改 API 回傳格式（Breaking） | 1.1.1 → 2.0.0 | 不向下相容變更 |
-| 移除已棄用的端點 | 1.5.2 → 2.0.0 | Removal = Breaking Change |
+| 情境                          | 版本變化      | 說明                      |
+| ----------------------------- | ------------- | ------------------------- |
+| 新增員工自助查詢功能          | 1.0.0 → 1.1.0 | 新功能，向下相容          |
+| 修復薪資計算錯誤              | 1.1.0 → 1.1.1 | Bug 修復                  |
+| 修改 API 回傳格式（Breaking） | 1.1.1 → 2.0.0 | 不向下相容變更            |
+| 移除已棄用的端點              | 1.5.2 → 2.0.0 | Removal = Breaking Change |
 
 ---
 
@@ -201,21 +208,21 @@ MAJOR.MINOR.PATCH
 
 #### 5.2 撰寫原則
 
-| 原則 | 說明 | 好的範例 | 不好的範例 |
-|------|------|---------|-----------|
-| 以使用者角度撰寫 | 描述對使用者的影響 | 新增批次匯入請假功能 | 加了 BatchImportService |
-| 動詞開頭 | 每條以動詞起始 | 修復跨月請假天數計算錯誤 | 跨月請假 bug |
-| 附上 Issue 連結 | 可追溯至需求/Bug | 修復 #234 薪資四捨五入問題 | 修了一些 bug |
-| 簡潔具體 | 一行描述一個變更 | 移除舊版登入 API `/v1/auth/legacy` | 清理程式碼 |
+| 原則             | 說明               | 好的範例                           | 不好的範例              |
+| ---------------- | ------------------ | ---------------------------------- | ----------------------- |
+| 以使用者角度撰寫 | 描述對使用者的影響 | 新增批次匯入請假功能               | 加了 BatchImportService |
+| 動詞開頭         | 每條以動詞起始     | 修復跨月請假天數計算錯誤           | 跨月請假 bug            |
+| 附上 Issue 連結  | 可追溯至需求/Bug   | 修復 #234 薪資四捨五入問題         | 修了一些 bug            |
+| 簡潔具體         | 一行描述一個變更   | 移除舊版登入 API `/v1/auth/legacy` | 清理程式碼              |
 
 #### 5.3 不應記錄的內容
 
-| 不記錄 | 原因 |
-|--------|------|
-| 純重構（無外部行為變更） | 使用者無感 |
-| 修改 typo（非使用者可見） | 太瑣碎 |
+| 不記錄                          | 原因       |
+| ------------------------------- | ---------- |
+| 純重構（無外部行為變更）        | 使用者無感 |
+| 修改 typo（非使用者可見）       | 太瑣碎     |
 | 開發依賴更新（devDependencies） | 使用者無感 |
-| Merge commit | 非實質變更 |
+| Merge commit                    | 非實質變更 |
 
 ### 📖 使用說明
 
@@ -226,15 +233,19 @@ MAJOR.MINOR.PATCH
 ### 💡 範例
 
 **好的寫法：**
+
 ```markdown
 ### Fixed
+
 - 修復跨月請假（如 1/30 ~ 2/2）天數計算為負數的問題 ([#234](https://...))
 - 修復薪資明細匯出 Excel 時中文欄位名稱顯示亂碼 ([#251](https://...))
 ```
 
 **不好的寫法：**
+
 ```markdown
 ### Fixed
+
 - fix bug
 - 修了一些問題
 - Updated LeaveCalculationService.cs
@@ -257,6 +268,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - {開發中的新功能}
 
 ---
@@ -264,12 +276,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [{version}] - {YYYY-MM-DD}
 
 ### Added
+
 - {新增功能描述} ([#{N}]({url}))
 
 ### Changed
+
 - {變更描述} ([#{N}]({url}))
 
 ### Fixed
+
 - {修復描述} ([#{N}]({url}))
 
 ---
@@ -277,6 +292,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [{previous-version}] - {YYYY-MM-DD}
 
 ### Added
+
 - {新增功能描述}
 
 ---
@@ -306,6 +322,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - 員工行動裝置 App（iOS / Android）支援
 
 ---
@@ -313,20 +330,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - 2026-11-20
 
 ### Added
+
 - 新增批次請假匯入功能，支援 Excel 格式上傳 ([#301](https://dev.azure.com/company/hrms/_workitems/edit/301))
 - 新增部門假勤統計儀表板 ([#287](https://dev.azure.com/company/hrms/_workitems/edit/287))
 - 新增 Email 通知範本自訂功能 ([#295](https://dev.azure.com/company/hrms/_workitems/edit/295))
 
 ### Changed
+
 - 薪資計算引擎改用非同步處理，大幅提升月結計算效能 ([#310](https://dev.azure.com/company/hrms/_workitems/edit/310))
 - 登入頁面 UI 改版，支援 RWD ([#288](https://dev.azure.com/company/hrms/_workitems/edit/288))
 
 ### Fixed
+
 - 修復跨月請假（如 1/30 ~ 2/2）天數計算為負數的問題 ([#234](https://dev.azure.com/company/hrms/_workitems/edit/234))
 - 修復薪資明細匯出 Excel 時中文欄位顯示亂碼 ([#251](https://dev.azure.com/company/hrms/_workitems/edit/251))
 - 修復主管審核假單後通知未發送的問題 ([#267](https://dev.azure.com/company/hrms/_workitems/edit/267))
 
 ### Security
+
 - 升級 System.Text.Json 至 8.0.5 修復 CVE-2024-43485 反序列化漏洞 ([#312](https://dev.azure.com/company/hrms/_workitems/edit/312))
 
 ---
@@ -334,6 +355,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.1] - 2026-10-22
 
 ### Fixed
+
 - 修復部分員工登入後頁面白屏問題（Session 序列化錯誤）([#256](https://dev.azure.com/company/hrms/_workitems/edit/256))
 - 修復假額計算未排除到職日當天的問題 ([#258](https://dev.azure.com/company/hrms/_workitems/edit/258))
 
@@ -342,6 +364,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2026-10-15
 
 ### Added
+
 - 假勤管理模組：線上請假、審核、假額管理
 - 薪資管理模組：月薪計算、加班費、獎金
 - 員工自助服務：個人資料查詢與修改
@@ -366,13 +389,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### 7.1 工具選項
 
-| 工具 | 適用語言/平台 | 說明 |
-|------|-------------|------|
-| [conventional-changelog](https://github.com/conventional-changelog/conventional-changelog) | Node.js | 依據 Conventional Commits 自動產生 |
-| [auto-changelog](https://github.com/cookpete/auto-changelog) | Node.js | 依據 Git Log 產生 |
-| [github-changelog-generator](https://github.com/github-changelog-generator/github-changelog-generator) | Ruby | 依據 GitHub PR/Issues 產生 |
-| [Release Drafter](https://github.com/release-drafter/release-drafter) | GitHub Action | 自動草擬 Release Notes |
-| [Versionize](https://github.com/versionize/versionize) | .NET | .NET 專用 Conventional Commits |
+| 工具                                                                                                   | 適用語言/平台 | 說明                               |
+| ------------------------------------------------------------------------------------------------------ | ------------- | ---------------------------------- |
+| [conventional-changelog](https://github.com/conventional-changelog/conventional-changelog)             | Node.js       | 依據 Conventional Commits 自動產生 |
+| [auto-changelog](https://github.com/cookpete/auto-changelog)                                           | Node.js       | 依據 Git Log 產生                  |
+| [github-changelog-generator](https://github.com/github-changelog-generator/github-changelog-generator) | Ruby          | 依據 GitHub PR/Issues 產生         |
+| [Release Drafter](https://github.com/release-drafter/release-drafter)                                  | GitHub Action | 自動草擬 Release Notes             |
+| [Versionize](https://github.com/versionize/versionize)                                                 | .NET          | .NET 專用 Conventional Commits     |
 
 #### 7.2 CI/CD 整合範例
 
@@ -414,24 +437,24 @@ conventional-changelog -p angular -i CHANGELOG.md -s -r 0
 
 #### 8.1 Keep a Changelog 核心原則
 
-| 原則 | 說明 |
-|------|------|
-| 為人而寫 | 讀者是人，不是機器 |
-| 每個版本一個條目 | 按版本分組 |
-| 同類型變更分組 | 用六個類別分組 |
-| 可連結 | 每個版本可連結至 diff |
-| 最新在最前 | 倒序排列 |
-| 顯示發布日期 | ISO 8601 格式 (YYYY-MM-DD) |
-| 標示是否遵循 SemVer | 讓讀者知道版本策略 |
+| 原則                | 說明                       |
+| ------------------- | -------------------------- |
+| 為人而寫            | 讀者是人，不是機器         |
+| 每個版本一個條目    | 按版本分組                 |
+| 同類型變更分組      | 用六個類別分組             |
+| 可連結              | 每個版本可連結至 diff      |
+| 最新在最前          | 倒序排列                   |
+| 顯示發布日期        | ISO 8601 格式 (YYYY-MM-DD) |
+| 標示是否遵循 SemVer | 讓讀者知道版本策略         |
 
 #### 8.2 常見問題
 
-| 問題 | 答案 |
-|------|------|
-| 何時更新 CHANGELOG？ | 每個 PR 合併時更新 [Unreleased]，發版時移至版本區塊 |
-| 誰負責維護？ | 每位開發者負責自己的 PR，Release Manager 負責發版整理 |
-| 要記錄多詳細？ | 以使用者能理解的粒度，通常一個 Feature/Bug 一條 |
-| 多語系怎麼處理？ | 建議使用英文撰寫（國際通用），或依團隊約定使用中文 |
+| 問題                 | 答案                                                  |
+| -------------------- | ----------------------------------------------------- |
+| 何時更新 CHANGELOG？ | 每個 PR 合併時更新 [Unreleased]，發版時移至版本區塊   |
+| 誰負責維護？         | 每位開發者負責自己的 PR，Release Manager 負責發版整理 |
+| 要記錄多詳細？       | 以使用者能理解的粒度，通常一個 Feature/Bug 一條       |
+| 多語系怎麼處理？     | 建議使用英文撰寫（國際通用），或依團隊約定使用中文    |
 
 ### 📖 使用說明
 
@@ -444,6 +467,7 @@ conventional-changelog -p angular -i CHANGELOG.md -s -r 0
 **CHANGELOG vs Git Log 的差異：**
 
 Git Log（技術導向）：
+
 ```
 a1b2c3d refactor: extract PayrollEngine from PayrollService
 d4e5f6g fix: null reference in LeaveCalculationService.cs line 42
@@ -451,14 +475,17 @@ g7h8i9j chore: update NuGet packages
 ```
 
 CHANGELOG（使用者導向）：
+
 ```markdown
 ### Fixed
+
 - 修復跨月請假天數計算錯誤，導致部分員工假額異常扣除
 ```
 
 ---
 
 > 📌 **範本使用注意事項**
+>
 > 1. 本範本依據 Keep a Changelog 1.1.0 與 Semantic Versioning 2.0.0 標準編製
 > 2. CHANGELOG.md 需於專案建立時即創建，不要等到發版才補
 > 3. 建議搭配 Conventional Commits 規範，支援半自動化產生

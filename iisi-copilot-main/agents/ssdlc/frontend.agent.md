@@ -44,16 +44,17 @@ argument-hint: "描述要實作的前端功能或頁面"
 
 ### 技術棧
 
-| 層級 | React 生態系 | Vue 生態系 | Angular 生態系 |
-|------|-------------|-----------|---------------|
-| **框架** | React 18+, Next.js 14+ | Vue 3+, Nuxt 3+ | Angular 19+ |
-| **狀態管理** | Zustand / TanStack Query | Pinia | NgRx / Signals |
-| **測試** | Vitest, Testing Library | Vitest, Testing Library | Karma + Jasmine |
-| **建置工具** | Vite | Vite | Angular CLI |
+| 層級         | React 生態系             | Vue 生態系              | Angular 生態系  |
+| ------------ | ------------------------ | ----------------------- | --------------- |
+| **框架**     | React 18+, Next.js 14+   | Vue 3+, Nuxt 3+         | Angular 19+     |
+| **狀態管理** | Zustand / TanStack Query | Pinia                   | NgRx / Signals  |
+| **測試**     | Vitest, Testing Library  | Vitest, Testing Library | Karma + Jasmine |
+| **建置工具** | Vite                     | Vite                    | Angular CLI     |
 
 ### 框架開發規範
 
 **通用規範：**
+
 - 元件命名 PascalCase（`UserProfile`）
 - 型別/介面 PascalCase，`I` 或 `T` 前綴可選
 - 樣式：Tailwind CSS / CSS Modules / SCSS

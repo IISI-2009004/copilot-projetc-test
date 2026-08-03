@@ -1,6 +1,6 @@
 ---
-description: '建立 GitHub Copilot 自訂代理檔案的指南。'
-applyTo: '**/*.agent.md'
+description: "建立 GitHub Copilot 自訂代理檔案的指南。"
+applyTo: "**/*.agent.md"
 ---
 
 # Custom Agent File Guidelines
@@ -22,70 +22,81 @@ applyTo: '**/*.agent.md'
 
 ```yaml
 ---
-description: 'Brief description of the agent purpose and capabilities'
-name: 'Agent Display Name'
-tools: ['read', 'edit', 'search']
-model: 'Claude Sonnet 4.5'
-target: 'vscode'
+description: "Brief description of the agent purpose and capabilities"
+name: "Agent Display Name"
+tools: ["read", "edit", "search"]
+model: "Claude Sonnet 4.5"
+target: "vscode"
 ---
 ```
 
 ### Core Frontmatter Properties
 
 #### **description** (REQUIRED)
+
 - 用單引號括起來的字串，清楚地說明了代理的目的和領域專業知識。
 - 應簡潔明了（50-150個字），並具有行動意義。
 - Example: `'Focuses on test coverage, quality, and testing best practices'`
 
 #### **name** (OPTIONAL)
+
 - 代理在使用者介面中的顯示名稱
 - 如果省略，預設為檔案名稱（不含 `.md` 或 `.agent.md`）
 - 使用標題大小寫並具有描述性
 - 範例: `'Testing Specialist'`
 
 #### **tools** (OPTIONAL)
+
 - 代理可以使用的工具名稱或別名列表
 - 支援逗號分隔的字串或 YAML 陣列格式
 - 如果省略，代理可以使用所有可用工具
 - 詳情請參見下方的 "工具配置" 部分
 
 #### **model** (STRONGLY RECOMMENDED)
+
 - 指定智能體應使用哪種人工智慧模型
 - 支援 VS Code、JetBrains IDEs、Eclipse 和 Xcode
 - 範例: `'Claude Sonnet 4.5'`, `'gpt-4'`, `'gpt-4o'`
 - 根據代理的複雜性和所需功能選擇模型
 
 #### **target** (OPTIONAL)
+
 - 指定目標環境: `'vscode'` 或 `'github-copilot'`
 - 如果省略，代理在兩個環境中都可用
 - 當代理具有特定環境功能時使用
 
 #### **user-invocable** (OPTIONAL)
+
 - 布林值，控制該代理是否出現在聊天視窗的代理下拉式選單中。
 - 預設值: `true` 如果省略
 - 設定為 `false` 以建立僅能作為子代理或程式化存取的代理
 
 #### **disable-model-invocation** (OPTIONAL)
+
 - 布林值，控制該代理是否可以被其他代理呼叫為子代理。
 - 預設值: `false` 如果省略
 - 設定為 `true` 以防止子代理呼叫，同時保持在選擇器中可用
 
 #### **metadata** (OPTIONAL, GitHub.com only)
+
 - 物件，包含代理註解的名稱-值對
 - 範例: `metadata: { category: 'testing', version: '1.0' }`
 - 在 VS Code 中不支援
 
 #### **mcp-servers** (OPTIONAL, Organization/Enterprise only)
+
 - 配置僅此代理程式可用的 MCP 伺服器
 - 僅支援組織/企業級代理
 - 詳情請參見下方的 "MCP 伺服器配置" 部分
 
 #### **handoffs** (OPTIONAL, VS Code only)
+
 - 啟用引導式的順序工作流程，允許在代理之間過渡並提供建議的下一步
 - 列出每個交接配置，指定目標代理和可選的提示
 - 在聊天回應完成後，交接按鈕會出現，允許使用者移動到下一個代理
 - 僅支援 VS Code（版本 1.106+）
 - 詳情請參見下方的 "交接配置" 部分
+
 ## Handoffs Configuration
 
 交接功能可讓您建立引導式順序工作流程，在自訂代理程式之間實現無縫過渡。這對於協調多步驟開發工作流程非常有用，使用者可以在進入下一步之前審核並批准每個步驟。
@@ -103,17 +114,17 @@ target: 'vscode'
 
 ```yaml
 ---
-description: 'Brief description of the agent'
-name: 'Agent Name'
-tools: ['search', 'read']
+description: "Brief description of the agent"
+name: "Agent Name"
+tools: ["search", "read"]
 handoffs:
   - label: Start Implementation
     agent: implementation
-    prompt: 'Now implement the plan outlined above.'
+    prompt: "Now implement the plan outlined above."
     send: false
   - label: Code Review
     agent: code-review
-    prompt: 'Please review the implementation for quality and security issues.'
+    prompt: "Please review the implementation for quality and security issues."
     send: false
 ---
 ```
@@ -122,12 +133,12 @@ handoffs:
 
 清單中的每次交接都必須包含以下屬性：
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `label` | string | Yes | 在聊天介面中顯示在交接按鈕上的文字 |
-| `agent` | string | Yes | 要切換到的目標代理識別符（名稱或不含 `.agent.md` 的檔案名稱） |
-| `prompt` | string | No | 用於預先填充目標代理聊天輸入的提示文本 |
-| `send` | boolean | No | 如果為 `true`，則自動將提示提交給目標代理（預設值: `false`） |
+| Property | Type    | Required | Description                                                   |
+| -------- | ------- | -------- | ------------------------------------------------------------- |
+| `label`  | string  | Yes      | 在聊天介面中顯示在交接按鈕上的文字                            |
+| `agent`  | string  | Yes      | 要切換到的目標代理識別符（名稱或不含 `.agent.md` 的檔案名稱） |
+| `prompt` | string  | No       | 用於預先填充目標代理聊天輸入的提示文本                        |
+| `send`   | boolean | No       | 如果為 `true`，則自動將提示提交給目標代理（預設值: `false`）  |
 
 ### Handoff Behavior
 
@@ -144,6 +155,7 @@ handoffs:
 - **Quality gates**: 確保在實作階段之間進行審查步驟
 - **Guided processes**: 引導使用者完成結構化的開發流程
 - **Skill transitions**: 從規劃/設計轉移到實作/測試專家
+
 #### Best Practices
 
 - **Clear Labels**: 使用行動導向的標籤，清楚指示下一步。
@@ -170,15 +182,16 @@ handoffs:
 以下是一個由三位代理人透過交接班組成完整工作流程的範例：
 
 **Planning Agent** (`planner.agent.md`):
+
 ```yaml
 ---
-description: '為新功能或重構制定實施計劃'
-name: 'Planner'
-tools: ['search', 'read']
+description: "為新功能或重構制定實施計劃"
+name: "Planner"
+tools: ["search", "read"]
 handoffs:
   - label: Implement Plan
     agent: implementer
-    prompt: '實施上述計劃。'
+    prompt: "實施上述計劃。"
     send: false
 ---
 # Planner Agent
@@ -193,15 +206,16 @@ handoffs:
 ```
 
 **Implementation Agent** (`implementer.agent.md`):
+
 ```yaml
 ---
-description: '根據計劃或規範實現代碼。'
-name: 'Implementer'
-tools: ['read', 'edit', 'search', 'execute']
+description: "根據計劃或規範實現代碼。"
+name: "Implementer"
+tools: ["read", "edit", "search", "execute"]
 handoffs:
   - label: Review Implementation
     agent: reviewer
-    prompt: '請審查此實作的程式碼品質、安全性及最佳實踐遵循情況。'
+    prompt: "請審查此實作的程式碼品質、安全性及最佳實踐遵循情況。"
     send: false
 ---
 # Implementer Agent
@@ -215,15 +229,16 @@ handoffs:
 ```
 
 **Review Agent** (`reviewer.agent.md`):
+
 ```yaml
 ---
-description: '審查程式碼，確保其品質、安全性和符合最佳實務。'
-name: 'Reviewer'
-tools: ['read', 'search']
+description: "審查程式碼，確保其品質、安全性和符合最佳實務。"
+name: "Reviewer"
+tools: ["read", "search"]
 handoffs:
   - label: Back to Planning
     agent: planner
-    prompt: '請查看以上回饋意見，並確定是否需要製定新計劃。'
+    prompt: "請查看以上回饋意見，並確定是否需要製定新計劃。"
     send: false
 ---
 # Code Review Agent
@@ -237,6 +252,7 @@ handoffs:
 ```
 
 此工作流程允許開發人員執行以下操作：
+
 1. 首先使用規劃代理建立詳細計劃
 2. 將計劃交給實施代理，由其根據計劃編寫程式碼
 3. 將計劃交給審核代理，由其檢查實現情形
@@ -253,22 +269,26 @@ handoffs:
 ### Tool Specification Strategies
 
 **Enable all tools** (default):
+
 ```yaml
 # Omit tools property entirely, or use:
-tools: ['*']
+tools: ["*"]
 ```
 
 **Enable specific tools**:
+
 ```yaml
-tools: ['read', 'edit', 'search', 'execute']
+tools: ["read", "edit", "search", "execute"]
 ```
 
 **Enable MCP server tools**:
+
 ```yaml
-tools: ['read', 'edit', 'github/*', 'playwright/navigate']
+tools: ["read", "edit", "github/*", "playwright/navigate"]
 ```
 
 **Disable all tools**:
+
 ```yaml
 tools: []
 ```
@@ -277,31 +297,35 @@ tools: []
 
 所有別名均不區分大小寫：
 
-| Alias | Alternative Names | Category | Description |
-|-------|------------------|----------|-------------|
-| `execute` | shell, Bash, powershell | Shell execution | 在對應的 shell 中執行指令 |
-| `read` | Read, NotebookRead, view | File reading | 讀取檔案內容 |
-| `edit` | Edit, MultiEdit, Write, NotebookEdit | File editing | 編輯和修改檔案 |
-| `search` | Grep, Glob, search | Code search | 搜尋檔案或檔案中的文字 |
-| `agent` | custom-agent, Task | Agent invocation | 調用其他自訂代理 |
-| `web` | WebSearch, WebFetch | Web access | 擷取網頁內容並進行搜尋 |
-| `todo` | TodoWrite | Task management | 建立和管理任務清單（僅限 VS Code） |
+| Alias     | Alternative Names                    | Category         | Description                        |
+| --------- | ------------------------------------ | ---------------- | ---------------------------------- |
+| `execute` | shell, Bash, powershell              | Shell execution  | 在對應的 shell 中執行指令          |
+| `read`    | Read, NotebookRead, view             | File reading     | 讀取檔案內容                       |
+| `edit`    | Edit, MultiEdit, Write, NotebookEdit | File editing     | 編輯和修改檔案                     |
+| `search`  | Grep, Glob, search                   | Code search      | 搜尋檔案或檔案中的文字             |
+| `agent`   | custom-agent, Task                   | Agent invocation | 調用其他自訂代理                   |
+| `web`     | WebSearch, WebFetch                  | Web access       | 擷取網頁內容並進行搜尋             |
+| `todo`    | TodoWrite                            | Task management  | 建立和管理任務清單（僅限 VS Code） |
 
 ### Built-in MCP Server Tools
 
 **GitHub MCP Server**:
+
 ```yaml
-tools: ['github/*']  # All GitHub tools
-tools: ['github/get_file_contents', 'github/search_repositories']  # Specific tools
+tools: ["github/*"] # All GitHub tools
+tools: ["github/get_file_contents", "github/search_repositories"] # Specific tools
 ```
+
 - 預設提供所有唯讀工具。
 - 令牌作用域限定於來源儲存庫
 
 **Playwright MCP Server**:
+
 ```yaml
-tools: ['playwright/*']  # All Playwright tools
-tools: ['playwright/navigate', 'playwright/screenshot']  # Specific tools
+tools: ["playwright/*"] # All Playwright tools
+tools: ["playwright/navigate", "playwright/screenshot"] # Specific tools
 ```
+
 - 僅配置為訪問本地主機
 - 適用於瀏覽器自動化和測試
 
@@ -317,19 +341,21 @@ tools: ['playwright/navigate', 'playwright/screenshot']  # Specific tools
 代理可以使用代理呼叫工具 （ agent 工具）呼叫其他代理，以協調多步驟工作流程。
 
 建議的方法是 **基於提示的編排**：
+
 - 編排者以自然語言定義逐步工作流程。
 - 每個步驟都委派給專門的代理。
 - 編排者僅傳遞必要的上下文（例如，基礎路徑、標識符），並要求每個子代理閱讀其自己的 `.agent.md` 規範以獲取工具/約束。
 
 ### How It Works
 
-1) 將 agent 新增至編排器的工具清單中，即可啟用代理呼叫：
+1. 將 agent 新增至編排器的工具清單中，即可啟用代理呼叫：
 
 ```yaml
-tools: ['read', 'edit', 'search', 'agent']
+tools: ["read", "edit", "search", "agent"]
 ```
 
-2) 對於每個步驟，透過提供以下資訊來呼叫子代理：
+2. 對於每個步驟，透過提供以下資訊來呼叫子代理：
+
 - **Agent name** (使用者選擇/呼叫的識別符)
 - **Agent spec path** (要閱讀和遵循的 `.agent.md` 檔案)
 - **Minimal shared context** (例如，`basePath`、`projectName`、`logFile`)
@@ -414,9 +440,10 @@ Expected: write ${basePath}/analysis/report.md
 **關鍵點** ：如果子代理程式需要特定工具（例如， edit 、 execute 、 search ），則編排器必須將這些工具包含在其自身的 tools 清單中。子代理程式無法存取其父編排器不可用的工具。
 
 **Example**:
+
 ```yaml
 # 如果您的子代理程式需要編輯檔案、執行命令或搜尋程式碼，則必須以代理身分執行此階段。
-tools: ['read', 'edit', 'search', 'execute', 'agent']
+tools: ["read", "edit", "search", "execute", "agent"]
 ```
 
 編排器的工具權限限制了所有被呼叫子代理程式的功能。請仔細規劃工具列表，確保所有子代理程式都擁有所需的工具。
@@ -424,6 +451,7 @@ tools: ['read', 'edit', 'search', 'execute', 'agent']
 ### ⚠️ Important Limitation
 
 **子代理編排不適用於大規模資料處理。** 避免在以下情況下使用多步驟子代理管道：
+
 - 處理數百或數千個檔案
 - 處理大型資料集
 - 對大型程式碼庫進行批量轉換
@@ -456,6 +484,7 @@ tools: ['read', 'edit', 'search', 'execute', 'agent']
 ### When to Use Variables
 
 **Use variables when**:
+
 - 代理行為取決於使用者輸入
 - 需要將動態值傳遞給子代理
 - 希望在不同情境中重複使用代理
@@ -463,6 +492,7 @@ tools: ['read', 'edit', 'search', 'execute', 'agent']
 - 需要追蹤或引用使用者提供的上下文
 
 **Examples**:
+
 - 從使用者提示中提取專案名稱
 - 捕捉管道處理的認證名稱
 - 識別檔案路徑或目錄
@@ -489,6 +519,7 @@ Process [PARAMETER_NAME] to accomplish [task].
 ### Variable Extraction Methods
 
 #### 1. **顯式使用者輸入**
+
 如果提示中未偵測到變量，則要求使用者提供該變數：
 
 ```markdown
@@ -497,7 +528,9 @@ Process [PARAMETER_NAME] to accomplish [task].
 透過分析程式碼庫來推進專案。
 
 ### Step 1: Identify Project
+
 如果未提供項目名稱，請**詢問使用者**以下資訊：
+
 - 項目名稱或識別符
 - 基本路徑或目錄位置
 - 配置類型（如適用）
@@ -506,6 +539,7 @@ Process [PARAMETER_NAME] to accomplish [task].
 ```
 
 #### 2. **從提示中隱式擷取變量**
+
 自動從使用者的自然語言輸入中提取變量：
 
 ```javascript
@@ -521,6 +555,7 @@ const basePath = `certifications/${certificationName}`;
 ```
 
 #### 3. **上下文變數解析**
+
 使用檔案上下文或工作區資訊來推導變量：
 
 ```markdown
@@ -543,6 +578,7 @@ const basePath = `certifications/${certificationName}`;
 # Agent Name
 
 ## Dynamic Parameters
+
 - **Project Name**: ${projectName}
 - **Base Path**: ${basePath}
 - **Output Directory**: ${outputDir}
@@ -596,10 +632,12 @@ Example (prompt template):
 
 一個簡單的程式碼協調器範例，它透過多個專門的代理程式來驗證程式碼：
 
-1) 確定共享上下文：
+1. 確定共享上下文：
+
 - `repositoryName`、`prNumber`
 - `basePath`（例如，`projects/${repositoryName}/pr-${prNumber}`）
-2) 依序呼叫專用代理程式（每個代理程式讀取其自身的 `.agent.md` 規格）：
+
+2. 依序呼叫專用代理程式（每個代理程式讀取其自身的 `.agent.md` 規格）：
 
 ```text
 Step 1: Security Review
@@ -626,34 +664,39 @@ Output: projects/${repositoryName}/pr-${prNumber}/final-review.md
 此範例展示了更完整的編排，包括預檢 、 條件步驟以及必需行為與可選行為。
 
 **Dynamic parameters (inputs):**
+
 - `repositoryName`, `prNumber`
 - `basePath` (e.g., `projects/${repositoryName}/pr-${prNumber}`)
 - `logFile` (e.g., `${basePath}/.review-log.md`)
 
 **Pre-flight checks (recommended):**
+
 - 驗證預期資料夾/檔案是否存在（例如， ${basePath}/changes/ ， ${basePath}/reports/ ）。
 - 偵測影響步驟觸發的高階特徵（例如，倉庫語言、是否存在 `package.json`、`pom.xml`、`requirements.txt`、測試資料夾）。
 - 在開始時記錄發現結果。
 
 **Step trigger conditions:**
 
-| Step | Status | Trigger Condition | On Failure |
-|------|--------|-------------------|-----------|
-| 1: Security Review | **Required** | Always run | Stop pipeline |
-| 2: Dependency Audit | Optional | If a dependency manifest exists (`package.json`, `pom.xml`, etc.) | Continue |
-| 3: Test Coverage Check | Optional | If test projects/files are present | Continue |
-| 4: Performance Checks | Optional | If perf-sensitive code changed OR a perf config exists | Continue |
-| 5: Aggregate & Verdict | **Required** | Always run if Step 1 completed | Stop pipeline |
+| Step                   | Status       | Trigger Condition                                                 | On Failure    |
+| ---------------------- | ------------ | ----------------------------------------------------------------- | ------------- |
+| 1: Security Review     | **Required** | Always run                                                        | Stop pipeline |
+| 2: Dependency Audit    | Optional     | If a dependency manifest exists (`package.json`, `pom.xml`, etc.) | Continue      |
+| 3: Test Coverage Check | Optional     | If test projects/files are present                                | Continue      |
+| 4: Performance Checks  | Optional     | If perf-sensitive code changed OR a perf config exists            | Continue      |
+| 5: Aggregate & Verdict | **Required** | Always run if Step 1 completed                                    | Stop pipeline |
 
 **Execution flow (natural language):**
+
 1. 初始化 basePath 並建立/更新 logFile 。
 2. 執行預檢並記錄結果。
 3. 依序執行步驟 1 → N。
 4. 對每個步驟：
-  - 如果觸發條件為假：標記為 **SKIPPED** 並繼續。
-  - 否則：使用包裝提示呼叫子代理程式並捕捉其摘要。
-  - 標記為 **SUCCESS** 或 **FAILED**。
-  - 如果步驟為 **Required** 且失敗：停止管道並寫入失敗摘要。
+
+- 如果觸發條件為假：標記為 **SKIPPED** 並繼續。
+- 否則：使用包裝提示呼叫子代理程式並捕捉其摘要。
+- 標記為 **SUCCESS** 或 **FAILED**。
+- 如果步驟為 **Required** 且失敗：停止管道並寫入失敗摘要。
+
 5. 以最終摘要部分結束（整體狀態、產物、後續行動）。
 
 **Sub-agent invocation prompt (example):**
@@ -676,6 +719,7 @@ Output: projects/${repositoryName}/pr-${prNumber}/final-review.md
 
 ```markdown
 ## Step 2: Dependency Audit
+
 **Status:** ✅ SUCCESS / ⚠️ SKIPPED / ❌ FAILED
 **Trigger:** package.json present
 **Started:** 2026-01-16T10:30:15Z
@@ -687,61 +731,68 @@ Output: projects/${repositoryName}/pr-${prNumber}/final-review.md
 
 此模式適用於任何編排場景：提取變量，使用清晰的上下文呼叫子代理，等待結果。
 
-
 ### Variable Best Practices
 
 #### 1. **Clear Documentation**
+
 務必記錄預期使用的變數：
 
 ```markdown
 ## Required Variables
+
 - **projectName**: 項目名稱（字串，必填）
 - **basePath**: 專案檔案的根目錄（路徑，必填）
 
 ## Optional Variables
+
 - **mode**: 處理模式 - quick/standard/detailed（列舉，預設：standard）
 - **outputFormat**: 輸出格式 - markdown/json/html（列舉，預設：markdown）
 
 ## Derived Variables
+
 - **outputDir**: 自動設置為 ${basePath}/output
 - **logFile**: 自動設置為 ${basePath}/.log.md
 ```
 
 #### 2. **Consistent Naming**
+
 使用一致的變數命名規範：
 
 ```javascript
 // Good: Clear, descriptive naming
 const variables = {
-  projectName,          // 項目名稱
-  basePath,            // 專案檔案的根目錄
-  outputDirectory,     // 結果保存位置
-  processingMode,      // 處理模式（詳細程度）
-  configurationPath    // 配置文件位置
+  projectName, // 項目名稱
+  basePath, // 專案檔案的根目錄
+  outputDirectory, // 結果保存位置
+  processingMode, // 處理模式（詳細程度）
+  configurationPath, // 配置文件位置
 };
 
 // Avoid: 含糊不清或前後矛盾
 const bad_variables = {
-  name,     // 太過通用
-  path,     // 不清楚是哪個路徑
-  mode,     // 太短
-  config    // 太模糊
+  name, // 太過通用
+  path, // 不清楚是哪個路徑
+  mode, // 太短
+  config, // 太模糊
 };
 ```
 
 #### 3. **Validation and Constraints**
+
 記錄有效值和約束條件：
 
 ```markdown
 ## Variable Constraints
 
 **projectName**:
+
 - Type: string (alphanumeric, hyphens, underscores allowed)
 - Length: 1-100 characters
 - Required: yes
 - Pattern: `/^[a-zA-Z0-9_-]+$/`
 
 **processingMode**:
+
 - Type: enum
 - Valid values: "quick" (< 5min), "standard" (5-15min), "detailed" (15+ min)
 - Default: "standard"
@@ -757,13 +808,13 @@ MCP 伺服器透過附加工具擴充代理功能。僅支援組織級和企業�
 ```yaml
 ---
 name: my-custom-agent
-description: 'Agent with MCP integration'
-tools: ['read', 'edit', 'custom-mcp/tool-1']
+description: "Agent with MCP integration"
+tools: ["read", "edit", "custom-mcp/tool-1"]
 mcp-servers:
   custom-mcp:
-    type: 'local'
-    command: 'some-command'
-    args: ['--arg1', '--arg2']
+    type: "local"
+    command: "some-command"
+    args: ["--arg1", "--arg2"]
     tools: ["*"]
     env:
       ENV_VAR_NAME: ${{ secrets.API_KEY }}
@@ -783,6 +834,7 @@ mcp-servers:
 Secrets 必須在倉庫設定中的 "copilot" 環境下配置。
 
 **支援的語法**:
+
 ```yaml
 env:
   # Environment variable only
@@ -800,16 +852,19 @@ env:
 ## File Organization and Naming
 
 ### Repository-Level Agents
+
 - Location: `.github/agents/`
 - Scope: Available only in the specific repository
 - Access: Uses repository-configured MCP servers
 
 ### Organization/Enterprise-Level Agents
+
 - Location: `.github-private/agents/` (then move to `agents/` root)
 - Scope: 僅在特定儲存庫中可用
 - Access: 可以配置專用的 MCP 伺服器
 
 ### Naming Conventions
+
 - 使用小寫字母和連字號: `test-specialist.agent.md`
 - 名稱應反映代理的用途
 - 文件名成為默認代理名稱（如果未指定 `name`）
@@ -818,13 +873,16 @@ env:
 ## Agent Processing and Behavior
 
 ### Versioning
+
 - 基於代理文件的 Git 提交 SHA
 - 為不同的代理版本建立分支/標籤
 - 使用最新版本實例化特定儲存庫/分支的代理
 - PR 互動使用相同的代理版本以保持一致性
 
 ### Name Conflicts
+
 優先權（從高到低）：
+
 1. 儲存庫級代理
 2. 組織級代理
 3. 企業級代理
@@ -832,12 +890,15 @@ env:
 低層級的配置會覆蓋高層級中具有相同名稱的配置。
 
 ### Tool Processing
+
 - `tools` 清單篩選器可用工具（內建工具和 MCP 工具）
 - 未指定工具 = 啟用所有工具
 - 空列表 (`[]`) = 禁用所有工具
 - 指定列表 = 僅啟用那些工具
 - 未識別的工具名稱將被忽略（允許環境特定工具）
+
 ### MCP Server Processing Order
+
 1. 開箱即用的 MCP 伺服器（例如，GitHub MCP）
 2. 自訂代理 MCP 配置（僅限組織/企業）
 3. 儲存庫級 MCP 配置
@@ -847,6 +908,7 @@ env:
 ## Agent Creation Checklist
 
 ### Frontmatter
+
 - [ ] `description` 欄位存在且內容詳實（50-150 個字元）
 - [ ] `description` 使用單引號包裹
 - [ ] `name` 已指定（可選但建議）
@@ -856,8 +918,8 @@ env:
 - [ ] 使用 `user-invocable: false` 隱藏於選擇器，同時允許子代理調用
 - [ ] 使用 `disable-model-invocation: true` 防止子代理調用，同時保持選擇器可見
 
-
 ### Prompt Content
+
 - [ ] 清晰定義代理身份和角色
 - [ ] 明確列出核心職責
 - [ ] 說明方法和流程
@@ -869,12 +931,14 @@ env:
 - [ ] 總內容不超過 30,000 個字元
 
 ### File Structure
+
 - [ ] 檔案名稱遵循小寫字母加連字符的命名規則
 - [ ] 檔案放置在正確的目錄中（`.github/agents/` 或 `agents/`）
 - [ ] 檔案名稱僅使用允許的字符
 - [ ] 檔案擴展名為 `.agent.md`
 
 ### Quality Assurance
+
 - [ ] 代理目的唯一且不重複
 - [ ] 工具最小化且必要
 - [ ] 指令清晰且無歧義
@@ -885,26 +949,31 @@ env:
 ## Common Agent Patterns
 
 ### Testing Specialist
+
 **Purpose**: 專注於測試覆蓋率和質量
 **Tools**: 所有工具（用於全面的測試創建）
 **Approach**: 分析、識別漏洞、編寫測試，避免修改生產代碼
 
 ### Implementation Planner
+
 **Purpose**: 創建詳細的技術計劃和規範
 **Tools**: 僅限 `['read', 'search', 'edit']`
 **Approach**: 分析需求，創建文檔，避免實施
 
 ### Code Reviewer
+
 **Purpose**: 審查代碼質量並提供反饋
 **Tools**: 僅限 `['read', 'search']`
 **Approach**: 分析、提出改進建議，避免直接修改
 
 ### Refactoring Specialist
+
 **Purpose**: 改善代碼結構和可維護性
 **Tools**: `['read', 'search', 'edit']`
 **Approach**: 分析模式，提出重構建議，安全地實施
 
 ### Security Auditor
+
 **Purpose**: 識別安全問題和漏洞
 **Tools**: `['read', 'search', 'web']`
 **Approach**: 掃描代碼，檢查 OWASP，報告發現
@@ -912,18 +981,21 @@ env:
 ## Common Mistakes to Avoid
 
 ### Frontmatter Errors
+
 - ❌ 缺少 description 字段
 - ❌ Description 未使用引號包裹
 - ❌ 無效的工具名稱，未檢查文檔
 - ❌ YAML 語法錯誤（縮進、引號）
 
 ### Tool Configuration Issues
+
 - ❌ 過度授予工具訪問權限
 - ❌ 缺少代理所需的工具
 - ❌ 工具別名使用不一致
 - ❌ 忘記 MCP 伺服器命名空間（`server-name/tool`）
 
 ### Prompt Content Problems
+
 - ❌ 指令模糊、不明確
 - ❌ 指南或約束條件相互矛盾
 - ❌ 缺少明確的範圍定義
@@ -932,6 +1004,7 @@ env:
 - ❌ 缺少複雜任務的範例或上下文
 
 ### Organizational Issues
+
 - ❌ 檔案名稱未反映代理目的
 - ❌ 錯誤的目錄（混淆儲存庫級與組織級）
 - ❌ 檔案名稱中使用空格或特殊字符
@@ -940,6 +1013,7 @@ env:
 ## Testing and Validation
 
 ### Manual Testing
+
 1. 建立具有正確 frontmatter 的代理文件
 2. 重新加載 VS Code 或刷新 GitHub.com
 3. 從 Copilot Chat 的下拉選單中選擇代理
@@ -948,6 +1022,7 @@ env:
 6. 確認輸出符合預期
 
 ### Integration Testing
+
 - 使用不同範圍內的文件類型測試代理
 - 驗證 MCP 伺服器連接（如果已配置）
 - 檢查代理在缺少上下文時的行為
@@ -955,6 +1030,7 @@ env:
 - 驗證代理切換和交接
 
 ### Quality Checks
+
 - 運行代理創建檢查清單
 - 對照常見錯誤清單進行審查
 - 與儲存庫中的範例代理進行比較
@@ -964,29 +1040,34 @@ env:
 ## Additional Resources
 
 ### Official Documentation
+
 - [Creating Custom Agents](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-custom-agents)
 - [Custom Agents Configuration](https://docs.github.com/en/copilot/reference/custom-agents-configuration)
 - [Custom Agents in VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
 - [MCP Integration](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/extend-coding-agent-with-mcp)
 
 ### Community Resources
+
 - [Awesome Copilot Agents Collection](https://github.com/github/awesome-copilot/tree/main/agents)
 - [Customization Library Examples](https://docs.github.com/en/copilot/tutorials/customization-library/custom-agents)
 - [Your First Custom Agent Tutorial](https://docs.github.com/en/copilot/tutorials/customization-library/custom-agents/your-first-custom-agent)
 
 ### Related Files
+
 - [Prompt Files Guidelines](./prompt.instructions.md) - 用於創建提示文件
 - [Instructions Guidelines](./instructions.instructions.md) - 用於創建指令文件
 
 ## Version Compatibility Notes
 
 ### GitHub.com (Coding Agent)
+
 - ✅ 完全支援所有標準 frontmatter 屬性
 - ✅ 儲存庫和組織/企業級代理
 - ✅ MCP 伺服器配置（組織/企業級）
 - ❌ 不支援 `model`、`argument-hint`、`handoffs` 屬性
 
 ### VS Code / JetBrains / Eclipse / Xcode
+
 - ✅ 支援 AI 模型選擇的 `model` 屬性
 - ✅ 支援 `argument-hint` 和 `handoffs` 屬性
 - ✅ 使用者配置檔和工作區級代理

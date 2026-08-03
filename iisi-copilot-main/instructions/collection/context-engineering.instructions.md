@@ -1,6 +1,6 @@
 ---
-description: '透過更好的上下文管理，建立程式碼和專案結構以最大限度地提高 GitHub Copilot 的效用，並提供相關指南。'
-applyTo: '**'
+description: "透過更好的上下文管理，建立程式碼和專案結構以最大限度地提高 GitHub Copilot 的效用，並提供相關指南。"
+applyTo: "**"
 ---
 
 # Context Engineering
@@ -13,7 +13,7 @@ applyTo: '**'
 - **將相關代碼放在一起**：將組件、測試、類型和鉤子放在一起。一個搜索模式應該能找到所有相關內容。
 - **從 index 文件導出公共 API**：導出的內容是契約；未導出的內容是內部實現。這有助於 Copilot 理解邊界。
 
-## Code Patterns  代碼模式
+## Code Patterns 代碼模式
 
 - **優先使用明確類型而非推斷**：類型註解是上下文。`function getUser(id: string): Promise<User>` 比 `function getUser(id)` 告訴 Copilot 更多信息。
 - **使用語義化名稱**：`activeAdultUsers` > `x`。自我描述的代碼是 AI 可讀的代碼。

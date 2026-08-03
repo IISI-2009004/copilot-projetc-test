@@ -61,14 +61,14 @@ claude-mem 是一套**持久化記憶壓縮系統（Persistent Memory Compressio
 
 **核心定位**：
 
-| 面向 | 說明 |
-|------|------|
-| 類型 | Claude Code Plugin / AI Agent Memory Layer |
-| 語言 | TypeScript（91.5%） |
-| 執行環境 | Node.js 20+ / Bun |
-| 儲存層 | SQLite + FTS5 + Chroma（可選） |
-| 授權 | Apache License 2.0 |
-| 社群規模 | 77.9k+ Stars、6.7k+ Forks、109+ 貢獻者 |
+| 面向     | 說明                                       |
+| -------- | ------------------------------------------ |
+| 類型     | Claude Code Plugin / AI Agent Memory Layer |
+| 語言     | TypeScript（91.5%）                        |
+| 執行環境 | Node.js 20+ / Bun                          |
+| 儲存層   | SQLite + FTS5 + Chroma（可選）             |
+| 授權     | Apache License 2.0                         |
+| 社群規模 | 77.9k+ Stars、6.7k+ Forks、109+ 貢獻者     |
 
 ## 1.2 解決什麼問題
 
@@ -107,27 +107,27 @@ graph TD
     A --> C[重複犯相同錯誤]
     A --> D[無法追蹤長期任務]
     A --> E[Token 浪費]
-    
+
     F[AI Agent 有長期記憶] --> G[自動恢復專案上下文]
     F --> H[記住已解決的問題]
     F --> I[維持多 Session 任務連續性]
     F --> J[Token 節省 10 倍以上]
-    
+
     style A fill:#f66,stroke:#333,color:#fff
     style F fill:#6f6,stroke:#333,color:#fff
 ```
 
 ## 1.4 適合的使用場景
 
-| 場景 | 適合程度 | 說明 |
-|------|----------|------|
-| 長期專案開發 | ⭐⭐⭐⭐⭐ | 跨數週/數月的持續開發，記憶價值最高 |
-| 逆向工程分析 | ⭐⭐⭐⭐⭐ | Legacy 系統分析結果不易重建，記憶極為重要 |
+| 場景           | 適合程度   | 說明                                        |
+| -------------- | ---------- | ------------------------------------------- |
+| 長期專案開發   | ⭐⭐⭐⭐⭐ | 跨數週/數月的持續開發，記憶價值最高         |
+| 逆向工程分析   | ⭐⭐⭐⭐⭐ | Legacy 系統分析結果不易重建，記憶極為重要   |
 | Framework 升級 | ⭐⭐⭐⭐⭐ | Breaking Changes 知識、Migration 策略需保存 |
-| Bug 追蹤修復 | ⭐⭐⭐⭐ | 記住已嘗試的方案、已排除的原因 |
-| 架構設計 | ⭐⭐⭐⭐ | 保存設計決策與 Trade-off 分析 |
-| 一次性腳本 | ⭐⭐ | 短期任務，記憶價值較低 |
-| 簡單程式碼生成 | ⭐ | 不需跨 Session 記憶 |
+| Bug 追蹤修復   | ⭐⭐⭐⭐   | 記住已嘗試的方案、已排除的原因              |
+| 架構設計       | ⭐⭐⭐⭐   | 保存設計決策與 Trade-off 分析               |
+| 一次性腳本     | ⭐⭐       | 短期任務，記憶價值較低                      |
+| 簡單程式碼生成 | ⭐         | 不需跨 Session 記憶                         |
 
 > **實務建議**：對於超過 3 個 Session 的任何開發任務，都建議啟用 claude-mem。記憶的複利效應會隨時間指數增長。
 
@@ -193,13 +193,13 @@ graph TB
 
 ### 架構設計原則
 
-| 原則 | 實作方式 |
-|------|----------|
-| **非阻塞（Non-blocking）** | IDE 的 HTTP 呼叫設定 2 秒 Timeout，使用 fire-and-forget 模式 |
-| **事件驅動（Event-driven）** | Worker 使用事件佇列處理觀察記錄，零延遲通知 SDK Agent |
-| **冪等操作（Idempotent）** | Session 建立使用 `INSERT OR IGNORE`，確保重複呼叫安全 |
-| **邊緣處理（Edge Processing）** | 隱私標籤在 Hook 層即被移除，敏感資料不進入 Worker |
-| **漸進式揭露（Progressive Disclosure）** | 搜尋從低 Token 索引開始，按需深入取得完整內容 |
+| 原則                                     | 實作方式                                                     |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| **非阻塞（Non-blocking）**               | IDE 的 HTTP 呼叫設定 2 秒 Timeout，使用 fire-and-forget 模式 |
+| **事件驅動（Event-driven）**             | Worker 使用事件佇列處理觀察記錄，零延遲通知 SDK Agent        |
+| **冪等操作（Idempotent）**               | Session 建立使用 `INSERT OR IGNORE`，確保重複呼叫安全        |
+| **邊緣處理（Edge Processing）**          | 隱私標籤在 Hook 層即被移除，敏感資料不進入 Worker            |
+| **漸進式揭露（Progressive Disclosure）** | 搜尋從低 Token 索引開始，按需深入取得完整內容                |
 
 ## 2.2 Memory Pipeline（記憶管線）
 
@@ -268,26 +268,26 @@ sequenceDiagram
 
 ### 觀察類型（Observation Types）
 
-| 類型 | 說明 | 典型場景 |
-|------|------|----------|
-| `decision` | 架構或設計決策 | 選擇 REST 而非 GraphQL |
-| `bugfix` | Bug 修復 | 修正 NullPointerException |
-| `feature` | 新功能 | 新增使用者註冊 API |
-| `refactor` | 程式重構 | 抽取共用方法 |
-| `discovery` | 程式碼探索發現 | 理解 Legacy 程式碼邏輯 |
-| `change` | 一般性變更 | 更新設定檔 |
+| 類型        | 說明           | 典型場景                  |
+| ----------- | -------------- | ------------------------- |
+| `decision`  | 架構或設計決策 | 選擇 REST 而非 GraphQL    |
+| `bugfix`    | Bug 修復       | 修正 NullPointerException |
+| `feature`   | 新功能         | 新增使用者註冊 API        |
+| `refactor`  | 程式重構       | 抽取共用方法              |
+| `discovery` | 程式碼探索發現 | 理解 Legacy 程式碼邏輯    |
+| `change`    | 一般性變更     | 更新設定檔                |
 
 ### 概念標籤（Concepts）
 
-| 標籤 | 說明 |
-|------|------|
-| `how-it-works` | 系統行為解釋 |
-| `why-it-exists` | 程式碼/設計的存在理由 |
-| `what-changed` | 變更摘要 |
-| `problem-solution` | 問題與解決方案配對 |
-| `gotcha` | 陷阱與注意事項 |
-| `pattern` | 重複出現的模式 |
-| `trade-off` | 設計取捨 |
+| 標籤               | 說明                  |
+| ------------------ | --------------------- |
+| `how-it-works`     | 系統行為解釋          |
+| `why-it-exists`    | 程式碼/設計的存在理由 |
+| `what-changed`     | 變更摘要              |
+| `problem-solution` | 問題與解決方案配對    |
+| `gotcha`           | 陷阱與注意事項        |
+| `pattern`          | 重複出現的模式        |
+| `trade-off`        | 設計取捨              |
 
 ## 2.4 Session 生命週期
 
@@ -330,13 +330,13 @@ stateDiagram-v2
 
 ## 3.1 系統需求
 
-| 元件 | 最低版本 | 說明 |
-|------|----------|------|
-| Node.js | 20.0.0+ | JavaScript 執行環境（LTS 版本推薦） |
-| Bun | ≥ 1.0 | JavaScript Runtime 及 Process Manager（安裝時自動下載） |
-| uv | 最新版 | Python 套件管理器，供 Chroma 向量搜尋使用（自動安裝） |
-| SQLite 3 | 內建 | 透過 `bun:sqlite` 驅動，無需額外安裝 |
-| 支援 IDE | 最新版 | Claude Code、Cursor、Gemini CLI、Windsurf、OpenCode、Codex CLI、OpenClaw |
+| 元件     | 最低版本 | 說明                                                                     |
+| -------- | -------- | ------------------------------------------------------------------------ |
+| Node.js  | 20.0.0+  | JavaScript 執行環境（LTS 版本推薦）                                      |
+| Bun      | ≥ 1.0    | JavaScript Runtime 及 Process Manager（安裝時自動下載）                  |
+| uv       | 最新版   | Python 套件管理器，供 Chroma 向量搜尋使用（自動安裝）                    |
+| SQLite 3 | 內建     | 透過 `bun:sqlite` 驅動，無需額外安裝                                     |
+| 支援 IDE | 最新版   | Claude Code、Cursor、Gemini CLI、Windsurf、OpenCode、Codex CLI、OpenClaw |
 
 ## 3.2 Windows 安裝
 
@@ -545,24 +545,24 @@ claude-mem 的設定集中管理於 `~/.claude-mem/settings.json`，首次執行
 
 ### 參數詳解
 
-| 參數 | 預設值 | 說明 |
-|------|--------|------|
-| `CLAUDE_MEM_MODEL` | `claude-haiku-4-5-20251001` | 用於壓縮觀察記錄的 Claude 模型。Haiku 快且便宜，Sonnet 平衡，Opus 最高品質 |
-| `CLAUDE_MEM_PROVIDER` | `claude` | AI Provider：`claude`、`gemini`、`openrouter` |
-| `CLAUDE_MEM_MODE` | `code` | 工作流模式。`code` 為預設英文，`code--zh` 簡體中文，`code--ja` 日文 |
-| `CLAUDE_MEM_WORKER_PORT` | `37700 + (uid % 100)` | Worker HTTP 服務的 Port。預設依使用者 UID 自動分配，避免多使用者衝突 |
-| `CLAUDE_MEM_DATA_DIR` | `~/.claude-mem` | 資料根目錄，所有其他路徑由此衍生 |
-| `CLAUDE_MEM_LOG_LEVEL` | `INFO` | 日誌等級：`DEBUG`、`INFO`、`WARN`、`ERROR`、`SILENT` |
-| `CLAUDE_MEM_SKIP_TOOLS` | 見上方 | 逗號分隔的排除工具清單，這些工具的使用不會被記錄 |
+| 參數                     | 預設值                      | 說明                                                                       |
+| ------------------------ | --------------------------- | -------------------------------------------------------------------------- |
+| `CLAUDE_MEM_MODEL`       | `claude-haiku-4-5-20251001` | 用於壓縮觀察記錄的 Claude 模型。Haiku 快且便宜，Sonnet 平衡，Opus 最高品質 |
+| `CLAUDE_MEM_PROVIDER`    | `claude`                    | AI Provider：`claude`、`gemini`、`openrouter`                              |
+| `CLAUDE_MEM_MODE`        | `code`                      | 工作流模式。`code` 為預設英文，`code--zh` 簡體中文，`code--ja` 日文        |
+| `CLAUDE_MEM_WORKER_PORT` | `37700 + (uid % 100)`       | Worker HTTP 服務的 Port。預設依使用者 UID 自動分配，避免多使用者衝突       |
+| `CLAUDE_MEM_DATA_DIR`    | `~/.claude-mem`             | 資料根目錄，所有其他路徑由此衍生                                           |
+| `CLAUDE_MEM_LOG_LEVEL`   | `INFO`                      | 日誌等級：`DEBUG`、`INFO`、`WARN`、`ERROR`、`SILENT`                       |
+| `CLAUDE_MEM_SKIP_TOOLS`  | 見上方                      | 逗號分隔的排除工具清單，這些工具的使用不會被記錄                           |
 
 ### Context Injection 設定
 
-| 參數 | 預設值 | 範圍 | 說明 |
-|------|--------|------|------|
-| `CLAUDE_MEM_CONTEXT_OBSERVATIONS` | `50` | 1-200 | 注入的觀察記錄總數 |
-| `CLAUDE_MEM_CONTEXT_SESSION_COUNT` | `10` | 1-50 | 從最近幾個 Session 中提取 |
-| `CLAUDE_MEM_CONTEXT_FULL_COUNT` | `5` | 0-20 | 展開完整內容的觀察記錄數 |
-| `CLAUDE_MEM_CONTEXT_FULL_FIELD` | `narrative` | `narrative` / `facts` | 展開哪個欄位的完整內容 |
+| 參數                               | 預設值      | 範圍                  | 說明                      |
+| ---------------------------------- | ----------- | --------------------- | ------------------------- |
+| `CLAUDE_MEM_CONTEXT_OBSERVATIONS`  | `50`        | 1-200                 | 注入的觀察記錄總數        |
+| `CLAUDE_MEM_CONTEXT_SESSION_COUNT` | `10`        | 1-50                  | 從最近幾個 Session 中提取 |
+| `CLAUDE_MEM_CONTEXT_FULL_COUNT`    | `5`         | 0-20                  | 展開完整內容的觀察記錄數  |
+| `CLAUDE_MEM_CONTEXT_FULL_FIELD`    | `narrative` | `narrative` / `facts` | 展開哪個欄位的完整內容    |
 
 > **實務建議**：
 >
@@ -583,6 +583,7 @@ claude-mem 的設定集中管理於 `~/.claude-mem/settings.json`，首次執行
 ```
 
 認證方式：
+
 - `subscription`：使用 Claude Code 訂閱認證（最簡單）
 - `api-key`：使用 Anthropic API Key
 - `gateway`：透過 LiteLLM Gateway
@@ -636,12 +637,12 @@ ANTHROPIC_AUTH_TOKEN=your-litellm-key
 }
 ```
 
-| 模式 | 說明 |
-|------|------|
-| `code` | 預設英文模式 |
-| `code--zh` | 簡體中文模式（內建） |
-| `code--ja` | 日文模式 |
-| `code--es` | 西班牙文模式 |
+| 模式           | 說明                                     |
+| -------------- | ---------------------------------------- |
+| `code`         | 預設英文模式                             |
+| `code--zh`     | 簡體中文模式（內建）                     |
+| `code--ja`     | 日文模式                                 |
+| `code--es`     | 西班牙文模式                             |
 | `code--[lang]` | 自訂語言，`[lang]` 為 ISO 639-1 語言代碼 |
 
 更改模式後需重啟 Claude Code 才能生效。
@@ -736,12 +737,12 @@ MCP 設定位於 Plugin 目錄下的 `.mcp.json`：
 ```typescript
 // 請求
 search({
-  query: "authentication bug",    // 搜尋關鍵字
-  type: "bugfix",                 // 篩選觀察類型（可選）
-  limit: 10,                      // 結果數量上限
-  project: "my-project",          // 篩選專案（可選）
-  date_range: "7d"                // 時間範圍（可選）
-})
+  query: "authentication bug", // 搜尋關鍵字
+  type: "bugfix", // 篩選觀察類型（可選）
+  limit: 10, // 結果數量上限
+  project: "my-project", // 篩選專案（可選）
+  date_range: "7d", // 時間範圍（可選）
+});
 
 // 回應（~50-100 tokens/筆）
 // ID | Title                              | Type    | Date
@@ -756,11 +757,11 @@ search({
 ```typescript
 // 請求
 timeline({
-  anchor: 123,          // 錨定的觀察記錄 ID
-  depth_before: 5,      // 向前看 5 筆
-  depth_after: 5,       // 向後看 5 筆
-  project: "my-project" // 篩選專案（可選）
-})
+  anchor: 123, // 錨定的觀察記錄 ID
+  depth_before: 5, // 向前看 5 筆
+  depth_after: 5, // 向後看 5 筆
+  project: "my-project", // 篩選專案（可選）
+});
 
 // 回應：以時間順序顯示 anchor 前後的觀察記錄
 ```
@@ -772,10 +773,10 @@ timeline({
 ```typescript
 // 請求（永遠批次查詢多個 ID）
 get_observations({
-  ids: [123, 456],       // 觀察記錄 ID 陣列
+  ids: [123, 456], // 觀察記錄 ID 陣列
   orderBy: "created_at", // 排序方式
-  project: "my-project"  // 篩選專案（可選）
-})
+  project: "my-project", // 篩選專案（可選）
+});
 
 // 回應（~500-1,000 tokens/筆）：完整的 title、narrative、facts、concepts、files
 ```
@@ -861,14 +862,14 @@ search(query="CORS", limit=10)
 
 **進階篩選參數**：
 
-| 參數 | 說明 | 範例 |
-|------|------|------|
-| `query` | 全文搜尋關鍵字 | `"CORS preflight"` |
-| `type` | 觀察類型篩選 | `"bugfix"` |
-| `limit` | 結果數量上限 | `10` |
-| `project` | 專案名稱篩選 | `"my-spring-app"` |
-| `date_range` | 時間範圍 | `"7d"`、`"30d"` |
-| `offset` | 分頁偏移量 | `5`（從第 6 筆開始） |
+| 參數         | 說明           | 範例                 |
+| ------------ | -------------- | -------------------- |
+| `query`      | 全文搜尋關鍵字 | `"CORS preflight"`   |
+| `type`       | 觀察類型篩選   | `"bugfix"`           |
+| `limit`      | 結果數量上限   | `10`                 |
+| `project`    | 專案名稱篩選   | `"my-spring-app"`    |
+| `date_range` | 時間範圍       | `"7d"`、`"30d"`      |
+| `offset`     | 分頁偏移量     | `5`（從第 6 筆開始） |
 
 ## 6.3 Layer 2：timeline（時間軸上下文）
 
@@ -912,11 +913,11 @@ get_observations(ids=[567, 570])
 
 ### Token 成本比較
 
-| 策略 | 查詢 10 筆 | 選取 2 筆 | 總成本 | 節省率 |
-|------|-----------|-----------|--------|--------|
-| 直接取全部 | — | 10 × 800 = 8,000 | **8,000** | 基準 |
-| 3-Layer | 10 × 75 = 750 | 2 × 800 = 1,600 | **2,350** | **71%** |
-| 3-Layer + timeline | 750 + 300 | 2 × 800 = 1,600 | **2,650** | **67%** |
+| 策略               | 查詢 10 筆    | 選取 2 筆        | 總成本    | 節省率  |
+| ------------------ | ------------- | ---------------- | --------- | ------- |
+| 直接取全部         | —             | 10 × 800 = 8,000 | **8,000** | 基準    |
+| 3-Layer            | 10 × 75 = 750 | 2 × 800 = 1,600  | **2,350** | **71%** |
+| 3-Layer + timeline | 750 + 300     | 2 × 800 = 1,600  | **2,650** | **67%** |
 
 ### 最佳實務
 
@@ -1053,13 +1054,13 @@ claude-mem 自動依專案名稱（cwd 的 basename）分隔記憶
 
 GitHub Copilot 與 claude-mem 可以形成互補的 AI 開發組合：
 
-| 能力 | GitHub Copilot | claude-mem |
-|------|---------------|------------|
-| 即時程式碼補全 | ✅ 核心能力 | ❌ 非此用途 |
-| 跨 Session 記憶 | ❌ 無原生支援 | ✅ 核心能力 |
-| 架構理解 | ⚠️ 僅限當前上下文 | ✅ 累積性架構記憶 |
-| Bug 歷史 | ❌ 無法追溯 | ✅ 完整修復歷史 |
-| 團隊知識共享 | ⚠️ 有限（透過 Instructions） | ⚠️ 每人獨立記憶 |
+| 能力            | GitHub Copilot               | claude-mem        |
+| --------------- | ---------------------------- | ----------------- |
+| 即時程式碼補全  | ✅ 核心能力                  | ❌ 非此用途       |
+| 跨 Session 記憶 | ❌ 無原生支援                | ✅ 核心能力       |
+| 架構理解        | ⚠️ 僅限當前上下文            | ✅ 累積性架構記憶 |
+| Bug 歷史        | ❌ 無法追溯                  | ✅ 完整修復歷史   |
+| 團隊知識共享    | ⚠️ 有限（透過 Instructions） | ⚠️ 每人獨立記憶   |
 
 ### 建議的協作工作流
 
@@ -1106,8 +1107,8 @@ graph TD
 
 # 範例：從 SQLite 匯出最重要的發現
 sqlite3 ~/.claude-mem/claude-mem.db \
-  "SELECT title, narrative FROM observations 
-   WHERE type IN ('decision', 'discovery') 
+  "SELECT title, narrative FROM observations
+   WHERE type IN ('decision', 'discovery')
    AND project='my-project'
    ORDER BY created_at_epoch DESC LIMIT 10;"
 ```
@@ -1249,11 +1250,11 @@ observation #45 (type: bugfix)
 
 ## 9.5 前端框架的記憶累積比較
 
-| 前端框架 | 常見記憶類型 | 典型觀察記錄範例 |
-|---------|------------|----------------|
-| Vue 3 | Composition API 模式 | `ref()` vs `reactive()` 的選擇時機 |
-| React | Hooks 使用模式 | `useEffect` 清理函數的必要性 |
-| Angular | RxJS 管線 | `switchMap` vs `mergeMap` 的場景選擇 |
+| 前端框架 | 常見記憶類型         | 典型觀察記錄範例                     |
+| -------- | -------------------- | ------------------------------------ |
+| Vue 3    | Composition API 模式 | `ref()` vs `reactive()` 的選擇時機   |
+| React    | Hooks 使用模式       | `useEffect` 清理函數的必要性         |
+| Angular  | RxJS 管線            | `switchMap` vs `mergeMap` 的場景選擇 |
 
 > **實務建議**：在 Day 1 就讓 Claude 完整檢視專案結構，產生高品質的初始觀察記錄。這些記憶將成為後續所有 Session 的基礎。
 
@@ -1339,21 +1340,21 @@ observation #38 (type: discovery)
 
 經過 10 個 Session 後，claude-mem 累積了 ~80 個觀察記錄：
 
-| 類型 | 數量 | 價值 |
-|------|------|------|
-| discovery | 25 | 架構理解、技術棧盤點 |
-| decision | 15 | 現代化策略選擇 |
-| bugfix | 10 | 潛在問題標記 |
-| refactor | 20 | 重構機會清單 |
-| feature | 10 | 功能映射 |
+| 類型      | 數量 | 價值                 |
+| --------- | ---- | -------------------- |
+| discovery | 25   | 架構理解、技術棧盤點 |
+| decision  | 15   | 現代化策略選擇       |
+| bugfix    | 10   | 潛在問題標記         |
+| refactor  | 20   | 重構機會清單         |
+| feature   | 10   | 功能映射             |
 
 **匯出為架構文件**：
 
 ```sql
 -- 從 SQLite 匯出重要的發現
-SELECT type, title, narrative 
-FROM observations 
-WHERE project = 'legacy-javaee-app' 
+SELECT type, title, narrative
+FROM observations
+WHERE project = 'legacy-javaee-app'
   AND type IN ('discovery', 'decision')
 ORDER BY created_at_epoch;
 ```
@@ -1456,7 +1457,7 @@ observation #18 (type: refactor)
 **匯出升級指南**：
 
 ```sql
-SELECT type, title, 
+SELECT type, title,
        GROUP_CONCAT(facts, '; ') as key_facts
 FROM observations
 WHERE project = 'my-spring-boot-app'
@@ -1466,6 +1467,7 @@ ORDER BY created_at_epoch;
 ```
 
 **這些記憶的長期價值**：
+
 - 下次升級另一個 Spring Boot 專案時，Claude 可以參考這些記憶
 - 團隊其他成員遇到類似問題時，可透過 search 找到解決方案
 - 觀察記錄成為「活的升級文件」
@@ -1500,15 +1502,16 @@ pie title Token 消耗分布（典型 Session）
 }
 ```
 
-| 參數 | 預設值 | 建議範圍 | 影響 |
-|------|--------|---------|------|
-| `CONTEXT_OBSERVATIONS` | 50 | 20-100 | 注入的觀察記錄數量上限 |
-| `CONTEXT_SESSION_COUNT` | 10 | 3-20 | 參考的歷史 Session 數量 |
-| `CONTEXT_MAX_TOKENS` | 4000 | 2000-8000 | 注入上下文的 Token 上限 |
+| 參數                    | 預設值 | 建議範圍  | 影響                    |
+| ----------------------- | ------ | --------- | ----------------------- |
+| `CONTEXT_OBSERVATIONS`  | 50     | 20-100    | 注入的觀察記錄數量上限  |
+| `CONTEXT_SESSION_COUNT` | 10     | 3-20      | 參考的歷史 Session 數量 |
+| `CONTEXT_MAX_TOKENS`    | 4000   | 2000-8000 | 注入上下文的 Token 上限 |
 
 ### 壓縮與展開比例
 
 claude-mem 使用兩層注入策略：
+
 - **壓縮層**（大部分記錄）：僅注入標題 + 類型 + 日期，~50 tokens/筆
 - **展開層**（最近 5 筆）：注入完整內容，~500 tokens/筆
 
@@ -1525,17 +1528,23 @@ claude-mem 使用兩層注入策略：
 **最佳化策略**：
 
 1. **擴大 Skip List**：將低價值工具加入跳過清單
+
    ```json
    {
      "skipTools": [
-       "ListMcpResourcesTool", "SlashCommand", "Skill",
-       "TodoWrite", "AskUserQuestion",
-       "ListDirectory", "SearchFiles"
+       "ListMcpResourcesTool",
+       "SlashCommand",
+       "Skill",
+       "TodoWrite",
+       "AskUserQuestion",
+       "ListDirectory",
+       "SearchFiles"
      ]
    }
    ```
 
 2. **選擇更小的壓縮模型**：
+
    ```json
    {
      "CLAUDE_MEM_MODEL": "haiku-4-5",
@@ -1552,11 +1561,11 @@ claude-mem 使用兩層注入策略：
 
 ## 12.4 Token 預算規劃
 
-| 專案規模 | 每日 Session 數 | 每日觀察記錄 | 每日 Token 消耗 | 月成本估算 |
-|---------|----------------|-------------|----------------|-----------|
-| 小型（個人） | 2-3 | 15-25 | ~30K | ~$0.50 |
-| 中型（團隊） | 5-8 | 40-60 | ~80K | ~$1.50 |
-| 大型（企業） | 10+ | 80-120 | ~150K | ~$3.00 |
+| 專案規模     | 每日 Session 數 | 每日觀察記錄 | 每日 Token 消耗 | 月成本估算 |
+| ------------ | --------------- | ------------ | --------------- | ---------- |
+| 小型（個人） | 2-3             | 15-25        | ~30K            | ~$0.50     |
+| 中型（團隊） | 5-8             | 40-60        | ~80K            | ~$1.50     |
+| 大型（企業） | 10+             | 80-120       | ~150K           | ~$3.00     |
 
 > **注意**：以上為 claude-mem 本身的 Token 消耗（壓縮 + 注入），不包含 Claude Code 主模型的 Token 消耗。
 
@@ -1655,12 +1664,12 @@ graph TD
 
 ## 13.4 安全性考量
 
-| 層面 | 措施 | 實作方式 |
-|------|------|---------|
-| 資料駐留 | 本地 SQLite | 記憶永遠不離開開發者機器 |
-| 敏感資料 | `<private>` 標籤 | 在 Hook 層邊緣處理，不送出 |
-| API 存取 | LiteLLM Gateway | 統一管理金鑰，開發者不接觸 API Key |
-| 稽核 | Worker 日誌 | 每次觀察記錄建立都有 audit trail |
+| 層面     | 措施             | 實作方式                           |
+| -------- | ---------------- | ---------------------------------- |
+| 資料駐留 | 本地 SQLite      | 記憶永遠不離開開發者機器           |
+| 敏感資料 | `<private>` 標籤 | 在 Hook 層邊緣處理，不送出         |
+| API 存取 | LiteLLM Gateway  | 統一管理金鑰，開發者不接觸 API Key |
+| 稽核     | Worker 日誌      | 每次觀察記錄建立都有 audit trail   |
 
 ---
 
@@ -1759,11 +1768,11 @@ WHERE observations_fts MATCH 'CORS'
 ORDER BY rank;
 
 -- 搜尋包含 Spring Boot AND 升級 的記錄
-SELECT * FROM observations_fts 
+SELECT * FROM observations_fts
 WHERE observations_fts MATCH 'Spring Boot AND 升級';
 
 -- 模糊搜尋（前綴匹配）
-SELECT * FROM observations_fts 
+SELECT * FROM observations_fts
 WHERE observations_fts MATCH 'Secur*';
 ```
 
@@ -1776,6 +1785,7 @@ PRAGMA journal_mode=WAL;
 ```
 
 **優勢**：
+
 - 讀取不會阻塞寫入
 - 寫入不會阻塞讀取
 - 適合 claude-mem 的「多 Hook 同時寫入 + MCP 同時查詢」場景
@@ -1846,15 +1856,15 @@ stateDiagram-v2
 
 ### Hook 階段摘要
 
-| 階段 | Hook 檔案 | 觸發時機 | 功能 |
-|------|-----------|----------|------|
-| Setup | version-check | Claude Code 啟動 | sub-100ms 版本檢查，不安裝任何東西 |
-| SessionStart | context-hook.js | Session 開始 | 啟動 Worker + 注入歷史記憶 |
-| UserPromptSubmit | new-hook.js | 使用者每次輸入 | 記錄 prompt，遞增 prompt_number |
+| 階段               | Hook 檔案       | 觸發時機            | 功能                                               |
+| ------------------ | --------------- | ------------------- | -------------------------------------------------- |
+| Setup              | version-check   | Claude Code 啟動    | sub-100ms 版本檢查，不安裝任何東西                 |
+| SessionStart       | context-hook.js | Session 開始        | 啟動 Worker + 注入歷史記憶                         |
+| UserPromptSubmit   | new-hook.js     | 使用者每次輸入      | 記錄 prompt，遞增 prompt_number                    |
 | PreToolUse（Read） | file-context.js | Claude 嘗試讀取檔案 | **File Read Gate**：攔截讀取，以觀察時間軸取代全文 |
-| PostToolUse | save-hook.js | 工具執行完成 | 壓縮並儲存觀察記錄 |
-| Stop | summary-hook.js | 使用者停止提問 | AI 生成 Session Summary |
-| SessionEnd | cleanup-hook.js | Session 結束 | 清理資源 |
+| PostToolUse        | save-hook.js    | 工具執行完成        | 壓縮並儲存觀察記錄                                 |
+| Stop               | summary-hook.js | 使用者停止提問      | AI 生成 Session Summary                            |
+| SessionEnd         | cleanup-hook.js | Session 結束        | 清理資源                                           |
 
 ## 15.2 Fire-and-Forget 模式
 
@@ -1881,6 +1891,7 @@ Worker 程式碼（獨立進程）
 ```
 
 **為什麼用 2s timeout？**
+
 - 如果 Worker 沒有啟動或崩潰，Claude Code 不應被阻塞
 - 記憶是「盡最大努力」的功能，不應影響主要工作流
 
@@ -1921,12 +1932,12 @@ stateDiagram-v2
     failed --> [*]: 超過重試次數
 ```
 
-| 狀態 | 說明 |
-|------|------|
-| `pending` | 剛收到，等待處理 |
+| 狀態         | 說明             |
+| ------------ | ---------------- |
+| `pending`    | 剛收到，等待處理 |
 | `processing` | 正在呼叫 AI 壓縮 |
-| `processed` | 成功寫入觀察記錄 |
-| `failed` | 處理失敗 |
+| `processed`  | 成功寫入觀察記錄 |
+| `failed`     | 處理失敗         |
 
 ---
 
@@ -1964,19 +1975,23 @@ sequenceDiagram
 ## 最近的開發記憶
 
 ### 最近 Session 摘要
+
 - [2026-05-20] 完成了使用者註冊 API 的實作，下一步需要加入 Email 驗證
 - [2026-05-19] 修復了 JWT Token 時區問題，學到 ZonedDateTime 的重要性
 - [2026-05-18] 建立了專案基礎架構，選擇 Spring Boot 3.3 + Vue 3
 
 ### 關鍵觀察記錄（壓縮）
-| ID | Title | Type | Date |
-|----|-------|------|------|
-| 45 | 修復薪資欄位精度問題 | bugfix | 05-20 |
-| 38 | Employee CRUD API 完成 | feature | 05-19 |
-| ... | ... | ... | ... |
+
+| ID  | Title                  | Type    | Date  |
+| --- | ---------------------- | ------- | ----- |
+| 45  | 修復薪資欄位精度問題   | bugfix  | 05-20 |
+| 38  | Employee CRUD API 完成 | feature | 05-19 |
+| ... | ...                    | ...     | ...   |
 
 ### 最近觀察記錄（展開，最新 5 筆）
+
 #### #45: 修復薪資欄位精度問題
+
 - **type**: bugfix
 - **narrative**: 將 salary 從 Double 改為 BigDecimal...
 - **facts**: [Double 有精度問題, BigDecimal 是正確選擇]
@@ -2001,6 +2016,7 @@ save-hook.js 檢查內容：
 ```
 
 **為什麼重要？** 如果沒有這個防護，claude-mem 會把自己注入的記憶重新記錄一次，造成：
+
 - 記憶膨脹（每個 Session 都會複製前一個 Session 的記憶）
 - Token 浪費（壓縮已壓縮過的內容）
 - 資訊退化（多次壓縮會遺失細節）
@@ -2101,12 +2117,12 @@ Hook 層（邊緣處理）：
 
 ## 17.3 Anti-Patterns（應避免的做法）
 
-| Anti-Pattern | 問題 | 正確做法 |
-|-------------|------|---------|
-| 頻繁 `/clear` | 中斷 Session 連續性 | 讓 Session 自然結束 |
-| 過於瑣碎的請求 | 產生低價值觀察記錄 | 合併相關操作到同一請求 |
-| 不提供上下文 | 觀察記錄缺乏敘事性 | 明確說明意圖和背景 |
-| 同時開多個 Claude | Worker 可能收到混亂的訊號 | 一次一個 Session |
+| Anti-Pattern      | 問題                      | 正確做法               |
+| ----------------- | ------------------------- | ---------------------- |
+| 頻繁 `/clear`     | 中斷 Session 連續性       | 讓 Session 自然結束    |
+| 過於瑣碎的請求    | 產生低價值觀察記錄        | 合併相關操作到同一請求 |
+| 不提供上下文      | 觀察記錄缺乏敘事性        | 明確說明意圖和背景     |
+| 同時開多個 Claude | Worker 可能收到混亂的訊號 | 一次一個 Session       |
 
 ---
 
@@ -2151,25 +2167,30 @@ graph LR
 # claude-mem 團隊使用約定
 
 ## 1. 安裝
+
 - 全團隊使用統一版本
 - settings.json 由 Tech Lead 維護模板
 - 每人使用個人的 API Key（或統一走 LiteLLM）
 
 ## 2. 專案命名
+
 - 使用 Git repo 名稱作為專案名稱（自動）
 - 若同一 repo 有多個模組，在不同目錄下作業
 
 ## 3. 知識共享
+
 - 每週五審閱觀察記錄，匯出重要發現到 Wiki
 - 架構決策 (type: decision) 同步到 ADR 文件
 - Bug 修復 (type: bugfix) 同步到 Known Issues 清單
 
 ## 4. 安全性
+
 - 敏感資訊一律使用 <private> 標籤
 - 不在觀察記錄中留下密碼、API Key
 - 定期清理過舊的觀察記錄（> 90 天）
 
 ## 5. Token 預算
+
 - 每人每月 Token 預算：[金額]
 - 壓縮模型統一使用 haiku-4-5
 - Context Injection 上限：50 筆觀察 + 10 個 Session
@@ -2177,12 +2198,12 @@ graph LR
 
 ## 18.3 成效衡量
 
-| 指標 | 如何衡量 | 預期改善 |
-|------|---------|---------|
-| Session 啟動速度 | 第一次回答是否包含歷史上下文 | 消除前 5 分鐘的重新理解時間 |
-| 重複問題率 | 同一類型的 Bug 是否重複發生 | 降低 30-50% |
-| 架構一致性 | 觀察記錄中 decision 類型的參考頻率 | 團隊對齊率提升 |
-| 知識傳承 | 新人上手時間 | 縮短 20-40% |
+| 指標             | 如何衡量                           | 預期改善                    |
+| ---------------- | ---------------------------------- | --------------------------- |
+| Session 啟動速度 | 第一次回答是否包含歷史上下文       | 消除前 5 分鐘的重新理解時間 |
+| 重複問題率       | 同一類型的 Bug 是否重複發生        | 降低 30-50%                 |
+| 架構一致性       | 觀察記錄中 decision 類型的參考頻率 | 團隊對齊率提升              |
+| 知識傳承         | 新人上手時間                       | 縮短 20-40%                 |
 
 ---
 
@@ -2215,7 +2236,7 @@ sqlite3 ~/.claude-mem/claude-mem.db "VACUUM;"
 
 # 清理已處理的 pending messages
 sqlite3 ~/.claude-mem/claude-mem.db \
-  "DELETE FROM pending_messages WHERE state = 'processed' 
+  "DELETE FROM pending_messages WHERE state = 'processed'
    AND processed_at_epoch < strftime('%s','now','-7 days');"
 
 # 備份資料庫
@@ -2241,12 +2262,12 @@ sqlite3 ~/.claude-mem/claude-mem.db "PRAGMA integrity_check;"
 
 ## 19.3 常見維運問題
 
-| 問題 | 診斷 | 解法 |
-|------|------|------|
-| Worker 未啟動 | `curl localhost:37700/health` 失敗 | 手動啟動或檢查 port 衝突 |
-| 記憶未被記錄 | 檢查 pending_messages | 查看 failed 狀態的訊息 |
-| 資料庫過大 | `du -h ~/.claude-mem/claude-mem.db` | VACUUM + 清理舊記錄 |
-| Context Injection 失敗 | 檢查 Worker 日誌 | 確認 API Key 有效 |
+| 問題                   | 診斷                                | 解法                     |
+| ---------------------- | ----------------------------------- | ------------------------ |
+| Worker 未啟動          | `curl localhost:37700/health` 失敗  | 手動啟動或檢查 port 衝突 |
+| 記憶未被記錄           | 檢查 pending_messages               | 查看 failed 狀態的訊息   |
+| 資料庫過大             | `du -h ~/.claude-mem/claude-mem.db` | VACUUM + 清理舊記錄      |
+| Context Injection 失敗 | 檢查 Worker 日誌                    | 確認 API Key 有效        |
 
 ## 19.4 資料庫遷移
 
@@ -2268,30 +2289,30 @@ v12.x → v13.x 自動遷移：
 
 ## 20.1 安裝問題
 
-| 症狀 | 可能原因 | 解法 |
-|------|---------|------|
-| `npx claude-mem install` 失敗 | Node.js 版本過低 | 升級到 Node.js 20+ |
-| Bun 安裝失敗 | 網路問題或 OS 不支援 | 使用 `curl -fsSL https://bun.sh/install \| bash` |
-| Hook 未被載入 | `~/.claude/hooks/` 路徑錯誤 | 確認目錄結構，重新執行 setup |
-| 權限錯誤 | 檔案權限不足 | `chmod +x ~/.claude/hooks/*.js` |
+| 症狀                          | 可能原因                    | 解法                                             |
+| ----------------------------- | --------------------------- | ------------------------------------------------ |
+| `npx claude-mem install` 失敗 | Node.js 版本過低            | 升級到 Node.js 20+                               |
+| Bun 安裝失敗                  | 網路問題或 OS 不支援        | 使用 `curl -fsSL https://bun.sh/install \| bash` |
+| Hook 未被載入                 | `~/.claude/hooks/` 路徑錯誤 | 確認目錄結構，重新執行 setup                     |
+| 權限錯誤                      | 檔案權限不足                | `chmod +x ~/.claude/hooks/*.js`                  |
 
 ## 20.2 運行時問題
 
-| 症狀 | 可能原因 | 解法 |
-|------|---------|------|
-| Worker 無法啟動 | Port 被佔用 | `lsof -i :37700` 檢查，或改用 `CLAUDE_MEM_WORKER_PORT` |
-| 觀察記錄未產生 | API Key 無效 | 檢查 `CLAUDE_MEM_API_KEY` 設定 |
-| Context Injection 為空 | 資料庫是空的 | 確認之前的 Session 有正常結束 |
-| Token 消耗異常高 | Context 設定過大 | 降低 `CONTEXT_OBSERVATIONS` 和 `CONTEXT_SESSION_COUNT` |
-| FTS5 搜尋無結果 | 同步觸發器異常 | `sqlite3 ~/.claude-mem/claude-mem.db "INSERT INTO observations_fts(observations_fts) VALUES('rebuild');"` |
+| 症狀                   | 可能原因         | 解法                                                                                                      |
+| ---------------------- | ---------------- | --------------------------------------------------------------------------------------------------------- |
+| Worker 無法啟動        | Port 被佔用      | `lsof -i :37700` 檢查，或改用 `CLAUDE_MEM_WORKER_PORT`                                                    |
+| 觀察記錄未產生         | API Key 無效     | 檢查 `CLAUDE_MEM_API_KEY` 設定                                                                            |
+| Context Injection 為空 | 資料庫是空的     | 確認之前的 Session 有正常結束                                                                             |
+| Token 消耗異常高       | Context 設定過大 | 降低 `CONTEXT_OBSERVATIONS` 和 `CONTEXT_SESSION_COUNT`                                                    |
+| FTS5 搜尋無結果        | 同步觸發器異常   | `sqlite3 ~/.claude-mem/claude-mem.db "INSERT INTO observations_fts(observations_fts) VALUES('rebuild');"` |
 
 ## 20.3 效能問題
 
-| 症狀 | 可能原因 | 解法 |
-|------|---------|------|
-| Session 啟動慢 | 資料庫過大 | VACUUM + 清理舊記錄 |
-| 搜尋慢 | FTS5 索引碎片化 | 重建 FTS5 索引 |
-| Worker 記憶體高 | 長時間運行 | 重啟 Worker |
+| 症狀            | 可能原因        | 解法                |
+| --------------- | --------------- | ------------------- |
+| Session 啟動慢  | 資料庫過大      | VACUUM + 清理舊記錄 |
+| 搜尋慢          | FTS5 索引碎片化 | 重建 FTS5 索引      |
+| Worker 記憶體高 | 長時間運行      | 重啟 Worker         |
 
 ## 20.4 日誌位置
 
@@ -2386,12 +2407,12 @@ graph TD
 
 ## 22.3 合規性考量
 
-| 需求 | claude-mem 對策 |
-|------|----------------|
-| GDPR | 資料完全本地，使用者可隨時刪除 |
-| SOC 2 | API 存取可透過 LiteLLM 集中稽核 |
-| 內部資安政策 | `<private>` 標籤 + 邊緣處理 |
-| 資料保留 | 可設定自動清理策略 |
+| 需求         | claude-mem 對策                 |
+| ------------ | ------------------------------- |
+| GDPR         | 資料完全本地，使用者可隨時刪除  |
+| SOC 2        | API 存取可透過 LiteLLM 集中稽核 |
+| 內部資安政策 | `<private>` 標籤 + 邊緣處理     |
+| 資料保留     | 可設定自動清理策略              |
 
 ---
 
@@ -2399,12 +2420,12 @@ graph TD
 
 ## 23.1 效能瓶頸分析
 
-| 瓶頸 | 影響 | 調校方式 |
-|------|------|---------|
-| Context Injection 過大 | Session 啟動慢 | 降低 `CONTEXT_OBSERVATIONS` |
-| 觀察記錄過多 | 搜尋變慢 | 定期清理 + FTS5 rebuild |
-| AI 壓縮延遲 | pending 佇列堆積 | 使用更快的模型（haiku） |
-| SQLite 檔案過大 | 磁碟 I/O 增加 | VACUUM + 清理舊資料 |
+| 瓶頸                   | 影響             | 調校方式                    |
+| ---------------------- | ---------------- | --------------------------- |
+| Context Injection 過大 | Session 啟動慢   | 降低 `CONTEXT_OBSERVATIONS` |
+| 觀察記錄過多           | 搜尋變慢         | 定期清理 + FTS5 rebuild     |
+| AI 壓縮延遲            | pending 佇列堆積 | 使用更快的模型（haiku）     |
+| SQLite 檔案過大        | 磁碟 I/O 增加    | VACUUM + 清理舊資料         |
 
 ## 23.2 調校參數參考
 
@@ -2430,10 +2451,10 @@ graph TD
 
 ```sql
 -- 檢查表格大小
-SELECT name, 
+SELECT name,
        SUM(pgsize) as size_bytes
-FROM dbstat 
-GROUP BY name 
+FROM dbstat
+GROUP BY name
 ORDER BY size_bytes DESC;
 
 -- 重建 FTS5 索引
@@ -2452,26 +2473,28 @@ SELECT * FROM observations WHERE project = 'my-app' ORDER BY created_at_epoch DE
 
 ## 24.1 AI 記憶工具比較表
 
-| 特性 | claude-mem | Mem0 | Zep | LangMem | Letta |
-|------|-----------|------|-----|---------|-------|
-| 定位 | Claude Code 記憶 | 通用記憶層 | LLM 記憶管理 | LangChain 記憶 | 有狀態 Agent |
-| 儲存 | SQLite + Chroma | 向量 DB | PostgreSQL | 向量 DB | PostgreSQL |
-| 自動化程度 | 全自動（Hook） | 需手動呼叫 | 需手動呼叫 | 需手動呼叫 | 框架內建 |
-| Token 最佳化 | 3-Layer Workflow | 無 | 有壓縮 | 有摘要 | 有壓縮 |
-| 本地優先 | ✅ | ❌（雲端） | ❌（伺服器） | ❌（需 DB） | ❌（伺服器） |
-| 隱私保護 | `<private>` 邊緣處理 | API 層 | 伺服器層 | 無原生 | 伺服器層 |
-| 安裝複雜度 | 低（一條指令） | 中 | 高 | 中 | 高 |
-| 適合場景 | 個人/團隊開發 | 聊天機器人 | 企業 Agent | LangChain 應用 | 複雜 Agent |
+| 特性         | claude-mem           | Mem0       | Zep          | LangMem        | Letta        |
+| ------------ | -------------------- | ---------- | ------------ | -------------- | ------------ |
+| 定位         | Claude Code 記憶     | 通用記憶層 | LLM 記憶管理 | LangChain 記憶 | 有狀態 Agent |
+| 儲存         | SQLite + Chroma      | 向量 DB    | PostgreSQL   | 向量 DB        | PostgreSQL   |
+| 自動化程度   | 全自動（Hook）       | 需手動呼叫 | 需手動呼叫   | 需手動呼叫     | 框架內建     |
+| Token 最佳化 | 3-Layer Workflow     | 無         | 有壓縮       | 有摘要         | 有壓縮       |
+| 本地優先     | ✅                   | ❌（雲端） | ❌（伺服器） | ❌（需 DB）    | ❌（伺服器） |
+| 隱私保護     | `<private>` 邊緣處理 | API 層     | 伺服器層     | 無原生         | 伺服器層     |
+| 安裝複雜度   | 低（一條指令）       | 中         | 高           | 中             | 高           |
+| 適合場景     | 個人/團隊開發        | 聊天機器人 | 企業 Agent   | LangChain 應用 | 複雜 Agent   |
 
 ## 24.2 何時選擇 claude-mem？
 
 ✅ **適合**：
+
 - 使用 Claude Code 進行日常開發
 - 需要跨 Session 保留開發知識
 - 重視資料隱私（本地儲存）
 - 想要零配置的自動化記憶
 
 ❌ **不適合**：
+
 - 非 Claude Code 的使用場景（但有 MCP 整合的可能）
 - 需要雲端同步的團隊記憶
 - 需要向量搜尋為主的場景（可加 Chroma 但非核心）
@@ -2512,20 +2535,20 @@ Claude 呼叫 Read("src/services/worker-service.ts")
 
 Gate 觸發後，Claude 有四個選項，從最便宜到最貴：
 
-| 策略 | 額外 Token 成本 | 說明 |
-|------|-----------------|------|
-| 語意引導（Semantic Priming） | 0 | 時間軸標題已足夠讓 Claude 繼續工作 |
-| `get_observations([IDs])` | ~300/筆 | 取得過去工作的具體細節 |
-| `smart_outline` / `smart_unfold` | ~1-2k | 取得目前程式碼結構或特定函式 |
-| 完整檔案讀取 | 5k-50k | 檔案已大幅變更，需讀取最新版本 |
+| 策略                             | 額外 Token 成本 | 說明                               |
+| -------------------------------- | --------------- | ---------------------------------- |
+| 語意引導（Semantic Priming）     | 0               | 時間軸標題已足夠讓 Claude 繼續工作 |
+| `get_observations([IDs])`        | ~300/筆         | 取得過去工作的具體細節             |
+| `smart_outline` / `smart_unfold` | ~1-2k           | 取得目前程式碼結構或特定函式       |
+| 完整檔案讀取                     | 5k-50k          | 檔案已大幅變更，需讀取最新版本     |
 
 ## 25.4 Token 經濟效益
 
-| 項目 | Token 數 |
-|------|----------|
-| 時間軸標頭 + 指引 | ~120 |
-| 15 筆觀察記錄 | ~250 |
-| **總時間軸成本** | **~370** |
+| 項目              | Token 數 |
+| ----------------- | -------- |
+| 時間軸標頭 + 指引 | ~120     |
+| 15 筆觀察記錄     | ~250     |
+| **總時間軸成本**  | **~370** |
 
 **實務案例**：讀取 `worker-service.ts`（18,000 tokens）→ 使用 Gate 後僅需 ~970 tokens（時間軸 370 + 2 筆觀察 600），**節省 95%**。
 
@@ -2648,26 +2671,26 @@ reprime_corpus name="hooks-expertise"
 
 ## 27.3 篩選參數
 
-| 參數 | 類型 | 說明 |
-|------|------|------|
-| `name` | string | 語料庫名稱 |
-| `project` | string | 依專案篩選 |
-| `types` | string[] | 觀察類型：bugfix, feature, decision, discovery, refactor, change |
-| `concepts` | string[] | 依標籤概念篩選 |
-| `files` | string[] | 依涉及檔案篩選 |
-| `query` | string | 全文搜尋關鍵字 |
-| `dateStart` / `dateEnd` | string | 日期範圍（YYYY-MM-DD） |
-| `limit` | number | 最大觀察記錄數 |
+| 參數                    | 類型     | 說明                                                             |
+| ----------------------- | -------- | ---------------------------------------------------------------- |
+| `name`                  | string   | 語料庫名稱                                                       |
+| `project`               | string   | 依專案篩選                                                       |
+| `types`                 | string[] | 觀察類型：bugfix, feature, decision, discovery, refactor, change |
+| `concepts`              | string[] | 依標籤概念篩選                                                   |
+| `files`                 | string[] | 依涉及檔案篩選                                                   |
+| `query`                 | string   | 全文搜尋關鍵字                                                   |
+| `dateStart` / `dateEnd` | string   | 日期範圍（YYYY-MM-DD）                                           |
+| `limit`                 | number   | 最大觀察記錄數                                                   |
 
 ## 27.4 `/knowledge-agent` vs `/mem-search` 比較
 
-| 面向 | `/mem-search` | `/knowledge-agent` |
-|------|---------------|---------------------|
-| 回傳 | 原始觀察記錄 | 綜合對話式答案 |
-| 最適合 | 找特定觀察、ID、時間軸 | 理解模式、決策、架構 |
+| 面向       | `/mem-search`           | `/knowledge-agent`         |
+| ---------- | ----------------------- | -------------------------- |
+| 回傳       | 原始觀察記錄            | 綜合對話式答案             |
+| 最適合     | 找特定觀察、ID、時間軸  | 理解模式、決策、架構       |
 | Token 模型 | 每次查詢付費（3-Layer） | Prime 時一次付費，後續便宜 |
-| 互動方式 | 搜尋、篩選、取得 | 自然語言提問 |
-| 設定 | 無需設定 | 需先 Build + Prime |
+| 互動方式   | 搜尋、篩選、取得        | 自然語言提問               |
+| 設定       | 無需設定                | 需先 Build + Prime         |
 
 > **經驗法則**：找特定東西用 `/mem-search`，理解事情全貌用 `/knowledge-agent`。
 
@@ -2685,6 +2708,7 @@ reprime_corpus name="hooks-expertise"
 4. 點擊 **Try Beta (Endless Mode)** 或 **Switch to Stable**
 
 切換版本時：
+
 - 本地變更會被丟棄
 - 自動 `git fetch` 並 `checkout` 目標分支
 - 重新安裝相依套件（`npm install`）
@@ -2711,6 +2735,7 @@ Archive Memory（Transcript 檔案）：
 ```
 
 **關鍵創新**：每次工具使用後，Endless Mode 會：
+
 1. 等待 Worker 生成壓縮觀察記錄（阻塞式）
 2. 在磁碟上轉換 transcript 檔案
 3. 將完整工具輸出替換為壓縮觀察記錄
@@ -2772,15 +2797,15 @@ curl -fsSL https://install.cmem.ai/openclaw.sh | bash -s -- --upgrade
 }
 ```
 
-| 設定 | 預設值 | 說明 |
-|------|--------|------|
-| `project` | `"openclaw"` | 觀察記錄的專案名稱 |
-| `syncMemoryFile` | `true` | 是否注入觀察上下文至 System Prompt |
-| `syncMemoryFileExclude` | `[]` | 排除特定 Agent ID 的上下文注入 |
-| `workerPort` | `37700` | Worker Port（如 Worker 使用非預設 Port） |
-| `observationFeed.enabled` | `false` | 啟用即時觀察推播至訊息頻道 |
-| `observationFeed.channel` | — | 頻道類型：telegram、discord、slack、signal、whatsapp、line |
-| `observationFeed.to` | — | 目標 chat/user/channel ID |
+| 設定                      | 預設值       | 說明                                                       |
+| ------------------------- | ------------ | ---------------------------------------------------------- |
+| `project`                 | `"openclaw"` | 觀察記錄的專案名稱                                         |
+| `syncMemoryFile`          | `true`       | 是否注入觀察上下文至 System Prompt                         |
+| `syncMemoryFileExclude`   | `[]`         | 排除特定 Agent ID 的上下文注入                             |
+| `workerPort`              | `37700`      | Worker Port（如 Worker 使用非預設 Port）                   |
+| `observationFeed.enabled` | `false`      | 啟用即時觀察推播至訊息頻道                                 |
+| `observationFeed.channel` | —            | 頻道類型：telegram、discord、slack、signal、whatsapp、line |
+| `observationFeed.to`      | —            | 目標 chat/user/channel ID                                  |
 
 ## 29.4 事件生命週期
 
@@ -2806,31 +2831,31 @@ OpenClaw Gateway
 
 Smart Explore 使用 tree-sitter AST 解析提供**結構化程式碼導航**，透過三個 MCP 工具實現：
 
-| 工具 | Token 成本 | 說明 |
-|------|-----------|------|
-| `smart_search` | 2,000-6,000 | 跨檔案符號搜尋 |
-| `smart_outline` | 1,000-2,000 | 單一檔案的結構地圖 |
-| `smart_unfold` | 400-2,100 | 展開單一符號的完整原始碼 |
+| 工具            | Token 成本  | 說明                     |
+| --------------- | ----------- | ------------------------ |
+| `smart_search`  | 2,000-6,000 | 跨檔案符號搜尋           |
+| `smart_outline` | 1,000-2,000 | 單一檔案的結構地圖       |
+| `smart_unfold`  | 400-2,100   | 展開單一符號的完整原始碼 |
 
 ## 30.2 效能基準（Benchmark）
 
 與傳統 Explore Agent（使用 Glob、Grep、Read 工具）的比較：
 
-| 任務類型 | Smart Explore | 傳統 Explore | 節省倍數 |
-|----------|--------------|-------------|---------|
-| 發現（跨檔案搜尋） | ~14,200 tokens | ~252,500 tokens | **17.8x** |
-| 定向讀取（特定符號） | ~5,650 tokens | ~109,400 tokens | **19.4x** |
-| 端到端（搜尋 + 讀取） | ~4,200 tokens | ~45,000 tokens | **10-12x** |
+| 任務類型              | Smart Explore  | 傳統 Explore    | 節省倍數   |
+| --------------------- | -------------- | --------------- | ---------- |
+| 發現（跨檔案搜尋）    | ~14,200 tokens | ~252,500 tokens | **17.8x**  |
+| 定向讀取（特定符號）  | ~5,650 tokens  | ~109,400 tokens | **19.4x**  |
+| 端到端（搜尋 + 讀取） | ~4,200 tokens  | ~45,000 tokens  | **10-12x** |
 
 ## 30.3 何時使用哪個
 
-| 任務 | 推薦工具 | 原因 |
-|------|----------|------|
-| 「X 定義在哪？」 | Smart Explore | 一次呼叫，精確答案 |
-| 「這個檔案有哪些函式？」 | Smart Explore | outline 回傳完整結構圖 |
-| 「給我看這個函式」 | Smart Explore | unfold 回傳完整原始碼，不截斷 |
-| 「功能 X 端到端怎麼運作？」 | Explore Agent | 需讀取多檔案並綜合敘述 |
-| 「這裡用了什麼設計模式？」 | Explore Agent | 需要閱讀和解讀 |
+| 任務                        | 推薦工具      | 原因                          |
+| --------------------------- | ------------- | ----------------------------- |
+| 「X 定義在哪？」            | Smart Explore | 一次呼叫，精確答案            |
+| 「這個檔案有哪些函式？」    | Smart Explore | outline 回傳完整結構圖        |
+| 「給我看這個函式」          | Smart Explore | unfold 回傳完整原始碼，不截斷 |
+| 「功能 X 端到端怎麼運作？」 | Explore Agent | 需讀取多檔案並綜合敘述        |
+| 「這裡用了什麼設計模式？」  | Explore Agent | 需要閱讀和解讀                |
 
 > **最佳實務**：先用 Smart Explore 探索和導航，僅在需要多檔案綜合分析時才升級到 Explore Agent。
 
@@ -2877,6 +2902,7 @@ A: 不會。所有記憶儲存在本地 SQLite（`~/.claude-mem/claude-mem.db`�
 
 **Q2: 我可以刪除特定的觀察記錄嗎？**
 A: 可以。使用 SQLite 直接操作：
+
 ```sql
 DELETE FROM observations WHERE id = 123;
 ```
@@ -2934,8 +2960,7 @@ A: `CLAUDE.md` 是靜態的手動維護檔案。claude-mem 是自動化的動態
 ---
 
 > **恭喜！** 你已完成 claude-mem 教學手冊的學習。
-> 
+>
 > 記住 claude-mem 的核心價值：**讓 AI Agent 像人類一樣累積經驗，而不是每次對話都失憶。**
-> 
+>
 > 開始使用吧！只需一行指令：`npx claude-mem install`
-

@@ -1,6 +1,7 @@
 ---
-applyTo: '**'
+applyTo: "**"
 ---
+
 人工智慧應遵循的編碼標準、領域知識和偏好。
 
 # Memory Bank
@@ -16,16 +17,17 @@ flowchart TD
     PB[projectbrief.md] --> PC[productContext.md]
     PB --> SP[systemPatterns.md]
     PB --> TC[techContext.md]
-    
+
     PC --> AC[activeContext.md]
     SP --> AC
     TC --> AC
-    
+
     AC --> P[progress.md]
     AC --> TF[tasks/ folder]
 ```
 
 ### Core Files (Required)
+
 1. `projectbrief.md`
    - 所有其他文件的基礎文件
    - 如果不存在，則在專案開始時創建
@@ -69,7 +71,9 @@ flowchart TD
    - 保留每個任務的完整思考過程和歷史記錄
 
 ### Additional Context
+
 當需要整理文件/資料夾時，可在記憶體庫中建立其他文件/資料夾：
+
 - 複雜功能文檔
 - 集成規範
 - API 文檔
@@ -79,20 +83,22 @@ flowchart TD
 ## Core Workflows
 
 ### Plan Mode
+
 ```mermaid
 flowchart TD
     Start[Start] --> ReadFiles[Read Memory Bank]
     ReadFiles --> CheckFiles{Files Complete?}
-    
+
     CheckFiles -->|No| Plan[Create Plan]
     Plan --> Document[Document in Chat]
-    
+
     CheckFiles -->|Yes| Verify[Verify Context]
     Verify --> Strategy[Develop Strategy]
     Strategy --> Present[Present Approach]
 ```
 
 ### Act Mode
+
 ```mermaid
 flowchart TD
     Start[Start] --> Context[Check Memory Bank]
@@ -103,13 +109,14 @@ flowchart TD
 ```
 
 ### Task Management
+
 ```mermaid
 flowchart TD
     Start[New Task] --> NewFile[Create Task File in tasks/ folder]
     NewFile --> Think[Document Thought Process]
     Think --> Plan[Create Implementation Plan]
     Plan --> Index[Update _index.md]
-    
+
     Execute[Execute Task] --> Update[Add Progress Log Entry]
     Update --> StatusChange[Update Task Status]
     StatusChange --> IndexUpdate[Update _index.md]
@@ -121,6 +128,7 @@ flowchart TD
 ## Documentation Updates
 
 記憶體庫更新發生在以下情況：
+
 1. 發現新的專案模式
 2. 實施重大變更後
 3. 使用者請求 **更新記憶體庫** 時（必須檢查所有文件）
@@ -129,16 +137,16 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start[Update Process]
-    
+
     subgraph Process
         P1[Review ALL Files]
         P2[Document Current State]
         P3[Clarify Next Steps]
         P4[Update instructions]
-        
+
         P1 --> P2 --> P3 --> P4
     end
-    
+
     Start --> Process
 ```
 
@@ -151,24 +159,25 @@ flowchart TD
 ```mermaid
 flowchart TD
     Start{Discover New Pattern}
-    
+
     subgraph Learn [Learning Process]
         D1[Identify Pattern]
         D2[Validate with User]
         D3[Document in instructions]
     end
-    
+
     subgraph Apply [Usage]
         A1[Read instructions]
         A2[Apply Learned Patterns]
         A3[Improve Future Work]
     end
-    
+
     Start --> Learn
     Learn --> Apply
 ```
 
 ### What to Capture
+
 - 關鍵實施路徑
 - 使用者偏好和工作流程
 - 專案特定模式
@@ -193,19 +202,23 @@ tasks/ 資料夾包含每個任務的單獨 markdown 檔案以及一個索引檔
 # Tasks Index
 
 ## In Progress
+
 - [TASK003] 實現用戶身份驗證 - 正在進行 OAuth 集成
 - [TASK005] 建立儀表板 UI - 正在構建主要組件
 
 ## Pending
+
 - [TASK006] 新增匯出功能 - 計劃在下一個衝刺中實施
 - [TASK007] 優化資料庫查詢 - 等待性能測試
 
 ## Completed
+
 - [TASK001] 專案設置 - 於 2025-03-15 完成
 - [TASK002] 建立資料庫架構 - 於 2025-03-17 完成
 - [TASK004] 實現登入頁面 - 於 2025-03-20 完成
 
 ## Abandoned
+
 - [TASK008] 與舊系統整合 - 由於 API 停用而放棄
 ```
 
@@ -221,12 +234,15 @@ tasks/ 資料夾包含每個任務的單獨 markdown 檔案以及一個索引檔
 **Updated:** [Date Last Updated]
 
 ## Original Request
+
 [使用者提供的原始任務描述]
 
 ## Thought Process
+
 [討論和推理的文件記錄，形成此任務的方法]
 
 ## Implementation Plan
+
 - [Step 1]
 - [Step 2]
 - [Step 3]
@@ -236,20 +252,24 @@ tasks/ 資料夾包含每個任務的單獨 markdown 檔案以及一個索引檔
 **Overall Status:** [Not Started/In Progress/Blocked/Completed] - [Completion Percentage]
 
 ### Subtasks
-| ID | Description | Status | Updated | Notes |
-|----|-------------|--------|---------|-------|
-| 1.1 | [Subtask description] | [Complete/In Progress/Not Started/Blocked] | [Date] | [Any relevant notes] |
-| 1.2 | [Subtask description] | [Complete/In Progress/Not Started/Blocked] | [Date] | [Any relevant notes] |
-| 1.3 | [Subtask description] | [Complete/In Progress/Not Started/Blocked] | [Date] | [Any relevant notes] |
+
+| ID  | Description           | Status                                     | Updated | Notes                |
+| --- | --------------------- | ------------------------------------------ | ------- | -------------------- |
+| 1.1 | [Subtask description] | [Complete/In Progress/Not Started/Blocked] | [Date]  | [Any relevant notes] |
+| 1.2 | [Subtask description] | [Complete/In Progress/Not Started/Blocked] | [Date]  | [Any relevant notes] |
+| 1.3 | [Subtask description] | [Complete/In Progress/Not Started/Blocked] | [Date]  | [Any relevant notes] |
 
 ## Progress Log
+
 ### [Date]
+
 - 任務 1.1 狀態已更新為"已完成"
 - 開始處理子任務 1.2
 - 遇到問題：[具體問題]
 - 做出決策：[方法/解決方案]
 
 ### [Date]
+
 - [隨著工作進展，我們將提供更多更新資訊。]
 ```
 
@@ -265,6 +285,7 @@ tasks/ 資料夾包含每個任務的單獨 markdown 檔案以及一個索引檔
 ### Task Commands
 
 當您請求**新增任務**或使用 **「建立任務」** 命令時，我將：
+
 1. 在 tasks/ 資料夾中建立一個具有唯一任務 ID 的新任務檔案
 2. 記錄我們對此任務方法的思考過程
 3. 制定實施計劃
@@ -272,6 +293,7 @@ tasks/ 資料夾包含每個任務的單獨 markdown 檔案以及一個索引檔
 5. 更新 _index.md 文件以包含新任務
 
 對於現有任務，命令 **update task [ID]** 將提示我：
+
 1. 打開特定的任務檔案
 2. 使用今天的日期新增進度日誌條目
 3. 如有需要，更新任務狀態
@@ -279,6 +301,7 @@ tasks/ 資料夾包含每個任務的單獨 markdown 檔案以及一個索引檔
 5. 將任何新的決策整合到思考過程中
 
 要查看任務，命令 **show tasks [filter]** 將：
+
 1. 根據指定的條件顯示篩選後的任務列表
 2. 可用的篩選條件包括：
    - **all** - 顯示所有任務，無論狀態如何

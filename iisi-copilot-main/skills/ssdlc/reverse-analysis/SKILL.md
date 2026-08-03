@@ -1,12 +1,14 @@
 ---
 name: "reverse-analysis"
-description: '分析遺留系統模組，產出架構文件與依賴圖'
+description: "分析遺留系統模組，產出架構文件與依賴圖"
 ---
 
 # Reverse Analysis Skill
 
 ## 能力
+
 此 Skill 可以：
+
 1. 掃描模組目錄結構
 2. 分析程式碼依賴關係
 3. 提取業務邏輯規則
@@ -16,12 +18,15 @@ description: '分析遺留系統模組，產出架構文件與依賴圖'
 ## 分析模板
 
 ### 模組分析報告模板
+
 使用 `templates/module-report.md` 格式。
 
 ### 依賴關係圖模板
+
 使用 `templates/dependency-map.md` 格式。
 
 ## 分析流程
+
 1. 列出模組內所有檔案及行數
 2. 識別進入點（Controller、Main、Scheduler）
 3. 追蹤核心流程的呼叫鏈

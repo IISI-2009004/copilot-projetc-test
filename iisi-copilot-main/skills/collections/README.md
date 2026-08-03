@@ -8,54 +8,54 @@
 
 ## 15.1　Coding（`coding/`，Skill-01～06）
 
-| Skill | 說明 |
-|---|---|
-| [java-spring-boot](coding/java-spring-boot/SKILL.md) | Spring Boot 開發技能（Java 21 + Spring Boot 3.x 三層架構） |
-| [vue3-typescript](coding/vue3-typescript/SKILL.md) | Vue3 + TypeScript 元件與 Composable 開發技能 |
-| [clean-code](coding/clean-code/SKILL.md) | Clean Code 可讀性與可維護性技能 |
-| [design-patterns](coding/design-patterns/SKILL.md) | 設計模式應用技能 |
-| [api-design](coding/api-design/SKILL.md) | RESTful API 設計技能 |
-| [database-optimization](coding/database-optimization/SKILL.md) | 資料庫優化技能（N+1、索引設計） |
+| Skill                                                          | 說明                                                       |
+| -------------------------------------------------------------- | ---------------------------------------------------------- |
+| [java-spring-boot](coding/java-spring-boot/SKILL.md)           | Spring Boot 開發技能（Java 21 + Spring Boot 3.x 三層架構） |
+| [vue3-typescript](coding/vue3-typescript/SKILL.md)             | Vue3 + TypeScript 元件與 Composable 開發技能               |
+| [clean-code](coding/clean-code/SKILL.md)                       | Clean Code 可讀性與可維護性技能                            |
+| [design-patterns](coding/design-patterns/SKILL.md)             | 設計模式應用技能                                           |
+| [api-design](coding/api-design/SKILL.md)                       | RESTful API 設計技能                                       |
+| [database-optimization](coding/database-optimization/SKILL.md) | 資料庫優化技能（N+1、索引設計）                            |
 
 ## 15.2　Architecture（`architecture/`，Skill-07～11）
 
-| Skill | 說明 |
-|---|---|
-| [microservices](architecture/microservices/SKILL.md) | 微服務架構技能（邊界劃分、Saga） |
-| [hexagonal-architecture](architecture/hexagonal-architecture/SKILL.md) | 六角形架構技能（Ports & Adapters） |
-| [ddd](architecture/ddd/SKILL.md) | DDD 領域驅動設計技能 |
-| [event-driven](architecture/event-driven/SKILL.md) | 事件驅動架構技能（Kafka、冪等消費） |
-| [cloud-native](architecture/cloud-native/SKILL.md) | Cloud Native 技能（Kubernetes、Twelve-Factor） |
+| Skill                                                                  | 說明                                           |
+| ---------------------------------------------------------------------- | ---------------------------------------------- |
+| [microservices](architecture/microservices/SKILL.md)                   | 微服務架構技能（邊界劃分、Saga）               |
+| [hexagonal-architecture](architecture/hexagonal-architecture/SKILL.md) | 六角形架構技能（Ports & Adapters）             |
+| [ddd](architecture/ddd/SKILL.md)                                       | DDD 領域驅動設計技能                           |
+| [event-driven](architecture/event-driven/SKILL.md)                     | 事件驅動架構技能（Kafka、冪等消費）            |
+| [cloud-native](architecture/cloud-native/SKILL.md)                     | Cloud Native 技能（Kubernetes、Twelve-Factor） |
 
 ## 15.3　Testing（`testing/`，Skill-12～16）
 
-| Skill | 說明 |
-|---|---|
-| [unit-testing-junit5](testing/unit-testing-junit5/SKILL.md) | JUnit 5 單元測試技能 |
-| [integration-testing](testing/integration-testing/SKILL.md) | 整合測試技能（Testcontainers） |
-| [e2e-testing-playwright](testing/e2e-testing-playwright/SKILL.md) | E2E 測試技能（Playwright） |
-| [performance-testing](testing/performance-testing/SKILL.md) | 效能測試技能（k6） |
-| [security-testing](testing/security-testing/SKILL.md) | 安全測試技能（水平/垂直權限提升） |
+| Skill                                                             | 說明                              |
+| ----------------------------------------------------------------- | --------------------------------- |
+| [unit-testing-junit5](testing/unit-testing-junit5/SKILL.md)       | JUnit 5 單元測試技能              |
+| [integration-testing](testing/integration-testing/SKILL.md)       | 整合測試技能（Testcontainers）    |
+| [e2e-testing-playwright](testing/e2e-testing-playwright/SKILL.md) | E2E 測試技能（Playwright）        |
+| [performance-testing](testing/performance-testing/SKILL.md)       | 效能測試技能（k6）                |
+| [security-testing](testing/security-testing/SKILL.md)             | 安全測試技能（水平/垂直權限提升） |
 
 ## 15.4　Security（`security/`，Skill-17～21）
 
-| Skill | 說明 |
-|---|---|
-| [owasp-top10](security/owasp-top10/SKILL.md) | OWASP Top 10 技能 |
-| [sast-analysis](security/sast-analysis/SKILL.md) | 靜態分析技能（SAST／SonarQube Quality Gate） |
-| [dependency-scanning](security/dependency-scanning/SKILL.md) | 相依套件掃描技能（CVE／SCA） |
-| [secrets-management](security/secrets-management/SKILL.md) | 秘密管理技能（Vault） |
-| [threat-modeling](security/threat-modeling/SKILL.md) | 威脅建模技能（STRIDE） |
+| Skill                                                        | 說明                                         |
+| ------------------------------------------------------------ | -------------------------------------------- |
+| [owasp-top10](security/owasp-top10/SKILL.md)                 | OWASP Top 10 技能                            |
+| [sast-analysis](security/sast-analysis/SKILL.md)             | 靜態分析技能（SAST／SonarQube Quality Gate） |
+| [dependency-scanning](security/dependency-scanning/SKILL.md) | 相依套件掃描技能（CVE／SCA）                 |
+| [secrets-management](security/secrets-management/SKILL.md)   | 秘密管理技能（Vault）                        |
+| [threat-modeling](security/threat-modeling/SKILL.md)         | 威脅建模技能（STRIDE）                       |
 
 ## 15.5　Migration（`migration/`，Skill-22～26）
 
-| Skill | 說明 |
-|---|---|
-| [java6-to-java21](migration/java6-to-java21/SKILL.md) | Java 版本升級技能（Java 6 → Java 21） |
-| [struts-to-spring-boot](migration/struts-to-spring-boot/SKILL.md) | Struts 遷移技能（Struts → Spring Boot） |
-| [jsp-to-vue3](migration/jsp-to-vue3/SKILL.md) | JSP 遷移技能（JSP → Vue3） |
-| [spring-boot-2-to-3](migration/spring-boot-2-to-3/SKILL.md) | Spring Boot 升級技能（2.x → 3.x） |
-| [monolith-to-microservices](migration/monolith-to-microservices/SKILL.md) | 單體到微服務技能 |
+| Skill                                                                     | 說明                                    |
+| ------------------------------------------------------------------------- | --------------------------------------- |
+| [java6-to-java21](migration/java6-to-java21/SKILL.md)                     | Java 版本升級技能（Java 6 → Java 21）   |
+| [struts-to-spring-boot](migration/struts-to-spring-boot/SKILL.md)         | Struts 遷移技能（Struts → Spring Boot） |
+| [jsp-to-vue3](migration/jsp-to-vue3/SKILL.md)                             | JSP 遷移技能（JSP → Vue3）              |
+| [spring-boot-2-to-3](migration/spring-boot-2-to-3/SKILL.md)               | Spring Boot 升級技能（2.x → 3.x）       |
+| [monolith-to-microservices](migration/monolith-to-microservices/SKILL.md) | 單體到微服務技能                        |
 
 ## 與 `skills/ssdlc/` 的關係
 

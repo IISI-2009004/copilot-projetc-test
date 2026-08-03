@@ -6,16 +6,14 @@ tags = ['教學', 'AI開發']
 categories = ['教學']
 +++
 
-
 # Claude Agent Skills 使用教學手冊
 
 > **版本**：1.0  
 > **最後更新**：2026 年 1 月  
 > **適用對象**：新進軟體工程師、系統分析師、AI 導入成員
 > **最後更新**: 2026年1月8日  
-> **適用於**: Claude Code 
+> **適用於**: Claude Code
 > **Created by**: Eric Cheng
-
 
 ## 目錄
 
@@ -79,12 +77,12 @@ categories = ['教學']
 
 ### 適用對象
 
-| 角色 | 學習重點 |
-|------|----------|
-| **軟體工程師** | 如何使用 Skills 提升開發效率、如何建立自訂 Skills |
-| **系統分析師** | 如何運用 Skills 產生需求文件、如何設計 Skill 規格 |
+| 角色            | 學習重點                                             |
+| --------------- | ---------------------------------------------------- |
+| **軟體工程師**  | 如何使用 Skills 提升開發效率、如何建立自訂 Skills    |
+| **系統分析師**  | 如何運用 Skills 產生需求文件、如何設計 Skill 規格    |
 | **AI 導入成員** | 如何規劃團隊 Skills 導入策略、如何建立 Skill Library |
-| **技術主管** | 如何評估 Skills 效益、如何制定導入計畫 |
+| **技術主管**    | 如何評估 Skills 效益、如何制定導入計畫               |
 
 ### 如何使用本手冊
 
@@ -99,12 +97,12 @@ flowchart LR
 
 **建議學習路徑**：
 
-| 階段 | 章節 | 學習目標 | 預計時間 |
-|------|------|----------|----------|
-| **入門** | 第 1-2 章 | 理解基礎概念與設計理念 | 1 小時 |
+| 階段     | 章節      | 學習目標                   | 預計時間 |
+| -------- | --------- | -------------------------- | -------- |
+| **入門** | 第 1-2 章 | 理解基礎概念與設計理念     | 1 小時   |
 | **進階** | 第 3-4 章 | 掌握 Skills 結構與使用方式 | 1.5 小時 |
-| **實作** | 第 5-6 章 | 動手練習與避免常見錯誤 | 2 小時 |
-| **導入** | 第 7 章 | 規劃團隊導入策略 | 1 小時 |
+| **實作** | 第 5-6 章 | 動手練習與避免常見錯誤     | 2 小時   |
+| **導入** | 第 7 章   | 規劃團隊導入策略           | 1 小時   |
 
 ---
 
@@ -138,12 +136,12 @@ flowchart LR
 
 **Agent Skills** 是一種輕量化、開放格式的擴充機制，用於為 AI Agent 提供：
 
-| 功能 | 說明 |
-|------|------|
+| 功能         | 說明                               |
+| ------------ | ---------------------------------- |
 | **專業知識** | 特定領域的規則、最佳實務、檢查清單 |
-| **操作指引** | 一步一步的執行流程與標準作業程序 |
-| **參考資源** | 範本、腳本、文件範例 |
-| **品質標準** | 驗收條件、品質檢查點 |
+| **操作指引** | 一步一步的執行流程與標準作業程序   |
+| **參考資源** | 範本、腳本、文件範例               |
+| **品質標準** | 驗收條件、品質檢查點               |
 
 **核心架構**：
 
@@ -163,11 +161,11 @@ skill-name/
 
 這三個概念經常混淆，以下是清楚的區分：
 
-| 概念 | 定義 | 類比 | 範例 |
-|------|------|------|------|
-| **Agent** | 具備推理與決策能力的 AI 系統 | 員工 | Claude Agent |
-| **Tool** | Agent 可呼叫的功能介面 | 工具箱中的工具 | 檔案讀寫、執行終端指令、API 呼叫 |
-| **Skill** | 教導 Agent 如何完成特定任務的知識包 | 培訓手冊/SOP | 「程式碼審查 Skill」、「PDF 處理 Skill」 |
+| 概念      | 定義                                | 類比           | 範例                                     |
+| --------- | ----------------------------------- | -------------- | ---------------------------------------- |
+| **Agent** | 具備推理與決策能力的 AI 系統        | 員工           | Claude Agent                             |
+| **Tool**  | Agent 可呼叫的功能介面              | 工具箱中的工具 | 檔案讀寫、執行終端指令、API 呼叫         |
+| **Skill** | 教導 Agent 如何完成特定任務的知識包 | 培訓手冊/SOP   | 「程式碼審查 Skill」、「PDF 處理 Skill」 |
 
 ```mermaid
 flowchart TB
@@ -177,20 +175,20 @@ flowchart TB
         A2[選擇 Skill]
         A3[執行計畫]
     end
-    
+
     subgraph Skills["Agent Skills（知識庫）"]
         S1[程式碼審查 Skill]
         S2[文件產生 Skill]
         S3[測試設計 Skill]
     end
-    
+
     subgraph Tools["Tools（執行能力）"]
         T1[讀取檔案]
         T2[寫入檔案]
         T3[執行指令]
         T4[API 呼叫]
     end
-    
+
     Agent --> Skills
     Agent --> Tools
     Skills -.-> |提供指引| Agent
@@ -210,12 +208,12 @@ flowchart TB
 
 沒有 Skills 時，Agent 可能遇到的問題：
 
-| 問題 | 說明 | 後果 |
-|------|------|------|
-| 缺乏領域知識 | Agent 不知道公司特定的命名規範 | 產出不符合團隊標準 |
-| 流程不一致 | 每次執行方式不同 | 難以維護、品質不穩定 |
-| 重複溝通 | 每次都要重新說明需求 | 效率低落 |
-| 知識難以傳承 | 專家經驗留在個人 | 團隊能力參差不齊 |
+| 問題         | 說明                           | 後果                 |
+| ------------ | ------------------------------ | -------------------- |
+| 缺乏領域知識 | Agent 不知道公司特定的命名規範 | 產出不符合團隊標準   |
+| 流程不一致   | 每次執行方式不同               | 難以維護、品質不穩定 |
+| 重複溝通     | 每次都要重新說明需求           | 效率低落             |
+| 知識難以傳承 | 專家經驗留在個人               | 團隊能力參差不齊     |
 
 #### 導入 Skills 的效益
 
@@ -226,25 +224,25 @@ flowchart LR
         B2[品質不穩定]
         B3[知識難傳承]
     end
-    
+
     subgraph After["導入後"]
         A1[標準化流程]
         A2[一致性輸出]
         A3[團隊知識庫]
     end
-    
+
     Before --> |導入 Skills| After
 ```
 
 **效益總結**：
 
-| 效益 | 說明 |
-|------|------|
-| **可重用性** | 一次建立，多次使用 |
-| **一致性** | 標準化流程，減少人為差異 |
-| **可組合性** | 多個 Skills 可組合完成複雜任務 |
+| 效益         | 說明                                |
+| ------------ | ----------------------------------- |
+| **可重用性** | 一次建立，多次使用                  |
+| **一致性**   | 標準化流程，減少人為差異            |
+| **可組合性** | 多個 Skills 可組合完成複雜任務      |
 | **可移植性** | Skills 是純文字檔案，易於版控與分享 |
-| **可審計性** | 明確記錄 Agent 的行為依據 |
+| **可審計性** | 明確記錄 Agent 的行為依據           |
 
 **💡 實務建議**：從團隊最常重複執行的任務開始建立 Skill，如程式碼審查、文件產生等。
 
@@ -258,17 +256,17 @@ flowchart LR
 
 #### 良好的責任邊界
 
-| Skill 名稱 | 職責 | 適當性 |
-|------------|------|--------|
-| `code-review` | 審查程式碼品質與安全性 | ✅ 單一職責 |
-| `unit-test-generator` | 產生單元測試案例 | ✅ 單一職責 |
-| `api-documentation` | 產生 API 文件 | ✅ 單一職責 |
+| Skill 名稱            | 職責                   | 適當性      |
+| --------------------- | ---------------------- | ----------- |
+| `code-review`         | 審查程式碼品質與安全性 | ✅ 單一職責 |
+| `unit-test-generator` | 產生單元測試案例       | ✅ 單一職責 |
+| `api-documentation`   | 產生 API 文件          | ✅ 單一職責 |
 
 #### 不良的責任邊界
 
-| Skill 名稱 | 職責 | 問題 |
-|------------|------|------|
-| `everything-helper` | 處理所有開發任務 | ❌ 過於廣泛 |
+| Skill 名稱                     | 職責             | 問題        |
+| ------------------------------ | ---------------- | ----------- |
+| `everything-helper`            | 處理所有開發任務 | ❌ 過於廣泛 |
 | `code-review-and-fix-and-test` | 審查、修復、測試 | ❌ 多重職責 |
 
 **設計原則**：
@@ -280,7 +278,7 @@ flowchart TB
         G2[Skill B: 修復]
         G3[Skill C: 測試]
     end
-    
+
     subgraph Bad["❌ 不良設計"]
         B1[Skill X: 審查+修復+測試]
     end
@@ -290,14 +288,14 @@ flowchart TB
 
 ### 2.2 Skill 與 Prompt 的差異
 
-| 特性 | Prompt | Skill |
-|------|--------|-------|
-| **形式** | 單次文字輸入 | 結構化資料夾 |
-| **重用性** | 需複製貼上 | 可被發現與載入 |
-| **組織性** | 無標準格式 | 有 frontmatter 元資料 |
-| **版本控制** | 困難 | 易於 Git 管理 |
-| **團隊協作** | 難以共享 | 易於發布與安裝 |
-| **附加資源** | 僅文字 | 可包含腳本、範本、參考文件 |
+| 特性         | Prompt       | Skill                      |
+| ------------ | ------------ | -------------------------- |
+| **形式**     | 單次文字輸入 | 結構化資料夾               |
+| **重用性**   | 需複製貼上   | 可被發現與載入             |
+| **組織性**   | 無標準格式   | 有 frontmatter 元資料      |
+| **版本控制** | 困難         | 易於 Git 管理              |
+| **團隊協作** | 難以共享     | 易於發布與安裝             |
+| **附加資源** | 僅文字       | 可包含腳本、範本、參考文件 |
 
 **Prompt 範例**（一次性使用）：
 
@@ -316,7 +314,6 @@ flowchart TB
 name: code-review
 description: 審查 Java/Python 程式碼的品質、安全性與效能。當使用者提到程式碼審查、Code Review、PR Review 時使用此 Skill。
 ---
-
 # 程式碼審查 Skill
 
 ## 審查流程
@@ -340,14 +337,14 @@ flowchart LR
         T3[測試設計]
         T4[文件撰寫]
     end
-    
+
     subgraph Skills["組合 Skills"]
         S1[requirement-analysis]
         S2[code-generator]
         S3[test-generator]
         S4[documentation]
     end
-    
+
     T1 --> S1
     T2 --> S2
     T3 --> S3
@@ -367,12 +364,12 @@ flowchart LR
 
 Anthropic 官方 Skills Repository 遵循以下原則：
 
-| 原則 | 說明 |
-|------|------|
+| 原則           | 說明                                          |
+| -------------- | --------------------------------------------- |
 | **漸進式揭露** | 先載入 name/description，需要時才載入完整指令 |
-| **自我描述** | SKILL.md 本身可被人類閱讀理解 |
-| **最小依賴** | 避免複雜的外部依賴 |
-| **清晰邊界** | 每個 Skill 職責明確 |
+| **自我描述**   | SKILL.md 本身可被人類閱讀理解                 |
+| **最小依賴**   | 避免複雜的外部依賴                            |
+| **清晰邊界**   | 每個 Skill 職責明確                           |
 
 **漸進式揭露（Progressive Disclosure）**：
 
@@ -381,7 +378,7 @@ sequenceDiagram
     participant User as 使用者
     participant Agent as Claude Agent
     participant Skills as Skill Library
-    
+
     User->>Agent: 請幫我審查這段程式碼
     Agent->>Skills: 載入所有 Skill 的 name + description（約 100 tokens/skill）
     Skills-->>Agent: 回傳 Skill 清單
@@ -435,31 +432,31 @@ skill-name/
 
 **命名規則**：
 
-| 規則 | 說明 | 範例 |
-|------|------|------|
-| 長度限制 | 1-64 字元 | `code-review` ✅ |
-| 字元限制 | 小寫字母、數字、連字號 | `pdf-processing` ✅ |
-| 禁止開頭結尾 | 不可以連字號開頭或結尾 | `-pdf` ❌ |
-| 禁止連續連字號 | 不可出現 `--` | `pdf--process` ❌ |
-| 目錄名稱匹配 | name 欄位須與資料夾名稱一致 | `code-review/SKILL.md` → `name: code-review` |
+| 規則           | 說明                        | 範例                                         |
+| -------------- | --------------------------- | -------------------------------------------- |
+| 長度限制       | 1-64 字元                   | `code-review` ✅                             |
+| 字元限制       | 小寫字母、數字、連字號      | `pdf-processing` ✅                          |
+| 禁止開頭結尾   | 不可以連字號開頭或結尾      | `-pdf` ❌                                    |
+| 禁止連續連字號 | 不可出現 `--`               | `pdf--process` ❌                            |
+| 目錄名稱匹配   | name 欄位須與資料夾名稱一致 | `code-review/SKILL.md` → `name: code-review` |
 
 **有效命名**：
 
 ```yaml
-name: pdf-processing      # ✅
-name: data-analysis       # ✅
-name: code-review         # ✅
-name: unit-test-gen       # ✅
+name: pdf-processing # ✅
+name: data-analysis # ✅
+name: code-review # ✅
+name: unit-test-gen # ✅
 ```
 
 **無效命名**：
 
 ```yaml
-name: PDF-Processing      # ❌ 包含大寫
-name: -pdf                # ❌ 以連字號開頭
-name: pdf-                # ❌ 以連字號結尾
-name: pdf--processing     # ❌ 連續連字號
-name: code review         # ❌ 包含空格
+name: PDF-Processing # ❌ 包含大寫
+name: -pdf # ❌ 以連字號開頭
+name: pdf- # ❌ 以連字號結尾
+name: pdf--processing # ❌ 連續連字號
+name: code review # ❌ 包含空格
 ```
 
 ---
@@ -516,14 +513,14 @@ allowed-tools: Bash(git:*) Read Write
 
 **欄位說明表**：
 
-| 欄位 | 必要性 | 長度限制 | 說明 |
-|------|--------|----------|------|
-| `name` | 必要 | 1-64 字元 | Skill 唯一識別名稱 |
-| `description` | 必要 | 1-1024 字元 | 描述功能與使用時機 |
-| `license` | 選擇性 | - | 授權條款 |
-| `compatibility` | 選擇性 | 1-500 字元 | 環境需求說明 |
-| `metadata` | 選擇性 | - | 自訂 key-value 資料 |
-| `allowed-tools` | 選擇性 | - | 預先授權的 Tools（實驗性）|
+| 欄位            | 必要性 | 長度限制    | 說明                       |
+| --------------- | ------ | ----------- | -------------------------- |
+| `name`          | 必要   | 1-64 字元   | Skill 唯一識別名稱         |
+| `description`   | 必要   | 1-1024 字元 | 描述功能與使用時機         |
+| `license`       | 選擇性 | -           | 授權條款                   |
+| `compatibility` | 選擇性 | 1-500 字元  | 環境需求說明               |
+| `metadata`      | 選擇性 | -           | 自訂 key-value 資料        |
+| `allowed-tools` | 選擇性 | -           | 預先授權的 Tools（實驗性） |
 
 ---
 
@@ -582,34 +579,34 @@ sequenceDiagram
     participant A as Claude Agent
     participant S as Skill Library
     participant T as Tools
-    
+
     U->>A: 請幫我產生這個類別的單元測試
     Note over A: 1. Discovery 階段
     A->>S: 查詢可用 Skills（只讀 name + description）
     S-->>A: 回傳 Skill 清單
-    
+
     Note over A: 2. Activation 階段
     A->>A: 判斷需要 unit-test-generator skill
     A->>S: 載入完整 SKILL.md
     S-->>A: 回傳完整指令
-    
+
     Note over A: 3. Execution 階段
     A->>T: 讀取原始程式碼
     T-->>A: 回傳程式碼內容
     A->>A: 依 Skill 指引產生測試
     A->>T: 寫入測試檔案
     T-->>A: 確認完成
-    
+
     A-->>U: 已產生單元測試：XxxTest.java
 ```
 
 **三階段說明**：
 
-| 階段 | 動作 | Token 消耗 |
-|------|------|------------|
-| **Discovery** | 載入所有 Skill 的 name + description | ~100 tokens/skill |
-| **Activation** | 載入選中 Skill 的完整 SKILL.md | < 5000 tokens（建議）|
-| **Execution** | 視需要載入 scripts/、references/、assets/ | 依需求而定 |
+| 階段           | 動作                                      | Token 消耗            |
+| -------------- | ----------------------------------------- | --------------------- |
+| **Discovery**  | 載入所有 Skill 的 name + description      | ~100 tokens/skill     |
+| **Activation** | 載入選中 Skill 的完整 SKILL.md            | < 5000 tokens（建議） |
+| **Execution**  | 視需要載入 scripts/、references/、assets/ | 依需求而定            |
 
 ---
 
@@ -617,21 +614,22 @@ sequenceDiagram
 
 **單一 Skill 場景**：
 
-| 場景 | 使用 Skill |
-|------|-----------|
-| 單純的程式碼審查 | `code-review` |
-| 產生 API 文件 | `api-documentation` |
-| PDF 文字提取 | `pdf-processing` |
+| 場景             | 使用 Skill          |
+| ---------------- | ------------------- |
+| 單純的程式碼審查 | `code-review`       |
+| 產生 API 文件    | `api-documentation` |
+| PDF 文字提取     | `pdf-processing`    |
 
 **多 Skill 組合場景**：
 
-| 場景 | 組合 Skills |
-|------|-------------|
-| 完整的 PR 審查流程 | `code-review` + `security-scan` + `test-coverage` |
-| 新功能開發 | `requirement-analysis` + `code-generator` + `unit-test-generator` |
-| 技術文件製作 | `api-documentation` + `diagram-generator` + `pdf-processing` |
+| 場景               | 組合 Skills                                                       |
+| ------------------ | ----------------------------------------------------------------- |
+| 完整的 PR 審查流程 | `code-review` + `security-scan` + `test-coverage`                 |
+| 新功能開發         | `requirement-analysis` + `code-generator` + `unit-test-generator` |
+| 技術文件製作       | `api-documentation` + `diagram-generator` + `pdf-processing`      |
 
 **🏦 銀行系統實務**：處理客戶資料的功能開發，可能需要組合：
+
 1. `requirement-analysis` - 分析需求
 2. `data-masking` - 資料遮罩規則
 3. `code-generator` - 產生程式碼
@@ -712,6 +710,7 @@ flowchart LR
 #### 實際使用示意
 
 **使用者 Prompt**：
+
 ```
 請根據以下會議記錄，產生一份 PRD 文件：
 
@@ -724,25 +723,28 @@ flowchart LR
 ```
 
 **Agent 輸出**（部分）：
+
 ```markdown
 # 產品需求文件（PRD）
 
 ## 1. 文件資訊
-| 項目 | 內容 |
-|------|------|
-| 版本 | 1.0 |
-| 日期 | 2026-01-08 |
+
+| 項目     | 內容         |
+| -------- | ------------ |
+| 版本     | 1.0          |
+| 日期     | 2026-01-08   |
 | 功能名稱 | 定期定額投資 |
 
 ## 2. 功能需求
 
 ### FR-001：設定定期定額計畫
+
 - **描述**：使用者可建立定期定額投資計畫
 - **驗收條件**：
   - AC-001-1：可選擇每月扣款日期（1-28 日）
   - AC-001-2：金額輸入範圍限制 1,000 ~ 100,000 元
   - AC-001-3：支援同時設定多個投資標的
-...
+    ...
 ```
 
 ---
@@ -809,24 +811,30 @@ compatibility: Requires access to source code files
 **輸出範例**：
 
 ```
+
 ## 程式碼審查報告
 
 ### 摘要
+
 - 審查檔案數：X
 - 發現問題數：Critical: X, Major: X, Minor: X
 
 ### 問題清單
 
 #### 🔴 Critical
-| 位置 | 問題 | 建議 |
-|------|------|------|
+
+| 位置        | 問題               | 建議                   |
+| ----------- | ------------------ | ---------------------- |
 | Xxx.java:42 | SQL Injection 風險 | 使用 PreparedStatement |
 
 #### 🟡 Major
+
 ...
 
 #### 🟢 Minor
+
 ...
+
 ```
 
 ## 重構建議原則
@@ -839,6 +847,7 @@ compatibility: Requires access to source code files
 #### 實際使用示意
 
 **使用者 Prompt**：
+
 ```
 請審查以下程式碼：
 
@@ -852,23 +861,25 @@ public class UserService {
 ```
 
 **Agent 輸出**：
+
 ```markdown
 ## 程式碼審查報告
 
 ### 摘要
+
 - 發現問題數：Critical: 2, Major: 1, Minor: 0
 
 ### 🔴 Critical
 
-| 位置 | 問題 | 建議 |
-|------|------|------|
+| 位置               | 問題                                        | 建議                                                         |
+| ------------------ | ------------------------------------------- | ------------------------------------------------------------ |
 | UserService.java:3 | **SQL Injection 漏洞** - 直接拼接使用者輸入 | 改用 PreparedStatement：`"SELECT * FROM users WHERE id = ?"` |
-| UserService.java:4 | **硬編碼密碼** - 資料庫密碼直接寫在程式碼中 | 改用環境變數或設定檔（加密儲存） |
+| UserService.java:4 | **硬編碼密碼** - 資料庫密碼直接寫在程式碼中 | 改用環境變數或設定檔（加密儲存）                             |
 
 ### 🟡 Major
 
-| 位置 | 問題 | 建議 |
-|------|------|------|
+| 位置               | 問題                                                  | 建議                                   |
+| ------------------ | ----------------------------------------------------- | -------------------------------------- |
 | UserService.java:4 | **資源未關閉** - Connection 未使用 try-with-resources | 使用 `try (Connection conn = ...) { }` |
 ```
 
@@ -882,7 +893,7 @@ public class UserService {
 
 #### Skill 定義
 
-```yaml
+````yaml
 ---
 name: test-case-generator
 description: >
@@ -910,26 +921,29 @@ void shouldReturnUserWhenIdExists() {
     String userId = "user-123";
     User expectedUser = new User(userId, "John");
     when(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser));
-    
+
     // Act（執行）
     User actualUser = userService.getUser(userId);
-    
+
     // Assert（驗證）
     assertEquals(expectedUser, actualUser);
 }
-```
+````
 
 ### 測試案例命名
+
 - 格式：`should[預期結果]When[條件]`
 - 範例：`shouldThrowExceptionWhenUserNotFound`
 
 ### 邊界條件檢查
+
 - 空值（null）
 - 空集合
 - 邊界值（最大、最小）
 - 異常情境
 
 ## 產生流程
+
 1. 分析目標類別/方法
 2. 識別所有公開方法
 3. 設計正向測試案例
@@ -955,14 +969,14 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-    
+
     @InjectMocks
     private UserService userService;
-    
+
     @Nested
     @DisplayName("getUser 方法")
     class GetUserTests {
-        
+
         @Test
         @DisplayName("當使用者存在時，應回傳使用者")
         void shouldReturnUserWhenUserExists() {
@@ -970,7 +984,7 @@ class UserServiceTest {
             // Act
             // Assert
         }
-        
+
         @Test
         @DisplayName("當使用者不存在時，應拋出例外")
         void shouldThrowExceptionWhenUserNotFound() {
@@ -982,30 +996,35 @@ class UserServiceTest {
 ```
 
 ## 覆蓋率目標
+
 - 行覆蓋率：≥ 80%
 - 分支覆蓋率：≥ 70%
 - 方法覆蓋率：100%
+
 ```
 
 #### 實際使用示意
 
 **使用者 Prompt**：
 ```
+
 請為以下 Java 類別產生單元測試：
 
 public class Calculator {
-    public int add(int a, int b) {
-        return a + b;
-    }
-    
+public int add(int a, int b) {
+return a + b;
+}
+
     public int divide(int a, int b) {
         if (b == 0) {
             throw new IllegalArgumentException("除數不能為零");
         }
         return a / b;
     }
+
 }
-```
+
+````
 
 **Agent 輸出**：
 ```java
@@ -1033,10 +1052,10 @@ class CalculatorTest {
         void shouldReturnSumWhenAddingPositiveNumbers() {
             // Arrange
             int a = 5, b = 3;
-            
+
             // Act
             int result = calculator.add(a, b);
-            
+
             // Assert
             assertEquals(8, result);
         }
@@ -1083,7 +1102,7 @@ class CalculatorTest {
         }
     }
 }
-```
+````
 
 ---
 
@@ -1100,6 +1119,7 @@ description: 處理所有開發任務，包括需求分析、設計、編碼、�
 ```
 
 **問題**：
+
 - 指令過長，消耗大量 Token
 - 難以維護與更新
 - Agent 難以準確觸發
@@ -1113,6 +1133,7 @@ description: 在程式碼結尾加上分號
 ```
 
 **問題**：
+
 - 功能過於簡單，不需要 Skill
 - 增加管理負擔
 - 難以組合使用
@@ -1128,11 +1149,11 @@ description: >
 
 **判斷原則**：
 
-| 問題 | 如果是，則... |
-|------|--------------|
-| 這個 Skill 需要超過 500 行指令嗎？ | 考慮拆分 |
-| 這個 Skill 可以用一句話描述嗎？ | 可能太小 |
-| 這個 Skill 會被重複使用嗎？ | 如果不會，不需要建立 |
+| 問題                               | 如果是，則...        |
+| ---------------------------------- | -------------------- |
+| 這個 Skill 需要超過 500 行指令嗎？ | 考慮拆分             |
+| 這個 Skill 可以用一句話描述嗎？    | 可能太小             |
+| 這個 Skill 會被重複使用嗎？        | 如果不會，不需要建立 |
 
 ---
 
@@ -1145,7 +1166,6 @@ description: >
 name: fix-bug-123
 description: 修復 Issue #123 的空指標例外問題
 ---
-
 1. 開啟 UserService.java
 2. 在第 42 行加入 null 檢查
 3. 提交變更
@@ -1176,12 +1196,12 @@ description: >
 
 **最佳實務**：
 
-| 原則 | 說明 | 範例 |
-|------|------|------|
+| 原則                   | 說明                              | 範例                                         |
+| ---------------------- | --------------------------------- | -------------------------------------------- |
 | **描述清楚的觸發條件** | 在 description 中明確說明何時使用 | "當使用者提到 Code Review、程式碼審查時使用" |
-| **提供具體範例** | 讓 Agent 理解預期輸入輸出 | 包含輸入範例和輸出範例 |
-| **定義清楚的邊界** | 說明此 Skill 不處理什麼 | "此 Skill 不處理資料庫設計" |
-| **使用通用術語** | 避免過於特定的專案術語 | 使用 "使用者" 而非 "甲方客戶" |
+| **提供具體範例**       | 讓 Agent 理解預期輸入輸出         | 包含輸入範例和輸出範例                       |
+| **定義清楚的邊界**     | 說明此 Skill 不處理什麼           | "此 Skill 不處理資料庫設計"                  |
+| **使用通用術語**       | 避免過於特定的專案術語            | 使用 "使用者" 而非 "甲方客戶"                |
 
 **description 寫作範本**：
 
@@ -1206,7 +1226,7 @@ flowchart TB
         S3[邊界條件處理]
         S4[品質檢查點]
     end
-    
+
     subgraph 不穩定的 Skill
         U1[模糊的指令]
         U2[未定義輸出]
@@ -1216,13 +1236,13 @@ flowchart TB
 
 **提高穩定性的技巧**：
 
-| 技巧 | 說明 |
-|------|------|
-| **步驟編號** | 使用 1, 2, 3... 明確步驟順序 |
+| 技巧             | 說明                           |
+| ---------------- | ------------------------------ |
+| **步驟編號**     | 使用 1, 2, 3... 明確步驟順序   |
 | **定義輸出格式** | 使用 Markdown 範本定義預期輸出 |
-| **加入檢查點** | 在關鍵步驟加入驗證邏輯 |
-| **處理異常** | 說明當 X 發生時，應該 Y |
-| **提供範例** | 用具體範例說明預期行為 |
+| **加入檢查點**   | 在關鍵步驟加入驗證邏輯         |
+| **處理異常**     | 說明當 X 發生時，應該 Y        |
+| **提供範例**     | 用具體範例說明預期行為         |
 
 **範例：定義清楚的輸出格式**
 
@@ -1230,12 +1250,12 @@ flowchart TB
 
 **輸出格式定義範本**：
 
-| 欄位 | 說明 | 範例 |
-|------|------|------|
-| 檔案數 | 審查的檔案總數 | `3` |
-| Critical | 嚴重問題數量 | `1` |
-| Major | 重要問題數量 | `2` |
-| Minor | 輕微問題數量 | `0` |
+| 欄位     | 說明           | 範例 |
+| -------- | -------------- | ---- |
+| 檔案數   | 審查的檔案總數 | `3`  |
+| Critical | 嚴重問題數量   | `1`  |
+| Major    | 重要問題數量   | `2`  |
+| Minor    | 輕微問題數量   | `0`  |
 
 **問題清單格式**：
 
@@ -1253,29 +1273,29 @@ flowchart TB
 
 **推薦順序**：
 
-| 優先級 | Skill 類型 | 原因 | 範例 |
-|--------|-----------|------|------|
-| 🥇 高 | 程式碼審查 | 高頻使用、效益明顯 | `code-review` |
-| 🥇 高 | 測試產生 | 節省大量時間 | `unit-test-generator` |
-| 🥈 中 | 文件產生 | 標準化輸出 | `api-documentation` |
-| 🥈 中 | 重構建議 | 提升程式碼品質 | `refactoring-advisor` |
-| 🥉 低 | 複雜工作流程 | 需要團隊成熟度 | `full-feature-development` |
+| 優先級 | Skill 類型   | 原因               | 範例                       |
+| ------ | ------------ | ------------------ | -------------------------- |
+| 🥇 高  | 程式碼審查   | 高頻使用、效益明顯 | `code-review`              |
+| 🥇 高  | 測試產生     | 節省大量時間       | `unit-test-generator`      |
+| 🥈 中  | 文件產生     | 標準化輸出         | `api-documentation`        |
+| 🥈 中  | 重構建議     | 提升程式碼品質     | `refactoring-advisor`      |
+| 🥉 低  | 複雜工作流程 | 需要團隊成熟度     | `full-feature-development` |
 
 **建議起始點**：
 
 ```mermaid
 flowchart LR
     A[第 1-2 週] --> B[第 3-4 週] --> C[第 5-8 週] --> D[持續演進]
-    
+
     A --> A1[code-review]
     A --> A2[test-generator]
-    
+
     B --> B1[api-documentation]
     B --> B2[requirement-analyzer]
-    
+
     C --> C1[custom-skills]
     C --> C2[workflow-skills]
-    
+
     D --> D1[團隊 Skill Library]
 ```
 
@@ -1335,14 +1355,14 @@ flowchart LR
 
 **整合點建議**：
 
-| 開發階段 | 可整合的 Skill | 觸發時機 |
-|----------|---------------|----------|
-| 需求分析 | requirement-analyzer | 收到客戶需求時 |
-| 設計階段 | api-design | 設計 API 規格時 |
-| 開發階段 | code-generator | 實作功能時 |
-| Code Review | code-review | PR 建立時 |
-| 測試階段 | test-generator | 撰寫測試時 |
-| 文件階段 | documentation | 功能完成後 |
+| 開發階段    | 可整合的 Skill       | 觸發時機        |
+| ----------- | -------------------- | --------------- |
+| 需求分析    | requirement-analyzer | 收到客戶需求時  |
+| 設計階段    | api-design           | 設計 API 規格時 |
+| 開發階段    | code-generator       | 實作功能時      |
+| Code Review | code-review          | PR 建立時       |
+| 測試階段    | test-generator       | 撰寫測試時      |
+| 文件階段    | documentation        | 功能完成後      |
 
 **與 Git 工作流程整合**：
 
@@ -1370,29 +1390,29 @@ flowchart LR
         L1B[小範圍試用]
         L1C[收集回饋]
     end
-    
+
     subgraph L2["Level 2：建立期"]
         L2A[建立團隊 Skills]
         L2B[標準化流程]
         L2C[培訓團隊]
     end
-    
+
     subgraph L3["Level 3：成熟期"]
         L3A[完整 Skill Library]
         L3B[自動化整合]
         L3C[持續優化]
     end
-    
+
     L1 --> L2 --> L3
 ```
 
 **各階段詳細說明**：
 
-| 階段 | 時程 | 目標 | 關鍵活動 |
-|------|------|------|----------|
-| **Level 1：探索期** | 1-2 週 | 理解 Skills 概念 | 試用官方 Skills、小型任務驗證 |
-| **Level 2：建立期** | 3-6 週 | 建立團隊能力 | 建立 2-3 個自訂 Skills、團隊培訓 |
-| **Level 3：成熟期** | 持續 | 全面整合 | 完整 Skill Library、CI/CD 整合 |
+| 階段                | 時程   | 目標             | 關鍵活動                         |
+| ------------------- | ------ | ---------------- | -------------------------------- |
+| **Level 1：探索期** | 1-2 週 | 理解 Skills 概念 | 試用官方 Skills、小型任務驗證    |
+| **Level 2：建立期** | 3-6 週 | 建立團隊能力     | 建立 2-3 個自訂 Skills、團隊培訓 |
+| **Level 3：成熟期** | 持續   | 全面整合         | 完整 Skill Library、CI/CD 整合   |
 
 **🏦 銀行系統實務建議**：
 
@@ -1443,22 +1463,22 @@ flowchart LR
 
 ### 官方資源
 
-| 資源 | 連結 |
-|------|------|
-| Agent Skills 規格說明 | https://agentskills.io/ |
-| Anthropic Skills Repository | https://github.com/anthropics/skills |
-| Skills 驗證工具 | https://github.com/agentskills/agentskills/tree/main/skills-ref |
-| 什麼是 Skills | https://support.claude.com/en/articles/12512176-what-are-skills |
-| 如何使用 Skills | https://support.claude.com/en/articles/12512180-using-skills-in-claude |
-| 如何建立自訂 Skills | https://support.claude.com/en/articles/12512198-creating-custom-skills |
+| 資源                        | 連結                                                                   |
+| --------------------------- | ---------------------------------------------------------------------- |
+| Agent Skills 規格說明       | https://agentskills.io/                                                |
+| Anthropic Skills Repository | https://github.com/anthropics/skills                                   |
+| Skills 驗證工具             | https://github.com/agentskills/agentskills/tree/main/skills-ref        |
+| 什麼是 Skills               | https://support.claude.com/en/articles/12512176-what-are-skills        |
+| 如何使用 Skills             | https://support.claude.com/en/articles/12512180-using-skills-in-claude |
+| 如何建立自訂 Skills         | https://support.claude.com/en/articles/12512198-creating-custom-skills |
 
 ### 延伸閱讀
 
-| 主題 | 說明 |
-|------|------|
-| Anthropic 工程部落格 | 深入了解 Agent Skills 設計理念 |
-| Agent Skills 最佳實務 | 官方撰寫建議 |
-| 社群討論區 | GitHub Discussions |
+| 主題                  | 說明                           |
+| --------------------- | ------------------------------ |
+| Anthropic 工程部落格  | 深入了解 Agent Skills 設計理念 |
+| Agent Skills 最佳實務 | 官方撰寫建議                   |
+| 社群討論區            | GitHub Discussions             |
 
 ---
 
@@ -1466,6 +1486,6 @@ flowchart LR
 
 **版本歷程**：
 
-| 版本 | 日期 | 變更說明 |
-|------|------|----------|
-| 1.0 | 2026-01-08 | 初始版本 |
+| 版本 | 日期       | 變更說明 |
+| ---- | ---------- | -------- |
+| 1.0  | 2026-01-08 | 初始版本 |

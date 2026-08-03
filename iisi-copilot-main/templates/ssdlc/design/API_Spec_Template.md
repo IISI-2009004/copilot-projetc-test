@@ -33,16 +33,16 @@ tags: ["設計開發", "範本", "API", "軟體工程", "OpenAPI"]
 
 ### 📝 範本
 
-| 項目 | 內容 |
-|------|------|
-| **文件編號** | API-{專案代碼}-{序號} |
-| **API 名稱** | {系統名稱} API |
-| **API 版本** | v{主版本} |
-| **文件版本** | v{主版本}.{次版本} |
-| **狀態** | 草稿 / 審核中 / 已發布 |
-| **建立日期** | {YYYY-MM-DD} |
-| **最後更新** | {YYYY-MM-DD} |
-| **負責人** | {姓名/角色} |
+| 項目         | 內容                              |
+| ------------ | --------------------------------- |
+| **文件編號** | API-{專案代碼}-{序號}             |
+| **API 名稱** | {系統名稱} API                    |
+| **API 版本** | v{主版本}                         |
+| **文件版本** | v{主版本}.{次版本}                |
+| **狀態**     | 草稿 / 審核中 / 已發布            |
+| **建立日期** | {YYYY-MM-DD}                      |
+| **最後更新** | {YYYY-MM-DD}                      |
+| **負責人**   | {姓名/角色}                       |
 | **Base URL** | `https://{domain}/api/v{version}` |
 
 ### 📖 使用說明
@@ -53,11 +53,11 @@ tags: ["設計開發", "範本", "API", "軟體工程", "OpenAPI"]
 
 ### 💡 範例
 
-| 項目 | 內容 |
-|------|------|
-| **文件編號** | API-HRM-001 |
-| **API 名稱** | HRMS API |
-| **API 版本** | v1 |
+| 項目         | 內容                              |
+| ------------ | --------------------------------- |
+| **文件編號** | API-HRM-001                       |
+| **API 名稱** | HRMS API                          |
+| **API 版本** | v1                                |
 | **Base URL** | `https://api.company.com/hrms/v1` |
 
 ---
@@ -72,15 +72,15 @@ tags: ["設計開發", "範本", "API", "軟體工程", "OpenAPI"]
 
 #### 2.2 目標使用者
 
-| 使用者類型 | 說明 | 權限範圍 |
-|-----------|------|---------|
-| {類型} | {說明} | {可存取的資源} |
+| 使用者類型 | 說明   | 權限範圍       |
+| ---------- | ------ | -------------- |
+| {類型}     | {說明} | {可存取的資源} |
 
 #### 2.3 API 資源總覽
 
-| 資源（Resource） | Base Path | 說明 | 支援操作 |
-|----------------|-----------|------|---------|
-| {資源名稱} | `/{resource}` | {描述} | GET, POST, PUT, DELETE |
+| 資源（Resource） | Base Path     | 說明   | 支援操作               |
+| ---------------- | ------------- | ------ | ---------------------- |
+| {資源名稱}       | `/{resource}` | {描述} | GET, POST, PUT, DELETE |
 
 ### 📖 使用說明
 
@@ -92,12 +92,12 @@ tags: ["設計開發", "範本", "API", "軟體工程", "OpenAPI"]
 
 #### 2.3 API 資源總覽
 
-| 資源 | Base Path | 說明 | 支援操作 |
-|------|-----------|------|---------|
-| Employees | `/employees` | 員工基本資料管理 | GET, POST, PUT, PATCH |
-| Leaves | `/leaves` | 請假申請與管理 | GET, POST, PUT, DELETE |
-| Payrolls | `/payrolls` | 薪資記錄查詢 | GET |
-| Departments | `/departments` | 部門組織管理 | GET, POST, PUT |
+| 資源        | Base Path      | 說明             | 支援操作               |
+| ----------- | -------------- | ---------------- | ---------------------- |
+| Employees   | `/employees`   | 員工基本資料管理 | GET, POST, PUT, PATCH  |
+| Leaves      | `/leaves`      | 請假申請與管理   | GET, POST, PUT, DELETE |
+| Payrolls    | `/payrolls`    | 薪資記錄查詢     | GET                    |
+| Departments | `/departments` | 部門組織管理     | GET, POST, PUT         |
 
 ---
 
@@ -107,19 +107,19 @@ tags: ["設計開發", "範本", "API", "軟體工程", "OpenAPI"]
 
 #### 3.1 認證機制
 
-| 項目 | 規格 |
-|------|------|
-| 認證方式 | {OAuth 2.0 / API Key / Bearer Token} |
-| Token 格式 | {JWT / Opaque} |
-| Token 位置 | {Authorization Header / Cookie} |
-| Token 有效期 | {時間} |
-| 刷新機制 | {Refresh Token / Re-authenticate} |
+| 項目         | 規格                                 |
+| ------------ | ------------------------------------ |
+| 認證方式     | {OAuth 2.0 / API Key / Bearer Token} |
+| Token 格式   | {JWT / Opaque}                       |
+| Token 位置   | {Authorization Header / Cookie}      |
+| Token 有效期 | {時間}                               |
+| 刷新機制     | {Refresh Token / Re-authenticate}    |
 
 #### 3.2 授權模型
 
-| Scope / Role | 描述 | 可存取資源 |
-|-------------|------|-----------|
-| {scope} | {描述} | {資源清單} |
+| Scope / Role | 描述   | 可存取資源 |
+| ------------ | ------ | ---------- |
+| {scope}      | {描述} | {資源清單} |
 
 #### 3.3 請求範例
 
@@ -140,21 +140,21 @@ Content-Type: application/json
 
 #### 3.1 認證機制
 
-| 項目 | 規格 |
-|------|------|
-| 認證方式 | OAuth 2.0 Authorization Code Flow（使用者）/ Client Credentials（系統） |
-| Token 格式 | JWT（RS256 簽章） |
-| Token 位置 | `Authorization: Bearer {token}` |
-| Token 有效期 | Access Token: 15 分鐘 / Refresh Token: 7 天 |
+| 項目         | 規格                                                                    |
+| ------------ | ----------------------------------------------------------------------- |
+| 認證方式     | OAuth 2.0 Authorization Code Flow（使用者）/ Client Credentials（系統） |
+| Token 格式   | JWT（RS256 簽章）                                                       |
+| Token 位置   | `Authorization: Bearer {token}`                                         |
+| Token 有效期 | Access Token: 15 分鐘 / Refresh Token: 7 天                             |
 
 #### 3.2 授權模型
 
-| Scope | 描述 | 可存取資源 |
-|-------|------|-----------|
-| `employee:read` | 讀取員工資料 | GET /employees |
-| `employee:write` | 修改員工資料 | POST/PUT /employees |
-| `leave:manage` | 管理假勤（含審核） | ALL /leaves |
-| `payroll:read` | 查詢薪資 | GET /payrolls |
+| Scope            | 描述               | 可存取資源          |
+| ---------------- | ------------------ | ------------------- |
+| `employee:read`  | 讀取員工資料       | GET /employees      |
+| `employee:write` | 修改員工資料       | POST/PUT /employees |
+| `leave:manage`   | 管理假勤（含審核） | ALL /leaves         |
+| `payroll:read`   | 查詢薪資           | GET /payrolls       |
 
 ---
 
@@ -164,13 +164,13 @@ Content-Type: application/json
 
 #### 4.1 HTTP 方法語義
 
-| 方法 | 語義 | 冪等性 | 安全性 |
-|------|------|--------|--------|
-| GET | 讀取資源 | 是 | 是 |
-| POST | 建立資源 | 否 | 否 |
-| PUT | 完整更新資源 | 是 | 否 |
-| PATCH | 部分更新資源 | 否 | 否 |
-| DELETE | 刪除資源 | 是 | 否 |
+| 方法   | 語義         | 冪等性 | 安全性 |
+| ------ | ------------ | ------ | ------ |
+| GET    | 讀取資源     | 是     | 是     |
+| POST   | 建立資源     | 否     | 否     |
+| PUT    | 完整更新資源 | 是     | 否     |
+| PATCH  | 部分更新資源 | 否     | 否     |
+| DELETE | 刪除資源     | 是     | 否     |
 
 #### 4.2 分頁規範
 
@@ -188,28 +188,28 @@ Content-Type: application/json
 
 **分頁參數：**
 
-| 參數 | 型別 | 預設值 | 說明 |
-|------|------|--------|------|
-| `page` | integer | 1 | 頁碼（從 1 開始） |
-| `pageSize` | integer | 20 | 每頁筆數（最大 100） |
-| `sort` | string | - | 排序欄位（如 `createdAt:desc`） |
+| 參數       | 型別    | 預設值 | 說明                            |
+| ---------- | ------- | ------ | ------------------------------- |
+| `page`     | integer | 1      | 頁碼（從 1 開始）               |
+| `pageSize` | integer | 20     | 每頁筆數（最大 100）            |
+| `sort`     | string  | -      | 排序欄位（如 `createdAt:desc`） |
 
 #### 4.3 日期時間格式
 
-| 格式 | 標準 | 範例 |
-|------|------|------|
+| 格式     | 標準                | 範例                        |
+| -------- | ------------------- | --------------------------- |
 | 日期時間 | ISO 8601 / RFC 3339 | `2026-05-18T10:30:00+08:00` |
-| 純日期 | ISO 8601 | `2026-05-18` |
-| 時區 | UTC 偏移量 | `+08:00` |
+| 純日期   | ISO 8601            | `2026-05-18`                |
+| 時區     | UTC 偏移量          | `+08:00`                    |
 
 #### 4.4 共用 HTTP Headers
 
-| Header | 用途 | 必填 | 範例 |
-|--------|------|------|------|
-| `Content-Type` | 請求/回應格式 | 是 | `application/json` |
-| `Accept` | 期望回應格式 | 否 | `application/json` |
-| `X-Request-Id` | 請求追蹤 ID | 是 | `uuid-v4` |
-| `X-Correlation-Id` | 跨服務追蹤 ID | 否 | `uuid-v4` |
+| Header             | 用途          | 必填 | 範例               |
+| ------------------ | ------------- | ---- | ------------------ |
+| `Content-Type`     | 請求/回應格式 | 是   | `application/json` |
+| `Accept`           | 期望回應格式  | 否   | `application/json` |
+| `X-Request-Id`     | 請求追蹤 ID   | 是   | `uuid-v4`          |
+| `X-Correlation-Id` | 跨服務追蹤 ID | 否   | `uuid-v4`          |
 
 ### 📖 使用說明
 
@@ -244,14 +244,14 @@ Accept: application/json
 
 **路徑參數（Path Parameters）：**
 
-| 參數 | 型別 | 必填 | 說明 |
-|------|------|------|------|
+| 參數      | 型別   | 必填  | 說明   |
+| --------- | ------ | ----- | ------ |
 | `{param}` | {type} | 是/否 | {描述} |
 
 **查詢參數（Query Parameters）：**
 
-| 參數 | 型別 | 必填 | 預設值 | 說明 |
-|------|------|------|--------|------|
+| 參數      | 型別   | 必填  | 預設值    | 說明   |
+| --------- | ------ | ----- | --------- | ------ |
 | `{param}` | {type} | 是/否 | {default} | {描述} |
 
 **請求 Body（Request Body）：**
@@ -265,14 +265,14 @@ Accept: application/json
 
 **回應（Response）：**
 
-| HTTP Status | 說明 | 回應 Body |
-|-------------|------|-----------|
-| 200 OK | 成功 | {回應結構} |
-| 201 Created | 建立成功 | {回應結構} |
-| 400 Bad Request | 參數錯誤 | Error Object |
-| 401 Unauthorized | 未認證 | Error Object |
-| 403 Forbidden | 無權限 | Error Object |
-| 404 Not Found | 資源不存在 | Error Object |
+| HTTP Status      | 說明       | 回應 Body    |
+| ---------------- | ---------- | ------------ |
+| 200 OK           | 成功       | {回應結構}   |
+| 201 Created      | 建立成功   | {回應結構}   |
+| 400 Bad Request  | 參數錯誤   | Error Object |
+| 401 Unauthorized | 未認證     | Error Object |
+| 403 Forbidden    | 無權限     | Error Object |
+| 404 Not Found    | 資源不存在 | Error Object |
 
 **回應 Body 範例：**
 
@@ -313,13 +313,13 @@ Accept: application/json
 }
 ```
 
-| 欄位 | 型別 | 必填 | 說明 |
-|------|------|------|------|
-| `leaveType` | string | 是 | 假別代碼（annual/sick/personal/official） |
-| `startDate` | string(date) | 是 | 請假起始日 |
-| `endDate` | string(date) | 是 | 請假結束日 |
-| `reason` | string | 是 | 請假事由（最長 500 字） |
-| `delegateId` | string | 否 | 職務代理人員工編號 |
+| 欄位         | 型別         | 必填 | 說明                                      |
+| ------------ | ------------ | ---- | ----------------------------------------- |
+| `leaveType`  | string       | 是   | 假別代碼（annual/sick/personal/official） |
+| `startDate`  | string(date) | 是   | 請假起始日                                |
+| `endDate`    | string(date) | 是   | 請假結束日                                |
+| `reason`     | string       | 是   | 請假事由（最長 500 字）                   |
+| `delegateId` | string       | 否   | 職務代理人員工編號                        |
 
 **回應：**
 
@@ -349,15 +349,15 @@ Accept: application/json
 
 **路徑參數：**
 
-| 參數 | 型別 | 必填 | 說明 |
-|------|------|------|------|
-| `id` | string | 是 | 請假單編號 |
+| 參數 | 型別   | 必填 | 說明       |
+| ---- | ------ | ---- | ---------- |
+| `id` | string | 是   | 請假單編號 |
 
 **回應：**
 
-| HTTP Status | 說明 |
-|-------------|------|
-| 200 OK | 回傳請假紀錄 |
+| HTTP Status   | 說明         |
+| ------------- | ------------ |
+| 200 OK        | 回傳請假紀錄 |
 | 404 Not Found | 請假單不存在 |
 
 ---
@@ -368,16 +368,16 @@ Accept: application/json
 
 #### 6.1 {Schema 名稱}
 
-| 欄位 | 型別 | 必填 | 說明 | 驗證規則 |
-|------|------|------|------|---------|
+| 欄位      | 型別   | 必填  | 說明   | 驗證規則               |
+| --------- | ------ | ----- | ------ | ---------------------- |
 | `{field}` | {type} | 是/否 | {描述} | {min/max/pattern/enum} |
 
 #### 6.2 列舉值（Enums）
 
-| Enum 名稱 | 值 | 說明 |
-|-----------|------|------|
+| Enum 名稱  | 值       | 說明   |
+| ---------- | -------- | ------ |
 | {EnumName} | `value1` | {描述} |
-| | `value2` | {描述} |
+|            | `value2` | {描述} |
 
 ### 📖 使用說明
 
@@ -389,21 +389,21 @@ Accept: application/json
 
 #### 6.1 LeaveRequest Schema
 
-| 欄位 | 型別 | 必填 | 說明 | 驗證規則 |
-|------|------|------|------|---------|
-| `leaveType` | string | 是 | 假別 | enum: annual, sick, personal, official |
-| `startDate` | string(date) | 是 | 起始日 | format: date, ≥ today |
-| `endDate` | string(date) | 是 | 結束日 | format: date, ≥ startDate |
-| `reason` | string | 是 | 事由 | minLength: 1, maxLength: 500 |
-| `delegateId` | string | 否 | 代理人 | pattern: `^E\d{8}$` |
+| 欄位         | 型別         | 必填 | 說明   | 驗證規則                               |
+| ------------ | ------------ | ---- | ------ | -------------------------------------- |
+| `leaveType`  | string       | 是   | 假別   | enum: annual, sick, personal, official |
+| `startDate`  | string(date) | 是   | 起始日 | format: date, ≥ today                  |
+| `endDate`    | string(date) | 是   | 結束日 | format: date, ≥ startDate              |
+| `reason`     | string       | 是   | 事由   | minLength: 1, maxLength: 500           |
+| `delegateId` | string       | 否   | 代理人 | pattern: `^E\d{8}$`                    |
 
 #### 6.2 LeaveStatus Enum
 
-| 值 | 說明 |
-|------|------|
-| `pending` | 待審核 |
-| `approved` | 已核准 |
-| `rejected` | 已駁回 |
+| 值          | 說明   |
+| ----------- | ------ |
+| `pending`   | 待審核 |
+| `approved`  | 已核准 |
+| `rejected`  | 已駁回 |
 | `cancelled` | 已取消 |
 
 ---
@@ -433,25 +433,25 @@ Accept: application/json
 
 #### 7.2 錯誤代碼清單
 
-| HTTP Status | Error Code | 說明 | 處理建議 |
-|-------------|-----------|------|---------|
-| 400 | `VALIDATION_ERROR` | 請求參數驗證失敗 | 修正請求參數後重試 |
-| 400 | `INVALID_DATE_RANGE` | 日期範圍無效 | 確認 endDate ≥ startDate |
-| 401 | `TOKEN_EXPIRED` | Token 已過期 | 使用 Refresh Token 取得新 Token |
-| 401 | `INVALID_TOKEN` | Token 無效 | 重新登入取得 Token |
-| 403 | `INSUFFICIENT_SCOPE` | 權限不足 | 確認帳號具有對應 Scope |
-| 404 | `RESOURCE_NOT_FOUND` | 資源不存在 | 確認 ID 是否正確 |
-| 409 | `CONFLICT` | 資源衝突 | 取得最新版本後重試 |
-| 422 | `BUSINESS_RULE_VIOLATION` | 違反業務規則 | 參考 detail 欄位說明 |
-| 429 | `RATE_LIMIT_EXCEEDED` | 超過請求頻率限制 | 等待後重試，參考 Retry-After header |
-| 500 | `INTERNAL_ERROR` | 伺服器內部錯誤 | 聯繫技術支援 |
+| HTTP Status | Error Code                | 說明             | 處理建議                            |
+| ----------- | ------------------------- | ---------------- | ----------------------------------- |
+| 400         | `VALIDATION_ERROR`        | 請求參數驗證失敗 | 修正請求參數後重試                  |
+| 400         | `INVALID_DATE_RANGE`      | 日期範圍無效     | 確認 endDate ≥ startDate            |
+| 401         | `TOKEN_EXPIRED`           | Token 已過期     | 使用 Refresh Token 取得新 Token     |
+| 401         | `INVALID_TOKEN`           | Token 無效       | 重新登入取得 Token                  |
+| 403         | `INSUFFICIENT_SCOPE`      | 權限不足         | 確認帳號具有對應 Scope              |
+| 404         | `RESOURCE_NOT_FOUND`      | 資源不存在       | 確認 ID 是否正確                    |
+| 409         | `CONFLICT`                | 資源衝突         | 取得最新版本後重試                  |
+| 422         | `BUSINESS_RULE_VIOLATION` | 違反業務規則     | 參考 detail 欄位說明                |
+| 429         | `RATE_LIMIT_EXCEEDED`     | 超過請求頻率限制 | 等待後重試，參考 Retry-After header |
+| 500         | `INTERNAL_ERROR`          | 伺服器內部錯誤   | 聯繫技術支援                        |
 
 #### 7.3 Rate Limiting
 
-| 項目 | 規格 |
-|------|------|
-| 限制方式 | {Per User / Per API Key / Per IP} |
-| 限制量 | {N} requests / {時間單位} |
+| 項目        | 規格                                                              |
+| ----------- | ----------------------------------------------------------------- |
+| 限制方式    | {Per User / Per API Key / Per IP}                                 |
+| 限制量      | {N} requests / {時間單位}                                         |
 | 回應 Header | `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` |
 
 ### 📖 使用說明
@@ -489,21 +489,23 @@ Accept: application/json
 
 #### 8.1 版本管理規則
 
-| 項目 | 策略 |
-|------|------|
+| 項目     | 策略                                  |
+| -------- | ------------------------------------- |
 | 版本格式 | {URL Path / Header / Query Parameter} |
-| 版本命名 | v{major}（如 v1, v2） |
-| 向後相容 | {相容性保證描述} |
-| 棄用通知 | {提前 N 個月通知} |
-| 並行支援 | {同時支援 N 個版本} |
+| 版本命名 | v{major}（如 v1, v2）                 |
+| 向後相容 | {相容性保證描述}                      |
+| 棄用通知 | {提前 N 個月通知}                     |
+| 並行支援 | {同時支援 N 個版本}                   |
 
 #### 8.2 Breaking Change 定義
 
 以下變更視為 Breaking Change（需升版）：
+
 - {Breaking Change 類型 1}
 - {Breaking Change 類型 2}
 
 以下變更為 Non-Breaking（不需升版）：
+
 - {Non-Breaking Change 類型 1}
 - {Non-Breaking Change 類型 2}
 
@@ -517,13 +519,13 @@ Accept: application/json
 
 #### 8.1 版本管理規則
 
-| 項目 | 策略 |
-|------|------|
-| 版本格式 | URL Path（`/api/v1/...`） |
-| 版本命名 | v1, v2（Major 版本） |
-| 向後相容 | 同一 Major 版本內保證向後相容 |
+| 項目     | 策略                                 |
+| -------- | ------------------------------------ |
+| 版本格式 | URL Path（`/api/v1/...`）            |
+| 版本命名 | v1, v2（Major 版本）                 |
+| 向後相容 | 同一 Major 版本內保證向後相容        |
 | 棄用通知 | 新版本發布後，舊版本至少維護 12 個月 |
-| 並行支援 | 最多同時維護 2 個 Major 版本 |
+| 並行支援 | 最多同時維護 2 個 Major 版本         |
 
 ---
 
@@ -572,12 +574,12 @@ paths:
             default: 20
             maximum: 100
       responses:
-        '200':
+        "200":
           description: "Success"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/{ResponseSchema}'
+                $ref: "#/components/schemas/{ResponseSchema}"
     post:
       summary: "{描述}"
       operationId: "{operationId}"
@@ -588,16 +590,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/{RequestSchema}'
+              $ref: "#/components/schemas/{RequestSchema}"
       responses:
-        '201':
+        "201":
           description: "Created"
-        '400':
+        "400":
           description: "Bad Request"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
 components:
   securitySchemes:
@@ -613,9 +615,9 @@ components:
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
         meta:
-          $ref: '#/components/schemas/Meta'
+          $ref: "#/components/schemas/Meta"
 
     Error:
       type: object
@@ -680,20 +682,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LeaveRequest'
+              $ref: "#/components/schemas/LeaveRequest"
       responses:
-        '201':
+        "201":
           description: "請假申請建立成功"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeaveResponse'
-        '422':
+                $ref: "#/components/schemas/LeaveResponse"
+        "422":
           description: "業務規則驗證失敗"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 ```
 
 ---
@@ -704,25 +706,25 @@ paths:
 
 #### 10.1 環境 URL 對照
 
-| 環境 | Base URL | 說明 |
-|------|----------|------|
-| DEV | `https://dev-api.{domain}/api/v1` | 開發環境 |
-| SIT | `https://sit-api.{domain}/api/v1` | 整合測試 |
-| UAT | `https://uat-api.{domain}/api/v1` | 使用者驗收 |
-| PROD | `https://api.{domain}/api/v1` | 正式環境 |
+| 環境 | Base URL                          | 說明       |
+| ---- | --------------------------------- | ---------- |
+| DEV  | `https://dev-api.{domain}/api/v1` | 開發環境   |
+| SIT  | `https://sit-api.{domain}/api/v1` | 整合測試   |
+| UAT  | `https://uat-api.{domain}/api/v1` | 使用者驗收 |
+| PROD | `https://api.{domain}/api/v1`     | 正式環境   |
 
 #### 10.2 變更紀錄
 
-| 日期 | 版本 | 變更內容 | 類型 |
-|------|------|---------|------|
+| 日期   | 版本   | 變更內容   | 類型                    |
+| ------ | ------ | ---------- | ----------------------- |
 | {日期} | {版本} | {變更描述} | Breaking / Non-Breaking |
 
 #### 10.3 相關工具
 
-| 工具 | 用途 | 連結 |
-|------|------|------|
-| Swagger UI | API 互動式文件 | {URL} |
-| Postman Collection | API 測試集合 | {URL} |
+| 工具               | 用途           | 連結  |
+| ------------------ | -------------- | ----- |
+| Swagger UI         | API 互動式文件 | {URL} |
+| Postman Collection | API 測試集合   | {URL} |
 
 ### 📖 使用說明
 
@@ -734,15 +736,16 @@ paths:
 
 #### 10.2 變更紀錄
 
-| 日期 | 版本 | 變更內容 | 類型 |
-|------|------|---------|------|
-| 2026-05-18 | v1.0 | 初版發布：Employees, Leaves, Payrolls API | - |
-| 2026-06-01 | v1.1 | 新增 `delegateId` 欄位於 LeaveRequest | Non-Breaking |
-| 2026-07-15 | v1.2 | 新增 `/leaves/{id}/approve` 端點 | Non-Breaking |
+| 日期       | 版本 | 變更內容                                  | 類型         |
+| ---------- | ---- | ----------------------------------------- | ------------ |
+| 2026-05-18 | v1.0 | 初版發布：Employees, Leaves, Payrolls API | -            |
+| 2026-06-01 | v1.1 | 新增 `delegateId` 欄位於 LeaveRequest     | Non-Breaking |
+| 2026-07-15 | v1.2 | 新增 `/leaves/{id}/approve` 端點          | Non-Breaking |
 
 ---
 
 > 📌 **範本使用注意事項**
+>
 > 1. 本範本依據 OpenAPI Specification 3.1 標準編製
 > 2. 建議同時維護本文件（人類可讀）與 OpenAPI yaml 檔案（機器可讀）
 > 3. API 設計建議遵循：REST 最佳實踐、一致命名、最小暴露原則

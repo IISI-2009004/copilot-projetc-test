@@ -82,20 +82,20 @@ free-claude-code 是一個開源 **Anthropic Messages API 相容代理伺服器*
 
 ### 1.2 與 Claude Code 官方的差異
 
-| 比較項目 | Claude Code 官方 | free-claude-code |
-|---------|-----------------|-----------------|
-| API 後端 | Anthropic API（付費） | 多模型 Proxy（免費/低成本） |
-| 模型選擇 | Claude 系列 | 18 種 Provider 任意相容模型 |
-| 計費方式 | 按 Token 付費 | 依 Provider 而定（可免費） |
-| Tool Use | 完整支援 | 透過 Proxy 轉譯支援 |
-| Thinking Block | 原生支援 | Proxy 正規化處理 |
-| 部署方式 | SaaS | 自架 Proxy |
-| 資料隱私 | 資料送至 Anthropic | 可選擇本地模型（完全離線） |
-| Smoke Testing | 無 | 內建 Provider Smoke Test |
-| 啟動驗證 | 無 | 啟動時自動驗證模型設定 |
-| 管理介面 | 無 | Admin UI（`/admin`）Web 介面 |
-| Codex CLI | 不支援 | `fcc-codex` 整合支援 |
-| 模型發現 | Claude Code 內建 | Gateway Model Discovery |
+| 比較項目       | Claude Code 官方      | free-claude-code             |
+| -------------- | --------------------- | ---------------------------- |
+| API 後端       | Anthropic API（付費） | 多模型 Proxy（免費/低成本）  |
+| 模型選擇       | Claude 系列           | 18 種 Provider 任意相容模型  |
+| 計費方式       | 按 Token 付費         | 依 Provider 而定（可免費）   |
+| Tool Use       | 完整支援              | 透過 Proxy 轉譯支援          |
+| Thinking Block | 原生支援              | Proxy 正規化處理             |
+| 部署方式       | SaaS                  | 自架 Proxy                   |
+| 資料隱私       | 資料送至 Anthropic    | 可選擇本地模型（完全離線）   |
+| Smoke Testing  | 無                    | 內建 Provider Smoke Test     |
+| 啟動驗證       | 無                    | 啟動時自動驗證模型設定       |
+| 管理介面       | 無                    | Admin UI（`/admin`）Web 介面 |
+| Codex CLI      | 不支援                | `fcc-codex` 整合支援         |
+| 模型發現       | Claude Code 內建      | Gateway Model Discovery      |
 
 ### 1.3 適用場景
 
@@ -307,22 +307,22 @@ MODEL="nvidia_nim/z-ai/glm4.7"
 
 Proxy 內建多項請求最佳化，可在不消耗上游配額的情況下自動回應 Claude Code 的探測請求：
 
-| 最佳化項目 | 環境變數 | 說明 |
-|-----------|---------|------|
-| 網路探測模擬 | `ENABLE_NETWORK_PROBE_MOCK=true` | 本地回應 Claude Code 的網路連線探測 |
-| 標題生成跳過 | `ENABLE_TITLE_GENERATION_SKIP=true` | 跳過對話標題生成請求 |
-| 建議模式跳過 | `ENABLE_SUGGESTION_MODE_SKIP=true` | 跳過建議模式相關請求 |
-| 檔案路徑擷取模擬 | `ENABLE_FILEPATH_EXTRACTION_MOCK=true` | 本地模擬檔案路徑擷取 |
-| 快速前綴偵測 | `FAST_PREFIX_DETECTION=true` | 加速請求前綴辨識 |
+| 最佳化項目       | 環境變數                               | 說明                                |
+| ---------------- | -------------------------------------- | ----------------------------------- |
+| 網路探測模擬     | `ENABLE_NETWORK_PROBE_MOCK=true`       | 本地回應 Claude Code 的網路連線探測 |
+| 標題生成跳過     | `ENABLE_TITLE_GENERATION_SKIP=true`    | 跳過對話標題生成請求                |
+| 建議模式跳過     | `ENABLE_SUGGESTION_MODE_SKIP=true`     | 跳過建議模式相關請求                |
+| 檔案路徑擷取模擬 | `ENABLE_FILEPATH_EXTRACTION_MOCK=true` | 本地模擬檔案路徑擷取                |
+| 快速前綴偵測     | `FAST_PREFIX_DETECTION=true`           | 加速請求前綴辨識                    |
 
 ### 2.6 擴充方式
 
-| 擴充類型 | 做法 |
-|---------|-----|
-| 新增 OpenAI 相容 Provider | 繼承 `OpenAIChatTransport` |
-| 新增 Anthropic 相容 Provider | 繼承 `AnthropicMessagesTransport` |
-| 註冊 Provider 中繼資料 | 修改 `config.provider_catalog` 並於 `providers.registry` 新增 factory wiring |
-| 新增 Messaging 平台 | 實作 `MessagingPlatform` interface（位於 `messaging/`） |
+| 擴充類型                     | 做法                                                                         |
+| ---------------------------- | ---------------------------------------------------------------------------- |
+| 新增 OpenAI 相容 Provider    | 繼承 `OpenAIChatTransport`                                                   |
+| 新增 Anthropic 相容 Provider | 繼承 `AnthropicMessagesTransport`                                            |
+| 註冊 Provider 中繼資料       | 修改 `config.provider_catalog` 並於 `providers.registry` 新增 factory wiring |
+| 新增 Messaging 平台          | 實作 `MessagingPlatform` interface（位於 `messaging/`）                      |
 
 > **實務建議**：企業若需整合內部私有模型（如 vLLM），建議走 `AnthropicMessagesTransport` 路線，因多數企業 LLM Gateway 已支援此協議。
 
@@ -354,14 +354,14 @@ irm https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/install
 
 ### 3.1 系統需求
 
-| 項目 | 最低需求 | 建議版本 |
-|-----|---------|---------|
-| 作業系統 | Windows 10+ / Ubuntu 20.04+ / macOS 12+ | 最新穩定版 |
-| Python | 3.14 | 3.14（專案指定，見 `.python-version`） |
-| uv（套件管理） | 最新版 | 最新版（透過 `uv self update` 更新） |
-| Node.js | 18+（Claude Code CLI 需要） | 22 LTS |
-| Claude Code CLI | 2.1.126+（Model Picker 支援） | 最新版 |
-| 記憶體 | 4 GB | 8 GB+（本地模型需 16 GB+） |
+| 項目            | 最低需求                                | 建議版本                               |
+| --------------- | --------------------------------------- | -------------------------------------- |
+| 作業系統        | Windows 10+ / Ubuntu 20.04+ / macOS 12+ | 最新穩定版                             |
+| Python          | 3.14                                    | 3.14（專案指定，見 `.python-version`） |
+| uv（套件管理）  | 最新版                                  | 最新版（透過 `uv self update` 更新）   |
+| Node.js         | 18+（Claude Code CLI 需要）             | 22 LTS                                 |
+| Claude Code CLI | 2.1.126+（Model Picker 支援）           | 最新版                                 |
+| 記憶體          | 4 GB                                    | 8 GB+（本地模型需 16 GB+）             |
 
 > **注意**：Python 3.14 為專案硬性要求。專案使用了 Python 3.14 的語法特性（例如 `except TypeError, ValueError:` 多型別例外語法），這些特性僅在 3.14 正式版中支援。
 
@@ -506,12 +506,12 @@ graph TD
 
 ### 4.1 ANTHROPIC_BASE_URL 設定
 
-| 客戶端 | 設定方式 |
-|-------|---------|
-| CLI（Bash） | `export ANTHROPIC_BASE_URL="http://localhost:8082"` |
-| CLI（PowerShell） | `$env:ANTHROPIC_BASE_URL="http://localhost:8082"` |
+| 客戶端            | 設定方式                                                        |
+| ----------------- | --------------------------------------------------------------- |
+| CLI（Bash）       | `export ANTHROPIC_BASE_URL="http://localhost:8082"`             |
+| CLI（PowerShell） | `$env:ANTHROPIC_BASE_URL="http://localhost:8082"`               |
 | VS Code Extension | `settings.json` 設定（見 [4.5 節](#45-vs-code-extension-設定)） |
-| JetBrains ACP | `installed.json` 設定（見 [4.6 節](#46-jetbrains-acp-設定)） |
+| JetBrains ACP     | `installed.json` 設定（見 [4.6 節](#46-jetbrains-acp-設定)）    |
 
 > ⚠️ **不要** 在 URL 末尾加上 `/v1`，正確格式為 `http://localhost:8082`
 
@@ -705,25 +705,25 @@ MESSAGING_RATE_WINDOW=1    # Messaging rate limit 視窗（秒）
 
 ### 4.13 環境變數分類速查表
 
-| 類別 | 關鍵變數 | 必填 |
-|------|---------|------|
-| 核心 | `MODEL`、`ANTHROPIC_AUTH_TOKEN`、`PORT` | ✅（PORT 選填，預設 8082） |
-| 模型路由 | `MODEL_OPUS`、`MODEL_SONNET`、`MODEL_HAIKU` | ❌ |
-| Thinking | `ENABLE_MODEL_THINKING`、`ENABLE_*_THINKING` | ❌ |
-| 雲端 Provider Key（原有） | `NVIDIA_NIM_API_KEY`、`OPENROUTER_API_KEY`、`DEEPSEEK_API_KEY` | 至少一個 |
-| 雲端 Provider Key（新增） | `GEMINI_API_KEY`、`MISTRAL_API_KEY`、`CODESTRAL_API_KEY`、`OPENCODE_API_KEY`、`WAFER_API_KEY`、`KIMI_API_KEY`、`CEREBRAS_API_KEY`、`GROQ_API_KEY`、`FIREWORKS_API_KEY`、`CLOUDFLARE_API_TOKEN`、`ZAI_API_KEY` | 至少一個 |
-| Cloudflare 專用 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 必填 |
-| 本地 Provider | `LM_STUDIO_BASE_URL`、`LLAMACPP_BASE_URL`、`OLLAMA_BASE_URL` | ❌ |
-| Model Discovery | `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY` | ❌ |
-| 對話壓縮 | `CLAUDE_CODE_AUTO_COMPACT_WINDOW` | ❌（fcc-claude 自動設定） |
-| Rate Limit | `PROVIDER_RATE_LIMIT`、`PROVIDER_RATE_WINDOW`、`PROVIDER_MAX_CONCURRENCY` | ❌ |
-| Timeout | `HTTP_READ_TIMEOUT`、`HTTP_WRITE_TIMEOUT`、`HTTP_CONNECT_TIMEOUT` | ❌ |
-| Proxy | `NVIDIA_NIM_PROXY`、`OPENROUTER_PROXY`、`LMSTUDIO_PROXY`、`LLAMACPP_PROXY` | ❌ |
-| Smoke Test | `FCC_SMOKE_MODEL_*` | ❌ |
-| Messaging | `MESSAGING_PLATFORM`、`MESSAGING_RATE_LIMIT`、`MESSAGING_RATE_WINDOW` | ❌ |
-| Agent | `CLAUDE_WORKSPACE`、`ALLOWED_DIR`、`CLAUDE_CLI_BIN` | ❌ |
-| 安全 | `LOG_RAW_*`、`DEBUG_*`、`WEB_FETCH_ALLOW_PRIVATE_NETWORKS` | ❌ |
-| 語音 | `VOICE_NOTE_ENABLED`、`WHISPER_DEVICE`、`WHISPER_MODEL`、`HF_TOKEN` | ❌ |
+| 類別                      | 關鍵變數                                                                                                                                                                                                      | 必填                       |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| 核心                      | `MODEL`、`ANTHROPIC_AUTH_TOKEN`、`PORT`                                                                                                                                                                       | ✅（PORT 選填，預設 8082） |
+| 模型路由                  | `MODEL_OPUS`、`MODEL_SONNET`、`MODEL_HAIKU`                                                                                                                                                                   | ❌                         |
+| Thinking                  | `ENABLE_MODEL_THINKING`、`ENABLE_*_THINKING`                                                                                                                                                                  | ❌                         |
+| 雲端 Provider Key（原有） | `NVIDIA_NIM_API_KEY`、`OPENROUTER_API_KEY`、`DEEPSEEK_API_KEY`                                                                                                                                                | 至少一個                   |
+| 雲端 Provider Key（新增） | `GEMINI_API_KEY`、`MISTRAL_API_KEY`、`CODESTRAL_API_KEY`、`OPENCODE_API_KEY`、`WAFER_API_KEY`、`KIMI_API_KEY`、`CEREBRAS_API_KEY`、`GROQ_API_KEY`、`FIREWORKS_API_KEY`、`CLOUDFLARE_API_TOKEN`、`ZAI_API_KEY` | 至少一個                   |
+| Cloudflare 專用           | `CLOUDFLARE_ACCOUNT_ID`                                                                                                                                                                                       | Cloudflare 必填            |
+| 本地 Provider             | `LM_STUDIO_BASE_URL`、`LLAMACPP_BASE_URL`、`OLLAMA_BASE_URL`                                                                                                                                                  | ❌                         |
+| Model Discovery           | `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY`                                                                                                                                                                  | ❌                         |
+| 對話壓縮                  | `CLAUDE_CODE_AUTO_COMPACT_WINDOW`                                                                                                                                                                             | ❌（fcc-claude 自動設定）  |
+| Rate Limit                | `PROVIDER_RATE_LIMIT`、`PROVIDER_RATE_WINDOW`、`PROVIDER_MAX_CONCURRENCY`                                                                                                                                     | ❌                         |
+| Timeout                   | `HTTP_READ_TIMEOUT`、`HTTP_WRITE_TIMEOUT`、`HTTP_CONNECT_TIMEOUT`                                                                                                                                             | ❌                         |
+| Proxy                     | `NVIDIA_NIM_PROXY`、`OPENROUTER_PROXY`、`LMSTUDIO_PROXY`、`LLAMACPP_PROXY`                                                                                                                                    | ❌                         |
+| Smoke Test                | `FCC_SMOKE_MODEL_*`                                                                                                                                                                                           | ❌                         |
+| Messaging                 | `MESSAGING_PLATFORM`、`MESSAGING_RATE_LIMIT`、`MESSAGING_RATE_WINDOW`                                                                                                                                         | ❌                         |
+| Agent                     | `CLAUDE_WORKSPACE`、`ALLOWED_DIR`、`CLAUDE_CLI_BIN`                                                                                                                                                           | ❌                         |
+| 安全                      | `LOG_RAW_*`、`DEBUG_*`、`WEB_FETCH_ALLOW_PRIVATE_NETWORKS`                                                                                                                                                    | ❌                         |
+| 語音                      | `VOICE_NOTE_ENABLED`、`WHISPER_DEVICE`、`WHISPER_MODEL`、`HF_TOKEN`                                                                                                                                           | ❌                         |
 
 ### 4.14 Admin UI 設定
 
@@ -816,26 +816,26 @@ graph LR
 
 ### 5.2 Provider 技術規格
 
-| Provider | 前綴 | Transport 協議 | API Key 變數 | 預設 Base URL |
-|---------|------|---------------|-------------|---------------|
-| NVIDIA NIM | `nvidia_nim/...` | OpenAI Chat | `NVIDIA_NIM_API_KEY` | `https://integrate.api.nvidia.com/v1` |
-| OpenRouter | `open_router/...` | Anthropic Messages | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1` |
-| DeepSeek | `deepseek/...` | Anthropic Messages | `DEEPSEEK_API_KEY` | `https://api.deepseek.com/anthropic` |
-| Google AI Studio | `gemini/...` | OpenAI Chat | `GEMINI_API_KEY` | `https://generativelanguage.googleapis.com/v1beta/openai/` |
-| Mistral | `mistral/...` | OpenAI Chat | `MISTRAL_API_KEY` | `https://api.mistral.ai/v1` |
-| Mistral Codestral | `mistral_codestral/...` | OpenAI Chat | `CODESTRAL_API_KEY` | `https://codestral.mistral.ai/v1` |
-| OpenCode Zen | `opencode/...` | OpenAI Chat | `OPENCODE_API_KEY` | `https://opencode.ai/zen/v1` |
-| OpenCode Go | `opencode_go/...` | OpenAI Chat | `OPENCODE_API_KEY` | `https://opencode.ai/zen/go/v1` |
-| Wafer | `wafer/...` | Anthropic Messages | `WAFER_API_KEY` | `https://pass.wafer.ai/v1/messages` |
-| Kimi (Moonshot) | `kimi/...` | Anthropic Messages | `KIMI_API_KEY` | `https://api.moonshot.ai/anthropic/v1/messages` |
-| Cerebras | `cerebras/...` | OpenAI Chat | `CEREBRAS_API_KEY` | `https://api.cerebras.ai/v1` |
-| Groq | `groq/...` | OpenAI Chat | `GROQ_API_KEY` | `https://api.groq.com/openai/v1` |
-| Fireworks AI | `fireworks/...` | Anthropic Messages | `FIREWORKS_API_KEY` | `https://api.fireworks.ai/inference/v1/messages` |
-| Cloudflare | `cloudflare/...` | Anthropic Messages | `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` | `https://api.cloudflare.com/client/v4/accounts/<id>/ai/v1/messages` |
-| Z.ai | `zai/...` | Anthropic Messages | `ZAI_API_KEY` | `https://api.z.ai/api/anthropic/v1/messages` |
-| LM Studio | `lmstudio/...` | Anthropic Messages | 無需 | `http://localhost:1234/v1` |
-| llama.cpp | `llamacpp/...` | Anthropic Messages | 無需 | `http://localhost:8080/v1` |
-| Ollama | `ollama/...` | Anthropic Messages | 無需 | `http://localhost:11434` |
+| Provider          | 前綴                    | Transport 協議     | API Key 變數                                     | 預設 Base URL                                                       |
+| ----------------- | ----------------------- | ------------------ | ------------------------------------------------ | ------------------------------------------------------------------- |
+| NVIDIA NIM        | `nvidia_nim/...`        | OpenAI Chat        | `NVIDIA_NIM_API_KEY`                             | `https://integrate.api.nvidia.com/v1`                               |
+| OpenRouter        | `open_router/...`       | Anthropic Messages | `OPENROUTER_API_KEY`                             | `https://openrouter.ai/api/v1`                                      |
+| DeepSeek          | `deepseek/...`          | Anthropic Messages | `DEEPSEEK_API_KEY`                               | `https://api.deepseek.com/anthropic`                                |
+| Google AI Studio  | `gemini/...`            | OpenAI Chat        | `GEMINI_API_KEY`                                 | `https://generativelanguage.googleapis.com/v1beta/openai/`          |
+| Mistral           | `mistral/...`           | OpenAI Chat        | `MISTRAL_API_KEY`                                | `https://api.mistral.ai/v1`                                         |
+| Mistral Codestral | `mistral_codestral/...` | OpenAI Chat        | `CODESTRAL_API_KEY`                              | `https://codestral.mistral.ai/v1`                                   |
+| OpenCode Zen      | `opencode/...`          | OpenAI Chat        | `OPENCODE_API_KEY`                               | `https://opencode.ai/zen/v1`                                        |
+| OpenCode Go       | `opencode_go/...`       | OpenAI Chat        | `OPENCODE_API_KEY`                               | `https://opencode.ai/zen/go/v1`                                     |
+| Wafer             | `wafer/...`             | Anthropic Messages | `WAFER_API_KEY`                                  | `https://pass.wafer.ai/v1/messages`                                 |
+| Kimi (Moonshot)   | `kimi/...`              | Anthropic Messages | `KIMI_API_KEY`                                   | `https://api.moonshot.ai/anthropic/v1/messages`                     |
+| Cerebras          | `cerebras/...`          | OpenAI Chat        | `CEREBRAS_API_KEY`                               | `https://api.cerebras.ai/v1`                                        |
+| Groq              | `groq/...`              | OpenAI Chat        | `GROQ_API_KEY`                                   | `https://api.groq.com/openai/v1`                                    |
+| Fireworks AI      | `fireworks/...`         | Anthropic Messages | `FIREWORKS_API_KEY`                              | `https://api.fireworks.ai/inference/v1/messages`                    |
+| Cloudflare        | `cloudflare/...`        | Anthropic Messages | `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` | `https://api.cloudflare.com/client/v4/accounts/<id>/ai/v1/messages` |
+| Z.ai              | `zai/...`               | Anthropic Messages | `ZAI_API_KEY`                                    | `https://api.z.ai/api/anthropic/v1/messages`                        |
+| LM Studio         | `lmstudio/...`          | Anthropic Messages | 無需                                             | `http://localhost:1234/v1`                                          |
+| llama.cpp         | `llamacpp/...`          | Anthropic Messages | 無需                                             | `http://localhost:8080/v1`                                          |
+| Ollama            | `ollama/...`            | Anthropic Messages | 無需                                             | `http://localhost:11434`                                            |
 
 ### 5.3 NVIDIA NIM
 
@@ -1157,26 +1157,26 @@ MODEL="zai/glm-5.1"
 
 ### 5.21 Provider 比較表（完整版）
 
-| Provider | 費用 | 延遲 | Tool Use | Thinking | 資料隱私 | 適用場景 |
-|---------|------|------|----------|----------|---------|---------|
-| NVIDIA NIM | 免費額度 | 低 | ✅ | ✅ | 雲端 | 初期驗證 / 一般開發 |
-| OpenRouter | 免費+付費 | 中 | ✅ | ✅ | 雲端 | 多模型切換 / 成本最佳化 |
-| DeepSeek | 極低 | 中 | ✅ | ✅ | 雲端 | 高性價比日常開發 |
-| Google AI Studio | 免費額度 | 低-中 | ✅ | 部分 | 雲端 | 大上下文分析 / 多模態 |
-| Mistral | 低-中 | 中 | ✅ | 部分 | 歐洲雲端 | GDPR 合規 / 開源模型 |
-| Mistral Codestral | 低 | 低-中 | ✅ | ❌ | 歐洲雲端 | 程式碼補全 / FIM |
-| OpenCode Zen | 低 | 低 | ✅ | 部分 | 雲端 | 程式碼生成 |
-| OpenCode Go | 低 | 低 | ✅ | 部分 | 雲端 | 多模態任務 |
-| Wafer | 低 | 低 | ✅ | ✅ | 雲端 | 即時開發 / 高性能 |
-| Kimi (Moonshot) | 低-中 | 中 | ✅ | 部分 | 雲端 | 長上下文 / 中文理解 |
-| Cerebras | 免費額度 | 極低 | ✅ | ❌ | 雲端 | 超快速互動式開發 |
-| Groq | 免費額度 | 極低 | ✅ | ❌ | 雲端 | 快速 Code Review |
-| Fireworks AI | 低 | 低 | ✅ | 部分 | 雲端 | 高吞吐量團隊使用 |
-| Cloudflare | 低 | 低（邊緣） | ✅ | 部分 | 邊緣雲端 | 已有 CF 帳戶者 |
-| Z.ai | 極低 | 中 | ✅ | ✅ | 雲端 | 中文場景 / 低成本 |
-| LM Studio | 免費 | 依硬體 | 部分 | 部分 | 完全本地 | 企業機密環境 |
-| llama.cpp | 免費 | 依硬體 | 部分 | 部分 | 完全本地 | 高效能本地推理 |
-| Ollama | 免費 | 依硬體 | 部分 | 部分 | 完全本地 | 快速本地測試 |
+| Provider          | 費用      | 延遲       | Tool Use | Thinking | 資料隱私 | 適用場景                |
+| ----------------- | --------- | ---------- | -------- | -------- | -------- | ----------------------- |
+| NVIDIA NIM        | 免費額度  | 低         | ✅       | ✅       | 雲端     | 初期驗證 / 一般開發     |
+| OpenRouter        | 免費+付費 | 中         | ✅       | ✅       | 雲端     | 多模型切換 / 成本最佳化 |
+| DeepSeek          | 極低      | 中         | ✅       | ✅       | 雲端     | 高性價比日常開發        |
+| Google AI Studio  | 免費額度  | 低-中      | ✅       | 部分     | 雲端     | 大上下文分析 / 多模態   |
+| Mistral           | 低-中     | 中         | ✅       | 部分     | 歐洲雲端 | GDPR 合規 / 開源模型    |
+| Mistral Codestral | 低        | 低-中      | ✅       | ❌       | 歐洲雲端 | 程式碼補全 / FIM        |
+| OpenCode Zen      | 低        | 低         | ✅       | 部分     | 雲端     | 程式碼生成              |
+| OpenCode Go       | 低        | 低         | ✅       | 部分     | 雲端     | 多模態任務              |
+| Wafer             | 低        | 低         | ✅       | ✅       | 雲端     | 即時開發 / 高性能       |
+| Kimi (Moonshot)   | 低-中     | 中         | ✅       | 部分     | 雲端     | 長上下文 / 中文理解     |
+| Cerebras          | 免費額度  | 極低       | ✅       | ❌       | 雲端     | 超快速互動式開發        |
+| Groq              | 免費額度  | 極低       | ✅       | ❌       | 雲端     | 快速 Code Review        |
+| Fireworks AI      | 低        | 低         | ✅       | 部分     | 雲端     | 高吞吐量團隊使用        |
+| Cloudflare        | 低        | 低（邊緣） | ✅       | 部分     | 邊緣雲端 | 已有 CF 帳戶者          |
+| Z.ai              | 極低      | 中         | ✅       | ✅       | 雲端     | 中文場景 / 低成本       |
+| LM Studio         | 免費      | 依硬體     | 部分     | 部分     | 完全本地 | 企業機密環境            |
+| llama.cpp         | 免費      | 依硬體     | 部分     | 部分     | 完全本地 | 高效能本地推理          |
+| Ollama            | 免費      | 依硬體     | 部分     | 部分     | 完全本地 | 快速本地測試            |
 
 ### 5.22 混合 Provider 策略（推薦）
 
@@ -1644,14 +1644,14 @@ graph TD
 
 ### 8.5 Governance（避免濫用）
 
-| 管控面向 | 具體措施 |
-|---------|---------|
-| 資料安全 | 禁止將客戶資料 / PII 送入 AI |
-| 程式碼品質 | AI 產出必須經人工 Code Review |
-| 成本控管 | 設定每日/每月 Token 上限 |
-| 合規性 | 記錄所有 AI 互動 Log |
-| 授權管理 | 使用 `ANTHROPIC_AUTH_TOKEN` 控管存取 |
-| 模型選擇 | 統一團隊使用的 Provider 與模型 |
+| 管控面向   | 具體措施                                                      |
+| ---------- | ------------------------------------------------------------- |
+| 資料安全   | 禁止將客戶資料 / PII 送入 AI                                  |
+| 程式碼品質 | AI 產出必須經人工 Code Review                                 |
+| 成本控管   | 設定每日/每月 Token 上限                                      |
+| 合規性     | 記錄所有 AI 互動 Log                                          |
+| 授權管理   | 使用 `ANTHROPIC_AUTH_TOKEN` 控管存取                          |
+| 模型選擇   | 統一團隊使用的 Provider 與模型                                |
 | Rate Limit | 透過 `PROVIDER_RATE_LIMIT` 與 `MESSAGING_RATE_LIMIT` 雙層控管 |
 
 > **實務建議**：導入初期指定 1-2 位「AI Champion」負責推廣與支援，降低學習曲線。
@@ -1682,11 +1682,11 @@ graph LR
 
 **建議的 Logging 策略：**
 
-| 環境 | RAW_API_PAYLOADS | RAW_SSE | ERROR_TRACES | CLI_DIAGNOSTICS | DEBUG_* |
-|-----|-----------------|---------|-------------|----------------|---------|
-| Development | true | true | true | true | true |
-| Staging | false | false | true | false | false |
-| Production | false | false | false | false | false |
+| 環境        | RAW_API_PAYLOADS | RAW_SSE | ERROR_TRACES | CLI_DIAGNOSTICS | DEBUG_* |
+| ----------- | ---------------- | ------- | ------------ | --------------- | ------- |
+| Development | true             | true    | true         | true            | true    |
+| Staging     | false            | false   | true         | false           | false   |
+| Production  | false            | false   | false        | false           | false   |
 
 ### 9.2 Token 使用監控
 
@@ -1720,13 +1720,13 @@ async def track_usage(request, response):
 
 ### 9.3 成本控管策略
 
-| 策略 | 實施方式 |
-|-----|---------|
-| 模型分級 | 簡單任務用 Haiku 級，複雜任務用 Opus 級 |
-| Rate Limit | 設定 `PROVIDER_RATE_LIMIT` 與 `PROVIDER_RATE_WINDOW` |
-| 每日上限 | 在 Provider 平台設定消費上限 |
-| 免費優先 | 優先使用 NVIDIA NIM 免費額度 / OpenRouter 免費模型 |
-| 本地模型 | 非敏感任務可使用本地模型（零成本） |
+| 策略           | 實施方式                                                    |
+| -------------- | ----------------------------------------------------------- |
+| 模型分級       | 簡單任務用 Haiku 級，複雜任務用 Opus 級                     |
+| Rate Limit     | 設定 `PROVIDER_RATE_LIMIT` 與 `PROVIDER_RATE_WINDOW`        |
+| 每日上限       | 在 Provider 平台設定消費上限                                |
+| 免費優先       | 優先使用 NVIDIA NIM 免費額度 / OpenRouter 免費模型          |
+| 本地模型       | 非敏感任務可使用本地模型（零成本）                          |
 | Request 最佳化 | Proxy 自動以本地方式回應 trivial probe（可節省 5-10% 配額） |
 
 ### 9.4 Rate Limit 設計
@@ -2001,11 +2001,11 @@ graph TD
 
 ### 11.5 Dev / Stage / Prod 環境設計
 
-| 環境 | Provider | 模型 | Rate Limit | Logging |
-|-----|---------|------|-----------|---------|
-| Dev | LM Studio / Ollama | 本地模型 | 寬鬆 | 全開 |
-| Stage | NVIDIA NIM（免費） | glm4.7 | 中等 | Error only |
-| Prod | DeepSeek / OpenRouter | 付費模型 | 嚴格 | 最小化 |
+| 環境  | Provider              | 模型     | Rate Limit | Logging    |
+| ----- | --------------------- | -------- | ---------- | ---------- |
+| Dev   | LM Studio / Ollama    | 本地模型 | 寬鬆       | 全開       |
+| Stage | NVIDIA NIM（免費）    | glm4.7   | 中等       | Error only |
+| Prod  | DeepSeek / OpenRouter | 付費模型 | 嚴格       | 最小化     |
 
 **環境切換策略：**
 
@@ -2174,45 +2174,45 @@ $env:CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1; fcc-claude
 
 ### 13.1 架構設計
 
-| 實務 | 說明 |
-|-----|------|
+| 實務                 | 說明                                     |
+| -------------------- | ---------------------------------------- |
 | Proxy 與開發環境分離 | Proxy 運行在獨立程序，避免與開發工具耦合 |
-| 多環境配置 | Dev / Stage / Prod 使用不同 `.env` |
-| Provider 備援 | 設定至少兩個 Provider，一個主要一個備援 |
-| 本地+雲端混合 | 敏感資料用本地模型，一般開發用雲端 |
-| 統一入口 | 團隊共用 Proxy，透過 Load Balancer 分流 |
+| 多環境配置           | Dev / Stage / Prod 使用不同 `.env`       |
+| Provider 備援        | 設定至少兩個 Provider，一個主要一個備援  |
+| 本地+雲端混合        | 敏感資料用本地模型，一般開發用雲端       |
+| 統一入口             | 團隊共用 Proxy，透過 Load Balancer 分流  |
 
 ### 13.2 Prompt Engineering
 
-| 實務 | 說明 |
-|-----|------|
-| 結構化 Prompt | 使用明確的角色、背景、任務、輸出格式 |
-| 上下文充足 | 提供足夠的程式碼上下文，避免 AI 猜測 |
-| 分步驟指示 | 複雜任務拆成小步驟，每步明確 |
-| 範例驅動 | 提供期望輸出的範例 |
-| 約束條件 | 明確列出限制（語言、框架、版本、風格） |
+| 實務          | 說明                                   |
+| ------------- | -------------------------------------- |
+| 結構化 Prompt | 使用明確的角色、背景、任務、輸出格式   |
+| 上下文充足    | 提供足夠的程式碼上下文，避免 AI 猜測   |
+| 分步驟指示    | 複雜任務拆成小步驟，每步明確           |
+| 範例驅動      | 提供期望輸出的範例                     |
+| 約束條件      | 明確列出限制（語言、框架、版本、風格） |
 
 ### 13.3 成本最佳化
 
-| 實務 | 節省幅度 |
-|-----|---------|
-| 使用 Model Routing 分級 | ~40% |
-| 優先使用免費模型（NIM / OpenRouter Free） | ~80% |
-| 本地模型處理簡單任務 | ~90% |
-| Request Optimization（Proxy 自動） | ~5-10% |
-| 控制 Prompt 長度 | ~20% |
+| 實務                                      | 節省幅度 |
+| ----------------------------------------- | -------- |
+| 使用 Model Routing 分級                   | ~40%     |
+| 優先使用免費模型（NIM / OpenRouter Free） | ~80%     |
+| 本地模型處理簡單任務                      | ~90%     |
+| Request Optimization（Proxy 自動）        | ~5-10%   |
+| 控制 Prompt 長度                          | ~20%     |
 
 ### 13.4 安全性
 
-| 實務 | 說明 |
-|-----|------|
-| 設定 `ANTHROPIC_AUTH_TOKEN` | 防止未授權存取 Proxy |
-| 關閉 Raw Logging | 生產環境不記錄敏感內容 |
-| 關閉 Debug Flags | `DEBUG_PLATFORM_EDITS=false`、`DEBUG_SUBAGENT_STACK=false` |
-| 禁用 Private Network Access | `WEB_FETCH_ALLOW_PRIVATE_NETWORKS=false` |
-| API Key 不入版控 | `.env` 加入 `.gitignore` |
-| 定期輪換 Key | 每月更換 Provider API Key |
-| PII 保護 | 禁止將個人資料送入 AI |
+| 實務                        | 說明                                                       |
+| --------------------------- | ---------------------------------------------------------- |
+| 設定 `ANTHROPIC_AUTH_TOKEN` | 防止未授權存取 Proxy                                       |
+| 關閉 Raw Logging            | 生產環境不記錄敏感內容                                     |
+| 關閉 Debug Flags            | `DEBUG_PLATFORM_EDITS=false`、`DEBUG_SUBAGENT_STACK=false` |
+| 禁用 Private Network Access | `WEB_FETCH_ALLOW_PRIVATE_NETWORKS=false`                   |
+| API Key 不入版控            | `.env` 加入 `.gitignore`                                   |
+| 定期輪換 Key                | 每月更換 Provider API Key                                  |
+| PII 保護                    | 禁止將個人資料送入 AI                                      |
 
 ---
 
@@ -2236,7 +2236,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.14'
+          python-version: "3.14"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v8
@@ -2324,13 +2324,13 @@ uv run pytest
 
 ### 15.3 程式碼規範
 
-| 規範 | 說明 |
-|------|------|
-| Formatter | Ruff（設定為 py314） |
-| Type Checker | Ty（不使用 `# type: ignore` 或 `# ty: ignore`） |
-| Logger | Loguru |
-| 測試框架 | Pytest |
-| 例外語法 | Python 3.14 支援 `except TypeError, ValueError:` 語法 |
+| 規範         | 說明                                                  |
+| ------------ | ----------------------------------------------------- |
+| Formatter    | Ruff（設定為 py314）                                  |
+| Type Checker | Ty（不使用 `# type: ignore` 或 `# ty: ignore`）       |
+| Logger       | Loguru                                                |
+| 測試框架     | Pytest                                                |
+| 例外語法     | Python 3.14 支援 `except TypeError, ValueError:` 語法 |
 
 ### 15.4 架構原則
 
@@ -2358,10 +2358,10 @@ uv run pytest
 
 `pyproject.toml` 定義了以下可執行腳本：
 
-| 指令 | 功能 |
-|------|------|
-| `free-claude-code` | 以設定的 host 與 port 啟動 Proxy |
-| `fcc-init` | 建立使用者設定範本於 `~/.config/free-claude-code/.env` |
+| 指令               | 功能                                                   |
+| ------------------ | ------------------------------------------------------ |
+| `free-claude-code` | 以設定的 host 與 port 啟動 Proxy                       |
+| `fcc-init`         | 建立使用者設定範本於 `~/.config/free-claude-code/.env` |
 
 ### 15.7 Cognitive Workflow
 
@@ -2610,11 +2610,11 @@ ssh -L 8082:127.0.0.1:8082 user@remote-server
 
 Admin UI 設定與 `.env` 設定並存，優先權如下：
 
-| 設定方式 | 優先權 | 說明 |
-| -------- | ------ | ---- |
-| Admin UI 即時設定 | 高 | 儲存後立即生效，不需重啟 |
-| `.env` 設定檔 | 中 | Proxy 啟動時載入 |
-| 系統環境變數 | 低 | 覆蓋 `.env`，但低於 Admin UI |
+| 設定方式          | 優先權 | 說明                         |
+| ----------------- | ------ | ---------------------------- |
+| Admin UI 即時設定 | 高     | 儲存後立即生效，不需重啟     |
+| `.env` 設定檔     | 中     | Proxy 啟動時載入             |
+| 系統環境變數      | 低     | 覆蓋 `.env`，但低於 Admin UI |
 
 ---
 

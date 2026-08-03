@@ -1,5 +1,5 @@
 ---
-applyTo: ['*']
+applyTo: ["*"]
 description: "自 Java 17 發布以來，採用 Java 21 新功能的全面最佳實務。"
 ---
 
@@ -14,9 +14,11 @@ description: "自 Java 17 發布以來，採用 Java 21 新功能的全面最佳
 **增強的 switch 表達式和語句**
 
 在處理 switch 結構時：
+
 - 建議在適當的情況下將傳統 switch 轉換為模式匹配
 - 使用模式匹配進行類型檢查和解構
 - 升級範例模式：
+
 ```java
 // 舊方法 (Java 17)
 public String processObject(Object obj) {
@@ -42,6 +44,7 @@ public String processObject(Object obj) {
 ```
 
 - 支援受保護的模式：
+
 ```java
 switch (obj) {
     case String s when s.length() > 10 -> "Long string: " + s;
@@ -57,9 +60,11 @@ switch (obj) {
 **在模式匹配中解構記錄**
 
 處理記錄時：
+
 - 建議使用記錄模式進行資料解構
 - 結合 switch 表達式實現強大的資料處理功能
 - 用法範例：
+
 ```java
 public record Point(int x, int y) {}
 public record ColoredPoint(Point point, Color color) {}
@@ -68,7 +73,7 @@ public record ColoredPoint(Point point, Color color) {}
 public String describe(Object obj) {
     return switch (obj) {
         case Point(var x, var y) -> "Point at (" + x + ", " + y + ")";
-        case ColoredPoint(Point(var x, var y), var color) -> 
+        case ColoredPoint(Point(var x, var y), var color) ->
             "Colored point at (" + x + ", " + y + ") in " + color;
         default -> "Unknown shape";
     };
@@ -76,11 +81,12 @@ public String describe(Object obj) {
 ```
 
 - 在複雜的模式匹配中使用：
+
 ```java
 // Nested record patterns
 switch (shape) {
-    case Rectangle(ColoredPoint(Point(var x1, var y1), var c1), 
-                   ColoredPoint(Point(var x2, var y2), var c2)) 
+    case Rectangle(ColoredPoint(Point(var x1, var y1), var c1),
+                   ColoredPoint(Point(var x2, var y2), var c2))
         when c1 == c2 -> "Monochrome rectangle";
     case Rectangle r -> "Multi-colored rectangle";
 }
@@ -91,9 +97,11 @@ switch (shape) {
 **輕量級並行**
 
 在處理並行性時：
+
 - 建議使用虛擬線程以實現高吞吐量的並行應用
 - 使用 `Thread.ofVirtual()` 創建虛擬線程
 - 範例遷移模式：
+
 ```java
 // 舊的平臺線程方法
 ExecutorService executor = Executors.newFixedThreadPool(100);
@@ -112,15 +120,16 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 ```
 
 - 使用結構化並行模式：
+
 ```java
 // Structured concurrency (Preview)
 try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
     Future<String> user = scope.fork(() -> fetchUser(userId));
     Future<String> order = scope.fork(() -> fetchOrder(orderId));
-    
+
     scope.join();           // Join all subtasks
     scope.throwIfFailed();  // Propagate errors
-    
+
     return processResults(user.resultNow(), order.resultNow());
 }
 ```
@@ -130,9 +139,11 @@ try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 **安全字串插值**
 
 在處理字串格式化時：
+
 - 建議使用字串模板進行安全的字串插值（預覽功能）
 - 使用 `--enable-preview` 啟用預覽功能
 - 範例用法：
+
 ```java
 // 傳統的字串串接
 String message = "Hello, " + name + "! You have " + count + " messages.";
@@ -143,7 +154,7 @@ String message = STR."Hello, \{name}! You have \{count} messages.";
 // Safe HTML generation
 String html = HTML."<p>User: \{username}</p>";
 
-// Safe SQL queries  
+// Safe SQL queries
 PreparedStatement stmt = SQL."SELECT * FROM users WHERE id = \{userId}";
 ```
 
@@ -152,9 +163,11 @@ PreparedStatement stmt = SQL."SELECT * FROM users WHERE id = \{userId}";
 **增強型收藏介面**
 
 在處理集合時：
+
 - 使用新的 `SequencedCollection`、`SequencedSet`、`SequencedMap` 介面
 - 統一訪問集合類型的首尾元素
 - 範例用法：
+
 ```java
 // 新方法可用於 Lists、Deques、LinkedHashSet 等
 List<String> list = List.of("first", "middle", "last");
@@ -174,9 +187,11 @@ String firstElement = set.getFirst();
 **簡化模式匹配**
 
 在處理模式匹配時：
+
 - 使用未命名模式 `_` 來忽略不需要的值
 - 簡化 switch 表達式和記錄模式
 - 範例用法：
+
 ```java
 // 忽略未使用的變數
 switch (ball) {
@@ -204,9 +219,11 @@ try {
 **改進的上下文傳播**
 
 在處理線程本地數據時：
+
 - 考慮將 Scoped Values 作為 ThreadLocal 的現代替代方案
 - 提供更好的性能和更清晰的語義，特別是對虛擬線程
 - 範例用法：
+
 ```java
 // 定義作用域值
 private static final ScopedValue<String> USER_ID = ScopedValue.newInstance();
@@ -229,9 +246,11 @@ public void processRequest() {
 ### UTF-8 by Default (JEP 400 - Standard in 18)
 
 處理文件 I/O 時：
+
 - UTF-8 現在是所有平台的默認字符集
 - 移除明確指定 UTF-8 的地方
 - 範例簡化：
+
 ```java
 // 舊的明確 UTF-8 指定
 Files.readString(path, StandardCharsets.UTF_8);
@@ -245,9 +264,11 @@ Files.writeString(path, content);  // Uses UTF-8 by default
 ### Simple Web Server 簡易 Web 伺服器 (JEP 408 - Standard in 18)
 
 當需要基本的 HTTP 伺服器時：
+
 - 使用內建的 `jwebserver` 命令或 `com.sun.net.httpserver` 增強功能
 - 適合測試和開發
 - 範例用法：
+
 ```java
 // 命令行
 $ jwebserver -p 8080 -d /path/to/files
@@ -261,14 +282,17 @@ server.start();
 ### Internet-Address Resolution SPI 網際網路位址解析 SPI (JEP 418 - Standard in 19)
 
 當需要自訂 DNS 解析時：
+
 - 實作 `InetAddressResolverProvider` 以進行自訂位址解析
 - 適用於服務發現和測試場景
 
 ### Key Encapsulation Mechanism API 密鑰封裝機制 API (JEP 452 - Standard in 21)
 
 當使用後量子密碼學時：
+
 - 使用 KEM API 進行密鑰封裝機制
 - 範例用法：
+
 ```java
 KeyPairGenerator kpg = KeyPairGenerator.getInstance("ML-KEM");
 KeyPair kp = kpg.generateKeyPair();
@@ -283,9 +307,11 @@ KEM.Encapsulated encapsulated = encapsulator.encapsulate();
 ### Finalization Deprecation 最終化棄用 (JEP 421 - Deprecated in 18)
 
 當遇到 `finalize()` 方法時：
+
 - 移除 finalize 方法並使用替代方案
 - 建議使用 Cleaner API 或 try-with-resources
 - 範例遷移：
+
 ```java
 // Deprecated finalize approach
 @Override
@@ -302,11 +328,11 @@ public MyResource() {
 
 private static class CleanupTask implements Runnable {
     private final long nativeResource;
-    
+
     CleanupTask(long nativeResource) {
         this.nativeResource = nativeResource;
     }
-    
+
     public void run() {
         cleanup(nativeResource);
     }
@@ -316,6 +342,7 @@ private static class CleanupTask implements Runnable {
 ### Dynamic Agent Loading 動態代理加載 (JEP 451 - Warnings in 21)
 
 使用代理或檢測工具時：
+
 - 如有需要，請添加 `-XX:+EnableDynamicAgentLoading` 以抑制警告
 - 考慮在啟動時加載代理，而不是動態加載
 - 更新工具以使用啟動時載入代理
@@ -325,8 +352,10 @@ private static class CleanupTask implements Runnable {
 ### 預覽功能
 
 對於使用預覽功能的專案：
+
 - 在編譯器和運行時添加 `--enable-preview`
 - Maven 配置：
+
 ```xml
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
@@ -349,6 +378,7 @@ private static class CleanupTask implements Runnable {
 ```
 
 - Gradle configuration:
+
 ```kotlin
 java {
     toolchain {
@@ -368,8 +398,10 @@ tasks.withType<Test> {
 ### 虛擬執行緒配置
 
 對於使用虛擬執行緒的應用程式：
+
 - 無需特殊的 JVM 標誌（21 中的標準功能）
 - 考慮這些系統屬性以進行調試：
+
 ```bash
 -Djdk.virtualThreadScheduler.parallelism=N  # 設置承載執行緒數量
 -Djdk.virtualThreadScheduler.maxPoolSize=N  # 設置最大池大小
@@ -380,6 +412,7 @@ tasks.withType<Test> {
 ### Generational ZGC 世代 ZGC (JEP 439 - Available in 21)
 
 配置垃圾回收時：
+
 - 嘗試使用 Generational ZGC 以獲得更好的性能
 - 啟用方式：`-XX:+UseZGC -XX:+ZGenerational`
 - 監控分配模式和 GC 行為
@@ -389,7 +422,7 @@ tasks.withType<Test> {
 ### 分步升級過程
 
 1. **更新建置工具**: 確保 Maven/Gradle 支援 JDK 21
-2. **語言功能採用**: 
+2. **語言功能採用**:
    - 從 switch 的模式匹配開始（標準功能）
    - 在有利的情況下添加 record patterns
    - 對於 I/O 密集型應用程式，考慮使用虛擬執行緒
@@ -400,6 +433,7 @@ tasks.withType<Test> {
 ### 代碼審查清單
 
 在審查 Java 21 升級的代碼時：
+
 - [ ] 將適當的 instanceof 鏈轉換為 switch 表達式
 - [ ] 使用 record patterns 進行數據解構
 - [ ] 在適當的情況下將 ThreadLocal 替換為 ScopedValues
@@ -412,6 +446,7 @@ tasks.withType<Test> {
 ### 常見遷移模式
 
 1. **Switch 增強**:
+
    ```java
    // 從 instanceof 鏈轉換為 switch 表達式
    if (obj instanceof String s) return processString(s);
@@ -425,6 +460,7 @@ tasks.withType<Test> {
    ```
 
 2. **虛擬執行緒採用**:
+
    ```java
    // 從平台執行緒轉換為虛擬執行緒
    Executors.newFixedThreadPool(200)

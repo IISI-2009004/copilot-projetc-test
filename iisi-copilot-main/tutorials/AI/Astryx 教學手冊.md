@@ -5,6 +5,7 @@ title = 'Astryx 教學手冊'
 tags = ['教學', 'AI開發']
 categories = ['教學']
 +++
+
 # Astryx 教學手冊（企業級實戰版）
 
 > **版本：** v1.1（2026-07-09 查證更新）
@@ -52,15 +53,15 @@ categories = ['教學']
 
 依讀者角色不同，建議的閱讀路徑如下，不需要從頭到尾逐章閱讀：
 
-| 讀者角色 | 建議優先閱讀章節 |
-| --- | --- |
-| 初次評估導入可行性的技術主管 / 架構師 | 前言、[第一章](#第一章-astryx-overview)、[第十章](#第十章-與其他-design-system-比較)、[第二十四章](#第二十四章-conclusion) |
-| 負責安裝與環境建置的工程師 | [第三章](#第三章-installation)、[第四章](#第四章-project-structure)、[第五章](#第五章-cli) |
-| 前端工程師（日常開發） | [第六章](#第六章-components)、[第七章](#第七章-theme-system)、[第八章](#第八章-accessibility)、[第十九章](#第十九章-faq) |
+| 讀者角色                                     | 建議優先閱讀章節                                                                                                                                                                                                |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 初次評估導入可行性的技術主管 / 架構師        | 前言、[第一章](#第一章-astryx-overview)、[第十章](#第十章-與其他-design-system-比較)、[第二十四章](#第二十四章-conclusion)                                                                                      |
+| 負責安裝與環境建置的工程師                   | [第三章](#第三章-installation)、[第四章](#第四章-project-structure)、[第五章](#第五章-cli)                                                                                                                      |
+| 前端工程師（日常開發）                       | [第六章](#第六章-components)、[第七章](#第七章-theme-system)、[第八章](#第八章-accessibility)、[第十九章](#第十九章-faq)                                                                                        |
 | AI 開發導入負責人（Claude Code／Copilot 等） | [第九章](#第九章-ai-agent-ready)、[第十一章](#第十一章-與-ai-coding-整合)、[第十五章](#第十五章-與-github-copilot-整合)、[第十六章](#第十六章-與-claude-code-整合)、[第二十二章](#第二十二章-prompt-collection) |
-| Design System / Token 治理負責人 | [第七章](#第七章-theme-system)、[第十四章](#第十四章-enterprise-best-practice)、[第二十一章](#第二十一章-best-practice企業最佳實務-100-條) |
-| 負責舊系統現代化的團隊 | [第十二章](#第十二章-reverse-engineering)、[第十三章](#第十三章-framework-upgrade)、[第二十三章](#第二十三章-case-study) |
-| 維運／升級負責人 | [第十七章](#第十七章-系統維護)、[第十八章](#第十八章-系統升級)、[第二十章](#第二十章-troubleshooting) |
+| Design System / Token 治理負責人             | [第七章](#第七章-theme-system)、[第十四章](#第十四章-enterprise-best-practice)、[第二十一章](#第二十一章-best-practice企業最佳實務-100-條)                                                                      |
+| 負責舊系統現代化的團隊                       | [第十二章](#第十二章-reverse-engineering)、[第十三章](#第十三章-framework-upgrade)、[第二十三章](#第二十三章-case-study)                                                                                        |
+| 維運／升級負責人                             | [第十七章](#第十七章-系統維護)、[第十八章](#第十八章-系統升級)、[第二十章](#第二十章-troubleshooting)                                                                                                           |
 
 > 無論何種角色，建議先讀過首頁的「⚠️ 版本快照提醒」——Astryx 為 2026 年新發布之 Beta 專案，本文所有具體事實查證截至 2026-07-09，實際導入前請以官方文件（[astryx.atmeta.com](https://astryx.atmeta.com)）再次核對。
 
@@ -94,13 +95,13 @@ Astryx（[github.com/facebook/astryx](https://github.com/facebook/astryx)）是 
 
 ### 與其他 Design System 的差異
 
-| 面向 | Astryx | 傳統元件庫（如 MUI / AntD） |
-| --- | --- | --- |
-| 樣式技術 | StyleX（build-time，近乎零 runtime 成本） | 多為 CSS-in-JS runtime 或預編譯 CSS |
-| 客製化模式 | CSS Custom Property 覆寫，免 fork | 常需要 Theme Provider + 深度 override，或 fork |
-| API 開放程度 | 元件可在任意層級組合，不鎖頂層 API | 部分元件將內部結構封裝，客製彈性受限 |
-| AI 友善程度 | 明確作為設計原則之一 | 多數未特別設計給 AI Agent 使用 |
-| 生態成熟度 | Beta，仍在快速迭代 | 多數已是成熟穩定版本 |
+| 面向         | Astryx                                    | 傳統元件庫（如 MUI / AntD）                    |
+| ------------ | ----------------------------------------- | ---------------------------------------------- |
+| 樣式技術     | StyleX（build-time，近乎零 runtime 成本） | 多為 CSS-in-JS runtime 或預編譯 CSS            |
+| 客製化模式   | CSS Custom Property 覆寫，免 fork         | 常需要 Theme Provider + 深度 override，或 fork |
+| API 開放程度 | 元件可在任意層級組合，不鎖頂層 API        | 部分元件將內部結構封裝，客製彈性受限           |
+| AI 友善程度  | 明確作為設計原則之一                      | 多數未特別設計給 AI Agent 使用                 |
+| 生態成熟度   | Beta，仍在快速迭代                        | 多數已是成熟穩定版本                           |
 
 > **企業導入提醒**：Astryx 目前仍屬 Beta 階段，API 可能持續調整。若你的專案時程緊迫、團隊沒有餘裕承擔破壞性變更風險，建議先以「非核心模組」（如內部後台、Admin Panel）試點，而非直接用於對外主力產品。
 
@@ -291,6 +292,7 @@ stateDiagram-v2
 一般使用 Astryx 的專案，只要現行 Node.js LTS 版本能跑 React 19+ 專案即可，以下示範以 nvm/fnm 管理版本作為企業常見做法，非 Astryx 官方強制要求：
 
 **Windows（PowerShell）**
+
 ```powershell
 # 確認 Node 版本（現行 LTS 即可）
 node -v
@@ -300,6 +302,7 @@ nvm use --lts
 ```
 
 **macOS（zsh/bash）**
+
 ```bash
 # 建議透過 nvm 或 fnm 管理 Node 版本
 fnm install --lts
@@ -307,6 +310,7 @@ fnm use --lts
 ```
 
 **Linux（Debian/Ubuntu 系列）**
+
 ```bash
 curl -fsSL https://fnm.vercel.app/install | bash
 fnm install --lts
@@ -319,12 +323,12 @@ fnm use --lts
 
 官方 Getting Started 文件的範例統一採用 `npm install`，以下為各套件管理器的等效指令，皆可正常安裝 `@astryxdesign/*` 系列套件：
 
-| 套件管理器 | 安裝核心套件指令 | 備註 |
-| --- | --- | --- |
-| npm | `npm install @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli` | 官方文件範例採用，相容性最廣 |
-| pnpm | `pnpm add @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli` | monorepo 場景磁碟空間效率佳 |
-| yarn | `yarn add @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli` | Yarn Berry（PnP 模式）建議先驗證解析行為 |
-| bun | `bun add @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli` | 執行速度快，屬社群驗證路徑 |
+| 套件管理器 | 安裝核心套件指令                                                               | 備註                                     |
+| ---------- | ------------------------------------------------------------------------------ | ---------------------------------------- |
+| npm        | `npm install @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli` | 官方文件範例採用，相容性最廣             |
+| pnpm       | `pnpm add @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli`    | monorepo 場景磁碟空間效率佳              |
+| yarn       | `yarn add @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli`    | Yarn Berry（PnP 模式）建議先驗證解析行為 |
+| bun        | `bun add @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli`     | 執行速度快，屬社群驗證路徑               |
 
 ### 3.4 完整安裝步驟（一般使用，免建置設定）
 
@@ -468,21 +472,21 @@ graph TD
 
 ### 5.2 指令總表
 
-| 指令分類 | 範例指令 | 用途 |
-| --- | --- | --- |
-| 說明 | `npx astryx --help` | 列出所有可用指令 |
-| 初始化 | `npx astryx init --all` | 安裝相依套件、設定主題、產生 AI Agent 規則檔 |
-| 元件查詢 | `npx astryx component Button` | 查看單一元件文件與 Props |
-| 全文搜尋 | `npx astryx search "confirm dialog"` | 跨元件／文件的關鍵字排序搜尋 |
-| 文件查詢 | `npx astryx docs tokens` | 查詢 Token／主題／色彩／字體等主題文件 |
-| 範本注入 | `npx astryx template --list` | 列出可用頁面／區塊範本 |
-| 元件取源 | `npx astryx swizzle Button` | 將元件原始碼複製進專案供深度客製 |
-| 主題建置 | `npx astryx theme build ./src/themes/ocean.ts` | 將 `defineTheme` 定義編譯為 CSS/JS |
-| 主題起手式 | `npx astryx theme add neutral ./src/theme` | 以內建主題為基底，產生可編輯的主題原始檔 |
-| 升級 | `npx astryx upgrade --from 0.1.2 --path ./src` | 先行模擬（預設 dry-run）版本升級的 Codemods 變更 |
-| 升級套用 | `npx astryx upgrade --from 0.1.2 --path ./src --apply` | 實際套用 Codemods 變更 |
-| 健檢 | `npx astryx doctor` | 檢查環境、設定檔、版本相容性，PASS/WARN/FAIL 分級輸出 |
-| Agent 清單 | `npx astryx manifest --json` | 輸出 CLI 完整能力規格（近似 CLI 版 OpenAPI spec），供 AI Agent 讀取 |
+| 指令分類   | 範例指令                                               | 用途                                                                |
+| ---------- | ------------------------------------------------------ | ------------------------------------------------------------------- |
+| 說明       | `npx astryx --help`                                    | 列出所有可用指令                                                    |
+| 初始化     | `npx astryx init --all`                                | 安裝相依套件、設定主題、產生 AI Agent 規則檔                        |
+| 元件查詢   | `npx astryx component Button`                          | 查看單一元件文件與 Props                                            |
+| 全文搜尋   | `npx astryx search "confirm dialog"`                   | 跨元件／文件的關鍵字排序搜尋                                        |
+| 文件查詢   | `npx astryx docs tokens`                               | 查詢 Token／主題／色彩／字體等主題文件                              |
+| 範本注入   | `npx astryx template --list`                           | 列出可用頁面／區塊範本                                              |
+| 元件取源   | `npx astryx swizzle Button`                            | 將元件原始碼複製進專案供深度客製                                    |
+| 主題建置   | `npx astryx theme build ./src/themes/ocean.ts`         | 將 `defineTheme` 定義編譯為 CSS/JS                                  |
+| 主題起手式 | `npx astryx theme add neutral ./src/theme`             | 以內建主題為基底，產生可編輯的主題原始檔                            |
+| 升級       | `npx astryx upgrade --from 0.1.2 --path ./src`         | 先行模擬（預設 dry-run）版本升級的 Codemods 變更                    |
+| 升級套用   | `npx astryx upgrade --from 0.1.2 --path ./src --apply` | 實際套用 Codemods 變更                                              |
+| 健檢       | `npx astryx doctor`                                    | 檢查環境、設定檔、版本相容性，PASS/WARN/FAIL 分級輸出               |
+| Agent 清單 | `npx astryx manifest --json`                           | 輸出 CLI 完整能力規格（近似 CLI 版 OpenAPI spec），供 AI Agent 讀取 |
 
 ### 5.3 初始化流程範例
 
@@ -564,19 +568,19 @@ npx astryx manifest --json
 
 依官方文件站 `astryx.atmeta.com/components` 查證，Astryx 實際採用 **11 大分類**、可獨立辨識約 **93 個元件**（官方行銷頁面宣稱「150+」，推測含子元件／變體／區塊級組合，企業導入評估請以文件站現況為準，見 1.3 節說明）：
 
-| 官方分類 | 中文對照 | 代表元件（節錄） |
-| --- | --- | --- |
-| Action | 操作 | Button、Button Group、Dropdown Menu、Icon Button、Link、More Menu、Toggle Button、Toolbar |
-| Chat | 對話 | Chat Composer、Chat Layout、Chat Message、Chat Tool Calls（AI 對話介面專屬類別） |
-| Container | 容器 | Card、Carousel、Clickable Card、Collapsible、Selectable Card |
-| Content | 內容呈現 | Avatar、Blockquote、Code Block、Empty State、Heading、Icon、Markdown、Text、Timestamp |
-| Data Input | 資料輸入 | Checkbox Input、Date Input、Field、File Input、Number Input、Radio List、Slider、Switch、Text Input、Typeahead |
-| Feedback & Status | 回饋與狀態 | Badge、Banner、Progress Bar、Skeleton、Spinner、Status Dot |
-| Layout | 版面 | App Shell、Aspect Ratio、Divider、Form Layout、Grid、Layout、Section |
-| Navigation | 導覽 | Breadcrumbs、Outline、Pagination、Side Nav、Tab List、Top Nav |
-| Overlay | 覆蓋層 | Command Palette、Dialog、Alert Dialog、Hover Card、Popover、Toast、Tooltip |
-| Table & List | 表格與清單 | List、Metadata List、Overflow List、Table、Tree List |
-| Utility | 工具型 | VisuallyHidden |
+| 官方分類          | 中文對照   | 代表元件（節錄）                                                                                               |
+| ----------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| Action            | 操作       | Button、Button Group、Dropdown Menu、Icon Button、Link、More Menu、Toggle Button、Toolbar                      |
+| Chat              | 對話       | Chat Composer、Chat Layout、Chat Message、Chat Tool Calls（AI 對話介面專屬類別）                               |
+| Container         | 容器       | Card、Carousel、Clickable Card、Collapsible、Selectable Card                                                   |
+| Content           | 內容呈現   | Avatar、Blockquote、Code Block、Empty State、Heading、Icon、Markdown、Text、Timestamp                          |
+| Data Input        | 資料輸入   | Checkbox Input、Date Input、Field、File Input、Number Input、Radio List、Slider、Switch、Text Input、Typeahead |
+| Feedback & Status | 回饋與狀態 | Badge、Banner、Progress Bar、Skeleton、Spinner、Status Dot                                                     |
+| Layout            | 版面       | App Shell、Aspect Ratio、Divider、Form Layout、Grid、Layout、Section                                           |
+| Navigation        | 導覽       | Breadcrumbs、Outline、Pagination、Side Nav、Tab List、Top Nav                                                  |
+| Overlay           | 覆蓋層     | Command Palette、Dialog、Alert Dialog、Hover Card、Popover、Toast、Tooltip                                     |
+| Table & List      | 表格與清單 | List、Metadata List、Overflow List、Table、Tree List                                                           |
+| Utility           | 工具型     | VisuallyHidden                                                                                                 |
 
 > **命名提醒**：官方元件命名與部分傳統 UI 庫慣用命名不同，例如「輸入框」是 `Text Input`（而非 `Input`）、「分頁切換」是 `Tab List`（而非 `Tabs`）、「下拉選單」是 `Dropdown Menu`（而非泛用的 `Menu`）、「樹狀清單」是 `Tree List`（而非 `Tree`）。Astryx **沒有**獨立的 `Modal` 元件，中斷式對話框一律使用 `Dialog`（一般用途）或 `Alert Dialog`（確認/危險操作專用，建構於 Dialog 之上）。程式碼中請以官方元件名稱為準，避免依過往其他元件庫的命名慣性猜測 import 名稱。
 
@@ -643,7 +647,7 @@ npx astryx manifest --json
 ### 6.3 元件組合範例
 
 ```tsx
-import { AlertDialog, Button } from '@astryxdesign/core'
+import { AlertDialog, Button } from "@astryxdesign/core";
 
 function ConfirmDeleteDialog({
   isOpen,
@@ -651,10 +655,10 @@ function ConfirmDeleteDialog({
   onConfirm,
   itemName,
 }: {
-  isOpen: boolean
-  onOpenChange: (isOpen: boolean) => void
-  onConfirm: () => void
-  itemName: string
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  onConfirm: () => void;
+  itemName: string;
 }) {
   return (
     <AlertDialog
@@ -667,7 +671,7 @@ function ConfirmDeleteDialog({
       actionVariant="destructive"
       onAction={onConfirm}
     />
-  )
+  );
 }
 ```
 
@@ -712,29 +716,29 @@ npx astryx theme build src/theme/themes/brand-x/index.ts --out src/theme/themes/
 
 ```ts
 // theme/themes/brand-x.ts
-import { neutralTheme } from '@astryxdesign/theme-neutral'
-import { defineTheme } from '@astryxdesign/core'
+import { neutralTheme } from "@astryxdesign/theme-neutral";
+import { defineTheme } from "@astryxdesign/core";
 
 export const brandXTheme = defineTheme(neutralTheme, {
-  colorPrimary: '#0B5FFF',
-  colorPrimaryHover: '#0A52DE',
-  radiusDefault: '6px',
+  colorPrimary: "#0B5FFF",
+  colorPrimaryHover: "#0A52DE",
+  radiusDefault: "6px",
   fontFamilyBase: '"Noto Sans TC", sans-serif',
-})
+});
 ```
 
 ### 7.4 Design Token 分類
 
 以下依用途分類 Semantic Token（皆為兩層架構中的第二層，見第二章 2.3）：
 
-| Token 類別 | 範例 | 用途 |
-| --- | --- | --- |
-| Color | `colorPrimary`、`colorDanger`、`colorSurface` | 品牌與語意色彩 |
-| Font | `fontFamilyBase`、`--text-heading-1-size` | 字體與字級（官方 Typography 文件即以此類 Token 示範兩層架構） |
-| Radius | `radiusDefault`、`radiusPill` | 圓角規則 |
-| Motion | `motionDurationFast`、`motionEasingStandard` | 動畫時長與緩動曲線 |
-| Spacing | `spacingUnit`、`spacingLg` | 間距基準與尺度 |
-| Density | `densityCompact` / `densityComfortable` | 資訊密度（如表格列高） |
+| Token 類別 | 範例                                          | 用途                                                          |
+| ---------- | --------------------------------------------- | ------------------------------------------------------------- |
+| Color      | `colorPrimary`、`colorDanger`、`colorSurface` | 品牌與語意色彩                                                |
+| Font       | `fontFamilyBase`、`--text-heading-1-size`     | 字體與字級（官方 Typography 文件即以此類 Token 示範兩層架構） |
+| Radius     | `radiusDefault`、`radiusPill`                 | 圓角規則                                                      |
+| Motion     | `motionDurationFast`、`motionEasingStandard`  | 動畫時長與緩動曲線                                            |
+| Spacing    | `spacingUnit`、`spacingLg`                    | 間距基準與尺度                                                |
+| Density    | `densityCompact` / `densityComfortable`       | 資訊密度（如表格列高）                                        |
 
 > 官方核心可自訂品牌起點為 7 套主題（neutral、butter、chocolate、matcha、stone、gothic、y2k），文件站另提供 default、daily、brutalist 等示範性主題供參考，兩者性質不同：前者是企業建立品牌主題時的建議起點，後者偏向風格示範，不建議直接作為生產環境品牌基底。
 
@@ -761,13 +765,13 @@ Astryx 元件內建常見的 ARIA 屬性綁定，但客製化組合元件時（�
 
 ### 8.2 鍵盤操作規範
 
-| 元件 | 鍵盤行為 |
-| --- | --- |
-| Dialog / Alert Dialog | `Tab`/`Shift+Tab` 焦點循環於對話框內，`Esc` 關閉 |
-| Dropdown Menu | 上下方向鍵移動選項，`Enter` 選取，`Esc` 關閉，並支援 typeahead（輸入文字快速定位選項） |
-| Tab List | 左右方向鍵切換分頁 |
-| Tree List | 官方 v0.1.3 起已補齊**完整 WAI-ARIA APG Tree View 鍵盤操作模式**，包含 roving-tabindex（同一時間僅一個節點可 Tab 聚焦）與 typeahead 節點定位，是目前查證到官方最具體詳列的無障礙實作紀錄 |
-| Table | 視實作可支援方向鍵在儲存格間移動（進階需求） |
+| 元件                  | 鍵盤行為                                                                                                                                                                                 |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dialog / Alert Dialog | `Tab`/`Shift+Tab` 焦點循環於對話框內，`Esc` 關閉                                                                                                                                         |
+| Dropdown Menu         | 上下方向鍵移動選項，`Enter` 選取，`Esc` 關閉，並支援 typeahead（輸入文字快速定位選項）                                                                                                   |
+| Tab List              | 左右方向鍵切換分頁                                                                                                                                                                       |
+| Tree List             | 官方 v0.1.3 起已補齊**完整 WAI-ARIA APG Tree View 鍵盤操作模式**，包含 roving-tabindex（同一時間僅一個節點可 Tab 聚焦）與 typeahead 節點定位，是目前查證到官方最具體詳列的無障礙實作紀錄 |
+| Table                 | 視實作可支援方向鍵在儲存格間移動（進階需求）                                                                                                                                             |
 
 ### 8.3 Screen Reader 支援
 
@@ -835,15 +839,15 @@ Astryx 官方在 `astryx.atmeta.com/docs/working-with-ai` 提供一個 **hosted 
 
 ### 9.3 各 AI 工具的角色定位
 
-| 工具 | 適合的角色 |
-| --- | --- |
-| Claude Code | 深度多檔案重構、跨元件一致性檢查、Migration 執行與驗證 |
-| GitHub Copilot | 即時行內建議、單一檔案內的元件補全 |
-| OpenAI Codex | 大範圍程式碼生成任務、CI 中的自動修復 Agent |
-| Gemini CLI | 終端機內快速查詢與腳本化操作 |
-| Cursor | IDE 內整合式的對話 + 編輯迴圈 |
-| Windsurf | 類似 Cursor 的整合式 Agent IDE 工作流 |
-| OpenHands | 自主性較高的多步驟任務執行（如整批元件遷移） |
+| 工具           | 適合的角色                                             |
+| -------------- | ------------------------------------------------------ |
+| Claude Code    | 深度多檔案重構、跨元件一致性檢查、Migration 執行與驗證 |
+| GitHub Copilot | 即時行內建議、單一檔案內的元件補全                     |
+| OpenAI Codex   | 大範圍程式碼生成任務、CI 中的自動修復 Agent            |
+| Gemini CLI     | 終端機內快速查詢與腳本化操作                           |
+| Cursor         | IDE 內整合式的對話 + 編輯迴圈                          |
+| Windsurf       | 類似 Cursor 的整合式 Agent IDE 工作流                  |
+| OpenHands      | 自主性較高的多步驟任務執行（如整批元件遷移）           |
 
 以上工具皆可透過 9.2 的 MCP Server 設定直接連線 Astryx；`init --features agents` 則能依工具類型自動產生對應的規則檔（`--agent claude`／`cursor`／`codex`），兩者互補：MCP 提供即時查詢能力，規則檔提供持久化的專案慣例。
 
@@ -900,16 +904,16 @@ graph LR
 
 ### 10.1 綜合比較表
 
-| 項目 | Astryx | Material UI | Ant Design | Chakra UI | Mantine | Radix UI | Shadcn/ui | Base UI | Fluent UI | Carbon | PrimeReact |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 樣式技術 | StyleX (build-time) | Emotion (runtime) | CSS + less/CSS-in-JS | Emotion (runtime) | CSS Modules/Emotion | 無樣式（行為層） | Tailwind + Radix | 無樣式（行為層） | Griffel (build-time 傾向) | SCSS/CSS | CSS + PrimeFlex |
-| Architecture | Composable，分層明確 | 元件封裝度高 | 元件封裝度高，客製彈性中等 | 客製彈性高 | 客製彈性高 | 極輕量，僅行為 | 原始碼直接複製進專案 | 極輕量，僅行為 | 企業導向，封裝度高 | 企業/政府導向 | 功能豐富但客製彈性中等 |
-| Performance | 高（近零 runtime 成本） | 中 | 中 | 中 | 中高 | 高（幾乎無樣式負擔） | 高（同 Tailwind） | 高 | 中 | 中 | 中 |
-| Accessibility | 提供基礎建設，**官方未正式聲明 WCAG 合規等級** | 良好 | 中等，部分需自行加強 | 良好 | 良好 | 業界標竿 | 依賴 Radix，良好 | 業界標竿 | 良好（企業級驗證） | 良好（政府無障礙合規） | 中等 |
-| Customization | 高（Token + Composition） | 中（需 Theme override） | 中 | 高 | 高 | 極高（自己刻樣式） | 極高（原始碼在自己手上） | 極高 | 中 | 中 | 中 |
-| Learning Curve | 中 | 低 | 低 | 低 | 低 | 中高（需自行組裝樣式） | 中 | 中高 | 中 | 中 | 低 |
-| Enterprise 適用度 | 高（但 Beta 需評估） | 高 | 高（中國市場為主） | 中高 | 中高 | 中（需自建元件層） | 中（需自建維運規範） | 中 | 高（微軟生態） | 高（政府/金融） | 中高 |
-| AI Friendly | 高（官方逐字定位為 "agent ready"，附原生 MCP Server） | 中 | 中 | 中 | 中 | 中（結構單純易懂） | 高（原始碼透明，AI 易讀） | 中 | 中 | 中 | 中 |
+| 項目              | Astryx                                                | Material UI             | Ant Design                 | Chakra UI         | Mantine             | Radix UI               | Shadcn/ui                 | Base UI          | Fluent UI                 | Carbon                 | PrimeReact             |
+| ----------------- | ----------------------------------------------------- | ----------------------- | -------------------------- | ----------------- | ------------------- | ---------------------- | ------------------------- | ---------------- | ------------------------- | ---------------------- | ---------------------- |
+| 樣式技術          | StyleX (build-time)                                   | Emotion (runtime)       | CSS + less/CSS-in-JS       | Emotion (runtime) | CSS Modules/Emotion | 無樣式（行為層）       | Tailwind + Radix          | 無樣式（行為層） | Griffel (build-time 傾向) | SCSS/CSS               | CSS + PrimeFlex        |
+| Architecture      | Composable，分層明確                                  | 元件封裝度高            | 元件封裝度高，客製彈性中等 | 客製彈性高        | 客製彈性高          | 極輕量，僅行為         | 原始碼直接複製進專案      | 極輕量，僅行為   | 企業導向，封裝度高        | 企業/政府導向          | 功能豐富但客製彈性中等 |
+| Performance       | 高（近零 runtime 成本）                               | 中                      | 中                         | 中                | 中高                | 高（幾乎無樣式負擔）   | 高（同 Tailwind）         | 高               | 中                        | 中                     | 中                     |
+| Accessibility     | 提供基礎建設，**官方未正式聲明 WCAG 合規等級**        | 良好                    | 中等，部分需自行加強       | 良好              | 良好                | 業界標竿               | 依賴 Radix，良好          | 業界標竿         | 良好（企業級驗證）        | 良好（政府無障礙合規） | 中等                   |
+| Customization     | 高（Token + Composition）                             | 中（需 Theme override） | 中                         | 高                | 高                  | 極高（自己刻樣式）     | 極高（原始碼在自己手上）  | 極高             | 中                        | 中                     | 中                     |
+| Learning Curve    | 中                                                    | 低                      | 低                         | 低                | 低                  | 中高（需自行組裝樣式） | 中                        | 中高             | 中                        | 中                     | 低                     |
+| Enterprise 適用度 | 高（但 Beta 需評估）                                  | 高                      | 高（中國市場為主）         | 中高              | 中高                | 中（需自建元件層）     | 中（需自建維運規範）      | 中               | 高（微軟生態）            | 高（政府/金融）        | 中高                   |
+| AI Friendly       | 高（官方逐字定位為 "agent ready"，附原生 MCP Server） | 中                      | 中                         | 中                | 中                  | 中（結構單純易懂）     | 高（原始碼透明，AI 易讀） | 中               | 中                        | 中                     | 中                     |
 
 ### 10.2 選型建議
 
@@ -1136,6 +1140,7 @@ Copilot 的行內建議高度依賴「目前檔案與鄰近檔案的上下文」
 
 ```markdown
 # .github/copilot-instructions.md 範例片段
+
 - 所有顏色請使用 theme/tokens.ts 中定義的 Semantic Token，禁止寫死色碼
 - Button variant 僅能為 primary/secondary/ghost/destructive
 - 產生互動元件時，必須包含基本的鍵盤操作與 ARIA 屬性
@@ -1561,7 +1566,7 @@ Beta 階段的 Astryx 較容易出現 Breaking Change，建議訂閱官方 Relea
 97. 建立固定節奏的維護排程（月度小版本檢視、季度相依升級評估）。
 98. 多品牌測試採代表性抽樣（淺色/深色/高對比各一），控制 QA 成本。
 99. 內部元件文件以程式碼型別與 JSDoc 為單一事實來源，避免文件與實作脫節。
-100. 治理制度化：升級、Token 變更、元件新增皆有明確決策流程，不依賴個人主動性。
+100.  治理制度化：升級、Token 變更、元件新增皆有明確決策流程，不依賴個人主動性。
 
 ---
 
@@ -1712,8 +1717,8 @@ Beta 階段的 Astryx 較容易出現 Breaking Change，建議訂閱官方 Relea
 97. 「請為 components/ui/Dialog.tsx 撰寫涵蓋開啟/關閉/焦點管理的單元測試。」
 98. 「請建立這個關鍵頁面的視覺回歸測試快照基準。」
 99. 「請為這次升級撰寫回歸測試檢查清單，涵蓋主要業務流程。」
-100. 「請檢查現有測試是否覆蓋了 Dark Mode 與品牌主題切換情境。」
-101. 「請為批次生成的 100 個包裝元件產生對應的快照測試。」
+100.  「請檢查現有測試是否覆蓋了 Dark Mode 與品牌主題切換情境。」
+101.  「請為批次生成的 100 個包裝元件產生對應的快照測試。」
 
 ### 22.16 Upgrade Prompt（102-105）
 
@@ -1874,4 +1879,3 @@ flowchart LR
 - [ ] 已建立升級與 Migration 的標準流程與回退策略
 - [ ] 已完成至少一個試點模組的實戰導入
 - [ ] 已規劃團隊學習路線與後續 Roadmap
-

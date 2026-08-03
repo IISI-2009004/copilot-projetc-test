@@ -1,6 +1,6 @@
 ---
-description: '建立基於 Spring Boot 的應用程式的指南'
-applyTo: '**/*.java, **/*.kt'
+description: "建立基於 Spring Boot 的應用程式的指南"
+applyTo: "**/*.java, **/*.kt"
 ---
 
 # Spring Boot 開發指南
@@ -59,10 +59,10 @@ applyTo: '**/*.java, **/*.kt'
 
 ## 常用命令
 
-| Gradle Command            | Maven Command                     | Description                                   |
-|:--------------------------|:----------------------------------|:----------------------------------------------|
-| `./gradlew bootRun`       |`./mvnw spring-boot:run`           | 運行應用程式。                                |
-| `./gradlew build`         |`./mvnw package`                   | 構建應用程式。                                |
-| `./gradlew test`          |`./mvnw test`                      | 運行測試。                                    |
-| `./gradlew bootJar`       |`./mvnw spring-boot:repackage`     | 將應用程式打包為 JAR。                        |
-| `./gradlew bootBuildImage`|`./mvnw spring-boot:build-image`   | 將應用程式打包為容器映像。                     |
+| Gradle Command             | Maven Command                    | Description                |
+| :------------------------- | :------------------------------- | :------------------------- |
+| `./gradlew bootRun`        | `./mvnw spring-boot:run`         | 運行應用程式。             |
+| `./gradlew build`          | `./mvnw package`                 | 構建應用程式。             |
+| `./gradlew test`           | `./mvnw test`                    | 運行測試。                 |
+| `./gradlew bootJar`        | `./mvnw spring-boot:repackage`   | 將應用程式打包為 JAR。     |
+| `./gradlew bootBuildImage` | `./mvnw spring-boot:build-image` | 將應用程式打包為容器映像。 |

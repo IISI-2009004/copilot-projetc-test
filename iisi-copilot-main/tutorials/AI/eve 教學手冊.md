@@ -5,6 +5,7 @@ title = 'Eve 教學手冊'
 tags = ['教學', 'AI開發']
 categories = ['教學']
 +++
+
 # Eve 教學手冊
 
 > Vercel Eve Agent Framework × PM Skills 企業整合架構完整指南
@@ -84,14 +85,14 @@ Vercel 過去十年透過 Next.js 把「Web 應用程式的慣例」標準化（
 
 要理解 Eve 的定位，需要先理解 Agent Framework 這個領域的演進脈絡：
 
-| 階段 | 時期 | 代表框架 | 核心關注點 |
-|---|---|---|---|
-| 第一代：Prompt 鏈 | 2022-2023 | LangChain | 把多個 LLM 呼叫串成鏈，引入 Tool/Memory 抽象 |
-| 第二代：圖狀工作流 | 2023-2024 | LangGraph | 用有狀態圖（State Graph）描述 Agent 的決策分支與迴圈 |
-| 第三代：角色協作 | 2023-2024 | CrewAI、AutoGen | 多個具備「角色」的 Agent 互相對話、分工完成任務 |
-| 第四代：框架原生 SDK | 2024-2025 | OpenAI Agents SDK、PydanticAI | 由模型供應商或型別系統社群推出輕量、強型別的 Agent SDK |
-| 第五代：企業整合層 | 2024-2025 | Semantic Kernel、Mastra | 強調與既有企業系統（.NET、TypeScript 全端）整合 |
-| 第六代：基礎設施框架 | 2025-2026 | **Eve** | 把 Durable Execution、Sandbox、Approval、Observability 視為框架預設能力，而非外部拼裝 |
+| 階段                 | 時期      | 代表框架                      | 核心關注點                                                                            |
+| -------------------- | --------- | ----------------------------- | ------------------------------------------------------------------------------------- |
+| 第一代：Prompt 鏈    | 2022-2023 | LangChain                     | 把多個 LLM 呼叫串成鏈，引入 Tool/Memory 抽象                                          |
+| 第二代：圖狀工作流   | 2023-2024 | LangGraph                     | 用有狀態圖（State Graph）描述 Agent 的決策分支與迴圈                                  |
+| 第三代：角色協作     | 2023-2024 | CrewAI、AutoGen               | 多個具備「角色」的 Agent 互相對話、分工完成任務                                       |
+| 第四代：框架原生 SDK | 2024-2025 | OpenAI Agents SDK、PydanticAI | 由模型供應商或型別系統社群推出輕量、強型別的 Agent SDK                                |
+| 第五代：企業整合層   | 2024-2025 | Semantic Kernel、Mastra       | 強調與既有企業系統（.NET、TypeScript 全端）整合                                       |
+| 第六代：基礎設施框架 | 2025-2026 | **Eve**                       | 把 Durable Execution、Sandbox、Approval、Observability 視為框架預設能力，而非外部拼裝 |
 
 可以看到，前五代框架幾乎都聚焦在「如何描述 Agent 的邏輯」（鏈、圖、角色、型別），而 Eve 是少數一開始就把「Agent 如何在生產環境穩定運作」當作第一優先級設計目標的框架。
 
@@ -217,13 +218,13 @@ graph TD
 
 「慣例優於設定」是 Eve 的方法論核心，具體展現在以下幾個慣例規則：
 
-| 慣例 | 規則 | 效果 |
-|---|---|---|
-| 檔名即工具名 | `tools/get_weather.ts` → 工具名稱為 `get_weather` | 不需要額外的 `name` 設定欄位 |
-| 預設匯出即定義 | 每個工具/Agent 檔案用 `export default defineXxx(...)` | 框架可直接 import 取得完整定義，不需解析複雜的具名匯出 |
-| 目錄位置即類型 | `skills/` 底下一定是技能，`tools/` 底下一定是工具 | 開發者不需要額外標記檔案的角色 |
-| Markdown 即知識 | `instructions.md`、`skills/*.md` 用 Markdown 撰寫 | 知識內容與程式碼分離，PM／非工程角色也能編輯 |
-| 子目錄即子代理 | `subagents/<name>/` 視為一個完整的子 Agent | 委派關係透過資料夾巢狀結構直接表達 |
+| 慣例            | 規則                                                  | 效果                                                   |
+| --------------- | ----------------------------------------------------- | ------------------------------------------------------ |
+| 檔名即工具名    | `tools/get_weather.ts` → 工具名稱為 `get_weather`     | 不需要額外的 `name` 設定欄位                           |
+| 預設匯出即定義  | 每個工具/Agent 檔案用 `export default defineXxx(...)` | 框架可直接 import 取得完整定義，不需解析複雜的具名匯出 |
+| 目錄位置即類型  | `skills/` 底下一定是技能，`tools/` 底下一定是工具     | 開發者不需要額外標記檔案的角色                         |
+| Markdown 即知識 | `instructions.md`、`skills/*.md` 用 Markdown 撰寫     | 知識內容與程式碼分離，PM／非工程角色也能編輯           |
+| 子目錄即子代理  | `subagents/<name>/` 視為一個完整的子 Agent            | 委派關係透過資料夾巢狀結構直接表達                     |
 
 > **實務案例**：某團隊原本用 LangChain 手刻一個內部客服 Agent，工具註冊邏輯散落在 5 個檔案中，新人平均需要 2 天才能搞懂如何新增一個工具。改用 Eve 的慣例後，新增工具變成「在 `tools/` 底下新增一個檔案」，新人 10 分鐘內就能完成第一個工具的新增與測試。
 >
@@ -423,19 +424,19 @@ my-agent/
 
 ### 4.2 各目錄用途詳解
 
-| 目錄 / 檔案 | 用途 | 內容型態 |
-|---|---|---|
-| `agent.ts` | 定義模型（如 `anthropic/claude-sonnet-4.6`）、Provider Fallback、執行期參數 | TypeScript，`defineAgent()` |
-| `instructions.md` | Agent 的系統提示詞，描述角色、職責、行為邊界 | Markdown |
-| `instrumentation.ts` | （選用）設定 OpenTelemetry，將 Trace 匯出至 Braintrust、Honeycomb、Datadog、Jaeger 等後端 | TypeScript |
-| `tools/` | 模型可呼叫的具型別函式 | TypeScript，`defineTool()` + Zod |
-| `skills/` | 程序性知識，特定任務的操作指引 | Markdown |
-| `connections/` | 對外部系統（MCP Server、OpenAPI）的連線定義，OAuth 由框架代管 | TypeScript |
-| `channels/` | 部署介面，例如 Slack/Discord/Microsoft Teams/Web Chat/API | TypeScript Adapter |
-| `schedules/` | Cron 觸發的排程任務 | TypeScript |
-| `sandbox/` | （選用）覆寫預設 Sandbox Adapter，自訂隔離計算環境的執行參數 | TypeScript |
-| `subagents/` | 子代理目錄，巢狀的完整 Agent 結構 | 目錄（含完整 Agent 結構） |
-| `evals/`（專案根層） | 評分測試案例，與 `agent/` 同級而非其子目錄 | TypeScript，`*.eval.ts` |
+| 目錄 / 檔案          | 用途                                                                                      | 內容型態                         |
+| -------------------- | ----------------------------------------------------------------------------------------- | -------------------------------- |
+| `agent.ts`           | 定義模型（如 `anthropic/claude-sonnet-4.6`）、Provider Fallback、執行期參數               | TypeScript，`defineAgent()`      |
+| `instructions.md`    | Agent 的系統提示詞，描述角色、職責、行為邊界                                              | Markdown                         |
+| `instrumentation.ts` | （選用）設定 OpenTelemetry，將 Trace 匯出至 Braintrust、Honeycomb、Datadog、Jaeger 等後端 | TypeScript                       |
+| `tools/`             | 模型可呼叫的具型別函式                                                                    | TypeScript，`defineTool()` + Zod |
+| `skills/`            | 程序性知識，特定任務的操作指引                                                            | Markdown                         |
+| `connections/`       | 對外部系統（MCP Server、OpenAPI）的連線定義，OAuth 由框架代管                             | TypeScript                       |
+| `channels/`          | 部署介面，例如 Slack/Discord/Microsoft Teams/Web Chat/API                                 | TypeScript Adapter               |
+| `schedules/`         | Cron 觸發的排程任務                                                                       | TypeScript                       |
+| `sandbox/`           | （選用）覆寫預設 Sandbox Adapter，自訂隔離計算環境的執行參數                              | TypeScript                       |
+| `subagents/`         | 子代理目錄，巢狀的完整 Agent 結構                                                         | 目錄（含完整 Agent 結構）        |
+| `evals/`（專案根層） | 評分測試案例，與 `agent/` 同級而非其子目錄                                                | TypeScript，`*.eval.ts`          |
 
 ### 4.3 最佳實務
 
@@ -447,14 +448,14 @@ my-agent/
 
 ### 4.4 命名規範
 
-| 類型 | 命名慣例 | 範例 |
-|---|---|---|
-| Tool 檔名 | 小寫蛇形命名（snake_case），動詞開頭 | `get_weather.ts`、`query_database.ts` |
-| Skill 檔名 | 小寫連字號命名（kebab-case），名詞或動名詞 | `writing-prd.md`、`incident-response.md` |
-| Channel 檔名 | 平台名稱小寫 | `slack.ts`、`discord.ts`、`web.ts` |
-| Schedule 檔名 | 任務描述 + 頻率（選用） | `daily-report.ts`、`weekly-cleanup.ts` |
-| Subagent 目錄名 | 角色名稱小寫連字號命名 | `researcher/`、`code-reviewer/` |
-| Eval 檔名 | 對應功能 + `.eval.ts` 後綴 | `weather-accuracy.eval.ts` |
+| 類型            | 命名慣例                                   | 範例                                     |
+| --------------- | ------------------------------------------ | ---------------------------------------- |
+| Tool 檔名       | 小寫蛇形命名（snake_case），動詞開頭       | `get_weather.ts`、`query_database.ts`    |
+| Skill 檔名      | 小寫連字號命名（kebab-case），名詞或動名詞 | `writing-prd.md`、`incident-response.md` |
+| Channel 檔名    | 平台名稱小寫                               | `slack.ts`、`discord.ts`、`web.ts`       |
+| Schedule 檔名   | 任務描述 + 頻率（選用）                    | `daily-report.ts`、`weekly-cleanup.ts`   |
+| Subagent 目錄名 | 角色名稱小寫連字號命名                     | `researcher/`、`code-reviewer/`          |
+| Eval 檔名       | 對應功能 + `.eval.ts` 後綴                 | `weather-accuracy.eval.ts`               |
 
 > **實務案例**：某企業內部團隊在導入初期，曾經把所有工具塞進一個 `tools/index.ts`，雖然短期內可以運作，但隨著工具數量增加到 20 個以上，單一檔案超過 800 行，Code Review 與 Git 衝突頻率大幅上升。重構為「一檔一工具」後，PR 平均變更行數從 200+ 行降到 30 行以內，Review 效率明顯提升。
 >
@@ -494,10 +495,12 @@ export default defineAgent({
 你是一個專門回答天氣問題的助理。
 
 ## 職責
+
 - 使用 `get_weather` 工具查詢使用者詢問城市的天氣
 - 以簡潔、口語化的方式回覆天氣資訊
 
 ## 行為邊界
+
 - 不要回答與天氣無關的問題，請禮貌地引導使用者回到天氣主題
 - 若城市名稱無法識別，請要求使用者提供更明確的城市名稱
 ```
@@ -510,6 +513,7 @@ Skills 是放在 `skills/` 底下的 Markdown 檔案，描述「如何完成某�
 
 ```markdown
 <!-- agent/skills/incident-response.md -->
+
 # Incident Response Playbook
 
 當使用者回報生產事故時，依下列步驟處理：
@@ -592,7 +596,7 @@ Schedules 定義依排程觸發的任務：
 import { defineSchedule } from "eve/schedules";
 
 export default defineSchedule({
-  cron: "0 9 * * 1-5",  // 每個工作日上午 9 點
+  cron: "0 9 * * 1-5", // 每個工作日上午 9 點
   async run({ agent }) {
     await agent.run("產出昨日營運摘要報告並發送到 #daily-report 頻道");
   },
@@ -614,8 +618,9 @@ export default defineEval({
   input: "台北的天氣如何？",
   expect: ({ toolCalls, reply }) => {
     return (
-      toolCalls.some((c) => c.tool === "get_weather" && c.input.city === "台北") &&
-      reply.includes("台北")
+      toolCalls.some(
+        (c) => c.tool === "get_weather" && c.input.city === "台北",
+      ) && reply.includes("台北")
     );
   },
 });
@@ -699,12 +704,12 @@ sequenceDiagram
 
 ### 7.1 環境需求
 
-| 項目 | 最低需求 | 建議版本 | 說明 |
-|---|---|---|---|
-| Node.js | 依專案 `.nvmrc` 指定版本 | 最新 LTS | Eve 以 TypeScript 為主，需要對應的 Node.js 執行環境 |
-| 套件管理工具 | npm | **pnpm**（官方 Repo 採用） | pnpm 對 monorepo 與依賴去重效率較佳，企業內建議統一使用 pnpm |
-| Git | 任意近期版本 | 最新版 | Agent 目錄本身即是 Git 可管理的程式碼 |
-| Vercel CLI | 若需部署則必裝 | 最新版 | `vercel deploy` 部署時需要 |
+| 項目         | 最低需求                 | 建議版本                   | 說明                                                         |
+| ------------ | ------------------------ | -------------------------- | ------------------------------------------------------------ |
+| Node.js      | 依專案 `.nvmrc` 指定版本 | 最新 LTS                   | Eve 以 TypeScript 為主，需要對應的 Node.js 執行環境          |
+| 套件管理工具 | npm                      | **pnpm**（官方 Repo 採用） | pnpm 對 monorepo 與依賴去重效率較佳，企業內建議統一使用 pnpm |
+| Git          | 任意近期版本             | 最新版                     | Agent 目錄本身即是 Git 可管理的程式碼                        |
+| Vercel CLI   | 若需部署則必裝           | 最新版                     | `vercel deploy` 部署時需要                                   |
 
 也可以使用 bun 作為替代執行環境（社群常見搭配），但官方範例與 CI 主要以 pnpm 驗證，企業導入建議以 pnpm 為主，bun 作為次要相容性選項。
 
@@ -871,16 +876,19 @@ flowchart LR
 
 ```markdown
 <!-- agent/instructions.md -->
+
 # Weather Agent
 
 你是一個天氣助理，負責回答天氣相關問題，並在適當時機給出生活化建議。
 
 ## 職責
+
 - 使用 `get_weather` 查詢使用者詢問城市的即時天氣
 - 依據「穿著與活動建議」Skill，將原始天氣數據轉換為實用建議
 - 當問題超出天氣範疇（如景點推薦、行程規劃），委派給 `travel-advisor` 子代理
 
 ## 行為邊界
+
 - 不要在沒有呼叫 `get_weather` 的情況下，自行編造天氣數據
 - 若城市名稱模糊或拼寫可能有誤，先向使用者確認
 ```
@@ -913,16 +921,19 @@ export default defineTool({
 
 ```markdown
 <!-- agent/skills/clothing-and-activity-advice.md -->
+
 # 穿著與活動建議 Skill
 
 當使用者詢問「該怎麼穿」「適合戶外活動嗎」「要帶傘嗎」時，依下列規則轉換 get_weather 的結果：
 
 ## 降雨建議
+
 - 降雨機率 > 60%：建議攜帶雨具，避免安排戶外活動
 - 降雨機率 30%-60%：建議攜帶折傘備用
 - 降雨機率 < 30%：無需特別準備雨具
 
 ## 穿著建議
+
 - 氣溫 < 10°C：建議厚外套、圍巾
 - 氣溫 10°C-22°C：建議薄外套或長袖
 - 氣溫 > 22°C：建議透氣短袖
@@ -944,6 +955,7 @@ agent/
 
 ```markdown
 <!-- agent/subagents/travel-advisor/instructions.md -->
+
 # Travel Advisor Subagent
 
 你負責根據城市與天氣狀況，推薦合適的旅遊景點或行程安排。
@@ -958,7 +970,8 @@ agent/
 import { defineEval } from "eve/evals";
 
 export default defineEval({
-  description: "詢問天氣＋旅遊建議時，應同時呼叫 get_weather 並委派 travel-advisor",
+  description:
+    "詢問天氣＋旅遊建議時，應同時呼叫 get_weather 並委派 travel-advisor",
   input: "東京現在天氣如何？順便推薦適合今天去的景點。",
   expect: ({ toolCalls, subagentCalls, reply }) => {
     return (
@@ -1023,18 +1036,22 @@ Skills 的本質是「把專家的隱性知識顯性化、結構化，並以模�
 {一句話描述這份 Skill 解決什麼問題、何時該被使用}
 
 ## 適用情境
+
 - {條件 1}
 - {條件 2}
 
 ## 處理規則
+
 1. {步驟或規則 1}
 2. {步驟或規則 2}
 
 ## 輸出格式要求
+
 - {格式要求 1}
 - {格式要求 2}
 
 ## 範例（選用）
+
 {輸入範例 → 預期輸出範例，幫助模型校準輸出風格}
 ```
 
@@ -1115,11 +1132,13 @@ agent/
 
 ```markdown
 <!-- agent/instructions.md -->
+
 # Product Manager Agent
 
 你是企業內部的產品經理助理，協助團隊完成從探索到上市的產品管理工作。
 
 ## 職責
+
 - 依使用者需求，從 `skills/pm-skills/` 中載入對應領域的 Skill 並套用其方法論
 - 產出結構化文件（PRD、市場分析、GTM 計畫等），並標註參考的方法論來源
 - 涉及跨領域任務時，委派給對應的專責子代理（Architect、Reverse Engineering、Refactoring、SSDLC、Framework Upgrade）
@@ -1129,11 +1148,13 @@ agent/
 
 ```markdown
 <!-- agent/subagents/architect/instructions.md -->
+
 # Architect Agent
 
 你負責將 Product Manager Agent 產出的需求文件，轉換為技術架構提案。
 
 ## 職責
+
 - 分析現有系統架構（可呼叫程式碼分析相關工具）
 - 提出符合需求的架構方案，標註技術債與風險
 - 涉及生產環境變更的提案，標記 needsApproval，交由人類審核
@@ -1143,11 +1164,13 @@ agent/
 
 ```markdown
 <!-- agent/subagents/reverse-engineering/instructions.md -->
+
 # Reverse Engineering Agent
 
 你負責對 Legacy System（Java、COBOL、RPG、Notes/Domino 等）進行逆向工程分析。
 
 ## 職責
+
 - 解析既有程式碼結構，產出模組關係圖與業務邏輯摘要
 - 套用 `skills/pm-skills/product-discovery/` 中的訪談與需求萃取方法論，補足程式碼無法表達的業務脈絡
 - 產出可供 Architect Agent 與 Refactoring Agent 後續使用的結構化分析報告
@@ -1157,11 +1180,13 @@ agent/
 
 ```markdown
 <!-- agent/subagents/refactoring/instructions.md -->
+
 # Refactoring Agent
 
 你負責依據 Architect Agent 的架構提案，執行具體的程式碼重構任務。
 
 ## 職責
+
 - 在 Sandbox 中執行重構並跑既有測試套件驗證行為一致性
 - 重構涉及資料庫 Schema 或對外 API 介面變更時，標記 needsApproval
 - 產出重構前後的差異摘要報告
@@ -1171,11 +1196,13 @@ agent/
 
 ```markdown
 <!-- agent/subagents/ssdlc/instructions.md -->
+
 # SSDLC Agent
 
 你負責在開發流程中嵌入安全軟體開發生命週期檢查。
 
 ## 職責
+
 - 對程式碼變更執行 SAST／Dependency Scan／Secret Scan 對應工具
 - 依風險等級決定是否需要人工審批才能合併
 - 產出安全檢查報告，整合進 Pull Request 描述
@@ -1185,11 +1212,13 @@ agent/
 
 ```markdown
 <!-- agent/subagents/framework-upgrade/instructions.md -->
+
 # Framework Upgrade Agent
 
 你負責規劃並執行框架升級任務（例如 Spring Boot 2.x → 3.x）。
 
 ## 職責
+
 - 套用 `skills/pm-skills/execution/` 中的風險評估方法論，制定升級計畫與回滾方案
 - 在 Sandbox 中先行驗證升級後的相容性
 - 升級涉及生產環境部署時，標記 needsApproval
@@ -1256,12 +1285,12 @@ graph TB
 
 實務上建議將「前端鷹架」與「後端鷹架」拆成兩個獨立 Tool，而不是塞進同一個萬用 Tool，方便模型依需求精準呼叫、也方便個別維護：
 
-| Tool 檔名 | 職責 | 輸出 |
-|---|---|---|
-| `tools/generate_vue_component.ts` | 依元件規格產生 Vue 3 + `<script setup>` 元件骨架 | 元件原始碼字串、檔案建議路徑 |
-| `tools/generate_spring_controller.ts` | 依 API 規格產生 Spring Boot Controller/Service 介面雛型 | Java 原始碼字串、檔案建議路徑 |
-| `tools/run_frontend_tests.ts` | 在 Sandbox 中執行 `npm run test` 驗證生成的元件 | 測試結果摘要、失敗案例清單 |
-| `tools/run_backend_tests.ts` | 在 Sandbox 中執行 `mvn test` 驗證生成的 Controller/Service | 測試結果摘要、失敗案例清單 |
+| Tool 檔名                             | 職責                                                       | 輸出                          |
+| ------------------------------------- | ---------------------------------------------------------- | ----------------------------- |
+| `tools/generate_vue_component.ts`     | 依元件規格產生 Vue 3 + `<script setup>` 元件骨架           | 元件原始碼字串、檔案建議路徑  |
+| `tools/generate_spring_controller.ts` | 依 API 規格產生 Spring Boot Controller/Service 介面雛型    | Java 原始碼字串、檔案建議路徑 |
+| `tools/run_frontend_tests.ts`         | 在 Sandbox 中執行 `npm run test` 驗證生成的元件            | 測試結果摘要、失敗案例清單    |
+| `tools/run_backend_tests.ts`          | 在 Sandbox 中執行 `mvn test` 驗證生成的 Controller/Service | 測試結果摘要、失敗案例清單    |
 
 ```typescript
 // agent/tools/generate_vue_component.ts
@@ -1269,14 +1298,21 @@ import { defineTool } from "eve/tools";
 import { z } from "zod";
 
 export default defineTool({
-  description: "依元件名稱、Props 與行為描述，產生 Vue 3 <script setup> 元件骨架。",
+  description:
+    "依元件名稱、Props 與行為描述，產生 Vue 3 <script setup> 元件骨架。",
   inputSchema: z.object({
-    componentName: z.string().describe("PascalCase 元件名稱，例如 OrderSummaryCard"),
+    componentName: z
+      .string()
+      .describe("PascalCase 元件名稱，例如 OrderSummaryCard"),
     props: z.array(z.object({ name: z.string(), type: z.string() })),
     description: z.string().describe("元件用途與互動行為的自然語言描述"),
   }),
   async execute({ componentName, props, description }) {
-    const source = renderVueComponentTemplate({ componentName, props, description });
+    const source = renderVueComponentTemplate({
+      componentName,
+      props,
+      description,
+    });
     return {
       filePath: `src/components/${componentName}.vue`,
       source,
@@ -1287,6 +1323,7 @@ export default defineTool({
 
 ```markdown
 <!-- agent/skills/web-dev/spring-boot-scaffolding.md -->
+
 # Spring Boot API 鷹架 Skill
 
 當需要將 PRD 中的 API 規格轉換為 Spring Boot 程式碼雛型時，依下列慣例產生：
@@ -1308,12 +1345,12 @@ export default defineTool({
 
 ### 13.1 適用 Legacy 系統類型
 
-| 系統類型 | 常見挑戰 | Eve Agent 可協助的部分 |
-|---|---|---|
-| Java（舊版 Struts/EJB） | 框架過時、文件缺失 | 解析程式碼結構、產出模組關係圖 |
-| COBOL | 人才斷層、業務邏輯隱藏在程式碼中 | 萃取業務規則、轉換為結構化文件 |
-| RPG（AS/400） | 程式碼風格特殊、缺乏現代開發工具支援 | 比對輸入輸出規格、產出功能摘要 |
-| Notes/Domino | 應用程式邏輯與資料模型高度耦合 | 拆解表單與流程邏輯、規劃遷移路徑 |
+| 系統類型                | 常見挑戰                             | Eve Agent 可協助的部分           |
+| ----------------------- | ------------------------------------ | -------------------------------- |
+| Java（舊版 Struts/EJB） | 框架過時、文件缺失                   | 解析程式碼結構、產出模組關係圖   |
+| COBOL                   | 人才斷層、業務邏輯隱藏在程式碼中     | 萃取業務規則、轉換為結構化文件   |
+| RPG（AS/400）           | 程式碼風格特殊、缺乏現代開發工具支援 | 比對輸入輸出規格、產出功能摘要   |
+| Notes/Domino            | 應用程式邏輯與資料模型高度耦合       | 拆解表單與流程邏輯、規劃遷移路徑 |
 
 ### 13.2 分析流程
 
@@ -1357,12 +1394,12 @@ flowchart TD
 
 ### 14.2 Agent 分工
 
-| Agent | 職責 |
-|---|---|
-| Framework Upgrade Agent（主導） | 制定整體升級計畫、協調其他 Subagent |
-| Refactoring Agent | 修正因 API 變更導致的相容性問題 |
-| SSDLC Agent | 確認升級後的相依套件無已知漏洞 |
-| Architect Agent | 評估升級對既有架構模式（如 Servlet → Jakarta EE 命名空間遷移）的影響範圍 |
+| Agent                           | 職責                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| Framework Upgrade Agent（主導） | 制定整體升級計畫、協調其他 Subagent                                      |
+| Refactoring Agent               | 修正因 API 變更導致的相容性問題                                          |
+| SSDLC Agent                     | 確認升級後的相依套件無已知漏洞                                           |
+| Architect Agent                 | 評估升級對既有架構模式（如 Servlet → Jakarta EE 命名空間遷移）的影響範圍 |
 
 ### 14.3 風險控制要點
 
@@ -1385,14 +1422,14 @@ flowchart TD
 
 企業導入多 Agent 協作時，常見以下六種角色分工，可視專案規模彈性組合：
 
-| 角色 | 職責 | 典型輸入 | 典型輸出 |
-|---|---|---|---|
-| Planner Agent | 拆解高層需求為具體任務清單 | 業務需求、目標 | 任務清單與優先順序 |
-| Architect Agent | 制定技術方案、評估風險 | 任務清單、現有架構 | 架構提案文件 |
-| Developer Agent | 實際撰寫/修改程式碼 | 架構提案 | 程式碼變更、PR |
-| Reviewer Agent | 審查程式碼品質與一致性 | 程式碼變更 | 審查意見、修改建議 |
-| Tester Agent | 設計並執行測試案例 | 程式碼變更 | 測試結果報告 |
-| Security Agent | 執行安全掃描與風險評估 | 程式碼變更 | 安全報告、阻擋/放行建議 |
+| 角色            | 職責                       | 典型輸入           | 典型輸出                |
+| --------------- | -------------------------- | ------------------ | ----------------------- |
+| Planner Agent   | 拆解高層需求為具體任務清單 | 業務需求、目標     | 任務清單與優先順序      |
+| Architect Agent | 制定技術方案、評估風險     | 任務清單、現有架構 | 架構提案文件            |
+| Developer Agent | 實際撰寫/修改程式碼        | 架構提案           | 程式碼變更、PR          |
+| Reviewer Agent  | 審查程式碼品質與一致性     | 程式碼變更         | 審查意見、修改建議      |
+| Tester Agent    | 設計並執行測試案例         | 程式碼變更         | 測試結果報告            |
+| Security Agent  | 執行安全掃描與風險評估     | 程式碼變更         | 安全報告、阻擋/放行建議 |
 
 ### 15.2 協作拓撲：流水線模式（Pipeline）
 
@@ -1481,13 +1518,13 @@ sequenceDiagram
 
 ### 16.2 適用場景
 
-| 場景 | 風險說明 | 建議審批層級 |
-|---|---|---|
-| Production Deployment | 錯誤部署可能造成服務中斷 | 必須人工核准，建議雙人複核 |
-| Database Migration | Schema 變更不可逆，可能造成資料遺失 | 必須人工核准，建議搭配自動化備份檢查 |
-| Source Code Merge | 合併到主分支影響全團隊 | 依變更風險動態判斷（小型修正可放寬，核心模組變更需審批） |
-| 大量資料匯出 | 可能涉及個資外洩風險 | 必須人工核准，並記錄稽核軌跡 |
-| 對外發送訊息（Email/簡訊） | 可能造成商業或公關風險 | 依收件對象規模動態判斷 |
+| 場景                       | 風險說明                            | 建議審批層級                                             |
+| -------------------------- | ----------------------------------- | -------------------------------------------------------- |
+| Production Deployment      | 錯誤部署可能造成服務中斷            | 必須人工核准，建議雙人複核                               |
+| Database Migration         | Schema 變更不可逆，可能造成資料遺失 | 必須人工核准，建議搭配自動化備份檢查                     |
+| Source Code Merge          | 合併到主分支影響全團隊              | 依變更風險動態判斷（小型修正可放寬，核心模組變更需審批） |
+| 大量資料匯出               | 可能涉及個資外洩風險                | 必須人工核准，並記錄稽核軌跡                             |
+| 對外發送訊息（Email/簡訊） | 可能造成商業或公關風險              | 依收件對象規模動態判斷                                   |
 
 ### 16.3 動態審批條件設計
 
@@ -1696,6 +1733,7 @@ GitHub Copilot 支援在 Repository 根目錄放置 `.github/copilot-instruction
 
 ```markdown
 <!-- .github/copilot-instructions.md（節錄，由同步腳本自動產生） -->
+
 # Repository 編碼規範（自動同步自 Eve Skill：coding-standards.md，請勿手動編輯）
 
 - 所有 Controller 方法須附帶輸入驗證
@@ -1732,14 +1770,14 @@ flowchart TD
 
 ### 20.2 Agent 自動化流程設計
 
-| 階段 | 負責 Agent | 自動化內容 |
-|---|---|---|
-| Threat Modeling | SSDLC Agent | 套用 PM Skills 風險評估方法論，產出威脅模型草稿供人工審閱 |
-| SAST | SSDLC Agent | 呼叫靜態分析工具（如 SonarQube、Semgrep）Tool，解析結果並摘要高風險項目 |
-| Dependency Scan | SSDLC Agent | 呼叫相依套件掃描工具，比對已知漏洞資料庫（CVE） |
-| Secret Scan | SSDLC Agent | 掃描程式碼與設定檔中是否有硬編碼憑證/金鑰 |
-| DAST | SSDLC Agent（委派至測試環境 Sandbox） | 在隔離測試環境執行動態掃描，避免影響生產系統 |
-| 安全簽核 | Human Approval | 依掃描結果風險等級，決定是否需要安全團隊人工複核 |
+| 階段            | 負責 Agent                            | 自動化內容                                                              |
+| --------------- | ------------------------------------- | ----------------------------------------------------------------------- |
+| Threat Modeling | SSDLC Agent                           | 套用 PM Skills 風險評估方法論，產出威脅模型草稿供人工審閱               |
+| SAST            | SSDLC Agent                           | 呼叫靜態分析工具（如 SonarQube、Semgrep）Tool，解析結果並摘要高風險項目 |
+| Dependency Scan | SSDLC Agent                           | 呼叫相依套件掃描工具，比對已知漏洞資料庫（CVE）                         |
+| Secret Scan     | SSDLC Agent                           | 掃描程式碼與設定檔中是否有硬編碼憑證/金鑰                               |
+| DAST            | SSDLC Agent（委派至測試環境 Sandbox） | 在隔離測試環境執行動態掃描，避免影響生產系統                            |
+| 安全簽核        | Human Approval                        | 依掃描結果風險等級，決定是否需要安全團隊人工複核                        |
 
 ```typescript
 // agent/tools/run_sast_scan.ts
@@ -1782,11 +1820,11 @@ export default defineTool({
 
 ### 21.1 部署架構選項總覽
 
-| 部署目標 | 適用情境 | Sandbox Adapter |
-|---|---|---|
-| Vercel | 與 Eve 框架原生整合最深，零額外基礎設施建置 | Vercel Sandbox |
-| Docker | 企業需要在自有資料中心或私有雲運行 | Docker |
-| Kubernetes | 企業已有 K8s 平台，需要與既有服務統一納管 | Docker（透過 K8s Pod 包裝） |
+| 部署目標   | 適用情境                                    | Sandbox Adapter             |
+| ---------- | ------------------------------------------- | --------------------------- |
+| Vercel     | 與 Eve 框架原生整合最深，零額外基礎設施建置 | Vercel Sandbox              |
+| Docker     | 企業需要在自有資料中心或私有雲運行          | Docker                      |
+| Kubernetes | 企業已有 K8s 平台，需要與既有服務統一納管   | Docker（透過 K8s Pod 包裝） |
 
 ### 21.2 Vercel 部署架構
 
@@ -1871,13 +1909,13 @@ graph LR
 
 建議追蹤的核心指標：
 
-| 指標類別 | 範例指標 | 用途 |
-|---|---|---|
-| 執行量 | 每日 Agent 觸發次數、每個 Channel 的訊息量 | 容量規劃 |
-| 效能 | 平均回應時間、Tool 執行延遲、Sandbox 啟動延遲 | 效能優化依據 |
-| 成本 | 每次執行的 Token 消耗量、模型呼叫費用 | 成本控管 |
-| 品質 | Eval 通過率、Human Approval 拒絕率 | 品質與風險監控 |
-| 可靠性 | 執行失敗率、Durable Execution 恢復次數 | 穩定性監控 |
+| 指標類別 | 範例指標                                      | 用途           |
+| -------- | --------------------------------------------- | -------------- |
+| 執行量   | 每日 Agent 觸發次數、每個 Channel 的訊息量    | 容量規劃       |
+| 效能     | 平均回應時間、Tool 執行延遲、Sandbox 啟動延遲 | 效能優化依據   |
+| 成本     | 每次執行的 Token 消耗量、模型呼叫費用         | 成本控管       |
+| 品質     | Eval 通過率、Human Approval 拒絕率            | 品質與風險監控 |
+| 可靠性   | 執行失敗率、Durable Execution 恢復次數        | 穩定性監控     |
 
 ### 22.3 Tracing
 
@@ -2020,12 +2058,12 @@ graph LR
 
 效能優化的效果應該被量化追蹤，而非只憑直覺判斷「感覺變快了」。以下是優化前後對照的量化基準範例（數字為示意性的內部測試結果，企業應依自身工作負載重新量測，不應直接套用）：
 
-| 優化項目 | 優化前 | 優化後 | 改善幅度 |
-|---|---|---|---|
-| Instructions 精簡化（移除操作細節，下放至 Skill） | 每次呼叫約 1,800 Token | 每次呼叫約 600 Token | 約節省 67% |
-| SAST 報告先結構化過濾才交給模型 | 單次呼叫約 12,000 Token | 單次呼叫約 3,500 Token | 約節省 70%（見上方實務案例） |
-| 長對話歷史定期摘要化 | 第 50 輪對話時約 25,000 Token | 第 50 輪對話時約 6,000 Token | 約節省 76% |
-| 工具回傳資料截斷（500 筆上限） | 單次工具回傳可能 5,000+ 筆 | 單次工具回傳固定 ≤ 500 筆 | 上限可預測，避免極端值 |
+| 優化項目                                          | 優化前                        | 優化後                       | 改善幅度                     |
+| ------------------------------------------------- | ----------------------------- | ---------------------------- | ---------------------------- |
+| Instructions 精簡化（移除操作細節，下放至 Skill） | 每次呼叫約 1,800 Token        | 每次呼叫約 600 Token         | 約節省 67%                   |
+| SAST 報告先結構化過濾才交給模型                   | 單次呼叫約 12,000 Token       | 單次呼叫約 3,500 Token       | 約節省 70%（見上方實務案例） |
+| 長對話歷史定期摘要化                              | 第 50 輪對話時約 25,000 Token | 第 50 輪對話時約 6,000 Token | 約節省 76%                   |
+| 工具回傳資料截斷（500 筆上限）                    | 單次工具回傳可能 5,000+ 筆    | 單次工具回傳固定 ≤ 500 筆    | 上限可預測，避免極端值       |
 
 簡易成本試算公式，方便企業在導入前估算月度 Token 成本量級：
 
@@ -2080,12 +2118,12 @@ graph LR
 
 文字規範若缺乏量化門檻，容易流於各審查者主觀判斷不一。建議將以下指標納入部署閘門（Deploy Gate），低於門檻則 CI 自動擋下：
 
-| 指標 | 建議門檻 | 說明 |
-|---|---|---|
-| 核心 Tool 的 Eval 覆蓋率 | ≥ 80% | 以「有對應 Eval 的 Tool 數／核心 Tool 總數」計算，核心 Tool 定義為涉及寫入或對外部系統操作者 |
-| Eval 通過率（CI Gate） | 100%（不允許跳過） | 任何既有 Eval 失敗，視同建置失敗，不得以「之後再修」為理由合併 |
-| 單元測試覆蓋率（Tool 內部邏輯） | ≥ 70% | 套用企業既有的測試覆蓋率工具鏈，與一般應用程式程式碼一視同仁 |
-| 高風險 Tool 的 `needsApproval` 評估記錄 | 100% | 每個涉及寫入/外部系統的 Tool，PR 描述中必須記錄是否評估過審批必要性 |
+| 指標                                    | 建議門檻           | 說明                                                                                         |
+| --------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------- |
+| 核心 Tool 的 Eval 覆蓋率                | ≥ 80%              | 以「有對應 Eval 的 Tool 數／核心 Tool 總數」計算，核心 Tool 定義為涉及寫入或對外部系統操作者 |
+| Eval 通過率（CI Gate）                  | 100%（不允許跳過） | 任何既有 Eval 失敗，視同建置失敗，不得以「之後再修」為理由合併                               |
+| 單元測試覆蓋率（Tool 內部邏輯）         | ≥ 70%              | 套用企業既有的測試覆蓋率工具鏈，與一般應用程式程式碼一視同仁                                 |
+| 高風險 Tool 的 `needsApproval` 評估記錄 | 100%               | 每個涉及寫入/外部系統的 Tool，PR 描述中必須記錄是否評估過審批必要性                          |
 
 ESLint 設定範本片段（與企業既有前端/Node.js 專案共用規則為基礎，額外加入 Eve 專屬規則）：
 
@@ -2095,7 +2133,15 @@ ESLint 設定範本片段（與企業既有前端/Node.js 專案共用規則為�
   "rules": {
     "no-restricted-imports": [
       "error",
-      { "paths": [{ "name": "eve/tools", "importNames": ["defineTool"], "message": "請確認此檔案位於 agent/tools/ 底下且已補上對應 Eval" }] }
+      {
+        "paths": [
+          {
+            "name": "eve/tools",
+            "importNames": ["defineTool"],
+            "message": "請確認此檔案位於 agent/tools/ 底下且已補上對應 Eval"
+          }
+        ]
+      }
     ]
   }
 }
@@ -2489,13 +2535,13 @@ graph TD
 
 ### 30.4 成熟度評估
 
-| 成熟度等級 | 特徵 | 建議下一步 |
-|---|---|---|
-| Level 0：未導入 | 仍依賴人工執行 PM Skills 中的方法論 | 啟動 PoC，從第 8-9 章範例開始上手 |
-| Level 1：單一 Agent 試點 | 已有 1-2 個 Eve Agent 在非核心場景運作 | 補齊 Evals 與基本可觀測性，準備擴展 |
-| Level 2：多 Agent 協作 | 已建立 Subagent 協作拓撲，涵蓋多個 PM Skills 領域 | 落實開發規範與安全治理，建立審批流程 |
-| Level 3：生產規模化 | 多個核心業務流程由 Agent 協作完成，具備完整可觀測性與稽核 | 持續優化成本效能，建立長期治理機制 |
-| Level 4：平台化 | 企業內部具備自助式 Agent 開發平台，各團隊可自行依規範建立新 Agent | 持續追蹤框架演進，優化平台開發者體驗 |
+| 成熟度等級               | 特徵                                                              | 建議下一步                           |
+| ------------------------ | ----------------------------------------------------------------- | ------------------------------------ |
+| Level 0：未導入          | 仍依賴人工執行 PM Skills 中的方法論                               | 啟動 PoC，從第 8-9 章範例開始上手    |
+| Level 1：單一 Agent 試點 | 已有 1-2 個 Eve Agent 在非核心場景運作                            | 補齊 Evals 與基本可觀測性，準備擴展  |
+| Level 2：多 Agent 協作   | 已建立 Subagent 協作拓撲，涵蓋多個 PM Skills 領域                 | 落實開發規範與安全治理，建立審批流程 |
+| Level 3：生產規模化      | 多個核心業務流程由 Agent 協作完成，具備完整可觀測性與稽核         | 持續優化成本效能，建立長期治理機制   |
+| Level 4：平台化          | 企業內部具備自助式 Agent 開發平台，各團隊可自行依規範建立新 Agent | 持續追蹤框架演進，優化平台開發者體驗 |
 
 ### 30.5 ROI 分析方向
 
@@ -2547,16 +2593,19 @@ export default defineAgent({
 
 ```markdown
 <!-- agent/instructions.md -->
+
 # Weather Agent
 
 你是一個天氣助理，負責回答天氣相關問題，並在適當時機給出生活化建議。
 
 ## 職責
+
 - 使用 `get_weather` 查詢使用者詢問城市的即時天氣
 - 依據「穿著與活動建議」Skill，將原始天氣數據轉換為實用建議
 - 當問題超出天氣範疇（如景點推薦、行程規劃），委派給 `travel-advisor` 子代理
 
 ## 行為邊界
+
 - 不要在沒有呼叫 `get_weather` 的情況下，自行編造天氣數據
 - 若城市名稱模糊或拼寫可能有誤，先向使用者確認
 ```
@@ -2585,16 +2634,19 @@ export default defineTool({
 
 ```markdown
 <!-- agent/skills/clothing-and-activity-advice.md -->
+
 # 穿著與活動建議 Skill
 
 當使用者詢問「該怎麼穿」「適合戶外活動嗎」「要帶傘嗎」時，依下列規則轉換 get_weather 的結果：
 
 ## 降雨建議
+
 - 降雨機率 > 60%：建議攜帶雨具，避免安排戶外活動
 - 降雨機率 30%-60%：建議攜帶折傘備用
 - 降雨機率 < 30%：無需特別準備雨具
 
 ## 穿著建議
+
 - 氣溫 < 10°C：建議厚外套、圍巾
 - 氣溫 10°C-22°C：建議薄外套或長袖
 - 氣溫 > 22°C：建議透氣短袖
@@ -2613,6 +2665,7 @@ export default defineAgent({
 
 ```markdown
 <!-- agent/subagents/travel-advisor/instructions.md -->
+
 # Travel Advisor Subagent
 
 你負責根據城市與天氣狀況，推薦合適的旅遊景點或行程安排。
@@ -2641,7 +2694,8 @@ export default defineTool({
 import { defineEval } from "eve/evals";
 
 export default defineEval({
-  description: "詢問天氣＋旅遊建議時，應同時呼叫 get_weather 並委派 travel-advisor",
+  description:
+    "詢問天氣＋旅遊建議時，應同時呼叫 get_weather 並委派 travel-advisor",
   input: "東京現在天氣如何？順便推薦適合今天去的景點。",
   expect: ({ toolCalls, subagentCalls, reply }) => {
     return (
@@ -2702,12 +2756,12 @@ pm-eve-agent/
 
 匯入既有 PM Skills 上游內容時，建議維持「上游原始檔名」與「Eve 專案路徑」之間 1:1 對應，方便日後同步上游更新時用腳本比對差異，而不需要逐檔手動核對內容是否被改寫過：
 
-| 上游 PM Skills 檔名 | 對應 Eve 專案路徑 | 對應 Plugin 分類 |
-|---|---|---|
-| `brainstorm-ideas.md` | `agent/skills/pm-skills/product-discovery/brainstorm-ideas.md` | product-discovery |
-| `write-prd.md` | `agent/skills/pm-skills/execution/write-prd.md` | execution |
-| `competitive-analysis.md` | `agent/skills/pm-skills/market-research/competitive-analysis.md` | market-research |
-| `okr-planning.md` | `agent/skills/pm-skills/product-strategy/okr-planning.md` | product-strategy |
+| 上游 PM Skills 檔名       | 對應 Eve 專案路徑                                                | 對應 Plugin 分類  |
+| ------------------------- | ---------------------------------------------------------------- | ----------------- |
+| `brainstorm-ideas.md`     | `agent/skills/pm-skills/product-discovery/brainstorm-ideas.md`   | product-discovery |
+| `write-prd.md`            | `agent/skills/pm-skills/execution/write-prd.md`                  | execution         |
+| `competitive-analysis.md` | `agent/skills/pm-skills/market-research/competitive-analysis.md` | market-research   |
+| `okr-planning.md`         | `agent/skills/pm-skills/product-strategy/okr-planning.md`        | product-strategy  |
 
 > **最佳實務**：同步腳本應只負責「複製檔案內容、保留檔名」，不要在同步過程中改寫上游 Markdown 的標題層級或措辭——若企業需要客製化內容，建議在 Eve 專案內以**獨立的補充檔案**（例如 `write-prd.enterprise-notes.md`）附加企業特例規則，並在 Instructions 中提示模型同時參考兩份檔案，避免修改上游檔案導致日後同步衝突。
 
@@ -2735,35 +2789,35 @@ flowchart TD
 
 ## 附錄 C Mermaid 圖總覽索引
 
-| 圖號 | 章節 | 類型 | 說明 |
-|---|---|---|---|
-| 圖 1 | 1.11 | graph LR | Web 與 Agent 開發年代演進類比 |
-| 圖 2 | 2.2 | graph TD | Agent is a Directory 結構圖 |
-| 圖 3 | 2.4 | sequenceDiagram | Durable Execution 跨部署存活流程 |
-| 圖 4 | 3.1 | graph TB | Eve 整體系統架構總覽 |
-| 圖 5 | 6.1 | sequenceDiagram | 單次請求完整執行流程 |
-| 圖 6 | 8.3 | flowchart LR | 初始化到開發伺服器啟動流程 |
-| 圖 7 | 9.6 | classDiagram | Weather Agent 元件關係圖 |
-| 圖 8 | 11.1 | graph TB | PM Skills 與 Eve 整合策略總覽 |
-| 圖 9 | 11.8 | graph TD | PM Skills Subagent 協作關係圖 |
-| 圖 10 | 12.1 | graph TB | Web Application 開發整體架構 |
-| 圖 11 | 13.2 | flowchart TD | Reverse Engineering 分析流程 |
-| 圖 12 | 14.1 | flowchart TD | Framework Upgrade 執行流程 |
-| 圖 13 | 15.2 | flowchart LR | Subagent 流水線協作模式 |
-| 圖 14 | 15.3 | flowchart TD | Subagent 星狀協調模式 |
-| 圖 15 | 15.4 | flowchart TD | Subagent 分層委派模式 |
-| 圖 16 | 16.1 | sequenceDiagram | Human Approval 流程 |
-| 圖 17 | 17.2 | graph LR | Eve 與 MCP 整合架構 |
-| 圖 18 | 18.1 | graph LR | Eve 與 Claude Code 定位關係 |
-| 圖 19 | 19.2 | flowchart LR | Eve 與 GitHub Copilot 整合架構 |
-| 圖 20 | 20.1 | flowchart TD | 企業 SSDLC 流程總覽 |
-| 圖 21 | 21.3 | graph TB | Kubernetes 部署架構 |
-| 圖 22 | 21.5 | graph LR | 監控架構總覽 |
-| 圖 23 | 22.3 | sequenceDiagram | Tracing 巢狀 Span 結構 |
-| 圖 24 | 23.2 | graph TD | 權限控制三層級架構 |
-| 圖 25 | 24.4 | graph LR | Context Compression 效果示意 |
-| 圖 26 | 30.2 | graph TD | PM Skills + Eve 適用場景總覽 |
-| 圖 27 | 附錄 B | flowchart TD | 金融業需求到部署全流程案例 |
+| 圖號  | 章節   | 類型            | 說明                             |
+| ----- | ------ | --------------- | -------------------------------- |
+| 圖 1  | 1.11   | graph LR        | Web 與 Agent 開發年代演進類比    |
+| 圖 2  | 2.2    | graph TD        | Agent is a Directory 結構圖      |
+| 圖 3  | 2.4    | sequenceDiagram | Durable Execution 跨部署存活流程 |
+| 圖 4  | 3.1    | graph TB        | Eve 整體系統架構總覽             |
+| 圖 5  | 6.1    | sequenceDiagram | 單次請求完整執行流程             |
+| 圖 6  | 8.3    | flowchart LR    | 初始化到開發伺服器啟動流程       |
+| 圖 7  | 9.6    | classDiagram    | Weather Agent 元件關係圖         |
+| 圖 8  | 11.1   | graph TB        | PM Skills 與 Eve 整合策略總覽    |
+| 圖 9  | 11.8   | graph TD        | PM Skills Subagent 協作關係圖    |
+| 圖 10 | 12.1   | graph TB        | Web Application 開發整體架構     |
+| 圖 11 | 13.2   | flowchart TD    | Reverse Engineering 分析流程     |
+| 圖 12 | 14.1   | flowchart TD    | Framework Upgrade 執行流程       |
+| 圖 13 | 15.2   | flowchart LR    | Subagent 流水線協作模式          |
+| 圖 14 | 15.3   | flowchart TD    | Subagent 星狀協調模式            |
+| 圖 15 | 15.4   | flowchart TD    | Subagent 分層委派模式            |
+| 圖 16 | 16.1   | sequenceDiagram | Human Approval 流程              |
+| 圖 17 | 17.2   | graph LR        | Eve 與 MCP 整合架構              |
+| 圖 18 | 18.1   | graph LR        | Eve 與 Claude Code 定位關係      |
+| 圖 19 | 19.2   | flowchart LR    | Eve 與 GitHub Copilot 整合架構   |
+| 圖 20 | 20.1   | flowchart TD    | 企業 SSDLC 流程總覽              |
+| 圖 21 | 21.3   | graph TB        | Kubernetes 部署架構              |
+| 圖 22 | 21.5   | graph LR        | 監控架構總覽                     |
+| 圖 23 | 22.3   | sequenceDiagram | Tracing 巢狀 Span 結構           |
+| 圖 24 | 23.2   | graph TD        | 權限控制三層級架構               |
+| 圖 25 | 24.4   | graph LR        | Context Compression 效果示意     |
+| 圖 26 | 30.2   | graph TD        | PM Skills + Eve 適用場景總覽     |
+| 圖 27 | 附錄 B | flowchart TD    | 金融業需求到部署全流程案例       |
 
 > 本手冊全文共包含 27 張 Mermaid 圖，涵蓋 flowchart、sequenceDiagram、classDiagram、graph（TB/TD/LR）等多元圖表類型，便於讀者依圖表類型快速定位所需的架構或流程說明。
 

@@ -1,6 +1,6 @@
 ---
-description: '建立高品質 GitHub Copilot 自訂指令檔的指南，涵蓋結構、內容和最佳實踐，以指導 AI 生成符合專案慣例的領域特定程式碼。'
-applyTo: '**/*.instructions.md'
+description: "建立高品質 GitHub Copilot 自訂指令檔的指南，涵蓋結構、內容和最佳實踐，以指導 AI 生成符合專案慣例的領域特定程式碼。"
+applyTo: "**/*.instructions.md"
 ---
 
 # Custom Instructions File Guidelines
@@ -21,8 +21,8 @@ applyTo: '**/*.instructions.md'
 
 ```yaml
 ---
-description: '指令的目的和範圍的簡要描述'
-applyTo: '目標檔案的 glob 模式 (例如 **/*.ts, **/*.py)'
+description: "指令的目的和範圍的簡要描述"
+applyTo: "目標檔案的 glob 模式 (例如 **/*.ts, **/*.py)"
 ---
 ```
 
@@ -64,12 +64,14 @@ applyTo: '目標檔案的 glob 模式 (例如 **/*.ts, **/*.py)'
 
 ```markdown
 ### Good Example
+
 \`\`\`language
 // Recommended approach
 code example here
 \`\`\`
 
 ### Bad Example
+
 \`\`\`language
 // Avoid this pattern
 code example here
@@ -109,11 +111,11 @@ code example here
 - 在觀察到失敗之後添加約束，而不是在假設的極端情況下添加約束。
 - 比起詳盡的決策表，更傾向於選擇高訊號範例。
 
-| Altitude 高度 | Failure Mode 故障模式 | Result 結果 |
-| --- | --- | --- |
-| Over-specified 過度指定 | Brittle if-else prose 脆弱的 if-else 語句 | Breaks on unlisted cases 未列入案件的案件 |
-| Under-specified 過度簡化 | Assumes shared context 假設共享上下文 | Generic outputs 通用輸出 |
-| Right altitude 適中高度 | Heuristics + examples 啟發式 + 範例 | Stable, generalizable quality 穩定且可泛化的品質 |
+| Altitude 高度            | Failure Mode 故障模式                     | Result 結果                                      |
+| ------------------------ | ----------------------------------------- | ------------------------------------------------ |
+| Over-specified 過度指定  | Brittle if-else prose 脆弱的 if-else 語句 | Breaks on unlisted cases 未列入案件的案件        |
+| Under-specified 過度簡化 | Assumes shared context 假設共享上下文     | Generic outputs 通用輸出                         |
+| Right altitude 適中高度  | Heuristics + examples 啟發式 + 範例       | Stable, generalizable quality 穩定且可泛化的品質 |
 
 ### Common Patterns to Include
 
@@ -143,33 +145,35 @@ code example here
 ```markdown
 ## Common Issues
 
-| 問題 | 解決方案 | 範例 |
-| ---------------- | ------------------- | ----------------------------- |
+| 問題     | 解決方案     | 範例                    |
+| -------- | ------------ | ----------------------- |
 | 魔法數字 | 使用命名常數 | `const MAX_RETRIES = 3` |
-| 深度嵌套 | 提取函數 | 重構嵌套的 if 語句 |
-| 硬編碼值 | 使用設定 | 將 API URL 儲存在設定中 |
+| 深度嵌套 | 提取函數     | 重構嵌套的 if 語句      |
+| 硬編碼值 | 使用設定     | 將 API URL 儲存在設定中 |
 ```
 
 ### Code Comparison
 
 ```markdown
 ### Good Example - Using TypeScript interfaces
+
 \`\`\`typescript
 interface User {
-  id: string;
-  name: string;
-  email: string;
+id: string;
+name: string;
+email: string;
 }
 
 function getUser(id: string): User {
-  // Implementation
+// Implementation
 }
 \`\`\`
 
 ### Bad Example - Using any type
+
 \`\`\`typescript
 function getUser(id: any): any {
-  // Loses type safety
+// Loses type safety
 }
 \`\`\`
 ```
@@ -208,8 +212,8 @@ function getUser(id: any): any {
 
 ```markdown
 ---
-description: '簡要描述目的'
-applyTo: '**/*.ext'
+description: "簡要描述目的"
+applyTo: "**/*.ext"
 ---
 
 # Technology Name Development
@@ -229,16 +233,19 @@ Brief introduction and context.
 ## Code Standards
 
 ### Naming Conventions
+
 - Rule 1
 - Rule 2
 
 ### File Organization
+
 - Structure 1
 - Structure 2
 
 ## Common Patterns
 
 ### Pattern 1
+
 Description and example
 
 \`\`\`language
@@ -246,6 +253,7 @@ code example
 \`\`\`
 
 ### Pattern 2
+
 Description and example
 
 ## Validation

@@ -9,6 +9,7 @@ applyTo: "**/*.java, **/*.kt, **/build.gradle.kts, **/build.gradle, **/settings.
 
 本指南提供了全面的 GitHub Copilot 指導，用於將 Spring Boot 專案從 3.x 版本升級到 4.0，重點介紹 Gradle Kotlin DSL、版本目錄（`libs.versions.toml`）以及 Kotlin 特定的考量。
 **Spring Boot 4.0 的主要架構變更：**
+
 - 模組化依賴結構，具有專注且更小的模組
 - 需要 Spring Framework 7.x
 - Jakarta EE 11（Servlet 6.1 基線）
@@ -60,6 +61,7 @@ springBoot = "3.5.6" # 最新的 3.x 版本，遷移到 4.0 之前使用
 ### 3. 檢查依賴變更
 
 將您的依賴與以下版本進行比較：
+
 - [Spring Boot 3.5.x 依賴版本](https://docs.spring.io/spring-boot/3.5/appendix/dependency-versions/coordinates.html)
 - [Spring Boot 4.0.x 依賴版本](https://docs.spring.io/spring-boot/4.0/appendix/dependency-versions/coordinates.html)
 
@@ -80,6 +82,7 @@ Spring Boot 4.0 引入了 **更小、更專注的模組**，取代了大型單�
 **完整啟動器參考：** 有關所有可用啟動器（核心、Web、數據庫、Spring Data、消息、安保、模板、Production-Ready 等）及其測試伴侶的完整表格，請參閱 [官方 Spring Boot 4.0 遷移指南](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide#starters)。
 
 **libs.versions.toml:**
+
 ```toml
 [versions]
 springBoot = "4.0.0"
@@ -97,6 +100,7 @@ spring-boot-starter-security-test = { module = "org.springframework.boot:spring-
 ```
 
 **build.gradle.kts:**
+
 ```kotlin
 dependencies {
     implementation(libs.spring.boot.starter.webmvc)
@@ -114,6 +118,7 @@ dependencies {
 快速遷移時，可以使用 **經典啟動器**，它們捆綁了所有自動配置（類似於 Spring Boot 3.x）：
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 spring-boot-starter-classic = { module = "org.springframework.boot:spring-boot-starter-classic", version.ref = "springBoot" }
@@ -121,6 +126,7 @@ spring-boot-starter-test-classic = { module = "org.springframework.boot:spring-b
 ```
 
 **build.gradle.kts:**
+
 ```kotlin
 dependencies {
     implementation(libs.spring.boot.starter.classic)
@@ -135,6 +141,7 @@ dependencies {
 對於顯式控制傳遞依賴：
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 spring-boot-webmvc = { module = "org.springframework.boot:spring-boot-webmvc", version.ref = "springBoot" }
@@ -145,16 +152,17 @@ spring-boot-webmvc-test = { module = "org.springframework.boot:spring-boot-webmv
 
 更新 `libs.versions.toml` 中的這些啟動器名稱：
 
-| Spring Boot 3.x | Spring Boot 4.0 | Notes |
-|----------------|-----------------|-------|
-| `spring-boot-starter-web` | `spring-boot-starter-webmvc` | 明確命名 |
-| `spring-boot-starter-web-services` | `spring-boot-starter-webservices` | 移除連字號 |
-| `spring-boot-starter-aop` | `spring-boot-starter-aspectj` | 僅在使用 `org.aspectj.lang.annotation` 時需要 |
-| `spring-boot-starter-oauth2-authorization-server` | `spring-boot-starter-security-oauth2-authorization-server` | 安全命名空間 |
-| `spring-boot-starter-oauth2-client` | `spring-boot-starter-security-oauth2-client` | 安全命名空間 |
-| `spring-boot-starter-oauth2-resource-server` | `spring-boot-starter-security-oauth2-resource-server` | 安全命名空間 |
+| Spring Boot 3.x                                   | Spring Boot 4.0                                            | Notes                                         |
+| ------------------------------------------------- | ---------------------------------------------------------- | --------------------------------------------- |
+| `spring-boot-starter-web`                         | `spring-boot-starter-webmvc`                               | 明確命名                                      |
+| `spring-boot-starter-web-services`                | `spring-boot-starter-webservices`                          | 移除連字號                                    |
+| `spring-boot-starter-aop`                         | `spring-boot-starter-aspectj`                              | 僅在使用 `org.aspectj.lang.annotation` 時需要 |
+| `spring-boot-starter-oauth2-authorization-server` | `spring-boot-starter-security-oauth2-authorization-server` | 安全命名空間                                  |
+| `spring-boot-starter-oauth2-client`               | `spring-boot-starter-security-oauth2-client`               | 安全命名空間                                  |
+| `spring-boot-starter-oauth2-resource-server`      | `spring-boot-starter-security-oauth2-resource-server`      | 安全命名空間                                  |
 
 **遷移範例 (libs.versions.toml):**
+
 ```toml
 [libraries]
 # Old (Spring Boot 3.x)
@@ -193,10 +201,12 @@ class MyAspect {
 **Undertow 已完全移除** - 不兼容 Servlet 6.1 基線。
 
 **遷移方案:**
+
 - 使用 **Tomcat**（默認）或 **Jetty**
 - 不要將 Spring Boot 4.0 應用部署到非 Servlet 6.1 容器
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 # Remove Undertow
@@ -207,6 +217,7 @@ spring-boot-starter-jetty = { module = "org.springframework.boot:spring-boot-sta
 ```
 
 **build.gradle.kts:**
+
 ```kotlin
 dependencies {
     implementation(libs.spring.boot.starter.webmvc) {
@@ -216,13 +227,14 @@ dependencies {
 }
 ```
 
-### 會話管理  
+### 會話管理
 
 #### Spring Session Hazelcast 和 MongoDB 已移除
 
 **由各自的團隊維護**，不再由 Spring Boot 管理依賴。
 
 **遷移方案 (libs.versions.toml):**
+
 ```toml
 [versions]
 hazelcast-spring-session = "3.x.x" # Check Hazelcast documentation
@@ -241,6 +253,7 @@ spring-session-mongodb = { module = "org.springframework.session:spring-session-
 Spring Pulsar 已放棄 Reactor 支持 - 反應式 Pulsar 客戶端已移除。
 
 **遷移方案:**
+
 - 使用命令式 Pulsar 客戶端
 - 或遷移到其他反應式消息傳遞（Kafka、RabbitMQ）
 
@@ -251,6 +264,7 @@ Spring Pulsar 已放棄 Reactor 支持 - 反應式 Pulsar 客戶端已移除。
 **Spock 尚不支持 Groovy 5**（Spring Boot 4.0 所需）。
 
 **遷移方案:**
+
 - 使用 JUnit 5 與 Kotlin
 - 或等待 Spock 支持 Groovy 5
 
@@ -261,6 +275,7 @@ Spring Pulsar 已放棄 Reactor 支持 - 反應式 Pulsar 客戶端已移除。
 嵌入式啟動腳本用於「完全可執行」的 jar 已移除（僅限 Unix，使用有限）。
 
 **build.gradle.kts (移除):**
+
 ```kotlin
 // 移除此配置
 tasks.bootJar {
@@ -269,6 +284,7 @@ tasks.bootJar {
 ```
 
 **替代方案:**
+
 - 直接使用 `java -jar app.jar`
 - 使用 Gradle Application 插件來創建本地啟動器
 - 使用 systemd 服務文件
@@ -278,6 +294,7 @@ tasks.bootJar {
 經典的 uber-jar 加載器已被移除。請從構建中移除任何加載器實現配置。
 
 **Maven (pom.xml) - 移除:**
+
 ```xml
 <build>
     <plugins>
@@ -293,6 +310,7 @@ tasks.bootJar {
 ```
 
 **Gradle (build.gradle.kts) - 移除:**
+
 ```kotlin
 tasks.bootJar {
     loaderImplementation = org.springframework.boot.loader.tools.LoaderImplementation.CLASSIC // 移除此配置
@@ -305,13 +323,14 @@ tasks.bootJar {
 
 Jackson 3 changes **group ID and package names**:
 
-| Component | Old (Jackson 2) | New (Jackson 3) |
-|-----------|----------------|-----------------|
-| Group ID | `com.fasterxml.jackson` | `tools.jackson` |
-| Packages | `com.fasterxml.jackson.*` | `tools.jackson.*` |
-| Exception | `jackson-annotations` | Still uses `com.fasterxml.jackson.core` group |
+| Component | Old (Jackson 2)           | New (Jackson 3)                               |
+| --------- | ------------------------- | --------------------------------------------- |
+| Group ID  | `com.fasterxml.jackson`   | `tools.jackson`                               |
+| Packages  | `com.fasterxml.jackson.*` | `tools.jackson.*`                             |
+| Exception | `jackson-annotations`     | Still uses `com.fasterxml.jackson.core` group |
 
 **libs.versions.toml:**
+
 ```toml
 [versions]
 jackson = "3.0.1" # Managed by Spring Boot 4.0
@@ -325,19 +344,20 @@ jackson-module-kotlin = { module = "tools.jackson.module:jackson-module-kotlin",
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 ```
 
-### 類別和註解重命名 
+### 類別和註解重命名
 
 更新導入和註解：
 
-| Spring Boot 3.x | Spring Boot 4.0 |
-|----------------|-----------------|
+| Spring Boot 3.x                         | Spring Boot 4.0               |
+| --------------------------------------- | ----------------------------- |
 | `Jackson2ObjectMapperBuilderCustomizer` | `JsonMapperBuilderCustomizer` |
-| `JsonObjectSerializer` | `ObjectValueSerializer` |
-| `JsonValueDeserializer` | `ObjectValueDeserializer` |
-| `@JsonComponent` | `@JacksonComponent` |
-| `@JsonMixin` | `@JacksonMixin` |
+| `JsonObjectSerializer`                  | `ObjectValueSerializer`       |
+| `JsonValueDeserializer`                 | `ObjectValueDeserializer`     |
+| `@JsonComponent`                        | `@JacksonComponent`           |
+| `@JsonMixin`                            | `@JacksonMixin`               |
 
 **Migration Example:**
+
 ```kotlin
 // Old (Spring Boot 3.x)
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -379,6 +399,7 @@ class JacksonConfig {
 ### 配置屬性更改
 
 **application.yml migration:**
+
 ```yaml
 # Old (Spring Boot 3.x)
 spring:
@@ -403,12 +424,14 @@ spring:
 為了實現逐步遷移，請使用臨時相容模組 （已棄用，即將移除）：
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 spring-boot-jackson2 = { module = "org.springframework.boot:spring-boot-jackson2", version.ref = "springBoot" }
 ```
 
 **build.gradle.kts:**
+
 ```kotlin
 dependencies {
     implementation(libs.spring.boot.jackson2)
@@ -416,6 +439,7 @@ dependencies {
 ```
 
 **application.yml:**
+
 ```yaml
 spring:
   jackson:
@@ -433,11 +457,13 @@ spring:
 Spring Boot 4.0 adds **JSpecify nullability annotations** throughout the codebase.
 
 **影響:**
+
 - Kotlin 空值安全性可能會標記新的警告/錯誤
 - Null checkers (SpotBugs, NullAway) 可能會報告新的問題
 - **RestClient 方法如 `body()` 現在明確標記為可為空** - 始終檢查 null 或使用 `Objects.requireNonNull()`
 
 **Kotlin 遷移示例:**
+
 ```kotlin
 // 可能需要明確的可空類型
 fun processUser(id: String?): User? {
@@ -456,10 +482,12 @@ if (body != null) {
 ```
 
 **Actuator endpoint parameters:**
+
 - 不能使用 javax.annotations.NonNull 或 org.springframework.lang.Nullable
 - 使用 `org.jspecify.annotations.Nullable` 代替
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 jspecify = { module = "org.jspecify:jspecify", version = "1.0.0" }
@@ -467,31 +495,36 @@ jspecify = { module = "org.jspecify:jspecify", version = "1.0.0" }
 
 ### Package Relocations 包裹搬遷
 
-#### BootstrapRegistry 
+#### BootstrapRegistry
 
 **Old import:**
+
 ```kotlin
 import org.springframework.boot.BootstrapRegistry
 ```
 
 **New import:**
+
 ```kotlin
 import org.springframework.boot.bootstrap.BootstrapRegistry
 ```
 
-#### EnvironmentPostProcessor 
+#### EnvironmentPostProcessor
 
 **Old import:**
+
 ```kotlin
 import org.springframework.boot.env.EnvironmentPostProcessor
 ```
 
 **New import:**
+
 ```kotlin
 import org.springframework.boot.EnvironmentPostProcessor
 ```
 
 **Update `META-INF/spring.factories`:**
+
 ```properties
 # Old
 org.springframework.boot.env.EnvironmentPostProcessor=com.example.MyPostProcessor
@@ -505,22 +538,25 @@ org.springframework.boot.EnvironmentPostProcessor=com.example.MyPostProcessor
 #### Entity Scan
 
 **Old import:**
+
 ```kotlin
 import org.springframework.boot.autoconfigure.domain.EntityScan
 ```
 
 **New import:**
+
 ```kotlin
 import org.springframework.boot.persistence.autoconfigure.EntityScan
 ```
 
-### Logging Changes 
+### Logging Changes
 
 #### Logback Default Charset
 
 日誌文件現在默認為 **UTF-8**（與 Log4j2 統一）：
 
 **logback-spring.xml (顯式配置):**
+
 ```xml
 <configuration>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
@@ -540,6 +576,7 @@ import org.springframework.boot.persistence.autoconfigure.EntityScan
 #### Live Reload 默認禁用
 
 **application.yml:**
+
 ```yaml
 spring:
   devtools:
@@ -548,12 +585,14 @@ spring:
 ```
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "springBoot" }
 ```
 
 **build.gradle.kts:**
+
 ```kotlin
 dependencies {
     developmentOnly(libs.spring.boot.devtools)
@@ -565,6 +604,7 @@ dependencies {
 **重大變更：** 當來源為 `null` 時，預設不再調用適配器/謂詞方法。
 
 **遷移模式：**
+
 ```kotlin
 // 舊行為 (Spring Boot 3.x)
 map.from(source::method).to(destination::method)
@@ -588,6 +628,7 @@ map.from(source::method).always().to(destination::method)
 ### Gradle插件更新
 
 **build.gradle.kts:**
+
 ```kotlin
 plugins {
     kotlin("jvm") version "2.2.0" // Minimum 2.2.0
@@ -603,13 +644,14 @@ plugins {
 可選依賴項 **默認不再包含在 uber jar 中**。
 
 **build.gradle.kts (顯式包含可選依賴項):**
+
 ```kotlin
 tasks.bootJar {
     includeOptional = true // If needed
 }
 ```
 
-### Spring  重試 → Spring Framework Core  重試
+### Spring 重試 → Spring Framework Core 重試
 
 Spring Boot 4.0 移除了對 Spring Retry 的依賴管理（產品組合正在遷移到 Spring Framework 7.0 core retry）。
 
@@ -635,6 +677,7 @@ class RetryConfig {
 **遷移選項 2：明確指定 Spring Retry 版本（臨時）**
 
 **libs.versions.toml:**
+
 ```toml
 [versions]
 spring-retry = "2.0.5" # 需要明確指定版本
@@ -645,11 +688,12 @@ spring-retry = { module = "org.springframework.retry:spring-retry", version.ref 
 
 **計劃遷移到 Spring Framework 核心重試。**
 
-### Spring 授權伺服器 
+### Spring 授權伺服器
 
 現在是 Spring Security 的一部分 - 明確的版本管理已移除。
 
 **libs.versions.toml (before - Spring Boot 3.x):**
+
 ```toml
 [versions]
 spring-authorization-server = "1.3.0" # No longer works
@@ -659,6 +703,7 @@ spring-security-oauth2-authorization-server = { module = "org.springframework.se
 ```
 
 **遷移 (Spring Boot 4.0):**
+
 ```toml
 [versions]
 spring-security = "7.0.0" # 使用 Spring Security 版本代替
@@ -669,6 +714,7 @@ spring-security-oauth2-authorization-server = { module = "org.springframework.se
 ```
 
 或依賴 Spring Boot 依賴管理（建議）：
+
 ```kotlin
 dependencies {
     implementation("org.springframework.security:spring-security-oauth2-authorization-server")
@@ -685,6 +731,7 @@ dependencies {
 **注意:** 高階客戶端（`ElasticsearchClient` 和 Spring Data 的 `ReactiveElasticsearchClient`）**保持不變**，並已在內部更新以使用新的低階客戶端。
 
 **Imports:**
+
 ```kotlin
 // 舊 (Spring Boot 3.x)
 import org.elasticsearch.client.RestClient
@@ -698,6 +745,7 @@ import org.springframework.boot.autoconfigure.elasticsearch.Rest5ClientBuilderCu
 ```
 
 **Configuration:**
+
 ```kotlin
 @Configuration
 class ElasticsearchConfig {
@@ -729,6 +777,7 @@ class ElasticsearchConfig {
 Sniffer 現在包含在 `co.elastic.clients:elasticsearch-java` 模組中。
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 # 移除這些 - 不再管理
@@ -742,6 +791,7 @@ elasticsearch-java = { module = "co.elastic.clients:elasticsearch-java", version
 ### Hibernate 相依性變更
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 # Renamed module (hibernate-jpamodelgen replaced by hibernate-processor)
@@ -761,6 +811,7 @@ hibernate-processor = { module = "org.hibernate.orm:hibernate-processor", versio
 
 **重大重組:** 非 Spring Data 屬性已移至 `spring.mongodb.*`：
 **application.yml migration:**
+
 ```yaml
 # 舊 (Spring Boot 3.x)
 spring:
@@ -840,6 +891,7 @@ management:
 ```
 
 **主要變更:**
+
 - **UUID 表示法**: **必填** - 沒有提供預設值，必須明確配置 `spring.mongodb.representation.uuid` (例如，`STANDARD`、`JAVA_LEGACY`、`PYTHON_LEGACY`、`C_SHARP_LEGACY`)
 - **BigDecimal 表示法**: **必填** - 沒有提供預設值，必須明確配置 `spring.data.mongodb.representation.big-decimal` (例如，`DECIMAL128`、`STRING`)
 - **管理屬性**: `mongo` → `mongodb`
@@ -848,6 +900,7 @@ management:
 ### Spring Session 屬性重命名
 
 **application.yml 遷移:**
+
 ```yaml
 # 舊 (Spring Boot 3.x)
 spring:
@@ -869,9 +922,10 @@ spring:
         collection-name: sessions
 ```
 
-### Persistence Module Property Change  持久化模組屬性更改
+### Persistence Module Property Change 持久化模組屬性更改
 
 **application.yml 遷移:**
+
 ```yaml
 # 舊 (Spring Boot 3.x)
 spring:
@@ -886,14 +940,14 @@ spring:
       enabled: true
 ```
 
-## Web 框架變更 
+## Web 框架變更
 
 ### 靜態資源位置
 
 `PathRequest#toStaticResources()` 現在默認包括 `/fonts/**`。
 
-
 **安全性配置（如有需要，可排除字體）：**
+
 ```kotlin
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.boot.autoconfigure.security.StaticResourceLocation
@@ -923,6 +977,7 @@ class SecurityConfig {
 `HttpMessageConverters` 因框架改進（合併的客戶端/服務器轉換器）而被棄用。
 
 **遷移:**
+
 ```kotlin
 // 舊 (Spring Boot 3.x)
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters
@@ -967,6 +1022,7 @@ class WebConfig {
 **解決方案:** 使用 `spring-boot-jackson2` 兼容模組 **可以替代或與** `spring-boot-jackson` 一起使用：
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 spring-boot-starter-jersey = { module = "org.springframework.boot:spring-boot-starter-jersey", version.ref = "springBoot" }
@@ -976,6 +1032,7 @@ spring-boot-jackson = { module = "org.springframework.boot:spring-boot-jackson",
 ```
 
 **build.gradle.kts:**
+
 ```kotlin
 dependencies {
     implementation(libs.spring.boot.starter.jersey)
@@ -1030,6 +1087,7 @@ class KafkaStreamsConfig {
 ### Kafka 重試屬性變更
 
 **application.yml 遷移:**
+
 ```yaml
 # 舊 (Spring Boot 3.x)
 spring:
@@ -1098,7 +1156,8 @@ class RabbitConfig {
 `MockitoTestExecutionListener` 已移除（在 3.4 中已棄用）。
 
 **遷移到 MockitoExtension:**
-```kotlin
+
+````kotlin
 // 舊 (Spring Boot 3.x)
 import org.springframework.boot.test.context.SpringBootTest
 import org.mockito.Mock
@@ -1130,7 +1189,7 @@ class MyServiceTest {
     @Captor
     private lateinit var captor: ArgumentCaptor<String>
 }
-```
+````
 
 ### @SpringBootTest 變更
 
@@ -1225,16 +1284,19 @@ class RestApiTest {
 **TestRestTemplate 套件變更 (如果仍在使用):**
 
 **重要:** 如果繼續使用 `TestRestTemplate`，您必須：
+
 1. 添加 `spring-boot-resttestclient` 測試依賴
 2. **更新套件導入** (類已移至新套件)
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 spring-boot-resttestclient = { module = "org.springframework.boot:spring-boot-resttestclient", version.ref = "springBoot" }
 ```
 
 **build.gradle.kts:**
+
 ```kotlin
 dependencies {
     testImplementation(libs.spring.boot.resttestclient)
@@ -1242,6 +1304,7 @@ dependencies {
 ```
 
 **更新套件導入 (必須):**
+
 ```kotlin
 // 舊套件導入 - 會導致編譯失敗
 // import org.springframework.boot.test.web.client.TestRestTemplate
@@ -1270,6 +1333,7 @@ import org.springframework.boot.test.context.PropertyMapping.Skip
 Spring Boot 4.0 將生產就緒功能模組化為專注的模組：
 
 **libs.versions.toml:**
+
 ```toml
 [libraries]
 # Health monitoring
@@ -1296,6 +1360,7 @@ spring-boot-zipkin = { module = "org.springframework.boot:spring-boot-zipkin", v
 ```
 
 **build.gradle.kts (example observability stack):**
+
 ```kotlin
 dependencies {
     // Actuator with metrics and tracing
@@ -1319,6 +1384,7 @@ dependencies {
 現在預設啟用存活探測和就緒探測。
 
 **application.yml (如果需要禁用):**
+
 ```yaml
 management:
   endpoint:
@@ -1328,6 +1394,7 @@ management:
 ```
 
 **自動暴露:**
+
 - `/actuator/health/liveness`
 - `/actuator/health/readiness`
 
@@ -1336,6 +1403,7 @@ management:
 ### Kotlin 編譯器配置
 
 **build.gradle.kts:**
+
 ```kotlin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -1376,6 +1444,7 @@ tasks.withType<Test> {
 ### Java 預覽功能 (如果使用 Java 25)
 
 **build.gradle.kts:**
+
 ```kotlin
 tasks.withType<JavaCompile> {
     options.compilerArgs.add("--enable-preview")
@@ -1435,6 +1504,7 @@ tasks.withType<JavaExec> {
 - [ ] 拆分: `RabbitRetryTemplateCustomizer` → `RabbitTemplateRetrySettingsCustomizer` / `RabbitListenerRetrySettingsCustomizer`
 - [ ] 替換: `HttpMessageConverters` → `ClientHttpMessageConvertersCustomizer` / `ServerHttpMessageConvertersCustomizer`
 - [ ] 更新: `PropertyMapper` 使用 `.always()` 如果需要處理 null
+
 ### 測試更新
 
 - [ ] 為使用 `@Mock` / `@Captor` 的測試添加 `@ExtendWith(MockitoExtension::class)`
@@ -1491,6 +1561,7 @@ tasks.withType<JavaExec> {
 - **虛擬線程**: 考慮在 Java 21+ 中啟用 (`spring.threads.virtual.enabled=true`)
 
 ## 資源
+
 - [Spring Boot 4.0 遷移指南](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide)
 - [Spring Boot 4.0 發行說明](https://github.com/spring-projects/spring-boot/releases)
 - [Spring Framework 7.0 文檔](https://docs.spring.io/spring-framework/reference/)

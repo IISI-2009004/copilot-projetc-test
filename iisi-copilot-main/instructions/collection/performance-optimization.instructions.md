@@ -1,6 +1,6 @@
 ---
-applyTo: '**'
-description: '基於核心 Web 指標 (LCP、INP、CLS) 的綜合 Web 效能標準，包含 50 多個反模式、偵測正規表示式、針對現代 Web 框架的框架特定修復以及現代 API 指南。'
+applyTo: "**"
+description: "基於核心 Web 指標 (LCP、INP、CLS) 的綜合 Web 效能標準，包含 50 多個反模式、偵測正規表示式、針對現代 Web 框架的框架特定修復以及現代 API 指南。"
 ---
 
 # Performance Standards 效能標準
@@ -23,12 +23,12 @@ description: '基於核心 Web 指標 (LCP、INP、CLS) 的綜合 Web 效能標�
 
 衡量最大可見內容元素完成渲染的時間。四個連續階段：
 
-| Phase | Target | What It Measures |
-|-------|--------|-----------------|
-| TTFB | ~40% of budget | 伺服器回應時間 |
-| Resource Load Delay | < 10% | 從 TTFB 到 LCP 資源抓取開始的時間 |
-| Resource Load Duration | ~40% | LCP 資源的下載時間 |
-| Element Render Delay | < 10% | 從下載到繪製的時間 |
+| Phase                  | Target         | What It Measures                  |
+| ---------------------- | -------------- | --------------------------------- |
+| TTFB                   | ~40% of budget | 伺服器回應時間                    |
+| Resource Load Delay    | < 10%          | 從 TTFB 到 LCP 資源抓取開始的時間 |
+| Resource Load Duration | ~40%           | LCP 資源的下載時間                |
+| Element Render Delay   | < 10%          | 從下載到繪製的時間                |
 
 ### INP (Interaction to Next Paint 用戶互動到下一次繪製)
 
@@ -36,10 +36,10 @@ description: '基於核心 Web 指標 (LCP、INP、CLS) 的綜合 Web 效能標�
 
 測量所有用戶互動的延遲，並報告最差的延遲。分為三個階段：
 
-| Phase | Optimization |
-|-------|-------------|
-| Input Delay | 拆分長任務，讓出給瀏覽器 |
-| Processing Time | 保持處理程序 < 50ms |
+| Phase              | Optimization                  |
+| ------------------ | ----------------------------- |
+| Input Delay        | 拆分長任務，讓出給瀏覽器      |
+| Processing Time    | 保持處理程序 < 50ms           |
 | Presentation Delay | 最小化 DOM 大小，避免強制佈局 |
 
 > **Diagnostic tool:** 使用 Long Animation Frames (LoAF) API (Chrome 123+) 來調試 INP 問題。LoAF 提供比舊的 Long Tasks API 更好的歸因，包括腳本來源和渲染時間。
@@ -65,7 +65,9 @@ description: '基於核心 Web 指標 (LCP、INP、CLS) 的綜合 Web 效能標�
 <link rel="stylesheet" href="/styles/main.css" />
 
 <!-- GOOD — inline關鍵 CSS（在建置時擷取），其餘部分預先載入 -->
-<style>/* 關鍵的首屏 CSS，由 Critters/Beasties 等工具內聯。 */</style>
+<style>
+  /* 關鍵的首屏 CSS，由 Critters/Beasties 等工具內聯。 */
+</style>
 <link rel="preload" href="/styles/main.css" as="style" />
 <link rel="stylesheet" href="/styles/main.css" />
 ```
@@ -115,16 +117,22 @@ description: '基於核心 Web 指標 (LCP、INP、CLS) 的綜合 Web 效能標�
 
 ```tsx
 // BAD — content appears after JS execution + API call
-'use client';
+"use client";
 function Page() {
   const [data, setData] = useState(null);
-  useEffect(() => { fetch('/api/data').then(r => r.json()).then(setData); }, []);
+  useEffect(() => {
+    fetch("/api/data")
+      .then((r) => r.json())
+      .then(setData);
+  }, []);
   return <div>{data?.title}</div>;
 }
 
 // GOOD — Server Component fetches data before HTML is sent
 async function Page() {
-  const data = await fetch('https://api.example.com/data').then(r => r.json());
+  const data = await fetch("https://api.example.com/data").then((r) =>
+    r.json(),
+  );
   return <div>{data.title}</div>;
 }
 ```
@@ -138,6 +146,7 @@ async function Page() {
 Each redirect adds 200-300ms. Maximum one redirect.
 
 ### L7: Missing fetchpriority on LCP Element 缺少對 LCP 元素的 fetchpriority
+
 - **Detection**: Above-fold hero image without `fetchpriority="high"` or `priority` prop
 - **CWV**: LCP
 
@@ -225,13 +234,13 @@ async function Page() {
 
 使用帶有 Suspense 邊界的流式 SSR。 Shell 會立即載入資料流；慢資料會逐步填入。
 
-### R5: Unstable References Causing Re-renders  不穩定的引用導致重新渲染
+### R5: Unstable References Causing Re-renders 不穩定的引用導致重新渲染
 
 - **Severity**: IMPORTANT
 - **Detection**: `style=\{\{|onClick=\{\(\) =>` inline in JSX
 - **CWV**: INP
 
-React 19+ 版本，啟用 React 編譯器（需使用獨立的 Babel/SWC 建置外掛程式）：自動快取。未啟用編譯器：使用 useMemo / useCallback 擷取或快取。 Angular：OnPush。 Vue： computed() 。 
+React 19+ 版本，啟用 React 編譯器（需使用獨立的 Babel/SWC 建置外掛程式）：自動快取。未啟用編譯器：使用 useMemo / useCallback 擷取或快取。 Angular：OnPush。 Vue： computed() 。
 
 ### R6: Missing Virtualization for Long Lists 缺少長列表的虛擬化
 
@@ -257,7 +266,9 @@ React 19+ 版本，啟用 React 編譯器（需使用獨立的 Babel/SWC 建置�
 
 ```tsx
 // GOOD — stable unique key
-{items.map(item => <Row key={item.id} data={item} />)}
+{
+  items.map((item) => <Row key={item.id} data={item} />);
+}
 ```
 
 永遠不要在列表可以重新排序的情況下使用數組索引作為 key。
@@ -276,7 +287,8 @@ React 19+ 版本，啟用 React 編譯器（需使用獨立的 Babel/SWC 建置�
 // GOOD — yield to browser
 async function handleClick() {
   setLoading(true);
-  await (globalThis.scheduler?.yield?.() ?? new Promise(r => setTimeout(r, 0)));
+  await (globalThis.scheduler?.yield?.() ??
+    new Promise((r) => setTimeout(r, 0)));
   const result = expensiveComputation(data);
   setResult(result);
 }
@@ -294,8 +306,10 @@ async function handleClick() {
 
 ```typescript
 // GOOD — batch reads then batch writes
-const heights = elements.map(el => el.offsetHeight);
-elements.forEach((el, i) => { el.style.height = `${heights[i] + 10}px`; });
+const heights = elements.map((el) => el.offsetHeight);
+elements.forEach((el, i) => {
+  el.style.height = `${heights[i] + 10}px`;
+});
 ```
 
 ### J3: setInterval/setTimeout Without Cleanup 設置間隔/超時而不清理
@@ -320,7 +334,9 @@ useEffect(() => {
 ```tsx
 useEffect(() => {
   const controller = new AbortController();
-  window.addEventListener('resize', handleResize, { signal: controller.signal });
+  window.addEventListener("resize", handleResize, {
+    signal: controller.signal,
+  });
   return () => controller.abort();
 }, []);
 ```
@@ -369,11 +385,21 @@ React: return cleanup from `useEffect`. Angular: `takeUntilDestroyed()`. Vue: `o
 
 ```css
 /* BAD — main thread, <60fps */
-.card { transition: width 0.3s, height 0.3s; }
+.card {
+  transition:
+    width 0.3s,
+    height 0.3s;
+}
 
 /* GOOD — GPU compositor, 60fps */
-.card { transition: transform 0.3s, opacity 0.3s; }
-.card:hover { transform: scale(1.05); }
+.card {
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
+}
+.card:hover {
+  transform: scale(1.05);
+}
 ```
 
 ### C2: Missing content-visibility for Off-Screen Sections 缺少離屏區域的 content-visibility
@@ -413,7 +439,9 @@ React: return cleanup from `useEffect`. Angular: `takeUntilDestroyed()`. Vue: `o
 
 ```css
 /* GOOD — zero-specificity reset */
-:where(*, *::before, *::after) { box-sizing: border-box; }
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
 ```
 
 ### C6: Missing CSS Containment 缺少 CSS 包含
@@ -423,7 +451,9 @@ React: return cleanup from `useEffect`. Angular: `takeUntilDestroyed()`. Vue: `o
 - **CWV**: INP
 
 ```css
-.sidebar { contain: layout style paint; }
+.sidebar {
+  contain: layout style paint;
+}
 ```
 
 ### C7: Route Transitions Without View Transitions API 路由過渡缺少 View Transitions API
@@ -489,9 +519,12 @@ Always set `width` and `height` on images, or use `aspect-ratio` in CSS.
 - **CWV**: LCP
 
 ```html
-<img src="/hero-800.jpg" alt="Hero"
-     srcset="/hero-400.jpg 400w, /hero-800.jpg 800w, /hero-1200.jpg 1200w"
-     sizes="(max-width: 600px) 400px, (max-width: 1024px) 800px, 1200px" />
+<img
+  src="/hero-800.jpg"
+  alt="Hero"
+  srcset="/hero-400.jpg 400w, /hero-800.jpg 800w, /hero-1200.jpg 1200w"
+  sizes="(max-width: 600px) 400px, (max-width: 1024px) 800px, 1200px"
+/>
 ```
 
 ### I5: Font Without font-display 缺少 font-display
@@ -502,8 +535,8 @@ Always set `width` and `height` on images, or use `aspect-ratio` in CSS.
 
 ```css
 @font-face {
-  font-family: 'CustomFont';
-  src: url('/fonts/custom.woff2') format('woff2');
+  font-family: "CustomFont";
+  src: url("/fonts/custom.woff2") format("woff2");
   font-display: swap; /* or "optional" for best CLS */
 }
 ```
@@ -515,7 +548,13 @@ Always set `width` and `height` on images, or use `aspect-ratio` in CSS.
 - **CWV**: LCP + CLS
 
 ```html
-<link rel="preload" href="/fonts/main.woff2" as="font" type="font/woff2" crossorigin />
+<link
+  rel="preload"
+  href="/fonts/main.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 ```
 
 ### I7: Full Font Loaded When Subset Suffices 當子集足夠時加載完整字體
@@ -548,10 +587,10 @@ npx svgo input.svg -o output.svg
 
 ```typescript
 // BAD
-import { Button } from './components';
+import { Button } from "./components";
 
 // GOOD — direct import
-import { Button } from './components/Button';
+import { Button } from "./components/Button";
 ```
 
 ### B2: CommonJS require() Preventing Tree Shaking ,CommonJS require() 阻止樹搖
@@ -570,11 +609,11 @@ Use ESM `import/export`. Replace `require` with `import`.
 
 ```typescript
 // GOOD — tree-shakeable alternatives
-import { format } from 'date-fns';
-import { pick } from 'lodash-es';
+import { format } from "date-fns";
+import { pick } from "lodash-es";
 
 // BEST — native JS
-const formatted = new Intl.DateTimeFormat('en').format(date);
+const formatted = new Intl.DateTimeFormat("en").format(date);
 ```
 
 ### B4: Missing Dynamic Import for Route Splitting 缺少路由拆分的動態導入
@@ -624,8 +663,8 @@ npm dedupe
 - **CWV**: LCP + CLS
 
 ```tsx
-import Image from 'next/image';
-<Image src="/hero.jpg" alt="Hero" width={1200} height={600} priority />
+import Image from "next/image";
+<Image src="/hero.jpg" alt="Hero" width={1200} height={600} priority />;
 ```
 
 ### NX2: Not Using Cache Components for Partial Prerendering 未使用快取組件進行部分預渲染
@@ -675,8 +714,8 @@ export default async function Page() {
 - **CWV**: CLS + LCP
 
 ```tsx
-import { Inter } from 'next/font/google';
-const inter = Inter({ subsets: ['latin'] });
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
 ```
 
 ### NX6: Missing "use cache" for Cacheable Server Functions 缺少可快取的服務器函數的 "use cache"
@@ -692,10 +731,10 @@ async function getProducts() {
 }
 
 // GOOD — cached with revalidation
-"use cache";
-import { cacheLife } from 'next/cache';
+("use cache");
+import { cacheLife } from "next/cache";
 async function getProducts() {
-  cacheLife('hours');
+  cacheLife("hours");
   return await db.products.findMany();
 }
 ```
@@ -748,9 +787,9 @@ Angular 19+：建議使用基於訊號的無區域變更偵測。使用基於訊
 
 ```html
 @defer (on viewport) {
-  <app-heavy-chart [data]="chartData" />
+<app-heavy-chart [data]="chartData" />
 } @placeholder {
-  <div class="chart-skeleton"></div>
+<div class="chart-skeleton"></div>
 }
 ```
 
@@ -770,10 +809,10 @@ Angular 19+：建議使用基於訊號的無區域變更偵測。使用基於訊
 
 ```typescript
 // BAD — full hydration blocks interactivity
-provideClientHydration()
+provideClientHydration();
 
 // GOOD — incremental hydration with triggers
-provideClientHydration(withIncrementalHydration())
+provideClientHydration(withIncrementalHydration());
 ```
 
 使用 @defer 觸發器（在視窗或互動時）按需為組件注水。透過延遲非關鍵組件的注水來縮短 TTI。增量水合在 Angular 19+ 中可用，並在 Angular 20+ 中穩定。
@@ -790,7 +829,7 @@ export const appConfig = {
   providers: [
     provideZonelessChangeDetection(), // removes ~15-30KB from bundle
     // ...
-  ]
+  ],
 };
 ```
 
@@ -798,7 +837,7 @@ export const appConfig = {
 
 ---
 
-## Framework-Specific: React (RX1-RX4)  框架特定：React (RX1-RX4)
+## Framework-Specific: React (RX1-RX4) 框架特定：React (RX1-RX4)
 
 ### RX1: Missing React Compiler Adoption 缺少 React 編譯器採用
 
@@ -839,7 +878,7 @@ const results = expensiveFilter(items, deferredQuery);
 - **CWV**: INP
 
 ```tsx
-const Settings = React.lazy(() => import('./pages/Settings'));
+const Settings = React.lazy(() => import("./pages/Settings"));
 ```
 
 ---
@@ -873,7 +912,7 @@ Use `shallowRef()` or `shallowReactive()` for large data.
 - **CWV**: INP
 
 ```typescript
-const HeavyChart = defineAsyncComponent(() => import('./HeavyChart.vue'));
+const HeavyChart = defineAsyncComponent(() => import("./HeavyChart.vue"));
 ```
 
 ### VU4: Not Using Vapor Mode for Performance-Critical Components 未對性能關鍵組件使用 Vapor 模式
@@ -888,38 +927,38 @@ Vue 3.6+ Vapor Mode 將模板編譯為直接的 DOM 操作，繞過虛擬 DOM。
 
 ## Resource Hints Quick Reference 資源提示快速參考
 
-| Hint | Purpose | When to Use |
-|------|---------|-------------|
-| `preconnect` | DNS + TCP + TLS 早期 | 關鍵第三方來源（API、CDN、字體） |
-| `preload` | 立即抓取，高優先級 | LCP 圖片，關鍵字體 |
-| `prefetch` | 低優先級，用於未來導航 | 下一頁資源 |
-| `dns-prefetch` | 僅 DNS 解析 | 非關鍵第三方來源 |
-| `modulepreload` | 預加載 + 解析 ES 模組 | 關鍵 JS 模組 |
+| Hint                               | Purpose                 | When to Use                           |
+| ---------------------------------- | ----------------------- | ------------------------------------- |
+| `preconnect`                       | DNS + TCP + TLS 早期    | 關鍵第三方來源（API、CDN、字體）      |
+| `preload`                          | 立即抓取，高優先級      | LCP 圖片，關鍵字體                    |
+| `prefetch`                         | 低優先級，用於未來導航  | 下一頁資源                            |
+| `dns-prefetch`                     | 僅 DNS 解析             | 非關鍵第三方來源                      |
+| `modulepreload`                    | 預加載 + 解析 ES 模組   | 關鍵 JS 模組                          |
 | `<script type="speculationrules">` | 預抓取/預渲染下一次導航 | 可能的下一頁（Chrome 121+，漸進增強） |
 
 ---
 
 ## Image Optimization Quick Reference 圖片優化快速參考
 
-| Aspect | Recommendation |
-|--------|---------------|
-| Format | WebP (25-34% smaller), AVIF (50% smaller) |
-| LCP image | `fetchpriority="high"` or framework `priority` prop |
-| Below-fold | `loading="lazy"` |
-| Dimensions | Always set `width` + `height` |
-| Responsive | `srcset` + `sizes` or framework Image component |
-| Compression | Quality 75-85 for photos |
+| Aspect      | Recommendation                                      |
+| ----------- | --------------------------------------------------- |
+| Format      | WebP (25-34% smaller), AVIF (50% smaller)           |
+| LCP image   | `fetchpriority="high"` or framework `priority` prop |
+| Below-fold  | `loading="lazy"`                                    |
+| Dimensions  | Always set `width` + `height`                       |
+| Responsive  | `srcset` + `sizes` or framework Image component     |
+| Compression | Quality 75-85 for photos                            |
 
 ---
 
 ## Font Loading Quick Reference 字體加載快速參考
 
-| Strategy | Best For | CLS Impact |
-|----------|---------|-----------|
-| `font-display: swap` | Body text | Slight FOUT, minimal CLS |
-| `font-display: optional` | All fonts (best CLS) | No FOUT, no CLS |
-| `next/font` | Next.js projects | Zero CLS |
-| Variable fonts | Multiple weights | Single file for all weights |
+| Strategy                 | Best For             | CLS Impact                  |
+| ------------------------ | -------------------- | --------------------------- |
+| `font-display: swap`     | Body text            | Slight FOUT, minimal CLS    |
+| `font-display: optional` | All fonts (best CLS) | No FOUT, no CLS             |
+| `next/font`              | Next.js projects     | Zero CLS                    |
+| Variable fonts           | Multiple weights     | Single file for all weights |
 
 規則：僅預先載入 1-2 個關鍵字體，使用 WOFF2，僅載入所需字符，盡可能自行託管。
 
@@ -928,6 +967,7 @@ Vue 3.6+ Vapor Mode 將模板編譯為直接的 DOM 操作，繞過虛擬 DOM。
 ## Performance Checklist (CWV) 性能檢查表（CWV）
 
 ### LCP (< 2.5s)
+
 - [ ] LCP 影像具有 fetchpriority="high" 或 priority 屬性
 - [ ] LCP 影像已預加載（如果不在 HTML 源中）
 - [ ] 上折疊影像不使用 `loading="lazy"`
@@ -940,6 +980,7 @@ Vue 3.6+ Vapor Mode 將模板編譯為直接的 DOM 操作，繞過虛擬 DOM。
 - [ ] 字體已預加載並使用 `font-display: swap` 或 `optional`
 
 ### INP (< 200ms)
+
 - [ ] 事件處理器在 < 50ms 內完成
 - [ ] 長任務拆分為較小的塊
 - [ ] 實施基於路由的代碼拆分
@@ -952,6 +993,7 @@ Vue 3.6+ Vapor Mode 將模板編譯為直接的 DOM 操作，繞過虛擬 DOM。
 - [ ] 實施效果清理（避免洩漏的監聽器/計時器）
 
 ### CLS (< 0.1)
+
 - [ ] 所有影像都有 `width` 和 `height` 屬性
 - [ ] 字體使用 `font-display: swap` 或 `optional`
 - [ ] 不在現有內容上方動態注入內容

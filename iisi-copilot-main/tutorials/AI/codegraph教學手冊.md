@@ -144,15 +144,15 @@ CodeGraph 是一個開源的本地端程式碼知識圖譜工具（MIT License�
 
 ### 核心定位
 
-| 面向 | 說明 |
-|------|------|
-| **產品類型** | 本地端程式碼知識圖譜 + MCP Server |
-| **目標使用者** | AI 編碼代理（Claude Code、Cursor、Codex CLI、opencode、Hermes Agent、Gemini CLI、Antigravity IDE、Kiro） |
-| **核心價值** | 減少 ~25% 成本、~57% Token、~62% Tool Calls、~23% 執行時間 |
-| **支援語言** | 20+ 種（TypeScript、JavaScript、Python、Go、Rust、Java、C#、PHP、Ruby、C/C++、Swift、Kotlin、Scala、Dart、Vue、Svelte、Pascal/Delphi、Lua/Luau 等） |
-| **資料安全** | 100% 本地運行，無資料外傳，無需 API Key |
-| **授權** | MIT License |
-| **最新版本** | v0.9.7（2026-05-29） |
+| 面向           | 說明                                                                                                                                                |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **產品類型**   | 本地端程式碼知識圖譜 + MCP Server                                                                                                                   |
+| **目標使用者** | AI 編碼代理（Claude Code、Cursor、Codex CLI、opencode、Hermes Agent、Gemini CLI、Antigravity IDE、Kiro）                                            |
+| **核心價值**   | 減少 ~25% 成本、~57% Token、~62% Tool Calls、~23% 執行時間                                                                                          |
+| **支援語言**   | 20+ 種（TypeScript、JavaScript、Python、Go、Rust、Java、C#、PHP、Ruby、C/C++、Swift、Kotlin、Scala、Dart、Vue、Svelte、Pascal/Delphi、Lua/Luau 等） |
+| **資料安全**   | 100% 本地運行，無資料外傳，無需 API Key                                                                                                             |
+| **授權**       | MIT License                                                                                                                                         |
+| **最新版本**   | v0.9.7（2026-05-29）                                                                                                                                |
 
 ### 一句話定義
 
@@ -179,12 +179,12 @@ CodeGraph 是一個開源的本地端程式碼知識圖譜工具（MIT License�
 
 以 VS Code 專案（TypeScript，~10k 檔案）為例：
 
-| 指標 | 無 CodeGraph | 有 CodeGraph | 節省 |
-|------|-------------|-------------|------|
-| 費用 | $0.45/次查詢 | $0.30/次查詢 | **33%** |
-| Token 數 | ~85,000 | ~25,500 | **70%** |
-| Tool Calls | 25 次 | 5 次 | **80%** |
-| 執行時間 | 45 秒 | 33 秒 | **27%** |
+| 指標       | 無 CodeGraph | 有 CodeGraph | 節省    |
+| ---------- | ------------ | ------------ | ------- |
+| 費用       | $0.45/次查詢 | $0.30/次查詢 | **33%** |
+| Token 數   | ~85,000      | ~25,500      | **70%** |
+| Tool Calls | 25 次        | 5 次         | **80%** |
+| 執行時間   | 45 秒        | 33 秒        | **27%** |
 
 ## 1.3 解決的核心問題
 
@@ -209,16 +209,16 @@ graph LR
 
 ## 1.4 與傳統 RAG 的差異
 
-| 比較面向 | 傳統 RAG | CodeGraph |
-|---------|---------|-----------|
-| **索引方式** | 文字切片 + Embedding 向量化 | Tree-sitter AST 結構化解析 |
-| **查詢方式** | 語意相似度搜尋 | 精確符號查詢 + 關係追蹤 |
-| **資料粒度** | 文件段落/Chunk | 函式、類別、方法等程式碼符號 |
-| **關係追蹤** | 無法追蹤呼叫鏈 | 完整的 Call Graph / Import Graph / Dependency Graph |
-| **更新機制** | 需要重新向量化 | 檔案監視自動增量同步（2 秒延遲） |
-| **外部依賴** | 需要 Embedding API（OpenAI 等） | 完全本地，無需外部 API |
-| **準確度** | 語意模糊匹配 | 編譯器等級的精確匹配 |
-| **成本** | 每次查詢消耗 Embedding Token | 零額外 Token 成本 |
+| 比較面向     | 傳統 RAG                        | CodeGraph                                           |
+| ------------ | ------------------------------- | --------------------------------------------------- |
+| **索引方式** | 文字切片 + Embedding 向量化     | Tree-sitter AST 結構化解析                          |
+| **查詢方式** | 語意相似度搜尋                  | 精確符號查詢 + 關係追蹤                             |
+| **資料粒度** | 文件段落/Chunk                  | 函式、類別、方法等程式碼符號                        |
+| **關係追蹤** | 無法追蹤呼叫鏈                  | 完整的 Call Graph / Import Graph / Dependency Graph |
+| **更新機制** | 需要重新向量化                  | 檔案監視自動增量同步（2 秒延遲）                    |
+| **外部依賴** | 需要 Embedding API（OpenAI 等） | 完全本地，無需外部 API                              |
+| **準確度**   | 語意模糊匹配                    | 編譯器等級的精確匹配                                |
+| **成本**     | 每次查詢消耗 Embedding Token    | 零額外 Token 成本                                   |
 
 > **📌 實務建議**：RAG 適合「文件」類知識的檢索，CodeGraph 適合「程式碼」結構的理解。兩者可互補，但程式碼分析場景應優先使用 CodeGraph。
 
@@ -229,27 +229,27 @@ graph TB
     subgraph "Source Code"
         SC[程式碼檔案<br/>*.ts, *.java, *.py, ...]
     end
-    
+
     subgraph "Symbol Graph"
         SG_N[Node 符號節點<br/>函式/類別/方法/變數]
         SG_E[Edge 關係邊<br/>calls/imports/extends/implements]
     end
-    
+
     subgraph "Knowledge Graph（SQLite）"
         KG_S[symbols 表]
         KG_ED[edges 表]
         KG_F[files 表]
         KG_FTS[FTS5 全文索引]
     end
-    
+
     subgraph "MCP Server"
         MCP_T[10 個 MCP 工具<br/>search/context/trace/callers<br/>callees/impact/node/explore<br/>files/status]
     end
-    
+
     subgraph "AI Agent"
         AG[Claude Code / Cursor / Codex<br/>opencode / Hermes / Gemini<br/>Antigravity / Kiro]
     end
-    
+
     SC -->|Tree-sitter 解析| SG_N
     SC -->|Tree-sitter 解析| SG_E
     SG_N -->|儲存| KG_S
@@ -291,27 +291,27 @@ graph TB
 
 ### 支援的程式語言
 
-| 語言 | 副檔名 | 支援程度 |
-|------|--------|---------|
-| TypeScript | .ts, .tsx | 完整支援 |
-| JavaScript | .js, .jsx, .mjs | 完整支援 |
-| Python | .py | 完整支援 |
-| Go | .go | 完整支援 |
-| Rust | .rs | 完整支援 |
-| Java | .java | 完整支援 |
-| C# | .cs | 完整支援 |
-| PHP | .php | 完整支援 |
-| Ruby | .rb | 完整支援 |
-| C / C++ | .c, .h, .cpp, .hpp, .cc | 完整支援 |
-| Swift | .swift | 完整支援 |
-| Kotlin | .kt, .kts | 完整支援 |
-| Scala | .scala, .sc | 完整支援 |
-| Dart | .dart | 完整支援 |
-| Vue | .vue | 完整支援（script + script-setup、Nuxt 路由） |
-| Svelte | .svelte | 完整支援（Svelte 5 runes、SvelteKit 路由） |
-| Objective-C | .m, .mm, .h | 部分支援 |
-| Pascal / Delphi | .pas, .dpr, .dpk, .lpr | 完整支援（含 DFM/FMX 表單） |
-| Lua / Luau | .lua, .luau | 完整支援 |
+| 語言            | 副檔名                  | 支援程度                                     |
+| --------------- | ----------------------- | -------------------------------------------- |
+| TypeScript      | .ts, .tsx               | 完整支援                                     |
+| JavaScript      | .js, .jsx, .mjs         | 完整支援                                     |
+| Python          | .py                     | 完整支援                                     |
+| Go              | .go                     | 完整支援                                     |
+| Rust            | .rs                     | 完整支援                                     |
+| Java            | .java                   | 完整支援                                     |
+| C#              | .cs                     | 完整支援                                     |
+| PHP             | .php                    | 完整支援                                     |
+| Ruby            | .rb                     | 完整支援                                     |
+| C / C++         | .c, .h, .cpp, .hpp, .cc | 完整支援                                     |
+| Swift           | .swift                  | 完整支援                                     |
+| Kotlin          | .kt, .kts               | 完整支援                                     |
+| Scala           | .scala, .sc             | 完整支援                                     |
+| Dart            | .dart                   | 完整支援                                     |
+| Vue             | .vue                    | 完整支援（script + script-setup、Nuxt 路由） |
+| Svelte          | .svelte                 | 完整支援（Svelte 5 runes、SvelteKit 路由）   |
+| Objective-C     | .m, .mm, .h             | 部分支援                                     |
+| Pascal / Delphi | .pas, .dpr, .dpk, .lpr  | 完整支援（含 DFM/FMX 表單）                  |
+| Lua / Luau      | .lua, .luau             | 完整支援                                     |
 
 > **📌 實務建議**：企業常見技術棧（Spring Boot/Java、Vue 3、Angular/TypeScript、Python/FastAPI）全部都有完整支援。JSP 和 Struts XML 不在直接支援範圍內，但 Java Controller 層的符號關係仍可完整提取。
 
@@ -321,26 +321,26 @@ graph TB
 
 CodeGraph 從 AST 中提取以下類型的符號：
 
-| 符號類型 | 說明 | 範例 |
-|---------|------|------|
-| function | 函式 | `function handleLogin()` |
-| class | 類別 | `class UserService` |
-| method | 方法 | `UserService.findById()` |
-| variable | 變數/常數 | `const API_URL = ...` |
-| interface | 介面 | `interface UserRepository` |
-| type | 型別別名 | `type UserId = string` |
-| enum | 列舉 | `enum UserRole { ADMIN, USER }` |
-| route | 路由（框架感知） | `@GetMapping("/api/users")` |
+| 符號類型  | 說明             | 範例                            |
+| --------- | ---------------- | ------------------------------- |
+| function  | 函式             | `function handleLogin()`        |
+| class     | 類別             | `class UserService`             |
+| method    | 方法             | `UserService.findById()`        |
+| variable  | 變數/常數        | `const API_URL = ...`           |
+| interface | 介面             | `interface UserRepository`      |
+| type      | 型別別名         | `type UserId = string`          |
+| enum      | 列舉             | `enum UserRole { ADMIN, USER }` |
+| route     | 路由（框架感知） | `@GetMapping("/api/users")`     |
 
 ### Edge（關係邊）
 
-| 關係類型 | 說明 | 範例 |
-|---------|------|------|
-| calls | 呼叫關係 | `login() → validatePassword()` |
-| imports | 匯入關係 | `import { UserService } from './user.service'` |
-| extends | 繼承關係 | `class Admin extends User` |
-| implements | 實作關係 | `class UserServiceImpl implements UserService` |
-| references | 引用關係（含路由→處理器） | `@GetMapping → UserController.list()` |
+| 關係類型   | 說明                      | 範例                                           |
+| ---------- | ------------------------- | ---------------------------------------------- |
+| calls      | 呼叫關係                  | `login() → validatePassword()`                 |
+| imports    | 匯入關係                  | `import { UserService } from './user.service'` |
+| extends    | 繼承關係                  | `class Admin extends User`                     |
+| implements | 實作關係                  | `class UserServiceImpl implements UserService` |
+| references | 引用關係（含路由→處理器） | `@GetMapping → UserController.list()`          |
 
 ## 2.3 Resolution 層
 
@@ -353,22 +353,22 @@ CodeGraph 從 AST 中提取以下類型的符號：
 
 ### 支援的框架路由偵測
 
-| 框架 | 路由語法 |
-|------|---------|
-| Django | `path()`, `re_path()`, `url()`, `include()` |
-| Flask | `@app.route('/path', methods=[...])` |
-| FastAPI | `@app.get(...)`, `@router.post(...)` |
-| Express | `app.get(...)`, `router.post(...)` |
-| NestJS | `@Controller` + `@Get/@Post/...`, GraphQL `@Resolver` |
-| Laravel | `Route::get()`, `Route::resource()` |
-| Drupal | `*.routing.yml`（`_controller`、`_form`、entity handlers）；`hook_*` |
-| Rails | `get '/x', to: 'users#index'` |
-| **Spring** | `@GetMapping`, `@PostMapping`, `@RequestMapping` |
-| Gin / chi / gorilla / mux | `r.GET(...)`, `router.HandleFunc(...)` |
-| Axum / actix / Rocket | `.route("/x", get(handler))` |
-| ASP.NET | `[HttpGet("/x")]` |
-| Vapor | `app.get("x", use: handler)` |
-| React Router / SvelteKit | Route component nodes |
+| 框架                      | 路由語法                                                             |
+| ------------------------- | -------------------------------------------------------------------- |
+| Django                    | `path()`, `re_path()`, `url()`, `include()`                          |
+| Flask                     | `@app.route('/path', methods=[...])`                                 |
+| FastAPI                   | `@app.get(...)`, `@router.post(...)`                                 |
+| Express                   | `app.get(...)`, `router.post(...)`                                   |
+| NestJS                    | `@Controller` + `@Get/@Post/...`, GraphQL `@Resolver`                |
+| Laravel                   | `Route::get()`, `Route::resource()`                                  |
+| Drupal                    | `*.routing.yml`（`_controller`、`_form`、entity handlers）；`hook_*` |
+| Rails                     | `get '/x', to: 'users#index'`                                        |
+| **Spring**                | `@GetMapping`, `@PostMapping`, `@RequestMapping`                     |
+| Gin / chi / gorilla / mux | `r.GET(...)`, `router.HandleFunc(...)`                               |
+| Axum / actix / Rocket     | `.route("/x", get(handler))`                                         |
+| ASP.NET                   | `[HttpGet("/x")]`                                                    |
+| Vapor                     | `app.get("x", use: handler)`                                         |
+| React Router / SvelteKit  | Route component nodes                                                |
 
 > **📌 實務建議**：對於 Spring Boot 專案，CodeGraph 能自動識別 `@GetMapping`、`@PostMapping` 等註解，並將 URL Pattern 連結到 Controller 方法。這在逆向工程時極為有用，可直接查詢「哪個 API 端點呼叫了哪些 Service」。
 
@@ -376,16 +376,16 @@ CodeGraph 從 AST 中提取以下類型的符號：
 
 實際的 iOS 和 React Native 專案橫跨多種語言，靜態 Tree-sitter 解析在語言邊界會中斷。CodeGraph 透過啟發式橋接（Heuristic Bridge）連接不同語言的符號，使 `trace`、`callers`、`callees`、`impact` 能端對端追蹤跨語言呼叫鏈。
 
-| 橋接類型 | 來源語言 | 目標語言 | 機制說明 |
-|---------|---------|---------|---------|
-| **Swift → ObjC** | Swift `obj.foo(bar:)` | ObjC selector `-fooWithBar:` | `@objc` 自動橋接規則 + Cocoa 介詞前綴轉換 |
-| **ObjC → Swift** | ObjC `[obj fooWithBar:]` | Swift `@objc func foo(bar:)` | 反向橋接名稱候選 + `@objc` 曝露驗證 |
-| **React Native Legacy Bridge** | JS `NativeModules.X.fn(...)` | ObjC `RCT_EXPORT_METHOD` / Java `@ReactMethod` | 解析 macro/annotation 建立 JS-name → native-method 映射 |
-| **React Native TurboModules** | JS `import M from './NativeM'; M.fn(...)` | Native impl | 以 `Native<X>.ts` spec interface 為真值來源 |
-| **RN Native → JS Events** | JS `NativeEventEmitter.addListener('e', cb)` | ObjC/Swift/Java `sendEvent(withName: "e", ...)` | 跨語言事件通道，以字面事件名稱為 key |
-| **Expo Modules** | JS `requireNativeModule('X').fn(...)` | Swift/Kotlin `Module { Name("X") }` | 解析 Expo DSL 字面值 |
-| **Fabric View Components** | JSX `<MyView prop={v}/>` | TS Codegen spec + Native impl | 慣例式名稱 + 後綴查找（View/ComponentView/Manager） |
-| **Legacy Paper View Managers** | JSX `<MyView prop={v}/>` | ObjC `RCT_EXPORT_VIEW_PROPERTY` | Paper 時代宣告同樣產生 component + property 節點 |
+| 橋接類型                       | 來源語言                                     | 目標語言                                        | 機制說明                                                |
+| ------------------------------ | -------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------- |
+| **Swift → ObjC**               | Swift `obj.foo(bar:)`                        | ObjC selector `-fooWithBar:`                    | `@objc` 自動橋接規則 + Cocoa 介詞前綴轉換               |
+| **ObjC → Swift**               | ObjC `[obj fooWithBar:]`                     | Swift `@objc func foo(bar:)`                    | 反向橋接名稱候選 + `@objc` 曝露驗證                     |
+| **React Native Legacy Bridge** | JS `NativeModules.X.fn(...)`                 | ObjC `RCT_EXPORT_METHOD` / Java `@ReactMethod`  | 解析 macro/annotation 建立 JS-name → native-method 映射 |
+| **React Native TurboModules**  | JS `import M from './NativeM'; M.fn(...)`    | Native impl                                     | 以 `Native<X>.ts` spec interface 為真值來源             |
+| **RN Native → JS Events**      | JS `NativeEventEmitter.addListener('e', cb)` | ObjC/Swift/Java `sendEvent(withName: "e", ...)` | 跨語言事件通道，以字面事件名稱為 key                    |
+| **Expo Modules**               | JS `requireNativeModule('X').fn(...)`        | Swift/Kotlin `Module { Name("X") }`             | 解析 Expo DSL 字面值                                    |
+| **Fabric View Components**     | JSX `<MyView prop={v}/>`                     | TS Codegen spec + Native impl                   | 慣例式名稱 + 後綴查找（View/ComponentView/Manager）     |
+| **Legacy Paper View Managers** | JSX `<MyView prop={v}/>`                     | ObjC `RCT_EXPORT_VIEW_PROPERTY`                 | Paper 時代宣告同樣產生 component + property 節點        |
 
 每個橋接產生的邊會標記 `provenance:'heuristic'`，並在 `metadata.synthesizedBy` 中記錄穩定的通道名稱（如 `swift-objc-bridge`、`rn-event-channel`、`expo-module-extract`），使 Agent 能清楚辨識呼叫跳轉的來源。
 
@@ -395,12 +395,12 @@ CodeGraph 從 AST 中提取以下類型的符號：
 
 所有解析結果儲存於專案目錄下的 `.codegraph/codegraph.db`（SQLite 資料庫）：
 
-| 資料表 | 用途 |
-|-------|------|
-| `symbols` | 儲存所有符號節點（名稱、類型、檔案、行號、原始碼） |
-| `edges` | 儲存所有關係邊（來源、目標、類型、provenance） |
-| `files` | 儲存已索引的檔案清單與狀態 |
-| `FTS5 索引` | 全文檢索索引，支援快速符號名稱搜尋 |
+| 資料表      | 用途                                               |
+| ----------- | -------------------------------------------------- |
+| `symbols`   | 儲存所有符號節點（名稱、類型、檔案、行號、原始碼） |
+| `edges`     | 儲存所有關係邊（來源、目標、類型、provenance）     |
+| `files`     | 儲存已索引的檔案清單與狀態                         |
+| `FTS5 索引` | 全文檢索索引，支援快速符號名稱搜尋                 |
 
 ### 技術特性
 
@@ -427,11 +427,11 @@ codegraph status
 
 CodeGraph 的 MCP Server 啟動後，會自動監視專案檔案變更：
 
-| 作業系統 | 監視機制 |
-|---------|---------|
-| macOS | FSEvents |
-| Linux | inotify |
-| Windows | ReadDirectoryChangesW |
+| 作業系統 | 監視機制              |
+| -------- | --------------------- |
+| macOS    | FSEvents              |
+| Linux    | inotify               |
+| Windows  | ReadDirectoryChangesW |
 
 ### 同步行為
 
@@ -572,12 +572,12 @@ Step 2: codegraph_explore(相關符號 IDs)                       → 一次呼�
 
 AI Agent 的 Context Window 是有限的（Claude 約 200K tokens）。無效的探索會填滿 Context：
 
-| 內容類型 | Token 估算 | 價值 |
-|---------|-----------|------|
-| grep 結果（50 個匹配） | ~5,000 tokens | 低：大量不相關匹配 |
-| glob 列表（100 個檔案路徑） | ~2,000 tokens | 低：僅檔案名稱，無內容 |
-| Read 整個檔案（500 行 Java） | ~3,000 tokens | 中：包含大量不相關程式碼 |
-| **codegraph_explore 結果** | **~1,500 tokens** | **高：精準的符號 + 關係 + 程式碼片段** |
+| 內容類型                     | Token 估算        | 價值                                   |
+| ---------------------------- | ----------------- | -------------------------------------- |
+| grep 結果（50 個匹配）       | ~5,000 tokens     | 低：大量不相關匹配                     |
+| glob 列表（100 個檔案路徑）  | ~2,000 tokens     | 低：僅檔案名稱，無內容                 |
+| Read 整個檔案（500 行 Java） | ~3,000 tokens     | 中：包含大量不相關程式碼               |
+| **codegraph_explore 結果**   | **~1,500 tokens** | **高：精準的符號 + 關係 + 程式碼片段** |
 
 ### Context 污染公式
 
@@ -599,34 +599,34 @@ CodeGraph 模式：
 
 每次 Tool Call 不僅消耗 Token，還增加延遲：
 
-| 操作 | 平均 Token 消耗 | 平均延遲 |
-|------|----------------|---------|
-| grep（一次搜尋） | 500-2,000 | 1-3 秒 |
-| glob（一次列表） | 200-1,000 | 0.5-1 秒 |
-| Read（一個檔案） | 1,000-5,000 | 0.5-2 秒 |
-| **codegraph_search** | **200-500** | **< 0.1 秒** |
-| **codegraph_trace** | **500-2,000** | **< 0.5 秒** |
+| 操作                  | 平均 Token 消耗 | 平均延遲     |
+| --------------------- | --------------- | ------------ |
+| grep（一次搜尋）      | 500-2,000       | 1-3 秒       |
+| glob（一次列表）      | 200-1,000       | 0.5-1 秒     |
+| Read（一個檔案）      | 1,000-5,000     | 0.5-2 秒     |
+| **codegraph_search**  | **200-500**     | **< 0.1 秒** |
+| **codegraph_trace**   | **500-2,000**   | **< 0.5 秒** |
 | **codegraph_explore** | **1,000-3,000** | **< 0.5 秒** |
 
 ### 累計效果
 
-| 場景 | 傳統模式 Tool Calls | CodeGraph 模式 Tool Calls | 減少 |
-|------|-------------------|-------------------------|------|
-| 架構問題 | 20-30 次 | 3-5 次 | **80%+** |
-| Bug 定位 | 10-20 次 | 2-4 次 | **75%+** |
-| 影響分析 | 15-25 次 | 1-3 次 | **85%+** |
-| Refactoring | 20-40 次 | 5-8 次 | **70%+** |
+| 場景        | 傳統模式 Tool Calls | CodeGraph 模式 Tool Calls | 減少     |
+| ----------- | ------------------- | ------------------------- | -------- |
+| 架構問題    | 20-30 次            | 3-5 次                    | **80%+** |
+| Bug 定位    | 10-20 次            | 2-4 次                    | **75%+** |
+| 影響分析    | 15-25 次            | 1-3 次                    | **85%+** |
+| Refactoring | 20-40 次            | 5-8 次                    | **70%+** |
 
 ## 3.4 大型專案規模影響
 
 Token 浪費隨專案規模呈指數增長：
 
-| 專案規模 | 檔案數 | 傳統模式 Token/次 | CodeGraph 模式 Token/次 | 節省比例 |
-|---------|--------|-----------------|----------------------|---------|
-| 小型（< 1 萬 LOC） | ~50 | 5,000 | 3,000 | 40% |
-| 中型（1-10 萬 LOC） | ~500 | 30,000 | 8,000 | 73% |
-| 大型（10-100 萬 LOC） | ~5,000 | 150,000 | 20,000 | 87% |
-| 超大型（100 萬+ LOC） | ~50,000 | 500,000+ | 30,000 | 94%+ |
+| 專案規模              | 檔案數  | 傳統模式 Token/次 | CodeGraph 模式 Token/次 | 節省比例 |
+| --------------------- | ------- | ----------------- | ----------------------- | -------- |
+| 小型（< 1 萬 LOC）    | ~50     | 5,000             | 3,000                   | 40%      |
+| 中型（1-10 萬 LOC）   | ~500    | 30,000            | 8,000                   | 73%      |
+| 大型（10-100 萬 LOC） | ~5,000  | 150,000           | 20,000                  | 87%      |
+| 超大型（100 萬+ LOC） | ~50,000 | 500,000+          | 30,000                  | 94%+     |
 
 > ⚠️ **注意**：在超大型專案中，傳統模式的 Token 消耗可能超過單次 Context Window 限制，導致 Agent 根本無法完成任務。CodeGraph 讓超大型專案的 AI 輔助開發成為可能。
 
@@ -638,12 +638,12 @@ Token 浪費隨專案規模呈指數增長：
 
 ## 4.1 預建索引 vs 即時掃描
 
-| 面向 | 傳統（即時掃描） | CodeGraph（預建索引） |
-|------|----------------|---------------------|
-| **首次成本** | 無（但每次查詢都付費） | 一次性索引建立（本地、免費） |
-| **每次查詢成本** | 高（grep/glob/Read） | 極低（SQLite 查詢） |
-| **資料鮮度** | 即時 | 近即時（2 秒自動同步） |
-| **累計成本** | 線性增長 | 趨近恆定 |
+| 面向             | 傳統（即時掃描）       | CodeGraph（預建索引）        |
+| ---------------- | ---------------------- | ---------------------------- |
+| **首次成本**     | 無（但每次查詢都付費） | 一次性索引建立（本地、免費） |
+| **每次查詢成本** | 高（grep/glob/Read）   | 極低（SQLite 查詢）          |
+| **資料鮮度**     | 即時                   | 近即時（2 秒自動同步）       |
+| **累計成本**     | 線性增長               | 趨近恆定                     |
 
 ### 成本模型
 
@@ -695,23 +695,23 @@ CodeGraph 的 `codegraph_explore` 工具是關鍵創新。它能在一次呼叫�
 
 CodeGraph 在 7 個真實開源專案上進行了 Benchmark 測試（Claude Code headless 模式，每個專案 4 次執行取中位數，Opus 4.8 模型，2026-05-29 驗證）：
 
-| 專案 | 語言 | 規模 | 成本節省 | Token 減少 | 速度提升 | Tool Calls 減少 |
-|------|------|------|---------|-----------|---------|----------------|
-| **VS Code** | TypeScript | ~10k 檔案 | **33%** | **70%** | **27%** | **80%** |
-| **Excalidraw** | TypeScript | ~640 檔案 | **27%** | **61%** | **26%** | **70%** |
-| **Django** | Python | ~3k 檔案 | **23%** | **70%** | **28%** | **77%** |
-| **Tokio** | Rust | ~790 檔案 | **35%** | **70%** | **37%** | **79%** |
-| **OkHttp** | Java | ~645 檔案 | **11%** | **48%** | **26%** | **70%** |
-| **Gin** | Go | ~110 檔案 | **15%** | **35%** | **9%** | **47%** |
-| **Alamofire** | Swift | ~110 檔案 | **28%** | **46%** | **7%** | **13%** |
+| 專案           | 語言       | 規模      | 成本節省 | Token 減少 | 速度提升 | Tool Calls 減少 |
+| -------------- | ---------- | --------- | -------- | ---------- | -------- | --------------- |
+| **VS Code**    | TypeScript | ~10k 檔案 | **33%**  | **70%**    | **27%**  | **80%**         |
+| **Excalidraw** | TypeScript | ~640 檔案 | **27%**  | **61%**    | **26%**  | **70%**         |
+| **Django**     | Python     | ~3k 檔案  | **23%**  | **70%**    | **28%**  | **77%**         |
+| **Tokio**      | Rust       | ~790 檔案 | **35%**  | **70%**    | **37%**  | **79%**         |
+| **OkHttp**     | Java       | ~645 檔案 | **11%**  | **48%**    | **26%**  | **70%**         |
+| **Gin**        | Go         | ~110 檔案 | **15%**  | **35%**    | **9%**   | **47%**         |
+| **Alamofire**  | Swift      | ~110 檔案 | **28%**  | **46%**    | **7%**   | **13%**         |
 
 ### 統計摘要
 
-| 指標 | 平均值 |
-|------|--------|
-| 成本節省 | **~25%** |
-| Token 減少 | **~57%** |
-| 速度提升 | **~23%** |
+| 指標            | 平均值   |
+| --------------- | -------- |
+| 成本節省        | **~25%** |
+| Token 減少      | **~57%** |
+| 速度提升        | **~23%** |
 | Tool Calls 減少 | **~62%** |
 
 ### 分析觀察
@@ -729,11 +729,11 @@ CodeGraph 在 7 個真實開源專案上進行了 Benchmark 測試（Claude Code
 
 ## 5.1 系統需求
 
-| 需求 | 說明 |
-|------|------|
-| **作業系統** | Windows（x64/arm64）、macOS（x64/arm64）、Linux（x64/arm64） |
-| **Node.js** | 不需要 — CodeGraph 自帶 bundled Node runtime |
-| **磁碟空間** | 約 100-200 MB（CodeGraph 本體 + 索引資料庫依專案大小而定） |
+| 需求         | 說明                                                                                                         |
+| ------------ | ------------------------------------------------------------------------------------------------------------ |
+| **作業系統** | Windows（x64/arm64）、macOS（x64/arm64）、Linux（x64/arm64）                                                 |
+| **Node.js**  | 不需要 — CodeGraph 自帶 bundled Node runtime                                                                 |
+| **磁碟空間** | 約 100-200 MB（CodeGraph 本體 + 索引資料庫依專案大小而定）                                                   |
 | **AI Agent** | Claude Code / Cursor / Codex CLI / opencode / Hermes Agent / Gemini CLI / Antigravity IDE / Kiro（至少一個） |
 
 ## 5.2 Windows 安裝
@@ -809,13 +809,13 @@ codegraph install --print-config codex
 
 ### 安裝參數
 
-| 參數 | 說明 | 預設值 |
-|------|------|--------|
-| `--target` | `auto`、`all`、`none`、或逗號分隔的 Agent 列表 | 互動式詢問 |
-| `--location` | `global`（全域）或 `local`（僅目前專案） | 互動式詢問 |
-| `--yes` | 跳過所有確認提示 | 每步都確認 |
-| `--no-permissions` | 跳過 Claude Code auto-allow 設定 | 設定權限 |
-| `--print-config <id>` | 印出指定 Agent 的設定片段後退出 | — |
+| 參數                  | 說明                                           | 預設值     |
+| --------------------- | ---------------------------------------------- | ---------- |
+| `--target`            | `auto`、`all`、`none`、或逗號分隔的 Agent 列表 | 互動式詢問 |
+| `--location`          | `global`（全域）或 `local`（僅目前專案）       | 互動式詢問 |
+| `--yes`               | 跳過所有確認提示                               | 每步都確認 |
+| `--no-permissions`    | 跳過 Claude Code auto-allow 設定               | 設定權限   |
+| `--print-config <id>` | 印出指定 Agent 的設定片段後退出                | —          |
 
 ## 5.6 專案初始化
 
@@ -923,24 +923,24 @@ graph TB
         S1[codegraph_search<br/>符號名稱搜尋]
         S2[codegraph_files<br/>檔案結構查詢]
     end
-    
+
     subgraph "追蹤類"
         T1[codegraph_trace<br/>呼叫路徑追蹤]
         T2[codegraph_callers<br/>呼叫者查詢]
         T3[codegraph_callees<br/>被呼叫者查詢]
     end
-    
+
     subgraph "分析類"
         A1[codegraph_impact<br/>影響範圍分析]
         A2[codegraph_context<br/>任務上下文建構]
     end
-    
+
     subgraph "探索類"
         E1[codegraph_node<br/>單一符號詳情]
         E2[codegraph_explore<br/>多符號探索]
         E3[codegraph_status<br/>索引健康檢查]
     end
-    
+
     Q{Agent 的問題類型?}
     Q -->|找某個符號| S1
     Q -->|瀏覽專案結構| S2
@@ -958,11 +958,11 @@ graph TB
 
 **用途**：依名稱在整個程式碼庫中搜尋符號，底層使用 FTS5 全文索引。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 找到某個類別、函式、方法的位置 |
+| 項目               | 說明                                                              |
+| ------------------ | ----------------------------------------------------------------- |
+| **典型場景**       | 找到某個類別、函式、方法的位置                                    |
 | **Token 節省原理** | 取代 `grep -r "ClassName" src/`，僅回傳結構化符號資訊而非文字匹配 |
-| **回傳內容** | 符號 ID、名稱、類型（class/function/method）、檔案路徑、行號 |
+| **回傳內容**       | 符號 ID、名稱、類型（class/function/method）、檔案路徑、行號      |
 
 **CLI 對應指令**：
 
@@ -987,11 +987,11 @@ codegraph query "UserService" --kind class --limit 10 --json
 
 **用途**：為特定任務自動建構相關的程式碼上下文（entry points + 相關符號 + 程式碼片段）。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 開始新任務前，讓 Agent 快速了解相關程式碼 |
+| 項目               | 說明                                              |
+| ------------------ | ------------------------------------------------- |
+| **典型場景**       | 開始新任務前，讓 Agent 快速了解相關程式碼         |
 | **Token 節省原理** | 一次呼叫取代 Agent 自行探索的 10-20 次 Tool Calls |
-| **回傳內容** | 與任務最相關的符號列表 + 原始碼片段 + 關係 |
+| **回傳內容**       | 與任務最相關的符號列表 + 原始碼片段 + 關係        |
 
 **CLI 對應指令**：
 
@@ -1003,11 +1003,11 @@ codegraph context "fix login bug" --format markdown --max-nodes 20
 
 **用途**：追蹤兩個符號之間的完整呼叫路徑，包含每一跳的原始碼，並能追蹤動態分派（callbacks、React re-render、interface → impl）。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 「請求如何從 Controller 到達 Repository？」 |
+| 項目               | 說明                                           |
+| ------------------ | ---------------------------------------------- |
+| **典型場景**       | 「請求如何從 Controller 到達 Repository？」    |
 | **Token 節省原理** | 一次呼叫即取得完整呼叫鏈，取代逐層 grep + Read |
-| **回傳內容** | 完整呼叫路徑，每一跳附帶原始碼 |
+| **回傳內容**       | 完整呼叫路徑，每一跳附帶原始碼                 |
 
 **使用範例**：
 
@@ -1028,9 +1028,9 @@ codegraph context "fix login bug" --format markdown --max-nodes 20
 
 **用途**：查詢「誰呼叫了這個函式/方法」。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 修改函式前，確認影響範圍 |
+| 項目               | 說明                                |
+| ------------------ | ----------------------------------- |
+| **典型場景**       | 修改函式前，確認影響範圍            |
 | **Token 節省原理** | 精確的呼叫者列表 vs grep 的文字匹配 |
 
 **CLI 對應指令**：
@@ -1043,9 +1043,9 @@ codegraph callers "UserService.findById" --limit 20 --json
 
 **用途**：查詢「這個函式/方法呼叫了什麼」。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 理解函式的依賴關係 |
+| 項目               | 說明                                     |
+| ------------------ | ---------------------------------------- |
+| **典型場景**       | 理解函式的依賴關係                       |
 | **Token 節省原理** | 精確的被呼叫者列表 vs 閱讀整個函式原始碼 |
 
 **CLI 對應指令**：
@@ -1058,11 +1058,11 @@ codegraph callees "AuthService.authenticate" --limit 20 --json
 
 **用途**：分析修改某個符號會影響哪些程式碼（遞迴追蹤呼叫者 + 相依者）。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | Refactoring 前的影響評估、API 變更風險分析 |
+| 項目               | 說明                                            |
+| ------------------ | ----------------------------------------------- |
+| **典型場景**       | Refactoring 前的影響評估、API 變更風險分析      |
 | **Token 節省原理** | 一次呼叫取得完整影響範圍，取代反覆 callers 查詢 |
-| **回傳內容** | 受影響的符號樹，含深度與路徑 |
+| **回傳內容**       | 受影響的符號樹，含深度與路徑                    |
 
 **CLI 對應指令**：
 
@@ -1090,20 +1090,20 @@ codegraph impact "UserService" --depth 3 --json
 
 **用途**：取得單一符號的完整詳情，可選擇是否包含原始碼。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 查看特定函式的完整實作 |
+| 項目               | 說明                                 |
+| ------------------ | ------------------------------------ |
+| **典型場景**       | 查看特定函式的完整實作               |
 | **Token 節省原理** | 僅回傳特定符號的程式碼，而非整個檔案 |
 
 ## 6.8 codegraph_explore
 
 **用途**：一次呼叫取得多個相關符號的原始碼，按檔案分組，附帶關係圖。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 理解一組相關程式碼（如 Controller + Service + Repository） |
-| **Token 節省原理** | 一次呼叫取代多次 Read，且自適應調整回傳大小 |
-| **關鍵特性** | **Per-symbol adaptive sizing** — 核心符號回傳完整程式碼，冗餘實作僅回傳簽名 |
+| 項目               | 說明                                                                        |
+| ------------------ | --------------------------------------------------------------------------- |
+| **典型場景**       | 理解一組相關程式碼（如 Controller + Service + Repository）                  |
+| **Token 節省原理** | 一次呼叫取代多次 Read，且自適應調整回傳大小                                 |
+| **關鍵特性**       | **Per-symbol adaptive sizing** — 核心符號回傳完整程式碼，冗餘實作僅回傳簽名 |
 
 > **📌 實務建議**：`codegraph_explore` 是節省 Token 的殺手級工具。Agent 可以在一次呼叫中取得完整的上下文，避免反覆的 Read 呼叫。
 
@@ -1111,9 +1111,9 @@ codegraph impact "UserService" --depth 3 --json
 
 **用途**：取得已索引的檔案結構（比 filesystem scan 更快）。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 了解專案目錄結構 |
+| 項目               | 說明                      |
+| ------------------ | ------------------------- |
+| **典型場景**       | 了解專案目錄結構          |
 | **Token 節省原理** | 取代 `glob` + `find` 指令 |
 
 **CLI 對應指令**：
@@ -1126,9 +1126,9 @@ codegraph files --format tree --max-depth 3 --filter "*.java"
 
 **用途**：檢查索引健康狀態與統計資訊。
 
-| 項目 | 說明 |
-|------|------|
-| **典型場景** | 驗證索引是否正常、是否需要重建 |
+| 項目         | 說明                                         |
+| ------------ | -------------------------------------------- |
+| **典型場景** | 驗證索引是否正常、是否需要重建               |
 | **回傳內容** | 檔案數、符號數、邊數、日誌模式、最後同步時間 |
 
 ### MCP 工具選擇決策流程
@@ -1136,7 +1136,7 @@ codegraph files --format tree --max-depth 3 --filter "*.java"
 ```mermaid
 graph TD
     START[Agent 收到任務] --> Q1{需要什麼資訊?}
-    
+
     Q1 -->|找某個符號/類別| SEARCH[codegraph_search]
     Q1 -->|了解專案結構| FILES[codegraph_files]
     Q1 -->|A 如何呼叫到 B| TRACE[codegraph_trace]
@@ -1147,16 +1147,16 @@ graph TD
     Q1 -->|看特定程式碼| NODE[codegraph_node]
     Q1 -->|看多個相關程式碼| EXPLORE[codegraph_explore]
     Q1 -->|檢查索引| STATUS[codegraph_status]
-    
+
     SEARCH --> Q2{需要原始碼?}
     Q2 -->|是，單一符號| NODE
     Q2 -->|是，多個符號| EXPLORE
     Q2 -->|否| DONE[完成]
-    
+
     CALLERS & CALLEES & TRACE & IMPACT --> Q3{需要深入查看?}
     Q3 -->|是| EXPLORE
     Q3 -->|否| DONE
-    
+
     CONTEXT --> DONE
 ```
 
@@ -1182,12 +1182,12 @@ Claude Code 是 CodeGraph 的主要支援 Agent。安裝後會自動設定 MCP S
 
 安裝 CodeGraph 後，Claude Code 的行為會自動改變：
 
-| 行為 | 無 CodeGraph | 有 CodeGraph |
-|------|-------------|-------------|
-| 架構探索 | 啟動 Explore Sub-Agent（多次 grep/Read） | 直接呼叫 `codegraph_context` 或 `codegraph_trace` |
-| 符號查找 | `grep -r "ClassName" src/` | `codegraph_search("ClassName")` |
-| 影響分析 | 反覆 callers 搜尋 | `codegraph_impact("symbol")` |
-| 程式碼閱讀 | `Read file.ts`（整個檔案） | `codegraph_explore(symbol_ids)`（精準片段） |
+| 行為       | 無 CodeGraph                             | 有 CodeGraph                                      |
+| ---------- | ---------------------------------------- | ------------------------------------------------- |
+| 架構探索   | 啟動 Explore Sub-Agent（多次 grep/Read） | 直接呼叫 `codegraph_context` 或 `codegraph_trace` |
+| 符號查找   | `grep -r "ClassName" src/`               | `codegraph_search("ClassName")`                   |
+| 影響分析   | 反覆 callers 搜尋                        | `codegraph_impact("symbol")`                      |
+| 程式碼閱讀 | `Read file.ts`（整個檔案）               | `codegraph_explore(symbol_ids)`（精準片段）       |
 
 ## 7.2 Architecture Analysis
 
@@ -1299,11 +1299,13 @@ Claude Code 是 CodeGraph 的主要支援 Agent。安裝後會自動設定 MCP S
 # CodeGraph 使用指引
 
 ## 開發規範
+
 - 在探索程式碼結構時，優先使用 CodeGraph MCP 工具
 - 禁止使用 grep/glob/Read 進行大範圍搜尋
 - 修改程式碼前，必須先用 codegraph_impact 分析影響範圍
 
 ## 工具使用優先順序
+
 1. codegraph_search — 找符號
 2. codegraph_trace — 追蹤呼叫鏈
 3. codegraph_impact — 影響分析
@@ -1380,12 +1382,14 @@ graph LR
 ## AI 開發規範
 
 ### 搜尋策略
+
 - ✅ 優先使用 CodeGraph MCP 工具進行符號搜尋和呼叫鏈追蹤
 - ✅ 使用 codegraph_impact 進行變更影響分析
 - ❌ 禁止使用 grep/find/rg 進行全 Repository 掃描
 - ❌ 禁止遞迴讀取整個目錄
 
 ### 上下文建構
+
 - ✅ 使用 codegraph_context 建構任務相關上下文
 - ✅ 使用 codegraph_explore 查看多個相關符號
 - ❌ 禁止一次讀取超過 3 個完整檔案
@@ -1397,18 +1401,22 @@ graph LR
 # Copilot + CodeGraph 開發指引
 
 ## 程式碼探索
+
 當需要理解程式碼結構時：
+
 1. 先用 codegraph_search 找到入口點
 2. 用 codegraph_trace 追蹤呼叫鏈
 3. 用 codegraph_explore 查看相關程式碼
 4. 僅在必要時才使用 Read 讀取完整檔案
 
 ## 修改前必做
+
 - 使用 codegraph_impact 分析影響範圍
 - 確認所有受影響的呼叫者已被考慮
 - 按依賴順序規劃修改步驟
 
 ## 效能意識
+
 - 每次對話盡量控制在 5 次以內的 MCP 工具呼叫
 - 避免重複查詢相同的符號
 - 使用 codegraph_explore 一次取得多個符號，而非逐一 codegraph_node
@@ -1424,14 +1432,14 @@ graph LR
 
 典型的企業遺留系統：
 
-| 技術 | 說明 |
-|------|------|
-| Java EE (J2EE) | Servlet / JSP / JNDI |
-| Struts 1.x / 2.x | MVC 框架 |
-| EJB 2.x / 3.x | Enterprise JavaBeans |
-| Spring Framework 3.x | IoC / AOP |
-| Oracle / DB2 | 關聯式資料庫 |
-| COBOL | 批次處理 / 主機整合 |
+| 技術                 | 說明                 |
+| -------------------- | -------------------- |
+| Java EE (J2EE)       | Servlet / JSP / JNDI |
+| Struts 1.x / 2.x     | MVC 框架             |
+| EJB 2.x / 3.x        | Enterprise JavaBeans |
+| Spring Framework 3.x | IoC / AOP            |
+| Oracle / DB2         | 關聯式資料庫         |
+| COBOL                | 批次處理 / 主機整合  |
 
 ### CodeGraph 在逆向工程中的角色
 
@@ -1442,7 +1450,7 @@ graph TB
         T2 --> T3[建立心智模型<br/>（容易遺漏）]
         T3 --> T4[數週~數月]
     end
-    
+
     subgraph "CodeGraph 輔助逆向工程"
         C1[codegraph init -i<br/>建立索引] --> C2[codegraph_context<br/>取得核心架構]
         C2 --> C3[codegraph_trace<br/>追蹤關鍵流程]
@@ -1588,12 +1596,12 @@ graph LR
 
 ### 主要變更點
 
-| 變更 | 影響 | CodeGraph 查詢方式 |
-|------|------|------------------|
-| `javax.*` → `jakarta.*` | 所有 Java EE 相關 import | `codegraph_search("javax.")` |
-| Spring Security 設定重構 | SecurityConfig 類別 | `codegraph_search("WebSecurityConfigurerAdapter")` |
-| Actuator 端點路徑變更 | 監控設定 | `codegraph_search("actuator")` |
-| 移除已棄用 API | 散布各處 | `codegraph_impact("deprecatedMethod")` |
+| 變更                     | 影響                     | CodeGraph 查詢方式                                 |
+| ------------------------ | ------------------------ | -------------------------------------------------- |
+| `javax.*` → `jakarta.*`  | 所有 Java EE 相關 import | `codegraph_search("javax.")`                       |
+| Spring Security 設定重構 | SecurityConfig 類別      | `codegraph_search("WebSecurityConfigurerAdapter")` |
+| Actuator 端點路徑變更    | 監控設定                 | `codegraph_search("actuator")`                     |
+| 移除已棄用 API           | 散布各處                 | `codegraph_impact("deprecatedMethod")`             |
 
 ### 升級步驟（搭配 CodeGraph）
 
@@ -1738,7 +1746,7 @@ graph LR
         T --> DEP[部署]
         DEP --> M[維護]
     end
-    
+
     subgraph "CodeGraph 介入點"
         CG1[Threat Modeling<br/>追蹤資料流]
         CG2[Impact Analysis<br/>變更風險評估]
@@ -1746,7 +1754,7 @@ graph LR
         CG4[Dependency Audit<br/>影響範圍分析]
         CG5[Incident Response<br/>快速定位]
     end
-    
+
     D -.-> CG1
     I -.-> CG2
     I -.-> CG3
@@ -1856,7 +1864,7 @@ graph TB
     L3[Level 3: Prompt 工程<br/>在 Prompt 中明確指定使用 CodeGraph<br/>節省 ~30-45%] --> L4
     L4[Level 4: 工作流整合<br/>CI/CD + codegraph affected + 自動化<br/>節省 ~45-55%] --> L5
     L5[Level 5: 全面治理<br/>團隊標準 + 監控 + 持續改善<br/>節省 ~55-65%]
-    
+
     style L1 fill:#e8f5e9
     style L2 fill:#c8e6c9
     style L3 fill:#a5d6a7
@@ -1884,11 +1892,11 @@ codegraph status
 
 **預期效果**：Agent 會自動發現並使用 MCP 工具，但仍可能混用 grep/Read。
 
-| 指標 | 改善 |
-|------|------|
+| 指標         | 改善         |
+| ------------ | ------------ |
 | Token 使用量 | 減少 ~10-15% |
-| Tool Calls | 減少 ~15-20% |
-| 回應速度 | 略有改善 |
+| Tool Calls   | 減少 ~15-20% |
+| 回應速度     | 略有改善     |
 
 ## 12.3 Level 2：工具優先
 
@@ -1898,6 +1906,7 @@ codegraph status
 
 ```markdown
 ## 搜尋策略
+
 - 必須先嘗試 CodeGraph MCP 工具
 - 僅在 CodeGraph 無法處理時才使用 grep/Read
 - 禁止對已索引檔案使用 glob 搜尋
@@ -1912,11 +1921,11 @@ codegraph status
 # 觀察 MCP tool calls vs grep/Read 的比例
 ```
 
-| 指標 | 改善 |
-|------|------|
+| 指標         | 改善         |
+| ------------ | ------------ |
 | Token 使用量 | 減少 ~20-30% |
-| Tool Calls | 減少 ~30-40% |
-| 回應速度 | 明顯改善 |
+| Tool Calls   | 減少 ~30-40% |
+| 回應速度     | 明顯改善     |
 
 ## 12.4 Level 3：Prompt 工程
 
@@ -1938,19 +1947,19 @@ CodeGraph 策略：
 
 ### 反模式對照表
 
-| 反模式（高 Token）| 正確模式（低 Token）|
-|---|---|
-| `grep -r "UserService" src/` | `codegraph_search("UserService")` |
-| `Read src/services/user.service.ts`（整檔） | `codegraph_node(42)`（單一符號） |
-| 反覆 `Read` 多個檔案 | `codegraph_explore([42, 43, 44])` |
-| 逐層 `callers` 追蹤 | `codegraph_trace(A, B)` |
-| `glob src/**/*.ts` + 逐一 Read | `codegraph_files` + `codegraph_explore` |
+| 反模式（高 Token）                          | 正確模式（低 Token）                    |
+| ------------------------------------------- | --------------------------------------- |
+| `grep -r "UserService" src/`                | `codegraph_search("UserService")`       |
+| `Read src/services/user.service.ts`（整檔） | `codegraph_node(42)`（單一符號）        |
+| 反覆 `Read` 多個檔案                        | `codegraph_explore([42, 43, 44])`       |
+| 逐層 `callers` 追蹤                         | `codegraph_trace(A, B)`                 |
+| `glob src/**/*.ts` + 逐一 Read              | `codegraph_files` + `codegraph_explore` |
 
-| 指標 | 改善 |
-|------|------|
-| Token 使用量 | 減少 ~30-45% |
-| Tool Calls | 減少 ~50-60% |
-| 回應品質 | 更精確、更完整 |
+| 指標         | 改善           |
+| ------------ | -------------- |
+| Token 使用量 | 減少 ~30-45%   |
+| Tool Calls   | 減少 ~50-60%   |
+| 回應品質     | 更精確、更完整 |
 
 ## 12.5 Level 4：工作流整合
 
@@ -1997,11 +2006,11 @@ codegraph sync
 [codegraph affected 結果]
 ```
 
-| 指標 | 改善 |
-|------|------|
-| Token 使用量 | 減少 ~45-55% |
-| CI/CD 時間 | 減少 ~30-50%（僅跑受影響的測試） |
-| PR Review 時間 | 減少 ~20-30% |
+| 指標           | 改善                             |
+| -------------- | -------------------------------- |
+| Token 使用量   | 減少 ~45-55%                     |
+| CI/CD 時間     | 減少 ~30-50%（僅跑受影響的測試） |
+| PR Review 時間 | 減少 ~20-30%                     |
 
 ## 12.6 Level 5：全面治理
 
@@ -2022,19 +2031,19 @@ codegraph sync
 
 ### 團隊儀表板指標
 
-| 指標 | 目標 | 測量方式 |
-|------|------|---------|
-| MCP 工具使用率 | > 80% | Tool Call 日誌分析 |
-| grep/Read 使用率 | < 20% | Tool Call 日誌分析 |
-| 平均 Token/任務 | 基準線的 50% | API 帳單統計 |
-| 平均 Tool Calls/任務 | 基準線的 40% | Agent 日誌分析 |
-| 索引健康度 | 100% | `codegraph status` 自動檢查 |
+| 指標                 | 目標         | 測量方式                    |
+| -------------------- | ------------ | --------------------------- |
+| MCP 工具使用率       | > 80%        | Tool Call 日誌分析          |
+| grep/Read 使用率     | < 20%        | Tool Call 日誌分析          |
+| 平均 Token/任務      | 基準線的 50% | API 帳單統計                |
+| 平均 Tool Calls/任務 | 基準線的 40% | Agent 日誌分析              |
+| 索引健康度           | 100%         | `codegraph status` 自動檢查 |
 
-| 指標 | 改善 |
-|------|------|
-| Token 使用量 | 減少 ~55-65% |
-| 團隊一致性 | 標準化使用方式 |
-| 持續改善 | 建立回饋迴圈 |
+| 指標         | 改善           |
+| ------------ | -------------- |
+| Token 使用量 | 減少 ~55-65%   |
+| 團隊一致性   | 標準化使用方式 |
+| 持續改善     | 建立回饋迴圈   |
 
 > **📌 實務建議**：不要試圖一次到達 Level 5。建議每 1-2 週提升一個等級，讓團隊逐步適應。Level 1-2 可以在一天內完成，Level 3 需要 1-2 週的 Prompt 調整，Level 4-5 需要與 DevOps 團隊協作。
 
@@ -2046,12 +2055,12 @@ codegraph sync
 
 ### 專案規模與建議
 
-| 專案規模 | 檔案數 | 建議配置 |
-|----------|--------|---------|
-| 小型（< 10K LOC） | < 100 | 預設配置即可 |
-| 中型（10K-100K LOC） | 100-1,000 | 調整 `max-file-size`，排除生成檔案 |
-| 大型（100K-1M LOC） | 1,000-10,000 | 分模組索引，使用 `--filter` |
-| 超大型（> 1M LOC） | > 10,000 | Monorepo 策略，分層索引 |
+| 專案規模             | 檔案數       | 建議配置                           |
+| -------------------- | ------------ | ---------------------------------- |
+| 小型（< 10K LOC）    | < 100        | 預設配置即可                       |
+| 中型（10K-100K LOC） | 100-1,000    | 調整 `max-file-size`，排除生成檔案 |
+| 大型（100K-1M LOC）  | 1,000-10,000 | 分模組索引，使用 `--filter`        |
+| 超大型（> 1M LOC）   | > 10,000     | Monorepo 策略，分層索引            |
 
 ### Monorepo 策略
 
@@ -2140,12 +2149,12 @@ codegraph trace "OrderController.createOrder" "OrderRepository.save"
 
 ## 13.4 安全考量
 
-| 安全面向 | 說明 | 建議 |
-|----------|------|------|
-| 索引內容 | SQLite 檔案包含符號名、程式碼片段 | 納入 `.gitignore`，不上傳到 remote |
-| MCP 通訊 | localhost stdio 通訊 | 預設安全，不開放外部存取 |
-| Agent 權限 | MCP 工具為唯讀 | CodeGraph 不修改原始碼 |
-| 敏感符號 | 密碼、API Key 相關符號可能被索引 | 將敏感配置檔加入 `.gitignore` 排除 |
+| 安全面向   | 說明                              | 建議                               |
+| ---------- | --------------------------------- | ---------------------------------- |
+| 索引內容   | SQLite 檔案包含符號名、程式碼片段 | 納入 `.gitignore`，不上傳到 remote |
+| MCP 通訊   | localhost stdio 通訊              | 預設安全，不開放外部存取           |
+| Agent 權限 | MCP 工具為唯讀                    | CodeGraph 不修改原始碼             |
+| 敏感符號   | 密碼、API Key 相關符號可能被索引  | 將敏感配置檔加入 `.gitignore` 排除 |
 
 ## 13.5 效能調優
 
@@ -2172,29 +2181,29 @@ codegraph index --force
 除了 CLI 和 MCP Server，CodeGraph 亦提供 TypeScript 程式庫 API，可直接在 Node.js 應用程式中嵌入使用：
 
 ```typescript
-import CodeGraph from '@colbymchenry/codegraph';
+import CodeGraph from "@colbymchenry/codegraph";
 
 // 初始化並開啟專案索引
-const cg = await CodeGraph.init('/path/to/project');
+const cg = await CodeGraph.init("/path/to/project");
 // 或開啟已建立的索引：
 // const cg = await CodeGraph.open('/path/to/project');
 
 // 建立全量索引（含進度回報）
 await cg.indexAll({
-  onProgress: (p) => console.log(`${p.phase}: ${p.current}/${p.total}`)
+  onProgress: (p) => console.log(`${p.phase}: ${p.current}/${p.total}`),
 });
 
 // 搜尋符號
-const results = cg.searchNodes('UserService');
+const results = cg.searchNodes("UserService");
 
 // 查詢呼叫者
 const callers = cg.getCallers(results[0].node.id);
 
 // 為 AI 任務建構上下文
-const context = await cg.buildContext('fix login bug', {
+const context = await cg.buildContext("fix login bug", {
   maxNodes: 20,
   includeCode: true,
-  format: 'markdown'
+  format: "markdown",
 });
 
 // 影響範圍分析
@@ -2212,13 +2221,13 @@ cg.close();
 
 ### 適用場景
 
-| 場景 | 說明 |
-|------|------|
-| **自訂 MCP Server** | 在既有的 MCP Server 中嵌入 CodeGraph 查詢能力 |
-| **CI/CD Pipeline** | 在 CI 中程式化地執行影響分析、受影響測試偵測 |
-| **IDE 外掛開發** | 將 CodeGraph 整合到自訂的開發工具中 |
-| **自動化報告** | 定期產生程式碼架構分析報告 |
-| **Multi-Agent 系統** | 作為多 Agent 協作的共享知識基礎設施 |
+| 場景                 | 說明                                          |
+| -------------------- | --------------------------------------------- |
+| **自訂 MCP Server**  | 在既有的 MCP Server 中嵌入 CodeGraph 查詢能力 |
+| **CI/CD Pipeline**   | 在 CI 中程式化地執行影響分析、受影響測試偵測  |
+| **IDE 外掛開發**     | 將 CodeGraph 整合到自訂的開發工具中           |
+| **自動化報告**       | 定期產生程式碼架構分析報告                    |
+| **Multi-Agent 系統** | 作為多 Agent 協作的共享知識基礎設施           |
 
 > **📌 實務建議**：Library API 適合需要深度客製化的進階場景。大多數團隊透過 CLI + MCP Server 即可滿足需求，不需要直接使用 Library API。
 
@@ -2234,21 +2243,25 @@ cg.close();
 # [公司/團隊名稱] AI 輔助開發規範 v1.0
 
 ## 1. 適用範圍
+
 本規範適用於使用 AI Agent（Claude Code, GitHub Copilot）進行開發的所有專案。
 
 ## 2. 工具使用規範
 
 ### 2.1 必須使用 CodeGraph
+
 - 所有已索引的專案，Agent 必須優先使用 CodeGraph MCP 工具
 - 禁止在已索引專案中使用 grep/glob 進行全域搜尋
 - 修改程式碼前，必須使用 codegraph_impact 進行影響分析
 
 ### 2.2 Prompt 撰寫規範
+
 - 任務 Prompt 必須包含明確的 CodeGraph 使用指示
 - 使用標準 Prompt 模板（見附錄）
 - 禁止使用 "幫我重構整個專案" 等模糊指令
 
 ### 2.3 Token 成本意識
+
 - 每個開發者每日 Token 預算：[設定上限]
 - 大型分析任務（> 50K Token）需事先申請
 - 定期檢查 /cost 並回報異常消耗
@@ -2256,11 +2269,13 @@ cg.close();
 ## 3. 安全規範
 
 ### 3.1 程式碼審查
+
 - AI 產生的程式碼必須經過人工 Code Review
 - 安全相關程式碼（認證、授權、加密）禁止直接採用 AI 建議
 - AI 產生的 SQL 查詢必須檢查注入風險
 
 ### 3.2 敏感資訊
+
 - 禁止在 Prompt 中包含真實密碼、API Key、Token
 - 禁止將生產環境的資料庫連線資訊傳給 Agent
 - 使用環境變數和 Secret Manager 管理敏感設定
@@ -2268,11 +2283,13 @@ cg.close();
 ## 4. 品質規範
 
 ### 4.1 測試要求
+
 - AI 產生的功能程式碼必須包含對應的單元測試
 - 使用 codegraph affected 確認測試覆蓋率
 - 重構後必須執行完整測試套件
 
 ### 4.2 文件要求
+
 - 複雜的 AI 輔助修改必須在 PR 描述中說明使用的 Prompt
 - 架構變更必須更新相關文件
 ```
@@ -2309,20 +2326,25 @@ cg.close();
 
 ```markdown
 # .github/prompts/bugfix/locate-bug.md
+
 ---
+
 description: "使用 CodeGraph 定位 Bug"
 ---
 
 ## 任務
+
 定位以下 Bug：{{BUG_DESCRIPTION}}
 
 ## CodeGraph 策略
+
 1. 用 codegraph_search 找到相關類別/方法
 2. 用 codegraph_trace 追蹤呼叫鏈
 3. 用 codegraph_explore 查看相關程式碼
 4. 分析可能的根因
 
 ## 注意事項
+
 - 不要使用 grep 搜尋
 - 不要讀取完整檔案
 - 列出所有可能的根因，並標記可能性高低
@@ -2330,16 +2352,16 @@ description: "使用 CodeGraph 定位 Bug"
 
 ## 14.3 Code Review Checklist（AI 產生程式碼）
 
-| 檢查項目 | 說明 | 必要性 |
-|----------|------|--------|
-| 邏輯正確性 | AI 產生的邏輯是否符合需求 | 必要 |
-| 安全性 | 是否有注入、XSS、CSRF 風險 | 必要 |
-| 效能 | 是否有 N+1、記憶體洩漏 | 必要 |
-| 測試覆蓋 | 是否有對應的測試 | 必要 |
-| 命名慣例 | 是否符合團隊命名規範 | 建議 |
-| 重複程式碼 | 是否與現有程式碼重複 | 建議 |
-| 依賴管理 | 是否引入不必要的依賴 | 建議 |
-| 影響範圍 | codegraph_impact 結果是否已考慮 | 必要 |
+| 檢查項目   | 說明                            | 必要性 |
+| ---------- | ------------------------------- | ------ |
+| 邏輯正確性 | AI 產生的邏輯是否符合需求       | 必要   |
+| 安全性     | 是否有注入、XSS、CSRF 風險      | 必要   |
+| 效能       | 是否有 N+1、記憶體洩漏          | 必要   |
+| 測試覆蓋   | 是否有對應的測試                | 必要   |
+| 命名慣例   | 是否符合團隊命名規範            | 建議   |
+| 重複程式碼 | 是否與現有程式碼重複            | 建議   |
+| 依賴管理   | 是否引入不必要的依賴            | 建議   |
+| 影響範圍   | codegraph_impact 結果是否已考慮 | 必要   |
 
 ## 14.4 onboarding 流程（AI 工具）
 
@@ -2635,7 +2657,7 @@ graph TB
         T4 --> T5[Agent 產生程式碼]
         T5 --> T6[可能遺漏 / 錯誤]
     end
-    
+
     subgraph "KGDD 流程"
         K1[人類描述需求] --> K2[Agent 查詢知識圖譜]
         K2 --> K3[Agent 獲得結構化上下文]
@@ -2643,20 +2665,20 @@ graph TB
         K4 --> K5[Agent 產生精確程式碼]
         K5 --> K6[Impact 驗證完整性]
     end
-    
+
     style T6 fill:#ffcdd2
     style K6 fill:#c8e6c9
 ```
 
 ### KGDD 核心原則
 
-| 原則 | 傳統方式 | KGDD 方式 |
-|------|----------|----------|
-| **資訊取得** | 文字搜尋 + 檔案讀取 | 圖譜查詢（Symbol + Edge） |
-| **上下文建構** | Agent 自行拼湊 | `codegraph_context` 自動建構 |
-| **影響分析** | 手動追蹤呼叫者 | `codegraph_impact` 遞迴分析 |
-| **呼叫鏈理解** | 逐層 grep | `codegraph_trace` 一次取得 |
-| **完整性驗證** | 人工 Code Review | `codegraph_impact` + `codegraph affected` |
+| 原則           | 傳統方式            | KGDD 方式                                 |
+| -------------- | ------------------- | ----------------------------------------- |
+| **資訊取得**   | 文字搜尋 + 檔案讀取 | 圖譜查詢（Symbol + Edge）                 |
+| **上下文建構** | Agent 自行拼湊      | `codegraph_context` 自動建構              |
+| **影響分析**   | 手動追蹤呼叫者      | `codegraph_impact` 遞迴分析               |
+| **呼叫鏈理解** | 逐層 grep           | `codegraph_trace` 一次取得                |
+| **完整性驗證** | 人工 Code Review    | `codegraph_impact` + `codegraph affected` |
 
 ## 16.2 Agent 工作流設計模式
 
@@ -2727,12 +2749,12 @@ graph LR
 ```mermaid
 graph TB
     KG[(CodeGraph<br/>知識圖譜)]
-    
+
     A1[Architecture Agent<br/>分析架構] --> KG
     A2[Implementation Agent<br/>撰寫程式碼] --> KG
     A3[Review Agent<br/>程式碼審查] --> KG
     A4[Test Agent<br/>撰寫測試] --> KG
-    
+
     KG -->|結構化上下文| A1
     KG -->|精確符號資訊| A2
     KG -->|影響範圍分析| A3
@@ -2761,14 +2783,14 @@ graph TB
 
 ## 16.4 Agentic Workflow 成熟度模型
 
-| 等級 | 名稱 | 描述 | CodeGraph 角色 |
-|------|------|------|---------------|
-| L0 | 手動開發 | 開發者手動寫所有程式碼 | 無 |
-| L1 | AI 輔助 | 使用 Copilot 自動完成 | 無 |
-| L2 | AI 引導 | Agent 提供建議，人類決策 | 提供精確上下文 |
-| L3 | AI 執行 | Agent 執行任務，人類審查 | 提供影響分析 + 完整性驗證 |
-| L4 | AI 自主 | Agent 自主完成開發循環 | 作為核心知識基礎設施 |
-| L5 | Multi-Agent | 多 Agent 協作，分工完成 | 共享知識圖譜 + 一致性保證 |
+| 等級 | 名稱        | 描述                     | CodeGraph 角色            |
+| ---- | ----------- | ------------------------ | ------------------------- |
+| L0   | 手動開發    | 開發者手動寫所有程式碼   | 無                        |
+| L1   | AI 輔助     | 使用 Copilot 自動完成    | 無                        |
+| L2   | AI 引導     | Agent 提供建議，人類決策 | 提供精確上下文            |
+| L3   | AI 執行     | Agent 執行任務，人類審查 | 提供影響分析 + 完整性驗證 |
+| L4   | AI 自主     | Agent 自主完成開發循環   | 作為核心知識基礎設施      |
+| L5   | Multi-Agent | 多 Agent 協作，分工完成  | 共享知識圖譜 + 一致性保證 |
 
 > **📌 實務建議**：大多數企業團隊目前處於 L1-L2 之間。CodeGraph 能幫助團隊快速從 L2 提升到 L3，因為它解決了 Agent 最大的瓶頸——準確理解程式碼結構。不建議跳過等級，應循序漸進。
 
@@ -2805,12 +2827,12 @@ mindmap
 
 ### 關鍵數據總結
 
-| 指標 | 無 CodeGraph | 有 CodeGraph | 改善幅度 |
-|------|------------|-------------|---------|
-| Token 使用量 | 100% | ~43% | **~57% 減少** |
-| 金錢成本 | 100% | ~75% | **~25% 節省** |
-| Tool Calls | 100% | ~38% | **~62% 減少** |
-| 完成時間 | 100% | ~77% | **~23% 加速** |
+| 指標         | 無 CodeGraph | 有 CodeGraph | 改善幅度      |
+| ------------ | ------------ | ------------ | ------------- |
+| Token 使用量 | 100%         | ~43%         | **~57% 減少** |
+| 金錢成本     | 100%         | ~75%         | **~25% 節省** |
+| Tool Calls   | 100%         | ~38%         | **~62% 減少** |
+| 完成時間     | 100%         | ~77%         | **~23% 加速** |
 
 ## 17.2 採用路線圖
 
@@ -2839,13 +2861,13 @@ gantt
 
 ### CodeGraph 發展方向
 
-| 方向 | 說明 |
-|------|------|
-| **更多語言支援** | 持續擴展 Tree-sitter Grammar 支援 |
-| **跨 Repository 索引** | Monorepo 和 Multi-repo 場景 |
-| **雲端索引共享** | 團隊共享索引，避免重複建構 |
-| **即時分析** | 編輯器內即時的符號關係展示 |
-| **AI 訓練整合** | 為 AI 模型提供結構化的訓練資料 |
+| 方向                   | 說明                              |
+| ---------------------- | --------------------------------- |
+| **更多語言支援**       | 持續擴展 Tree-sitter Grammar 支援 |
+| **跨 Repository 索引** | Monorepo 和 Multi-repo 場景       |
+| **雲端索引共享**       | 團隊共享索引，避免重複建構        |
+| **即時分析**           | 編輯器內即時的符號關係展示        |
+| **AI 訓練整合**        | 為 AI 模型提供結構化的訓練資料    |
 
 ### Knowledge Graph 在 AI 開發中的趨勢
 
@@ -2856,13 +2878,13 @@ gantt
 
 ## 17.4 行動建議
 
-| 角色 | 建議行動 | 優先順序 |
-|------|---------|---------|
-| **個人開發者** | 安裝 CodeGraph，在日常開發中使用 | 立即 |
-| **Tech Lead** | 制定團隊 AI 開發規範，建立 Prompt Library | 1 個月內 |
-| **DevOps** | 整合 `codegraph affected` 到 CI/CD | 2 個月內 |
-| **Engineering Manager** | 建立 Token 使用監控和預算機制 | 3 個月內 |
-| **CTO / VP Engineering** | 評估組織級 AI 開發策略 | 本季度 |
+| 角色                     | 建議行動                                  | 優先順序 |
+| ------------------------ | ----------------------------------------- | -------- |
+| **個人開發者**           | 安裝 CodeGraph，在日常開發中使用          | 立即     |
+| **Tech Lead**            | 制定團隊 AI 開發規範，建立 Prompt Library | 1 個月內 |
+| **DevOps**               | 整合 `codegraph affected` 到 CI/CD        | 2 個月內 |
+| **Engineering Manager**  | 建立 Token 使用監控和預算機制             | 3 個月內 |
+| **CTO / VP Engineering** | 評估組織級 AI 開發策略                    | 本季度   |
 
 ---
 
@@ -2870,11 +2892,11 @@ gantt
 
 ## A.1 場景設定
 
-| 項目 | 說明 |
-|------|------|
-| 專案 | Spring Boot 微服務（約 80K LOC） |
-| 任務 | 分析 OrderService 的完整業務邏輯 |
-| Agent | Claude Code (Opus 4) |
+| 項目  | 說明                             |
+| ----- | -------------------------------- |
+| 專案  | Spring Boot 微服務（約 80K LOC） |
+| 任務  | 分析 OrderService 的完整業務邏輯 |
+| Agent | Claude Code (Opus 4)             |
 
 ## A.2 無 CodeGraph 的對話
 
@@ -2923,13 +2945,13 @@ Claude Code (有 CodeGraph):
 
 ## A.4 對比分析
 
-| 指標 | 無 CodeGraph | 有 CodeGraph | 改善 |
-|------|------------|-------------|------|
-| Tool Calls | 18 次 | 3 次 | **-83%** |
-| Input Tokens | ~85,000 | ~35,000 | **-59%** |
-| Output Tokens | ~12,000 | ~10,000 | -17% |
-| 總成本 | ~$0.52 | ~$0.22 | **-58%** |
-| 結果品質 | 可能遺漏依賴 | 完整呼叫鏈 | 更好 |
+| 指標          | 無 CodeGraph | 有 CodeGraph | 改善     |
+| ------------- | ------------ | ------------ | -------- |
+| Tool Calls    | 18 次        | 3 次         | **-83%** |
+| Input Tokens  | ~85,000      | ~35,000      | **-59%** |
+| Output Tokens | ~12,000      | ~10,000      | -17%     |
+| 總成本        | ~$0.52       | ~$0.22       | **-58%** |
+| 結果品質      | 可能遺漏依賴 | 完整呼叫鏈   | 更好     |
 
 ---
 
@@ -2937,11 +2959,11 @@ Claude Code (有 CodeGraph):
 
 ## B.1 場景設定
 
-| 項目 | 說明 |
-|------|------|
-| 專案 | React + TypeScript 前端（約 45K LOC） |
-| 任務 | 重構 UserProfile 元件，提取共用邏輯 |
-| Agent | GitHub Copilot Agent Mode |
+| 項目  | 說明                                  |
+| ----- | ------------------------------------- |
+| 專案  | React + TypeScript 前端（約 45K LOC） |
+| 任務  | 重構 UserProfile 元件，提取共用邏輯   |
+| Agent | GitHub Copilot Agent Mode             |
 
 ## B.2 無 CodeGraph 的工作流
 
@@ -2988,12 +3010,12 @@ Copilot (有 CodeGraph):
 
 ## B.4 對比分析
 
-| 指標 | 無 CodeGraph | 有 CodeGraph | 改善 |
-|------|------------|-------------|------|
-| Tool Calls | 14 次 | 3 次 | **-79%** |
-| 程式碼行數 | ~2,300 行 | ~800 行 | **-65%** |
-| Token 消耗 | ~72,000 | ~28,000 | **-61%** |
-| 遺漏風險 | 可能遺漏使用者 | callers 確保完整 | 更低 |
+| 指標       | 無 CodeGraph   | 有 CodeGraph     | 改善     |
+| ---------- | -------------- | ---------------- | -------- |
+| Tool Calls | 14 次          | 3 次             | **-79%** |
+| 程式碼行數 | ~2,300 行      | ~800 行          | **-65%** |
+| Token 消耗 | ~72,000        | ~28,000          | **-61%** |
+| 遺漏風險   | 可能遺漏使用者 | callers 確保完整 | 更低     |
 
 ---
 
@@ -3003,24 +3025,25 @@ Copilot (有 CodeGraph):
 
 ### AI API 定價（以 Claude Opus 4 為例，2026 年）
 
-| 項目 | 定價 |
-|------|------|
-| Input Tokens | $15 / 1M tokens |
-| Output Tokens | $75 / 1M tokens |
-| Cached Input | $1.875 / 1M tokens |
+| 項目          | 定價               |
+| ------------- | ------------------ |
+| Input Tokens  | $15 / 1M tokens    |
+| Output Tokens | $75 / 1M tokens    |
+| Cached Input  | $1.875 / 1M tokens |
 
 ### 每日開發者 Token 消耗估算
 
-| 場景 | 無 CodeGraph | 有 CodeGraph |
-|------|-------------|-------------|
-| 小型任務（Bug Fix）| ~30K tokens | ~15K tokens |
-| 中型任務（Feature）| ~80K tokens | ~35K tokens |
-| 大型任務（Refactor）| ~200K tokens | ~85K tokens |
-| 每日平均 | ~150K tokens | ~65K tokens |
+| 場景                 | 無 CodeGraph | 有 CodeGraph |
+| -------------------- | ------------ | ------------ |
+| 小型任務（Bug Fix）  | ~30K tokens  | ~15K tokens  |
+| 中型任務（Feature）  | ~80K tokens  | ~35K tokens  |
+| 大型任務（Refactor） | ~200K tokens | ~85K tokens  |
+| 每日平均             | ~150K tokens | ~65K tokens  |
 
 ## C.2 月度成本試算
 
 ### 假設條件
+
 - 團隊人數：20 人
 - 每日工作日：22 天
 - 平均每日 Token：150K（無 CG）/ 65K（有 CG）
@@ -3046,23 +3069,23 @@ Output: 5.72M × $75/1M = $429
 
 ### 節省效果
 
-| 指標 | 無 CodeGraph | 有 CodeGraph | 節省 |
-|------|-------------|-------------|------|
-| 月度 Token | 66M | 28.6M | **56.7%** |
-| 月度成本 | $1,782 | $772 | **$1,010/月** |
-| 年度成本 | $21,384 | $9,264 | **$12,120/年** |
+| 指標       | 無 CodeGraph | 有 CodeGraph | 節省           |
+| ---------- | ------------ | ------------ | -------------- |
+| 月度 Token | 66M          | 28.6M        | **56.7%**      |
+| 月度成本   | $1,782       | $772         | **$1,010/月**  |
+| 年度成本   | $21,384      | $9,264       | **$12,120/年** |
 
 ## C.3 ROI 計算
 
-| 項目 | 金額 |
-|------|------|
-| CodeGraph 部署成本 | $0（開源 MIT License） |
-| 團隊訓練成本（一次性） | ~40 人時 × $50/時 = $2,000 |
-| 年度維護成本 | ~$500（索引管理、規範更新） |
-| **年度投入總計** | **$2,500** |
-| **年度節省** | **$12,120** |
-| **ROI** | **385%** |
-| **回本時間** | **~2.5 個月** |
+| 項目                   | 金額                        |
+| ---------------------- | --------------------------- |
+| CodeGraph 部署成本     | $0（開源 MIT License）      |
+| 團隊訓練成本（一次性） | ~40 人時 × $50/時 = $2,000  |
+| 年度維護成本           | ~$500（索引管理、規範更新） |
+| **年度投入總計**       | **$2,500**                  |
+| **年度節省**           | **$12,120**                 |
+| **ROI**                | **385%**                    |
+| **回本時間**           | **~2.5 個月**               |
 
 > **📌 實務建議**：以上計算基於 Claude Opus 4 定價。如果使用較便宜的模型（如 Sonnet），絕對金額會降低，但百分比節省幅度類似。實際節省效果取決於團隊的使用模式和專案特性。
 
@@ -3078,24 +3101,28 @@ Output: 5.72M × $75/1M = $429
 ## 1. 總則
 
 ### 1.1 目的
+
 本標準規範企業內使用 AI 輔助開發的流程、工具和最佳實踐，
 確保開發效率、程式碼品質和資訊安全的平衡。
 
 ### 1.2 適用範圍
+
 適用於所有使用 AI Agent（Claude Code, GitHub Copilot, 其他 MCP 相容 Agent）
 進行軟體開發的團隊和專案。
 
 ## 2. 工具標準
 
 ### 2.1 核准工具清單
-| 類別 | 工具 | 版本 | 狀態 |
-|------|------|------|------|
-| 知識圖譜 | CodeGraph | ≥ 0.9.7 | 必裝 |
-| AI Agent | Claude Code | Latest | 核准 |
-| AI Agent | GitHub Copilot | Latest | 核准 |
-| MCP Server | CodeGraph MCP | 內建 | 必裝 |
+
+| 類別       | 工具           | 版本    | 狀態 |
+| ---------- | -------------- | ------- | ---- |
+| 知識圖譜   | CodeGraph      | ≥ 0.9.7 | 必裝 |
+| AI Agent   | Claude Code    | Latest  | 核准 |
+| AI Agent   | GitHub Copilot | Latest  | 核准 |
+| MCP Server | CodeGraph MCP  | 內建    | 必裝 |
 
 ### 2.2 禁止工具
+
 - 未經安全審查的第三方 MCP Server
 - 非公司核准的 AI Agent
 - 任何將程式碼傳送到公司外部的工具（除核准工具外）
@@ -3103,33 +3130,38 @@ Output: 5.72M × $75/1M = $429
 ## 3. 使用規範
 
 ### 3.1 CodeGraph 使用
+
 - 所有程式碼專案必須建立 CodeGraph 索引
 - Agent 必須優先使用 CodeGraph MCP 工具
 - 修改程式碼前必須執行 codegraph_impact 分析
 
 ### 3.2 Prompt 規範
+
 - 使用團隊 Prompt Library 中的模板
 - 禁止在 Prompt 中包含敏感資訊
 - 大型分析任務需事先評估 Token 消耗
 
 ### 3.3 Token 預算
-| 等級 | 每日上限 | 審批 |
-|------|---------|------|
-| 開發者 | 500K tokens | 免審批 |
-| 大型任務 | 2M tokens | Tech Lead 審批 |
-| 專案級分析 | 10M tokens | Manager 審批 |
+
+| 等級       | 每日上限    | 審批           |
+| ---------- | ----------- | -------------- |
+| 開發者     | 500K tokens | 免審批         |
+| 大型任務   | 2M tokens   | Tech Lead 審批 |
+| 專案級分析 | 10M tokens  | Manager 審批   |
 
 ## 4. 安全規範
 
 ### 4.1 資料分類
-| 分類 | 說明 | AI 使用限制 |
-|------|------|-----------|
-| Public | 開源程式碼 | 無限制 |
-| Internal | 一般業務程式碼 | 核准 Agent 可用 |
-| Confidential | 含商業邏輯的核心程式碼 | 需加密或脫敏 |
-| Restricted | 含密碼/金鑰的配置 | 禁止傳給 AI |
+
+| 分類         | 說明                   | AI 使用限制     |
+| ------------ | ---------------------- | --------------- |
+| Public       | 開源程式碼             | 無限制          |
+| Internal     | 一般業務程式碼         | 核准 Agent 可用 |
+| Confidential | 含商業邏輯的核心程式碼 | 需加密或脫敏    |
+| Restricted   | 含密碼/金鑰的配置      | 禁止傳給 AI     |
 
 ### 4.2 Code Review 要求
+
 - AI 產生的程式碼必須經過至少 1 位人工 Reviewer
 - 安全相關程式碼需 2 位 Reviewer（含 Security Champion）
 - AI 產生的 SQL 必須通過 SQL Injection 審查
@@ -3137,11 +3169,13 @@ Output: 5.72M × $75/1M = $429
 ## 5. 品質標準
 
 ### 5.1 測試覆蓋
+
 - AI 產生的功能程式碼必須有對應的單元測試
 - 使用 codegraph affected 確認測試完整性
 - 重構後執行完整回歸測試
 
 ### 5.2 文件要求
+
 - 使用 CodeGraph 進行的重大分析需在 PR 中記錄
 - 架構變更需更新相關文件
 - Prompt 範例需回饋至 Prompt Library
@@ -3168,27 +3202,27 @@ graph TD
 
 ### MCP Server 分級
 
-| 等級 | 說明 | 範例 | 權限 |
-|------|------|------|------|
-| Level 1 | 唯讀查詢 | CodeGraph（search, trace, explore） | 預設開啟 |
-| Level 2 | 本地修改 | File System（read, write, edit） | 需確認 |
-| Level 3 | 網路存取 | GitHub API, Jira API | 需審批 |
-| Level 4 | 資料庫存取 | Database MCP | 需特別審批 |
+| 等級    | 說明       | 範例                                | 權限       |
+| ------- | ---------- | ----------------------------------- | ---------- |
+| Level 1 | 唯讀查詢   | CodeGraph（search, trace, explore） | 預設開啟   |
+| Level 2 | 本地修改   | File System（read, write, edit）    | 需確認     |
+| Level 3 | 網路存取   | GitHub API, Jira API                | 需審批     |
+| Level 4 | 資料庫存取 | Database MCP                        | 需特別審批 |
 
 ### CodeGraph MCP 工具權限矩陣
 
-| 工具 | 等級 | 說明 | 風險 |
-|------|------|------|------|
-| codegraph_search | L1 | 符號搜尋 | 低 |
-| codegraph_context | L1 | 上下文建構 | 低 |
-| codegraph_trace | L1 | 呼叫鏈追蹤 | 低 |
-| codegraph_callers | L1 | 呼叫者查詢 | 低 |
-| codegraph_callees | L1 | 被呼叫者查詢 | 低 |
-| codegraph_impact | L1 | 影響分析 | 低 |
-| codegraph_node | L1 | 符號詳情 | 低 |
-| codegraph_explore | L1 | 多符號探索 | 低 |
-| codegraph_files | L1 | 檔案結構 | 低 |
-| codegraph_status | L1 | 狀態檢查 | 低 |
+| 工具              | 等級 | 說明         | 風險 |
+| ----------------- | ---- | ------------ | ---- |
+| codegraph_search  | L1   | 符號搜尋     | 低   |
+| codegraph_context | L1   | 上下文建構   | 低   |
+| codegraph_trace   | L1   | 呼叫鏈追蹤   | 低   |
+| codegraph_callers | L1   | 呼叫者查詢   | 低   |
+| codegraph_callees | L1   | 被呼叫者查詢 | 低   |
+| codegraph_impact  | L1   | 影響分析     | 低   |
+| codegraph_node    | L1   | 符號詳情     | 低   |
+| codegraph_explore | L1   | 多符號探索   | 低   |
+| codegraph_files   | L1   | 檔案結構     | 低   |
+| codegraph_status  | L1   | 狀態檢查     | 低   |
 
 > **📌 實務建議**：CodeGraph 的所有 MCP 工具都是唯讀的（Level 1），不會修改任何原始碼。這是企業環境中採用 CodeGraph 的重要安全優勢。
 
@@ -3206,24 +3240,24 @@ graph TB
         D3[Claude Code CLI]
         D4[CI/CD Pipeline]
     end
-    
+
     subgraph "MCP 層"
         M1[CodeGraph MCP Server]
         M2[Custom MCP Servers]
     end
-    
+
     subgraph "知識圖譜層"
         KG1[(CodeGraph DB<br/>程式碼符號)]
         KG2[(Architecture DB<br/>架構決策)]
         KG3[(Dependency DB<br/>套件依賴)]
     end
-    
+
     subgraph "資料層"
         S1[Git Repository]
         S2[Artifact Registry]
         S3[Document Store]
     end
-    
+
     D1 & D2 & D3 & D4 --> M1 & M2
     M1 --> KG1
     M2 --> KG2 & KG3
@@ -3232,22 +3266,22 @@ graph TB
 
 ## F.2 建設路線圖
 
-| 階段 | 時程 | 目標 | 產出 |
-|------|------|------|------|
-| Phase 1 | Q1 | 單一團隊試點 CodeGraph | 使用報告、Token 節省數據 |
-| Phase 2 | Q2 | 跨團隊推廣 + CI/CD 整合 | 標準規範、Prompt Library |
-| Phase 3 | Q3 | 組織級部署 + 監控 | 儀表板、成本報告 |
-| Phase 4 | Q4 | 進階整合 + 自訂 MCP | 企業知識圖譜平台 |
+| 階段    | 時程 | 目標                    | 產出                     |
+| ------- | ---- | ----------------------- | ------------------------ |
+| Phase 1 | Q1   | 單一團隊試點 CodeGraph  | 使用報告、Token 節省數據 |
+| Phase 2 | Q2   | 跨團隊推廣 + CI/CD 整合 | 標準規範、Prompt Library |
+| Phase 3 | Q3   | 組織級部署 + 監控       | 儀表板、成本報告         |
+| Phase 4 | Q4   | 進階整合 + 自訂 MCP     | 企業知識圖譜平台         |
 
 ## F.3 成功指標
 
-| KPI | 目標值 | 測量方式 |
-|-----|-------|---------|
-| Token 成本降低 | ≥ 40% | API 帳單月度對比 |
-| 開發者採用率 | ≥ 80% | CodeGraph 活躍使用者統計 |
-| MCP 工具使用率 | ≥ 70% | Tool Call 日誌分析 |
-| CI/CD 整合率 | ≥ 50% | Pipeline 設定審計 |
-| 開發者滿意度 | ≥ 4.0/5.0 | 季度調查問卷 |
+| KPI            | 目標值    | 測量方式                 |
+| -------------- | --------- | ------------------------ |
+| Token 成本降低 | ≥ 40%     | API 帳單月度對比         |
+| 開發者採用率   | ≥ 80%     | CodeGraph 活躍使用者統計 |
+| MCP 工具使用率 | ≥ 70%     | Tool Call 日誌分析       |
+| CI/CD 整合率   | ≥ 50%     | Pipeline 設定審計        |
+| 開發者滿意度   | ≥ 4.0/5.0 | 季度調查問卷             |
 
 ---
 
@@ -3274,12 +3308,14 @@ graph TB
 ## G.3 Agent 整合檢查清單
 
 ### Claude Code
+
 - [ ] /mcp 顯示 codegraph MCP Server
 - [ ] codegraph_search 可正常回傳結果
 - [ ] codegraph_trace 可追蹤呼叫鏈
 - [ ] CLAUDE.md 已加入 CodeGraph 使用指引（可選）
 
 ### GitHub Copilot
+
 - [ ] settings.json 已配置 MCP Server
 - [ ] Agent Mode 可存取 CodeGraph 工具
 - [ ] copilot-instructions.md 已加入使用規範（可選）
@@ -3307,14 +3343,14 @@ graph TB
 ---
 
 > **本手冊全文完成。**
-> 
+>
 > 涵蓋 17 個章節 + 7 個附錄，從 CodeGraph 的基礎原理到企業級部署，
 > 提供完整的 Token 優化知識體系。
-> 
+>
 > 建議定期更新本手冊以反映 CodeGraph 的最新版本和功能。
-> 
+>
 > ---
-> *最後更新：2026-05-31*
-> *CodeGraph 版本：v0.9.7*
-> *手冊版本：v1.0*
-
+>
+> _最後更新：2026-05-31_
+> _CodeGraph 版本：v0.9.7_
+> _手冊版本：v1.0_

@@ -657,6 +657,7 @@ Process process = pb.start();
 ### JEP 379: Shenandoah - A Low-Pause-Time Garbage Collector 低延遲垃圾回收器 (Java 15)
 
 **遷移模式**: 為一致延遲啟用 Shenandoah
+
 ```bash
 # 啟用 Shenandoah
 -XX:+UseShenandoahGC

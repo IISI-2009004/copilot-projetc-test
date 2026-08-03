@@ -124,23 +124,24 @@ GitHub Copilot CLI = AI Agent + Terminal + GitHub 深度整合 + 多代理協作
 
 ### 支援模型一覽
 
-| 模型 | 類型 | 說明 | 適用場景 |
-|------|------|------|----------|
-| **Claude Opus 4.5** | Anthropic | **預設模型**（1x），最強推理能力 | 複雜架構設計、困難除錯、深層重構 |
-| Claude Sonnet 4.5 | Anthropic | 快速且高效（1x） | 日常編碼、例行任務 |
-| Claude Sonnet 4.6 | Anthropic | 可透過 `/model` 切換 | 一般開發工作 |
-| Claude Opus 4.6 | Anthropic | 高品質推理 | 複雜問題分析 |
-| Claude Opus 4.6 Fast | Anthropic | 快速推理（Preview） | 快速迭代 |
-| Claude Opus 4.7 | Anthropic | 最新高品質推理（v1.0.29 新增） | 最複雜的推理任務 |
-| Haiku 4.5 | Anthropic | 輕量快速 | 簡單查詢 |
-| GPT-5.1 | OpenAI | 通用能力 | 通用開發 |
-| GPT-5.2 Codex | OpenAI | 程式碼生成與審查 | 高量程式碼產出、交叉審查 |
-| GPT-5.4 | OpenAI | 進階推理（v0.0.422 新增） | 進階分析 |
-| GPT-5.4-Mini | OpenAI | 輕量快速（v1.0.7 新增） | 簡單任務 |
-| **auto** | 自動選擇 | 降低速率限制、更低延遲與錯誤 | **推薦**：系統自動最佳化 |
-| 自訂模型 | 自備 | 組織/企業自配模型供應商 | 合規需求、私有部署 |
+| 模型                 | 類型      | 說明                             | 適用場景                         |
+| -------------------- | --------- | -------------------------------- | -------------------------------- |
+| **Claude Opus 4.5**  | Anthropic | **預設模型**（1x），最強推理能力 | 複雜架構設計、困難除錯、深層重構 |
+| Claude Sonnet 4.5    | Anthropic | 快速且高效（1x）                 | 日常編碼、例行任務               |
+| Claude Sonnet 4.6    | Anthropic | 可透過 `/model` 切換             | 一般開發工作                     |
+| Claude Opus 4.6      | Anthropic | 高品質推理                       | 複雜問題分析                     |
+| Claude Opus 4.6 Fast | Anthropic | 快速推理（Preview）              | 快速迭代                         |
+| Claude Opus 4.7      | Anthropic | 最新高品質推理（v1.0.29 新增）   | 最複雜的推理任務                 |
+| Haiku 4.5            | Anthropic | 輕量快速                         | 簡單查詢                         |
+| GPT-5.1              | OpenAI    | 通用能力                         | 通用開發                         |
+| GPT-5.2 Codex        | OpenAI    | 程式碼生成與審查                 | 高量程式碼產出、交叉審查         |
+| GPT-5.4              | OpenAI    | 進階推理（v0.0.422 新增）        | 進階分析                         |
+| GPT-5.4-Mini         | OpenAI    | 輕量快速（v1.0.7 新增）          | 簡單任務                         |
+| **auto**             | 自動選擇  | 降低速率限制、更低延遲與錯誤     | **推薦**：系統自動最佳化         |
+| 自訂模型             | 自備      | 組織/企業自配模型供應商          | 合規需求、私有部署               |
 
 > 💡 **模型選擇建議**（根據[官方最佳實務](https://docs.github.com/copilot/how-tos/copilot-cli/cli-best-practices#select-your-preferred-model)）：
+>
 > - **Auto**：智慧選擇模型，基於即時系統健康狀態與模型效能，降低速率限制並提供更低延遲
 > - **Opus 4.5**（預設）：適合需要深度推理、複雜系統設計、細微 Bug 調查、大量上下文理解的任務
 > - **Sonnet 4.5**：適合速度與成本效率優先的例行任務，能有效處理大多數日常編碼工作
@@ -150,18 +151,18 @@ GitHub Copilot CLI = AI Agent + Terminal + GitHub 深度整合 + 多代理協作
 
 ## 1.2 與其他 AI 工具的差異比較
 
-| 比較面向 | ChatGPT | IDE Copilot（VS Code） | Copilot CLI | Agent Framework（LangChain 等） |
-|---------|---------|----------------------|-------------|-------------------------------|
-| **介面** | Web / API | IDE 內嵌 | Terminal 命令列 | 程式碼 SDK |
-| **操作方式** | 對話 | 自動補全 / Chat | 對話 + 自動執行 + Autopilot | API 驅動 |
-| **檔案存取** | 無（需手動貼上） | 當前編輯器開啟檔案 | 整個專案目錄 + 跨目錄引用 | 自定義 |
-| **執行能力** | 僅建議 | 僅建議（部分 Apply） | **直接執行** Shell / Git / 檔案操作 | 自定義 |
-| **GitHub 整合** | 無 | 有（Extensions） | **原生深度整合**（MCP） | 需自行實作 |
-| **自主性** | 被動回答 | 被動補全 | **主動代理**（Agentic / Autopilot / Fleet） | 高度自定義 |
-| **Context 管理** | 手動 | 自動（有限） | **自動**（整個專案 + 跨 Session 記憶 + 自動壓縮） | 需自行設計 |
-| **多代理** | 無 | 無 | **原生支援**（/fleet 平行子代理） | 需自己編排 |
-| **擴充性** | 無 | Extensions | **Plugin + Skill + Hook + Extension + MCP + LSP** | 自定義 |
-| **適合場景** | 通用問答 | 編碼輔助 | **DevOps / CLI 自動化 / 全流程** | 企業級 AI 系統 |
+| 比較面向         | ChatGPT          | IDE Copilot（VS Code） | Copilot CLI                                       | Agent Framework（LangChain 等） |
+| ---------------- | ---------------- | ---------------------- | ------------------------------------------------- | ------------------------------- |
+| **介面**         | Web / API        | IDE 內嵌               | Terminal 命令列                                   | 程式碼 SDK                      |
+| **操作方式**     | 對話             | 自動補全 / Chat        | 對話 + 自動執行 + Autopilot                       | API 驅動                        |
+| **檔案存取**     | 無（需手動貼上） | 當前編輯器開啟檔案     | 整個專案目錄 + 跨目錄引用                         | 自定義                          |
+| **執行能力**     | 僅建議           | 僅建議（部分 Apply）   | **直接執行** Shell / Git / 檔案操作               | 自定義                          |
+| **GitHub 整合**  | 無               | 有（Extensions）       | **原生深度整合**（MCP）                           | 需自行實作                      |
+| **自主性**       | 被動回答         | 被動補全               | **主動代理**（Agentic / Autopilot / Fleet）       | 高度自定義                      |
+| **Context 管理** | 手動             | 自動（有限）           | **自動**（整個專案 + 跨 Session 記憶 + 自動壓縮） | 需自行設計                      |
+| **多代理**       | 無               | 無                     | **原生支援**（/fleet 平行子代理）                 | 需自己編排                      |
+| **擴充性**       | 無               | Extensions             | **Plugin + Skill + Hook + Extension + MCP + LSP** | 自定義                          |
+| **適合場景**     | 通用問答         | 編碼輔助               | **DevOps / CLI 自動化 / 全流程**                  | 企業級 AI 系統                  |
 
 ### 1.2.1 與 IDE Copilot 的互補關係
 
@@ -182,18 +183,18 @@ Copilot CLI 與 VS Code IDE Copilot 可以**無縫銜接**：
 
 ### 最適合使用 Copilot CLI 的場景
 
-| 場景類型 | 說明 | 範例 |
-|---------|------|------|
-| **CLI 操作** | 不熟悉的 Shell 指令 | 「幫我找出佔用 8080 port 的 process」 |
-| **Git 操作** | 複雜的 Git 工作流 | 「幫我 rebase 到 main 並解決衝突」 |
-| **DevOps** | CI/CD Pipeline 管理 | 「建立一個 GitHub Actions workflow 跑 ESLint」 |
-| **Backend 開發** | API 開發與除錯 | 「在 Spring Boot 專案新增一個 REST API」 |
-| **Infra 管理** | 基礎設施操作 | 「幫我建立 Docker Compose 設定」 |
-| **Code Review** | PR 審查與管理 | 「檢查 PR #123 的變更是否有安全問題」 |
-| **Batch Job** | 批次作業開發 | 「幫我建立一個資料匯出的 Batch Job」 |
-| **多代理協作** | 平行分工大型任務 | 「用 /fleet 平行重構前後端 API 和測試」 |
-| **非同步委派** | 背景執行耗時任務 | 「/delegate 修復所有 Lint 錯誤並開 PR」 |
-| **深度研究** | 技術調研與報告 | 「/research 比較 Redis 與 Memcached」 |
+| 場景類型         | 說明                | 範例                                           |
+| ---------------- | ------------------- | ---------------------------------------------- |
+| **CLI 操作**     | 不熟悉的 Shell 指令 | 「幫我找出佔用 8080 port 的 process」          |
+| **Git 操作**     | 複雜的 Git 工作流   | 「幫我 rebase 到 main 並解決衝突」             |
+| **DevOps**       | CI/CD Pipeline 管理 | 「建立一個 GitHub Actions workflow 跑 ESLint」 |
+| **Backend 開發** | API 開發與除錯      | 「在 Spring Boot 專案新增一個 REST API」       |
+| **Infra 管理**   | 基礎設施操作        | 「幫我建立 Docker Compose 設定」               |
+| **Code Review**  | PR 審查與管理       | 「檢查 PR #123 的變更是否有安全問題」          |
+| **Batch Job**    | 批次作業開發        | 「幫我建立一個資料匯出的 Batch Job」           |
+| **多代理協作**   | 平行分工大型任務    | 「用 /fleet 平行重構前後端 API 和測試」        |
+| **非同步委派**   | 背景執行耗時任務    | 「/delegate 修復所有 Lint 錯誤並開 PR」        |
+| **深度研究**     | 技術調研與報告      | 「/research 比較 Redis 與 Memcached」          |
 
 ### 不適合的場景
 
@@ -440,14 +441,14 @@ copilot -p "在 Spring Boot 專案建立 /api/v1/users 的 CRUD API，
 
 ## 3.1 支援平台
 
-| 平台 | 支援狀況 | 安裝方式 |
-|------|---------|---------|
-| **Windows** | ✅ 支援 | WinGet / MSI / npm |
-| **macOS** | ✅ 支援 | Homebrew / npm / 安裝腳本 |
-| **Linux** | ✅ 支援 | Homebrew / npm / 安裝腳本 |
-| **WSL** | ✅ 支援 | 同 Linux（需注意 `/terminal-setup`） |
-| **Codespaces** | ✅ 支援 | 預先安裝 |
-| **SSH / Remote** | ✅ 支援 | Device Flow 登入 |
+| 平台             | 支援狀況 | 安裝方式                             |
+| ---------------- | -------- | ------------------------------------ |
+| **Windows**      | ✅ 支援  | WinGet / MSI / npm                   |
+| **macOS**        | ✅ 支援  | Homebrew / npm / 安裝腳本            |
+| **Linux**        | ✅ 支援  | Homebrew / npm / 安裝腳本            |
+| **WSL**          | ✅ 支援  | 同 Linux（需注意 `/terminal-setup`） |
+| **Codespaces**   | ✅ 支援  | 預先安裝                             |
+| **SSH / Remote** | ✅ 支援  | Device Flow 登入                     |
 
 ## 3.2 前置需求
 
@@ -471,6 +472,7 @@ npm install -g @github/copilot@prerelease
 ```
 
 > ⚠️ **注意**：若 `~/.npmrc` 中設定了 `ignore-scripts=true`，需使用：
+>
 > ```bash
 > npm_config_ignore_scripts=false npm install -g @github/copilot
 > ```
@@ -588,10 +590,7 @@ export COPILOT_HOME="$HOME/.my-copilot"
   "includeCoAuthoredBy": true,
   "effortLevel": "medium",
   "autoUpdatesChannel": "stable",
-  "trustedDirectories": [
-    "/home/dev/projects",
-    "/workspace"
-  ]
+  "trustedDirectories": ["/home/dev/projects", "/workspace"]
 }
 ```
 
@@ -599,21 +598,21 @@ export COPILOT_HOME="$HOME/.my-copilot"
 
 ## 3.6 常見錯誤與排除
 
-| 錯誤訊息 | 可能原因 | 解決方案 |
-|---------|---------|---------|
-| `command not found: copilot` | 未正確安裝 | 重新安裝並確認 PATH |
-| `Authentication failed` | Token 過期或無效 | 執行 `/login` 重新驗證 |
-| `Policy not enabled` | 組織未啟用 CLI 政策 | 請管理員啟用 Copilot CLI 政策 |
-| `Node.js version too old` | Node.js < 22 | 升級 Node.js 至 22+ |
-| `Permission denied` | 檔案權限不足 | 使用 `sudo` 或修改安裝路徑 |
-| `MCP server connection failed` | MCP 設定錯誤 | 檢查 `mcp-config.json`；執行 `/mcp` 查看狀態 |
-| `classic PAT (ghp_) detected` | 使用了傳統 PAT | 改用 Fine-grained PAT 並加上 Copilot Requests 權限 |
-| `Session file is corrupted` | 跨版本 Session 不相容 | 開啟新 Session（`/new`）或指定 `--resume` 選取功能正常的 Session |
-| `Third-party MCP servers blocked` | 組織策略封鎖第三方 MCP | 請管理員更新 MCP 允許清單政策 |
-| `/terminal-setup` 出現錯誤 | WSL 環境特殊路徑問題 | v1.0.10+ 已改善；更新至最新版 |
-| `multiple Copilot licenses detected` | 偵測到多個授權 | 參閱錯誤訊息中的直接連結解決（v1.0.36+） |
-| `session rate limit` | Session 級速率限制 | 等待限制解除；使用 `/compact` 減少 Token 消耗（v1.0.34+） |
-| `remote sessions blocked by policy` | 組織禁用遠端 Session | 聯繫組織管理員調整政策（v1.0.22+） |
+| 錯誤訊息                             | 可能原因               | 解決方案                                                         |
+| ------------------------------------ | ---------------------- | ---------------------------------------------------------------- |
+| `command not found: copilot`         | 未正確安裝             | 重新安裝並確認 PATH                                              |
+| `Authentication failed`              | Token 過期或無效       | 執行 `/login` 重新驗證                                           |
+| `Policy not enabled`                 | 組織未啟用 CLI 政策    | 請管理員啟用 Copilot CLI 政策                                    |
+| `Node.js version too old`            | Node.js < 22           | 升級 Node.js 至 22+                                              |
+| `Permission denied`                  | 檔案權限不足           | 使用 `sudo` 或修改安裝路徑                                       |
+| `MCP server connection failed`       | MCP 設定錯誤           | 檢查 `mcp-config.json`；執行 `/mcp` 查看狀態                     |
+| `classic PAT (ghp_) detected`        | 使用了傳統 PAT         | 改用 Fine-grained PAT 並加上 Copilot Requests 權限               |
+| `Session file is corrupted`          | 跨版本 Session 不相容  | 開啟新 Session（`/new`）或指定 `--resume` 選取功能正常的 Session |
+| `Third-party MCP servers blocked`    | 組織策略封鎖第三方 MCP | 請管理員更新 MCP 允許清單政策                                    |
+| `/terminal-setup` 出現錯誤           | WSL 環境特殊路徑問題   | v1.0.10+ 已改善；更新至最新版                                    |
+| `multiple Copilot licenses detected` | 偵測到多個授權         | 參閱錯誤訊息中的直接連結解決（v1.0.36+）                         |
+| `session rate limit`                 | Session 級速率限制     | 等待限制解除；使用 `/compact` 減少 Token 消耗（v1.0.34+）        |
+| `remote sessions blocked by policy`  | 組織禁用遠端 Session   | 聯繫組織管理員調整政策（v1.0.22+）                               |
 
 ---
 
@@ -808,12 +807,12 @@ Copilot 會讀取：
 
 ### 最佳化提問技巧
 
-| 層級 | 提問方式 | 效果 |
-|------|---------|------|
-| ❌ 差 | 「幫我寫一個 API」 | 缺乏上下文，結果不精確 |
-| ⚠️ 一般 | 「幫我在 UserController 加一個 GET API」 | 有基本方向，但細節不足 |
-| ✅ 好 | 「在 @UserController.java 新增 GET /api/v1/users/{id}，回傳 UserDTO，使用 @UserService.java 的 findById 方法，錯誤時回傳 404」 | 具體、有引用、有預期結果 |
-| 🌟 最佳 | 使用 Plan Mode 先討論再實作 | 多步驟複雜任務的最佳作法 |
+| 層級    | 提問方式                                                                                                                       | 效果                     |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
+| ❌ 差   | 「幫我寫一個 API」                                                                                                             | 缺乏上下文，結果不精確   |
+| ⚠️ 一般 | 「幫我在 UserController 加一個 GET API」                                                                                       | 有基本方向，但細節不足   |
+| ✅ 好   | 「在 @UserController.java 新增 GET /api/v1/users/{id}，回傳 UserDTO，使用 @UserService.java 的 findById 方法，錯誤時回傳 404」 | 具體、有引用、有預期結果 |
+| 🌟 最佳 | 使用 Plan Mode 先討論再實作                                                                                                    | 多步驟複雜任務的最佳作法 |
 
 ### Custom Instructions（自訂指令）
 
@@ -821,24 +820,29 @@ Copilot CLI 支援多層級的自訂指令，用來告知 Copilot 你的專案�
 
 ```markdown
 <!-- .github/copilot-instructions.md -->
+
 # 專案開發規範
 
 ## 架構
+
 - 使用 Clean Architecture
 - Controller -> Service -> Repository -> Entity
 
 ## 命名慣例
+
 - 類別名：PascalCase
 - 方法名：camelCase
 - 常數：UPPER_SNAKE_CASE
 - REST API 路徑：kebab-case
 
 ## 測試
+
 - 使用 JUnit 5 + Mockito
 - 測試覆蓋率需達 80%
 - 命名格式：should_DoSomething_When_Condition
 
 ## 日誌
+
 - 使用 Log4j2
 - ERROR：系統錯誤
 - WARN：業務異常
@@ -848,15 +852,15 @@ Copilot CLI 支援多層級的自訂指令，用來告知 Copilot 你的專案�
 
 支援的指令檔類型（依探索優先順序）：
 
-| 檔案類型 | 位置 | 作用範圍 |
-|---------|------|---------|
-| `copilot-instructions.md` | `~/.copilot/` | 全域（所有 Session） |
-| `copilot-instructions.md` | `.github/` | 整個 Repository |
-| `*.instructions.md` | `.github/instructions/**/` | 依 Path 匹配（模組化） |
-| `AGENTS.md` | Git Root 或工作目錄 | Agent 行為定義 |
-| `Copilot.md` | Repository 根目錄 | Repository 層級指令 |
-| `GEMINI.md` | Repository 根目錄 | 相容格式（自動讀取） |
-| `CODEX.md` | Repository 根目錄 | 相容格式（自動讀取） |
+| 檔案類型                  | 位置                       | 作用範圍               |
+| ------------------------- | -------------------------- | ---------------------- |
+| `copilot-instructions.md` | `~/.copilot/`              | 全域（所有 Session）   |
+| `copilot-instructions.md` | `.github/`                 | 整個 Repository        |
+| `*.instructions.md`       | `.github/instructions/**/` | 依 Path 匹配（模組化） |
+| `AGENTS.md`               | Git Root 或工作目錄        | Agent 行為定義         |
+| `Copilot.md`              | Repository 根目錄          | Repository 層級指令    |
+| `GEMINI.md`               | Repository 根目錄          | 相容格式（自動讀取）   |
+| `CODEX.md`                | Repository 根目錄          | 相容格式（自動讀取）   |
 
 > 📝 **注意**：所有自訂指令檔會**合併使用**，而非基於優先順序覆蓋。Repository 指令始終優先於全域指令。指令應保持簡潔且可操作——過長的指令會稀釋效果。
 
@@ -958,10 +962,10 @@ pip install python-lsp-server
 
 可在使用者層級或 Repository 層級配置 LSP 伺服器：
 
-| 層級 | 設定檔位置 | 作用範圍 |
-|------|-----------|---------|
-| **使用者層級** | `~/.copilot/lsp-config.json` | 所有專案 |
-| **Repository 層級** | `.github/lsp.json` | 特定專案 |
+| 層級                | 設定檔位置                   | 作用範圍 |
+| ------------------- | ---------------------------- | -------- |
+| **使用者層級**      | `~/.copilot/lsp-config.json` | 所有專案 |
+| **Repository 層級** | `.github/lsp.json`           | 特定專案 |
 
 **設定範例：**
 
@@ -1007,26 +1011,26 @@ Hooks 允許在 Agent 執行的關鍵時間點執行自訂 Shell 指令，實現
 
 ### Hook 事件類型
 
-| Hook 事件 | 觸發時機 | 典型用途 |
-|-----------|---------|---------|
-| `preToolUse` | 工具執行**前** | 驗證指令安全性、修改參數、要求確認 |
-| `postToolUse` | 工具執行**後**（成功時） | 記錄日誌、觸發通知 |
-| `postToolUseFailure` | 工具執行**失敗時** | 錯誤記錄、告警通知（v1.0.15+） |
-| `sessionStart` | Session 啟動時 | 注入額外 Context、環境檢查 |
-| `sessionEnd` | Session 結束時 | 清理資源、發送摘要通知（v1.0.22+） |
-| `preCompact` | Context 壓縮**前** | 儲存重要資訊 |
-| `subagentStart` | 子代理啟動時 | 為子代理注入額外 Context |
-| `agentStop` / `subagentStop` | Agent 完成時 | 清理資源、發送通知 |
-| `notification` | Shell 完成、權限提示、Elicitation 對話框、Agent 完成 | 非同步通知（v1.0.18+） |
-| `PermissionRequest` | 工具權限請求前 | 程式化批准或拒絕工具權限（v1.0.16+） |
+| Hook 事件                    | 觸發時機                                             | 典型用途                             |
+| ---------------------------- | ---------------------------------------------------- | ------------------------------------ |
+| `preToolUse`                 | 工具執行**前**                                       | 驗證指令安全性、修改參數、要求確認   |
+| `postToolUse`                | 工具執行**後**（成功時）                             | 記錄日誌、觸發通知                   |
+| `postToolUseFailure`         | 工具執行**失敗時**                                   | 錯誤記錄、告警通知（v1.0.15+）       |
+| `sessionStart`               | Session 啟動時                                       | 注入額外 Context、環境檢查           |
+| `sessionEnd`                 | Session 結束時                                       | 清理資源、發送摘要通知（v1.0.22+）   |
+| `preCompact`                 | Context 壓縮**前**                                   | 儲存重要資訊                         |
+| `subagentStart`              | 子代理啟動時                                         | 為子代理注入額外 Context             |
+| `agentStop` / `subagentStop` | Agent 完成時                                         | 清理資源、發送通知                   |
+| `notification`               | Shell 完成、權限提示、Elicitation 對話框、Agent 完成 | 非同步通知（v1.0.18+）               |
+| `PermissionRequest`          | 工具權限請求前                                       | 程式化批准或拒絕工具權限（v1.0.16+） |
 
 ### Hook 設定檔位置
 
-| 位置 | 作用範圍 |
-|------|---------|
-| `~/.copilot/hooks/` | 個人層級（所有專案） |
-| `.github/hooks/` | Repository 層級 |
-| `settings.json` / `settings.local.json` / `config.json` 內 | 混合設定 |
+| 位置                                                       | 作用範圍             |
+| ---------------------------------------------------------- | -------------------- |
+| `~/.copilot/hooks/`                                        | 個人層級（所有專案） |
+| `.github/hooks/`                                           | Repository 層級      |
+| `settings.json` / `settings.local.json` / `config.json` 內 | 混合設定             |
 
 ### Hook 設定範例
 
@@ -1052,6 +1056,7 @@ Hooks 允許在 Agent 執行的關鍵時間點執行自訂 Shell 指令，實現
 ```
 
 > ⚠️ **重要**：
+>
 > - `preToolUse` Hook 可以 **拒絕工具執行**（deny）或 **修改參數**（modifiedArgs/updatedInput）
 > - Hook 支援 `ask` 權限決策，在工具執行前要求使用者確認
 > - `postToolUse` 僅在工具成功時觸發；失敗時觸發 `postToolUseFailure`（v1.0.15+）
@@ -1069,29 +1074,34 @@ Skills 是可擴充的專門指令集，讓 Copilot 能執行特定領域的任�
 
 ### Skill 檔案位置
 
-| 位置 | 作用範圍 |
-|------|---------|
-| `~/.copilot/skills/` | 個人層級 |
-| `~/.agents/skills/` | 個人層級（v1.0.11 新增，與 VS Code 一致） |
-| `.agents/skills/` | Repository 層級 |
-| `.github/skills/` | Repository 層級 |
+| 位置                 | 作用範圍                                  |
+| -------------------- | ----------------------------------------- |
+| `~/.copilot/skills/` | 個人層級                                  |
+| `~/.agents/skills/`  | 個人層級（v1.0.11 新增，與 VS Code 一致） |
+| `.agents/skills/`    | Repository 層級                           |
+| `.github/skills/`    | Repository 層級                           |
 
 ### Skill 檔案格式
 
 ```markdown
 <!-- .agents/skills/database-migration.md -->
+
 ---
+
 name: database-migration
 description: 執行資料庫 Migration 操作
 allowed-tools:
-  - shell(mvn)
-  - shell(flyway)
-  - write
+
+- shell(mvn)
+- shell(flyway)
+- write
+
 ---
 
 # Database Migration Skill
 
 你是資料庫 Migration 專家，負責：
+
 1. 建立 Flyway migration 腳本
 2. 驗證 Migration 相容性
 3. 執行 Migration 並驗證結果
@@ -1164,6 +1174,7 @@ Plugin 使用 `plugin.json` 或 `.claude-plugin/plugin.json` / `.plugin/` 目錄
 ### 預設 Marketplace
 
 Copilot CLI 內建以下預設 Marketplace：
+
 - **copilot-plugins**：官方插件市集
 - **awesome-copilot**：社群精選插件
 
@@ -1190,6 +1201,7 @@ copilot --plugin-dir /path/to/extension
 ### Extension 格式
 
 Extension 可以是 CommonJS 模組（`extension.cjs`）或 ES Module，支援：
+
 - 註冊自訂 Slash Command
 - 提供自訂工具與 Hook
 - 在 Session 啟動或加入時注入功能
@@ -1250,15 +1262,15 @@ copilot --acp
 
 ### ACP 能力
 
-| 能力 | 說明 |
-|------|------|
-| Session 管理 | 列出、建立、加入、恢復 Session |
-| 模型切換 | 在 Session 中動態變更模型 |
-| Slash Command | SDK 客戶端可註冊自訂 Slash Command |
-| Elicitation | 向使用者顯示互動式表單 |
-| Plan 模式 | 支援 Plan 審核與 Autopilot |
-| Fleet 模式 | 支援平行子代理 |
-| Skills / Plugins / MCP | 完整的擴充體系支援 |
+| 能力                   | 說明                               |
+| ---------------------- | ---------------------------------- |
+| Session 管理           | 列出、建立、加入、恢復 Session     |
+| 模型切換               | 在 Session 中動態變更模型          |
+| Slash Command          | SDK 客戶端可註冊自訂 Slash Command |
+| Elicitation            | 向使用者顯示互動式表單             |
+| Plan 模式              | 支援 Plan 審核與 Autopilot         |
+| Fleet 模式             | 支援平行子代理                     |
+| Skills / Plugins / MCP | 完整的擴充體系支援                 |
 
 ### SDK 整合
 
@@ -1292,21 +1304,21 @@ copilot
 
 ### 追蹤的 Span 類型
 
-| Span 類型 | 說明 |
-|-----------|------|
-| **Agent Session** | 整個 Session 的生命週期 |
-| **LLM Call** | 每次模型呼叫的延遲、Token 數 |
-| **Tool Execution** | 工具執行的持續時間與結果 |
-| **Sub-agent** | 子代理 Span（使用 INTERNAL kind） |
+| Span 類型          | 說明                                |
+| ------------------ | ----------------------------------- |
+| **Agent Session**  | 整個 Session 的生命週期             |
+| **LLM Call**       | 每次模型呼叫的延遲、Token 數        |
+| **Tool Execution** | 工具執行的持續時間與結果            |
+| **Sub-agent**      | 子代理 Span（使用 INTERNAL kind）   |
 | **Hook Execution** | Hook 觸發記錄（以 Span Event 形式） |
 
 ### 觀測指標
 
-| 指標 | 說明 |
-|------|------|
-| `github.copilot.time_to_first_chunk` | 首次串流回應的延遲（僅串流模式） |
-| Token 消耗 | 每次 LLM 呼叫的 Input / Output Token 數 |
-| 推理 Token | 支援模型的推理 Token 消耗（非零時顯示） |
+| 指標                                 | 說明                                    |
+| ------------------------------------ | --------------------------------------- |
+| `github.copilot.time_to_first_chunk` | 首次串流回應的延遲（僅串流模式）        |
+| Token 消耗                           | 每次 LLM 呼叫的 Input / Output Token 數 |
+| 推理 Token                           | 支援模型的推理 Token 消耗（非零時顯示） |
 
 > 💡 **提示**：此功能自 v1.0.4 起引入，v1.0.19-v1.0.20 持續強化。可搭配 Jaeger、Grafana Tempo 或其他 OTEL 相容的觀測平台使用。
 
@@ -1373,10 +1385,10 @@ copilot --resume  # 自動繼承
 
 ### 使用場景
 
-| 場景 | 說明 |
-|------|------|
-| 跨裝置接續 | 在桌機開始工作，手機或筆電接續 |
-| 遠端協助 | 讓其他開發者遠端控制您的 CLI Session |
+| 場景              | 說明                                         |
+| ----------------- | -------------------------------------------- |
+| 跨裝置接續        | 在桌機開始工作，手機或筆電接續               |
+| 遠端協助          | 讓其他開發者遠端控制您的 CLI Session         |
 | Coding Agent 管理 | 遠端控制 Copilot Coding Agent 任務並提供引導 |
 
 > 💡 **提示**：ACP 伺服器僅綁定 localhost，防止意外的網路暴露（v1.0.26+）。遠端 Session 被組織策略封鎖時會顯示清晰的提示訊息。
@@ -1389,12 +1401,12 @@ Copilot CLI 支援連接您自己的模型供應商，取代 GitHub 託管的模
 
 ### 設定環境變數
 
-| 環境變數 | 說明 |
-|---------|------|
-| `COPILOT_PROVIDER_BASE_URL` | 模型供應商 API 端點的基礎 URL |
-| `COPILOT_PROVIDER_TYPE` | 供應商類型：`openai`（預設）、`azure`、`anthropic`。`openai` 類型適用於任何 OpenAI 相容端點（含 Ollama、vLLM） |
-| `COPILOT_PROVIDER_API_KEY` | 供應商的 API 金鑰。不需要認證的供應商（如本地 Ollama）可省略 |
-| `COPILOT_MODEL` | 使用的模型名稱（使用自訂供應商時**必填**） |
+| 環境變數                    | 說明                                                                                                           |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `COPILOT_PROVIDER_BASE_URL` | 模型供應商 API 端點的基礎 URL                                                                                  |
+| `COPILOT_PROVIDER_TYPE`     | 供應商類型：`openai`（預設）、`azure`、`anthropic`。`openai` 類型適用於任何 OpenAI 相容端點（含 Ollama、vLLM） |
+| `COPILOT_PROVIDER_API_KEY`  | 供應商的 API 金鑰。不需要認證的供應商（如本地 Ollama）可省略                                                   |
+| `COPILOT_MODEL`             | 使用的模型名稱（使用自訂供應商時**必填**）                                                                     |
 
 ### 使用範例
 
@@ -1428,12 +1440,12 @@ copilot
 
 ### 注意事項
 
-| 特性 | 說明 |
-|------|------|
-| 內建子代理繼承 | `/review`、`/task`、explore、`/fleet` 等內建子代理會自動繼承您的供應商設定 |
-| Premium Requests | 使用自訂供應商時，Premium Request 成本估算會隱藏。Token 使用量（輸入、輸出、快取）仍會顯示 |
+| 特性             | 說明                                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| 內建子代理繼承   | `/review`、`/task`、explore、`/fleet` 等內建子代理會自動繼承您的供應商設定                    |
+| Premium Requests | 使用自訂供應商時，Premium Request 成本估算會隱藏。Token 使用量（輸入、輸出、快取）仍會顯示    |
 | `/delegate` 限制 | `/delegate` 指令僅在同時登入 GitHub 時有效，因為它會將 Session 轉交給 GitHub 伺服器端 Copilot |
-| 詳細設定說明 | 執行 `copilot help providers` 查看完整設定指南 |
+| 詳細設定說明     | 執行 `copilot help providers` 查看完整設定指南                                                |
 
 > 💡 **企業應用場景**：企業可透過自訂模型供應商連接內部 AI Gateway，實現資料不出企業邊界的合規需求，同時享有 Copilot CLI 的完整工具鏈與 Agent 能力。
 
@@ -1445,11 +1457,11 @@ Copilot CLI 支援視覺參考輸入，可將設計稿、截圖或圖表直接�
 
 ### 輸入方式
 
-| 方式 | 操作 | 適用場景 |
-|------|------|---------|
-| **拖放** | 直接將圖片拖放到 CLI 輸入區域 | 桌面操作 |
-| **剪貼簿貼上** | `Ctrl + V` 貼上剪貼簿中的圖片 | 截圖後快速輸入 |
-| **檔案引用** | 在 Prompt 中使用 `@` 引用圖片檔案 | 引用設計稿或 Mockup |
+| 方式           | 操作                              | 適用場景            |
+| -------------- | --------------------------------- | ------------------- |
+| **拖放**       | 直接將圖片拖放到 CLI 輸入區域     | 桌面操作            |
+| **剪貼簿貼上** | `Ctrl + V` 貼上剪貼簿中的圖片     | 截圖後快速輸入      |
+| **檔案引用**   | 在 Prompt 中使用 `@` 引用圖片檔案 | 引用設計稿或 Mockup |
 
 ### 使用範例
 
@@ -1474,14 +1486,14 @@ Copilot CLI 內建一組專門化的 Agent，由 AI 模型自動判斷何時委�
 
 ### 內建 Agent 清單
 
-| Agent | 功能 | 運作方式 |
-|-------|------|---------|
-| **Explore** | 快速程式碼庫分析，在不汙染主 Context 的情況下回答程式碼相關問題 | 獨立 Context 運行 |
-| **Task** | 執行指令（測試、建置等），成功時簡要摘要，失敗時完整輸出 | 自動摘要結果 |
-| **General Purpose** | 處理複雜多步驟任務，需要完整工具集與高品質推理 | 獨立 Context，保持主對話清晰 |
-| **Code Review** | 審查程式碼變更，專注發現真正問題，最小化雜訊 | 多模型交叉審查 |
-| **Research** | 跨程式碼庫、相關儲存庫和網路進行深度研究，產出帶有引用的詳細報告 | 深度搜尋與分析 |
-| **Rubber Duck** | 作為建設性批評者，對非瑣碎任務提供回饋 | **自動觸發**，無需手動呼叫 |
+| Agent               | 功能                                                             | 運作方式                     |
+| ------------------- | ---------------------------------------------------------------- | ---------------------------- |
+| **Explore**         | 快速程式碼庫分析，在不汙染主 Context 的情況下回答程式碼相關問題  | 獨立 Context 運行            |
+| **Task**            | 執行指令（測試、建置等），成功時簡要摘要，失敗時完整輸出         | 自動摘要結果                 |
+| **General Purpose** | 處理複雜多步驟任務，需要完整工具集與高品質推理                   | 獨立 Context，保持主對話清晰 |
+| **Code Review**     | 審查程式碼變更，專注發現真正問題，最小化雜訊                     | 多模型交叉審查               |
+| **Research**        | 跨程式碼庫、相關儲存庫和網路進行深度研究，產出帶有引用的詳細報告 | 深度搜尋與分析               |
+| **Rubber Duck**     | 作為建設性批評者，對非瑣碎任務提供回饋                           | **自動觸發**，無需手動呼叫   |
 
 ### Agent 使用方式
 
@@ -1498,12 +1510,12 @@ copilot --agent=backend-expert --prompt "重構 UserService"
 
 ### 自訂 Agent 層級
 
-| 層級 | 位置 | 作用範圍 |
-|------|------|---------|
-| **系統層級** | 內建 | 最高優先權 |
-| **使用者層級** | `~/.copilot/agents/` | 所有專案 |
-| **Repository 層級** | `.github/agents/` | 當前專案 |
-| **組織/企業層級** | 組織 `.github-private` Repository 的 `/agents/` 目錄 | 組織下所有專案 |
+| 層級                | 位置                                                 | 作用範圍       |
+| ------------------- | ---------------------------------------------------- | -------------- |
+| **系統層級**        | 內建                                                 | 最高優先權     |
+| **使用者層級**      | `~/.copilot/agents/`                                 | 所有專案       |
+| **Repository 層級** | `.github/agents/`                                    | 當前專案       |
+| **組織/企業層級**   | 組織 `.github-private` Repository 的 `/agents/` 目錄 | 組織下所有專案 |
 
 > ⚠️ **優先順序**：系統 Agent > Repository Agent > 組織 Agent。發生命名衝突時，高優先順序的 Agent 會覆蓋低優先順序的。
 
@@ -1517,13 +1529,13 @@ copilot --agent=backend-expert --prompt "重構 UserService"
 
 在 CLI 中撰寫 Prompt 的最佳實務：
 
-| 原則 | 說明 | 範例 |
-|------|------|------|
-| **具體明確** | 指定技術棧、框架、命名 | 「使用 Spring Boot 3.x + JPA」而非「寫一個 API」 |
-| **提供上下文** | 使用 @ 引用檔案 | 「參考 @UserController.java 的風格」 |
-| **指定輸出格式** | 說明預期結果 | 「回傳 JSON 格式，包含 status 和 data」 |
-| **分步驟** | 複雜任務拆解 | 使用 Plan Mode |
-| **限制範圍** | 明確不要做什麼 | 「不要修改現有的測試」 |
+| 原則             | 說明                   | 範例                                             |
+| ---------------- | ---------------------- | ------------------------------------------------ |
+| **具體明確**     | 指定技術棧、框架、命名 | 「使用 Spring Boot 3.x + JPA」而非「寫一個 API」 |
+| **提供上下文**   | 使用 @ 引用檔案        | 「參考 @UserController.java 的風格」             |
+| **指定輸出格式** | 說明預期結果           | 「回傳 JSON 格式，包含 status 和 data」          |
+| **分步驟**       | 複雜任務拆解           | 使用 Plan Mode                                   |
+| **限制範圍**     | 明確不要做什麼         | 「不要修改現有的測試」                           |
 
 ### 企業級 Prompt 範本
 
@@ -1587,17 +1599,20 @@ graph TD
 # 專案：企業級訂單管理系統
 
 ## 技術棧
+
 - Java 21 + Spring Boot 3.x
 - PostgreSQL 15 + JPA/Hibernate
 - Redis 7.x（快取）
 - Kafka（事件驅動）
 
 ## 架構規範
+
 - Clean Architecture（4 層）
 - Domain 層不依賴 Infrastructure
 - 使用 Port/Adapter 模式
 
 ## API 規範
+
 - RESTful API，版本化（/api/v1/）
 - 回傳格式統一使用 ApiResponse<T>
 - 錯誤碼：業務錯誤 4xxxx，系統錯誤 5xxxx
@@ -1607,7 +1622,9 @@ graph TD
 
 ```markdown
 <!-- .github/instructions/api-controllers.instructions.md -->
+
 ---
+
 applyTo: "**/controller/**"
 ---
 
@@ -1624,24 +1641,30 @@ applyTo: "**/controller/**"
 
 ```markdown
 <!-- .github/agents/backend-expert.md -->
+
 ---
+
 name: backend-expert
 description: 後端開發專家
 tools:
-  - shell(mvn)
-  - shell(git)
-  - write
+
+- shell(mvn)
+- shell(git)
+- write
+
 ---
 
 # Backend Expert Agent
 
 你是一位資深 Java 後端工程師，專精於：
+
 - Spring Boot 3.x 開發
 - Clean Architecture 設計
 - 高效能 API 開發
 - 資料庫最佳化
 
 ## 工作原則
+
 1. 所有程式碼必須有測試
 2. 遵循 SOLID 原則
 3. 使用 Log4j2 記錄關鍵操作
@@ -1879,6 +1902,7 @@ copilot --connect <session-id>
 ```
 
 > 📝 **v1.0.35+ 行為變更**：
+>
 > - `--continue` 偏好恢復**目前工作目錄**的 Session，而非最近觸碰的 Session
 > - 使用者設定現在儲存在 `~/.copilot/settings.json`，與 `config.json` 中的內部狀態分離
 > - `/clear` 完全放棄目前 Session，`/new` 開啟新對話但保留舊 Session 在背景
@@ -1889,12 +1913,12 @@ copilot --connect <session-id>
 
 根據[官方文件](https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-copilot-cli#steering-the-conversation)，您可以在 Copilot 思考時進行即時引導：
 
-| 引導技巧 | 說明 |
-|---------|------|
-| **排隊訊息** | 在 Copilot 處理中發送後續訊息，引導方向或排隊附加指令 |
+| 引導技巧         | 說明                                                        |
+| ---------------- | ----------------------------------------------------------- |
+| **排隊訊息**     | 在 Copilot 處理中發送後續訊息，引導方向或排隊附加指令       |
 | **拒絕時給回饋** | 拒絕工具權限請求時，可同時提供替代建議，讓 Copilot 調整策略 |
-| **中途 Esc** | 按 `Esc` 中斷目前操作並重新指引 |
-| **Ctrl+C** | 中斷執行，Copilot 會保存對話狀態 |
+| **中途 Esc**     | 按 `Esc` 中斷目前操作並重新指引                             |
+| **Ctrl+C**       | 中斷執行，Copilot 會保存對話狀態                            |
 
 ### `#` 參照 GitHub 資源
 
@@ -1972,13 +1996,13 @@ copilot
 
 ### 適用場景
 
-| 場景 | 說明 |
-|------|------|
-| 跨模組重構 | 更新共用模式到所有使用位置 |
-| API 契約變更 | 同時更新 Server 與 Client |
+| 場景         | 說明                       |
+| ------------ | -------------------------- |
+| 跨模組重構   | 更新共用模式到所有使用位置 |
+| API 契約變更 | 同時更新 Server 與 Client  |
 | 跨 Repo 文件 | 產出引用多個程式碼庫的文件 |
-| 依賴升級 | 在 Monorepo 中統一升級依賴 |
-| 微服務協調 | 協調多個微服務的介面變更 |
+| 依賴升級     | 在 Monorepo 中統一升級依賴 |
+| 微服務協調   | 協調多個微服務的介面變更   |
 
 ## 5.7 圖片驅動開發
 
@@ -2002,12 +2026,12 @@ copilot
 
 ### 適用場景
 
-| 場景 | 說明 |
-|------|------|
-| 設計稿實作 | 從 Figma/XD 匯出的設計截圖直接實作 |
-| Bug 截圖修復 | 從 QA 回報的截圖定位並修復問題 |
-| UI 差異比對 | 比較設計稿與實作的視覺差異 |
-| 圖表解讀 | 分析架構圖、流程圖並產出對應程式碼 |
+| 場景         | 說明                               |
+| ------------ | ---------------------------------- |
+| 設計稿實作   | 從 Figma/XD 匯出的設計截圖直接實作 |
+| Bug 截圖修復 | 從 QA 回報的截圖定位並修復問題     |
+| UI 差異比對  | 比較設計稿與實作的視覺差異         |
+| 圖表解讀     | 分析架構圖、流程圖並產出對應程式碼 |
 
 ---
 
@@ -2043,6 +2067,7 @@ Copilot 想要執行：rm -rf ./build/
 ### 位置感知權限（v1.0.37+）
 
 工具批准規則現在會考慮**工作目錄**：
+
 - 批准規則在主 Session 和子代理之間**共享**
 - 切換工作目錄時，先前對特定路徑的批准仍然有效
 - CLI 在不同目錄啟動時會使用各自的權限設定
@@ -2050,13 +2075,13 @@ Copilot 想要執行：rm -rf ./build/
 
 ### 工具權限控制選項
 
-| 選項 | 功能 | 安全等級 | 適用場景 |
-|------|------|---------|---------|
-| `--allow-all-tools` | 允許所有工具 | 🔴 低 | 受控環境 / CI |
-| `--allow-tool='shell(mvn)'` | 允許特定指令 | 🟢 高 | 生產環境開發 |
-| `--deny-tool='shell(rm)'` | 禁止特定指令 | 🟢 高 | 防止危險操作 |
-| `--deny-tool='shell(git push)'` | 禁止 push | 🟢 高 | 防止意外推送 |
-| 預設（無選項） | 每次詢問 | 🟢 最高 | 一般開發 |
+| 選項                            | 功能         | 安全等級 | 適用場景      |
+| ------------------------------- | ------------ | -------- | ------------- |
+| `--allow-all-tools`             | 允許所有工具 | 🔴 低    | 受控環境 / CI |
+| `--allow-tool='shell(mvn)'`     | 允許特定指令 | 🟢 高    | 生產環境開發  |
+| `--deny-tool='shell(rm)'`       | 禁止特定指令 | 🟢 高    | 防止危險操作  |
+| `--deny-tool='shell(git push)'` | 禁止 push    | 🟢 高    | 防止意外推送  |
+| 預設（無選項）                  | 每次詢問     | 🟢 最高  | 一般開發      |
 
 ### 企業建議的安全配置
 
@@ -2095,13 +2120,13 @@ copilot --allow-all
 
 ### YOLO Mode 風險矩陣
 
-| 風險類型 | 說明 | 嚴重度 |
-|---------|------|--------|
-| **資料刪除** | 可能執行 `rm -rf` | 🔴 嚴重 |
+| 風險類型     | 說明                         | 嚴重度  |
+| ------------ | ---------------------------- | ------- |
+| **資料刪除** | 可能執行 `rm -rf`            | 🔴 嚴重 |
 | **機密外洩** | 可能讀取 `.env` 並輸出到日誌 | 🔴 嚴重 |
-| **Git 操作** | 可能執行 `git push --force` | 🟠 高 |
-| **系統變更** | 可能修改系統設定檔 | 🟠 高 |
-| **網路存取** | 可能下載不受信任的檔案 | 🟡 中 |
+| **Git 操作** | 可能執行 `git push --force`  | 🟠 高   |
+| **系統變更** | 可能修改系統設定檔           | 🟠 高   |
+| **網路存取** | 可能下載不受信任的檔案       | 🟡 中   |
 
 > ⚠️ **企業環境嚴禁使用 YOLO Mode**。如必須使用，應在 VM、Container 或沙箱環境中執行。
 
@@ -2109,12 +2134,12 @@ copilot --allow-all
 
 ### Copilot Policy 設定建議
 
-| 政策 | 建議設定 | 說明 |
-|------|---------|------|
-| **Copilot CLI 存取** | 啟用（特定團隊） | 只對有需要的團隊開放 |
-| **MCP Server** | 限制為白名單 | 只允許內部核準的 MCP |
-| **模型選擇** | 限制可用模型 | 避免使用未經評估的模型 |
-| **Trusted Directories** | 限制為專案目錄 | 避免存取系統目錄 |
+| 政策                    | 建議設定         | 說明                   |
+| ----------------------- | ---------------- | ---------------------- |
+| **Copilot CLI 存取**    | 啟用（特定團隊） | 只對有需要的團隊開放   |
+| **MCP Server**          | 限制為白名單     | 只允許內部核準的 MCP   |
+| **模型選擇**            | 限制可用模型     | 避免使用未經評估的模型 |
+| **Trusted Directories** | 限制為專案目錄   | 避免存取系統目錄       |
 
 ### 資安控管措施
 
@@ -2212,15 +2237,16 @@ sys.exit(0)
 
 ### MCP Server 政策控管
 
-| 政策 | 說明 | 設定方式 |
-|------|------|---------|
-| **第三方 MCP 封鎖** | 封鎖未經核準的第三方 MCP Server | 組織政策設定 |
-| **MCP 允許清單** | 僅允許白名單中的 MCP Server | `MCP_ALLOWLIST` 實驗性旗標（v1.0.8+） |
-| **MCP Registry 驗證** | 透過配置的 Registry 驗證 MCP Server | 組織政策 |
-| **MCP OAuth 認證** | MCP Server 認證管理 | `/mcp auth`（v1.0.15+） |
-| **Repository MCP 信任** | 僅在信任資料夾後載入 `.mcp.json` | 資料夾信任確認 |
+| 政策                    | 說明                                | 設定方式                              |
+| ----------------------- | ----------------------------------- | ------------------------------------- |
+| **第三方 MCP 封鎖**     | 封鎖未經核準的第三方 MCP Server     | 組織政策設定                          |
+| **MCP 允許清單**        | 僅允許白名單中的 MCP Server         | `MCP_ALLOWLIST` 實驗性旗標（v1.0.8+） |
+| **MCP Registry 驗證**   | 透過配置的 Registry 驗證 MCP Server | 組織政策                              |
+| **MCP OAuth 認證**      | MCP Server 認證管理                 | `/mcp auth`（v1.0.15+）               |
+| **Repository MCP 信任** | 僅在信任資料夾後載入 `.mcp.json`    | 資料夾信任確認                        |
 
 > ⚠️ **已知限制**（[官方文件](https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-copilot-cli#known-mcp-server-policy-limitations)）：CLI 目前**無法支援**以下組織級 MCP 政策：
+>
 > - 「MCP servers in Copilot」（控制是否允許使用 MCP）
 > - 「MCP Registry URL」（控制允許的 MCP Registry 來源）
 
@@ -2400,7 +2426,7 @@ public class CustomerController {
 ```
 > 線上環境在批量匯入客戶資料時，偶發 DataIntegrityViolationException。
   相關檔案：@CustomerImportService.java
-  
+
   請:
   1. 分析可能的根因
   2. 修復問題
@@ -2457,7 +2483,7 @@ void shouldRollbackAllWhenCriticalErrorOccurs() {
     // When & Then
     assertThrows(ImportException.class,
         () -> customerImportService.batchImport(batch));
-    
+
     // 確認沒有部分資料被寫入
     assertThat(customerRepository.count()).isEqualTo(0);
 }
@@ -2514,26 +2540,29 @@ git push origin feature/jwt-auth
 
 ### 🔧 主要變更
 
-| 類型 | 檔案 | 說明 |
-|------|------|------|
-| 新增 | `AuthController.java` | 認證 API（登入/登出/Refresh） |
-| 新增 | `JwtTokenService.java` | JWT Token 管理 |
-| 新增 | `SecurityConfig.java` | Spring Security 設定 |
-| 新增 | `JwtAuthenticationFilter.java` | JWT 過濾器 |
-| 修改 | `application.yml` | JWT 相關設定 |
-| 新增 | `AuthServiceTest.java` | 認證測試（23 cases） |
+| 類型 | 檔案                           | 說明                          |
+| ---- | ------------------------------ | ----------------------------- |
+| 新增 | `AuthController.java`          | 認證 API（登入/登出/Refresh） |
+| 新增 | `JwtTokenService.java`         | JWT Token 管理                |
+| 新增 | `SecurityConfig.java`          | Spring Security 設定          |
+| 新增 | `JwtAuthenticationFilter.java` | JWT 過濾器                    |
+| 修改 | `application.yml`              | JWT 相關設定                  |
+| 新增 | `AuthServiceTest.java`         | 認證測試（23 cases）          |
 
 ### ✅ 測試結果
+
 - 單元測試：23/23 ✅
 - 整合測試：8/8 ✅
 - 覆蓋率：87%
 
 ### ⚠️ 部署注意事項
+
 1. 需設定環境變數：`JWT_SECRET`, `JWT_EXPIRATION`
 2. 需在 Redis 中啟用 Token 黑名單功能
 3. 資料庫需執行 migration：`V2__add_refresh_token_table.sql`
 
 ### 🔒 安全考量
+
 - Token 有效期：Access Token 30 分鐘，Refresh Token 7 天
 - 使用 RS256 演算法簽名
 - Refresh Token 使用一次即失效（Rotation）
@@ -2557,7 +2586,7 @@ git push origin feature/jwt-auth
   2. 按銀行代碼分組統計
   3. 產生 CSV 報表輸出到 /reports/ 目錄
   4. 發送統計摘要到指定 Email
-  
+
   要求：
   - 使用 Spring Batch 5.x
   - 支持斷點續跑（Restartable）
@@ -2586,7 +2615,7 @@ public class DailyTransactionReportJobConfig {
                 .listener(new JobExecutionListener() {
                     @Override
                     public void beforeJob(JobExecution jobExecution) {
-                        log.info("開始執行每日交易報表 Job: {}", 
+                        log.info("開始執行每日交易報表 Job: {}",
                             LocalDate.now());
                     }
                     @Override
@@ -2642,13 +2671,13 @@ public class DailyTransactionReportJobConfig {
 
 ### Prompt 品質等級
 
-| 等級 | 範例 | 問題 |
-|------|------|------|
-| 🔴 差 | 「寫一個 API」 | 無上下文、無具體需求 |
-| 🟠 一般 | 「寫一個使用者 CRUD API」 | 缺乏技術細節 |
-| 🟡 好 | 「用 Spring Boot 寫使用者 CRUD API，使用 JPA」 | 缺乏架構指引 |
-| 🟢 很好 | 「在 @UserController 新增 GET /api/v1/users/{id}，回傳 UserDTO，使用 Service 層，404 時回傳 ErrorResponse」 | 清晰、完整 |
-| 🌟 最佳 | 使用 Plan Mode + Custom Instructions + @ 引用 | 企業級品質 |
+| 等級    | 範例                                                                                                        | 問題                 |
+| ------- | ----------------------------------------------------------------------------------------------------------- | -------------------- |
+| 🔴 差   | 「寫一個 API」                                                                                              | 無上下文、無具體需求 |
+| 🟠 一般 | 「寫一個使用者 CRUD API」                                                                                   | 缺乏技術細節         |
+| 🟡 好   | 「用 Spring Boot 寫使用者 CRUD API，使用 JPA」                                                              | 缺乏架構指引         |
+| 🟢 很好 | 「在 @UserController 新增 GET /api/v1/users/{id}，回傳 UserDTO，使用 Service 層，404 時回傳 ErrorResponse」 | 清晰、完整           |
+| 🌟 最佳 | 使用 Plan Mode + Custom Instructions + @ 引用                                                               | 企業級品質           |
 
 ### Prompt 結構範本
 
@@ -2693,14 +2722,14 @@ graph TD
 
 ### 何時應人工介入
 
-| 場景 | 建議 | 原因 |
-|------|------|------|
-| 安全相關程式碼 | 🔴 必須人工審查 | AI 可能遺漏安全漏洞 |
-| 資料庫 Migration | 🔴 必須人工審查 | 不可逆操作 |
-| Git Force Push | 🔴 必須人工審查 | 可能覆蓋他人工作 |
-| 一般 CRUD 程式碼 | 🟢 可信任 Copilot | 成熟模式 |
-| 單元測試 | 🟢 可信任 Copilot | 容易驗證 |
-| 複雜業務邏輯 | 🟠 需審查 | 業務正確性需人工判斷 |
+| 場景             | 建議              | 原因                 |
+| ---------------- | ----------------- | -------------------- |
+| 安全相關程式碼   | 🔴 必須人工審查   | AI 可能遺漏安全漏洞  |
+| 資料庫 Migration | 🔴 必須人工審查   | 不可逆操作           |
+| Git Force Push   | 🔴 必須人工審查   | 可能覆蓋他人工作     |
+| 一般 CRUD 程式碼 | 🟢 可信任 Copilot | 成熟模式             |
+| 單元測試         | 🟢 可信任 Copilot | 容易驗證             |
+| 複雜業務邏輯     | 🟠 需審查         | 業務正確性需人工判斷 |
 
 ## 8.3 適合與不適合使用的場景
 
@@ -2792,13 +2821,13 @@ graph LR
 
 官方建議每個 Session 聚焦於**單一目標**，而非在同一 Session 中混合不同任務：
 
-| 做法 | 說明 |
-|------|------|
-| ✅ 一個 Session 一個目標 | 「重構認證模組」→ 完成後開新 Session |
-| ✅ 適時壓縮 Context | 長 Session 中用 `/compact` 釋放空間 |
-| ✅ 使用 `/ask` 做快速查詢 | 不污染主要 Context |
-| ❌ 在同一 Session 處理多個不相關任務 | Context 混亂導致品質下降 |
-| ❌ 等 Context 溢出才壓縮 | 應主動管理 |
+| 做法                                 | 說明                                 |
+| ------------------------------------ | ------------------------------------ |
+| ✅ 一個 Session 一個目標             | 「重構認證模組」→ 完成後開新 Session |
+| ✅ 適時壓縮 Context                  | 長 Session 中用 `/compact` 釋放空間  |
+| ✅ 使用 `/ask` 做快速查詢            | 不污染主要 Context                   |
+| ❌ 在同一 Session 處理多個不相關任務 | Context 混亂導致品質下降             |
+| ❌ 等 Context 溢出才壓縮             | 應主動管理                           |
 
 ### Session 命名規範
 
@@ -2863,7 +2892,9 @@ copilot \
 
 ```markdown
 <!-- .github/copilot-instructions.md -->
+
 ## 工具使用規範
+
 - 允許：git、mvn、npm、docker 相關操作
 - 禁止：git push --force、rm -rf /、kubectl delete namespace
 - 所有資料庫操作需人工確認
@@ -2874,32 +2905,32 @@ copilot \
 
 ### 團隊指引建立建議
 
-| 項目 | 說明 |
-|------|------|
-| Custom Instructions | 統一團隊程式碼風格、架構規範 |
-| Prompt 範本庫 | 共享常用 Prompt（存於 `.github/prompts/`） |
-| Agent 定義 | 為團隊角色定義專用 Agent |
-| Hook 規範 | 統一安全稽核、日誌格式 |
-| MCP Server | 統一整合工具（DB、Docker、監控） |
+| 項目                | 說明                                       |
+| ------------------- | ------------------------------------------ |
+| Custom Instructions | 統一團隊程式碼風格、架構規範               |
+| Prompt 範本庫       | 共享常用 Prompt（存於 `.github/prompts/`） |
+| Agent 定義          | 為團隊角色定義專用 Agent                   |
+| Hook 規範           | 統一安全稽核、日誌格式                     |
+| MCP Server          | 統一整合工具（DB、Docker、監控）           |
 
 ### 生產力量測指標
 
-| 指標 | 量測方式 | 說明 |
-|------|---------|------|
-| Commit 頻率 | Git log 分析 | 每日 / 每週 Commit 次數變化 |
-| PR 週期 | GitHub Insights | 從開 PR 到 Merge 的時間 |
-| Code Review 回退率 | PR 統計 | AI 產生程式碼被退回修改的比例 |
-| Session 利用率 | `/usage` 統計 | Premium Requests 使用效率 |
-| Bug 產出率 | Issue Tracker | AI 協助產生的程式碼之缺陷率 |
+| 指標               | 量測方式        | 說明                          |
+| ------------------ | --------------- | ----------------------------- |
+| Commit 頻率        | Git log 分析    | 每日 / 每週 Commit 次數變化   |
+| PR 週期            | GitHub Insights | 從開 PR 到 Merge 的時間       |
+| Code Review 回退率 | PR 統計         | AI 產生程式碼被退回修改的比例 |
+| Session 利用率     | `/usage` 統計   | Premium Requests 使用效率     |
+| Bug 產出率         | Issue Tracker   | AI 協助產生的程式碼之缺陷率   |
 
 ### 持續學習資源
 
-| 資源 | 連結 | 說明 |
-|------|------|------|
+| 資源                   | 連結                                                                                                           | 說明               |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------ |
 | GitHub Skills 互動課程 | [create-applications-with-the-copilot-cli](https://github.com/skills/create-applications-with-the-copilot-cli) | 官方 Hands-on 練習 |
-| 官方最佳實務 | [cli-best-practices](https://docs.github.com/copilot/how-tos/copilot-cli/cli-best-practices) | 定期更新的實務指引 |
-| Changelog | `/changelog` 或 [changelog.md](https://github.com/github/copilot-cli/blob/main/changelog.md) | 版本更新紀錄 |
-| Community Discussions | [GitHub Discussions](https://github.com/github/copilot-cli/discussions) | 社群討論與回饋 |
+| 官方最佳實務           | [cli-best-practices](https://docs.github.com/copilot/how-tos/copilot-cli/cli-best-practices)                   | 定期更新的實務指引 |
+| Changelog              | `/changelog` 或 [changelog.md](https://github.com/github/copilot-cli/blob/main/changelog.md)                   | 版本更新紀錄       |
+| Community Discussions  | [GitHub Discussions](https://github.com/github/copilot-cli/discussions)                                        | 社群討論與回饋     |
 
 ---
 
@@ -2935,11 +2966,11 @@ npm outdated -g @github/copilot
 
 ## 9.2 版本管理策略
 
-| 環境 | 建議版本 | 更新頻率 |
-|------|---------|---------|
-| 開發環境 | Latest Stable | 每月更新 |
-| CI/CD 環境 | 固定版本 | 每季度評估後更新 |
-| 企業統一 | 經測試的穩定版 | 由 DevOps 團隊統一管理 |
+| 環境       | 建議版本       | 更新頻率               |
+| ---------- | -------------- | ---------------------- |
+| 開發環境   | Latest Stable  | 每月更新               |
+| CI/CD 環境 | 固定版本       | 每季度評估後更新       |
+| 企業統一   | 經測試的穩定版 | 由 DevOps 團隊統一管理 |
 
 ### 企業版本管理建議
 
@@ -2956,17 +2987,17 @@ npm install -g @github/copilot@1.0.39
 
 ## 9.3 常見問題（FAQ）
 
-| 問題 | 解決方案 |
-|------|---------|
-| Copilot 回應太慢 | 1. 檢查網路連線<br>2. 使用 `/compact` 壓縮 context<br>3. 切換到更快的模型 |
-| Context 用完 | 使用 `/compact` 或開啟新 session |
-| Agent 不準確 | 1. 改善 custom instructions<br>2. 使用 @ 引用相關檔案<br>3. 使用 Plan Mode |
-| MCP Server 無法連線 | 1. `/mcp` 檢查狀態<br>2. 驗證 `.mcp.json` 設定<br>3. `/mcp reload` 重新載入 |
-| 無法建立 PR | 1. 確認 GitHub Token 權限<br>2. 確認 Repository 權限 |
-| 升級後行為改變 | 1. 檢查 Changelog（`/changelog`）<br>2. 更新 custom instructions |
+| 問題                  | 解決方案                                                                           |
+| --------------------- | ---------------------------------------------------------------------------------- |
+| Copilot 回應太慢      | 1. 檢查網路連線<br>2. 使用 `/compact` 壓縮 context<br>3. 切換到更快的模型          |
+| Context 用完          | 使用 `/compact` 或開啟新 session                                                   |
+| Agent 不準確          | 1. 改善 custom instructions<br>2. 使用 @ 引用相關檔案<br>3. 使用 Plan Mode         |
+| MCP Server 無法連線   | 1. `/mcp` 檢查狀態<br>2. 驗證 `.mcp.json` 設定<br>3. `/mcp reload` 重新載入        |
+| 無法建立 PR           | 1. 確認 GitHub Token 權限<br>2. 確認 Repository 權限                               |
+| 升級後行為改變        | 1. 檢查 Changelog（`/changelog`）<br>2. 更新 custom instructions                   |
 | 遠端 Session 無法連線 | 1. 確認組織策略未封鎖<br>2. 使用 `--remote` 啟動<br>3. 確認 ACP 伺服器在 localhost |
-| MCP OAuth 認證失敗 | 使用 `/mcp auth` 重新認證 |
-| Session 排序混亂 | 在 Session 選擇器中按 `s` 切換排序方式 |
+| MCP OAuth 認證失敗    | 使用 `/mcp auth` 重新認證                                                          |
+| Session 排序混亂      | 在 Session 選擇器中按 `s` 切換排序方式                                             |
 
 ## 9.4 效能與成本考量
 
@@ -3015,10 +3046,10 @@ copilot --version
 
 ### 發佈頻道（v1.0.29+）
 
-| 頻道 | 說明 | 適用對象 |
-|------|------|---------|
-| **stable** | 穩定版（預設） | 一般使用者、企業環境 |
-| **nightly** | 每日建置版 | 功能預覽、搶先體驗 |
+| 頻道        | 說明           | 適用對象             |
+| ----------- | -------------- | -------------------- |
+| **stable**  | 穩定版（預設） | 一般使用者、企業環境 |
+| **nightly** | 每日建置版     | 功能預覽、搶先體驗   |
 
 ```bash
 # 安裝 nightly 頻道
@@ -3034,12 +3065,12 @@ npm install -g @github/copilot@latest
 
 ### 企業更新策略
 
-| 策略 | 說明 | 建議 |
-|------|------|------|
-| **逐步推出** | 先在開發團隊測試，再推廣至全組織 | ✅ 推薦 |
-| **版本固定** | CI/CD 環境鎖定特定版本 | ✅ 推薦 |
-| **自動更新** | 開發機器使用 stable 頻道自動更新 | ⚠️ 需監控 |
-| **Nightly 預覽** | 指定人員使用 nightly 提前驗證 | ✅ 推薦 |
+| 策略             | 說明                             | 建議      |
+| ---------------- | -------------------------------- | --------- |
+| **逐步推出**     | 先在開發團隊測試，再推廣至全組織 | ✅ 推薦   |
+| **版本固定**     | CI/CD 環境鎖定特定版本           | ✅ 推薦   |
+| **自動更新**     | 開發機器使用 stable 頻道自動更新 | ⚠️ 需監控 |
+| **Nightly 預覽** | 指定人員使用 nightly 提前驗證    | ✅ 推薦   |
 
 ---
 
@@ -3049,232 +3080,232 @@ npm install -g @github/copilot@latest
 
 ### 啟動與基本操作
 
-| 指令 | 說明 |
-|------|------|
-| `copilot` | 啟動互動式介面 |
-| `copilot -p "..."` | 程式化呼叫（執行完即退出） |
-| `copilot --continue` | 繼續上次的 session |
-| `copilot --resume` | 選擇並恢復歷史 session |
-| `copilot --model <model>` | 指定模型 |
-| `copilot --agent=<name>` | 使用指定 Agent |
+| 指令                      | 說明                       |
+| ------------------------- | -------------------------- |
+| `copilot`                 | 啟動互動式介面             |
+| `copilot -p "..."`        | 程式化呼叫（執行完即退出） |
+| `copilot --continue`      | 繼續上次的 session         |
+| `copilot --resume`        | 選擇並恢復歷史 session     |
+| `copilot --model <model>` | 指定模型                   |
+| `copilot --agent=<name>`  | 使用指定 Agent             |
 
 ### 互動式 Slash 指令
 
 #### 核心指令
 
-| 指令 | 說明 |
-|------|------|
-| `/login` | 登入 GitHub |
-| `/logout` | 登出 |
-| `/model` 或 `/models` | 切換模型 |
-| `/agent` | 選擇 / 切換 Custom Agent |
-| `/mcp` | 管理 MCP Server |
-| `/mcp add` | 新增 MCP Server |
-| `/mcp show` / `/mcp show <name>` | 查看 MCP 狀態與工具清單 |
-| `/mcp enable` / `/mcp disable` | 啟用 / 停用 MCP Server |
-| `/mcp reload` | 重新載入 MCP 設定 |
-| `/lsp` / `/lsp show` | 查看 LSP Server 狀態 |
+| 指令                             | 說明                     |
+| -------------------------------- | ------------------------ |
+| `/login`                         | 登入 GitHub              |
+| `/logout`                        | 登出                     |
+| `/model` 或 `/models`            | 切換模型                 |
+| `/agent`                         | 選擇 / 切換 Custom Agent |
+| `/mcp`                           | 管理 MCP Server          |
+| `/mcp add`                       | 新增 MCP Server          |
+| `/mcp show` / `/mcp show <name>` | 查看 MCP 狀態與工具清單  |
+| `/mcp enable` / `/mcp disable`   | 啟用 / 停用 MCP Server   |
+| `/mcp reload`                    | 重新載入 MCP 設定        |
+| `/lsp` / `/lsp show`             | 查看 LSP Server 狀態     |
 
 #### Session 管理
 
-| 指令 | 說明 |
-|------|------|
-| `/new [prompt]` | 開始新 Session（舊 Session 保留於背景） |
-| `/clear [prompt]` | 完全放棄目前 Session |
-| `/resume` | 恢復之前的 Session |
-| `/rename <name>` | 重新命名目前 Session（不帶參數自動生成） |
-| `/session` | 查看 Session 資訊（含貢獻圖表） |
-| `/session delete` | 刪除指定 Session（v1.0.35+） |
-| `/session delete-all` | 刪除所有 Session（v1.0.35+） |
-| `/restart` | 熱重啟 CLI（保留 Session） |
+| 指令                  | 說明                                     |
+| --------------------- | ---------------------------------------- |
+| `/new [prompt]`       | 開始新 Session（舊 Session 保留於背景）  |
+| `/clear [prompt]`     | 完全放棄目前 Session                     |
+| `/resume`             | 恢復之前的 Session                       |
+| `/rename <name>`      | 重新命名目前 Session（不帶參數自動生成） |
+| `/session`            | 查看 Session 資訊（含貢獻圖表）          |
+| `/session delete`     | 刪除指定 Session（v1.0.35+）             |
+| `/session delete-all` | 刪除所有 Session（v1.0.35+）             |
+| `/restart`            | 熱重啟 CLI（保留 Session）               |
 
 #### 開發工作流
 
-| 指令 | 說明 |
-|------|------|
-| `/pr` | 建立 / 查看 PR、修復 CI 失敗、處理 Review 回饋 |
-| `/diff` | 檢視本次 Session 的變更（支援 17 種語言語法高亮） |
-| `/undo` | 復原上一輪操作與檔案變更 |
-| `/review` | 分析程式碼變更 |
-| `/delegate [prompt]` | 非同步委派給 Copilot Coding Agent |
-| `/research` | 深度研究並產出可匯出報告 |
-| `/init` | 產生 Copilot Instructions 檔案 |
-| `/ask <question>` | 一次性查詢，不汙染 Context（v1.0.15+） |
-| `/rewind` | 回溯到對話中的先前時間點（v1.0.38+） |
-| `/bug` | 提交 Bug 報告（v1.0.15+） |
-| `/continue` | 繼續先前的回應（v1.0.32+） |
-| `/release-notes` | 產生版本發佈說明（v1.0.19+） |
-| `/export` | 匯出 Session 內容（v1.0.23+） |
-| `/reset` | 重置 CLI 狀態（v1.0.30+） |
-| `/keep-alive` | 保持 Session 存活（v1.0.35+） |
-| `/statusline` | 切換狀態列顯示（v1.0.37+） |
-| `/footer` | 切換頁尾顯示（v1.0.37+） |
-| `/env` | 查看環境變數資訊（v1.0.20+） |
+| 指令                 | 說明                                              |
+| -------------------- | ------------------------------------------------- |
+| `/pr`                | 建立 / 查看 PR、修復 CI 失敗、處理 Review 回饋    |
+| `/diff`              | 檢視本次 Session 的變更（支援 17 種語言語法高亮） |
+| `/undo`              | 復原上一輪操作與檔案變更                          |
+| `/review`            | 分析程式碼變更                                    |
+| `/delegate [prompt]` | 非同步委派給 Copilot Coding Agent                 |
+| `/research`          | 深度研究並產出可匯出報告                          |
+| `/init`              | 產生 Copilot Instructions 檔案                    |
+| `/ask <question>`    | 一次性查詢，不汙染 Context（v1.0.15+）            |
+| `/rewind`            | 回溯到對話中的先前時間點（v1.0.38+）              |
+| `/bug`               | 提交 Bug 報告（v1.0.15+）                         |
+| `/continue`          | 繼續先前的回應（v1.0.32+）                        |
+| `/release-notes`     | 產生版本發佈說明（v1.0.19+）                      |
+| `/export`            | 匯出 Session 內容（v1.0.23+）                     |
+| `/reset`             | 重置 CLI 狀態（v1.0.30+）                         |
+| `/keep-alive`        | 保持 Session 存活（v1.0.35+）                     |
+| `/statusline`        | 切換狀態列顯示（v1.0.37+）                        |
+| `/footer`            | 切換頁尾顯示（v1.0.37+）                          |
+| `/env`               | 查看環境變數資訊（v1.0.20+）                      |
 
 #### Context 與記憶
 
-| 指令 | 說明 |
-|------|------|
-| `/compact [hint]` | 手動壓縮 Context（可帶自訂提示） |
-| `/context` | 查看 Token 使用量 |
-| `/usage` | 查看 Session 使用統計（請求數、Token、程式碼變更量） |
-| `/instructions` | 查看與切換 Custom Instructions 檔案 |
-| `/skills` / `/skills add` | 管理 Skills |
-| `/remote` | 遠端控制管理（v1.0.25+） |
+| 指令                      | 說明                                                 |
+| ------------------------- | ---------------------------------------------------- |
+| `/compact [hint]`         | 手動壓縮 Context（可帶自訂提示）                     |
+| `/context`                | 查看 Token 使用量                                    |
+| `/usage`                  | 查看 Session 使用統計（請求數、Token、程式碼變更量） |
+| `/instructions`           | 查看與切換 Custom Instructions 檔案                  |
+| `/skills` / `/skills add` | 管理 Skills                                          |
+| `/remote`                 | 遠端控制管理（v1.0.25+）                             |
 
 #### 權限與安全
 
-| 指令 | 說明 |
-|------|------|
-| `/yolo` / `/allow-all` | 啟用全部工具權限（**危險！**） |
-| `/allow-all on\|off\|show` | 互動式權限管理（v1.0.35+） |
-| `/reset-allowed-tools` | 重置已授予的工具權限 |
-| `/add-dir <path>` | 新增受信任目錄 |
-| `/cwd <path>` 或 `/cd <path>` | 切換工作目錄 |
+| 指令                          | 說明                           |
+| ----------------------------- | ------------------------------ |
+| `/yolo` / `/allow-all`        | 啟用全部工具權限（**危險！**） |
+| `/allow-all on\|off\|show`    | 互動式權限管理（v1.0.35+）     |
+| `/reset-allowed-tools`        | 重置已授予的工具權限           |
+| `/add-dir <path>`             | 新增受信任目錄                 |
+| `/cwd <path>` 或 `/cd <path>` | 切換工作目錄                   |
 
 #### 擴充與插件
 
-| 指令 | 說明 |
-|------|------|
-| `/plugin` | Plugin 管理（install / update / uninstall / list） |
-| `/plugin marketplace add` | 從 Marketplace 安裝 Plugin |
-| `/extensions` | 查看、啟用、停用 Extensions |
+| 指令                      | 說明                                               |
+| ------------------------- | -------------------------------------------------- |
+| `/plugin`                 | Plugin 管理（install / update / uninstall / list） |
+| `/plugin marketplace add` | 從 Marketplace 安裝 Plugin                         |
+| `/extensions`             | 查看、啟用、停用 Extensions                        |
 
 #### 輔助工具
 
-| 指令 | 說明 |
-|------|------|
-| `/copy` | 複製最近一次回應到剪貼簿 |
-| `/share` / `/share gist` | 匯出 Session 為 Markdown 或 Gist |
-| `/share html` | 匯出為自包含互動式 HTML 檔案（v1.0.15+） |
-| `/feedback` | 提交回饋 |
-| `/changelog` | 查看版本更新日誌（支援 `last N`、`since <version>`、`summarize`） |
-| `/version` | 顯示 CLI 版本並檢查更新 |
-| `/update` | 查看更新說明並執行更新 |
-| `/upgrade` | 執行 CLI 升級（v1.0.29+） |
-| `/theme` | 主題選擇器（含 GitHub Dark/Light、色盲友善主題） |
-| `/streamer-mode` / `/on-air` | 隱藏模型名稱和配額細節（直播模式） |
-| `/experimental` / `/experimental on\|off` | 啟用 / 停用實驗性功能 |
-| `/chronicle` | Standup 報告、技巧提示（實驗性） |
-| `/terminal-setup` | 設定終端機多行輸入支援 |
-| `/diagnose` | 診斷 Session 問題 |
-| `#` | 參照 GitHub Issue / PR / Discussion |
-| `?` | 快速幫助覆蓋（分組顯示快捷鍵與指令） |
+| 指令                                      | 說明                                                              |
+| ----------------------------------------- | ----------------------------------------------------------------- |
+| `/copy`                                   | 複製最近一次回應到剪貼簿                                          |
+| `/share` / `/share gist`                  | 匯出 Session 為 Markdown 或 Gist                                  |
+| `/share html`                             | 匯出為自包含互動式 HTML 檔案（v1.0.15+）                          |
+| `/feedback`                               | 提交回饋                                                          |
+| `/changelog`                              | 查看版本更新日誌（支援 `last N`、`since <version>`、`summarize`） |
+| `/version`                                | 顯示 CLI 版本並檢查更新                                           |
+| `/update`                                 | 查看更新說明並執行更新                                            |
+| `/upgrade`                                | 執行 CLI 升級（v1.0.29+）                                         |
+| `/theme`                                  | 主題選擇器（含 GitHub Dark/Light、色盲友善主題）                  |
+| `/streamer-mode` / `/on-air`              | 隱藏模型名稱和配額細節（直播模式）                                |
+| `/experimental` / `/experimental on\|off` | 啟用 / 停用實驗性功能                                             |
+| `/chronicle`                              | Standup 報告、技巧提示（實驗性）                                  |
+| `/terminal-setup`                         | 設定終端機多行輸入支援                                            |
+| `/diagnose`                               | 診斷 Session 問題                                                 |
+| `#`                                       | 參照 GitHub Issue / PR / Discussion                               |
+| `?`                                       | 快速幫助覆蓋（分組顯示快捷鍵與指令）                              |
 
 ### 快捷鍵
 
-| 快捷鍵 | 說明 |
-|--------|------|
-| `Shift + Tab` | 向前循環模式（Ask → Plan → Autopilot → Shell） |
-| `Tab` | 向前循環模式 |
-| `Esc` | 終止操作 / 拒絕工具 / 清除輸入 |
-| `Double-Esc` | 復原檔案變更到上一個快照 |
-| `Ctrl + T` | 切換顯示/隱藏推理過程 |
-| `Ctrl + R` | 反向搜尋指令歷史（如 Bash） |
-| `Ctrl + C` | 中斷執行 |
-| `Ctrl + D` | 在空 Prompt 時退出 CLI |
-| `Ctrl + Z` | 暫停 CLI（Unix，`fg` 恢復） |
-| `Ctrl + X, Ctrl + E` | 在外部編輯器中編輯 Prompt |
-| `Ctrl + X, B` | 將目前任務轉為背景執行（v1.0.33+） |
-| `Ctrl + Y` | 在終端編輯器中編輯 Plan |
-| `Ctrl + G` | 在外部編輯器中編輯 / 關閉 UI 元素 |
-| `Ctrl + F` / `Ctrl + B` | 頁面下 / 上捲動（Alt Screen） |
-| `Ctrl + A` / `Ctrl + E` | 行首 / 行尾 |
-| `Ctrl + K` | 刪除到行尾（游標在行尾時合併行） |
-| `Ctrl + N` / `Ctrl + P` | 等同上 / 下方向鍵 |
-| `Ctrl + O` | 展開最近 Timeline |
-| `Ctrl + S` | 執行指令（保留輸入） |
-| `s` | 在 Session 選擇器中循環排序（v1.0.37+） |
-| `j` / `k` | Vim 風格導航（上/下選擇，v1.0.34+） |
-| `x` | 在 Session 選擇器中刪除 Session（v1.0.35+） |
-| `!<command>` | 直接執行 shell 指令 |
-| `&<prompt>` | 等同 `/delegate`（非同步委派） |
-| `@<path>` | 引用檔案內容（支援絕對/相對/父目錄/home 路徑） |
-| `#` | 參照 GitHub Issue / PR / Discussion |
+| 快捷鍵                  | 說明                                           |
+| ----------------------- | ---------------------------------------------- |
+| `Shift + Tab`           | 向前循環模式（Ask → Plan → Autopilot → Shell） |
+| `Tab`                   | 向前循環模式                                   |
+| `Esc`                   | 終止操作 / 拒絕工具 / 清除輸入                 |
+| `Double-Esc`            | 復原檔案變更到上一個快照                       |
+| `Ctrl + T`              | 切換顯示/隱藏推理過程                          |
+| `Ctrl + R`              | 反向搜尋指令歷史（如 Bash）                    |
+| `Ctrl + C`              | 中斷執行                                       |
+| `Ctrl + D`              | 在空 Prompt 時退出 CLI                         |
+| `Ctrl + Z`              | 暫停 CLI（Unix，`fg` 恢復）                    |
+| `Ctrl + X, Ctrl + E`    | 在外部編輯器中編輯 Prompt                      |
+| `Ctrl + X, B`           | 將目前任務轉為背景執行（v1.0.33+）             |
+| `Ctrl + Y`              | 在終端編輯器中編輯 Plan                        |
+| `Ctrl + G`              | 在外部編輯器中編輯 / 關閉 UI 元素              |
+| `Ctrl + F` / `Ctrl + B` | 頁面下 / 上捲動（Alt Screen）                  |
+| `Ctrl + A` / `Ctrl + E` | 行首 / 行尾                                    |
+| `Ctrl + K`              | 刪除到行尾（游標在行尾時合併行）               |
+| `Ctrl + N` / `Ctrl + P` | 等同上 / 下方向鍵                              |
+| `Ctrl + O`              | 展開最近 Timeline                              |
+| `Ctrl + S`              | 執行指令（保留輸入）                           |
+| `s`                     | 在 Session 選擇器中循環排序（v1.0.37+）        |
+| `j` / `k`               | Vim 風格導航（上/下選擇，v1.0.34+）            |
+| `x`                     | 在 Session 選擇器中刪除 Session（v1.0.35+）    |
+| `!<command>`            | 直接執行 shell 指令                            |
+| `&<prompt>`             | 等同 `/delegate`（非同步委派）                 |
+| `@<path>`               | 引用檔案內容（支援絕對/相對/父目錄/home 路徑） |
+| `#`                     | 參照 GitHub Issue / PR / Discussion            |
 
 ### 命令列選項
 
 #### 執行模式
 
-| 選項 | 說明 |
-|------|------|
-| `-p, --prompt "..."` | 程式化模式（執行完即退出） |
-| `--continue` | 繼續最近的 Session（偏好目前目錄，v1.0.35+） |
-| `--resume [id]` | 選擇恢復 Session（支援 Session ID / Task ID / 名稱） |
-| `--connect <session-id>` | 直接連接遠端 Session（v1.0.32+） |
-| `--name <name>` | 以名稱啟動 Session（v1.0.35+） |
-| `--agent=<name>` | 使用指定 Agent |
-| `--model <name>` | 指定模型 |
-| `--mode <mode>` | 設定互動模式（ask / plan / autopilot，v1.0.30+） |
-| `--autopilot` | 直接進入 Autopilot 模式（v1.0.30+） |
-| `--plan` | 直接進入 Plan 模式（v1.0.30+） |
-| `--effort, --reasoning-effort <level>` | 設定推理強度 |
-| `--experimental` / `--no-experimental` | 啟用 / 停用實驗性功能 |
-| `--remote` | 啟用遠端控制（v1.0.25+） |
-| `--banner` | 顯示啟動動畫 |
-| `--print-debug-info` | 印出除錯資訊並退出（v1.0.27+） |
-| `--session-idle-timeout <sec>` | Session 閒置逾時時間（v1.0.35+） |
+| 選項                                   | 說明                                                 |
+| -------------------------------------- | ---------------------------------------------------- |
+| `-p, --prompt "..."`                   | 程式化模式（執行完即退出）                           |
+| `--continue`                           | 繼續最近的 Session（偏好目前目錄，v1.0.35+）         |
+| `--resume [id]`                        | 選擇恢復 Session（支援 Session ID / Task ID / 名稱） |
+| `--connect <session-id>`               | 直接連接遠端 Session（v1.0.32+）                     |
+| `--name <name>`                        | 以名稱啟動 Session（v1.0.35+）                       |
+| `--agent=<name>`                       | 使用指定 Agent                                       |
+| `--model <name>`                       | 指定模型                                             |
+| `--mode <mode>`                        | 設定互動模式（ask / plan / autopilot，v1.0.30+）     |
+| `--autopilot`                          | 直接進入 Autopilot 模式（v1.0.30+）                  |
+| `--plan`                               | 直接進入 Plan 模式（v1.0.30+）                       |
+| `--effort, --reasoning-effort <level>` | 設定推理強度                                         |
+| `--experimental` / `--no-experimental` | 啟用 / 停用實驗性功能                                |
+| `--remote`                             | 啟用遠端控制（v1.0.25+）                             |
+| `--banner`                             | 顯示啟動動畫                                         |
+| `--print-debug-info`                   | 印出除錯資訊並退出（v1.0.27+）                       |
+| `--session-idle-timeout <sec>`         | Session 閒置逾時時間（v1.0.35+）                     |
 
 #### 工具權限
 
-| 選項 | 說明 |
-|------|------|
-| `--allow-all-tools` / `--yolo` / `--allow-all` | 允許所有工具 |
-| `--allow-tool='<spec>'` | 允許特定工具 |
-| `--deny-tool='<spec>'` | 禁止特定工具 |
-| `--allow-all-paths` | 允許存取所有路徑 |
+| 選項                                           | 說明             |
+| ---------------------------------------------- | ---------------- |
+| `--allow-all-tools` / `--yolo` / `--allow-all` | 允許所有工具     |
+| `--allow-tool='<spec>'`                        | 允許特定工具     |
+| `--deny-tool='<spec>'`                         | 禁止特定工具     |
+| `--allow-all-paths`                            | 允許存取所有路徑 |
 
 #### 擴充整合
 
-| 選項 | 說明 |
-|------|------|
-| `--additional-mcp-config '<json\|@file>'` | 附加 / 覆蓋 MCP 設定 |
-| `--enable-all-github-mcp-tools` | 啟用所有 GitHub MCP 讀寫工具 |
-| `--add-github-mcp-toolset <set>` | 新增 GitHub MCP 工具集 |
-| `--add-github-mcp-tool <tool>` | 新增個別 GitHub MCP 工具 |
-| `--disable-mcp-server <name>` | 停用指定 MCP Server |
-| `--plugin-dir <path>` | 從本地目錄載入 Plugin |
-| `--available-tools <list>` | 過濾可用工具 |
-| `--excluded-tools <list>` | 排除特定工具 |
+| 選項                                      | 說明                         |
+| ----------------------------------------- | ---------------------------- |
+| `--additional-mcp-config '<json\|@file>'` | 附加 / 覆蓋 MCP 設定         |
+| `--enable-all-github-mcp-tools`           | 啟用所有 GitHub MCP 讀寫工具 |
+| `--add-github-mcp-toolset <set>`          | 新增 GitHub MCP 工具集       |
+| `--add-github-mcp-tool <tool>`            | 新增個別 GitHub MCP 工具     |
+| `--disable-mcp-server <name>`             | 停用指定 MCP Server          |
+| `--plugin-dir <path>`                     | 從本地目錄載入 Plugin        |
+| `--available-tools <list>`                | 過濾可用工具                 |
+| `--excluded-tools <list>`                 | 排除特定工具                 |
 
 #### 顯示與輸出
 
-| 選項 | 說明 |
-|------|------|
-| `--alt-screen on\|off` | 啟用 / 停用 Alt Screen Buffer |
-| `--mouse` / `--no-mouse` | 啟用 / 停用滑鼠模式 |
-| `--screen-reader` | 無障礙螢幕閱讀器模式 |
-| `--output-format json` | 程式化模式輸出 JSONL 格式 |
-| `--silent` | 靜默模式（抑制統計輸出） |
-| `--share` / `--share-gist` | 非互動模式分享 Session |
+| 選項                       | 說明                          |
+| -------------------------- | ----------------------------- |
+| `--alt-screen on\|off`     | 啟用 / 停用 Alt Screen Buffer |
+| `--mouse` / `--no-mouse`   | 啟用 / 停用滑鼠模式           |
+| `--screen-reader`          | 無障礙螢幕閱讀器模式          |
+| `--output-format json`     | 程式化模式輸出 JSONL 格式     |
+| `--silent`                 | 靜默模式（抑制統計輸出）      |
+| `--share` / `--share-gist` | 非互動模式分享 Session        |
 
 #### 其他
 
-| 選項 | 說明 |
-|------|------|
-| `--acp` | 啟動 ACP（Agent Client Protocol）伺服器 |
-| `--server` | 伺服器模式 |
-| `--config-dir <dir>` | 覆蓋設定檔目錄 |
-| `--bash-env` | 在 Shell Session 中 source BASH_ENV |
-| `--binary-version` | 查詢二進位版本（不啟動 CLI） |
-| `--version` | 顯示版本 |
+| 選項                 | 說明                                    |
+| -------------------- | --------------------------------------- |
+| `--acp`              | 啟動 ACP（Agent Client Protocol）伺服器 |
+| `--server`           | 伺服器模式                              |
+| `--config-dir <dir>` | 覆蓋設定檔目錄                          |
+| `--bash-env`         | 在 Shell Session 中 source BASH_ENV     |
+| `--binary-version`   | 查詢二進位版本（不啟動 CLI）            |
+| `--version`          | 顯示版本                                |
 
 ### 輔助指令
 
-| 指令 | 說明 |
-|------|------|
-| `copilot help` | 顯示幫助 |
-| `copilot help config` | 設定說明（含支援模型列表） |
-| `copilot help environment` | 環境變數說明 |
-| `copilot help logging` | 日誌等級說明 |
-| `copilot help permissions` | 工具權限說明 |
-| `copilot help monitoring` | OpenTelemetry 監控說明（v1.0.4+） |
-| `copilot login` | 子命令：登入 |
-| `copilot version` | 子命令：查看版本 |
-| `copilot update` | 子命令：更新 |
-| `copilot plugin` | 子命令：Plugin 管理（非互動） |
-| `copilot mcp` | 子命令：MCP 管理（非互動，v1.0.21+） |
-| `copilot completion` | 子命令：Shell 自動完成設定（v1.0.12+） |
+| 指令                       | 說明                                   |
+| -------------------------- | -------------------------------------- |
+| `copilot help`             | 顯示幫助                               |
+| `copilot help config`      | 設定說明（含支援模型列表）             |
+| `copilot help environment` | 環境變數說明                           |
+| `copilot help logging`     | 日誌等級說明                           |
+| `copilot help permissions` | 工具權限說明                           |
+| `copilot help monitoring`  | OpenTelemetry 監控說明（v1.0.4+）      |
+| `copilot login`            | 子命令：登入                           |
+| `copilot version`          | 子命令：查看版本                       |
+| `copilot update`           | 子命令：更新                           |
+| `copilot plugin`           | 子命令：Plugin 管理（非互動）          |
+| `copilot mcp`              | 子命令：MCP 管理（非互動，v1.0.21+）   |
+| `copilot completion`       | 子命令：Shell 自動完成設定（v1.0.12+） |
 
 ## 10.2 Prompt 範本合集
 
@@ -3359,148 +3390,148 @@ Bug 描述：{問題描述}
 
 ## 10.3 工具權限速查表
 
-| 工具規範 | 說明 | 範例 |
-|---------|------|------|
-| `shell` | 所有 shell 指令 | `--allow-tool='shell'` |
-| `shell(COMMAND)` | 特定指令 | `--allow-tool='shell(mvn)'` |
-| `shell(git SUBCOMMAND)` | 特定 git 子命令 | `--deny-tool='shell(git push)'` |
-| `write` | 檔案寫入權限 | `--allow-tool='write'` |
-| `MCP_SERVER` | MCP server 全部工具 | `--allow-tool='github'` |
-| `MCP_SERVER(tool)` | MCP server 特定工具 | `--deny-tool='github(delete_file)'` |
+| 工具規範                | 說明                | 範例                                |
+| ----------------------- | ------------------- | ----------------------------------- |
+| `shell`                 | 所有 shell 指令     | `--allow-tool='shell'`              |
+| `shell(COMMAND)`        | 特定指令            | `--allow-tool='shell(mvn)'`         |
+| `shell(git SUBCOMMAND)` | 特定 git 子命令     | `--deny-tool='shell(git push)'`     |
+| `write`                 | 檔案寫入權限        | `--allow-tool='write'`              |
+| `MCP_SERVER`            | MCP server 全部工具 | `--allow-tool='github'`             |
+| `MCP_SERVER(tool)`      | MCP server 特定工具 | `--deny-tool='github(delete_file)'` |
 
 ## 10.4 環境變數
 
 ### 認證相關
 
-| 變數名稱 | 說明 | 優先順序 |
-|---------|------|---------|
-| `COPILOT_GITHUB_TOKEN` | GitHub Token（推薦，用於 CI/CD） | 1（最高） |
-| `GH_TOKEN` | GitHub Token | 2 |
-| `GITHUB_TOKEN` | GitHub Token（在 Agent Shell Session 中亦可使用） | 3 |
-| `GITHUB_ASKPASS` | 認證輔助程式路徑 | - |
-| `GH_HOST` | GitHub Enterprise 主機名稱（PAT / gh 認證模式） | - |
+| 變數名稱               | 說明                                              | 優先順序  |
+| ---------------------- | ------------------------------------------------- | --------- |
+| `COPILOT_GITHUB_TOKEN` | GitHub Token（推薦，用於 CI/CD）                  | 1（最高） |
+| `GH_TOKEN`             | GitHub Token                                      | 2         |
+| `GITHUB_TOKEN`         | GitHub Token（在 Agent Shell Session 中亦可使用） | 3         |
+| `GITHUB_ASKPASS`       | 認證輔助程式路徑                                  | -         |
+| `GH_HOST`              | GitHub Enterprise 主機名稱（PAT / gh 認證模式）   | -         |
 
 ### 設定相關
 
-| 變數名稱 | 說明 |
-|---------|------|
-| `COPILOT_HOME` | Copilot 設定檔目錄（預設 `~/.copilot`） |
-| `COPILOT_CUSTOM_INSTRUCTIONS_DIRS` | 額外的 Custom Instructions 目錄 |
-| `COPILOT_CLI` | 值為 `1`，自動設定於子進程中（可供 Git Hook 偵測） |
-| `COPILOT_GH_HOST` | 指定 GitHub Enterprise Server 主機（v1.0.15+） |
-| `COPILOT_AGENT_SESSION_ID` | 目前 Agent Session ID（自動設定於子進程，v1.0.20+） |
-| `COPILOT_DISABLE_TERMINAL_TITLE` | 停用 CLI 自動設定的終端標題（v1.0.25+） |
+| 變數名稱                           | 說明                                                |
+| ---------------------------------- | --------------------------------------------------- |
+| `COPILOT_HOME`                     | Copilot 設定檔目錄（預設 `~/.copilot`）             |
+| `COPILOT_CUSTOM_INSTRUCTIONS_DIRS` | 額外的 Custom Instructions 目錄                     |
+| `COPILOT_CLI`                      | 值為 `1`，自動設定於子進程中（可供 Git Hook 偵測）  |
+| `COPILOT_GH_HOST`                  | 指定 GitHub Enterprise Server 主機（v1.0.15+）      |
+| `COPILOT_AGENT_SESSION_ID`         | 目前 Agent Session ID（自動設定於子進程，v1.0.20+） |
+| `COPILOT_DISABLE_TERMINAL_TITLE`   | 停用 CLI 自動設定的終端標題（v1.0.25+）             |
 
 ### 網路與代理
 
-| 變數名稱 | 說明 |
-|---------|------|
+| 變數名稱                     | 說明                  |
+| ---------------------------- | --------------------- |
 | `HTTP_PROXY` / `HTTPS_PROXY` | HTTP/HTTPS 代理伺服器 |
-| `NO_PROXY` | 排除代理的網域 |
+| `NO_PROXY`                   | 排除代理的網域        |
 
 ### 顯示與行為
 
-| 變數名稱 | 說明 |
-|---------|------|
-| `NO_COLOR` | 停用終端色彩輸出 |
+| 變數名稱              | 說明                                |
+| --------------------- | ----------------------------------- |
+| `NO_COLOR`            | 停用終端色彩輸出                    |
 | `USE_BUILTIN_RIPGREP` | 使用 PATH 中的 ripgrep 而非內建版本 |
-| `BASH_ENV` | 搭配 `--bash-env` 旗標使用 |
+| `BASH_ENV`            | 搭配 `--bash-env` 旗標使用          |
 
 ## 10.5 設定檔位置
 
 ### 使用者層級設定
 
-| 檔案 | 位置 | 說明 |
-|------|------|------|
-| `config.json` | `~/.copilot/config.json` | 全域設定（內部狀態） |
-| `settings.json` | `~/.copilot/settings.json` | 使用者設定（v1.0.35+ 從 config.json 分離） |
-| `mcp-config.json` | `~/.copilot/mcp-config.json` | MCP Server 設定 |
-| `lsp-config.json` | `~/.copilot/lsp-config.json` | LSP Server 設定 |
-| `hooks/` | `~/.copilot/hooks/` | 個人 Hooks |
-| `skills/` | `~/.copilot/skills/` | 個人 Skills |
-| `agents/` | `~/.copilot/agents/` | 個人 Agent 定義 |
-| `instructions/` | `~/.copilot/instructions/*.instructions.md` | 個人 Instructions（跨 Repository） |
-| `~/.agents/skills/` | 個人 Skill 目錄（v1.0.11+） | 與 VS Code 一致 |
+| 檔案                | 位置                                        | 說明                                       |
+| ------------------- | ------------------------------------------- | ------------------------------------------ |
+| `config.json`       | `~/.copilot/config.json`                    | 全域設定（內部狀態）                       |
+| `settings.json`     | `~/.copilot/settings.json`                  | 使用者設定（v1.0.35+ 從 config.json 分離） |
+| `mcp-config.json`   | `~/.copilot/mcp-config.json`                | MCP Server 設定                            |
+| `lsp-config.json`   | `~/.copilot/lsp-config.json`                | LSP Server 設定                            |
+| `hooks/`            | `~/.copilot/hooks/`                         | 個人 Hooks                                 |
+| `skills/`           | `~/.copilot/skills/`                        | 個人 Skills                                |
+| `agents/`           | `~/.copilot/agents/`                        | 個人 Agent 定義                            |
+| `instructions/`     | `~/.copilot/instructions/*.instructions.md` | 個人 Instructions（跨 Repository）         |
+| `~/.agents/skills/` | 個人 Skill 目錄（v1.0.11+）                 | 與 VS Code 一致                            |
 
 ### Repository 層級設定
 
-| 檔案 | 位置 | 說明 |
-|------|------|------|
-| `copilot-instructions.md` | `.github/copilot-instructions.md` | 專案 Instructions |
-| `*.instructions.md` | `.github/instructions/` | 路徑專屬 Instructions |
-| Agent 定義 | `.github/agents/` | 自訂 Agent |
-| Skills | `.agents/skills/` 或 `.github/skills/` | 專案 Skills |
-| Hooks | `.github/hooks/` | 專案 Hooks |
-| `settings.json` | `.github/copilot/settings.json` | 專案設定（含 Marketplace 等） |
-| `settings.local.json` | `.github/copilot/settings.local.json` | 本地專案設定 |
-| LSP 設定 | `.github/lsp.json` | 專案 LSP Server 設定 |
-| MCP 設定 | `.mcp.json` | 工作區 MCP 設定（**v1.0.22+ 唯一來源**） |
-| ~~MCP 設定~~ | ~~`.vscode/mcp.json`~~ | ~~已棄用（v1.0.22+）~~ |
-| ~~DevContainer MCP~~ | ~~`.devcontainer/devcontainer.json`~~ | ~~已不再作為 MCP 來源（v1.0.22+）~~ |
+| 檔案                      | 位置                                   | 說明                                     |
+| ------------------------- | -------------------------------------- | ---------------------------------------- |
+| `copilot-instructions.md` | `.github/copilot-instructions.md`      | 專案 Instructions                        |
+| `*.instructions.md`       | `.github/instructions/`                | 路徑專屬 Instructions                    |
+| Agent 定義                | `.github/agents/`                      | 自訂 Agent                               |
+| Skills                    | `.agents/skills/` 或 `.github/skills/` | 專案 Skills                              |
+| Hooks                     | `.github/hooks/`                       | 專案 Hooks                               |
+| `settings.json`           | `.github/copilot/settings.json`        | 專案設定（含 Marketplace 等）            |
+| `settings.local.json`     | `.github/copilot/settings.local.json`  | 本地專案設定                             |
+| LSP 設定                  | `.github/lsp.json`                     | 專案 LSP Server 設定                     |
+| MCP 設定                  | `.mcp.json`                            | 工作區 MCP 設定（**v1.0.22+ 唯一來源**） |
+| ~~MCP 設定~~              | ~~`.vscode/mcp.json`~~                 | ~~已棄用（v1.0.22+）~~                   |
+| ~~DevContainer MCP~~      | ~~`.devcontainer/devcontainer.json`~~  | ~~已不再作為 MCP 來源（v1.0.22+）~~      |
 
 ### Agent 定義格式
 
-| 檔案類型 | 位置 | 說明 |
-|---------|------|------|
-| `AGENTS.md` | 任何目錄 | Agent 行為定義 |
-| `*.agent.md` | `.github/agents/` | VS Code 格式的 Agent 定義 |
-| 遠端 Agent | 組織 `.github` Repository | 組織級 Agent 定義 |
+| 檔案類型     | 位置                      | 說明                      |
+| ------------ | ------------------------- | ------------------------- |
+| `AGENTS.md`  | 任何目錄                  | Agent 行為定義            |
+| `*.agent.md` | `.github/agents/`         | VS Code 格式的 Agent 定義 |
+| 遠端 Agent   | 組織 `.github` Repository | 組織級 Agent 定義         |
 
 > 📝 **Monorepo 支援**（v1.0.11+）：Custom Instructions、MCP Servers、Skills、Agents 現在會從工作目錄向上搜尋到 Git Root 的每一層目錄，完整支援 Monorepo 結構。
 
 ## 10.6 版本演進里程碑
 
-| 版本 | 日期 | 重大事件 |
-|------|------|---------|
-| v0.0.329 | 2025-09-29 | 首次支援 Claude Sonnet 4.5；新增 `/model` 指令 |
-| v0.0.342 | 2025-10-15 | 多行輸入（Kitty Protocol）；Session 格式改版 |
-| v0.0.348 | 2025-10-21 | Token-by-token 串流輸出 |
-| v0.0.349 | 2025-10-22 | 平行工具呼叫 |
-| v0.0.353 | 2025-10-28 | Custom Agent 支援；`/delegate` 委派功能 |
-| v0.0.374 | 2026-01-02 | 自動壓縮；子代理系統；`web_fetch` 工具 |
-| v0.0.387 | 2026-01-20 | Plan Mode；`ask_user` 工具 |
-| v0.0.389 | 2026-01-22 | `/diff` 指令；MCP OAuth 2.0；Plugin 生態系 |
-| v0.0.396 | 2026-01-27 | `/init`、`/experimental`；Plugin Marketplace |
-| v0.0.400 | 2026-01-30 | Autopilot 模式（實驗性）；`/theme` 指令 |
-| v0.0.407 | 2026-02-11 | Alt Screen Buffer；`/instructions` 指令 |
-| v0.0.411 | 2026-02-17 | Claude Sonnet 4.6；Autopilot 與 `/fleet` 開放所有使用者 |
-| **v0.0.418** | **2026-02-25** | **🎉 正式 GA（General Availability）** |
-| v1.0.2 | 2026-03-06 | 主版本號升至 1.0 |
-| v1.0.3 | 2026-03-09 | Extensions（實驗性）；`/restart` 指令 |
-| v1.0.5 | 2026-03-13 | `/pr` 指令；`/undo` 指令；`/extensions` 指令 |
-| v1.0.10 | 2026-03-20 | 多 Session 並行（實驗性）；`/undo` 指令 |
-| **v1.0.11** | **2026-03-23** | MCP 政策封鎖警告；Monorepo 完整支援 |
-| v1.0.12 | 2026-03-24 | `copilot completion`；`/rename` 自動命名 |
-| v1.0.15 | 2026-03-28 | `/ask` 指令；`/share html`；MCP OAuth；`/bug`；`postToolUseFailure` Hook |
-| v1.0.16 | 2026-03-30 | `PermissionRequest` Hook；程式化工具權限決策 |
-| v1.0.18 | 2026-04-01 | Critic Agent（實驗性）；`notification` Hook |
-| v1.0.19 | 2026-04-03 | `/release-notes`；OTEL 強化；MCP 啟用/停用持久化 |
-| v1.0.20 | 2026-04-04 | `/env` 指令；OTEL 推理 Token 追蹤 |
-| v1.0.21 | 2026-04-06 | `copilot mcp` 非互動式管理 |
-| v1.0.22 | 2026-04-08 | `.mcp.json` 唯一 MCP 設定來源；`sessionEnd` Hook |
-| v1.0.25 | 2026-04-12 | `/remote` 遠端控制；MCP Registry 安裝 |
-| v1.0.26 | 2026-04-13 | ACP 綁定 localhost；Plugin Hook 環境變數 |
-| v1.0.27 | 2026-04-14 | `--print-debug-info` 旗標 |
-| v1.0.29 | 2026-04-17 | Nightly 發佈頻道；`/upgrade` 指令 |
-| v1.0.30 | 2026-04-18 | `--mode`、`--autopilot`、`--plan` 旗標；`/reset` 指令 |
-| v1.0.32 | 2026-04-21 | `--connect` 直接連接；`/continue`；短 Session ID |
-| v1.0.33 | 2026-04-22 | `Ctrl+X → B` 背景任務 |
-| v1.0.34 | 2026-04-23 | `j`/`k` Vim 導航 |
-| v1.0.35 | 2026-04-24 | `--name`；`--session-idle-timeout`；`/session delete`；`/keep-alive`；`settings.json` 分離；`--continue` 偏好目前目錄 |
-| v1.0.36 | 2026-04-25 | 雙次 Esc 確認 allow-all 切換 |
-| v1.0.37 | 2026-04-27 | 位置感知權限；Session 排序（`s` 鍵）；`/statusline`；`/footer` |
-| v1.0.38 | 2026-04-27 | `/rewind` 回溯指令 |
-| **v1.0.39** | **2026-04-28** | **目前最新版**；HTTP Hook 支援；穩定性與效能改進 |
+| 版本         | 日期           | 重大事件                                                                                                              |
+| ------------ | -------------- | --------------------------------------------------------------------------------------------------------------------- |
+| v0.0.329     | 2025-09-29     | 首次支援 Claude Sonnet 4.5；新增 `/model` 指令                                                                        |
+| v0.0.342     | 2025-10-15     | 多行輸入（Kitty Protocol）；Session 格式改版                                                                          |
+| v0.0.348     | 2025-10-21     | Token-by-token 串流輸出                                                                                               |
+| v0.0.349     | 2025-10-22     | 平行工具呼叫                                                                                                          |
+| v0.0.353     | 2025-10-28     | Custom Agent 支援；`/delegate` 委派功能                                                                               |
+| v0.0.374     | 2026-01-02     | 自動壓縮；子代理系統；`web_fetch` 工具                                                                                |
+| v0.0.387     | 2026-01-20     | Plan Mode；`ask_user` 工具                                                                                            |
+| v0.0.389     | 2026-01-22     | `/diff` 指令；MCP OAuth 2.0；Plugin 生態系                                                                            |
+| v0.0.396     | 2026-01-27     | `/init`、`/experimental`；Plugin Marketplace                                                                          |
+| v0.0.400     | 2026-01-30     | Autopilot 模式（實驗性）；`/theme` 指令                                                                               |
+| v0.0.407     | 2026-02-11     | Alt Screen Buffer；`/instructions` 指令                                                                               |
+| v0.0.411     | 2026-02-17     | Claude Sonnet 4.6；Autopilot 與 `/fleet` 開放所有使用者                                                               |
+| **v0.0.418** | **2026-02-25** | **🎉 正式 GA（General Availability）**                                                                                |
+| v1.0.2       | 2026-03-06     | 主版本號升至 1.0                                                                                                      |
+| v1.0.3       | 2026-03-09     | Extensions（實驗性）；`/restart` 指令                                                                                 |
+| v1.0.5       | 2026-03-13     | `/pr` 指令；`/undo` 指令；`/extensions` 指令                                                                          |
+| v1.0.10      | 2026-03-20     | 多 Session 並行（實驗性）；`/undo` 指令                                                                               |
+| **v1.0.11**  | **2026-03-23** | MCP 政策封鎖警告；Monorepo 完整支援                                                                                   |
+| v1.0.12      | 2026-03-24     | `copilot completion`；`/rename` 自動命名                                                                              |
+| v1.0.15      | 2026-03-28     | `/ask` 指令；`/share html`；MCP OAuth；`/bug`；`postToolUseFailure` Hook                                              |
+| v1.0.16      | 2026-03-30     | `PermissionRequest` Hook；程式化工具權限決策                                                                          |
+| v1.0.18      | 2026-04-01     | Critic Agent（實驗性）；`notification` Hook                                                                           |
+| v1.0.19      | 2026-04-03     | `/release-notes`；OTEL 強化；MCP 啟用/停用持久化                                                                      |
+| v1.0.20      | 2026-04-04     | `/env` 指令；OTEL 推理 Token 追蹤                                                                                     |
+| v1.0.21      | 2026-04-06     | `copilot mcp` 非互動式管理                                                                                            |
+| v1.0.22      | 2026-04-08     | `.mcp.json` 唯一 MCP 設定來源；`sessionEnd` Hook                                                                      |
+| v1.0.25      | 2026-04-12     | `/remote` 遠端控制；MCP Registry 安裝                                                                                 |
+| v1.0.26      | 2026-04-13     | ACP 綁定 localhost；Plugin Hook 環境變數                                                                              |
+| v1.0.27      | 2026-04-14     | `--print-debug-info` 旗標                                                                                             |
+| v1.0.29      | 2026-04-17     | Nightly 發佈頻道；`/upgrade` 指令                                                                                     |
+| v1.0.30      | 2026-04-18     | `--mode`、`--autopilot`、`--plan` 旗標；`/reset` 指令                                                                 |
+| v1.0.32      | 2026-04-21     | `--connect` 直接連接；`/continue`；短 Session ID                                                                      |
+| v1.0.33      | 2026-04-22     | `Ctrl+X → B` 背景任務                                                                                                 |
+| v1.0.34      | 2026-04-23     | `j`/`k` Vim 導航                                                                                                      |
+| v1.0.35      | 2026-04-24     | `--name`；`--session-idle-timeout`；`/session delete`；`/keep-alive`；`settings.json` 分離；`--continue` 偏好目前目錄 |
+| v1.0.36      | 2026-04-25     | 雙次 Esc 確認 allow-all 切換                                                                                          |
+| v1.0.37      | 2026-04-27     | 位置感知權限；Session 排序（`s` 鍵）；`/statusline`；`/footer`                                                        |
+| v1.0.38      | 2026-04-27     | `/rewind` 回溯指令                                                                                                    |
+| **v1.0.39**  | **2026-04-28** | **目前最新版**；HTTP Hook 支援；穩定性與效能改進                                                                      |
 
 ## 10.7 已移除與棄用項目
 
-| 項目 | 移除版本 | 替代方案 |
-|------|---------|---------|
-| `.vscode/mcp.json` 作為 MCP 設定來源 | v1.0.22 | 使用 `.mcp.json` |
-| `.devcontainer/devcontainer.json` 作為 MCP 設定來源 | v1.0.22 | 使用 `.mcp.json` |
-| `codex-mini` 模型 | v1.0.15 | 使用 `auto` 或其他可用模型 |
-| `o4-mini` 模型（已移除後重新新增） | 短暫移除 | 已重新可用 |
-| `--yolo` 旗標（部分場景） | 未正式棄用 | 建議使用 `--allow-all-tools` |
+| 項目                                                | 移除版本   | 替代方案                     |
+| --------------------------------------------------- | ---------- | ---------------------------- |
+| `.vscode/mcp.json` 作為 MCP 設定來源                | v1.0.22    | 使用 `.mcp.json`             |
+| `.devcontainer/devcontainer.json` 作為 MCP 設定來源 | v1.0.22    | 使用 `.mcp.json`             |
+| `codex-mini` 模型                                   | v1.0.15    | 使用 `auto` 或其他可用模型   |
+| `o4-mini` 模型（已移除後重新新增）                  | 短暫移除   | 已重新可用                   |
+| `--yolo` 旗標（部分場景）                           | 未正式棄用 | 建議使用 `--allow-all-tools` |
 
 ---
 
@@ -3579,7 +3610,8 @@ Bug 描述：{問題描述}
 
 ---
 
-> 📝 **文件維護**  
+> 📝 **文件維護**
+>
 > - 本手冊基於 GitHub Copilot CLI **v1.0.39**（2026 年 4 月 28 日）撰寫，最後更新：2026 年 5 月 29 日
 > - 官方 Repository：https://github.com/github/copilot-cli
 > - 產品頁面：https://github.com/features/copilot/cli
@@ -3592,4 +3624,3 @@ Bug 描述：{問題描述}
 > - GitHub MCP Registry：https://github.com/mcp
 > - GitHub Skills 互動課程：https://github.com/skills/create-applications-with-the-copilot-cli
 > - 建議每季度檢視並更新本手冊內容
-

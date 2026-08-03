@@ -5,6 +5,7 @@ title = 'Caveman 教學手冊'
 tags = ['教學', 'AI開發']
 categories = ['教學']
 +++
+
 # caveman 教學手冊（企業級 Token 最佳化完整版）
 
 > **版本基準：** caveman v1.9.1（2026-07-03 發布，官方代號 "65%, honestly"）
@@ -73,27 +74,27 @@ categories = ['教學']
 
 ### 👥 目標讀者
 
-| 角色 | 關注重點 | 建議閱讀章節 |
-|------|---------|------------|
-| 新進工程師 | 快速上手、指令速查 | 第1、5、6、7章 + 附錄 Checklist |
-| 資深工程師 | Prompt 原理、企業實務範本 | 第3、4、8、9~14章 |
-| Tech Lead / 架構師 | 系統架構、與其他方案比較、優缺點 | 第2、21、22章 |
-| DevSecOps 工程師 | 安全性、隱私、Prompt Injection 風險 | 第8、23章 |
-| 導入決策者 / PM | ROI、團隊導入流程、KPI | 第17、24章 |
-| 維運人員 | 版本管理、升級、Rollback | 第15、16章 |
+| 角色               | 關注重點                            | 建議閱讀章節                    |
+| ------------------ | ----------------------------------- | ------------------------------- |
+| 新進工程師         | 快速上手、指令速查                  | 第1、5、6、7章 + 附錄 Checklist |
+| 資深工程師         | Prompt 原理、企業實務範本           | 第3、4、8、9~14章               |
+| Tech Lead / 架構師 | 系統架構、與其他方案比較、優缺點    | 第2、21、22章                   |
+| DevSecOps 工程師   | 安全性、隱私、Prompt Injection 風險 | 第8、23章                       |
+| 導入決策者 / PM    | ROI、團隊導入流程、KPI              | 第17、24章                      |
+| 維運人員           | 版本管理、升級、Rollback            | 第15、16章                      |
 
 ### 🛠️ 技術背景
 
-| 項目 | 說明 |
-|------|------|
-| 專案名稱 | caveman |
-| 開發者 | JuliusBrussee（GitHub 個人專案，MIT 授權） |
-| 核心形式 | Markdown Skill + Claude Code Hook + MCP Middleware |
-| 支援 Agent 數量 | 30+（含原生整合、skills registry 整合、規則檔整合三種層級） |
-| 是否需要 Backend | 否，純本地運作 |
-| 是否有遙測 | 官方明確聲明「零遙測」 |
-| 官方網站 | caveman.so（實際內容為「Caveman 2」候補名單頁面，非泛用行銷網站，詳見 1.9 節與第25.8節） |
-| 官方文件 | README.md / INSTALL.md / SECURITY.md / CLAUDE.md（maintainer guide） |
+| 項目             | 說明                                                                                     |
+| ---------------- | ---------------------------------------------------------------------------------------- |
+| 專案名稱         | caveman                                                                                  |
+| 開發者           | JuliusBrussee（GitHub 個人專案，MIT 授權）                                               |
+| 核心形式         | Markdown Skill + Claude Code Hook + MCP Middleware                                       |
+| 支援 Agent 數量  | 30+（含原生整合、skills registry 整合、規則檔整合三種層級）                              |
+| 是否需要 Backend | 否，純本地運作                                                                           |
+| 是否有遙測       | 官方明確聲明「零遙測」                                                                   |
+| 官方網站         | caveman.so（實際內容為「Caveman 2」候補名單頁面，非泛用行銷網站，詳見 1.9 節與第25.8節） |
+| 官方文件         | README.md / INSTALL.md / SECURITY.md / CLAUDE.md（maintainer guide）                     |
 
 ### 🔖 使用方式（依角色的閱讀路徑建議）
 
@@ -139,13 +140,13 @@ caveman 是一款由個人開發者 JuliusBrussee 發布、以 MIT 授權釋出�
 
 ### 1.3 核心思想拆解
 
-| 核心思想 | 說明 | 企業視角的意義 |
-|---------|------|--------------|
-| 輸出壓縮，非知識壓縮 | 只精簡「怎麼說」，不精簡「說什麼」 | 不影響程式碼正確性與技術判斷品質 |
-| 保留事實性內容逐字不變 | Code Block、指令、錯誤訊息、檔案路徑、URL 一律逐字保留 | 降低「AI 為了省字亂改程式碼」的風險 |
-| Session 級別可切換 | 透過 `/caveman [level]` 切換壓縮強度，並可隨時關閉 | 可依任務性質（除錯 vs. 教學說明）動態調整 |
-| 本地運作、零遙測 | 無 Backend、無帳號系統 | 符合企業對程式碼與對話內容不外流的要求 |
-| Prompt 層級實作 | 透過 Hook 注入 System Context，而非修改模型本身 | 導入與移除成本低，可快速 Pilot 驗證 |
+| 核心思想               | 說明                                                   | 企業視角的意義                            |
+| ---------------------- | ------------------------------------------------------ | ----------------------------------------- |
+| 輸出壓縮，非知識壓縮   | 只精簡「怎麼說」，不精簡「說什麼」                     | 不影響程式碼正確性與技術判斷品質          |
+| 保留事實性內容逐字不變 | Code Block、指令、錯誤訊息、檔案路徑、URL 一律逐字保留 | 降低「AI 為了省字亂改程式碼」的風險       |
+| Session 級別可切換     | 透過 `/caveman [level]` 切換壓縮強度，並可隨時關閉     | 可依任務性質（除錯 vs. 教學說明）動態調整 |
+| 本地運作、零遙測       | 無 Backend、無帳號系統                                 | 符合企業對程式碼與對話內容不外流的要求    |
+| Prompt 層級實作        | 透過 Hook 注入 System Context，而非修改模型本身        | 導入與移除成本低，可快速 Pilot 驗證       |
 
 ### 1.4 caveman 解決什麼問題
 
@@ -176,13 +177,13 @@ caveman 針對的正是「回覆冗長」這一類問題，而非「模型判斷
 
 ### 1.7 適合哪些團隊
 
-| 團隊類型 | 適合度 | 說明 |
-|---------|-------|------|
-| 高頻率使用 Agent 的後端/前端開發團隊 | ⭐⭐⭐⭐⭐ | Commit/Review/Bug Fix 高頻互動，效益最明顯 |
-| Legacy System 逆向工程／現代化團隊 | ⭐⭐⭐⭐ | 大量逐檔分析，說明性文字占比高 |
-| DevSecOps／平台團隊 | ⭐⭐⭐⭐ | 大量自動化腳本說明、Runbook 產出 |
-| 需求分析／產品設計團隊 | ⭐⭐ | 這類角色更需要 Agent 完整闡述脈絡 |
-| 對外客戶技術支援團隊 | ⭐⭐ | 面向客戶的文字通常需要完整禮貌用語，不宜套用 |
+| 團隊類型                             | 適合度     | 說明                                         |
+| ------------------------------------ | ---------- | -------------------------------------------- |
+| 高頻率使用 Agent 的後端/前端開發團隊 | ⭐⭐⭐⭐⭐ | Commit/Review/Bug Fix 高頻互動，效益最明顯   |
+| Legacy System 逆向工程／現代化團隊   | ⭐⭐⭐⭐   | 大量逐檔分析，說明性文字占比高               |
+| DevSecOps／平台團隊                  | ⭐⭐⭐⭐   | 大量自動化腳本說明、Runbook 產出             |
+| 需求分析／產品設計團隊               | ⭐⭐       | 這類角色更需要 Agent 完整闡述脈絡            |
+| 對外客戶技術支援團隊                 | ⭐⭐       | 面向客戶的文字通常需要完整禮貌用語，不宜套用 |
 
 ### 1.8 企業使用價值
 
@@ -193,20 +194,20 @@ caveman 針對的正是「回覆冗長」這一類問題，而非「模型判斷
 3. **導入成本低、風險可控**：純 Prompt/Hook 層級實作，無需修改既有 CI/CD 或程式碼庫，可用最小成本先在單一團隊 Pilot。
 4. **與既有 Governance 機制相容**：可與企業既有的 `CLAUDE.md`／`AGENTS.md`／`GEMINI.md` 規範檔並存（詳見第21章比較分析），非取代關係而是疊加關係。
 
-> 💡 **實務案例**：某導入 Claude Code 進行 Spring Boot Legacy 現代化的團隊，在為期兩週的逐檔案掃描與說明產出流程中，觀察到 Agent 對「單一類別職責說明」類型的回覆從平均 800~1200 token 降至 150~300 token 區間（此為模擬情境，數量級對齊官方公開 Benchmark，非官方針對此特定案例的實測數據），大幅縮短了團隊逐一審閱 AI 產出摘要所需的時間。
+> 💡 **實務案例**：某導入 Claude Code 進行 Spring Boot Legacy 現代化的團隊，在為期兩週的逐檔案掃描與說明產出流程中，觀察到 Agent 對「單一類別職責說明」類型的回覆從平均 800~~1200 token 降至 150~~300 token 區間（此為模擬情境，數量級對齊官方公開 Benchmark，非官方針對此特定案例的實測數據），大幅縮短了團隊逐一審閱 AI 產出摘要所需的時間。
 
 ### 1.9 專案現況與社群採用度
 
 > 📌 **時間點快照聲明**：以下數據為本手冊研究時點（**2026-07-06**）直接查詢 GitHub API 所得之即時快照，並非固定不變的事實。GitHub Star／Fork／Issue 數量會持續變動，導入評估時請自行重新查詢 [github.com/JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) 取得當下數字，切勿直接引用本節數字作為導入簡報的「現時」佐證。
 
-| 項目 | 2026-07-06 快照數據 |
-|------|-------------------|
-| GitHub Stars | 85,191 |
-| Forks | 4,738 |
-| Open Issues | 363 |
-| 授權 | MIT（repo 內 `LICENSE` 檔案確認） |
-| 贊助商 | Atlas Cloud（atlascloud.ai，README 標註） |
-| 專案建立日期 | 2026-04-04（對應 v1.0.0 首發） |
+| 項目         | 2026-07-06 快照數據                       |
+| ------------ | ----------------------------------------- |
+| GitHub Stars | 85,191                                    |
+| Forks        | 4,738                                     |
+| Open Issues  | 363                                       |
+| 授權         | MIT（repo 內 `LICENSE` 檔案確認）         |
+| 贊助商       | Atlas Cloud（atlascloud.ai，README 標註） |
+| 專案建立日期 | 2026-04-04（對應 v1.0.0 首發）            |
 
 這份快照數據的企業參考意義在於：短短三個月內（2026-04-04 首發至 2026-07-06）累積超過 8 萬顆 Star、逾 360 個開放 Issue，顯示這是一個**社群關注度高、迭代速度快**的活躍專案——這既是「生態系與整合覆蓋率快速擴張」的正面訊號，也呼應第22.3節「版本漂移風險」與「維護者依賴風險」的提醒：企業導入前應理解其活躍度背後仍是**單一開發者維護**的個人專案性質，兩者需一併納入風險評估，而非只看熱度數字。
 
@@ -243,16 +244,16 @@ graph TB
 
 ### 2.2 各層作用分析
 
-| 層級 | 角色 | 說明 |
-|------|------|------|
-| User | 需求發起者 | 提出問題、下達指令，可能包含 `/caveman [level]` 等控制指令 |
-| AI Coding Agent | 執行環境 | Claude Code、Copilot、Cursor 等，負責整體對話管理與工具呼叫 |
-| SessionStart Hook | 初始化注入 | Session 開始時寫入 flag file，並將 caveman 規則以「隱藏 stdout」形式注入 System Context，使用者不會看到這段注入內容 |
-| UserPromptSubmit Hook | 持續維持風格 | 每次使用者送出訊息時偵測是否仍在 caveman 模式，並在偵測到其他 Plugin 可能覆蓋風格指示時重新提醒模型 |
-| caveman Prompt Layer | 核心規則 | 定義四種模式（`lite`/`full`/`ultra`/`wenyan`）的具體壓縮規則，是整個機制的「大腦」 |
-| LLM 推論 | 實際生成 | 模型依照被注入的規則，在生成階段就直接產出精簡文字，**並非事後再做字串裁切** |
-| Output Compression | 結果呈現 | 這一層並非獨立的後處理程式，而是模型「一次到位」生成的精簡輸出——這是理解 caveman 與傳統「摘要工具」最大差異之處 |
-| Statusline / caveman-stats | 觀測與回饋 | 顯示本次/累積節省的 Token 量與換算美金成本，供使用者與團隊追蹤效益 |
+| 層級                       | 角色         | 說明                                                                                                                |
+| -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| User                       | 需求發起者   | 提出問題、下達指令，可能包含 `/caveman [level]` 等控制指令                                                          |
+| AI Coding Agent            | 執行環境     | Claude Code、Copilot、Cursor 等，負責整體對話管理與工具呼叫                                                         |
+| SessionStart Hook          | 初始化注入   | Session 開始時寫入 flag file，並將 caveman 規則以「隱藏 stdout」形式注入 System Context，使用者不會看到這段注入內容 |
+| UserPromptSubmit Hook      | 持續維持風格 | 每次使用者送出訊息時偵測是否仍在 caveman 模式，並在偵測到其他 Plugin 可能覆蓋風格指示時重新提醒模型                 |
+| caveman Prompt Layer       | 核心規則     | 定義四種模式（`lite`/`full`/`ultra`/`wenyan`）的具體壓縮規則，是整個機制的「大腦」                                  |
+| LLM 推論                   | 實際生成     | 模型依照被注入的規則，在生成階段就直接產出精簡文字，**並非事後再做字串裁切**                                        |
+| Output Compression         | 結果呈現     | 這一層並非獨立的後處理程式，而是模型「一次到位」生成的精簡輸出——這是理解 caveman 與傳統「摘要工具」最大差異之處     |
+| Statusline / caveman-stats | 觀測與回饋   | 顯示本次/累積節省的 Token 量與換算美金成本，供使用者與團隊追蹤效益                                                  |
 
 > 📌 **架構關鍵澄清**：圖中的「Output Compression」並非獨立處理步驟，而是模型依照被注入的 Prompt 規則直接生成精簡文字的結果。caveman 完全是 **Prompt 層級**的機制，沒有任何後端伺服器對輸出做二次壓縮或摘要——這也是它能維持「零遙測、無 Backend」特性的根本原因。
 
@@ -353,10 +354,10 @@ caveman 的核心規則集（`skills/caveman/SKILL.md`）本質上是一組「�
 
 caveman 提供兩種層級的壓縮，企業需區分清楚：
 
-| 類型 | 作用範圍 | 持續性 | 對應機制 |
-|------|---------|-------|---------|
-| Conversation-level（對話級） | 當前 Session 的每一次回覆 | Session 結束或手動關閉即失效 | `/caveman [level]` |
-| Memory-level（記憶檔級） | `CLAUDE.md`、專案筆記等長期記憶檔案 | 永久寫回檔案，影響所有未來 Session | `/caveman-compress <file>` |
+| 類型                         | 作用範圍                            | 持續性                             | 對應機制                   |
+| ---------------------------- | ----------------------------------- | ---------------------------------- | -------------------------- |
+| Conversation-level（對話級） | 當前 Session 的每一次回覆           | Session 結束或手動關閉即失效       | `/caveman [level]`         |
+| Memory-level（記憶檔級）     | `CLAUDE.md`、專案筆記等長期記憶檔案 | 永久寫回檔案，影響所有未來 Session | `/caveman-compress <file>` |
 
 `/caveman-compress` 的運作方式是：讀取指定檔案 → 以模型將內容改寫為精簡風格 → 驗證程式碼區塊/標題/連結/指令是否被完整保留 → 寫回原檔案並在旁另存 `<filename>.original.md` 備份 → 若驗證失敗最多重試 2 次，僅做針對性局部修補。官方實測此機制平均可為未來所有 Session 節省約 46% 的 input token（因為 Memory 檔案是每次 Session 開頭都會被讀入的固定成本）。
 
@@ -413,19 +414,19 @@ Skill 採用「Markdown 即程式」的設計：`SKILL.md` 是給模型讀的 Pr
 
 根據 caveman 官方以 Claude API 進行的實測（非本手冊自行量測，逐字引用自官方 README 公開 Benchmark 表格，經與 GitHub 上的原始表格逐項核對無誤）：
 
-| 任務類型 | 一般模式 Token | caveman 模式 Token | 節省比例 |
-|---------|---------------|-------------------|---------|
-| React 重複渲染 Bug 分析 | 1,180 | 159 | 87% |
-| Auth Middleware Token 過期修復 | 704 | 121 | 83% |
-| PostgreSQL 連線池設定 | 2,347 | 380 | 84% |
-| Git rebase vs. merge 說明 | 702 | 292 | 58% |
-| Callback 重構為 async/await | 387 | 301 | 22% |
-| 架構討論：Microservices vs. Monolith | 446 | 310 | 30% |
-| PR 安全性議題 Review | 678 | 398 | 41% |
-| Docker Multi-stage Build 設定 | 1,042 | 290 | 72% |
-| PostgreSQL Race Condition 除錯 | 1,200 | 232 | 81% |
-| React Error Boundary 實作 | 3,454 | 456 | 87% |
-| **平均** | **1,214** | **294** | **65%** |
+| 任務類型                             | 一般模式 Token | caveman 模式 Token | 節省比例 |
+| ------------------------------------ | -------------- | ------------------ | -------- |
+| React 重複渲染 Bug 分析              | 1,180          | 159                | 87%      |
+| Auth Middleware Token 過期修復       | 704            | 121                | 83%      |
+| PostgreSQL 連線池設定                | 2,347          | 380                | 84%      |
+| Git rebase vs. merge 說明            | 702            | 292                | 58%      |
+| Callback 重構為 async/await          | 387            | 301                | 22%      |
+| 架構討論：Microservices vs. Monolith | 446            | 310                | 30%      |
+| PR 安全性議題 Review                 | 678            | 398                | 41%      |
+| Docker Multi-stage Build 設定        | 1,042          | 290                | 72%      |
+| PostgreSQL Race Condition 除錯       | 1,200          | 232                | 81%      |
+| React Error Boundary 實作            | 3,454          | 456                | 87%      |
+| **平均**                             | **1,214**      | **294**            | **65%**  |
 
 實測範圍橫跨 10 種任務類型，單筆節省比例落在 **22%～87%** 之間，並非每個任務都能達到平均值，任務本身「敘述性文字占比」是決定節省幅度的主要變數（詳見4.4節分析）。
 
@@ -433,27 +434,27 @@ Skill 採用「Markdown 即程式」的設計：`SKILL.md` 是給模型讀的 Pr
 
 ### 4.2 為什麼能節省 Token：文字層級分析
 
-| 被省略的內容 | 範例 | 說明 |
-|------------|------|------|
-| 開場客套語 | 「好的，讓我來看一下這個問題」 | 對技術判斷零貢獻 |
-| 重複性總結 | 「總結來說，以上就是...」 | 內容在前文已完整呈現 |
-| 過度鋪陳的因果解釋 | 「這是因為...，原因在於...，也就是說...」 | 精簡為單一因果句 |
-| 多餘的選項羅列 | 條列 5 種可能原因但只有 1 種相關 | 直接指出最可能原因 |
-| 禮貌性緩衝語 | 「這是一個很好的問題」「希望這對你有幫助」 | 純社交修辭 |
+| 被省略的內容       | 範例                                       | 說明                 |
+| ------------------ | ------------------------------------------ | -------------------- |
+| 開場客套語         | 「好的，讓我來看一下這個問題」             | 對技術判斷零貢獻     |
+| 重複性總結         | 「總結來說，以上就是...」                  | 內容在前文已完整呈現 |
+| 過度鋪陳的因果解釋 | 「這是因為...，原因在於...，也就是說...」  | 精簡為單一因果句     |
+| 多餘的選項羅列     | 條列 5 種可能原因但只有 1 種相關           | 直接指出最可能原因   |
+| 禮貌性緩衝語       | 「這是一個很好的問題」「希望這對你有幫助」 | 純社交修辭           |
 
 ### 4.3 哪些內容「不能」被省略
 
 > ⚠️ **絕對不可壓縮清單**：這是 caveman 設計中最重要的安全邊界。
 
-| 內容類型 | 是否可壓縮 | 說明 |
-|---------|-----------|------|
-| 程式碼（Code Block） | ❌ 不可 | 逐字元保留，caveman 完全不觸碰程式碼本身 |
-| 指令（Command） | ❌ 不可 | Shell/Git/CLI 指令必須完整可執行 |
-| 錯誤訊息（Error Message） | ❌ 不可 | 除錯依據，任何簡化都可能誤導 |
-| 檔案路徑 / URL | ❌ 不可 | 精確性優先於精簡 |
-| 技術結論本身 | ❌ 不可 | 只精簡「怎麼表達」，不精簡「結論是什麼」 |
-| 敘述性說明文字 | ✅ 可壓縮 | 這是 caveman 實際作用的範圍 |
-| 重複性鋪陳語句 | ✅ 可壓縮 | 主要節省來源 |
+| 內容類型                  | 是否可壓縮 | 說明                                     |
+| ------------------------- | ---------- | ---------------------------------------- |
+| 程式碼（Code Block）      | ❌ 不可    | 逐字元保留，caveman 完全不觸碰程式碼本身 |
+| 指令（Command）           | ❌ 不可    | Shell/Git/CLI 指令必須完整可執行         |
+| 錯誤訊息（Error Message） | ❌ 不可    | 除錯依據，任何簡化都可能誤導             |
+| 檔案路徑 / URL            | ❌ 不可    | 精確性優先於精簡                         |
+| 技術結論本身              | ❌ 不可    | 只精簡「怎麼表達」，不精簡「結論是什麼」 |
+| 敘述性說明文字            | ✅ 可壓縮  | 這是 caveman 實際作用的範圍              |
+| 重複性鋪陳語句            | ✅ 可壓縮  | 主要節省來源                             |
 
 ### 4.4 各類任務的節省效益差異分析
 
@@ -492,14 +493,14 @@ graph LR
 
 ### 4.6 各企業常見任務的節省原理總表
 
-| 任務 | 說明文字占比 | 建議 Mode | 預期節省效益 |
-|------|------------|----------|------------|
-| Commit Message 產生 | 極高 | full 或 ultra | 高 |
-| PR Review 註解 | 高 | full | 高 |
-| Bug 原因說明 | 高 | full | 高 |
-| 架構決策說明（ADR） | 中 | lite | 中（避免省略決策依據） |
-| 大量程式碼生成 | 低 | 不特別要求 | 低 |
-| 需求規格書產出 | 低（需完整敘述） | 建議關閉 | 不適用 |
+| 任務                | 說明文字占比     | 建議 Mode     | 預期節省效益           |
+| ------------------- | ---------------- | ------------- | ---------------------- |
+| Commit Message 產生 | 極高             | full 或 ultra | 高                     |
+| PR Review 註解      | 高               | full          | 高                     |
+| Bug 原因說明        | 高               | full          | 高                     |
+| 架構決策說明（ADR） | 中               | lite          | 中（避免省略決策依據） |
+| 大量程式碼生成      | 低               | 不特別要求    | 低                     |
+| 需求規格書產出      | 低（需完整敘述） | 建議關閉      | 不適用                 |
 
 ---
 
@@ -513,12 +514,12 @@ graph LR
 
 ### 5.1 前置需求
 
-| 項目 | 需求 |
-|------|------|
-| Node.js | ≥ 18 |
-| 作業系統 | Windows 10/11、Linux、macOS、WSL2 |
-| Shell | Git Bash / PowerShell 5.1+ / bash / zsh |
-| 網路 | 僅安裝當下需要（下載 GitHub/npm 資源） |
+| 項目     | 需求                                    |
+| -------- | --------------------------------------- |
+| Node.js  | ≥ 18                                    |
+| 作業系統 | Windows 10/11、Linux、macOS、WSL2       |
+| Shell    | Git Bash / PowerShell 5.1+ / bash / zsh |
+| 網路     | 僅安裝當下需要（下載 GitHub/npm 資源）  |
 
 ### 5.2 一鍵安裝（推薦）
 
@@ -566,23 +567,23 @@ node bin/install.js --all
 
 ### 5.5 安裝旗標速查
 
-| 旗標 | 作用 |
-|------|------|
-| `--all` | 安裝 Plugin + Hooks + Statusline + 每個 Repo 的規則檔（MCP shrink 需另外以 `--with-mcp-shrink` 加開） |
-| `--minimal` | 只安裝 Plugin/Extension，不含 Hooks/MCP/規則檔 |
-| `--only <id>` | 只安裝指定 Agent（可重複指定多個，如 `--only claude --only cursor`） |
-| `--dry-run` | 預覽指令但不寫入 |
-| `--with-init` | 在目前 Repo 寫入永久生效的規則檔（適合無 Hook 機制的 Agent） |
-| `--with-mcp-shrink="<cmd>"` | 註冊 caveman-shrink MCP Middleware，包裹既有 MCP Tool Server（需帶入欲包裹的上游指令） |
-| `--no-mcp-shrink` | 明確跳過 MCP shrink（此為預設行為，此旗標用於顯式聲明） |
-| `--with-hooks` / `--no-hooks` | 強制開啟／關閉 Claude Code Hook 安裝（預設為開啟） |
-| `--skip-skills` | 跳過透過 `npx skills add` 進行的自動偵測後備安裝流程 |
-| `--config-dir <path>` | 覆寫 Claude Code 設定目錄路徑（僅影響 Claude Code，不會連帶改變其他 Agent 的安裝路徑） |
-| `--non-interactive` | 安裝過程不出現任何互動式提示，適合 CI/自動化腳本場景 |
-| `--no-color` | 關閉終端機 ANSI 顏色輸出 |
-| `--force` | 已安裝狀態下強制重新安裝 |
-| `--uninstall` | 移除所有 Hook/Plugin/Flag/設定 |
-| `--list` | 印出目前環境偵測到的 Agent 矩陣 |
+| 旗標                          | 作用                                                                                                  |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `--all`                       | 安裝 Plugin + Hooks + Statusline + 每個 Repo 的規則檔（MCP shrink 需另外以 `--with-mcp-shrink` 加開） |
+| `--minimal`                   | 只安裝 Plugin/Extension，不含 Hooks/MCP/規則檔                                                        |
+| `--only <id>`                 | 只安裝指定 Agent（可重複指定多個，如 `--only claude --only cursor`）                                  |
+| `--dry-run`                   | 預覽指令但不寫入                                                                                      |
+| `--with-init`                 | 在目前 Repo 寫入永久生效的規則檔（適合無 Hook 機制的 Agent）                                          |
+| `--with-mcp-shrink="<cmd>"`   | 註冊 caveman-shrink MCP Middleware，包裹既有 MCP Tool Server（需帶入欲包裹的上游指令）                |
+| `--no-mcp-shrink`             | 明確跳過 MCP shrink（此為預設行為，此旗標用於顯式聲明）                                               |
+| `--with-hooks` / `--no-hooks` | 強制開啟／關閉 Claude Code Hook 安裝（預設為開啟）                                                    |
+| `--skip-skills`               | 跳過透過 `npx skills add` 進行的自動偵測後備安裝流程                                                  |
+| `--config-dir <path>`         | 覆寫 Claude Code 設定目錄路徑（僅影響 Claude Code，不會連帶改變其他 Agent 的安裝路徑）                |
+| `--non-interactive`           | 安裝過程不出現任何互動式提示，適合 CI/自動化腳本場景                                                  |
+| `--no-color`                  | 關閉終端機 ANSI 顏色輸出                                                                              |
+| `--force`                     | 已安裝狀態下強制重新安裝                                                                              |
+| `--uninstall`                 | 移除所有 Hook/Plugin/Flag/設定                                                                        |
+| `--list`                      | 印出目前環境偵測到的 Agent 矩陣                                                                       |
 
 > 📌 上述完整旗標清單已對照官方 INSTALL.md 逐項核實。`--non-interactive`／`--no-color`／`--config-dir` 三者特別適合 Docker/DevContainer/CI 等自動化安裝場景，建議與第5.7節企業建議做法搭配使用。
 
@@ -703,11 +704,11 @@ graph TB
     style L3 fill:#975a16,color:#fff
 ```
 
-| 整合層級 | 特性 | 優點 | 限制 |
-|---------|------|------|------|
-| Level 1 原生整合 | 安裝後自動啟用，Hook 機制完整運作 | 體驗最完整，Session 狀態自動維持 | 僅少數 Agent 支援 |
-| Level 2 Skills Registry | 透過通用 `npx skills add` 安裝 | 覆蓋範圍廣（25+ Agent） | 多數需手動輸入 `/caveman` 啟用，無法自動偵測 Session 開始 |
-| Level 3 規則檔／soft-probe | 寫入 `.cursor/rules/`、`copilot-instructions.md` 等靜態檔案，或官方矩陣中標示為需明確 `--only` 指定、無自動偵測訊號的 Agent | 對無 Hook 機制的工具仍可運作 | 規則為靜態文字，無法即時切換 Mode，需手動編輯檔案才能調整 |
+| 整合層級                   | 特性                                                                                                                        | 優點                             | 限制                                                      |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------------------------------- |
+| Level 1 原生整合           | 安裝後自動啟用，Hook 機制完整運作                                                                                           | 體驗最完整，Session 狀態自動維持 | 僅少數 Agent 支援                                         |
+| Level 2 Skills Registry    | 透過通用 `npx skills add` 安裝                                                                                              | 覆蓋範圍廣（25+ Agent）          | 多數需手動輸入 `/caveman` 啟用，無法自動偵測 Session 開始 |
+| Level 3 規則檔／soft-probe | 寫入 `.cursor/rules/`、`copilot-instructions.md` 等靜態檔案，或官方矩陣中標示為需明確 `--only` 指定、無自動偵測訊號的 Agent | 對無 Hook 機制的工具仍可運作     | 規則為靜態文字，無法即時切換 Mode，需手動編輯檔案才能調整 |
 
 ### 6.2 各 Agent 詳細安裝與設定
 
@@ -784,29 +785,29 @@ npx skills add JuliusBrussee/caveman -a <agent-slug>
 
 官方 INSTALL.md 目前矩陣中，除前述已詳列的 Cursor / Windsurf / Cline / Continue / Codex CLI 外，Level 2 尚包含以下約 20 個 Agent（`<agent-slug>` 僅為示意，實際安裝前建議執行 `npx skills list` 或查閱官方 INSTALL.md 最新矩陣確認正確 slug 名稱）：
 
-| Agent | 類型 |
-|-------|------|
-| Kilo Code | AI Coding Agent |
-| Roo Code | AI Coding Agent |
-| Augment Code | AI Coding Agent |
-| Aider Desk | AI Coding Agent |
-| Sourcegraph Amp | AI Coding Agent |
-| IBM Bob | AI Coding Agent |
-| Crush | AI Coding Agent |
-| Devin | AI Coding Agent（Cognition） |
-| Droid（Factory） | AI Coding Agent |
-| ForgeCode | AI Coding Agent |
-| Block Goose | AI Coding Agent |
-| iFlow CLI | CLI Agent |
-| Kiro CLI | CLI Agent |
-| Mistral Vibe | AI Coding Agent |
-| OpenHands | AI Coding Agent |
-| Qwen Code | AI Coding Agent |
-| Atlassian Rovo Dev | AI Coding Agent |
-| Tabnine CLI | CLI Agent |
-| Trae | AI Coding Agent |
-| Warp | Terminal Agent |
-| Replit Agent | AI Coding Agent |
+| Agent              | 類型                         |
+| ------------------ | ---------------------------- |
+| Kilo Code          | AI Coding Agent              |
+| Roo Code           | AI Coding Agent              |
+| Augment Code       | AI Coding Agent              |
+| Aider Desk         | AI Coding Agent              |
+| Sourcegraph Amp    | AI Coding Agent              |
+| IBM Bob            | AI Coding Agent              |
+| Crush              | AI Coding Agent              |
+| Devin              | AI Coding Agent（Cognition） |
+| Droid（Factory）   | AI Coding Agent              |
+| ForgeCode          | AI Coding Agent              |
+| Block Goose        | AI Coding Agent              |
+| iFlow CLI          | CLI Agent                    |
+| Kiro CLI           | CLI Agent                    |
+| Mistral Vibe       | AI Coding Agent              |
+| OpenHands          | AI Coding Agent              |
+| Qwen Code          | AI Coding Agent              |
+| Atlassian Rovo Dev | AI Coding Agent              |
+| Tabnine CLI        | CLI Agent                    |
+| Trae               | AI Coding Agent              |
+| Warp               | Terminal Agent               |
+| Replit Agent       | AI Coding Agent              |
 
 > 📌 此清單依官方 INSTALL.md 的「Auto-activates」欄位判讀，歸類為需透過 `npx skills add` 安裝、多數需在對話中手動輸入 `/caveman` 啟用的 Agent。官方支援矩陣持續擴充中，正式導入前務必以官方最新版本為準。
 
@@ -816,15 +817,15 @@ npx skills add JuliusBrussee/caveman -a <agent-slug>
 
 ### 6.3 整合方式選型建議表
 
-| 企業使用的 Agent | 建議整合層級 | 導入複雜度 | 備註 |
-|---------------|------------|----------|------|
-| Claude Code | Level 1 | 低 | 首選試點對象，體驗最完整 |
-| GitHub Copilot | Level 3 | 中 | 需搭配 Repo 規則檔治理 |
-| Cursor / Windsurf / Cline | Level 2 | 低 | 安裝快速，行為接近自動 |
-| Gemini CLI | Level 1 | 低 | 官方 Extension 機制成熟 |
-| Codex CLI / Continue | Level 2 | 中 | 需教育使用者手動輸入 `/caveman` |
-| JetBrains Junie / Qoder / Google Antigravity | Level 3 | 中 | 需明確以 `--only` 指定安裝，無自動偵測訊號 |
-| 其他 ~25 個 Level 2 Agent（Devin、Warp、Replit Agent、Sourcegraph Amp 等，詳見6.2節完整表格） | Level 2 | 視工具而定 | 建議先小範圍試點驗證相容性 |
+| 企業使用的 Agent                                                                              | 建議整合層級 | 導入複雜度 | 備註                                       |
+| --------------------------------------------------------------------------------------------- | ------------ | ---------- | ------------------------------------------ |
+| Claude Code                                                                                   | Level 1      | 低         | 首選試點對象，體驗最完整                   |
+| GitHub Copilot                                                                                | Level 3      | 中         | 需搭配 Repo 規則檔治理                     |
+| Cursor / Windsurf / Cline                                                                     | Level 2      | 低         | 安裝快速，行為接近自動                     |
+| Gemini CLI                                                                                    | Level 1      | 低         | 官方 Extension 機制成熟                    |
+| Codex CLI / Continue                                                                          | Level 2      | 中         | 需教育使用者手動輸入 `/caveman`            |
+| JetBrains Junie / Qoder / Google Antigravity                                                  | Level 3      | 中         | 需明確以 `--only` 指定安裝，無自動偵測訊號 |
+| 其他 ~25 個 Level 2 Agent（Devin、Warp、Replit Agent、Sourcegraph Amp 等，詳見6.2節完整表格） | Level 2      | 視工具而定 | 建議先小範圍試點驗證相容性                 |
 
 > 💡 **實務案例**：某同時使用 Claude Code（後端團隊）與 GitHub Copilot（前端團隊）的企業，採取差異化策略——後端團隊直接安裝 Level 1 完整體驗，前端團隊則透過 `--with-init` 寫入 `.github/copilot-instructions.md`，並將此檔案納入 Code Review 規範中一併維護，確保兩個工具鏈都能享有一致的精簡輸出風格。
 
@@ -842,22 +843,22 @@ npx skills add JuliusBrussee/caveman -a <agent-slug>
 
 > 📌 **經與官方 README 核實的更正**：caveman 實際只提供**四種**可切換模式：`lite`、`full`、`ultra`、`wenyan`。`wenyan` 是單一模式，**並無** `wenyan-lite`／`wenyan-full`／`wenyan-ultra` 三種子強度之分——這點在早期版本手冊中曾被誤植為三種變體，本次已更正。另需提醒：官方 README 的段落標題雖寫作「Six levels」，但實際表格只列出「一般 Agent（基準線，非可選模式）+ lite + full + ultra + wenyan」共5列，扣除非可選的基準線後，真正可切換的模式就是這4種——這是官方文件本身用詞與實際表格數量不一致的小瑕疵，讀者查閱官方文件時可留意，不代表 caveman 有隱藏的第五、第六種模式。
 
-| Mode | 說明 | 適合情境 |
-|------|------|---------|
-| `lite` | 輕度壓縮，保留較完整句子結構 | 新人尚在適應期、需要一定可讀性緩衝 |
-| `full`（預設） | 標準壓縮強度，官方預設值 | 日常開發的絕大多數場景 |
-| `ultra` | 極限壓縮，句子高度精簡 | 高頻率、經驗豐富團隊的極致省字場景 |
-| `wenyan` | 文言文（Classical Chinese）風格壓縮，官方定位為「刻意例外」——文言文本身即以精簡著稱，資訊密度高於白話文 | 中文團隊追求文字美感與極致壓縮的實驗性選項 |
+| Mode           | 說明                                                                                                    | 適合情境                                   |
+| -------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `lite`         | 輕度壓縮，保留較完整句子結構                                                                            | 新人尚在適應期、需要一定可讀性緩衝         |
+| `full`（預設） | 標準壓縮強度，官方預設值                                                                                | 日常開發的絕大多數場景                     |
+| `ultra`        | 極限壓縮，句子高度精簡                                                                                  | 高頻率、經驗豐富團隊的極致省字場景         |
+| `wenyan`       | 文言文（Classical Chinese）風格壓縮，官方定位為「刻意例外」——文言文本身即以精簡著稱，資訊密度高於白話文 | 中文團隊追求文字美感與極致壓縮的實驗性選項 |
 
 ### 7.2 範例輸出比較
 
 以「解釋一段 React 元件為何每次 render 都重新建立新物件」為例：
 
-| Mode | 範例輸出 |
-|------|---------|
-| `lite` | 「將物件包在 `useMemo` 裡。每次 render 都會建立新的參照。」 |
-| `full` | 「每次 render 都建立新參照。用 `useMemo` 包起來。」 |
-| `ultra` | 「每 render 一個新 ref。`useMemo` 它。」 |
+| Mode     | 範例輸出                                                           |
+| -------- | ------------------------------------------------------------------ |
+| `lite`   | 「將物件包在 `useMemo` 裡。每次 render 都會建立新的參照。」        |
+| `full`   | 「每次 render 都建立新參照。用 `useMemo` 包起來。」                |
+| `ultra`  | 「每 render 一個新 ref。`useMemo` 它。」                           |
 | `wenyan` | 以文言文風格呈現同一結論，資訊密度更高但需team具備閱讀文言文的默契 |
 
 > ⚠️ **wenyan 使用提醒**：文言文風格雖然在字元層級可能達到最高壓縮率，但對非中文母語工程師、或不熟悉文言文表達的團隊成員，反而會提高理解成本，建議僅在團隊共識明確、且以教學/展示用途為主時採用，正式生產工作流建議以 `full` 或 `ultra` 為主。
@@ -944,12 +945,12 @@ sequenceDiagram
 
 需要區分清楚 caveman 影響的是「表達方式」而非「對話記憶內容」本身：
 
-| 項目 | caveman 是否影響 |
-|------|-----------------|
-| 模型記得的對話歷史內容 | 否，完全不變 |
-| 模型組織回覆文字的方式 | 是，這是核心作用範圍 |
+| 項目                             | caveman 是否影響                          |
+| -------------------------------- | ----------------------------------------- |
+| 模型記得的對話歷史內容           | 否，完全不變                              |
+| 模型組織回覆文字的方式           | 是，這是核心作用範圍                      |
 | `CLAUDE.md` 等記憶檔案的實際內容 | 是（僅限主動執行 `/caveman-compress` 時） |
-| 使用者輸入的原始訊息 | 否，caveman 不會修改使用者的輸入 |
+| 使用者輸入的原始訊息             | 否，caveman 不會修改使用者的輸入          |
 
 > 💡 **實務案例**：某企業在導入初期同時運行既有的內部 Prompt 治理 Plugin（用於強制加上合規免責聲明）與 caveman，測試後發現兩者運作良好——caveman 的「auto-clarity rule」會在偵測到安全/合規相關內容時自動退回完整敘述模式，恰好與既有合規 Plugin 的目的相容，未產生指示衝突。
 
@@ -964,24 +965,24 @@ sequenceDiagram
 
 ### 9.1 後端框架搭配建議
 
-| 技術棧 | 常見高頻 Agent 任務 | caveman 建議 Mode | 說明 |
-|-------|-------------------|------------------|------|
-| Spring Boot | Controller/Service 職責說明、Bean 注入除錯 | full | 逐層架構說明文字量大，效益明顯 |
-| .NET (ASP.NET Core) | Middleware Pipeline 除錯、DI 生命週期解釋 | full | 與 Spring Boot 類似模式 |
-| Node.js / Express | Middleware Chain 除錯、Async 流程說明 | full | 非同步流程說明文字量大 |
-| FastAPI | Pydantic Model 驗證錯誤解釋 | ultra | 錯誤說明格式化程度高，適合高強度壓縮 |
-| Laravel | Eloquent Query 除錯說明 | full | — |
-| Ruby on Rails | Convention over Configuration 慣例說明 | lite | 慣例說明需要一定完整度，避免新人誤解 |
-| Django | ORM Migration 衝突解釋 | full | — |
+| 技術棧              | 常見高頻 Agent 任務                        | caveman 建議 Mode | 說明                                 |
+| ------------------- | ------------------------------------------ | ----------------- | ------------------------------------ |
+| Spring Boot         | Controller/Service 職責說明、Bean 注入除錯 | full              | 逐層架構說明文字量大，效益明顯       |
+| .NET (ASP.NET Core) | Middleware Pipeline 除錯、DI 生命週期解釋  | full              | 與 Spring Boot 類似模式              |
+| Node.js / Express   | Middleware Chain 除錯、Async 流程說明      | full              | 非同步流程說明文字量大               |
+| FastAPI             | Pydantic Model 驗證錯誤解釋                | ultra             | 錯誤說明格式化程度高，適合高強度壓縮 |
+| Laravel             | Eloquent Query 除錯說明                    | full              | —                                    |
+| Ruby on Rails       | Convention over Configuration 慣例說明     | lite              | 慣例說明需要一定完整度，避免新人誤解 |
+| Django              | ORM Migration 衝突解釋                     | full              | —                                    |
 
 ### 9.2 前端框架搭配建議
 
-| 技術棧 | 常見高頻 Agent 任務 | caveman 建議 Mode |
-|-------|-------------------|------------------|
-| Vue3 | Reactivity 追蹤除錯（`ref` vs `reactive`） | full |
-| React | Re-render 原因分析、`useMemo`/`useCallback` 建議 | ultra |
-| Angular | Change Detection 策略說明 | full |
-| Next.js / Nuxt | SSR/CSR 邊界問題除錯 | full |
+| 技術棧         | 常見高頻 Agent 任務                              | caveman 建議 Mode |
+| -------------- | ------------------------------------------------ | ----------------- |
+| Vue3           | Reactivity 追蹤除錯（`ref` vs `reactive`）       | full              |
+| React          | Re-render 原因分析、`useMemo`/`useCallback` 建議 | ultra             |
+| Angular        | Change Detection 策略說明                        | full              |
+| Next.js / Nuxt | SSR/CSR 邊界問題除錯                             | full              |
 
 ### 9.3 架構風格與 Token 優化的關係
 
@@ -1011,14 +1012,14 @@ sequenceDiagram
 
 Legacy 現代化專案通常涉及**大量逐檔案、逐模組的說明性分析**——例如「這個 COBOL Copybook 定義了什麼欄位」「這個 VB6 Form 的事件處理邏輯對應到哪個業務流程」。這類任務的輸出往往是「敘述性文字」而非「新程式碼」，正是 caveman 效益最大化的場景。
 
-| 舊技術 | 常見 Agent 任務 | Token 消耗特性 |
-|-------|----------------|--------------|
-| COBOL | Copybook 欄位對應說明、批次程式邏輯拆解 | 說明文字占比極高 |
-| Java EE (EJB/Struts) | 舊版元件職責釐清、遷移至 Spring Boot 的對應關係說明 | 說明文字占比高 |
-| ASP.NET (WebForms) | Code-Behind 事件流程說明 | 說明文字占比高 |
-| VB6 / VB.NET | Form 事件邏輯拆解 | 說明文字占比高 |
-| Delphi | Unit 依賴關係說明 | 說明文字占比中高 |
-| PowerBuilder | DataWindow 邏輯拆解 | 說明文字占比高 |
+| 舊技術               | 常見 Agent 任務                                     | Token 消耗特性   |
+| -------------------- | --------------------------------------------------- | ---------------- |
+| COBOL                | Copybook 欄位對應說明、批次程式邏輯拆解             | 說明文字占比極高 |
+| Java EE (EJB/Struts) | 舊版元件職責釐清、遷移至 Spring Boot 的對應關係說明 | 說明文字占比高   |
+| ASP.NET (WebForms)   | Code-Behind 事件流程說明                            | 說明文字占比高   |
+| VB6 / VB.NET         | Form 事件邏輯拆解                                   | 說明文字占比高   |
+| Delphi               | Unit 依賴關係說明                                   | 說明文字占比中高 |
+| PowerBuilder         | DataWindow 邏輯拆解                                 | 說明文字占比高   |
 
 ### 10.2 建議工作流程
 
@@ -1061,18 +1062,18 @@ caveman full 模式輸出：約 400~500 token（僅列出 Paragraph 名稱、輸
 
 ### 11.1 常見框架升級場景與 Token 特性
 
-| 升級場景 | 常見 Agent 任務 | 建議 Mode |
-|---------|----------------|----------|
-| Spring Boot 2 → 3 | `javax.*` → `jakarta.*` 掃描與影響分析 | full（掃描階段）／normal（風險評估報告） |
-| Spring Framework 舊版 → 新版 | Bean 設定方式變更說明 | full |
-| .NET Framework → .NET (Core) | 專案檔格式與相依套件相容性分析 | full |
-| Angular 舊版 → 新版 | Breaking Changes 逐項影響說明 | full |
-| React Class Component → Hooks | 元件邏輯轉換說明 | full |
-| Vue2 → Vue3 | Composition API 遷移對應說明 | full |
-| Hibernate 舊版 → 新版 | HQL/Criteria API 變更說明 | full |
-| MyBatis 版本升級 | Mapper XML 相容性檢查說明 | full |
-| JDK 8 → JDK 17/21/25 | API 棄用（Deprecation）逐項說明 | ultra（清單類任務） |
-| Python 2 → 3 / Node 舊版升級 | 相容性檢查與語法變更說明 | full |
+| 升級場景                      | 常見 Agent 任務                        | 建議 Mode                                |
+| ----------------------------- | -------------------------------------- | ---------------------------------------- |
+| Spring Boot 2 → 3             | `javax.*` → `jakarta.*` 掃描與影響分析 | full（掃描階段）／normal（風險評估報告） |
+| Spring Framework 舊版 → 新版  | Bean 設定方式變更說明                  | full                                     |
+| .NET Framework → .NET (Core)  | 專案檔格式與相依套件相容性分析         | full                                     |
+| Angular 舊版 → 新版           | Breaking Changes 逐項影響說明          | full                                     |
+| React Class Component → Hooks | 元件邏輯轉換說明                       | full                                     |
+| Vue2 → Vue3                   | Composition API 遷移對應說明           | full                                     |
+| Hibernate 舊版 → 新版         | HQL/Criteria API 變更說明              | full                                     |
+| MyBatis 版本升級              | Mapper XML 相容性檢查說明              | full                                     |
+| JDK 8 → JDK 17/21/25          | API 棄用（Deprecation）逐項說明        | ultra（清單類任務）                      |
+| Python 2 → 3 / Node 舊版升級  | 相容性檢查與語法變更說明               | full                                     |
 
 ### 11.2 降低 AI 成本的具體策略
 
@@ -1107,15 +1108,15 @@ flowchart TD
 
 ### 12.1 逆向工程任務類型與 Token 特性
 
-| 任務類型 | 說明 | 建議 Mode |
-|---------|------|----------|
-| 閱讀 Legacy 程式碼、理解流程 | 大量逐檔案摘要 | full |
-| 分析模組依賴關係 | 格式化清單輸出 | ultra |
-| Sequence Diagram 產出說明 | 需保留完整流程順序邏輯 | lite（避免省略關鍵步驟） |
-| Class Diagram 關係說明 | 結構化程度高 | full |
-| Database Schema 逆向分析 | 欄位/關聯說明 | full |
-| API 端點盤點 | 格式化清單 | ultra |
-| Batch Job 邏輯拆解 | 說明文字占比高 | full |
+| 任務類型                     | 說明                   | 建議 Mode                |
+| ---------------------------- | ---------------------- | ------------------------ |
+| 閱讀 Legacy 程式碼、理解流程 | 大量逐檔案摘要         | full                     |
+| 分析模組依賴關係             | 格式化清單輸出         | ultra                    |
+| Sequence Diagram 產出說明    | 需保留完整流程順序邏輯 | lite（避免省略關鍵步驟） |
+| Class Diagram 關係說明       | 結構化程度高           | full                     |
+| Database Schema 逆向分析     | 欄位/關聯說明          | full                     |
+| API 端點盤點                 | 格式化清單             | ultra                    |
+| Batch Job 邏輯拆解           | 說明文字占比高         | full                     |
 
 ### 12.2 建議工作流程
 
@@ -1296,18 +1297,18 @@ graph TB
 
 ### 14.2 各層級最佳化策略對照
 
-| 層級 | 最佳化手段 | caveman 是否涵蓋 |
-|------|-----------|-----------------|
-| Conversation | 適時開新 Session，避免對話歷史無限累積 | 否，需團隊自律 |
-| Context | 只讀取必要檔案，避免整包目錄無差別讀入 | 否，屬於 Agent 使用習慣 |
-| History | 定期歸檔/總結長對話 | 部分（`/caveman-compress` 可壓縮已寫入記憶檔的歷史摘要） |
-| Memory | 使用 `/caveman-compress` 永久精簡 CLAUDE.md 等檔案 | 是，核心功能 |
-| Prompt | 精簡系統提示、避免重複規則堆疊 | 是（caveman 本身即此類最佳化） |
-| Output | 減少說明性文字冗餘 | 是，核心功能 |
-| Code Block | 保持程式碼片段精簡（只貼相關片段） | 否，需團隊自律 |
-| Review | 單行精簡註解取代長篇 Review | 是（`/caveman-review`） |
-| Commit | Conventional Commit 精簡格式 | 是（`/caveman-commit`） |
-| Documentation | 精簡但保留完整技術事實 | 部分（需搭配人工把關） |
+| 層級          | 最佳化手段                                         | caveman 是否涵蓋                                         |
+| ------------- | -------------------------------------------------- | -------------------------------------------------------- |
+| Conversation  | 適時開新 Session，避免對話歷史無限累積             | 否，需團隊自律                                           |
+| Context       | 只讀取必要檔案，避免整包目錄無差別讀入             | 否，屬於 Agent 使用習慣                                  |
+| History       | 定期歸檔/總結長對話                                | 部分（`/caveman-compress` 可壓縮已寫入記憶檔的歷史摘要） |
+| Memory        | 使用 `/caveman-compress` 永久精簡 CLAUDE.md 等檔案 | 是，核心功能                                             |
+| Prompt        | 精簡系統提示、避免重複規則堆疊                     | 是（caveman 本身即此類最佳化）                           |
+| Output        | 減少說明性文字冗餘                                 | 是，核心功能                                             |
+| Code Block    | 保持程式碼片段精簡（只貼相關片段）                 | 否，需團隊自律                                           |
+| Review        | 單行精簡註解取代長篇 Review                        | 是（`/caveman-review`）                                  |
+| Commit        | Conventional Commit 精簡格式                       | 是（`/caveman-commit`）                                  |
+| Documentation | 精簡但保留完整技術事實                             | 部分（需搭配人工把關）                                   |
 
 ### 14.3 企業級 Token 最佳化 Checklist
 
@@ -1338,11 +1339,11 @@ graph TB
 
 caveman 屬於活躍開發中的個人專案，建議企業採用以下版本管理原則：
 
-| 原則 | 說明 |
-|------|------|
-| 固定版本安裝 | 透過 Git Clone 特定 Tag，而非永遠追蹤 `main` 分支，避免非預期的行為變更 |
-| 內部鏡射倉庫 | 大型企業建議建立內部 Git 鏡射，所有安裝來源指向內部倉庫，便於稽核與離線安裝 |
-| 變更前先於非production環境驗證 | 每次升級 caveman 版本前，先在測試用 Repo 驗證行為是否符合預期 |
+| 原則                           | 說明                                                                        |
+| ------------------------------ | --------------------------------------------------------------------------- |
+| 固定版本安裝                   | 透過 Git Clone 特定 Tag，而非永遠追蹤 `main` 分支，避免非預期的行為變更     |
+| 內部鏡射倉庫                   | 大型企業建議建立內部 Git 鏡射，所有安裝來源指向內部倉庫，便於稽核與離線安裝 |
+| 變更前先於非production環境驗證 | 每次升級 caveman 版本前，先在測試用 Repo 驗證行為是否符合預期               |
 
 > 📌 **名詞澄清：官方沒有 CHANGELOG.md 檔案**：本手冊全文提及的「官方 CHANGELOG」實際上並非指 repo 根目錄下的某個 `CHANGELOG.md` 檔案——經核實，caveman 官方 repo **並未提供** CHANGELOG.md，版本異動說明完整記錄於 [GitHub Releases 頁面](https://github.com/JuliusBrussee/caveman/releases) 的每個版本發布說明中。後續章節統一改稱「官方 Release Notes（GitHub Releases）」以避免誤導讀者去尋找一個不存在的檔案。完整版本標籤、日期與代號歷程請參見第25.11節「版本歷程」。
 
@@ -1400,33 +1401,33 @@ npx -y github:JuliusBrussee/caveman -- --uninstall
 
 ### 16.1 常見 Breaking Changes 類型
 
-| 類型 | 說明 | 因應方式 |
-|------|------|---------|
-| Mode 名稱變更 | 新版本可能重新命名或合併某些強度等級 | 升級前先查閱官方 Release Notes（GitHub Releases） |
-| Slash Command 語法變更 | 指令參數或別名調整 | 更新團隊內部 Prompt Style Guide 文件 |
-| Hook 事件行為變更 | SessionStart/UserPromptSubmit 觸發時機或輸出格式調整 | 於測試 Repo 驗證後才推廣至全公司 |
-| 安裝旗標調整 | `--with-init`／`--minimal` 等旗標語意變動 | 重新確認安裝腳本仍符合企業內網限制 |
+| 類型                   | 說明                                                 | 因應方式                                          |
+| ---------------------- | ---------------------------------------------------- | ------------------------------------------------- |
+| Mode 名稱變更          | 新版本可能重新命名或合併某些強度等級                 | 升級前先查閱官方 Release Notes（GitHub Releases） |
+| Slash Command 語法變更 | 指令參數或別名調整                                   | 更新團隊內部 Prompt Style Guide 文件              |
+| Hook 事件行為變更      | SessionStart/UserPromptSubmit 觸發時機或輸出格式調整 | 於測試 Repo 驗證後才推廣至全公司                  |
+| 安裝旗標調整           | `--with-init`／`--minimal` 等旗標語意變動            | 重新確認安裝腳本仍符合企業內網限制                |
 
 ### 16.2 Migration Guide 撰寫建議
 
 企業內部應維護一份簡短的《caveman 版本遷移紀錄》，建議欄位如下：
 
-| 欄位 | 說明 |
-|------|------|
-| 舊版本 / 新版本 | 版本號對照 |
-| 主要變更摘要 | 條列化列出行為差異 |
+| 欄位               | 說明                                     |
+| ------------------ | ---------------------------------------- |
+| 舊版本 / 新版本    | 版本號對照                               |
+| 主要變更摘要       | 條列化列出行為差異                       |
 | 對既有規則檔的影響 | 是否需要重新產生 `.cursor/rules/` 等檔案 |
-| 驗證結果 | Pass/Fail，附上測試 Repo 連結 |
-| 推廣時程 | 何時開放全公司升級 |
+| 驗證結果           | Pass/Fail，附上測試 Repo 連結            |
+| 推廣時程           | 何時開放全公司升級                       |
 
 ### 16.3 相容性矩陣範例
 
-| Agent | v1.8.x 支援 | v1.9.1 支援 | 備註 |
-|-------|:---:|:---:|------|
-| Claude Code | ✅ | ✅ | 無變動 |
-| GitHub Copilot | ✅（規則檔） | ✅（規則檔） | 無變動 |
-| Gemini CLI | ✅ | ✅ | 無變動 |
-| （企業應依實際升級時的官方 Release Notes 填寫） | — | — | — |
+| Agent                                           | v1.8.x 支援  | v1.9.1 支援  | 備註   |
+| ----------------------------------------------- | :----------: | :----------: | ------ |
+| Claude Code                                     |      ✅      |      ✅      | 無變動 |
+| GitHub Copilot                                  | ✅（規則檔） | ✅（規則檔） | 無變動 |
+| Gemini CLI                                      |      ✅      |      ✅      | 無變動 |
+| （企業應依實際升級時的官方 Release Notes 填寫） |      —       |      —       | —      |
 
 ### 16.4 Regression Test 建議清單
 
@@ -1479,17 +1480,17 @@ flowchart LR
 
 ### 17.3 Pilot 試點階段
 
-- 擴大至單一團隊（5~15 人），期程建議 2~4 週
+- 擴大至單一團隊（5~~15 人），期程建議 2~~4 週
 - 制定初版 Mode 選用規範（可直接參考第7.5節 Checklist 修改）
 - 每週追蹤 `/caveman-stats` 數據，並蒐集團隊主觀回饋（是否影響溝通品質）
 - 確認與既有工具鏈（CI/CD、Code Review 流程、既有 Prompt 治理機制）無衝突
 
 ### 17.4 Governance 與 Coding/Prompt/Review 標準
 
-| 標準類型 | 建議內容 |
-|---------|---------|
-| Coding Standard | 明訂 caveman 不影響既有程式碼風格規範（如 Checkstyle/ESLint），純屬對話層面 |
-| Prompt Standard | 制定第13章範本為團隊標準起手式，明訂何時應加 `/caveman [level]` 前綴 |
+| 標準類型        | 建議內容                                                                            |
+| --------------- | ----------------------------------------------------------------------------------- |
+| Coding Standard | 明訂 caveman 不影響既有程式碼風格規範（如 Checkstyle/ESLint），純屬對話層面         |
+| Prompt Standard | 制定第13章範本為團隊標準起手式，明訂何時應加 `/caveman [level]` 前綴                |
 | Review Standard | 明訂 `/caveman-review` 產出的單行註解仍需附上嚴重度標記，且重大問題不得因精簡而遺漏 |
 
 ### 17.5 Rollout 全面推廣階段
@@ -1506,13 +1507,13 @@ flowchart LR
 
 ### 17.7 KPI 與 ROI 評估模型
 
-| KPI 指標 | 量測方式 |
-|---------|---------|
-| Output Token 節省率 | `/caveman-stats` 累積數據 ÷ 估算原始 Token 量 |
-| 整體 API 成本變化 | 月結帳單前後對比（需排除同期用量成長因素） |
-| 工程師回覆閱讀時間 | 主觀問卷調查（例如 1~5 分量表） |
-| Code Review 週期時間 | PR 從建立到 Merge 的平均時間 |
-| 導入滿意度 | Pilot 結束後的團隊問卷 |
+| KPI 指標             | 量測方式                                      |
+| -------------------- | --------------------------------------------- |
+| Output Token 節省率  | `/caveman-stats` 累積數據 ÷ 估算原始 Token 量 |
+| 整體 API 成本變化    | 月結帳單前後對比（需排除同期用量成長因素）    |
+| 工程師回覆閱讀時間   | 主觀問卷調查（例如 1~5 分量表）               |
+| Code Review 週期時間 | PR 從建立到 Merge 的平均時間                  |
+| 導入滿意度           | Pilot 結束後的團隊問卷                        |
 
 ROI 試算建議公式（本手冊提供之簡化模型，非官方公式）：
 
@@ -1623,48 +1624,56 @@ ROI 試算建議公式（本手冊提供之簡化模型，非官方公式）：
 ### 19.1 安裝與設定類錯誤（1~8）
 
 **錯誤 1：直接在生產環境的 CI Pipeline 上執行 `curl | bash` 安裝**
+
 - 原因：貪圖方便，忽略供應鏈安全風險。
 - 分析：CI Pipeline 通常具備較高權限，若安裝來源遭竄改，風險放大。
 - 解法：改用固定 Tag 的內部鏡射倉庫安裝。
 - 避免方式：將安裝腳本納入基礎映像檔建置流程，而非每次 Pipeline 執行時動態下載。
 
 **錯誤 2：追蹤 `main` 分支而非固定版本**
+
 - 原因：省去版本管理麻煩。
 - 分析：`main` 分支的行為可能隨時變動，造成團隊間行為不一致。
 - 解法：改為固定 Tag。
 - 避免方式：內部鏡射倉庫僅同步已驗證的 Release Tag。
 
 **錯誤 3：未執行 `--dry-run` 就直接全公司安裝**
+
 - 原因：跳過驗證步驟以求快速上線。
 - 分析：可能寫入非預期的規則檔或覆蓋既有設定。
 - 解法：PoC 階段務必先 `--dry-run`。
 - 避免方式：將 `--dry-run` 納入標準 SOP 的強制步驟。
 
 **錯誤 4：混淆 `--minimal` 與 `--all` 造成 Hook 未安裝**
+
 - 原因：不理解兩者差異。
 - 分析：`--minimal` 不含 Hooks/MCP/規則檔，若團隊誤用會導致自動啟用失效。
 - 解法：安裝前參考第5.5節旗標速查表。
 - 避免方式：將常用安裝指令固化為團隊內部 Script，避免每次手動組合旗標。
 
 **錯誤 5：Docker 映像檔內每次啟動都重新安裝**
+
 - 原因：未理解建置與執行階段的差異。
 - 分析：增加容器啟動延遲，且安裝過程需要網路存取。
 - 解法：改於 Dockerfile 建置階段安裝並固化。
 - 避免方式：Code Review 時檢查是否誤將安裝指令寫在 `entrypoint` 而非 `RUN`。
 
 **錯誤 6：`--uninstall` 後誤以為完全清除**
+
 - 原因：不理解 `--uninstall` 的清除範圍限制。
 - 分析：`npx skills add` 安裝的部分與 `--with-init` 規則檔不會被移除。
 - 解法：Rollback SOP 中明確列出需額外手動清除的項目。
 - 避免方式：制定完整的解除安裝 Checklist。
 
 **錯誤 7：忽略 Windows Execution Policy 導致安裝失敗後直接關閉安全性原則**
+
 - 原因：求快速排除障礙。
 - 分析：全域關閉 Execution Policy 屬於過度降低安全性。
 - 解法：改用 `-Scope Process` 的臨時性 Bypass。
 - 避免方式：安裝文件中明確標註建議的 Scope 限定寫法。
 
 **錯誤 8：在 WSL 與 Windows 檔案系統路徑混用安裝**
+
 - 原因：不清楚跨檔案系統的路徑權限差異。
 - 分析：可能造成 Hook 檔案權限異常或路徑找不到。
 - 解法：統一在 WSL 原生檔案系統路徑下安裝與操作。
@@ -1673,48 +1682,56 @@ ROI 試算建議公式（本手冊提供之簡化模型，非官方公式）：
 ### 19.2 Mode 使用類錯誤（9~16）
 
 **錯誤 9：全公司一律強制 `ultra` 模式**
+
 - 原因：誤以為壓縮強度越高效益越好。
 - 分析：簡單任務套用 `ultra` 反而因固定注入成本淨增加 Token。
 - 解法：依任務複雜度分級選用（參考第7.5節）。
 - 避免方式：Governance 規範中明訂例外情境。
 
 **錯誤 10：正式 ADR / 需求規格書套用壓縮模式**
+
 - 原因：忽略正式文件對完整敘述的需求。
 - 分析：關鍵決策依據可能因壓縮而遺漏，影響未來稽核。
 - 解法：明訂正式文件一律 `normal mode`。
 - 避免方式：Code Review Checklist 加入此項檢查。
 
 **錯誤 11：對新人使用高強度壓縮**
+
 - 原因：未考量學習曲線。
 - 分析：新人難以從精簡回覆中建立完整心智模型。
 - 解法：新人 Onboarding 期間使用 `lite` 或關閉。
 - 避免方式：Onboarding 流程文件明確標註建議 Mode。
 
 **錯誤 12：`wenyan` 模式直接用於團隊正式溝通**
+
 - 原因：覺得有趣、追求極致壓縮率。
 - 分析：非中文母語或不熟悉文言文的同仁理解成本大增。
 - 解法：限定為個人實驗或分享娛樂用途。
 - 避免方式：Governance 規範明文禁止正式流程使用。
 
 **錯誤 13：忽略 auto-clarity 規則被觸發後未察覺**
+
 - 原因：不理解 caveman 內建的自動退回機制。
 - 分析：可能誤以為壓縮失效而反覆手動切換 Mode，造成困擾。
 - 解法：教育團隊理解此為刻意設計的安全閥。
 - 避免方式：教育訓練課程明確說明此行為。
 
 **錯誤 14：架構決策討論使用 `ultra` 導致論證不完整**
+
 - 原因：貪圖精簡。
 - 分析：Microservices 邊界劃分等決策需要完整論證支撐。
 - 解法：架構討論類任務建議 `full` 或關閉。
 - 避免方式：Prompt Style Guide 明確標註。
 
 **錯誤 15：跨團隊 Mode 設定不一致造成溝通落差**
+
 - 原因：缺乏統一 Governance。
 - 分析：A 團隊回覆精簡、B 團隊回覆詳細，跨團隊協作時產生認知不對稱。
 - 解法：建立公司層級的 Mode 選用規範。
 - 避免方式：定期跨團隊校準會議。
 
 **錯誤 16：對客戶對外文件誤用 caveman**
+
 - 原因：忘記切換回一般模式。
 - 分析：客戶收到過度精簡、缺乏禮貌用語的文件，影響專業形象。
 - 解法：明訂對外文件一律排除 caveman。
@@ -1723,48 +1740,56 @@ ROI 試算建議公式（本手冊提供之簡化模型，非官方公式）：
 ### 19.3 團隊治理類錯誤（17~24）
 
 **錯誤 17：未經 PoC 直接全公司 Rollout**
+
 - 原因：求快、低估變更管理複雜度。
 - 分析：缺乏真實數據基礎，難以說服持懷疑態度的團隊成員。
 - 解法：務必先完成 PoC 與 Pilot。
 - 避免方式：導入 SOP 明確要求分階段推廣。
 
 **錯誤 18：導入後未指定 Champion，問題無人處理**
+
 - 原因：忽略導入後的維運責任分配。
 - 分析：一線問題無人快速回應，降低團隊信任度。
 - 解法：每團隊指定至少一位 Champion。
 - 避免方式：導入計畫書中明確列出角色分工。
 
 **錯誤 19：Prompt Style Guide 制定後未持續更新**
+
 - 原因：視為一次性文件。
 - 分析：隨版本升級與團隊實務演進，舊規範逐漸失準。
 - 解法：每季檢視並更新。
 - 避免方式：將 Style Guide 更新納入季度回顧會議議程。
 
 **錯誤 20：忽略團隊主觀回饋，只看 Token 數據**
+
 - 原因：過度依賴量化指標。
 - 分析：即使 Token 節省顯著，若團隊普遍反映溝通品質下降，長期會導致抵制或棄用。
 - 解法：主客觀指標並重。
 - 避免方式：季度回顧會議固定納入問卷調查環節。
 
 **錯誤 21：將 caveman 導入與其他重大工具鏈變更同時推行**
+
 - 原因：追求效率、想一次到位。
 - 分析：問題排查時難以歸因，增加變更管理風險。
 - 解法：分開時程推行。
 - 避免方式：變更管理行事曆中明確錯開時間。
 
 **錯誤 22：教育訓練流於形式、未實際操作**
+
 - 原因：時間壓力下簡化訓練內容。
 - 分析：工程師僅知道有這個工具，卻不知道正確使用時機。
 - 解法：訓練課程務必包含實機操作環節。
 - 避免方式：課程設計加入實際案例演練。
 
 **錯誤 23：缺乏 Rollback 演練，真正需要時手忙腳亂**
+
 - 原因：假設不會出問題。
 - 分析：Rollback 流程涉及多個殘留項目清理，臨時執行容易遺漏。
 - 解法：導入後主動演練一次完整 Rollback。
 - 避免方式：將 Rollback 演練納入 Pilot 階段的驗收項目之一。
 
 **錯誤 24：忽略不同 Agent 整合層級差異，統一套用相同期待**
+
 - 原因：不理解 Level 1/2/3 整合層級差異（詳見第6.1節）。
 - 分析：對 Level 3（規則檔）Agent 期待「即時 Mode 切換」等 Level 1 才有的能力，導致誤判工具故障。
 - 解法：教育團隊理解各 Agent 的整合層級與限制。
@@ -1773,42 +1798,49 @@ ROI 試算建議公式（本手冊提供之簡化模型，非官方公式）：
 ### 19.4 安全與效益評估類錯誤（25~31）
 
 **錯誤 25：未審查原始碼就導入生產環境**
+
 - 原因：信任開源專案標語，未落實實際查核。
 - 分析：即使宣稱零遙測，企業仍應自行驗證而非單純採信文件宣稱。
 - 解法：資安團隊逐行審查 Hook 原始碼。
 - 避免方式：導入 SOP 強制要求資安簽核。
 
 **錯誤 26：對管理層過度承諾「省下 65% API 成本」**
+
 - 原因：誤解官方 Benchmark 數字的涵蓋範圍。
 - 分析：實際整體成本節省通常低於 65%，過度承諾會傷害導入專案的長期信任度。
 - 解法：清楚說明 65% 僅涵蓋 Output Token。
 - 避免方式：所有對外簡報統一使用第4.5節的誠實揭露版本說明。
 
 **錯誤 27：ROI 試算未扣除 Skill 固定注入成本**
+
 - 原因：計算模型過度簡化。
 - 分析：高估實際效益，日後被財務或稽核部門質疑數字真實性。
 - 解法：採用第4.5節提供的完整估算公式。
 - 避免方式：ROI 報告需附上計算公式與假設條件。
 
 **錯誤 28：將業務成長誤判為 caveman 效果不彰**
+
 - 原因：比較基準未控制變因。
 - 分析：若同期任務量大幅成長，即使有節省效果，帳單總額仍可能上升。
 - 解法：以「單次互動平均 Token」而非「月結總額」作為主要評估指標。
 - 避免方式：保留對照組或對照期間數據。
 
 **錯誤 29：對高風險模組的說明也全面套用高強度壓縮**
+
 - 原因：圖方便一致套用。
 - 分析：核心交易邏輯等高風險內容的說明若被過度精簡，可能遺漏重要的邊界條件描述。
 - 解法：高風險模組相關輸出建議切回 `normal mode`。
 - 避免方式：在程式碼標記（如特定目錄或註解標籤）中標示高風險模組，並建立對應規範。
 
 **錯誤 30：忽視多重 Prompt 治理工具疊加的交互風險**
+
 - 原因：假設所有 Prompt 層工具彼此獨立不互相影響。
 - 分析：多個同時修改 System Prompt 的工具可能產生指示衝突。
 - 解法：Pilot 階段務必進行交互測試。
 - 避免方式：建立「Prompt 層工具清單」，任何新工具導入前先盤點既有工具並規劃交互測試。
 
 **錯誤 31：忽略版本升級的 Regression Test**
+
 - 原因：認為只是小版本更新不會有影響。
 - 分析：Slash Command 語法或 Mode 命名的細微變化，可能造成既有自動化腳本（如解析 Statusline 輸出的監控工具）失效。
 - 解法：每次升級皆執行第16.4節的 Regression Test 清單。
@@ -2011,7 +2043,7 @@ caveman 本身的注入是善意且受控的，需要注意的是多重 Plugin �
 ### 20.6 團隊導入與治理類
 
 **Q59. 導入 caveman 需要多久的專案時程？**
-建議規劃 PoC（1~2週）+ Pilot（2~4週）+ 分批 Rollout，整體約 2~3 個月視企業規模而定。
+建議規劃 PoC（1~~2週）+ Pilot（2~~4週）+ 分批 Rollout，整體約 2~3 個月視企業規模而定。
 
 **Q60. 需要哪些角色參與導入專案？**
 建議至少包含技術負責人、資安代表、各團隊 Champion、以及一位負責追蹤 KPI 的專案協調者。
@@ -2158,18 +2190,18 @@ MIT 授權允許 Fork 與修改，但需自行承擔與上游脫鉤後的維護�
 
 ### 21.1 總覽比較表
 
-| 方案 | 定位 | 作用層級 | 是否需要安裝額外工具 | 是否影響輸出精簡度 | 是否影響 Agent 行為規範 |
-|------|------|---------|:---:|:---:|:---:|
-| 無 caveman（原生 Agent） | 基準線 | — | 否 | 否 | 否 |
-| Claude Code 原生設定 | Agent 內建設定 | Session/Repo | 否 | 部分（可調整詳細度偏好） | 是 |
-| GitHub Copilot 原生設定 | Agent 內建設定 | IDE 設定 | 否 | 有限 | 有限 |
-| Cursor Rules | IDE 層規則檔 | Repo | 否（IDE 內建） | 否（聚焦行為規範非文字精簡） | 是 |
-| `CLAUDE.md` | 專案層記憶/規範檔 | Repo | 否 | 否 | 是 |
-| `AGENTS.md` | 跨工具通用規範標準 | Repo | 否 | 否 | 是 |
-| `GEMINI.md` | Gemini CLI 專案規範檔 | Repo | 否 | 否 | 是 |
-| Prompt Optimizer（泛稱） | 泛指各類 Prompt 優化工具 | 依工具而定 | 通常需要 | 部分 | 部分 |
-| 自建 Compression Prompt | 企業自行撰寫的精簡指示 | Session/Repo | 否 | 是 | 部分 |
-| **caveman** | **專職輸出壓縮 Skill** | **Session + Memory 檔** | **是（輕量安裝）** | **是（核心功能）** | **否（不涉及行為規範，只涉及表達風格）** |
+| 方案                     | 定位                     | 作用層級                | 是否需要安裝額外工具 |      是否影響輸出精簡度      |         是否影響 Agent 行為規範          |
+| ------------------------ | ------------------------ | ----------------------- | :------------------: | :--------------------------: | :--------------------------------------: |
+| 無 caveman（原生 Agent） | 基準線                   | —                       |          否          |              否              |                    否                    |
+| Claude Code 原生設定     | Agent 內建設定           | Session/Repo            |          否          |   部分（可調整詳細度偏好）   |                    是                    |
+| GitHub Copilot 原生設定  | Agent 內建設定           | IDE 設定                |          否          |             有限             |                   有限                   |
+| Cursor Rules             | IDE 層規則檔             | Repo                    |    否（IDE 內建）    | 否（聚焦行為規範非文字精簡） |                    是                    |
+| `CLAUDE.md`              | 專案層記憶/規範檔        | Repo                    |          否          |              否              |                    是                    |
+| `AGENTS.md`              | 跨工具通用規範標準       | Repo                    |          否          |              否              |                    是                    |
+| `GEMINI.md`              | Gemini CLI 專案規範檔    | Repo                    |          否          |              否              |                    是                    |
+| Prompt Optimizer（泛稱） | 泛指各類 Prompt 優化工具 | 依工具而定              |       通常需要       |             部分             |                   部分                   |
+| 自建 Compression Prompt  | 企業自行撰寫的精簡指示   | Session/Repo            |          否          |              是              |                   部分                   |
+| **caveman**              | **專職輸出壓縮 Skill**   | **Session + Memory 檔** |  **是（輕量安裝）**  |      **是（核心功能）**      | **否（不涉及行為規範，只涉及表達風格）** |
 
 ### 21.2 關鍵定位差異說明
 
@@ -2181,12 +2213,12 @@ MIT 授權允許 Fork 與修改，但需自行承擔與上游脫鉤後的維護�
 
 ### 21.3 選型建議
 
-| 企業情境 | 建議方案 |
-|---------|---------|
-| 已有完善 `CLAUDE.md` 規範，只想再降低 Token 成本 | 直接疊加安裝 caveman，不需修改既有規範檔 |
-| 尚未有任何規範檔，且以 Token 節省為首要目標 | 先導入 caveman 見效快，`CLAUDE.md` 等規範檔可後續補齊 |
-| 追求高度客製化的壓縮規則，且有 Prompt Engineering 專職人力 | 可評估 Fork caveman 自行維護，或撰寫企業專屬 Compression Prompt |
-| 多 Agent 環境且各 Agent 已有不同的原生設定 | 依第6章整合層級分別導入，並以 caveman 作為跨 Agent 一致的精簡風格層 |
+| 企業情境                                                   | 建議方案                                                            |
+| ---------------------------------------------------------- | ------------------------------------------------------------------- |
+| 已有完善 `CLAUDE.md` 規範，只想再降低 Token 成本           | 直接疊加安裝 caveman，不需修改既有規範檔                            |
+| 尚未有任何規範檔，且以 Token 節省為首要目標                | 先導入 caveman 見效快，`CLAUDE.md` 等規範檔可後續補齊               |
+| 追求高度客製化的壓縮規則，且有 Prompt Engineering 專職人力 | 可評估 Fork caveman 自行維護，或撰寫企業專屬 Compression Prompt     |
+| 多 Agent 環境且各 Agent 已有不同的原生設定                 | 依第6章整合層級分別導入，並以 caveman 作為跨 Agent 一致的精簡風格層 |
 
 ### 21.4 決策流程圖
 
@@ -2211,28 +2243,28 @@ flowchart TD
 
 ### 22.1 優勢
 
-| 優勢 | 說明 |
-|------|------|
-| 導入成本低 | 純 Prompt/Hook 層級，無需修改程式碼庫或 CI/CD |
+| 優勢              | 說明                                          |
+| ----------------- | --------------------------------------------- |
+| 導入成本低        | 純 Prompt/Hook 層級，無需修改程式碼庫或 CI/CD |
 | 可快速 Pilot 驗證 | 安裝/解除安裝皆為輕量操作，適合小範圍快速試點 |
-| 不影響程式碼品質 | 事實性內容逐字保留，風險邊界明確 |
-| 隱私與安全性佳 | 無 Backend、無遙測，原始碼公開透明可審查 |
-| 支援 Agent 範圍廣 | 30+ Agent，涵蓋主流 AI Coding Agent 生態系 |
-| 效益可量化追蹤 | `/caveman-stats` 提供即時節省數據 |
-| 與既有規範檔相容 | 與 `CLAUDE.md` 等機制正交，可疊加使用 |
-| 開源、免費、透明 | MIT 授權，無供應商鎖定疑慮 |
+| 不影響程式碼品質  | 事實性內容逐字保留，風險邊界明確              |
+| 隱私與安全性佳    | 無 Backend、無遙測，原始碼公開透明可審查      |
+| 支援 Agent 範圍廣 | 30+ Agent，涵蓋主流 AI Coding Agent 生態系    |
+| 效益可量化追蹤    | `/caveman-stats` 提供即時節省數據             |
+| 與既有規範檔相容  | 與 `CLAUDE.md` 等機制正交，可疊加使用         |
+| 開源、免費、透明  | MIT 授權，無供應商鎖定疑慮                    |
 
 ### 22.2 限制
 
-| 限制 | 說明 |
-|------|------|
-| 僅作用於 Output Token | Input Token、Reasoning Token 不受影響 |
-| Skill 本身有固定注入成本 | 約 1~1.5k input token，簡單任務可能得不償失 |
-| 部分 Agent 整合層級較淺 | Level 2/3 整合無法享有 Level 1 的自動化體驗 |
-| 官方矩陣未涵蓋所有工具 | Zed、通用 VS Code/JetBrains 等無獨立原生整合 |
-| 無官方容器化文件 | Docker/DevContainer/Codespaces 需企業自行摸索最佳實務 |
-| 無商業支援方案 | 屬個人開源專案，企業需自行承擔風險評估 |
-| 過度壓縮有資訊遺漏風險 | `ultra`/`wenyan` 若誤用於複雜論證場景可能省略關鍵依據 |
+| 限制                     | 說明                                                  |
+| ------------------------ | ----------------------------------------------------- |
+| 僅作用於 Output Token    | Input Token、Reasoning Token 不受影響                 |
+| Skill 本身有固定注入成本 | 約 1~1.5k input token，簡單任務可能得不償失           |
+| 部分 Agent 整合層級較淺  | Level 2/3 整合無法享有 Level 1 的自動化體驗           |
+| 官方矩陣未涵蓋所有工具   | Zed、通用 VS Code/JetBrains 等無獨立原生整合          |
+| 無官方容器化文件         | Docker/DevContainer/Codespaces 需企業自行摸索最佳實務 |
+| 無商業支援方案           | 屬個人開源專案，企業需自行承擔風險評估                |
+| 過度壓縮有資訊遺漏風險   | `ultra`/`wenyan` 若誤用於複雜論證場景可能省略關鍵依據 |
 
 ### 22.3 風險
 
@@ -2243,13 +2275,13 @@ flowchart TD
 
 ### 22.4 成本
 
-| 成本類型 | 說明 |
-|---------|------|
-| 授權/軟體成本 | 零（MIT 授權免費） |
-| 安裝/維運人力成本 | 低，但仍需版本管理與 Regression Test 投入 |
-| 教育訓練成本 | 中等，需建立 Mode 選用規範與 Prompt Style Guide |
-| Skill 固定注入成本 | 每輪約 1~1.5k input token，屬於持續性隱性成本 |
-| 導入專案管理成本 | 中等，PoC/Pilot/Rollout 需要專案協調投入 |
+| 成本類型           | 說明                                            |
+| ------------------ | ----------------------------------------------- |
+| 授權/軟體成本      | 零（MIT 授權免費）                              |
+| 安裝/維運人力成本  | 低，但仍需版本管理與 Regression Test 投入       |
+| 教育訓練成本       | 中等，需建立 Mode 選用規範與 Prompt Style Guide |
+| Skill 固定注入成本 | 每輪約 1~1.5k input token，屬於持續性隱性成本   |
+| 導入專案管理成本   | 中等，PoC/Pilot/Rollout 需要專案協調投入        |
 
 ### 22.5 效能
 
@@ -2298,12 +2330,12 @@ quadrantChart
 
 ### 23.1 Prompt Injection 風險分析
 
-| 風險面向 | caveman 相關性 | 說明 |
-|---------|--------------|------|
-| caveman 本身對模型的注入 | 低風險 | 規則公開透明、行為受限於「風格轉換」，不涉及權限提升或資料存取 |
-| 使用者輸入中夾帶惡意指令試圖覆蓋 caveman 規則 | 中風險 | 屬於一般 LLM 應用皆需防範的 Prompt Injection 範疇，非 caveman 特有，但 UserPromptSubmit Hook 的持續提醒機制可降低風格被覆蓋的機率 |
-| 多重 Plugin 疊加造成指示衝突 | 中風險 | 需於 Pilot 階段實測驗證（詳見第8.4節、第19.3節錯誤30） |
-| caveman 規則檔本身遭竄改（供應鏈攻擊） | 需關注 | 建議使用固定 Tag + SHA-256 校驗 + 內部鏡射降低風險 |
+| 風險面向                                      | caveman 相關性 | 說明                                                                                                                              |
+| --------------------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| caveman 本身對模型的注入                      | 低風險         | 規則公開透明、行為受限於「風格轉換」，不涉及權限提升或資料存取                                                                    |
+| 使用者輸入中夾帶惡意指令試圖覆蓋 caveman 規則 | 中風險         | 屬於一般 LLM 應用皆需防範的 Prompt Injection 範疇，非 caveman 特有，但 UserPromptSubmit Hook 的持續提醒機制可降低風格被覆蓋的機率 |
+| 多重 Plugin 疊加造成指示衝突                  | 中風險         | 需於 Pilot 階段實測驗證（詳見第8.4節、第19.3節錯誤30）                                                                            |
+| caveman 規則檔本身遭竄改（供應鏈攻擊）        | 需關注         | 建議使用固定 Tag + SHA-256 校驗 + 內部鏡射降低風險                                                                                |
 
 ### 23.2 Prompt Leak 考量
 
@@ -2353,10 +2385,10 @@ graph LR
 
 > 📌 以下兩項為官方 SECURITY.md 中明確記載、經核實存在的真實社群回報案例，收錄目的是讓資安團隊在導入前預先了解「已知會發生但非真正安全疑慮」的誤判情境，避免重複排查已有官方說明的問題。
 
-| 已知情境 | 觸發來源 | 官方／維護者說明 |
-|---------|---------|----------------|
-| Windows Defender／SmartScreen 將 `install.ps1` 誤判為一般惡意下載器（Generic Dropper） | 對應官方 GitHub Issue #383 | 屬已知的防毒軟體誤判行為，源於腳本本身會下載並執行後續安裝步驟的通用模式；建議企業改用第5.4節手動 Clone 安裝方式，讓資安團隊可逐行審查腳本內容後再執行，而非直接信任防毒軟體的自動放行或攔截判斷 |
-| Snyk 將 `caveman-compress` 對記憶檔案的**原地覆寫**行為標記為「High Risk」 | 對應官方 GitHub Issue #28 | 維護者說明此為**預期行為**：`caveman-compress` 本質就是「讀取指定檔案 → 原地覆寫為精簡版本 → 保留 `.original.md` 備份」，符合這個功能被設計出來要做的事，並非未預期的檔案系統存取；不涉及網路呼叫或任意程式碼執行 |
+| 已知情境                                                                               | 觸發來源                   | 官方／維護者說明                                                                                                                                                                                                  |
+| -------------------------------------------------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Windows Defender／SmartScreen 將 `install.ps1` 誤判為一般惡意下載器（Generic Dropper） | 對應官方 GitHub Issue #383 | 屬已知的防毒軟體誤判行為，源於腳本本身會下載並執行後續安裝步驟的通用模式；建議企業改用第5.4節手動 Clone 安裝方式，讓資安團隊可逐行審查腳本內容後再執行，而非直接信任防毒軟體的自動放行或攔截判斷                  |
+| Snyk 將 `caveman-compress` 對記憶檔案的**原地覆寫**行為標記為「High Risk」             | 對應官方 GitHub Issue #28  | 維護者說明此為**預期行為**：`caveman-compress` 本質就是「讀取指定檔案 → 原地覆寫為精簡版本 → 保留 `.original.md` 備份」，符合這個功能被設計出來要做的事，並非未預期的檔案系統存取；不涉及網路呼叫或任意程式碼執行 |
 
 > ⚠️ **企業安全審查建議做法**：上述兩個案例都屬於「靜態掃描工具依通用規則模式匹配、而非依實際行為判斷」所產生的誤判。建議資安團隊在正式簽核前，**直接參照官方 SECURITY.md 的說明段落**佐證，而非僅憑第三方掃描工具的紅色警示直接否決導入，同時仍應維持第23.5節 Checklist 中「逐行審查原始碼」的獨立驗證步驟，不應僅以官方說明作為唯一依據。
 
@@ -2467,16 +2499,16 @@ flowchart TD
 
 ### 24.10 本案例 Token 節省總覽（示意數據）
 
-| 階段 | 一般模式估計 Token（月累積） | caveman 模式估計 Token（月累積） | 節省比例 |
-|------|---------------------------|--------------------------------|---------|
-| 需求分析 | 45,000 | 29,000 | 36% |
-| Coding 除錯說明 | 180,000 | 54,000 | 70% |
-| Code Review | 220,000 | 55,000 | 75% |
-| Refactor 說明 | 90,000 | 27,000 | 70% |
-| Framework Upgrade 掃描 | 60,000 | 11,000 | 82% |
-| Commit Message | 15,000 | 6,000 | 60% |
-| Documentation（API+內部說明） | 70,000 | 45,000 | 36% |
-| **合計** | **680,000** | **227,000** | **約 67%** |
+| 階段                          | 一般模式估計 Token（月累積） | caveman 模式估計 Token（月累積） | 節省比例   |
+| ----------------------------- | ---------------------------- | -------------------------------- | ---------- |
+| 需求分析                      | 45,000                       | 29,000                           | 36%        |
+| Coding 除錯說明               | 180,000                      | 54,000                           | 70%        |
+| Code Review                   | 220,000                      | 55,000                           | 75%        |
+| Refactor 說明                 | 90,000                       | 27,000                           | 70%        |
+| Framework Upgrade 掃描        | 60,000                       | 11,000                           | 82%        |
+| Commit Message                | 15,000                       | 6,000                            | 60%        |
+| Documentation（API+內部說明） | 70,000                       | 45,000                           | 36%        |
+| **合計**                      | **680,000**                  | **227,000**                      | **約 67%** |
 
 > ⚠️ 上表為教學示範情境數字，用於展示「依任務類型分級套用 Mode」的整體效果量級，並非任何真實企業的實測財報數據。實際企業導入應依第17.7節 ROI 模型自行量測。
 
@@ -2490,39 +2522,39 @@ flowchart TD
 
 ### 25.1 Commands 速查表
 
-| 指令 | 作用 | 範例 |
-|------|------|------|
-| `/caveman [level]` | 啟用/切換壓縮模式，持續整個 Session（`level` 為 `lite`/`full`/`ultra`/`wenyan` 之一） | `/caveman ultra` |
-| `/caveman-init` | 於目前 Repo 寫入永久生效的規則檔，v1.9.1 起不再需要 caveman 本身的 checkout | `/caveman-init` |
-| `/caveman-commit` | 產出 ≤50 字 Conventional Commit | `/caveman-commit` |
-| `/caveman-review` | 產出單行 PR Review 註解 | `/caveman-review` |
-| `/caveman-stats` | 顯示本次/累積節省 Token 與美金成本，支援 `--share` 產生可分享的單行摘要 | `/caveman-stats --share` |
-| `/caveman-compress <file>` | 永久壓縮指定檔案，保留 `.original.md` 備份 | `/caveman-compress CLAUDE.md` |
-| `caveman-help`（skill） | 提供操作說明與快速上手引導 | — |
-| 「normal mode」 | 以自然語言關閉 caveman | — |
-| 「talk like caveman」 | 部分未原生整合的 Agent 用以手動觸發 | — |
+| 指令                       | 作用                                                                                  | 範例                          |
+| -------------------------- | ------------------------------------------------------------------------------------- | ----------------------------- |
+| `/caveman [level]`         | 啟用/切換壓縮模式，持續整個 Session（`level` 為 `lite`/`full`/`ultra`/`wenyan` 之一） | `/caveman ultra`              |
+| `/caveman-init`            | 於目前 Repo 寫入永久生效的規則檔，v1.9.1 起不再需要 caveman 本身的 checkout           | `/caveman-init`               |
+| `/caveman-commit`          | 產出 ≤50 字 Conventional Commit                                                       | `/caveman-commit`             |
+| `/caveman-review`          | 產出單行 PR Review 註解                                                               | `/caveman-review`             |
+| `/caveman-stats`           | 顯示本次/累積節省 Token 與美金成本，支援 `--share` 產生可分享的單行摘要               | `/caveman-stats --share`      |
+| `/caveman-compress <file>` | 永久壓縮指定檔案，保留 `.original.md` 備份                                            | `/caveman-compress CLAUDE.md` |
+| `caveman-help`（skill）    | 提供操作說明與快速上手引導                                                            | —                             |
+| 「normal mode」            | 以自然語言關閉 caveman                                                                | —                             |
+| 「talk like caveman」      | 部分未原生整合的 Agent 用以手動觸發                                                   | —                             |
 
 ### 25.2 Configuration 設定速查
 
-| 設定項 | 說明 |
-|-------|------|
-| Mode 解析優先順序 | 環境變數 > repo-local 設定 > 使用者設定 > 預設值 `full` |
-| Flag File 路徑 | `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.caveman-active` |
-| Statusline 靜音 | 環境變數 `CAVEMAN_STATUSLINE_SAVINGS=0` |
-| Repo 規則檔寫入 | `--with-init` 旗標，寫入 `.cursor/rules/`、`.windsurf/rules/`、`.clinerules/`、`.github/copilot-instructions.md`、`.opencode/AGENTS.md`，以及偵測到 OpenClaw 時的 `SOUL.md` bootstrap 區塊 |
-| MCP Middleware 註冊 | `--with-mcp-shrink="<cmd>"`（預設不啟用，可用 `--no-mcp-shrink` 明確聲明關閉） |
-| 自動化安裝旗標 | `--non-interactive`（無互動提示）、`--no-color`（關閉 ANSI 顏色）、`--skip-skills`（跳過 npx skills 自動偵測）、`--config-dir <path>`（覆寫 Claude Code 設定目錄），詳見第5.5節 |
+| 設定項              | 說明                                                                                                                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Mode 解析優先順序   | 環境變數 > repo-local 設定 > 使用者設定 > 預設值 `full`                                                                                                                                    |
+| Flag File 路徑      | `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.caveman-active`                                                                                                                                      |
+| Statusline 靜音     | 環境變數 `CAVEMAN_STATUSLINE_SAVINGS=0`                                                                                                                                                    |
+| Repo 規則檔寫入     | `--with-init` 旗標，寫入 `.cursor/rules/`、`.windsurf/rules/`、`.clinerules/`、`.github/copilot-instructions.md`、`.opencode/AGENTS.md`，以及偵測到 OpenClaw 時的 `SOUL.md` bootstrap 區塊 |
+| MCP Middleware 註冊 | `--with-mcp-shrink="<cmd>"`（預設不啟用，可用 `--no-mcp-shrink` 明確聲明關閉）                                                                                                             |
+| 自動化安裝旗標      | `--non-interactive`（無互動提示）、`--no-color`（關閉 ANSI 顏色）、`--skip-skills`（跳過 npx skills 自動偵測）、`--config-dir <path>`（覆寫 Claude Code 設定目錄），詳見第5.5節            |
 
 ### 25.3 Modes 速查表
 
 > 📌 已更正為官方實際的四種模式（無 `wenyan-lite`/`wenyan-full`/`wenyan-ultra` 子強度）。
 
-| Mode | 強度 | 語言風格 |
-|------|------|---------|
-| `lite` | 低 | 一般語言，輕度精簡 |
-| `full`（預設） | 中 | 一般語言，標準精簡 |
-| `ultra` | 高 | 一般語言，極限精簡 |
-| `wenyan` | 單一強度 | 文言文風格（官方定位為刻意的例外設計，非白話文的第四個強度階梯） |
+| Mode           | 強度     | 語言風格                                                         |
+| -------------- | -------- | ---------------------------------------------------------------- |
+| `lite`         | 低       | 一般語言，輕度精簡                                               |
+| `full`（預設） | 中       | 一般語言，標準精簡                                               |
+| `ultra`        | 高       | 一般語言，極限精簡                                               |
+| `wenyan`       | 單一強度 | 文言文風格（官方定位為刻意的例外設計，非白話文的第四個強度階梯） |
 
 ### 25.4 Prompt Template Library（完整版，P1~P50+）
 
@@ -2753,31 +2785,31 @@ normal mode
 
 ### 25.5 術語表（Glossary）
 
-| 術語 | 說明 |
-|------|------|
-| caveman | 本手冊主題專案，AI Coding Agent 輸出壓縮 Skill |
-| Output Compression | 輸出壓縮，caveman 核心機制 |
-| SessionStart Hook | Claude Code 於 Session 啟動時觸發的 Hook 事件 |
-| UserPromptSubmit Hook | Claude Code 於使用者送出訊息時觸發的 Hook 事件 |
-| Flag File | 記錄目前啟用 Mode 狀態的本地檔案 |
-| SKILL.md | 定義 Agent 行為規則的 Markdown 檔案 |
-| cavecrew | caveman 提供的三隻專職 subagent（investigator/builder/reviewer） |
-| caveman-shrink | 包裹既有 MCP Tool Server 的壓縮 Middleware |
-| wenyan | caveman 提供的文言文風格壓縮模式，為單一模式，並非家族／多階強度（無 wenyan-lite/full/ultra 之分） |
-| Auto-clarity rule | 偵測到安全性/困惑情境時自動退回完整敘述的機制 |
+| 術語                  | 說明                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------- |
+| caveman               | 本手冊主題專案，AI Coding Agent 輸出壓縮 Skill                                                     |
+| Output Compression    | 輸出壓縮，caveman 核心機制                                                                         |
+| SessionStart Hook     | Claude Code 於 Session 啟動時觸發的 Hook 事件                                                      |
+| UserPromptSubmit Hook | Claude Code 於使用者送出訊息時觸發的 Hook 事件                                                     |
+| Flag File             | 記錄目前啟用 Mode 狀態的本地檔案                                                                   |
+| SKILL.md              | 定義 Agent 行為規則的 Markdown 檔案                                                                |
+| cavecrew              | caveman 提供的三隻專職 subagent（investigator/builder/reviewer）                                   |
+| caveman-shrink        | 包裹既有 MCP Tool Server 的壓縮 Middleware                                                         |
+| wenyan                | caveman 提供的文言文風格壓縮模式，為單一模式，並非家族／多階強度（無 wenyan-lite/full/ultra 之分） |
+| Auto-clarity rule     | 偵測到安全性/困惑情境時自動退回完整敘述的機制                                                      |
 
 ### 25.6 縮寫表
 
-| 縮寫 | 全稱 |
-|------|------|
-| MCP | Model Context Protocol |
-| DDD | Domain-Driven Design |
-| ADR | Architecture Decision Record |
-| PoC | Proof of Concept |
-| ROI | Return on Investment |
-| KPI | Key Performance Indicator |
-| SOP | Standard Operating Procedure |
-| DPA | Data Processing Agreement |
+| 縮寫 | 全稱                         |
+| ---- | ---------------------------- |
+| MCP  | Model Context Protocol       |
+| DDD  | Domain-Driven Design         |
+| ADR  | Architecture Decision Record |
+| PoC  | Proof of Concept             |
+| ROI  | Return on Investment         |
+| KPI  | Key Performance Indicator    |
+| SOP  | Standard Operating Procedure |
+| DPA  | Data Processing Agreement    |
 
 ### 25.7 參考架構圖
 
@@ -2874,24 +2906,22 @@ graph TB
 
 > 📌 官方 repo **無 CHANGELOG.md 檔案**，以下版本標籤、日期與代號皆逐一核對自 GitHub Releases API，作為第15.1節、第16章交叉引用的唯一資料來源。企業如需完整逐項變更說明，請點擊對應版本連結查閱 [GitHub Releases](https://github.com/JuliusBrussee/caveman/releases) 原文。
 
-| 版本 | 發布日期 | 代號／重點 |
-|------|---------|----------|
-| v1.9.1 | 2026-07-03 | "65%, honestly" — 維運與誠實揭露修正版，統一節省數字為 65%，退役舊版 ~75% 宣稱 |
-| v1.9.0 | 2026-06-12 | "Rock pinned. Rock verified. opencode rock work now." |
-| v1.8.2 | 2026-05-12 | 安裝程式錯誤修正 |
-| v1.8.1 | 2026-05-10 | Hotfix：`curl\|bash` 一鍵安裝腳本修復 |
-| v1.8.0 | 2026-05-10 | "Lobster grunt. Opencode grunt. Brain still big." |
+| 版本   | 發布日期   | 代號／重點                                                                                                        |
+| ------ | ---------- | ----------------------------------------------------------------------------------------------------------------- |
+| v1.9.1 | 2026-07-03 | "65%, honestly" — 維運與誠實揭露修正版，統一節省數字為 65%，退役舊版 ~75% 宣稱                                    |
+| v1.9.0 | 2026-06-12 | "Rock pinned. Rock verified. opencode rock work now."                                                             |
+| v1.8.2 | 2026-05-12 | 安裝程式錯誤修正                                                                                                  |
+| v1.8.1 | 2026-05-10 | Hotfix：`curl\|bash` 一鍵安裝腳本修復                                                                             |
+| v1.8.0 | 2026-05-10 | "Lobster grunt. Opencode grunt. Brain still big."                                                                 |
 | v1.7.0 | 2026-05-01 | "Stats receipts, smart installer, cavecrew, MCP-shrink" — `/caveman-stats`、`cavecrew`、`caveman-shrink` 首次發布 |
-| v1.6.0 | 2026-04-15 | Hardening release：Hook 當機修復、symlink-safe flag 寫入（`safeWriteFlag()`） |
-| v1.3.0 | 2026-04-08 | "文言文, Skills, Evals & Community Fixes" — `wenyan` 模式首次發布 |
-| v1.2.0 | 2026-04-06 | "Intensity Levels, Auto-Clarity & Caveman-Compress" — 強度分級、auto-clarity、`/caveman-compress` 首次發布 |
-| v1.1.0 | 2026-04-05 | "Real Benchmarks" — 首次公開官方 Benchmark 數據 |
-| v1.0.0 | 2026-04-04 | "why use many token when few token do trick" — 首次發布 |
+| v1.6.0 | 2026-04-15 | Hardening release：Hook 當機修復、symlink-safe flag 寫入（`safeWriteFlag()`）                                     |
+| v1.3.0 | 2026-04-08 | "文言文, Skills, Evals & Community Fixes" — `wenyan` 模式首次發布                                                 |
+| v1.2.0 | 2026-04-06 | "Intensity Levels, Auto-Clarity & Caveman-Compress" — 強度分級、auto-clarity、`/caveman-compress` 首次發布        |
+| v1.1.0 | 2026-04-05 | "Real Benchmarks" — 首次公開官方 Benchmark 數據                                                                   |
+| v1.0.0 | 2026-04-04 | "why use many token when few token do trick" — 首次發布                                                           |
 
 > 💡 由版本歷程可見，`wenyan` 模式（v1.3.0）與 `cavecrew`／`caveman-shrink`（v1.7.0）都是專案發布後逐步疊加的功能，並非一開始就存在——這也解釋了為何本手冊第2、3章的架構描述需要涵蓋這些後續才加入的元件。企業評估「功能穩定性」時，可將功能發布版本與目前對齊版本（v1.9.1）的版本差距，作為該功能成熟度的參考指標之一。
 
 ---
 
-*本手冊為企業內部教學與規範用途，內容係依 caveman v1.9.1（2026-07-03）之官方公開文件（README / INSTALL.md / SECURITY.md / CLAUDE.md）整理分析並補充企業導入視角撰寫而成，非官方文件之逐字翻譯或轉載。caveman 為活躍開發中的開源專案，行為與指令可能隨版本演進調整，請定期核對官方 Repository 最新內容以確認本手冊各項細節仍然有效，如有出入請以官方文件為準。*
-
-
+_本手冊為企業內部教學與規範用途，內容係依 caveman v1.9.1（2026-07-03）之官方公開文件（README / INSTALL.md / SECURITY.md / CLAUDE.md）整理分析並補充企業導入視角撰寫而成，非官方文件之逐字翻譯或轉載。caveman 為活躍開發中的開源專案，行為與指令可能隨版本演進調整，請定期核對官方 Repository 最新內容以確認本手冊各項細節仍然有效，如有出入請以官方文件為準。_

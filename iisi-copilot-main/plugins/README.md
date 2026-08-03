@@ -28,11 +28,11 @@ graph TD
 
 ### 1.2.2 三大組成元素
 
-| 元素 | 說明 | 存放位置 |
-|------|------|---------|
-| **plugin.json** | 外掛清單，宣告外掛名稱、版本、Skills、工具與 MCP Server | 根目錄或 `.github/` |
-| **Skills 檔案** | 定義 AI 可呼叫的專門技能，包含指令範本與腳本 | `.github/skills/<skill-name>/` |
-| **工具 / API 定義** | 描述外部工具或 API 的輸入輸出規格，供 AI 動態呼叫 | `plugin.json` 內嵌或外部 schema 檔 |
+| 元素                | 說明                                                    | 存放位置                           |
+| ------------------- | ------------------------------------------------------- | ---------------------------------- |
+| **plugin.json**     | 外掛清單，宣告外掛名稱、版本、Skills、工具與 MCP Server | 根目錄或 `.github/`                |
+| **Skills 檔案**     | 定義 AI 可呼叫的專門技能，包含指令範本與腳本            | `.github/skills/<skill-name>/`     |
+| **工具 / API 定義** | 描述外部工具或 API 的輸入輸出規格，供 AI 動態呼叫       | `plugin.json` 內嵌或外部 schema 檔 |
 
 ### 1.2.3 與其他 Copilot 功能的關係
 
@@ -123,15 +123,15 @@ GitHub Copilot 功能層次
 
 ### 1.3.2 plugin.json 欄位說明
 
-| 欄位 | 類型 | 必填 | 說明 |
-|------|------|------|------|
-| `name` | string | ✓ | 外掛唯一識別名稱 |
-| `version` | string | ✓ | 語意化版本號（semver） |
-| `description` | string | ✓ | 外掛功能描述 |
-| `skills` | array | — | 外掛提供的 Skills 清單 |
-| `tools` | array | — | 自訂工具或 API 整合清單 |
-| `mcpServers` | array | — | MCP Server 連線設定清單 |
-| `context` | object | — | 靜態專案情境資訊（供 AI 參考） |
+| 欄位          | 類型   | 必填 | 說明                           |
+| ------------- | ------ | ---- | ------------------------------ |
+| `name`        | string | ✓    | 外掛唯一識別名稱               |
+| `version`     | string | ✓    | 語意化版本號（semver）         |
+| `description` | string | ✓    | 外掛功能描述                   |
+| `skills`      | array  | —    | 外掛提供的 Skills 清單         |
+| `tools`       | array  | —    | 自訂工具或 API 整合清單        |
+| `mcpServers`  | array  | —    | MCP Server 連線設定清單        |
+| `context`     | object | —    | 靜態專案情境資訊（供 AI 參考） |
 
 ### 1.3.3 放置位置優先順序
 
@@ -196,6 +196,7 @@ trigger: on-demand
 ## 輸出格式
 
 請以下列結構回報：
+
 - **風險等級**：Critical / High / Medium / Low
 - **問題描述**：具體描述發現的問題
 - **受影響位置**：檔案名稱與行號
@@ -204,12 +205,12 @@ trigger: on-demand
 
 ### 1.4.3 Skills 載入機制
 
-| 載入方式 | 說明 | 觸發條件 |
-|---------|------|----------|
-| **自動載入** | Copilot 根據任務類型自動選擇相關 Skill | AI 判斷任務需要對應技能 |
-| **手動呼叫** | 使用者在對話中明確指定 | `@copilot 使用 security-review skill` |
-| **Agent Handoff** | Agent 交接時指定使用特定 Skill | Handoff prompt 中宣告 |
-| **Hooks 觸發** | 在特定生命週期節點自動執行 | `pre-commit`、`post-save` 等 |
+| 載入方式          | 說明                                   | 觸發條件                              |
+| ----------------- | -------------------------------------- | ------------------------------------- |
+| **自動載入**      | Copilot 根據任務類型自動選擇相關 Skill | AI 判斷任務需要對應技能               |
+| **手動呼叫**      | 使用者在對話中明確指定                 | `@copilot 使用 security-review skill` |
+| **Agent Handoff** | Agent 交接時指定使用特定 Skill         | Handoff prompt 中宣告                 |
+| **Hooks 觸發**    | 在特定生命週期節點自動執行             | `pre-commit`、`post-save` 等          |
 
 ## 1.5 整合 MCP Server
 
@@ -240,46 +241,48 @@ MCP（Model Context Protocol）Server 讓 Copilot 能透過標準化協議連接
 **`.github/mcp/server.js`**
 
 ```javascript
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import fs from 'fs';
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import fs from "fs";
 
 const server = new Server(
-  { name: 'project-context-mcp', version: '1.0.0' },
-  { capabilities: { tools: {} } }
+  { name: "project-context-mcp", version: "1.0.0" },
+  { capabilities: { tools: {} } },
 );
 
 // 提供資料庫 Schema 查詢工具
-server.setRequestHandler('tools/call', async (request) => {
-  if (request.params.name === 'get_db_schema') {
+server.setRequestHandler("tools/call", async (request) => {
+  if (request.params.name === "get_db_schema") {
     const schema = fs.readFileSync(
-      process.env.DB_SCHEMA_PATH || './docs/schema.sql', 'utf8'
+      process.env.DB_SCHEMA_PATH || "./docs/schema.sql",
+      "utf8",
     );
-    return { content: [{ type: 'text', text: schema }] };
+    return { content: [{ type: "text", text: schema }] };
   }
 
-  if (request.params.name === 'get_api_spec') {
+  if (request.params.name === "get_api_spec") {
     const spec = fs.readFileSync(
-      process.env.API_SPEC_PATH || './docs/openapi.yaml', 'utf8'
+      process.env.API_SPEC_PATH || "./docs/openapi.yaml",
+      "utf8",
     );
-    return { content: [{ type: 'text', text: spec }] };
+    return { content: [{ type: "text", text: spec }] };
   }
 });
 
 // 宣告可用工具
-server.setRequestHandler('tools/list', async () => ({
+server.setRequestHandler("tools/list", async () => ({
   tools: [
     {
-      name: 'get_db_schema',
-      description: '取得專案資料庫 Schema（DDL）',
-      inputSchema: { type: 'object', properties: {} }
+      name: "get_db_schema",
+      description: "取得專案資料庫 Schema（DDL）",
+      inputSchema: { type: "object", properties: {} },
     },
     {
-      name: 'get_api_spec',
-      description: '取得 OpenAPI 規格檔案內容',
-      inputSchema: { type: 'object', properties: {} }
-    }
-  ]
+      name: "get_api_spec",
+      description: "取得 OpenAPI 規格檔案內容",
+      inputSchema: { type: "object", properties: {} },
+    },
+  ],
 }));
 
 await server.connect(new StdioServerTransport());
@@ -287,12 +290,12 @@ await server.connect(new StdioServerTransport());
 
 ### 1.5.3 MCP 整合效益
 
-| 情境 | 未整合 MCP | 整合後 |
-|------|-----------|-------|
-| 詢問資料庫欄位 | AI 不知道 schema，回答不精準 | AI 即時查詢 MCP，給出精確 DDL |
-| 生成 API 測試 | 需要手動貼上 spec | AI 自動讀取 OpenAPI spec 並生成對應測試 |
-| 架構分析 | 僅能分析已開啟的檔案 | AI 可查詢完整架構圖與依賴關係 |
-| 安全審查 | 依賴通用知識 | AI 結合專案實際設定進行針對性審查 |
+| 情境           | 未整合 MCP                   | 整合後                                  |
+| -------------- | ---------------------------- | --------------------------------------- |
+| 詢問資料庫欄位 | AI 不知道 schema，回答不精準 | AI 即時查詢 MCP，給出精確 DDL           |
+| 生成 API 測試  | 需要手動貼上 spec            | AI 自動讀取 OpenAPI spec 並生成對應測試 |
+| 架構分析       | 僅能分析已開啟的檔案         | AI 可查詢完整架構圖與依賴關係           |
+| 安全審查       | 依賴通用知識                 | AI 結合專案實際設定進行針對性審查       |
 
 ## 22.6 整合自訂工具與 API
 
@@ -378,11 +381,26 @@ MCP_GITHUB_URL=http://localhost:3001
   "version": "2.0.0",
   "description": "企業級 SSDLC 外掛，整合安全掃描、品質閘道、架構驗證與 Issue 管理",
   "skills": [
-    { "name": "security-review", "path": ".github/skills/security-review/SKILL.md" },
-    { "name": "arch-analyzer",   "path": ".github/skills/arch-analyzer/SKILL.md" },
-    { "name": "api-validator",   "path": ".github/skills/api-validator/SKILL.md" },
-    { "name": "doc-generator",   "path": ".github/skills/doc-generator/SKILL.md" },
-    { "name": "test-generator",  "path": ".github/skills/test-generator/SKILL.md" }
+    {
+      "name": "security-review",
+      "path": ".github/skills/security-review/SKILL.md"
+    },
+    {
+      "name": "arch-analyzer",
+      "path": ".github/skills/arch-analyzer/SKILL.md"
+    },
+    {
+      "name": "api-validator",
+      "path": ".github/skills/api-validator/SKILL.md"
+    },
+    {
+      "name": "doc-generator",
+      "path": ".github/skills/doc-generator/SKILL.md"
+    },
+    {
+      "name": "test-generator",
+      "path": ".github/skills/test-generator/SKILL.md"
+    }
   ],
   "tools": [
     {
@@ -451,13 +469,13 @@ sequenceDiagram
 
 ## 1.8 安全考量
 
-| 風險 | 說明 | 緩解措施 |
-|------|------|----------|
-| **憑證洩漏** | API Token 誤寫入 `plugin.json` 並推送至 Git | 使用 `${ENV_VAR}` 語法；將 `.env` 加入 `.gitignore`；啟用 Secret Scanning |
-| **工具濫用** | AI 被誘導呼叫危險工具（Prompt Injection） | 限制工具的操作範圍；為高風險操作加入 Human-in-the-loop 確認 |
-| **MCP Server 安全** | MCP Server 暴露過多敏感資料 | 實作最小權限原則；僅暴露唯讀 API；加入存取控制 |
-| **Script 注入** | 工具 `input_schema` 驗證不足，導致指令注入 | 嚴格驗證所有工具輸入；避免直接拼接 Shell 指令 |
-| **依賴供應鏈** | MCP Server 依賴存在已知漏洞 | 定期執行 `npm audit`；鎖定依賴版本 |
+| 風險                | 說明                                        | 緩解措施                                                                  |
+| ------------------- | ------------------------------------------- | ------------------------------------------------------------------------- |
+| **憑證洩漏**        | API Token 誤寫入 `plugin.json` 並推送至 Git | 使用 `${ENV_VAR}` 語法；將 `.env` 加入 `.gitignore`；啟用 Secret Scanning |
+| **工具濫用**        | AI 被誘導呼叫危險工具（Prompt Injection）   | 限制工具的操作範圍；為高風險操作加入 Human-in-the-loop 確認               |
+| **MCP Server 安全** | MCP Server 暴露過多敏感資料                 | 實作最小權限原則；僅暴露唯讀 API；加入存取控制                            |
+| **Script 注入**     | 工具 `input_schema` 驗證不足，導致指令注入  | 嚴格驗證所有工具輸入；避免直接拼接 Shell 指令                             |
+| **依賴供應鏈**      | MCP Server 依賴存在已知漏洞                 | 定期執行 `npm audit`；鎖定依賴版本                                        |
 
 ## 1.9 最佳實務
 
@@ -491,9 +509,9 @@ sequenceDiagram
 
 ### 1.9.3 逐步導入建議
 
-| 階段 | 重點工作 | 預期效益 |
-|------|---------|----------|
-| **Phase 1** | 建立 `plugin.json` 基本結構，加入 2～3 個核心 Skills | AI 開始使用專案內建技能 |
-| **Phase 2** | 整合 SonarQube、Jira 等既有工具 API | 消除工具切換成本，AI 可直接查詢品質數據 |
-| **Phase 3** | 建立 MCP Server，提供 Schema / API spec 情境 | AI 生成的程式碼與文件更符合專案實際規格 |
-| **Phase 4** | 與 SSDLC Agent Team 完整整合，加入 Hooks 自動觸發 | 全流程自動化安全護欄落地 |
+| 階段        | 重點工作                                             | 預期效益                                |
+| ----------- | ---------------------------------------------------- | --------------------------------------- |
+| **Phase 1** | 建立 `plugin.json` 基本結構，加入 2～3 個核心 Skills | AI 開始使用專案內建技能                 |
+| **Phase 2** | 整合 SonarQube、Jira 等既有工具 API                  | 消除工具切換成本，AI 可直接查詢品質數據 |
+| **Phase 3** | 建立 MCP Server，提供 Schema / API spec 情境         | AI 生成的程式碼與文件更符合專案實際規格 |
+| **Phase 4** | 與 SSDLC Agent Team 完整整合，加入 Hooks 自動觸發    | 全流程自動化安全護欄落地                |

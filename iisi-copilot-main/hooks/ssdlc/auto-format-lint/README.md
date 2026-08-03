@@ -1,6 +1,6 @@
 ---
-name: 'Auto Format and Lint'
-description: 'PostToolUse Hook，在 Agent 編輯檔案後自動執行 Prettier 格式化與 ESLint/Ruff/Checkstyle Lint 檢查，確保程式碼風格一致性。支援 JavaScript、TypeScript、Python、Java 等語言。'
+name: "Auto Format and Lint"
+description: "PostToolUse Hook，在 Agent 編輯檔案後自動執行 Prettier 格式化與 ESLint/Ruff/Checkstyle Lint 檢查，確保程式碼風格一致性。支援 JavaScript、TypeScript、Python、Java 等語言。"
 tags:
   - ssdlc
   - quality
@@ -15,12 +15,12 @@ PostToolUse Hook，在 Agent 每次編輯檔案後自動執行格式化與 Lint 
 
 ## 支援語言
 
-| 語言 | 格式化工具 | Lint 工具 |
-|------|-----------|----------|
-| JavaScript / TypeScript | Prettier | ESLint |
-| Python | — | Ruff / Flake8 |
-| Java | — | Checkstyle（Maven） |
-| JSON / YAML / CSS / HTML | Prettier | — |
+| 語言                     | 格式化工具 | Lint 工具           |
+| ------------------------ | ---------- | ------------------- |
+| JavaScript / TypeScript  | Prettier   | ESLint              |
+| Python                   | —          | Ruff / Flake8       |
+| Java                     | —          | Checkstyle（Maven） |
+| JSON / YAML / CSS / HTML | Prettier   | —                   |
 
 ## 使用方式
 

@@ -1,6 +1,6 @@
 ---
-description: '為 HTML 元素制定顏色使用指南和樣式規則，以確保設計易於存取且專業。'
-applyTo: '**/*.html, **/*.css, **/*.js'
+description: "為 HTML 元素制定顏色使用指南和樣式規則，以確保設計易於存取且專業。"
+applyTo: "**/*.html, **/*.css, **/*.js"
 ---
 
 # HTML CSS Style Color Guide
@@ -14,9 +14,9 @@ applyTo: '**/*.html, **/*.css, **/*.js'
 - **Neutral Colors**: 灰色及其變化
 - **Binary Colors**: 黑色和白色
 - **60-30-10 Rule**
-  - **Primary Color**: 使用 60% 的時間 (*冷色或淺色*)
-  - **Secondary Color**: 使用 30% 的時間 (*冷色或淺色*)
-  - **Accent**: 使用 10% 的時間 (*互補的熱色*)
+  - **Primary Color**: 使用 60% 的時間 (_冷色或淺色_)
+  - **Secondary Color**: 使用 30% 的時間 (_冷色或淺色_)
+  - **Accent**: 使用 10% 的時間 (_互補的熱色_)
 
 ## Color Usage Guidelines
 
@@ -30,7 +30,7 @@ applyTo: '**/*.html, **/*.css, **/*.js'
 - 紅色、橙色或黃色
 - 粉紅色
 - 任何熱色
-**Recommended:**
+  **Recommended:**
 
 - 白色或接近白色
 - 淺色冷色調（例如，淺藍色、淺綠色）
@@ -73,6 +73,7 @@ applyTo: '**/*.html, **/*.css, **/*.js'
 - 僅在傳達緊急性或重要性時使用
 - 限制在小面積的點綴區域，而非大面積區域
 - 在使用熱色之前，考慮使用圖示或粗體文字作為替代
+
 ## Gradients
 
 使用漸層色並進行微妙的顏色過渡，以保持專業美感。

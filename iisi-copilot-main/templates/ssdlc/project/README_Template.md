@@ -34,13 +34,13 @@ tags: ["專案管理", "範本", "軟體工程", "DevOps"]
 
 ### 📝 範本
 
-| 項目 | 內容 |
-|------|------|
-| **文件名稱** | README.md |
-| **位置** | 專案根目錄 |
-| **格式** | GitHub Flavored Markdown (GFM) |
-| **維護者** | {姓名/團隊} |
-| **最後更新** | {YYYY-MM-DD} |
+| 項目         | 內容                           |
+| ------------ | ------------------------------ |
+| **文件名稱** | README.md                      |
+| **位置**     | 專案根目錄                     |
+| **格式**     | GitHub Flavored Markdown (GFM) |
+| **維護者**   | {姓名/團隊}                    |
+| **最後更新** | {YYYY-MM-DD}                   |
 
 ### 📖 使用說明
 
@@ -64,6 +64,7 @@ tags: ["專案管理", "範本", "軟體工程", "DevOps"]
 > {一句話描述專案用途}
 
 {2-3 句擴展描述，說明：}
+
 - 專案解決什麼問題
 - 目標使用者是誰
 - 核心特色/差異化
@@ -123,7 +124,7 @@ HRMS 是為中大型企業設計的人力資源管理系統，整合 Active Dire
 
 ### 📝 範本
 
-```markdown
+````markdown
 ## Quick Start
 
 ### 前置需求
@@ -135,19 +136,23 @@ HRMS 是為中大型企業設計的人力資源管理系統，整合 Active Dire
 ### 三步驟啟動
 
 \```bash
+
 # 1. Clone
+
 git clone {repo-url}
 cd {project-name}
 
 # 2. 安裝依賴
+
 {install command}
 
 # 3. 啟動
+
 {start command}
 \```
 
 啟動後訪問 {URL} 即可使用。
-```
+````
 
 ### 📖 使用說明
 
@@ -158,7 +163,7 @@ cd {project-name}
 
 ### 💡 範例
 
-```markdown
+````markdown
 ## Quick Start
 
 ### 前置需求
@@ -171,20 +176,24 @@ cd {project-name}
 ### 三步驟啟動
 
 \```bash
+
 # 1. Clone
+
 git clone https://dev.azure.com/company/hrms/_git/hrms
 cd hrms
 
 # 2. 使用 Docker Compose 啟動所有服務
+
 docker compose up -d
 
 # 3. 初始化資料庫
+
 dotnet ef database update --project src/HRMS.API
 \```
 
 啟動後訪問 http://localhost:3000 即可使用。
 預設管理員帳號：admin@company.com / P@ssw0rd（僅開發環境）
-```
+````
 
 ---
 
@@ -192,17 +201,17 @@ dotnet ef database update --project src/HRMS.API
 
 ### 📝 範本
 
-```markdown
+````markdown
 ## Installation
 
 ### 環境需求
 
-| 項目 | 最低需求 | 建議 |
-|------|---------|------|
-| OS | {OS} | {OS} |
-| CPU | {cores} | {cores} |
-| RAM | {GB} | {GB} |
-| Disk | {GB} | {GB} |
+| 項目 | 最低需求 | 建議    |
+| ---- | -------- | ------- |
+| OS   | {OS}     | {OS}    |
+| CPU  | {cores}  | {cores} |
+| RAM  | {GB}     | {GB}    |
+| Disk | {GB}     | {GB}    |
 
 ### 方式一：Docker（建議）
 
@@ -218,10 +227,10 @@ dotnet ef database update --project src/HRMS.API
 
 ### 環境變數設定
 
-| 變數名稱 | 說明 | 預設值 | 必填 |
-|---------|------|--------|------|
-| {VAR} | {說明} | {值} | 是/否 |
-```
+| 變數名稱 | 說明   | 預設值 | 必填  |
+| -------- | ------ | ------ | ----- |
+| {VAR}    | {說明} | {值}   | 是/否 |
+````
 
 ### 📖 使用說明
 
@@ -231,7 +240,7 @@ dotnet ef database update --project src/HRMS.API
 
 ### 💡 範例
 
-```markdown
+````markdown
 ### 環境變數設定
 
 複製 `.env.example` 為 `.env` 並填入設定：
@@ -240,14 +249,14 @@ dotnet ef database update --project src/HRMS.API
 cp .env.example .env
 \```
 
-| 變數名稱 | 說明 | 預設值 | 必填 |
-|---------|------|--------|------|
-| DATABASE_URL | PostgreSQL 連線字串 | — | 是 |
-| REDIS_URL | Redis 連線字串 | localhost:6379 | 是 |
-| AD_DOMAIN | Active Directory 網域 | — | 是 |
-| JWT_SECRET | JWT 簽章金鑰 | — | 是 |
-| SMTP_HOST | 郵件伺服器 | — | 否 |
-```
+| 變數名稱     | 說明                  | 預設值         | 必填 |
+| ------------ | --------------------- | -------------- | ---- |
+| DATABASE_URL | PostgreSQL 連線字串   | —              | 是   |
+| REDIS_URL    | Redis 連線字串        | localhost:6379 | 是   |
+| AD_DOMAIN    | Active Directory 網域 | —              | 是   |
+| JWT_SECRET   | JWT 簽章金鑰          | —              | 是   |
+| SMTP_HOST    | 郵件伺服器            | —              | 否   |
+````
 
 ---
 
@@ -255,7 +264,7 @@ cp .env.example .env
 
 ### 📝 範本
 
-```markdown
+````markdown
 ## Usage
 
 ### 基本使用
@@ -281,7 +290,7 @@ cp .env.example .env
 ### 截圖/展示
 
 {螢幕截圖或 GIF 動畫}
-```
+````
 
 ### 📖 使用說明
 
@@ -291,17 +300,20 @@ cp .env.example .env
 
 ### 💡 範例
 
-```markdown
+````markdown
 ## Usage
 
 ### 開發模式
 
 \```bash
+
 # 啟動後端 API（含 Hot Reload）
+
 cd src/HRMS.API
 dotnet watch run
 
 # 啟動前端（另一個終端）
+
 cd src/hrms-web
 npm run dev
 \```
@@ -309,13 +321,17 @@ npm run dev
 ### 執行測試
 
 \```bash
+
 # 單元測試
+
 dotnet test tests/HRMS.UnitTests
 
 # 整合測試（需要 Docker）
+
 dotnet test tests/HRMS.IntegrationTests
 
 # 前端測試
+
 cd src/hrms-web && npm test
 \```
 
@@ -325,7 +341,7 @@ cd src/hrms-web && npm test
 docker build -t hrms-api:latest -f src/HRMS.API/Dockerfile .
 docker build -t hrms-web:latest -f src/hrms-web/Dockerfile .
 \```
-```
+````
 
 ---
 
@@ -333,18 +349,18 @@ docker build -t hrms-web:latest -f src/hrms-web/Dockerfile .
 
 ### 📝 範本
 
-```markdown
+````markdown
 ## API Reference
 
 完整 API 文件請參閱：{API 文件連結}
 
 ### 常用端點
 
-| Method | Endpoint | 說明 |
-|--------|---------|------|
-| GET | /api/v1/{resource} | {說明} |
-| POST | /api/v1/{resource} | {說明} |
-| PUT | /api/v1/{resource}/{id} | {說明} |
+| Method | Endpoint                | 說明   |
+| ------ | ----------------------- | ------ |
+| GET    | /api/v1/{resource}      | {說明} |
+| POST   | /api/v1/{resource}      | {說明} |
+| PUT    | /api/v1/{resource}/{id} | {說明} |
 | DELETE | /api/v1/{resource}/{id} | {說明} |
 
 ### 認證
@@ -355,9 +371,9 @@ docker build -t hrms-web:latest -f src/hrms-web/Dockerfile .
 
 \```bash
 curl -X GET https://api.example.com/v1/{resource} \
-  -H "Authorization: Bearer {token}"
+-H "Authorization: Bearer {token}"
 \```
-```
+````
 
 ### 📖 使用說明
 
@@ -367,20 +383,20 @@ curl -X GET https://api.example.com/v1/{resource} \
 
 ### 💡 範例
 
-```markdown
+````markdown
 ## API Reference
 
 完整 Swagger 文件：https://hrms-api.company.com/swagger
 
 ### 常用端點
 
-| Method | Endpoint | 說明 |
-|--------|---------|------|
-| POST | /api/v1/auth/login | 登入取得 Token |
-| GET | /api/v1/employees/me | 取得個人資料 |
-| POST | /api/v1/leaves | 建立請假申請 |
-| GET | /api/v1/leaves?status=pending | 查詢待審核假單 |
-| PATCH | /api/v1/leaves/{id}/approve | 審核假單 |
+| Method | Endpoint                      | 說明           |
+| ------ | ----------------------------- | -------------- |
+| POST   | /api/v1/auth/login            | 登入取得 Token |
+| GET    | /api/v1/employees/me          | 取得個人資料   |
+| POST   | /api/v1/leaves                | 建立請假申請   |
+| GET    | /api/v1/leaves?status=pending | 查詢待審核假單 |
+| PATCH  | /api/v1/leaves/{id}/approve   | 審核假單       |
 
 ### 認證
 
@@ -388,10 +404,10 @@ curl -X GET https://api.example.com/v1/{resource} \
 
 \```bash
 curl -X POST https://hrms-api.company.com/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username": "user@company.com", "password": "****"}'
+-H "Content-Type: application/json" \
+-d '{"username": "user@company.com", "password": "****"}'
 \```
-```
+````
 
 ---
 
@@ -399,25 +415,25 @@ curl -X POST https://hrms-api.company.com/api/v1/auth/login \
 
 ### 📝 範本
 
-```markdown
+````markdown
 ## Project Structure
 
 \```
 {project-name}/
 ├── src/
-│   ├── {module-1}/          # {說明}
-│   ├── {module-2}/          # {說明}
-│   └── {module-3}/          # {說明}
+│ ├── {module-1}/ # {說明}
+│ ├── {module-2}/ # {說明}
+│ └── {module-3}/ # {說明}
 ├── tests/
-│   ├── {test-project-1}/    # {說明}
-│   └── {test-project-2}/    # {說明}
-├── docs/                    # 文件
-├── scripts/                 # 工具腳本
-├── .github/                 # CI/CD 設定
-├── docker-compose.yml       # 本機開發環境
+│ ├── {test-project-1}/ # {說明}
+│ └── {test-project-2}/ # {說明}
+├── docs/ # 文件
+├── scripts/ # 工具腳本
+├── .github/ # CI/CD 設定
+├── docker-compose.yml # 本機開發環境
 └── README.md
 \```
-```
+````
 
 ### 📖 使用說明
 
@@ -427,30 +443,30 @@ curl -X POST https://hrms-api.company.com/api/v1/auth/login \
 
 ### 💡 範例
 
-```markdown
+````markdown
 ## Project Structure
 
 \```
 hrms/
 ├── src/
-│   ├── HRMS.API/              # Web API 主專案
-│   ├── HRMS.Application/      # 應用層（Use Cases）
-│   ├── HRMS.Domain/           # 領域層（Entities, Value Objects）
-│   ├── HRMS.Infrastructure/   # 基礎設施層（DB, External Services）
-│   └── hrms-web/              # React 前端 SPA
+│ ├── HRMS.API/ # Web API 主專案
+│ ├── HRMS.Application/ # 應用層（Use Cases）
+│ ├── HRMS.Domain/ # 領域層（Entities, Value Objects）
+│ ├── HRMS.Infrastructure/ # 基礎設施層（DB, External Services）
+│ └── hrms-web/ # React 前端 SPA
 ├── tests/
-│   ├── HRMS.UnitTests/        # 單元測試
-│   └── HRMS.IntegrationTests/ # 整合測試
+│ ├── HRMS.UnitTests/ # 單元測試
+│ └── HRMS.IntegrationTests/ # 整合測試
 ├── deploy/
-│   ├── k8s/                   # Kubernetes manifests
-│   └── terraform/             # IaC（Azure 資源）
-├── docs/                      # 專案文件
-├── scripts/                   # 開發/維運工具腳本
-├── docker-compose.yml         # 本機開發環境
-├── CHANGELOG.md               # 版本異動紀錄
-└── README.md                  # 本文件
+│ ├── k8s/ # Kubernetes manifests
+│ └── terraform/ # IaC（Azure 資源）
+├── docs/ # 專案文件
+├── scripts/ # 開發/維運工具腳本
+├── docker-compose.yml # 本機開發環境
+├── CHANGELOG.md # 版本異動紀錄
+└── README.md # 本文件
 \```
-```
+````
 
 ---
 
@@ -475,14 +491,14 @@ hrms/
 
 使用 [Conventional Commits](https://www.conventionalcommits.org/)：
 
-| 類型 | 說明 |
-|------|------|
-| feat | 新功能 |
-| fix | 修復 Bug |
-| docs | 文件變更 |
+| 類型     | 說明                |
+| -------- | ------------------- |
+| feat     | 新功能              |
+| fix      | 修復 Bug            |
+| docs     | 文件變更            |
 | refactor | 重構（非 feat/fix） |
-| test | 測試相關 |
-| chore | 建置/工具/依賴更新 |
+| test     | 測試相關            |
+| chore    | 建置/工具/依賴更新  |
 
 ### Code Review 標準
 
@@ -502,7 +518,7 @@ hrms/
 
 ### 💡 範例
 
-```markdown
+````markdown
 ## Contributing
 
 ### Branch Strategy
@@ -531,7 +547,7 @@ feat(leave): add cross-month leave application support
 
 Closes #234
 \```
-```
+````
 
 ---
 
@@ -572,26 +588,26 @@ Closes #234
 
 #### 11.1 其他建議章節
 
-| 章節 | 適用情境 | 說明 |
-|------|---------|------|
-| FAQ | 常見問題多時 | 問答形式解答常見疑問 |
-| Troubleshooting | 已知問題多時 | 常見問題排解步驟 |
-| Roadmap | 開源/產品型專案 | 未來規劃展示 |
-| Acknowledgments | 使用第三方資源時 | 致謝與引用 |
-| Related Projects | 有相關專案時 | 關聯專案連結 |
+| 章節             | 適用情境         | 說明                 |
+| ---------------- | ---------------- | -------------------- |
+| FAQ              | 常見問題多時     | 問答形式解答常見疑問 |
+| Troubleshooting  | 已知問題多時     | 常見問題排解步驟     |
+| Roadmap          | 開源/產品型專案  | 未來規劃展示         |
+| Acknowledgments  | 使用第三方資源時 | 致謝與引用           |
+| Related Projects | 有相關專案時     | 關聯專案連結         |
 
 #### 11.2 README 品質檢查清單
 
-| 檢查項 | ☐ |
-|--------|---|
-| 專案名稱與描述清楚 | ☐ |
-| 有 Quick Start（5 分鐘可跑起來） | ☐ |
-| 安裝步驟可直接複製執行 | ☐ |
-| 環境變數/設定有說明 | ☐ |
-| 有貢獻指南 | ☐ |
-| 有授權條款 | ☐ |
-| 無過時資訊 | ☐ |
-| 無機敏資訊外洩 | ☐ |
+| 檢查項                           | ☐   |
+| -------------------------------- | --- |
+| 專案名稱與描述清楚               | ☐   |
+| 有 Quick Start（5 分鐘可跑起來） | ☐   |
+| 安裝步驟可直接複製執行           | ☐   |
+| 環境變數/設定有說明              | ☐   |
+| 有貢獻指南                       | ☐   |
+| 有授權條款                       | ☐   |
+| 無過時資訊                       | ☐   |
+| 無機敏資訊外洩                   | ☐   |
 
 ### 📖 使用說明
 
@@ -619,6 +635,7 @@ A: 執行 `scripts/seed-data.sh`，會建立預設測試帳號與資料。
 ---
 
 > 📌 **範本使用注意事項**
+>
 > 1. 本範本依據 GitHub Community Standards 與業界最佳實踐編製
 > 2. README 需隨專案演進持續更新（尤其安裝步驟與環境需求）
 > 3. 避免在 README 中放入機敏資訊（密碼、API Key、內部 IP）

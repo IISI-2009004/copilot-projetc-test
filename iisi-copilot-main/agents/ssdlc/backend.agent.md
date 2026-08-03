@@ -44,13 +44,13 @@ argument-hint: "描述要實作的後端功能或 API"
 
 ### 技術棧
 
-| 層級 | 技術 |
-|------|------|
-| **語言** | Java 21+ |
-| **框架** | Spring Boot 3.x+, Spring Security, Spring Data JPA |
-| **資料庫** | PostgreSQL, Redis |
-| **API 規範** | RESTful API, OpenAPI 3.0 |
-| **建置工具** | Maven / Gradle |
+| 層級         | 技術                                               |
+| ------------ | -------------------------------------------------- |
+| **語言**     | Java 21+                                           |
+| **框架**     | Spring Boot 3.x+, Spring Security, Spring Data JPA |
+| **資料庫**   | PostgreSQL, Redis                                  |
+| **API 規範** | RESTful API, OpenAPI 3.0                           |
+| **建置工具** | Maven / Gradle                                     |
 
 ### 開發規範
 

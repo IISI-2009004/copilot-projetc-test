@@ -1,6 +1,6 @@
 ---
-name: 'Session Report'
-description: 'Stop Hook，在 Agent 會話結束時自動產生變更摘要報告，包含 Git diff 統計、修改檔案清單與會話 metadata，便於事後稽核與追蹤。'
+name: "Session Report"
+description: "Stop Hook，在 Agent 會話結束時自動產生變更摘要報告，包含 Git diff 統計、修改檔案清單與會話 metadata，便於事後稽核與追蹤。"
 tags:
   - ssdlc
   - audit
@@ -14,17 +14,18 @@ Stop Hook，在 Agent 會話結束時自動產生結構化的變更摘要報告�
 
 ## 報告內容
 
-| 區段 | 說明 |
-|------|------|
-| 會話 metadata | 會話 ID、時間戳記 |
-| 變更統計 | `git diff --stat` 摘要 |
-| 已修改檔案 | 未暫存的已變更檔案清單 |
-| 已暫存檔案 | 已加入暫存區的檔案清單 |
-| 新增檔案 | 未追蹤的新建檔案 |
+| 區段          | 說明                   |
+| ------------- | ---------------------- |
+| 會話 metadata | 會話 ID、時間戳記      |
+| 變更統計      | `git diff --stat` 摘要 |
+| 已修改檔案    | 未暫存的已變更檔案清單 |
+| 已暫存檔案    | 已加入暫存區的檔案清單 |
+| 新增檔案      | 未追蹤的新建檔案       |
 
 ## 報告位置
 
 報告產生在 `.copilot/reports/` 目錄下，檔名格式為：
+
 ```
 session-{sessionId}-{timestamp}.md
 ```

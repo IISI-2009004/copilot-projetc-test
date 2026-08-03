@@ -1,6 +1,6 @@
 ---
-description: '便攜式指南，用於編寫安全、快速、清晰的鉤子和可重複使用的鉤子範例。'
-applyTo: '.github/hooks/**, hooks/**'
+description: "便攜式指南，用於編寫安全、快速、清晰的鉤子和可重複使用的鉤子範例。"
+applyTo: ".github/hooks/**, hooks/**"
 ---
 
 # Hook Authoring Guidelines
@@ -53,15 +53,15 @@ GitHub Copilot hook 位於倉庫的 .github/hooks/ 目錄中：
 
 ### Config fields
 
-| Field | Required | What it does |
-| ---- | ---- | ---- |
-| `type` | yes | `"command"` for scripts |
-| `matcher` | no | 主機級過濾器－僅當工具名稱與此值相符時（例如 "bash" 、 "powershell" 、 "edit" 、 "create" ），此鉤子才會觸發。已在本地 Copilot CLI v1.0.36 中驗證有效；尚未在倉庫鉤子範例中使用。 |
-| `bash` | one or both | 在支援 Unix/Bash 的主機上呼叫的命令列 |
-| `powershell` | one or both | 在支援 Windows / PowerShell 的主機上呼叫的命令列 |
-| `cwd` | no | 工作目錄，相對於倉庫根目錄 |
-| `timeoutSec` | no | 主機在終止進程前的最大秒數（默認 30） |
-| `env` | no | 傳遞給腳本的額外進程環境變數 |
+| Field        | Required    | What it does                                                                                                                                                                      |
+| ------------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`       | yes         | `"command"` for scripts                                                                                                                                                           |
+| `matcher`    | no          | 主機級過濾器－僅當工具名稱與此值相符時（例如 "bash" 、 "powershell" 、 "edit" 、 "create" ），此鉤子才會觸發。已在本地 Copilot CLI v1.0.36 中驗證有效；尚未在倉庫鉤子範例中使用。 |
+| `bash`       | one or both | 在支援 Unix/Bash 的主機上呼叫的命令列                                                                                                                                             |
+| `powershell` | one or both | 在支援 Windows / PowerShell 的主機上呼叫的命令列                                                                                                                                  |
+| `cwd`        | no          | 工作目錄，相對於倉庫根目錄                                                                                                                                                        |
+| `timeoutSec` | no          | 主機在終止進程前的最大秒數（默認 30）                                                                                                                                             |
+| `env`        | no          | 傳遞給腳本的額外進程環境變數                                                                                                                                                      |
 
 ### Why matchers matter
 
@@ -82,24 +82,24 @@ tool_name="$(printf '%s' "$payload" | jq -r '.toolName')"
 
 它們作為 **進程環境變數** 傳遞，而不是在 stdin JSON 載荷中。將它們用於不應硬編碼的靜態配置：
 
-| Pattern | Example |
-| ---- | ---- |
-| Mode flag | `"BLOCK_MODE": "deny"` — 同一個腳本在一個倉庫中記錄日誌，在另一個倉庫中阻止運行 |
-| Threshold | `"MAX_CHANGED_FILES": "20"` |
-| Path | `"AUDIT_LOG_PATH": ".github/logs/hooks.log"` |
-| Feature toggle | `"ENABLE_NOTIFICATIONS": "false"` |
+| Pattern        | Example                                                                         |
+| -------------- | ------------------------------------------------------------------------------- |
+| Mode flag      | `"BLOCK_MODE": "deny"` — 同一個腳本在一個倉庫中記錄日誌，在另一個倉庫中阻止運行 |
+| Threshold      | `"MAX_CHANGED_FILES": "20"`                                                     |
+| Path           | `"AUDIT_LOG_PATH": ".github/logs/hooks.log"`                                    |
+| Feature toggle | `"ENABLE_NOTIFICATIONS": "false"`                                               |
 
 ### `bash` and `powershell` —何時提供其中一種或兩種
 
 主機選擇與目前環境相符的項目。它不會同時運行兩個條目，也不會在兩者之間來回切換。
 
-| Situation | Provide |
-| ---- | ---- |
-| 私人鉤子，一個已知的平台 | 只有該平台的條目 |
-| 發佈的鉤子聲稱支持跨平台 | 兩個條目都提供 |
+| Situation                              | Provide                    |
+| -------------------------------------- | -------------------------- |
+| 私人鉤子，一個已知的平台               | 只有該平台的條目           |
+| 發佈的鉤子聲稱支持跨平台               | 兩個條目都提供             |
 | 單一跨平台運行時（Python、Node、pwsh） | 通過兩個條目暴露相同的腳本 |
-| 僅限 Bash 的依賴 | 僅 `bash` |
-| 僅限 Windows 的依賴 | 僅 `powershell` |
+| 僅限 Bash 的依賴                       | 僅 `bash`                  |
+| 僅限 Windows 的依賴                    | 僅 `powershell`            |
 
 透過兩個條目使用 Python 實現跨平台範例：
 
@@ -149,31 +149,31 @@ exit 0
 
 ### What the script receives
 
-| Input | What it carries |
-| ---- | ---- |
-| `stdin` | 一個描述當前事件的 JSON 有效負載 |
+| Input               | What it carries                                       |
+| ------------------- | ----------------------------------------------------- |
+| `stdin`             | 一個描述當前事件的 JSON 有效負載                      |
 | process environment | 正常的環境變數，加上你在配置中 `env` 下定義的任何變數 |
-| working directory | 配置中的 `cwd`，或主機的默認值 |
+| working directory   | 配置中的 `cwd`，或主機的默認值                        |
 
 ### How the script responds
 
-| Channel | Purpose |
-| ---- | ---- |
-| exit `0` | 腳本執行成功－除非標準輸出包含結構化的拒絕指令，否則主機將繼續運作。 |
-| non-zero exit | **阻止觸發的操作** 並表示鉤子失敗 |
-| `stdout` | 結構化的機器可讀輸出——僅適用於記錄 stdout 架構的事件（如 `preToolUse`） |
-| `stderr` | 用於日誌的人類可讀診斷信息 |
+| Channel       | Purpose                                                                 |
+| ------------- | ----------------------------------------------------------------------- |
+| exit `0`      | 腳本執行成功－除非標準輸出包含結構化的拒絕指令，否則主機將繼續運作。    |
+| non-zero exit | **阻止觸發的操作** 並表示鉤子失敗                                       |
+| `stdout`      | 結構化的機器可讀輸出——僅適用於記錄 stdout 架構的事件（如 `preToolUse`） |
+| `stderr`      | 用於日誌的人類可讀診斷信息                                              |
 
 ### Exit codes and deny: the full picture
 
 拒絕機制取決於事件 ：
 
-| Event type | How to allow | How to deny / block |
-| ---- | ---- | ---- |
-| `preToolUse` | 退出代碼為 0 ，空輸出或返回 {"permissionDecision":"allow"} 到標準輸出 | 首選方法 ：在標準輸出中傳回 exit 0 + {"permissionDecision":"deny","permissionDecisionReason":"..."} 可以給主機一個顯示原因的提示。 另一種方法是：非零退出代碼會阻塞工具調用，但沒有提供結構化的原因。 |
-| `userPromptSubmitted` | exit `0` |非零退出代碼會阻塞提示符號（此事件會忽略標準輸出）。 |
-| `agentStop` | exit `0` | 非零退出代碼會阻塞操作 |
-| Other events (`sessionStart`, `sessionEnd`, `postToolUse`, `errorOccurred`) | exit `0` | 非零退出代碼表示失敗；主機可能會跳過該事件的後續鉤子 |
+| Event type                                                                  | How to allow                                                          | How to deny / block                                                                                                                                                                                   |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `preToolUse`                                                                | 退出代碼為 0 ，空輸出或返回 {"permissionDecision":"allow"} 到標準輸出 | 首選方法 ：在標準輸出中傳回 exit 0 + {"permissionDecision":"deny","permissionDecisionReason":"..."} 可以給主機一個顯示原因的提示。 另一種方法是：非零退出代碼會阻塞工具調用，但沒有提供結構化的原因。 |
+| `userPromptSubmitted`                                                       | exit `0`                                                              | 非零退出代碼會阻塞提示符號（此事件會忽略標準輸出）。                                                                                                                                                  |
+| `agentStop`                                                                 | exit `0`                                                              | 非零退出代碼會阻塞操作                                                                                                                                                                                |
+| Other events (`sessionStart`, `sessionEnd`, `postToolUse`, `errorOccurred`) | exit `0`                                                              | 非零退出代碼表示失敗；主機可能會跳過該事件的後續鉤子                                                                                                                                                  |
 
 **經驗法則** ：如果事件具有結構化的 stdout 模式（例如 preToolUse ），則應使用它——它能提供清晰的拒絕理由，並且是官方文件中記錄的拒絕路徑。對於沒有結構化 stdout 的事件，非零退出值是實際可行的阻塞機制——這一點已在程式碼庫範例和學習中心文件中得到證實，儘管 GitHub 官方文件並未明確將「非零退出值 = 阻塞」作為一項約定保證。
 
@@ -253,11 +253,11 @@ exit 0
 
 **What happens at runtime:**
 
-| Scenario | stdout | exit | Host action |
-| ---- | ---- | ---- | ---- |
-| All checks pass | empty | `0` | Commit proceeds |
-| Lint fails | `{"permissionDecision":"deny","permissionDecisionReason":"Cannot commit — fix these issues first:\n=== Lint Errors ===\n..."}` | `0` | Blocks commit; agent sees the errors and fixes them |
-| jq missing | empty | non-zero | Hook failure |
+| Scenario        | stdout                                                                                                                         | exit     | Host action                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------- | --------------------------------------------------- |
+| All checks pass | empty                                                                                                                          | `0`      | Commit proceeds                                     |
+| Lint fails      | `{"permissionDecision":"deny","permissionDecisionReason":"Cannot commit — fix these issues first:\n=== Lint Errors ===\n..."}` | `0`      | Blocks commit; agent sees the errors and fixes them |
+| jq missing      | empty                                                                                                                          | non-zero | Hook failure                                        |
 
 ### Example 2: Auto-format after file edits
 
@@ -314,11 +314,11 @@ exit 0
 
 **What happens at runtime:**
 
-| Scenario | What the hook does | exit |
-| ---- | ---- | ---- |
-| 代理程式成功編輯了 src/app.ts 。 | 運行 `prettier --write src/app.ts` | `0` |
-| 代理程式執行 `bash ls` | Skips（不是檔案寫入工具） | `0` |
-| Prettier 未安裝 | 靜默跳過格式化 | `0` |
+| Scenario                         | What the hook does                 | exit |
+| -------------------------------- | ---------------------------------- | ---- |
+| 代理程式成功編輯了 src/app.ts 。 | 運行 `prettier --write src/app.ts` | `0`  |
+| 代理程式執行 `bash ls`           | Skips（不是檔案寫入工具）          | `0`  |
+| Prettier 未安裝                  | 靜默跳過格式化                     | `0`  |
 
 ### Example 3: 使用結構化拒絕規則阻止危險命令
 
@@ -376,11 +376,11 @@ exit 0
 
 **What happens at runtime:**
 
-| Scenario | BLOCK_MODE | stdout | exit | Host action |
-| ---- | ---- | ---- | ---- | ---- |
-| Safe command | any | empty | `0` | Proceeds |
-| `git push --force` | `deny` | `{"permissionDecision":"deny",...}` | `0` | Blocks with reason |
-| `git push --force` | `log` | empty | `0` | Proceeds (log only) |
+| Scenario           | BLOCK_MODE | stdout                              | exit | Host action         |
+| ------------------ | ---------- | ----------------------------------- | ---- | ------------------- |
+| Safe command       | any        | empty                               | `0`  | Proceeds            |
+| `git push --force` | `deny`     | `{"permissionDecision":"deny",...}` | `0`  | Blocks with reason  |
+| `git push --force` | `log`      | empty                               | `0`  | Proceeds (log only) |
 
 ## Event Types
 
@@ -389,20 +389,20 @@ exit 0
 - [Hooks configuration reference](https://docs.github.com/en/copilot/reference/hooks-configuration)
 - [About hooks](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-hooks)
 
-| Event | stdout | Typical use |
-| ---- | ---- | ---- |
-| `sessionStart` | **parsed** －stdout 中的 additionalContext 被注入到會話中 | 設定、驗證、上下文注入、日誌記錄 |
-| `sessionEnd` | ignored | 清理、摘要 |
-| `userPromptSubmitted` | ignored | 審計、提示阻止 |
-| `preToolUse` | **parsed** — `permissionDecision`, `modifiedArgs`/`updatedInput`, `additionalContext` | 防護措施、拒絕/阻止、參數修改 |
-| `postToolUse` | ignored | 日誌記錄、格式化 |
-| `postToolUseFailure` | — | 工具運行失敗後的恢復 |
-| `agentStop` | — | 最終驗證 |
-| `subagentStart` | — | 子代理審計 |
-| `subagentStop` | — | 子代理輸出驗證 |
-| `errorOccurred` | ignored | 診斷、警報 |
-| `preCompact` | — | 壓縮前工作 |
-| `permissionRequest` | — | 批准工作流程 |
+| Event                 | stdout                                                                                | Typical use                      |
+| --------------------- | ------------------------------------------------------------------------------------- | -------------------------------- |
+| `sessionStart`        | **parsed** －stdout 中的 additionalContext 被注入到會話中                             | 設定、驗證、上下文注入、日誌記錄 |
+| `sessionEnd`          | ignored                                                                               | 清理、摘要                       |
+| `userPromptSubmitted` | ignored                                                                               | 審計、提示阻止                   |
+| `preToolUse`          | **parsed** — `permissionDecision`, `modifiedArgs`/`updatedInput`, `additionalContext` | 防護措施、拒絕/阻止、參數修改    |
+| `postToolUse`         | ignored                                                                               | 日誌記錄、格式化                 |
+| `postToolUseFailure`  | —                                                                                     | 工具運行失敗後的恢復             |
+| `agentStop`           | —                                                                                     | 最終驗證                         |
+| `subagentStart`       | —                                                                                     | 子代理審計                       |
+| `subagentStop`        | —                                                                                     | 子代理輸出驗證                   |
+| `errorOccurred`       | ignored                                                                               | 診斷、警報                       |
+| `preCompact`          | —                                                                                     | 壓縮前工作                       |
+| `permissionRequest`   | —                                                                                     | 批准工作流程                     |
 
 ### Payload schemas for common events
 
@@ -422,6 +422,7 @@ exit 0
 source 為 "new" 、 "resume" 或 "startup" 。 initialPrompt 是使用者首次看到的提示訊息 initialPrompt (如果已提供)。
 
 **`sessionStart` stdout output** — 主機解析標準輸出以獲得：
+
 ```json
 {
   "additionalContext": "Current branch: main. Deploy target: staging."
@@ -439,7 +440,6 @@ source 為 "new" 、 "resume" 或 "startup" 。 initialPrompt 是使用者首次
   "reason": "complete"
 }
 ```
-
 
 `reason` 為 "complete" 、 "error" 、 "abort" 、 "timeout" 或 "user_exit" 。
 
@@ -470,12 +470,12 @@ source 為 "new" 、 "resume" 或 "startup" 。 initialPrompt 是使用者首次
 
 **`preToolUse` stdout output** — 主機解析標準輸出以獲得：
 
-| Field | What it does |
-| ---- | ---- |
-| `permissionDecision` | "deny" 會阻止工具呼叫。 "allow" 和 "ask" 也可以接受；目前只處理 "deny" 。 |
-| `permissionDecisionReason` | 顯示給使用者的人類可讀原因 |
-| `modifiedArgs` or `updatedInput` | 替換工具參數 — 用於取代原始參數 |
-| `additionalContext` | 注入到代理上下文中的文字，用於本次操作 |
+| Field                            | What it does                                                              |
+| -------------------------------- | ------------------------------------------------------------------------- |
+| `permissionDecision`             | "deny" 會阻止工具呼叫。 "allow" 和 "ask" 也可以接受；目前只處理 "deny" 。 |
+| `permissionDecisionReason`       | 顯示給使用者的人類可讀原因                                                |
+| `modifiedArgs` or `updatedInput` | 替換工具參數 — 用於取代原始參數                                           |
+| `additionalContext`              | 注入到代理上下文中的文字，用於本次操作                                    |
 
 **`postToolUse`**
 
@@ -491,6 +491,7 @@ source 為 "new" 、 "resume" 或 "startup" 。 initialPrompt 是使用者首次
   }
 }
 ```
+
 `resultType` 為 "success" 、 "failure" 或 "denied" 。
 
 **`errorOccurred`**
@@ -520,24 +521,24 @@ source 為 "new" 、 "resume" 或 "startup" 。 initialPrompt 是使用者首次
 
 ## 當hooks鉤子是錯誤的工具時
 
-| Avoid hooks for | Better fit |
-| ---- | ---- |
-| 開放式推理或風格指導 | Instructions, prompts, or agents |
-| 長多步驟工作流程，包含記憶、重試或分支 | Agents, scripts, or workflow engines |
-| 背景守護程序、監視器、去抖動循環或異步作業 | Dedicated automation, services, or CI |
-| 大規模倉庫範圍的驗證 | CI, scheduled jobs, or dedicated automation |
+| Avoid hooks for                            | Better fit                                  |
+| ------------------------------------------ | ------------------------------------------- |
+| 開放式推理或風格指導                       | Instructions, prompts, or agents            |
+| 長多步驟工作流程，包含記憶、重試或分支     | Agents, scripts, or workflow engines        |
+| 背景守護程序、監視器、去抖動循環或異步作業 | Dedicated automation, services, or CI       |
+| 大規模倉庫範圍的驗證                       | CI, scheduled jobs, or dedicated automation |
 
 ## 通用設計規則
 
-| Rule | Why it matters |
-| ---- | ---- |
-| 一個鉤子，一份責任 | 小型鉤子更容易信任和調試。 |
-| 預設優先觀察 | 阻塞或變更應該是明確的選擇 |
-| 保持鉤子同步、有界且非互動式 | 鉤子運行在關鍵路徑上 |
-| 使鉤子具有確定性和冪等性 | 重新運行不應該產生漂移 |
-| 預設不修改分支、索引或工作樹狀態 | Git破壞性行為風險高 |
-| 將提示、工具參數和工具輸出視為不可信且敏感 | 輸入可能是敵對的或私密的 |
-| 從日誌中刪除秘密、憑證、令牌和私密內容 | 日誌通常比鉤子運行時間長 |
+| Rule                                       | Why it matters             |
+| ------------------------------------------ | -------------------------- |
+| 一個鉤子，一份責任                         | 小型鉤子更容易信任和調試。 |
+| 預設優先觀察                               | 阻塞或變更應該是明確的選擇 |
+| 保持鉤子同步、有界且非互動式               | 鉤子運行在關鍵路徑上       |
+| 使鉤子具有確定性和冪等性                   | 重新運行不應該產生漂移     |
+| 預設不修改分支、索引或工作樹狀態           | Git破壞性行為風險高        |
+| 將提示、工具參數和工具輸出視為不可信且敏感 | 輸入可能是敵對的或私密的   |
+| 從日誌中刪除秘密、憑證、令牌和私密內容     | 日誌通常比鉤子運行時間長   |
 
 ## 腳本編寫規則
 
@@ -585,6 +586,7 @@ source 為 "new" 、 "resume" 或 "startup" 。 initialPrompt 是使用者首次
 ### Claude Code
 
 Claude Code 使用不同的鉤子系統：
+
 - 設定在 `~/.claude/settings.json` 和 `.claude/settings.json`
 - 不同的事件名稱和匹配器語法（正規表示式、 if 條件）
 - Exit 2 = 阻塞，Exit 1 = 非阻塞錯誤（與 GitHub Copilot 不同）

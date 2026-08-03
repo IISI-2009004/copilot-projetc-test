@@ -50,29 +50,29 @@ PRD（做什麼） → SDD（如何設計） → TSD（如何實作）
 
 ## 1. 文件資訊
 
-| 項目 | 內容 |
-|------|------|
+| 項目         | 內容                             |
+| ------------ | -------------------------------- |
 | **文件編號** | TSD-[專案代碼]-[模組代碼]-[序號] |
-| **版本** | v0.1 |
-| **建立日期** | YYYY-MM-DD |
-| **最後更新** | YYYY-MM-DD |
-| **撰寫者** | [工程師姓名] |
-| **審核者** | [技術主管 / 架構師] |
-| **狀態** | 草稿 / 審查中 / 已核准 |
+| **版本**     | v0.1                             |
+| **建立日期** | YYYY-MM-DD                       |
+| **最後更新** | YYYY-MM-DD                       |
+| **撰寫者**   | [工程師姓名]                     |
+| **審核者**   | [技術主管 / 架構師]              |
+| **狀態**     | 草稿 / 審查中 / 已核准           |
 
 ### 版本歷程
 
-| 版本 | 日期 | 修改人 | 修改內容摘要 |
-|------|------|--------|-------------|
-| v0.1 | YYYY-MM-DD | [姓名] | 初版建立 |
+| 版本 | 日期       | 修改人 | 修改內容摘要 |
+| ---- | ---------- | ------ | ------------ |
+| v0.1 | YYYY-MM-DD | [姓名] | 初版建立     |
 
 ### 關聯文件
 
-| 文件名稱 | 文件編號 | 版本 | 關聯性 |
-|---------|---------|------|--------|
+| 文件名稱            | 文件編號    | 版本 | 關聯性   |
+| ------------------- | ----------- | ---- | -------- |
 | 系統設計文件（SDD） | SDD-XXX-001 | v1.0 | 架構設計 |
 | 產品需求文件（PRD） | PRD-XXX-001 | v1.0 | 需求來源 |
-| API 規格文件 | API-XXX-001 | v1.0 | 介面規格 |
+| API 規格文件        | API-XXX-001 | v1.0 | 介面規格 |
 
 ---
 
@@ -84,33 +84,35 @@ PRD（做什麼） → SDD（如何設計） → TSD（如何實作）
 
 **模組名稱**：[模組名稱]  
 **功能範圍**：
+
 - [功能 1 描述]
 - [功能 2 描述]
 - [功能 3 描述]
 
 **不包含**：
+
 - [明確排除的功能]
 
 ### 2.2 技術環境
 
-| 項目 | 規格 |
-|------|------|
-| 程式語言 | Java 21 / TypeScript 5.x / Python 3.12 |
-| 框架 | Spring Boot 3.4.x / NestJS / FastAPI |
-| 執行環境 | JVM 21 (GraalVM) / Node.js 22 LTS |
-| 建置工具 | Gradle 8.x / npm / Poetry |
-| 測試框架 | JUnit 5 + Mockito / Jest / pytest |
-| 程式碼品質 | SonarQube / ESLint / Ruff |
+| 項目       | 規格                                   |
+| ---------- | -------------------------------------- |
+| 程式語言   | Java 21 / TypeScript 5.x / Python 3.12 |
+| 框架       | Spring Boot 3.4.x / NestJS / FastAPI   |
+| 執行環境   | JVM 21 (GraalVM) / Node.js 22 LTS      |
+| 建置工具   | Gradle 8.x / npm / Poetry              |
+| 測試框架   | JUnit 5 + Mockito / Jest / pytest      |
+| 程式碼品質 | SonarQube / ESLint / Ruff              |
 
 ### 2.3 相依套件
 
-| 套件名稱 | 版本 | 用途 | 授權 |
-|---------|------|------|------|
-| spring-boot-starter-web | 3.4.x | Web 框架 | Apache 2.0 |
-| spring-boot-starter-data-jpa | 3.4.x | ORM | Apache 2.0 |
-| resilience4j | 2.x | 容錯處理 | Apache 2.0 |
-| mapstruct | 1.6.x | DTO 轉換 | Apache 2.0 |
-| lombok | 1.18.x | 程式碼簡化 | MIT |
+| 套件名稱                     | 版本   | 用途       | 授權       |
+| ---------------------------- | ------ | ---------- | ---------- |
+| spring-boot-starter-web      | 3.4.x  | Web 框架   | Apache 2.0 |
+| spring-boot-starter-data-jpa | 3.4.x  | ORM        | Apache 2.0 |
+| resilience4j                 | 2.x    | 容錯處理   | Apache 2.0 |
+| mapstruct                    | 1.6.x  | DTO 轉換   | Apache 2.0 |
+| lombok                       | 1.18.x | 程式碼簡化 | MIT        |
 
 ---
 
@@ -152,15 +154,16 @@ PRD（做什麼） → SDD（如何設計） → TSD（如何實作）
 
 #### 3.2.1 UserServiceImpl
 
-| 屬性 | 描述 |
-|------|------|
-| **類別名稱** | `com.company.project.service.impl.UserServiceImpl` |
-| **職責** | 使用者 CRUD 業務邏輯處理 |
-| **設計模式** | Service Layer + Repository Pattern |
-| **交易管理** | 寫入操作使用 `@Transactional` |
-| **執行緒安全** | 無狀態設計，Spring Singleton 安全 |
+| 屬性           | 描述                                               |
+| -------------- | -------------------------------------------------- |
+| **類別名稱**   | `com.company.project.service.impl.UserServiceImpl` |
+| **職責**       | 使用者 CRUD 業務邏輯處理                           |
+| **設計模式**   | Service Layer + Repository Pattern                 |
+| **交易管理**   | 寫入操作使用 `@Transactional`                      |
+| **執行緒安全** | 無狀態設計，Spring Singleton 安全                  |
 
 **建構子**：
+
 ```java
 /**
  * @param userRepository 使用者資料存取物件
@@ -178,22 +181,22 @@ public UserServiceImpl(
 
 #### 方法：create（建立使用者）
 
-| 項目 | 內容 |
-|------|------|
+| 項目         | 內容                                               |
+| ------------ | -------------------------------------------------- |
 | **方法簽名** | `public UserDTO create(CreateUserRequest request)` |
-| **存取修飾** | public |
-| **回傳型別** | `UserDTO` |
-| **交易** | `@Transactional` |
-| **冪等性** | 否（每次呼叫建立新使用者） |
+| **存取修飾** | public                                             |
+| **回傳型別** | `UserDTO`                                          |
+| **交易**     | `@Transactional`                                   |
+| **冪等性**   | 否（每次呼叫建立新使用者）                         |
 
 **參數說明**：
 
-| 參數名稱 | 型別 | 必填 | 驗證規則 | 說明 |
-|---------|------|------|---------|------|
-| request | CreateUserRequest | ✅ | @Valid | 建立使用者請求 |
-| request.username | String | ✅ | 3-50 字元，英數底線 | 使用者帳號 |
-| request.email | String | ✅ | RFC 5322 格式 | 電子郵件 |
-| request.password | String | ✅ | ≥ 8 碼、含大小寫數字特殊字元 | 密碼 |
+| 參數名稱         | 型別              | 必填 | 驗證規則                     | 說明           |
+| ---------------- | ----------------- | ---- | ---------------------------- | -------------- |
+| request          | CreateUserRequest | ✅   | @Valid                       | 建立使用者請求 |
+| request.username | String            | ✅   | 3-50 字元，英數底線          | 使用者帳號     |
+| request.email    | String            | ✅   | RFC 5322 格式                | 電子郵件       |
+| request.password | String            | ✅   | ≥ 8 碼、含大小寫數字特殊字元 | 密碼           |
 
 **處理流程**：
 
@@ -255,12 +258,12 @@ public UserDTO create(CreateUserRequest request) {
 
 **例外處理**：
 
-| 例外類型 | 觸發條件 | HTTP 狀態碼 | 錯誤碼 |
-|---------|---------|------------|--------|
-| `ConstraintViolationException` | 參數驗證失敗 | 400 | E3001 |
-| `DuplicateEmailException` | Email 已存在 | 409 | E2001 |
-| `DuplicateUsernameException` | 帳號已存在 | 409 | E2002 |
-| `DataAccessException` | 資料庫操作失敗 | 500 | E9001 |
+| 例外類型                       | 觸發條件       | HTTP 狀態碼 | 錯誤碼 |
+| ------------------------------ | -------------- | ----------- | ------ |
+| `ConstraintViolationException` | 參數驗證失敗   | 400         | E3001  |
+| `DuplicateEmailException`      | Email 已存在   | 409         | E2001  |
+| `DuplicateUsernameException`   | 帳號已存在     | 409         | E2002  |
+| `DataAccessException`          | 資料庫操作失敗 | 500         | E9001  |
 
 ---
 
@@ -268,12 +271,12 @@ public UserDTO create(CreateUserRequest request) {
 
 ### 4.1 演算法清單
 
-| 演算法編號 | 名稱 | 用途 | 時間複雜度 | 空間複雜度 |
-|-----------|------|------|-----------|-----------|
-| ALG-001 | 密碼強度驗證 | 驗證密碼符合安全規則 | O(n) | O(1) |
-| ALG-002 | Token 產生 | JWT Token 簽發 | O(1) | O(1) |
-| ALG-003 | 分頁查詢 | 資料分頁與排序 | O(n log n) | O(n) |
-| ALG-004 | 權限樹計算 | 角色權限繼承計算 | O(V+E) | O(V) |
+| 演算法編號 | 名稱         | 用途                 | 時間複雜度 | 空間複雜度 |
+| ---------- | ------------ | -------------------- | ---------- | ---------- |
+| ALG-001    | 密碼強度驗證 | 驗證密碼符合安全規則 | O(n)       | O(1)       |
+| ALG-002    | Token 產生   | JWT Token 簽發       | O(1)       | O(1)       |
+| ALG-003    | 分頁查詢     | 資料分頁與排序       | O(n log n) | O(n)       |
+| ALG-004    | 權限樹計算   | 角色權限繼承計算     | O(V+E)     | O(V)       |
 
 ### 4.2 演算法詳細描述
 
@@ -285,15 +288,16 @@ public UserDTO create(CreateUserRequest request) {
 **輸出**：`PasswordStrength { valid: boolean, score: int, issues: List<String> }`
 
 **規則**：
-| 規則 | 描述 | 分數 |
-|------|------|------|
-| 長度 ≥ 8 | 最低長度要求 | 必要 |
-| 長度 ≥ 12 | 建議長度 | +1 |
-| 含大寫字母 | A-Z 至少一個 | +1 |
-| 含小寫字母 | a-z 至少一個 | +1 |
-| 含數字 | 0-9 至少一個 | +1 |
-| 含特殊字元 | !@#$%^&*等 | +1 |
-| 不含常見密碼 | 比對常見密碼庫 | 必要 |
+
+| 規則           | 描述            | 分數 |
+| -------------- | --------------- | ---- |
+| 長度 ≥ 8       | 最低長度要求    | 必要 |
+| 長度 ≥ 12      | 建議長度        | +1   |
+| 含大寫字母     | A-Z 至少一個    | +1   |
+| 含小寫字母     | a-z 至少一個    | +1   |
+| 含數字         | 0-9 至少一個    | +1   |
+| 含特殊字元     | !@#$%^&*等      | +1   |
+| 不含常見密碼   | 比對常見密碼庫  | 必要 |
 | 不含使用者資訊 | 不含帳號、Email | 必要 |
 
 **虛擬碼**：
@@ -431,12 +435,12 @@ public record UserDTO(
 
 ### 5.3 快取結構
 
-| 快取 Key 模式 | Value 類型 | TTL | 用途 |
-|-------------|-----------|-----|------|
-| `user:{id}` | UserDTO JSON | 30 分鐘 | 使用者資料快取 |
-| `user:email:{email}` | Long (userId) | 30 分鐘 | Email 反查 |
-| `auth:token:{tokenId}` | TokenInfo JSON | 依 Token 效期 | Token 黑名單/白名單 |
-| `auth:failcount:{userId}` | Integer | 30 分鐘 | 登入失敗計數 |
+| 快取 Key 模式             | Value 類型     | TTL           | 用途                |
+| ------------------------- | -------------- | ------------- | ------------------- |
+| `user:{id}`               | UserDTO JSON   | 30 分鐘       | 使用者資料快取      |
+| `user:email:{email}`      | Long (userId)  | 30 分鐘       | Email 反查          |
+| `auth:token:{tokenId}`    | TokenInfo JSON | 依 Token 效期 | Token 黑名單/白名單 |
+| `auth:failcount:{userId}` | Integer        | 30 分鐘       | 登入失敗計數        |
 
 ---
 
@@ -514,12 +518,12 @@ public class GlobalExceptionHandler {
 
 ### 6.4 重試策略
 
-| 場景 | 重試次數 | 間隔策略 | 逾時 |
-|------|---------|---------|------|
-| 資料庫暫態錯誤 | 3 次 | 指數退避（100ms, 200ms, 400ms） | 2 秒 |
-| 外部 API 呼叫 | 3 次 | 指數退避（500ms, 1s, 2s） | 10 秒 |
-| 訊息佇列發送 | 5 次 | 固定間隔（1 秒） | 30 秒 |
-| 快取操作 | 1 次 | 立即重試 | 500ms |
+| 場景           | 重試次數 | 間隔策略                        | 逾時  |
+| -------------- | -------- | ------------------------------- | ----- |
+| 資料庫暫態錯誤 | 3 次     | 指數退避（100ms, 200ms, 400ms） | 2 秒  |
+| 外部 API 呼叫  | 3 次     | 指數退避（500ms, 1s, 2s）       | 10 秒 |
+| 訊息佇列發送   | 5 次     | 固定間隔（1 秒）                | 30 秒 |
+| 快取操作       | 1 次     | 立即重試                        | 500ms |
 
 ---
 
@@ -543,25 +547,25 @@ public class GlobalExceptionHandler {
 
 ### 7.2 測試覆蓋率目標
 
-| 測試類型 | 覆蓋率目標 | 範圍 |
-|---------|-----------|------|
-| 單元測試 | ≥ 80% 行覆蓋 | Service、Domain 層 |
+| 測試類型 | 覆蓋率目標    | 範圍                    |
+| -------- | ------------- | ----------------------- |
+| 單元測試 | ≥ 80% 行覆蓋  | Service、Domain 層      |
 | 整合測試 | 關鍵路徑 100% | Controller + Repository |
-| E2E 測試 | 核心流程 100% | 使用者關鍵旅程 |
+| E2E 測試 | 核心流程 100% | 使用者關鍵旅程          |
 
 ### 7.3 單元測試規格
 
 #### 測試類別：UserServiceImplTest
 
-| 測試案例 ID | 測試方法 | 測試場景 | 預期結果 |
-|-----------|---------|---------|---------|
-| UT-001 | test_create_success | 正常建立使用者 | 回傳 UserDTO，狀態為 PENDING |
-| UT-002 | test_create_duplicateEmail | Email 已存在 | 拋出 DuplicateEmailException |
-| UT-003 | test_create_duplicateUsername | 帳號已存在 | 拋出 DuplicateUsernameException |
-| UT-004 | test_create_passwordEncoded | 密碼需雜湊 | passwordHash ≠ 原始密碼 |
-| UT-005 | test_create_eventPublished | 建立成功後發布事件 | UserCreatedEvent 被發布 |
-| UT-006 | test_findById_success | 查詢存在的使用者 | 回傳正確 UserDTO |
-| UT-007 | test_findById_notFound | 查詢不存在的使用者 | 拋出 UserNotFoundException |
+| 測試案例 ID | 測試方法                      | 測試場景           | 預期結果                        |
+| ----------- | ----------------------------- | ------------------ | ------------------------------- |
+| UT-001      | test_create_success           | 正常建立使用者     | 回傳 UserDTO，狀態為 PENDING    |
+| UT-002      | test_create_duplicateEmail    | Email 已存在       | 拋出 DuplicateEmailException    |
+| UT-003      | test_create_duplicateUsername | 帳號已存在         | 拋出 DuplicateUsernameException |
+| UT-004      | test_create_passwordEncoded   | 密碼需雜湊         | passwordHash ≠ 原始密碼         |
+| UT-005      | test_create_eventPublished    | 建立成功後發布事件 | UserCreatedEvent 被發布         |
+| UT-006      | test_findById_success         | 查詢存在的使用者   | 回傳正確 UserDTO                |
+| UT-007      | test_findById_notFound        | 查詢不存在的使用者 | 拋出 UserNotFoundException      |
 
 #### 測試範例
 
@@ -625,20 +629,20 @@ class UserServiceImplTest {
 
 ### 7.4 整合測試規格
 
-| 測試案例 ID | 測試場景 | 測試範圍 | 前置條件 |
-|-----------|---------|---------|---------|
-| IT-001 | POST /api/v1/users 建立使用者 | Controller → Service → DB | 空資料庫 |
-| IT-002 | POST /api/v1/users 重複 Email | Controller → Service → DB | 已有同 Email 使用者 |
-| IT-003 | GET /api/v1/users/{id} 查詢 | Controller → Service → DB → Cache | 資料庫有測試資料 |
-| IT-004 | POST /api/v1/auth/login 登入 | Controller → Auth → DB | 已有驗證通過的使用者 |
+| 測試案例 ID | 測試場景                      | 測試範圍                          | 前置條件             |
+| ----------- | ----------------------------- | --------------------------------- | -------------------- |
+| IT-001      | POST /api/v1/users 建立使用者 | Controller → Service → DB         | 空資料庫             |
+| IT-002      | POST /api/v1/users 重複 Email | Controller → Service → DB         | 已有同 Email 使用者  |
+| IT-003      | GET /api/v1/users/{id} 查詢   | Controller → Service → DB → Cache | 資料庫有測試資料     |
+| IT-004      | POST /api/v1/auth/login 登入  | Controller → Auth → DB            | 已有驗證通過的使用者 |
 
 ### 7.5 效能測試規格
 
-| 測試案例 | 工具 | 模擬條件 | 通過標準 |
-|---------|------|---------|---------|
-| 登入 API 壓力測試 | JMeter / k6 | 500 併發、持續 5 分鐘 | P95 < 200ms |
+| 測試案例          | 工具        | 模擬條件                 | 通過標準    |
+| ----------------- | ----------- | ------------------------ | ----------- |
+| 登入 API 壓力測試 | JMeter / k6 | 500 併發、持續 5 分鐘    | P95 < 200ms |
 | 查詢 API 壓力測試 | JMeter / k6 | 1,000 併發、持續 10 分鐘 | P95 < 100ms |
-| 建立使用者 API | JMeter / k6 | 100 併發、持續 5 分鐘 | P95 < 500ms |
+| 建立使用者 API    | JMeter / k6 | 100 併發、持續 5 分鐘    | P95 < 500ms |
 
 ---
 
@@ -646,22 +650,22 @@ class UserServiceImplTest {
 
 ### 8.1 應用程式組態
 
-| 組態項目 | 開發環境 | 測試環境 | 生產環境 | 說明 |
-|---------|---------|---------|---------|------|
-| server.port | 8080 | 8080 | 8080 | 服務埠號 |
-| spring.datasource.url | localhost:5432 | sit-db:5432 | prd-db:5432 | 資料庫連線 |
-| spring.redis.host | localhost | sit-redis | prd-redis | Redis 位址 |
-| jwt.expiration | 3600 | 3600 | 1800 | Token 效期（秒） |
-| logging.level.root | DEBUG | INFO | WARN | 日誌等級 |
+| 組態項目              | 開發環境       | 測試環境    | 生產環境    | 說明             |
+| --------------------- | -------------- | ----------- | ----------- | ---------------- |
+| server.port           | 8080           | 8080        | 8080        | 服務埠號         |
+| spring.datasource.url | localhost:5432 | sit-db:5432 | prd-db:5432 | 資料庫連線       |
+| spring.redis.host     | localhost      | sit-redis   | prd-redis   | Redis 位址       |
+| jwt.expiration        | 3600           | 3600        | 1800        | Token 效期（秒） |
+| logging.level.root    | DEBUG          | INFO        | WARN        | 日誌等級         |
 
 ### 8.2 敏感組態管理
 
-| 組態項目 | 管理方式 | 存取控制 |
-|---------|---------|---------|
-| 資料庫密碼 | Kubernetes Secret / Vault | 僅維運團隊 |
-| JWT 簽名金鑰 | Vault | 僅應用服務 |
-| 第三方 API Key | Vault | 僅應用服務 |
-| SSL 憑證 | Cert Manager | 自動管理 |
+| 組態項目       | 管理方式                  | 存取控制   |
+| -------------- | ------------------------- | ---------- |
+| 資料庫密碼     | Kubernetes Secret / Vault | 僅維運團隊 |
+| JWT 簽名金鑰   | Vault                     | 僅應用服務 |
+| 第三方 API Key | Vault                     | 僅應用服務 |
+| SSL 憑證       | Cert Manager              | 自動管理   |
 
 ---
 
@@ -708,12 +712,12 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 ### 9.3 健康檢查端點
 
-| 端點 | 用途 | 回應 |
-|------|------|------|
-| /actuator/health | 存活探測（Liveness） | UP / DOWN |
-| /actuator/health/readiness | 就緒探測（Readiness） | UP / DOWN |
-| /actuator/info | 應用資訊 | 版本、建置時間 |
-| /actuator/metrics | Prometheus 指標 | 指標資料 |
+| 端點                       | 用途                  | 回應           |
+| -------------------------- | --------------------- | -------------- |
+| /actuator/health           | 存活探測（Liveness）  | UP / DOWN      |
+| /actuator/health/readiness | 就緒探測（Readiness） | UP / DOWN      |
+| /actuator/info             | 應用資訊              | 版本、建置時間 |
+| /actuator/metrics          | Prometheus 指標       | 指標資料       |
 
 ---
 
@@ -721,47 +725,50 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 ### 10.1 靜態分析規則
 
-| 規則類型 | 工具 | 閾值 |
-|---------|------|------|
-| 程式碼重複 | SonarQube | < 3% |
-| 認知複雜度 | SonarQube | 單一方法 < 15 |
-| 技術債務 | SonarQube | < 2 小時 |
-| 安全弱點 | SonarQube | 0 Critical, 0 Blocker |
-| 測試覆蓋率 | JaCoCo | ≥ 80% |
+| 規則類型   | 工具      | 閾值                  |
+| ---------- | --------- | --------------------- |
+| 程式碼重複 | SonarQube | < 3%                  |
+| 認知複雜度 | SonarQube | 單一方法 < 15         |
+| 技術債務   | SonarQube | < 2 小時              |
+| 安全弱點   | SonarQube | 0 Critical, 0 Blocker |
+| 測試覆蓋率 | JaCoCo    | ≥ 80%                 |
 
 ### 10.2 Code Review 檢查要點
 
-| 類別 | 檢查項目 |
-|------|---------|
-| 正確性 | 業務邏輯是否正確、邊界條件處理 |
-| 安全性 | 輸入驗證、SQL 注入、XSS 防護 |
-| 效能 | N+1 查詢、不必要的資料載入 |
+| 類別     | 檢查項目                         |
+| -------- | -------------------------------- |
+| 正確性   | 業務邏輯是否正確、邊界條件處理   |
+| 安全性   | 輸入驗證、SQL 注入、XSS 防護     |
+| 效能     | N+1 查詢、不必要的資料載入       |
 | 可維護性 | 命名清晰、方法長度適當、註解充足 |
-| 測試 | 測試覆蓋、測試案例品質 |
+| 測試     | 測試覆蓋、測試案例品質           |
 
 ---
 
 ## 範例：訂單服務 TSD 摘要
 
 ### 核心方法
-| 方法 | 輸入 | 輸出 | 複雜度 |
-|------|------|------|--------|
-| createOrder | CreateOrderRequest | OrderDTO | O(n)，n = 商品數 |
-| cancelOrder | orderId, reason | void | O(1) |
-| calculateTotal | List<OrderItem> | BigDecimal | O(n) |
+
+| 方法           | 輸入               | 輸出       | 複雜度           |
+| -------------- | ------------------ | ---------- | ---------------- |
+| createOrder    | CreateOrderRequest | OrderDTO   | O(n)，n = 商品數 |
+| cancelOrder    | orderId, reason    | void       | O(1)             |
+| calculateTotal | List<OrderItem>    | BigDecimal | O(n)             |
 
 ### 測試案例數
-| 測試類型 | 案例數 | 覆蓋率 |
-|---------|--------|--------|
-| 單元測試 | 45 | 87% |
-| 整合測試 | 12 | 關鍵路徑 100% |
-| 效能測試 | 3 | 核心 API |
+
+| 測試類型 | 案例數 | 覆蓋率        |
+| -------- | ------ | ------------- |
+| 單元測試 | 45     | 87%           |
+| 整合測試 | 12     | 關鍵路徑 100% |
+| 效能測試 | 3      | 核心 API      |
 
 ---
 
-> 📌 **填寫提醒**  
-> 1. TSD 應由開發工程師撰寫，技術主管與架構師審查  
-> 2. 虛擬碼應可直接轉換為實際程式碼  
-> 3. 每個公開方法需有對應的單元測試案例  
-> 4. 完成後需安排 Code Review 確認設計與實作一致  
+> 📌 **填寫提醒**
+>
+> 1. TSD 應由開發工程師撰寫，技術主管與架構師審查
+> 2. 虛擬碼應可直接轉換為實際程式碼
+> 3. 每個公開方法需有對應的單元測試案例
+> 4. 完成後需安排 Code Review 確認設計與實作一致
 > 5. 隨程式碼演進同步更新本文件

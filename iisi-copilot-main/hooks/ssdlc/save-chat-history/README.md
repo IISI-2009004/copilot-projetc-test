@@ -1,6 +1,6 @@
 ---
-name: 'Save Chat History'
-description: 'Stop Hook，在 Agent 會話結束時自動將 GitHub Copilot 對話逐字稿附加到工作區的 chat_history.md（純問答）與 chat_detail_history.md（含工具呼叫），提供可追溯的稽核紀錄。'
+name: "Save Chat History"
+description: "Stop Hook，在 Agent 會話結束時自動將 GitHub Copilot 對話逐字稿附加到工作區的 chat_history.md（純問答）與 chat_detail_history.md（含工具呼叫），提供可追溯的稽核紀錄。"
 tags:
   - ssdlc
   - audit
@@ -15,11 +15,11 @@ Stop Hook，在每次 GitHub Copilot Agent 會話結束時，自動解析當次�
 
 ## 產出檔案
 
-| 檔案 | 內容 |
-|------|------|
-| `chat_history.md` | **純問答**：使用者訊息 + Assistant 的最終文字回覆 |
-| `chat_detail_history.md` | **完整明細**：上述內容再加上每次工具呼叫（`_[Tool: ...]_`） |
-| `chat_history.debug.json` | 僅在無法解析逐字稿時產生，保存原始 Stop 事件 JSON 供除錯 |
+| 檔案                      | 內容                                                        |
+| ------------------------- | ----------------------------------------------------------- |
+| `chat_history.md`         | **純問答**：使用者訊息 + Assistant 的最終文字回覆           |
+| `chat_detail_history.md`  | **完整明細**：上述內容再加上每次工具呼叫（`_[Tool: ...]_`） |
+| `chat_history.debug.json` | 僅在無法解析逐字稿時產生，保存原始 Stop 事件 JSON 供除錯    |
 
 每次會話以 `## Session {時間戳記}` 區段附加，並記錄 Session ID 與 Stop reason。
 

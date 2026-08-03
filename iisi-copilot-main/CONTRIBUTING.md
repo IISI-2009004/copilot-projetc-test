@@ -21,17 +21,17 @@
 
 本 repo 目前包含以下元件類型，歡迎針對任一類型提出新增或修正：
 
-| 類型 | 資料夾 | 說明文件 |
-|------|--------|---------|
-| Agents | [agents/ssdlc/](agents/ssdlc/) | [agents/README.md](agents/README.md) |
-| Hooks | [hooks/ssdlc/](hooks/ssdlc/) | [docs/README.hooks.md](docs/README.hooks.md) |
-| Instructions | [instructions/ssdlc/](instructions/ssdlc/)、[instructions/collection/](instructions/collection/) | [docs/README.instructions.md](docs/README.instructions.md) |
-| Plugins | [plugins/ssdlc/](plugins/ssdlc/) | [docs/README.plugins.md](docs/README.plugins.md) |
-| Prompts | [prompts/ssdlc/](prompts/ssdlc/) | [prompts/README.md](prompts/README.md) |
-| Skills | [skills/ssdlc/](skills/ssdlc/) | [docs/README.skills.md](docs/README.skills.md) |
-| Templates | [templates/ssdlc/](templates/ssdlc/) | — |
-| Tutorials | [tutorials/](tutorials/) | — |
-| **案例回饋（新）** | [case-studies/](case-studies/) | [case-studies/README.md](case-studies/README.md) |
+| 類型               | 資料夾                                                                                           | 說明文件                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| Agents             | [agents/ssdlc/](agents/ssdlc/)                                                                   | [agents/README.md](agents/README.md)                       |
+| Hooks              | [hooks/ssdlc/](hooks/ssdlc/)                                                                     | [docs/README.hooks.md](docs/README.hooks.md)               |
+| Instructions       | [instructions/ssdlc/](instructions/ssdlc/)、[instructions/collection/](instructions/collection/) | [docs/README.instructions.md](docs/README.instructions.md) |
+| Plugins            | [plugins/ssdlc/](plugins/ssdlc/)                                                                 | [docs/README.plugins.md](docs/README.plugins.md)           |
+| Prompts            | [prompts/ssdlc/](prompts/ssdlc/)                                                                 | [prompts/README.md](prompts/README.md)                     |
+| Skills             | [skills/ssdlc/](skills/ssdlc/)                                                                   | [docs/README.skills.md](docs/README.skills.md)             |
+| Templates          | [templates/ssdlc/](templates/ssdlc/)                                                             | —                                                          |
+| Tutorials          | [tutorials/](tutorials/)                                                                         | —                                                          |
+| **案例回饋（新）** | [case-studies/](case-studies/)                                                                   | [case-studies/README.md](case-studies/README.md)           |
 
 ## 不接受的貢獻
 
@@ -68,12 +68,12 @@
 
 ### 可回饋的內容
 
-| 類型 | 說明 |
-|------|------|
-| 使用心得 | 導入的背景、採用的 Agent/Instructions/Hooks/Plugins 組合、遇到的問題與解法 |
-| 客製化後的檔案 | 依專案需求調整過的 `.agent.md`、`.instructions.md`、`.prompt.md`、Hooks 設定/腳本、Plugin 配置等 |
-| 驗證測試結果 | 使用該 Agent Team 產出的測試報告、驗收報告（可對應 [templates/ssdlc/testing/](templates/ssdlc/testing/) 的格式） |
-| 成效數據 | 導入前後的量化比較（如審查耗時、缺陷密度、安全掃描發現數等），非必要但十分歡迎 |
+| 類型           | 說明                                                                                                             |
+| -------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 使用心得       | 導入的背景、採用的 Agent/Instructions/Hooks/Plugins 組合、遇到的問題與解法                                       |
+| 客製化後的檔案 | 依專案需求調整過的 `.agent.md`、`.instructions.md`、`.prompt.md`、Hooks 設定/腳本、Plugin 配置等                 |
+| 驗證測試結果   | 使用該 Agent Team 產出的測試報告、驗收報告（可對應 [templates/ssdlc/testing/](templates/ssdlc/testing/) 的格式） |
+| 成效數據       | 導入前後的量化比較（如審查耗時、缺陷密度、安全掃描發現數等），非必要但十分歡迎                                   |
 
 ### 回饋前必做檢查
 

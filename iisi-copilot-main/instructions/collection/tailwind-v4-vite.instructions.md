@@ -1,6 +1,6 @@
 ---
-description: '使用官方 @tailwindcss/vite 外掛程式為 Vite 專案安裝和設定 Tailwind CSS v4+'
-applyTo: 'vite.config.ts, vite.config.js, **/*.css, **/*.tsx, **/*.ts, **/*.jsx, **/*.js'
+description: "使用官方 @tailwindcss/vite 外掛程式為 Vite 專案安裝和設定 Tailwind CSS v4+"
+applyTo: "vite.config.ts, vite.config.js, **/*.css, **/*.tsx, **/*.ts, **/*.jsx, **/*.js"
 ---
 
 # Tailwind CSS v4+ 安裝與 Vite 配置
@@ -31,30 +31,25 @@ npm install tailwindcss @tailwindcss/vite
 
 ```typescript
 // vite.config.ts
-import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-  ],
-})
+  plugins: [tailwindcss()],
+});
 ```
 
 對於使用 Vite 的 React 專案：
 
 ```typescript
 // vite.config.ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
-})
+  plugins: [react(), tailwindcss()],
+});
 ```
 
 ### 步驟 3：導入 Tailwind CSS
@@ -71,12 +66,13 @@ export default defineConfig({
 
 ```typescript
 // src/main.tsx 或 src/main.ts
-import './index.css'
+import "./index.css";
 ```
 
 ### 步驟 5：啟動開發伺服器
 
 運行開發伺服器以驗證安裝：
+
 ```bash
 npm run dev
 ```
@@ -90,12 +86,12 @@ Tailwind v4 使用 CSS 優先配置。除非有特定的舊版需求，否則不
 ```javascript
 // ❌ NOT NEEDED in Tailwind v4
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },
   plugins: [],
-}
+};
 ```
 
 ### 不要為 Tailwind 建立 postcss.config.js 文件
@@ -109,7 +105,7 @@ module.exports = {
     tailwindcss: {},
     autoprefixer: {},
   },
-}
+};
 ```
 
 ### 不要使用舊的指令
@@ -132,13 +128,14 @@ module.exports = {
 ### 自訂主題配置
 
 使用 CSS 中的 `@theme` 指令來自訂設計標記：
+
 ```css
 @import "tailwindcss";
 
 @theme {
   --color-primary: #3b82f6;
   --color-secondary: #64748b;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
   --radius-lg: 0.75rem;
 }
 ```
@@ -196,7 +193,7 @@ export function TestComponent() {
         Hello, Tailwind CSS v4!
       </h1>
     </div>
-  )
+  );
 }
 ```
 
@@ -222,12 +219,13 @@ npm install @tailwindcss/vite
 如果 TypeScript 無法找到 Vite 外掛程式的類型，請確保您有正確的導入：
 
 ```typescript
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from "@tailwindcss/vite";
 ```
 
 ## 從 Tailwind v3 遷移
 
 如果從 Tailwind v3 遷移：
+
 1. 移除 tailwind.config.js （將自訂設定移至 CSS @theme ）
 2. 移除 `postcss.config.js`（如果僅用於 Tailwind）
 3. 卸載舊的套件：`npm uninstall postcss autoprefixer`

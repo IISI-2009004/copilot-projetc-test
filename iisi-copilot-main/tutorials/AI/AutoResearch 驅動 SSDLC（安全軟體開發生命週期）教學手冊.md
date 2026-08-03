@@ -138,7 +138,7 @@ categories = ['教學']
 
 AutoResearch 是由 Andrej Karpathy 於 2026 年 3 月提出的 **AI 自主研究框架**（[GitHub: karpathy/autoresearch](https://github.com/karpathy/autoresearch)，⭐ 89.3k stars，12.9k forks），核心理念為：讓 AI Agent 在固定的 **時間預算（Time Budget）** 內，自主修改程式碼、執行測試、評估結果，最終決定是否保留變更。截至 2026 年 7 月，專案已累積超過 10,000 代的社群實驗，成為 AI 自主研究領域的標竿專案。
 
-> *"Research is now entirely the domain of autonomous swarms of AI agents running across compute cluster megastructures in the skies."* — Andrej Karpathy, March 2026
+> _"Research is now entirely the domain of autonomous swarms of AI agents running across compute cluster megastructures in the skies."_ — Andrej Karpathy, March 2026
 
 AutoResearch 的核心設計理念包含三大原則：
 
@@ -148,19 +148,20 @@ AutoResearch 的核心設計理念包含三大原則：
 
 其核心元件包含：
 
-| 元件 | 角色 | 可被 AI 修改？ | 說明 |
-|------|------|:---:|------|
-| `train.py` | 訓練/執行邏輯（AI 可修改的目標檔案） | ✅ | 包含完整 GPT 模型、優化器（Muon + AdamW）、訓練迴圈 |
-| `prepare.py` | 資料準備與環境固定工具 | ❌ | 下載訓練資料、訓練 BPE tokenizer、dataloader、evaluation |
-| `program.md` | 指令策略文件（Prompt Engineering） | ✅（由人類編輯） | 相當於 AI Agent 的「技能（Skill）」 |
-| Git commit/revert | 版本控制 Keep/Revert 機制 | ❌ | 每次實驗原子化：改善則 commit，否則 revert |
-| Time Budget | 固定執行時間（5 分鐘） | ❌ | 約 12 次實驗/小時，一晚約 100 次實驗 |
+| 元件              | 角色                                 |  可被 AI 修改？  | 說明                                                     |
+| ----------------- | ------------------------------------ | :--------------: | -------------------------------------------------------- |
+| `train.py`        | 訓練/執行邏輯（AI 可修改的目標檔案） |        ✅        | 包含完整 GPT 模型、優化器（Muon + AdamW）、訓練迴圈      |
+| `prepare.py`      | 資料準備與環境固定工具               |        ❌        | 下載訓練資料、訓練 BPE tokenizer、dataloader、evaluation |
+| `program.md`      | 指令策略文件（Prompt Engineering）   | ✅（由人類編輯） | 相當於 AI Agent 的「技能（Skill）」                      |
+| Git commit/revert | 版本控制 Keep/Revert 機制            |        ❌        | 每次實驗原子化：改善則 commit，否則 revert               |
+| Time Budget       | 固定執行時間（5 分鐘）               |        ❌        | 約 12 次實驗/小時，一晚約 100 次實驗                     |
 
 **核心評估指標**：`val_bpb`（validation bits per byte）— 越低越好，且與 vocab size 無關，使架構變更可以公平比較。
 
 **分析工具**：專案內建 `analysis.ipynb` Jupyter Notebook，可視化實驗進展曲線、比較各次迭代的 `val_bpb` 變化，協助人類研究員快速識別有效策略。
 
 **平台支援**：原生要求單一 NVIDIA GPU（H100 測試通過）。社群已提供多平台 fork：
+
 - [miolini/autoresearch-macos](https://github.com/miolini/autoresearch-macos)（MacOS）
 - [trevin-creator/autoresearch-mlx](https://github.com/trevin-creator/autoresearch-mlx)（MacOS MLX）
 - [jsegov/autoresearch-win-rtx](https://github.com/jsegov/autoresearch-win-rtx)（Windows）
@@ -205,14 +206,14 @@ graph LR
 
 ### 1.4 與傳統 DevSecOps 差異
 
-| 面向 | 傳統 DevSecOps | AutoResearch 驅動 SSDLC |
-|------|---------------|------------------------|
-| **安全掃描** | 工具掃描 → 人工修補 | AI 掃描 → AI 自動修補 → 驗證 |
-| **程式碼品質** | Linter + Code Review | AI 自主優化 + 自動測試驗證 |
-| **效能調優** | 人工 Profiling | AutoResearch 自主迭代優化 |
-| **學習能力** | 團隊知識傳承 | AI 持續累積最佳實踐 |
-| **回應速度** | 小時/天級 | 分鐘級（Time Budget） |
-| **一致性** | 取決於人員經驗 | 標準化、可重現 |
+| 面向           | 傳統 DevSecOps       | AutoResearch 驅動 SSDLC      |
+| -------------- | -------------------- | ---------------------------- |
+| **安全掃描**   | 工具掃描 → 人工修補  | AI 掃描 → AI 自動修補 → 驗證 |
+| **程式碼品質** | Linter + Code Review | AI 自主優化 + 自動測試驗證   |
+| **效能調優**   | 人工 Profiling       | AutoResearch 自主迭代優化    |
+| **學習能力**   | 團隊知識傳承         | AI 持續累積最佳實踐          |
+| **回應速度**   | 小時/天級            | 分鐘級（Time Budget）        |
+| **一致性**     | 取決於人員經驗       | 標準化、可重現               |
 
 ### 1.5 自我優化迴圈（Self-Improving Loop）
 
@@ -243,13 +244,13 @@ graph TD
 
 AutoResearch 刻意保持極簡設計，背後蘊含深刻的工程哲學：
 
-| 設計選擇 | 說明 | 對 SSDLC 的啟示 |
-|---------|------|----------------|
-| **單一檔案修改** | Agent 僅修改 `train.py`，保持範圍可控 | 安全修補應限定影響範圍，避免級聯變更 |
-| **固定時間預算** | 5 分鐘/次，結果跨實驗可比較 | CI/CD Pipeline 應設合理超時，防止資源耗盡 |
-| **自包含** | 無外部依賴，一 GPU 一檔案 | 減少供應鏈攻擊面，最小化依賴 |
-| **明確指標** | `val_bpb` 單一量化指標 | 安全評估需明確、可量化的 KPI |
-| **原子操作** | 每次 commit/revert 為原子單位 | 部署變更應可完整回滾 |
+| 設計選擇         | 說明                                  | 對 SSDLC 的啟示                           |
+| ---------------- | ------------------------------------- | ----------------------------------------- |
+| **單一檔案修改** | Agent 僅修改 `train.py`，保持範圍可控 | 安全修補應限定影響範圍，避免級聯變更      |
+| **固定時間預算** | 5 分鐘/次，結果跨實驗可比較           | CI/CD Pipeline 應設合理超時，防止資源耗盡 |
+| **自包含**       | 無外部依賴，一 GPU 一檔案             | 減少供應鏈攻擊面，最小化依賴              |
+| **明確指標**     | `val_bpb` 單一量化指標                | 安全評估需明確、可量化的 KPI              |
+| **原子操作**     | 每次 commit/revert 為原子單位         | 部署變更應可完整回滾                      |
 
 #### 與其他 AI 開發工具的定位對比
 
@@ -274,13 +275,13 @@ quadrantChart
 
 AutoResearch 原本用於 ML 模型訓練優化，但其 **自我改進迴圈（Self-Improving Loop）** 可以遷移至軟體工程的各個面向：
 
-| AutoResearch 原始場景 | SSDLC 遷移場景 | 對應指標 |
-|---------------------|---------------|---------|
-| 優化 GPT 模型架構 | 優化 API 效能 | P99 延遲、吞吐量 |
-| 調整超參數 | 調整應用設定 | 回應時間、資源使用率 |
-| 模型訓練 → 驗證 | 程式碼修改 → 測試+安全掃描 | 測試通過率、漏洞數 |
-| val_bpb 指標 | 安全分數、品質分數 | CVSS、Code Quality Score |
-| Keep/Revert 決策 | Merge/Reject PR 決策 | 多維度評估結果 |
+| AutoResearch 原始場景 | SSDLC 遷移場景             | 對應指標                 |
+| --------------------- | -------------------------- | ------------------------ |
+| 優化 GPT 模型架構     | 優化 API 效能              | P99 延遲、吞吐量         |
+| 調整超參數            | 調整應用設定               | 回應時間、資源使用率     |
+| 模型訓練 → 驗證       | 程式碼修改 → 測試+安全掃描 | 測試通過率、漏洞數       |
+| val_bpb 指標          | 安全分數、品質分數         | CVSS、Code Quality Score |
+| Keep/Revert 決策      | Merge/Reject PR 決策       | 多維度評估結果           |
 
 ---
 
@@ -366,17 +367,17 @@ flowchart TD
 
 ### 2.3 元件互動關係
 
-| 元件 | 通訊協定 | 資料格式 | 安全機制 |
-|------|---------|---------|---------|
-| AutoResearch ↔ LLM | HTTPS / API | JSON | API Key + Rate Limit |
-| AutoResearch ↔ Git | SSH / HTTPS | Git Protocol | SSH Key / PAT |
-| CI/CD ↔ Security Scanner | REST API | SARIF / JSON | Service Account |
-| Feedback Loop ↔ AutoResearch | Internal Queue | JSON Metrics | mTLS |
-| VS Code ↔ Copilot | HTTPS | LSP / JSON | OAuth Token |
-| Copilot CLI ↔ GitHub | HTTPS | JSON / gRPC | GitHub PAT / OAuth |
-| Copilot Cloud Agent ↔ GitHub | HTTPS | GraphQL / JSON | App Installation Token |
-| Claude Code ↔ API | HTTPS | JSON | API Key / OAuth (PKCE) |
-| Claude Code Desktop ↔ API | HTTPS | JSON | Session Token |
+| 元件                         | 通訊協定       | 資料格式       | 安全機制               |
+| ---------------------------- | -------------- | -------------- | ---------------------- |
+| AutoResearch ↔ LLM           | HTTPS / API    | JSON           | API Key + Rate Limit   |
+| AutoResearch ↔ Git           | SSH / HTTPS    | Git Protocol   | SSH Key / PAT          |
+| CI/CD ↔ Security Scanner     | REST API       | SARIF / JSON   | Service Account        |
+| Feedback Loop ↔ AutoResearch | Internal Queue | JSON Metrics   | mTLS                   |
+| VS Code ↔ Copilot            | HTTPS          | LSP / JSON     | OAuth Token            |
+| Copilot CLI ↔ GitHub         | HTTPS          | JSON / gRPC    | GitHub PAT / OAuth     |
+| Copilot Cloud Agent ↔ GitHub | HTTPS          | GraphQL / JSON | App Installation Token |
+| Claude Code ↔ API            | HTTPS          | JSON           | API Key / OAuth (PKCE) |
+| Claude Code Desktop ↔ API    | HTTPS          | JSON           | Session Token          |
 
 ### 2.4 安全邊界設計
 
@@ -418,16 +419,16 @@ graph LR
 
 ### 3.1 前置需求總覽
 
-| 工具 | 最低版本 | 用途 | 備註 |
-|------|---------|------|------|
-| Python | 3.10+ | AutoResearch 執行環境 | AutoResearch 專案要求 |
-| [uv](https://docs.astral.sh/uv/) | 最新版 | Python 專案管理器 | AutoResearch 官方使用的套件管理器 |
-| Git | 2.40+ | 版本控制 | Windows 需安裝 [Git for Windows](https://git-scm.com/downloads/win) |
-| VS Code | 1.95+ | 開發 IDE | 建議使用最新穩定版 |
-| Docker | 24+ | 容器化部署 | 可選，用於 Docker Compose 環境 |
-| GitHub CLI (`gh`) | 2.50+ | GitHub 操作 | Claude Code 和 Copilot CLI 均可利用 |
-| GitHub Copilot CLI | 最新版 | Agentic 開發工具 | 透過 GitHub CLI 安裝，見 3.6 節 |
-| NVIDIA GPU | — | AutoResearch 訓練 | H100 測試通過，也可使用社群 fork 支援其他平台 |
+| 工具                             | 最低版本 | 用途                  | 備註                                                                |
+| -------------------------------- | -------- | --------------------- | ------------------------------------------------------------------- |
+| Python                           | 3.10+    | AutoResearch 執行環境 | AutoResearch 專案要求                                               |
+| [uv](https://docs.astral.sh/uv/) | 最新版   | Python 專案管理器     | AutoResearch 官方使用的套件管理器                                   |
+| Git                              | 2.40+    | 版本控制              | Windows 需安裝 [Git for Windows](https://git-scm.com/downloads/win) |
+| VS Code                          | 1.95+    | 開發 IDE              | 建議使用最新穩定版                                                  |
+| Docker                           | 24+      | 容器化部署            | 可選，用於 Docker Compose 環境                                      |
+| GitHub CLI (`gh`)                | 2.50+    | GitHub 操作           | Claude Code 和 Copilot CLI 均可利用                                 |
+| GitHub Copilot CLI               | 最新版   | Agentic 開發工具      | 透過 GitHub CLI 安裝，見 3.6 節                                     |
+| NVIDIA GPU                       | —        | AutoResearch 訓練     | H100 測試通過，也可使用社群 fork 支援其他平台                       |
 
 > **📝 注意**：Claude Code 已改為原生安裝，不再需要 Node.js 作為前置需求。GitHub Copilot CLI 亦為獨立安裝，與 VS Code Copilot 擴充套件為不同產品。
 
@@ -627,17 +628,17 @@ claude --version
 
 Claude Code 不僅限於 Terminal CLI，還可在多個介面使用：
 
-| 介面 | 說明 | 使用場景 |
-|------|------|--------|
-| **Terminal CLI** | 完整功能的命令列工具 | 日常開發、腳本自動化 |
-| **VS Code** | IDE 整合擴充套件 | 編輯器內直接使用 |
-| **JetBrains** | IntelliJ / PyCharm 等整合 | JetBrains 使用者 |
-| **Desktop App** | 桌面應用程式 | 多工作區管理、排程任務 |
-| **Web** | 瀏覽器版本（claude.ai/code） | 遠端存取、雲端 VM |
-| **GitHub Actions** | CI/CD 整合 | 自動化 PR 審查、Issue 分派 |
-| **GitLab CI/CD** | CI/CD 整合 | GitLab 使用者 |
-| **Slack** | 聊天整合 | 團隊協作、Bug 報告路由 |
-| **Chrome** | 瀏覽器擴充 | 即時 UI 偵錯與驗證 |
+| 介面               | 說明                         | 使用場景                   |
+| ------------------ | ---------------------------- | -------------------------- |
+| **Terminal CLI**   | 完整功能的命令列工具         | 日常開發、腳本自動化       |
+| **VS Code**        | IDE 整合擴充套件             | 編輯器內直接使用           |
+| **JetBrains**      | IntelliJ / PyCharm 等整合    | JetBrains 使用者           |
+| **Desktop App**    | 桌面應用程式                 | 多工作區管理、排程任務     |
+| **Web**            | 瀏覽器版本（claude.ai/code） | 遠端存取、雲端 VM          |
+| **GitHub Actions** | CI/CD 整合                   | 自動化 PR 審查、Issue 分派 |
+| **GitLab CI/CD**   | CI/CD 整合                   | GitLab 使用者              |
+| **Slack**          | 聊天整合                     | 團隊協作、Bug 報告路由     |
+| **Chrome**         | 瀏覽器擴充                   | 即時 UI 偵錯與驗證         |
 
 > **💡 所有介面共享相同底層引擎**：CLAUDE.md 檔案、設定、MCP 伺服器在所有介面間通用。
 
@@ -700,21 +701,21 @@ gh copilot "fix the failing tests in src/auth/"
 
 **Copilot CLI 核心功能**：
 
-| 功能 | 說明 | 使用方式 |
-|------|------|---------|
-| **Autopilot Mode** | 自主完成多步驟任務 | 設定後 Copilot 自動執行不需逐步確認 |
-| **`/fleet` 平行任務** | 將複雜任務拆分為子任務並行執行 | `/fleet implement all TODO items` |
-| **`/research` 研究模式** | 深度研究 codebase 並產出報告 | `/research how does the auth module work` |
-| **`/pr` PR 管理** | 從 CLI 建立、檢視、修復 PR | `/pr create` |
-| **Chronicle** | 可搜尋的 session 歷史 | `/chronicle search yesterday's work` |
-| **Remote Control** | 離開電腦後從手機繼續操控 | 啟用後自動產生 URL |
-| **Hooks** | 在 agent 執行關鍵點觸發自訂腳本 | 設定 `copilot-hooks.yml` |
-| **Skills** | 可重用的指令集 | 建立 `.github/copilot/skills/` |
-| **Custom Agents** | 特化 Agent 定義 | 建立 `.github/copilot/agents/` |
-| **Plugins** | 可安裝的擴充套件包 | `gh copilot plugin install` |
-| **MCP Servers** | 連接外部工具與資料源 | 設定 MCP 伺服器 |
-| **Voice Input** | 語音輸入 prompt | 按住錄音鍵 |
-| **Local Sandbox** | 隔離的檔案系統/網路執行環境 | `/sandbox` 設定 |
+| 功能                     | 說明                            | 使用方式                                  |
+| ------------------------ | ------------------------------- | ----------------------------------------- |
+| **Autopilot Mode**       | 自主完成多步驟任務              | 設定後 Copilot 自動執行不需逐步確認       |
+| **`/fleet` 平行任務**    | 將複雜任務拆分為子任務並行執行  | `/fleet implement all TODO items`         |
+| **`/research` 研究模式** | 深度研究 codebase 並產出報告    | `/research how does the auth module work` |
+| **`/pr` PR 管理**        | 從 CLI 建立、檢視、修復 PR      | `/pr create`                              |
+| **Chronicle**            | 可搜尋的 session 歷史           | `/chronicle search yesterday's work`      |
+| **Remote Control**       | 離開電腦後從手機繼續操控        | 啟用後自動產生 URL                        |
+| **Hooks**                | 在 agent 執行關鍵點觸發自訂腳本 | 設定 `copilot-hooks.yml`                  |
+| **Skills**               | 可重用的指令集                  | 建立 `.github/copilot/skills/`            |
+| **Custom Agents**        | 特化 Agent 定義                 | 建立 `.github/copilot/agents/`            |
+| **Plugins**              | 可安裝的擴充套件包              | `gh copilot plugin install`               |
+| **MCP Servers**          | 連接外部工具與資料源            | 設定 MCP 伺服器                           |
+| **Voice Input**          | 語音輸入 prompt                 | 按住錄音鍵                                |
+| **Local Sandbox**        | 隔離的檔案系統/網路執行環境     | `/sandbox` 設定                           |
 
 **Copilot CLI 設定檔**（`.github/copilot-cli.yml`）：
 
@@ -758,12 +759,12 @@ custom_instructions: |
 
 #### 3.6.4 GitHub Copilot 方案選擇
 
-| 方案 | 適用對象 | 關鍵功能 | AI Credits |
-|------|---------|---------|------------|
-| **Copilot Free** | 個人開發者 | 基礎程式碼建議、有限 Chat | 有限額度 |
-| **Copilot Pro** | 個人進階用戶 | 無限建議、進階模型選擇 | 標準額度 |
-| **Copilot Business** | 組織團隊 | 政策管理、存取控制、Cloud Agent | 組織額度 |
-| **Copilot Enterprise** | 大型企業 | 完整治理、Audit logs、自訂模型 | 企業額度 |
+| 方案                   | 適用對象     | 關鍵功能                        | AI Credits |
+| ---------------------- | ------------ | ------------------------------- | ---------- |
+| **Copilot Free**       | 個人開發者   | 基礎程式碼建議、有限 Chat       | 有限額度   |
+| **Copilot Pro**        | 個人進階用戶 | 無限建議、進階模型選擇          | 標準額度   |
+| **Copilot Business**   | 組織團隊     | 政策管理、存取控制、Cloud Agent | 組織額度   |
+| **Copilot Enterprise** | 大型企業     | 完整治理、Audit logs、自訂模型  | 企業額度   |
 
 > **💡 企業導入建議**：2026 年的 GitHub Copilot 採用 **AI Credits 計量計費**模式。建議設定 Budget Controls（預算控制），在 enterprise/organization/user 層級設定消費上限，避免成本失控。
 
@@ -1025,6 +1026,7 @@ if __name__ == "__main__":
 ```
 
 **設計重點**：
+
 - `METRIC:` 前綴輸出是 AutoResearch 讀取評估結果的約定格式
 - 可修改區域清楚標記，讓 AI 知道可以調整哪些部分
 - 固定的評估邏輯不在 `train.py` 內，而是由 `prepare.py` 提供
@@ -1093,9 +1095,11 @@ def get_baseline_metric() -> float:
 # AutoResearch Program Instructions
 
 ## 目標
+
 優化 train.py 中的模型效能，提升 validation accuracy。
 
 ## 約束條件
+
 - 只能修改 train.py 中「可調整區域」標記的程式碼
 - 不能修改 prepare.py
 - 每次修改後必須執行完整測試
@@ -1103,17 +1107,20 @@ def get_baseline_metric() -> float:
 - 不能安裝新的外部套件
 
 ## 策略優先順序
+
 1. 調整模型架構（增加層數、改變激活函式）
 2. 調整超參數（learning rate、batch size、epochs）
 3. 加入正規化策略（Dropout、BatchNorm、Weight Decay）
 4. 嘗試不同的優化器（SGD、AdamW、RAdam）
 
 ## 評估標準
+
 - 主要指標：`METRIC:val_accuracy` 越高越好
 - 次要約束：訓練時間不超過 60 秒
 - 安全約束：不使用 eval()、exec() 等危險函式
 
 ## Keep/Revert 規則
+
 - 如果 val_accuracy 提升 >= 0.5%：KEEP
 - 如果 val_accuracy 下降：REVERT
 - 如果程式執行失敗：REVERT
@@ -1267,14 +1274,14 @@ if __name__ == "__main__":
 
 ### 4.6 program.md 的 Prompt Engineering 技巧
 
-| 技巧 | 說明 | 範例 |
-|------|------|------|
-| **範圍限定** | 明確告訴 AI 可修改的範圍 | `只能修改「可調整區域」標記內的程式碼` |
-| **禁止清單** | 列出禁止的操作 | `不得使用 eval()、os.system()、subprocess` |
-| **策略排序** | 給予優先順序 | `1. 架構調整 2. 超參數 3. 正規化` |
-| **量化閾值** | 明確的改善標準 | `提升 >= 0.5% 才保留` |
-| **安全護欄** | 安全相關限制 | `不得引入 pickle.loads、不得讀取環境變數` |
-| **時間約束** | 單次執行時間限制 | `單次訓練不超過 60 秒` |
+| 技巧         | 說明                     | 範例                                       |
+| ------------ | ------------------------ | ------------------------------------------ |
+| **範圍限定** | 明確告訴 AI 可修改的範圍 | `只能修改「可調整區域」標記內的程式碼`     |
+| **禁止清單** | 列出禁止的操作           | `不得使用 eval()、os.system()、subprocess` |
+| **策略排序** | 給予優先順序             | `1. 架構調整 2. 超參數 3. 正規化`          |
+| **量化閾值** | 明確的改善標準           | `提升 >= 0.5% 才保留`                      |
+| **安全護欄** | 安全相關限制             | `不得引入 pickle.loads、不得讀取環境變數`  |
+| **時間約束** | 單次執行時間限制         | `單次訓練不超過 60 秒`                     |
 
 > **💡 企業導入建議**：`program.md` 應如同 Infrastructure as Code 一般進行版本控制與 Code Review。每次修改 `program.md` 都應該有對應的 Pull Request 與團隊審核。
 
@@ -1309,16 +1316,16 @@ flowchart LR
     O ---|AutoResearch| AI8((AI))
 ```
 
-| 階段 | AI 角色 | 工具 | 自動化程度 |
-|------|--------|------|-----------|
-| 需求分析 | 威脅建模、需求審查 | Claude Code、Copilot CLI `/research` | 輔助（70%） |
-| 架構設計 | 安全架構建議、設計審查 | Copilot Chat、Claude Code Plan Mode | 輔助（60%） |
-| 開發 | 程式碼生成、重構、平行開發 | Copilot CLI + Claude Code + `/fleet` | 高度（85%） |
-| 測試 | 測試用例生成、覆蓋率分析 | Copilot + AutoResearch + Claude Code | 高度（90%） |
-| 安全掃描 | 漏洞掃描、自動修補、Code Review | AutoResearch + Security Guidance Plugin + Copilot Code Review | 全自動（95%） |
-| 部署 | 部署策略、Canary 分析 | GitHub Actions + Routines + Agentic Workflows | 全自動（95%） |
-| 監控 | 異常偵測、告警、即時通知 | AI Monitoring Agent + Channels + Analytics | 全自動（95%） |
-| 優化 | 自主迭代優化 | AutoResearch + Copilot Cloud Agent | 全自動（100%） |
+| 階段     | AI 角色                         | 工具                                                          | 自動化程度     |
+| -------- | ------------------------------- | ------------------------------------------------------------- | -------------- |
+| 需求分析 | 威脅建模、需求審查              | Claude Code、Copilot CLI `/research`                          | 輔助（70%）    |
+| 架構設計 | 安全架構建議、設計審查          | Copilot Chat、Claude Code Plan Mode                           | 輔助（60%）    |
+| 開發     | 程式碼生成、重構、平行開發      | Copilot CLI + Claude Code + `/fleet`                          | 高度（85%）    |
+| 測試     | 測試用例生成、覆蓋率分析        | Copilot + AutoResearch + Claude Code                          | 高度（90%）    |
+| 安全掃描 | 漏洞掃描、自動修補、Code Review | AutoResearch + Security Guidance Plugin + Copilot Code Review | 全自動（95%）  |
+| 部署     | 部署策略、Canary 分析           | GitHub Actions + Routines + Agentic Workflows                 | 全自動（95%）  |
+| 監控     | 異常偵測、告警、即時通知        | AI Monitoring Agent + Channels + Analytics                    | 全自動（95%）  |
+| 優化     | 自主迭代優化                    | AutoResearch + Copilot Cloud Agent                            | 全自動（100%） |
 
 ---
 
@@ -1352,14 +1359,14 @@ claude "請分析以下需求文件，進行 STRIDE 威脅建模分析：
 
 ## STRIDE Analysis
 
-| 類別 | 威脅 | 風險 | 緩解措施 |
-|------|------|------|---------|
-| Spoofing | JWT Token 偽造 | 高 | 使用 RS256 簽章 |
-| Tampering | Token 內容竄改 | 高 | JWT 簽章驗證 |
-| Repudiation | 登入行為否認 | 中 | Audit Log 記錄 |
-| Info Disclosure | Token 資訊外洩 | 高 | HTTPS + HttpOnly Cookie |
-| DoS | 暴力破解登入 | 高 | Rate Limiting + CAPTCHA |
-| Elevation | 權限提升 | 高 | RBAC + 最小權限原則 |
+| 類別            | 威脅           | 風險 | 緩解措施                |
+| --------------- | -------------- | ---- | ----------------------- |
+| Spoofing        | JWT Token 偽造 | 高   | 使用 RS256 簽章         |
+| Tampering       | Token 內容竄改 | 高   | JWT 簽章驗證            |
+| Repudiation     | 登入行為否認   | 中   | Audit Log 記錄          |
+| Info Disclosure | Token 資訊外洩 | 高   | HTTPS + HttpOnly Cookie |
+| DoS             | 暴力破解登入   | 高   | Rate Limiting + CAPTCHA |
+| Elevation       | 權限提升       | 高   | RBAC + 最小權限原則     |
 ```
 
 #### AutoResearch 介入方式
@@ -1461,13 +1468,13 @@ graph TB
 
 #### Copilot / Claude Code / VS Code 協作方式
 
-| 工具 | 架構設計階段用途 | 使用方式 |
-|------|-----------------|---------|
-| **VS Code** | 繪製 Mermaid 架構圖 | 安裝 Mermaid Preview 擴充套件 |
-| **Copilot Chat** | 架構安全性審查 | `@workspace /explain` 分析現有架構 |
-| **Copilot Cloud Agent** | 自主研究架構改善方案 | 在 GitHub.com 發起 Agent 任務 |
-| **Claude Code** | 產生詳細設計文件 | `claude "根據架構圖產生 API 安全規範"` |
-| **Claude Code Plan Mode** | 唯讀分析架構風險 | `claude --permission-mode plan` |
+| 工具                      | 架構設計階段用途     | 使用方式                               |
+| ------------------------- | -------------------- | -------------------------------------- |
+| **VS Code**               | 繪製 Mermaid 架構圖  | 安裝 Mermaid Preview 擴充套件          |
+| **Copilot Chat**          | 架構安全性審查       | `@workspace /explain` 分析現有架構     |
+| **Copilot Cloud Agent**   | 自主研究架構改善方案 | 在 GitHub.com 發起 Agent 任務          |
+| **Claude Code**           | 產生詳細設計文件     | `claude "根據架構圖產生 API 安全規範"` |
+| **Claude Code Plan Mode** | 唯讀分析架構風險     | `claude --permission-mode plan`        |
 
 > **💡 企業導入建議**：架構設計階段的 AI 輸出應視為「建議」而非「決策」，最終架構決策仍需資深架構師審核。
 
@@ -1809,15 +1816,15 @@ sequenceDiagram
 
 #### 安全掃描工具矩陣
 
-| 掃描類型 | 工具 | AI 增強 | 整合方式 |
-|---------|------|---------|---------|
-| SAST | Semgrep / SonarQube | ✅ 自訂規則 | CI/CD Pipeline |
-| DAST | OWASP ZAP / Burp Suite | ✅ 智能掃描路徑 | Post-Deploy |
-| SCA | Snyk / Dependabot | ✅ 自動修補 PR | GitHub Integration |
-| Secret Scan | GitLeaks / TruffleHog | ✅ 誤報過濾 | Pre-commit Hook |
-| Container Scan | Trivy / Grype | ✅ 風險優先排序 | Build Pipeline |
-| **AI Code Review** | **Copilot Code Review** | ✅ 語意分析 | **PR Integration** |
-| **Security Plugin** | **Claude Code Security Guidance** | ✅ 即時建議 | **IDE + CI** |
+| 掃描類型            | 工具                              | AI 增強         | 整合方式           |
+| ------------------- | --------------------------------- | --------------- | ------------------ |
+| SAST                | Semgrep / SonarQube               | ✅ 自訂規則     | CI/CD Pipeline     |
+| DAST                | OWASP ZAP / Burp Suite            | ✅ 智能掃描路徑 | Post-Deploy        |
+| SCA                 | Snyk / Dependabot                 | ✅ 自動修補 PR  | GitHub Integration |
+| Secret Scan         | GitLeaks / TruffleHog             | ✅ 誤報過濾     | Pre-commit Hook    |
+| Container Scan      | Trivy / Grype                     | ✅ 風險優先排序 | Build Pipeline     |
+| **AI Code Review**  | **Copilot Code Review**           | ✅ 語意分析     | **PR Integration** |
+| **Security Plugin** | **Claude Code Security Guidance** | ✅ 即時建議     | **IDE + CI**       |
 
 #### Claude Code Security Guidance Plugin
 
@@ -1865,11 +1872,11 @@ on:
 copilot_review:
   enabled: true
   focus_areas:
-    - security          # 安全漏洞
-    - performance       # 效能問題
-    - best_practices    # 最佳實踐
-  auto_comment: true    # 自動在 PR 中留下審查意見
-  block_on_critical: true  # Critical 問題阻擋合併
+    - security # 安全漏洞
+    - performance # 效能問題
+    - best_practices # 最佳實踐
+  auto_comment: true # 自動在 PR 中留下審查意見
+  block_on_critical: true # Critical 問題阻擋合併
 ```
 
 #### 實作範例：安全掃描整合腳本
@@ -2377,11 +2384,11 @@ graph TD
 
 #### 三大優化面向
 
-| 優化面向 | 指標 | AutoResearch 策略 | 產出 |
-|---------|------|-------------------|------|
-| **效能** | Latency, Throughput, Resource Usage | 演算法優化、快取策略、查詢優化 | 效能改善報告 |
-| **品質** | Code Coverage, Complexity, Duplication | 重構、DRY 原則、模式應用 | 品質分數提升 |
-| **安全** | Vulnerability Count, CVSS Score | 修補漏洞、升級依賴、強化設定 | 安全態勢改善 |
+| 優化面向 | 指標                                   | AutoResearch 策略              | 產出         |
+| -------- | -------------------------------------- | ------------------------------ | ------------ |
+| **效能** | Latency, Throughput, Resource Usage    | 演算法優化、快取策略、查詢優化 | 效能改善報告 |
+| **品質** | Code Coverage, Complexity, Duplication | 重構、DRY 原則、模式應用       | 品質分數提升 |
+| **安全** | Vulnerability Count, CVSS Score        | 修補漏洞、升級依賴、強化設定   | 安全態勢改善 |
 
 > **💡 企業導入建議**：優化階段的 AutoResearch 建議設定為「建議模式」（非自動合併），讓團隊在 Pull Request 中審核 AI 的優化建議後再決定是否合併。
 
@@ -2617,12 +2624,12 @@ def evaluate(
 
 ### 6.5 Keep / Revert 決策矩陣
 
-| 條件 | 測試 100% 通過 | 安全分數不降 | 效能不劣化 | 決策 |
-|------|:---:|:---:|:---:|------|
-| ✅ ✅ ✅ | ✅ | ✅ | ✅ | **KEEP** |
-| ✅ ✅ ❌ | ✅ | ✅ | ❌ | KEEP（若效能降幅 < 10%） |
-| ✅ ❌ — | ✅ | ❌ | — | **REVERT**（安全一票否決） |
-| ❌ — — | ❌ | — | — | **REVERT**（測試一票否決） |
+| 條件     | 測試 100% 通過 | 安全分數不降 | 效能不劣化 | 決策                       |
+| -------- | :------------: | :----------: | :--------: | -------------------------- |
+| ✅ ✅ ✅ |       ✅       |      ✅      |     ✅     | **KEEP**                   |
+| ✅ ✅ ❌ |       ✅       |      ✅      |     ❌     | KEEP（若效能降幅 < 10%）   |
+| ✅ ❌ —  |       ✅       |      ❌      |     —      | **REVERT**（安全一票否決） |
+| ❌ — —   |       ❌       |      —       |     —      | **REVERT**（測試一票否決） |
 
 ### 6.6 應用於三大場景
 
@@ -2632,19 +2639,23 @@ def evaluate(
 # program.md - Code Quality 優化策略
 
 ## 目標
+
 提升程式碼品質分數（使用 pylint / radon 量測）
 
 ## 策略
+
 1. 降低圈複雜度（Cyclomatic Complexity）至 10 以下
 2. 消除重複程式碼（DRY 原則）
 3. 改善命名一致性
 4. 拆分過長函式（> 50 行）
 
 ## 評估指標
+
 METRIC:quality_score=<pylint 分數>
 METRIC:complexity=<平均圈複雜度>
 
 ## 約束
+
 - 不可改變程式行為（所有測試必須通過）
 - 不可引入新的依賴
 ```
@@ -2655,19 +2666,23 @@ METRIC:complexity=<平均圈複雜度>
 # program.md - Performance 優化策略
 
 ## 目標
+
 降低 API P99 延遲至 200ms 以下
 
 ## 策略
+
 1. 識別 N+1 Query 並修復
 2. 加入適當的快取層
 3. 優化資料結構與演算法
 4. 減少不必要的 I/O 操作
 
 ## 評估指標
+
 METRIC:p99_latency_ms=<P99 延遲毫秒>
 METRIC:throughput_rps=<每秒請求數>
 
 ## 約束
+
 - 記憶體使用不可增加超過 20%
 - 不可犧牲程式碼可讀性
 ```
@@ -2678,20 +2693,24 @@ METRIC:throughput_rps=<每秒請求數>
 # program.md - Security 強化策略
 
 ## 目標
+
 消除所有 Critical 和 High 安全漏洞
 
 ## 策略
+
 1. 修補 SAST 掃描出的漏洞
 2. 升級有已知 CVE 的依賴
 3. 強化輸入驗證
 4. 改善錯誤處理（避免資訊洩漏）
 
 ## 評估指標
+
 METRIC:critical_vulns=<Critical 漏洞數>
 METRIC:high_vulns=<High 漏洞數>
 METRIC:security_score=<安全評分>
 
 ## 約束
+
 - 不可降低測試覆蓋率
 - 不可影響既有功能
 - 依賴升級需保持向後相容
@@ -2732,14 +2751,14 @@ flowchart TD
 
 #### 多 AI Agent CI/CD 角色矩陣
 
-| AI Agent | CI/CD 角色 | 觸發時機 | 典型任務 |
-|----------|-----------|---------|---------|
-| **AutoResearch** | 自動修補 + 優化 | 排程 / 安全閘門失敗 | 漏洞修補、效能優化 |
-| **Claude Code Action** | PR 自動化 | PR 開啟/更新 | Code Review、生成修改建議 |
-| **Copilot Code Review** | 安全審查 | PR 開啟 | 語意分析、安全建議 |
-| **Copilot Cloud Agent** | 自動化流程 | merge / issue / 排程 | E2E 測試、部署驗證 |
-| **Claude Code Routines** | 排程驗證 | cron / event trigger | 每日安全掃描、健康檢查 |
-| **GitHub Agentic Workflows** | 端對端自動化 | push / PR / deployment | 完整 CI/CD 流程管理 |
+| AI Agent                     | CI/CD 角色      | 觸發時機               | 典型任務                  |
+| ---------------------------- | --------------- | ---------------------- | ------------------------- |
+| **AutoResearch**             | 自動修補 + 優化 | 排程 / 安全閘門失敗    | 漏洞修補、效能優化        |
+| **Claude Code Action**       | PR 自動化       | PR 開啟/更新           | Code Review、生成修改建議 |
+| **Copilot Code Review**      | 安全審查        | PR 開啟                | 語意分析、安全建議        |
+| **Copilot Cloud Agent**      | 自動化流程      | merge / issue / 排程   | E2E 測試、部署驗證        |
+| **Claude Code Routines**     | 排程驗證        | cron / event trigger   | 每日安全掃描、健康檢查    |
+| **GitHub Agentic Workflows** | 端對端自動化    | push / PR / deployment | 完整 CI/CD 流程管理       |
 
 ### 7.2 GitHub Actions 完整 YAML 設計
 
@@ -2756,7 +2775,7 @@ on:
     branches: [main]
   schedule:
     # 每日凌晨 2 點執行 AutoResearch 優化
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
 
 permissions:
   contents: write
@@ -2764,7 +2783,7 @@ permissions:
   security-events: write
 
 env:
-  PYTHON_VERSION: '3.12'
+  PYTHON_VERSION: "3.12"
   AUTORESEARCH_TIME_BUDGET: 300
 
 jobs:
@@ -2864,10 +2883,10 @@ jobs:
         if: hashFiles('Dockerfile') != ''
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          format: 'json'
-          output: 'trivy-report.json'
-          severity: 'CRITICAL,HIGH'
+          scan-type: "fs"
+          format: "json"
+          output: "trivy-report.json"
+          severity: "CRITICAL,HIGH"
 
       - name: Aggregate Scan Results
         id: scan_results
@@ -3051,16 +3070,16 @@ jobs:
 
 ### 7.3 自動觸發 AutoResearch 的機制
 
-| 觸發方式 | 條件 | 執行內容 |
-|---------|------|---------|
-| **排程觸發** | 每日凌晨 2:00 | 效能 + 品質優化 |
-| **安全閘門失敗** | Critical/High 漏洞 | 安全修補 |
-| **Pull Request** | PR 開啟/更新 | Code Review + 建議 |
-| **監控告警** | 效能劣化 > 20% | 效能緊急優化 |
-| **手動觸發** | workflow_dispatch | 指定面向的優化 |
-| **Claude Code Routines** | cron / GitHub event / API | 排程安全掃描、部署驗證 |
-| **Copilot Cloud Agent Automations** | Issue assign / PR merge / Slack command | 自動化 E2E 流程 |
-| **GitHub Agentic Workflows** | 自訂 agent trigger | Agent 自主決定下一步 |
+| 觸發方式                            | 條件                                    | 執行內容               |
+| ----------------------------------- | --------------------------------------- | ---------------------- |
+| **排程觸發**                        | 每日凌晨 2:00                           | 效能 + 品質優化        |
+| **安全閘門失敗**                    | Critical/High 漏洞                      | 安全修補               |
+| **Pull Request**                    | PR 開啟/更新                            | Code Review + 建議     |
+| **監控告警**                        | 效能劣化 > 20%                          | 效能緊急優化           |
+| **手動觸發**                        | workflow_dispatch                       | 指定面向的優化         |
+| **Claude Code Routines**            | cron / GitHub event / API               | 排程安全掃描、部署驗證 |
+| **Copilot Cloud Agent Automations** | Issue assign / PR merge / Slack command | 自動化 E2E 流程        |
+| **GitHub Agentic Workflows**        | 自訂 agent trigger                      | Agent 自主決定下一步   |
 
 #### Claude Code Action（PR 自動化）
 
@@ -3139,7 +3158,7 @@ on:
   workflow_dispatch:
     inputs:
       optimization_target:
-        description: '優化目標'
+        description: "優化目標"
         required: true
         type: choice
         options:
@@ -3147,13 +3166,13 @@ on:
           - security
           - quality
       time_budget:
-        description: '時間預算（秒）'
+        description: "時間預算（秒）"
         required: true
-        default: '300'
+        default: "300"
       target_path:
-        description: '目標路徑'
+        description: "目標路徑"
         required: true
-        default: 'src/'
+        default: "src/"
 
 jobs:
   autoresearch:
@@ -3299,25 +3318,30 @@ graph TD
 # Performance Optimization: Order API
 
 ## 目標
+
 降低 GET /api/v1/orders P99 延遲至 200ms 以下
 
 ## 目前狀態
+
 - P99 延遲：2000ms
 - 平均延遲：800ms
 - 吞吐量：50 RPS
 
 ## 可修改檔案
+
 - src/api/orders.py
 - src/services/order_service.py
 - src/repositories/order_repository.py
 
 ## 策略
+
 1. 修復 N+1 Query（使用 JOIN 或 eager loading）
 2. 加入 Redis 快取（TTL: 60 秒）
 3. 使用更高效的序列化方式
 4. 加入資料庫索引建議
 
 ## 評估指標
+
 METRIC:p99_latency_ms=<p99 延遲>
 METRIC:avg_latency_ms=<平均延遲>
 METRIC:throughput_rps=<每秒請求數>
@@ -3325,14 +3349,14 @@ METRIC:throughput_rps=<每秒請求數>
 
 **Step 2：AutoResearch 迭代過程**
 
-| 迭代 | 修改內容 | P99 延遲 | 動作 |
-|------|---------|---------|------|
-| 0 | 基線 | 2000ms | — |
-| 1 | 修復 N+1 Query → JOIN | 600ms | ✅ KEEP |
-| 2 | 加入 Redis 快取 | 180ms | ✅ KEEP |
-| 3 | 嘗試 msgpack 序列化 | 185ms | ❌ REVERT（無顯著改善） |
-| 4 | 加入 DB 連線池 | 150ms | ✅ KEEP |
-| 5 | 最終結果 | **150ms** | 達標 ✅ |
+| 迭代 | 修改內容              | P99 延遲  | 動作                    |
+| ---- | --------------------- | --------- | ----------------------- |
+| 0    | 基線                  | 2000ms    | —                       |
+| 1    | 修復 N+1 Query → JOIN | 600ms     | ✅ KEEP                 |
+| 2    | 加入 Redis 快取       | 180ms     | ✅ KEEP                 |
+| 3    | 嘗試 msgpack 序列化   | 185ms     | ❌ REVERT（無顯著改善） |
+| 4    | 加入 DB 連線池        | 150ms     | ✅ KEEP                 |
+| 5    | 最終結果              | **150ms** | 達標 ✅                 |
 
 **Step 3：AutoResearch 產出的程式碼變更**
 
@@ -3450,6 +3474,7 @@ class OrderService:
 #### 場景描述
 
 安全掃描偵測到多個 Critical/High 漏洞：
+
 - **CVE-2024-XXXX**：SQL Injection in search endpoint
 - **CVE-2024-YYYY**：XSS in user profile display
 - **Hardcoded API Key** in configuration file
@@ -3549,12 +3574,12 @@ def load_session(session_data: str) -> dict:
 
 #### 安全修補報告
 
-| 漏洞 | 嚴重度 | 修補狀態 | 迭代次數 |
-|------|--------|---------|---------|
-| SQL Injection | **CRITICAL** | ✅ 已修補 | 1 次 |
-| XSS | **HIGH** | ✅ 已修補 | 2 次（首次修補不完整） |
-| Hardcoded Secret | **HIGH** | ✅ 已修補 | 1 次 |
-| Insecure Deserialization | **CRITICAL** | ✅ 已修補 | 1 次 |
+| 漏洞                     | 嚴重度       | 修補狀態  | 迭代次數               |
+| ------------------------ | ------------ | --------- | ---------------------- |
+| SQL Injection            | **CRITICAL** | ✅ 已修補 | 1 次                   |
+| XSS                      | **HIGH**     | ✅ 已修補 | 2 次（首次修補不完整） |
+| Hardcoded Secret         | **HIGH**     | ✅ 已修補 | 1 次                   |
+| Insecure Deserialization | **CRITICAL** | ✅ 已修補 | 1 次                   |
 
 > **💡 企業導入建議**：安全修補的 PR 應標記 `urgent` + `security` 標籤，並設定更嚴格的審核流程（至少需要一位安全工程師 Approve）。修補後應重新執行完整的安全掃描驗證。
 
@@ -3610,8 +3635,8 @@ graph LR
   "iteration": 3,
   "action": "KEEP",
   "metrics": {
-    "before": {"val_accuracy": 0.8750},
-    "after": {"val_accuracy": 0.8820}
+    "before": { "val_accuracy": 0.875 },
+    "after": { "val_accuracy": 0.882 }
   },
   "duration_seconds": 45.2,
   "git_commit": "a1b2c3d",
@@ -3738,13 +3763,13 @@ gitGraph
 
 #### Git 分支策略
 
-| 分支 | 用途 | 保護規則 |
-|------|------|---------|
-| `main` | 生產版本 | 需 2 人 Approve + CI 全通過 |
-| `develop` | 開發整合 | 需 1 人 Approve + CI 全通過 |
-| `autoresearch/optimization` | AI 優化建議 | 自動建立 PR → 人工審核 |
+| 分支                        | 用途        | 保護規則                     |
+| --------------------------- | ----------- | ---------------------------- |
+| `main`                      | 生產版本    | 需 2 人 Approve + CI 全通過  |
+| `develop`                   | 開發整合    | 需 1 人 Approve + CI 全通過  |
+| `autoresearch/optimization` | AI 優化建議 | 自動建立 PR → 人工審核       |
 | `autoresearch/security-fix` | AI 安全修補 | 自動建立 PR → 安全工程師審核 |
-| `feature/*` | 功能開發 | 標準 Code Review |
+| `feature/*`                 | 功能開發    | 標準 Code Review             |
 
 #### Git 標籤策略
 
@@ -3813,15 +3838,15 @@ echo "=== 回滾完成 ==="
 
 ### 9.5 維運 Checklist
 
-| 項目 | 頻率 | 負責人 | 自動化 |
-|------|------|--------|--------|
-| 審核 AutoResearch PR | 每日 | 開發團隊 | ❌ 人工 |
-| 檢查 Drift 偵測報告 | 每週 | AI 架構師 | ✅ 自動 |
-| 更新 `program.md` 策略 | 每月 | 技術主管 | ❌ 人工 |
-| 輪替 API Key / Token | 每季 | SecOps | ✅ 半自動 |
-| LLM API 版本檢查 | 每月 | AI 架構師 | ✅ 自動 |
-| 安全掃描規則更新 | 每月 | 安全工程師 | ✅ 自動 |
-| 回滾演練 | 每季 | DevOps | ❌ 人工 |
+| 項目                   | 頻率 | 負責人     | 自動化    |
+| ---------------------- | ---- | ---------- | --------- |
+| 審核 AutoResearch PR   | 每日 | 開發團隊   | ❌ 人工   |
+| 檢查 Drift 偵測報告    | 每週 | AI 架構師  | ✅ 自動   |
+| 更新 `program.md` 策略 | 每月 | 技術主管   | ❌ 人工   |
+| 輪替 API Key / Token   | 每季 | SecOps     | ✅ 半自動 |
+| LLM API 版本檢查       | 每月 | AI 架構師  | ✅ 自動   |
+| 安全掃描規則更新       | 每月 | 安全工程師 | ✅ 自動   |
+| 回滾演練               | 每季 | DevOps     | ❌ 人工   |
 
 > **💡 企業導入建議**：建立「AutoResearch 維運日誌」，記錄每日 AutoResearch 的執行結果、異常事件、人工介入原因，做為持續改善的依據。
 
@@ -3879,7 +3904,7 @@ graph TB
 # config/agents.yaml - 多 Agent 設定
 orchestrator:
   max_concurrent_agents: 4
-  conflict_resolution: "priority-based"  # priority-based / lock-based / queue-based
+  conflict_resolution: "priority-based" # priority-based / lock-based / queue-based
   shared_lock:
     type: redis
     host: localhost
@@ -3892,15 +3917,15 @@ agents:
     target_paths:
       - src/api/
       - src/services/
-    schedule: "0 2 * * 1,3,5"  # 週一三五
+    schedule: "0 2 * * 1,3,5" # 週一三五
     time_budget: 300
 
   - name: security-agent
-    priority: 1  # 最高優先
+    priority: 1 # 最高優先
     program: programs/security.md
     target_paths:
       - src/
-    schedule: "0 2 * * 2,4"  # 週二四
+    schedule: "0 2 * * 2,4" # 週二四
     time_budget: 600
     triggers:
       - security_gate_failure
@@ -3911,7 +3936,7 @@ agents:
     target_paths:
       - src/
       - tests/
-    schedule: "0 3 * * 6"  # 週六
+    schedule: "0 3 * * 6" # 週六
     time_budget: 300
 
   - name: test-agent
@@ -3919,7 +3944,7 @@ agents:
     program: programs/testing.md
     target_paths:
       - tests/
-    schedule: "0 3 * * 0"  # 週日
+    schedule: "0 3 * * 0" # 週日
     time_budget: 300
 ```
 
@@ -4024,11 +4049,11 @@ regions:
       - testing
 
 routing:
-  strategy: capability-based  # 根據能力路由
+  strategy: capability-based # 根據能力路由
   fallback: round-robin
 
 sync:
-  method: git  # 透過 Git 同步結果
+  method: git # 透過 Git 同步結果
   conflict_resolution: last-writer-wins
   merge_strategy: rebase
 ```
@@ -4037,12 +4062,12 @@ sync:
 
 #### 雲端資源管理
 
-| 場景 | 建議資源 | 成本等級 | 說明 |
-|------|---------|---------|------|
-| 基礎 AutoResearch | CPU: 4 Core, RAM: 16GB | $ | 適合文字處理、API 優化 |
-| 機器學習模型優化 | GPU: T4 / L4 | $$ | 需要 GPU 訓練 |
-| 大規模安全掃描 | CPU: 8 Core, RAM: 32GB | $$ | 平行掃描多專案 |
-| 多 Agent 叢集 | K8s Cluster | $$$ | 企業級部署 |
+| 場景              | 建議資源               | 成本等級 | 說明                   |
+| ----------------- | ---------------------- | -------- | ---------------------- |
+| 基礎 AutoResearch | CPU: 4 Core, RAM: 16GB | $        | 適合文字處理、API 優化 |
+| 機器學習模型優化  | GPU: T4 / L4           | $$       | 需要 GPU 訓練          |
+| 大規模安全掃描    | CPU: 8 Core, RAM: 32GB | $$       | 平行掃描多專案         |
+| 多 Agent 叢集     | K8s Cluster            | $$$      | 企業級部署             |
 
 #### Kubernetes 部署範例
 
@@ -4157,12 +4182,12 @@ CLAUDE.md 是 Claude Code 的**持久化指令系統**，類似於 `.editorconfi
 
 #### 檔案位置與層級（優先順序由低到高）
 
-| 位置 | 範圍 | 版控 | 用途 |
-|------|------|------|------|
-| `~/.claude/CLAUDE.md` | 全域（所有專案） | ❌ | 個人偏好、通用規則 |
-| `./CLAUDE.md`（專案根目錄） | 專案級 | ✅ | 團隊共享的專案規範 |
-| `./CLAUDE.local.md` | 專案級（個人） | ❌（加入 .gitignore） | 個人專案覆寫 |
-| 子目錄 `CLAUDE.md` | 目錄級 | ✅ | 子模組特定規則 |
+| 位置                        | 範圍             | 版控                  | 用途               |
+| --------------------------- | ---------------- | --------------------- | ------------------ |
+| `~/.claude/CLAUDE.md`       | 全域（所有專案） | ❌                    | 個人偏好、通用規則 |
+| `./CLAUDE.md`（專案根目錄） | 專案級           | ✅                    | 團隊共享的專案規範 |
+| `./CLAUDE.local.md`         | 專案級（個人）   | ❌（加入 .gitignore） | 個人專案覆寫       |
+| 子目錄 `CLAUDE.md`          | 目錄級           | ✅                    | 子模組特定規則     |
 
 #### SSDLC 專用 CLAUDE.md 範例
 
@@ -4170,23 +4195,27 @@ CLAUDE.md 是 Claude Code 的**持久化指令系統**，類似於 `.editorconfi
 # SSDLC Project Rules
 
 ## Security（安全）
+
 - 所有 SQL 查詢必須使用參數化查詢，禁止字串拼接
 - 密碼儲存必須使用 bcrypt 或 Argon2，禁止 MD5/SHA1
 - API Key 不得出現在程式碼中，必須使用環境變數
 - 禁止使用 eval()、exec()、pickle.loads() 等危險函式
 
 ## Testing（測試）
+
 - 每個 API endpoint 必須有對應的安全測試
 - 跑測試指令：pytest tests/ --cov=src --cov-fail-under=80
 - 型態檢查指令：mypy src/ --strict
 
 ## Code Style（程式碼風格）
+
 - 使用 ruff 進行 linting：ruff check .
 - 使用 black 進行格式化：black .
 
 ## Git Workflow
+
 - Commit message 遵循 Conventional Commits
-- Branch naming: feature/*, fix/*, autoresearch/*
+- Branch naming: feature/_, fix/_, autoresearch/*
 ```
 
 #### CLAUDE.md 檔案匯入語法
@@ -4197,6 +4226,7 @@ CLAUDE.md 支援 `@` 語法匯入其他檔案：
 See @README.md for project overview and @package.json for available commands.
 
 # Additional Instructions
+
 - Git workflow: @docs/git-instructions.md
 - Personal overrides: @~/.claude/my-project-instructions.md
 ```
@@ -4213,10 +4243,13 @@ Skills 將領域知識和可重複工作流程封裝為 Claude Code 可自動載
 
 ```markdown
 # .claude/skills/security-scan/SKILL.md
+
 ---
+
 name: security-scan
 description: Run comprehensive security scanning on the codebase
 ---
+
 # Security Scanning Workflow
 
 1. Run `semgrep scan --config auto --json` for SAST
@@ -4231,11 +4264,14 @@ description: Run comprehensive security scanning on the codebase
 
 ```markdown
 # .claude/skills/fix-issue/SKILL.md
+
 ---
+
 name: fix-issue
 description: Fix a GitHub issue end-to-end
 disable-model-invocation: true
 ---
+
 Analyze and fix the GitHub issue: $ARGUMENTS.
 
 1. Use `gh issue view` to get the issue details
@@ -4252,12 +4288,12 @@ Analyze and fix the GitHub issue: $ARGUMENTS.
 
 #### Skills 存放位置
 
-| 位置 | 範圍 | 說明 |
-|------|------|------|
-| `.claude/skills/` | 專案級 | 專案特定技能，可分享給團隊 |
-| `~/.claude/skills/` | 個人級 | 跨專案通用技能 |
-| `.github/skills/` | 專案級 | GitHub Copilot 也支援的開放標準格式 |
-| `.agents/skills/` | 專案級 | Agent Skills 開放標準格式 |
+| 位置                | 範圍   | 說明                                |
+| ------------------- | ------ | ----------------------------------- |
+| `.claude/skills/`   | 專案級 | 專案特定技能，可分享給團隊          |
+| `~/.claude/skills/` | 個人級 | 跨專案通用技能                      |
+| `.github/skills/`   | 專案級 | GitHub Copilot 也支援的開放標準格式 |
+| `.agents/skills/`   | 專案級 | Agent Skills 開放標準格式           |
 
 ### 11.3 Hooks 自動化機制
 
@@ -4265,13 +4301,13 @@ Hooks 在 Claude Code 工作流程的特定時機自動執行腳本，與 CLAUDE
 
 #### Hook 事件類型
 
-| 事件 | 觸發時機 | SSDLC 用途 |
-|------|---------|-----------|
-| `PreToolUse` | 工具執行前 | 阻止對受保護檔案的寫入 |
-| `PostToolUse` | 工具執行後 | 編輯後自動執行 linting |
-| `Notification` | 需要注意時 | 桌面通知（權限請求、閒置） |
-| `WorktreeCreate` | Worktree 建立時 | 複製環境設定檔 |
-| `WorktreeRemove` | Worktree 移除時 | 清理資源 |
+| 事件             | 觸發時機        | SSDLC 用途                 |
+| ---------------- | --------------- | -------------------------- |
+| `PreToolUse`     | 工具執行前      | 阻止對受保護檔案的寫入     |
+| `PostToolUse`    | 工具執行後      | 編輯後自動執行 linting     |
+| `Notification`   | 需要注意時      | 桌面通知（權限請求、閒置） |
+| `WorktreeCreate` | Worktree 建立時 | 複製環境設定檔             |
+| `WorktreeRemove` | Worktree 移除時 | 清理資源                   |
 
 #### SSDLC 安全 Hooks 範例
 
@@ -4313,13 +4349,17 @@ Subagents 在獨立的 context 中運行，擁有獨立的工具權限，適合�
 
 ```markdown
 # .claude/agents/security-reviewer.md
+
 ---
+
 name: security-reviewer
 description: Reviews code for security vulnerabilities
 tools: Read, Grep, Glob, Bash
 model: opus
 ---
+
 You are a senior security engineer. Review code for:
+
 - Injection vulnerabilities (SQL, XSS, command injection)
 - Authentication and authorization flaws
 - Secrets or credentials in code
@@ -4357,14 +4397,14 @@ MCP 讓 Claude Code 連接外部工具和資料來源，擴展其能力邊界。
 
 #### 常見 MCP 整合場景
 
-| MCP Server | 用途 | SSDLC 場景 |
-|-----------|------|-----------|
-| GitHub | Issue/PR 管理 | 自動化漏洞追蹤、PR 審查 |
-| Jira | 專案管理 | 安全 Ticket 自動建立 |
-| Notion | 知識庫 | 查閱安全政策文件 |
-| Figma | 設計稿 | UI 安全設計驗證 |
-| 資料庫 | 查詢資料 | 資料完整性檢查 |
-| Sentry/Datadog | 監控 | 即時異常分析 |
+| MCP Server     | 用途          | SSDLC 場景              |
+| -------------- | ------------- | ----------------------- |
+| GitHub         | Issue/PR 管理 | 自動化漏洞追蹤、PR 審查 |
+| Jira           | 專案管理      | 安全 Ticket 自動建立    |
+| Notion         | 知識庫        | 查閱安全政策文件        |
+| Figma          | 設計稿        | UI 安全設計驗證         |
+| 資料庫         | 查詢資料      | 資料完整性檢查          |
+| Sentry/Datadog | 監控          | 即時異常分析            |
 
 #### 新增 MCP Server
 
@@ -4407,6 +4447,7 @@ claude --permission-mode plan -p "分析 src/ 目錄的安全風險並產出報�
 #### Extended Thinking（延伸思考）
 
 延伸思考預設啟用，讓 Claude 在回應前進行更深入的推理。特別適合：
+
 - 複雜架構決策
 - 困難的安全漏洞分析
 - 多步驟實作規劃
@@ -4469,22 +4510,22 @@ graph TB
 
 #### Writer / Reviewer 模式（SSDLC 實踐）
 
-| 會話 A（Writer） | 會話 B（Reviewer） |
-|---|---|
-| 實作 API Rate Limiter | — |
-| — | 審查 @src/middleware/rateLimiter.ts，檢查邊界條件、競態條件、一致性 |
-| 根據審查回饋修正問題 | — |
+| 會話 A（Writer）      | 會話 B（Reviewer）                                                  |
+| --------------------- | ------------------------------------------------------------------- |
+| 實作 API Rate Limiter | —                                                                   |
+| —                     | 審查 @src/middleware/rateLimiter.ts，檢查邊界條件、競態條件、一致性 |
+| 根據審查回饋修正問題  | —                                                                   |
 
 ### 11.9 排程任務（Scheduled Tasks）
 
 Claude Code 支援多種排程方式，非常適合 SSDLC 的持續監控：
 
-| 排程方式 | 運行位置 | 適用場景 |
-|---------|---------|---------|
-| **Cloud Scheduled Tasks** | Anthropic 管理的基礎設施 | 電腦關機也需執行的任務 |
-| **Desktop Scheduled Tasks** | 本機（桌面 App） | 需要存取本地檔案的任務 |
-| **GitHub Actions** | CI Pipeline | 與 Repo 事件綁定的任務 |
-| **/loop** | 當前 CLI 會話 | 臨時輪詢，結束會話時取消 |
+| 排程方式                    | 運行位置                 | 適用場景                 |
+| --------------------------- | ------------------------ | ------------------------ |
+| **Cloud Scheduled Tasks**   | Anthropic 管理的基礎設施 | 電腦關機也需執行的任務   |
+| **Desktop Scheduled Tasks** | 本機（桌面 App）         | 需要存取本地檔案的任務   |
+| **GitHub Actions**          | CI Pipeline              | 與 Repo 事件綁定的任務   |
+| **/loop**                   | 當前 CLI 會話            | 臨時輪詢，結束會話時取消 |
 
 #### SSDLC 排程任務範例
 
@@ -4508,13 +4549,13 @@ Claude Code Agent SDK 讓開發者使用 Python 或 TypeScript 建構生產級 A
 
 #### 核心概念
 
-| 概念 | 說明 |
-|------|------|
-| **Agent** | 封裝 Claude 模型的自主代理 |
-| **Tool** | Agent 可呼叫的外部函式（function calling） |
-| **Guardrail** | 輸入/輸出的安全驗證邏輯 |
-| **Handoff** | Agent 間任務移交（Agent-to-Agent） |
-| **Tracing** | 完整執行鏈路追蹤（OpenTelemetry 相容） |
+| 概念          | 說明                                       |
+| ------------- | ------------------------------------------ |
+| **Agent**     | 封裝 Claude 模型的自主代理                 |
+| **Tool**      | Agent 可呼叫的外部函式（function calling） |
+| **Guardrail** | 輸入/輸出的安全驗證邏輯                    |
+| **Handoff**   | Agent 間任務移交（Agent-to-Agent）         |
+| **Tracing**   | 完整執行鏈路追蹤（OpenTelemetry 相容）     |
 
 #### Python SDK 範例：SSDLC Security Agent
 
@@ -4582,27 +4623,31 @@ async def main():
 
 ```typescript
 // security-agent.ts - TypeScript Agent SDK
-import { Agent, Tool, run } from '@anthropic-ai/claude-code-sdk';
+import { Agent, Tool, run } from "@anthropic-ai/claude-code-sdk";
 
 const sastScan = new Tool({
-  name: 'sast_scan',
-  description: 'Run SAST scan on the codebase',
-  parameters: { paths: { type: 'array', items: { type: 'string' } } },
+  name: "sast_scan",
+  description: "Run SAST scan on the codebase",
+  parameters: { paths: { type: "array", items: { type: "string" } } },
   execute: async ({ paths }) => {
-    const { execSync } = await import('child_process');
+    const { execSync } = await import("child_process");
     return JSON.parse(
-      execSync(`semgrep scan --config auto --json ${paths.join(' ')}`).toString()
+      execSync(
+        `semgrep scan --config auto --json ${paths.join(" ")}`,
+      ).toString(),
     );
   },
 });
 
 const agent = new Agent({
-  name: 'SSDLC Security Agent',
-  instructions: 'You are a security expert...',
+  name: "SSDLC Security Agent",
+  instructions: "You are a security expert...",
   tools: [sastScan],
 });
 
-const result = await run(agent, { input: 'Scan and fix critical vulnerabilities' });
+const result = await run(agent, {
+  input: "Scan and fix critical vulnerabilities",
+});
 ```
 
 ### 11.11 Plugins 生態系
@@ -4631,13 +4676,13 @@ claude plugin remove security-guidance
 
 Security Guidance Plugin 是 SSDLC 最重要的 Plugin，提供：
 
-| 功能 | 說明 |
-|------|------|
+| 功能             | 說明                         |
+| ---------------- | ---------------------------- |
 | **即時安全建議** | 編輯程式碼時即時提示安全風險 |
-| **合規性檢查** | OWASP、CWE、NIST 框架對照 |
-| **安全 Lint** | 每次 file edit 後自動掃描 |
-| **修補建議** | 發現問題時提供修補方案 |
-| **報告產出** | 產出 SARIF 格式安全報告 |
+| **合規性檢查**   | OWASP、CWE、NIST 框架對照    |
+| **安全 Lint**    | 每次 file edit 後自動掃描    |
+| **修補建議**     | 發現問題時提供修補方案       |
+| **報告產出**     | 產出 SARIF 格式安全報告      |
 
 #### 建立自定義 Plugin
 
@@ -4711,24 +4756,24 @@ curl -X POST https://api.claude.ai/channels/ch_xxxx/webhook \
 
 **SSDLC 應用場景**：
 
-| Channel 來源 | 推送事件 | Claude Code 回應 |
-|-------------|---------|----------------|
-| Prometheus Alertmanager | 效能劣化告警 | 自動分析根因、產生修補 PR |
-| GitHub Security Advisory | 新 CVE 發布 | 檢查是否受影響、更新依賴 |
-| Sentry | Runtime 錯誤 | 分析 stack trace、提出修復 |
-| PagerDuty | On-call 事件 | 提供即時診斷建議 |
+| Channel 來源             | 推送事件     | Claude Code 回應           |
+| ------------------------ | ------------ | -------------------------- |
+| Prometheus Alertmanager  | 效能劣化告警 | 自動分析根因、產生修補 PR  |
+| GitHub Security Advisory | 新 CVE 發布  | 檢查是否受影響、更新依賴   |
+| Sentry                   | Runtime 錯誤 | 分析 stack trace、提出修復 |
+| PagerDuty                | On-call 事件 | 提供即時診斷建議           |
 
 ### 11.13 Desktop App、Web、Chrome 整合
 
 Claude Code 在 2026 年已擴展為**多平台**工具，不再限於終端機：
 
-| 平台 | 適用場景 | 特有功能 |
-|------|---------|---------|
-| **CLI**（終端機） | 日常開發、CI/CD 整合 | 最輕量、pipe 支援、Hooks |
-| **Desktop App** | 複雜專案、多 session 管理 | 平行 sessions、視覺化 diff、PR 監控 |
-| **Web**（claude.ai/code） | 無本地環境、長時間任務 | 免安裝、雲端運算、Routines |
-| **Chrome Extension** | Web 應用偵錯 | 擷取瀏覽器 console、DOM 互動 |
-| **Slack Integration** | 團隊協作、委派任務 | 在 Slack 中下達 coding 任務 |
+| 平台                      | 適用場景                  | 特有功能                            |
+| ------------------------- | ------------------------- | ----------------------------------- |
+| **CLI**（終端機）         | 日常開發、CI/CD 整合      | 最輕量、pipe 支援、Hooks            |
+| **Desktop App**           | 複雜專案、多 session 管理 | 平行 sessions、視覺化 diff、PR 監控 |
+| **Web**（claude.ai/code） | 無本地環境、長時間任務    | 免安裝、雲端運算、Routines          |
+| **Chrome Extension**      | Web 應用偵錯              | 擷取瀏覽器 console、DOM 互動        |
+| **Slack Integration**     | 團隊協作、委派任務        | 在 Slack 中下達 coding 任務         |
 
 #### Desktop App 核心功能
 
@@ -4830,6 +4875,7 @@ claude --sandbox "執行 DAST 掃描腳本，
 ```
 
 **SSDLC 場景**：
+
 - 在 Sandbox 中執行滲透測試腳本
 - 隔離測試可疑的第三方依賴
 - 安全地分析惡意程式碼樣本
@@ -4865,14 +4911,14 @@ claude --otel-endpoint "http://otel-collector:4318"
 
 #### 追蹤的關鍵指標
 
-| 指標類別 | 指標 | 用途 |
-|---------|------|------|
+| 指標類別 | 指標                | 用途     |
+| -------- | ------------------- | -------- |
 | **效率** | Token 使用量 / 任務 | 成本控制 |
-| **效率** | 平均任務完成時間 | 效能基準 |
-| **品質** | 安全修補成功率 | 品質追蹤 |
-| **品質** | 測試通過率 | 回歸偵測 |
-| **安全** | 安全掃描觸發次數 | 合規證明 |
-| **安全** | 漏洞自動修補數 | ROI 計算 |
+| **效率** | 平均任務完成時間    | 效能基準 |
+| **品質** | 安全修補成功率      | 品質追蹤 |
+| **品質** | 測試通過率          | 回歸偵測 |
+| **安全** | 安全掃描觸發次數    | 合規證明 |
+| **安全** | 漏洞自動修補數      | ROI 計算 |
 | **成本** | API 呼叫次數 / 費用 | 預算管理 |
 
 #### Grafana Dashboard 整合
@@ -4907,18 +4953,18 @@ GitHub Copilot 已從單純的程式碼補全工具，演進為完整的 **AI Ag
 
 ### 12.1 GitHub Copilot 功能總覽（2026）
 
-| 功能 | 適用方案 | 說明 |
-|------|---------|------|
-| **程式碼建議** | 所有方案 | IDE 中即時程式碼補全 |
-| **Copilot Chat** | 所有方案 | IDE / GitHub.com 中的對話式 AI |
-| **Copilot CLI** | 所有方案 | 命令列 AI 輔助 |
-| **Cloud Agent** | Pro+ / Business / Enterprise | 雲端代理人，可自主研究、規劃、修改程式碼、建立 PR |
-| **Agent Skills** | Pro+ / Business / Enterprise | 可擴充的專業技能模組 |
-| **Agentic Memory** | Pro+ / Business / Enterprise | 儲存庫級別的持久記憶系統 |
-| **Code Review** | Business / Enterprise | AI 自動化程式碼審查 |
-| **Copilot Spaces** | 所有方案 | 組織和分享 Context 以獲得更相關的回答 |
-| **PR Description** | 所有方案 | 自動生成 PR 描述 |
-| **Auto Model Selection** | 所有方案 | 自動為 Chat 和 Cloud Agent 選擇最佳模型 |
+| 功能                     | 適用方案                     | 說明                                              |
+| ------------------------ | ---------------------------- | ------------------------------------------------- |
+| **程式碼建議**           | 所有方案                     | IDE 中即時程式碼補全                              |
+| **Copilot Chat**         | 所有方案                     | IDE / GitHub.com 中的對話式 AI                    |
+| **Copilot CLI**          | 所有方案                     | 命令列 AI 輔助                                    |
+| **Cloud Agent**          | Pro+ / Business / Enterprise | 雲端代理人，可自主研究、規劃、修改程式碼、建立 PR |
+| **Agent Skills**         | Pro+ / Business / Enterprise | 可擴充的專業技能模組                              |
+| **Agentic Memory**       | Pro+ / Business / Enterprise | 儲存庫級別的持久記憶系統                          |
+| **Code Review**          | Business / Enterprise        | AI 自動化程式碼審查                               |
+| **Copilot Spaces**       | 所有方案                     | 組織和分享 Context 以獲得更相關的回答             |
+| **PR Description**       | 所有方案                     | 自動生成 PR 描述                                  |
+| **Auto Model Selection** | 所有方案                     | 自動為 Chat 和 Cloud Agent 選擇最佳模型           |
 
 ### 12.2 Cloud Agent 雲端代理人
 
@@ -4937,13 +4983,13 @@ flowchart LR
 
 #### 使用場景（SSDLC 相關）
 
-| 場景 | Prompt 範例 |
-|------|-----------|
-| 安全漏洞修補 | `Fix the SQL injection vulnerability in the search endpoint` |
-| 依賴升級 | `Upgrade all dependencies with known CVEs to safe versions` |
-| 測試補充 | `Add security test cases for the authentication module` |
-| 程式碼重構 | `Refactor the user service to use parameterized queries everywhere` |
-| 文件生成 | `Generate API documentation with security considerations for all endpoints` |
+| 場景         | Prompt 範例                                                                 |
+| ------------ | --------------------------------------------------------------------------- |
+| 安全漏洞修補 | `Fix the SQL injection vulnerability in the search endpoint`                |
+| 依賴升級     | `Upgrade all dependencies with known CVEs to safe versions`                 |
+| 測試補充     | `Add security test cases for the authentication module`                     |
+| 程式碼重構   | `Refactor the user service to use parameterized queries everywhere`         |
+| 文件生成     | `Generate API documentation with security considerations for all endpoints` |
 
 #### Agent Management（代理人管理）
 
@@ -4973,13 +5019,17 @@ Agent Skills 是一個**開放標準**（[github.com/agentskills/agentskills](ht
 
 ```markdown
 # .github/skills/security-audit/SKILL.md
+
 ---
+
 name: security-audit
 description: Comprehensive security audit for OWASP Top 10 compliance
 ---
+
 # Security Audit Workflow
 
 ## Steps
+
 1. Scan for injection vulnerabilities (SQL, XSS, Command Injection)
 2. Check authentication and session management
 3. Verify authorization controls and access patterns
@@ -4990,6 +5040,7 @@ description: Comprehensive security audit for OWASP Top 10 compliance
 8. Review error handling for information leakage
 
 ## Output Format
+
 - Severity: CRITICAL / HIGH / MEDIUM / LOW
 - File and line reference
 - Description of vulnerability
@@ -4999,13 +5050,13 @@ description: Comprehensive security audit for OWASP Top 10 compliance
 
 #### Skill 存放位置（通用於 Copilot 和 Claude Code）
 
-| 位置 | 說明 |
-|------|------|
-| `.github/skills/` | 專案級（推薦，GitHub Copilot 原生支援） |
-| `.claude/skills/` | 專案級（Claude Code 原生支援） |
-| `.agents/skills/` | 專案級（Agent Skills 開放標準格式） |
-| `~/.copilot/skills/` | 個人級（跨專案共用） |
-| `~/.claude/skills/` | 個人級（跨專案共用） |
+| 位置                 | 說明                                    |
+| -------------------- | --------------------------------------- |
+| `.github/skills/`    | 專案級（推薦，GitHub Copilot 原生支援） |
+| `.claude/skills/`    | 專案級（Claude Code 原生支援）          |
+| `.agents/skills/`    | 專案級（Agent Skills 開放標準格式）     |
+| `~/.copilot/skills/` | 個人級（跨專案共用）                    |
+| `~/.claude/skills/`  | 個人級（跨專案共用）                    |
 
 > **💡 企業導入建議**：使用 `.github/skills/` 目錄，因為此格式同時被 GitHub Copilot 和 Claude Code 支援，實現一次定義、雙平台使用。
 
@@ -5015,14 +5066,14 @@ Copilot Memory 讓 AI 建立並維護對儲存庫的**持久化理解**，類似
 
 #### 核心概念
 
-| 特性 | 說明 |
-|------|------|
-| **儲存庫範圍** | 記憶綁定在特定儲存庫，不會跨 Repo 洩漏 |
-| **自動建立** | Copilot 在工作過程中自動推導出的知識片段 |
-| **帶有引用** | 每條記憶都有程式碼位置的引用作為佐證 |
-| **驗證機制** | 使用記憶前，Copilot 會對照當前程式碼驗證其是否仍然有效 |
-| **自動過期** | 記憶在 28 天後自動刪除，防止過期資訊影響決策 |
-| **跨功能共享** | Cloud Agent 建立的記憶可被 Code Review 使用，反之亦然 |
+| 特性           | 說明                                                   |
+| -------------- | ------------------------------------------------------ |
+| **儲存庫範圍** | 記憶綁定在特定儲存庫，不會跨 Repo 洩漏                 |
+| **自動建立**   | Copilot 在工作過程中自動推導出的知識片段               |
+| **帶有引用**   | 每條記憶都有程式碼位置的引用作為佐證                   |
+| **驗證機制**   | 使用記憶前，Copilot 會對照當前程式碼驗證其是否仍然有效 |
+| **自動過期**   | 記憶在 28 天後自動刪除，防止過期資訊影響決策           |
+| **跨功能共享** | Cloud Agent 建立的記憶可被 Code Review 使用，反之亦然  |
 
 #### Agentic Memory 與 SSDLC 的關係
 
@@ -5037,16 +5088,17 @@ graph LR
 ```
 
 **SSDLC 效益**：
+
 - Copilot Code Review 可根據記憶發現不一致的安全模式
 - Cloud Agent 修改設定檔時，記憶會提醒同步相關檔案
 - 減少重複提供相同安全規範的需求
 
 #### 啟用方式
 
-| 方案 | 預設狀態 | 啟用位置 |
-|------|---------|---------|
-| Pro / Pro+ | **預設啟用** | 個人 Copilot 設定 |
-| Business / Enterprise | 預設關閉 | 組織/企業設定 → 啟用後全體成員可用 |
+| 方案                  | 預設狀態     | 啟用位置                           |
+| --------------------- | ------------ | ---------------------------------- |
+| Pro / Pro+            | **預設啟用** | 個人 Copilot 設定                  |
+| Business / Enterprise | 預設關閉     | 組織/企業設定 → 啟用後全體成員可用 |
 
 ### 12.5 Copilot Code Review
 
@@ -5115,17 +5167,17 @@ graph TB
 
 #### 工具選擇矩陣
 
-| 場景 | GitHub Copilot | Claude Code | AutoResearch |
-|------|:---:|:---:|:---:|
-| IDE 即時程式碼補全 | ✅⭐ | — | — |
-| 對話式程式碼問答 | ✅ | ✅⭐ | — |
-| 複雜重構/功能開發 | ✅（Cloud Agent） | ✅⭐ | — |
-| PR 自動審查 | ✅⭐ | ✅ | — |
-| 批量安全修補 | ✅（Cloud Agent） | ✅ | ✅⭐ |
-| 效能自主迭代優化 | — | — | ✅⭐ |
-| CI/CD 安全閘門 | ✅ | ✅ | ✅⭐ |
-| 持久化專案知識 | ✅（Memory） | ✅（CLAUDE.md） | ✅（program.md） |
-| 排程自動化任務 | ✅（Actions） | ✅（Scheduled Tasks）| ✅（Cron） |
+| 場景               |  GitHub Copilot   |      Claude Code      |   AutoResearch   |
+| ------------------ | :---------------: | :-------------------: | :--------------: |
+| IDE 即時程式碼補全 |       ✅⭐        |           —           |        —         |
+| 對話式程式碼問答   |        ✅         |         ✅⭐          |        —         |
+| 複雜重構/功能開發  | ✅（Cloud Agent） |         ✅⭐          |        —         |
+| PR 自動審查        |       ✅⭐        |          ✅           |        —         |
+| 批量安全修補       | ✅（Cloud Agent） |          ✅           |       ✅⭐       |
+| 效能自主迭代優化   |         —         |           —           |       ✅⭐       |
+| CI/CD 安全閘門     |        ✅         |          ✅           |       ✅⭐       |
+| 持久化專案知識     |   ✅（Memory）    |    ✅（CLAUDE.md）    | ✅（program.md） |
+| 排程自動化任務     |   ✅（Actions）   | ✅（Scheduled Tasks） |    ✅（Cron）    |
 
 > ⭐ 表示該工具在此場景中為最佳選擇
 
@@ -5207,13 +5259,13 @@ GitHub Copilot App 是獨立的桌面應用，提供比 IDE extension 更豐富�
 
 #### 核心功能
 
-| 功能 | 說明 |
-|------|------|
-| **多 Session 管理** | 同時運行多個 Agent，各自獨立 Git branch |
-| **Canvas Extensions** | 互動式協作介面（拖拉設計、流程圖） |
-| **Issue → PR 生命週期** | 從 Issue 自動研究、規劃、實作到建立 PR |
-| **Automations** | 設定排程任務或事件觸發的自動化 |
-| **Deep Links** | 從外部工具（Jira、Slack）直接開啟對應 session |
+| 功能                    | 說明                                          |
+| ----------------------- | --------------------------------------------- |
+| **多 Session 管理**     | 同時運行多個 Agent，各自獨立 Git branch       |
+| **Canvas Extensions**   | 互動式協作介面（拖拉設計、流程圖）            |
+| **Issue → PR 生命週期** | 從 Issue 自動研究、規劃、實作到建立 PR        |
+| **Automations**         | 設定排程任務或事件觸發的自動化                |
+| **Deep Links**          | 從外部工具（Jira、Slack）直接開啟對應 session |
 
 #### SSDLC 使用範例
 
@@ -5240,7 +5292,7 @@ Copilot SDK 讓開發者在自己的應用中嵌入 Copilot 能力：
 
 ```typescript
 // copilot-security-bot.ts - 使用 Copilot SDK 建構安全機器人
-import { CopilotSDK } from '@github/copilot-sdk';
+import { CopilotSDK } from "@github/copilot-sdk";
 
 const copilot = new CopilotSDK({
   appId: process.env.GITHUB_APP_ID,
@@ -5249,18 +5301,18 @@ const copilot = new CopilotSDK({
 
 // 建立安全掃描任務
 const session = await copilot.createSession({
-  repo: 'my-org/my-app',
+  repo: "my-org/my-app",
   task: `Scan the codebase for OWASP Top 10 vulnerabilities.
     For each finding, create a separate fix PR with:
     - Description of the vulnerability
     - CVSS score estimate
     - Fix implementation
     - Test case`,
-  permissions: ['contents:write', 'pull-requests:write'],
+  permissions: ["contents:write", "pull-requests:write"],
 });
 
 // 監控進度
-session.on('progress', (event) => {
+session.on("progress", (event) => {
   console.log(`[${event.step}/${event.total}] ${event.message}`);
 });
 
@@ -5273,11 +5325,11 @@ console.log(`Created ${result.pullRequests.length} fix PRs`);
 
 GitHub 支援第三方 AI Agent 整合，在 GitHub 平台上提供專業服務。
 
-| Agent | 提供者 | SSDLC 用途 |
-|-------|--------|-----------|
-| **OpenAI Codex** | OpenAI | 多語言程式碼生成與修補 |
+| Agent                | 提供者    | SSDLC 用途             |
+| -------------------- | --------- | ---------------------- |
+| **OpenAI Codex**     | OpenAI    | 多語言程式碼生成與修補 |
 | **Anthropic Claude** | Anthropic | 深度安全分析、複雜重構 |
-| **自定義 Agent** | 企業自建 | 內部安全規範檢查 |
+| **自定義 Agent**     | 企業自建  | 內部安全規範檢查       |
 
 #### 在 GitHub 中使用第三方 Agent
 
@@ -5346,7 +5398,7 @@ workflow:
       action: create-pr
       reviewers: [security-team]
       labels: [security, automated, urgent]
-      
+
     - name: Notify
       action: notify
       channels: [slack:#security-alerts, email:security@company.com]
@@ -5377,7 +5429,7 @@ gh copilot plugin install test-generator
 name: ssdlc-compliance
 version: 2.0.0
 publisher: internal-security-team
-visibility: organization  # 僅組織內可見
+visibility: organization # 僅組織內可見
 
 capabilities:
   - name: security_scan
@@ -5402,29 +5454,29 @@ enterprise_controls:
 
 #### AI Controls 設定
 
-| 控制項目 | 說明 | 設定層級 |
-|---------|------|---------|
-| **Content Exclusions** | 排除特定檔案/目錄不被 AI 存取 | Organization |
-| **IP Indemnity** | 智慧財產權保障 | Enterprise |
-| **Audit Logs** | AI 操作完整稽核紀錄 | Enterprise |
-| **Policy Controls** | 啟用/停用特定功能 | Organization |
-| **Budget Controls** | AI Credits 消費上限 | Enterprise / Org / User |
-| **Model Selection** | 限制可使用的模型 | Organization |
-| **Data Residency** | 資料儲存地區限制 | Enterprise |
+| 控制項目               | 說明                          | 設定層級                |
+| ---------------------- | ----------------------------- | ----------------------- |
+| **Content Exclusions** | 排除特定檔案/目錄不被 AI 存取 | Organization            |
+| **IP Indemnity**       | 智慧財產權保障                | Enterprise              |
+| **Audit Logs**         | AI 操作完整稽核紀錄           | Enterprise              |
+| **Policy Controls**    | 啟用/停用特定功能             | Organization            |
+| **Budget Controls**    | AI Credits 消費上限           | Enterprise / Org / User |
+| **Model Selection**    | 限制可使用的模型              | Organization            |
+| **Data Residency**     | 資料儲存地區限制              | Enterprise              |
 
 #### AI Credits & Budget Management
 
 ```yaml
 # GitHub Enterprise 設定（Organization Settings → Copilot → Budgets）
 budget_controls:
-  organization_monthly_limit: 10000  # USD
-  per_user_monthly_limit: 500       # USD
-  alert_threshold: 80               # 80% 時告警
+  organization_monthly_limit: 10000 # USD
+  per_user_monthly_limit: 500 # USD
+  alert_threshold: 80 # 80% 時告警
 
   cost_allocation:
     - team: security
       budget: 3000
-      priority: high      # 安全任務優先保障額度
+      priority: high # 安全任務優先保障額度
     - team: development
       budget: 5000
       priority: medium
@@ -5432,7 +5484,7 @@ budget_controls:
       budget: 2000
       priority: low
 
-  overage_policy: block  # block | alert | allow
+  overage_policy: block # block | alert | allow
 ```
 
 #### Audit Log 整合
@@ -5461,15 +5513,15 @@ gh api /orgs/MY-ORG/audit-log \
 
 #### program.md 撰寫原則
 
-| 原則 | 說明 | 範例 |
-|------|------|------|
-| **明確目標** | 每份 program.md 只聚焦一個優化面向 | `目標：降低 P99 延遲至 200ms` |
-| **可量化指標** | 使用數字定義成功/失敗 | `提升 >= 0.5% 才保留` |
-| **範圍限定** | 明確指出可修改的檔案/區域 | `只能修改 src/api/ 目錄` |
-| **禁止清單** | 列出禁止的操作 | `不得使用 eval()、不得修改 DB Schema` |
-| **策略排序** | 給出優先嘗試順序 | `1. 快取 2. 查詢優化 3. 演算法` |
-| **安全護欄** | 安全相關硬限制 | `不得降低安全掃描分數` |
-| **時間約束** | 單次執行時間上限 | `每次迭代不超過 60 秒` |
+| 原則           | 說明                               | 範例                                  |
+| -------------- | ---------------------------------- | ------------------------------------- |
+| **明確目標**   | 每份 program.md 只聚焦一個優化面向 | `目標：降低 P99 延遲至 200ms`         |
+| **可量化指標** | 使用數字定義成功/失敗              | `提升 >= 0.5% 才保留`                 |
+| **範圍限定**   | 明確指出可修改的檔案/區域          | `只能修改 src/api/ 目錄`              |
+| **禁止清單**   | 列出禁止的操作                     | `不得使用 eval()、不得修改 DB Schema` |
+| **策略排序**   | 給出優先嘗試順序                   | `1. 快取 2. 查詢優化 3. 演算法`       |
+| **安全護欄**   | 安全相關硬限制                     | `不得降低安全掃描分數`                |
+| **時間約束**   | 單次執行時間上限                   | `每次迭代不超過 60 秒`                |
 
 #### Prompt 範本
 
@@ -5477,31 +5529,39 @@ gh api /orgs/MY-ORG/audit-log \
 # [面向] Optimization Program
 
 ## 目標
+
 [明確、可量化的目標描述]
 
 ## 目前狀態
+
 - 指標 A：[目前值]
 - 指標 B：[目前值]
 
 ## 可修改範圍
+
 - [檔案/目錄清單]
 
 ## 禁止範圍
+
 - [檔案/目錄/操作清單]
 
 ## 策略（依優先順序）
+
 1. [策略一]
 2. [策略二]
 3. [策略三]
 
 ## 評估指標
+
 METRIC:[指標名]=[值]
 
 ## Keep/Revert 規則
+
 - KEEP 條件：[條件]
 - REVERT 條件：[條件]
 
 ## 安全約束
+
 - [安全限制清單]
 ```
 
@@ -5559,7 +5619,7 @@ security_policy:
     can_modify_production: false
     can_access_secrets: false
     can_install_packages: false
-    can_execute_shell: restricted  # 僅允許白名單命令
+    can_execute_shell: restricted # 僅允許白名單命令
     allowed_commands:
       - python
       - pytest
@@ -5582,12 +5642,12 @@ security_policy:
   # 安全掃描要求
   scan_requirements:
     pre_commit:
-      - gitleaks  # Secret scan
+      - gitleaks # Secret scan
     pre_merge:
-      - semgrep   # SAST
+      - semgrep # SAST
       - pip-audit # SCA
     post_deploy:
-      - trivy     # Container scan
+      - trivy # Container scan
 ```
 
 ### 13.3 Git 管理策略
@@ -5602,13 +5662,13 @@ security_policy:
 [optional footer]
 ```
 
-| Type | 用途 | 範例 |
-|------|------|------|
-| `feat` | 新功能 | `feat(auth): 加入 OAuth 2.0 支援` |
-| `fix` | 修復 | `fix(api): 修復 N+1 Query` |
-| `fix(security)` | 安全修補 | `fix(security): 修補 SQL Injection [CVE-2024-XXXX]` |
-| `perf` | 效能優化 | `perf(orders): 加入 Redis 快取` |
-| `refactor` | 重構 | `refactor(service): 降低圈複雜度` |
+| Type                  | 用途        | 範例                                                 |
+| --------------------- | ----------- | ---------------------------------------------------- |
+| `feat`                | 新功能      | `feat(auth): 加入 OAuth 2.0 支援`                    |
+| `fix`                 | 修復        | `fix(api): 修復 N+1 Query`                           |
+| `fix(security)`       | 安全修補    | `fix(security): 修補 SQL Injection [CVE-2024-XXXX]`  |
+| `perf`                | 效能優化    | `perf(orders): 加入 Redis 快取`                      |
+| `refactor`            | 重構        | `refactor(service): 降低圈複雜度`                    |
 | `chore(autoresearch)` | AI 自動變更 | `chore(autoresearch): automated optimization iter-3` |
 
 #### Branch Protection Rules
@@ -5628,10 +5688,7 @@ security_policy:
   },
   "develop": {
     "required_reviews": 1,
-    "required_status_checks": [
-      "build-and-test",
-      "security-scan"
-    ]
+    "required_status_checks": ["build-and-test", "security-scan"]
   }
 }
 ```
@@ -5652,27 +5709,27 @@ autoresearch/quality/complexity-reduction
 
 ### 13.4 成本管理
 
-| 項目 | 費用模型 | 月估成本（小型團隊） | 優化建議 |
-|------|---------|---------------------|---------|
-| Claude API | 按 Token 計費 | $200-500 | 最佳化 Prompt 長度 |
-| Claude Code Pro | 訂閱 + AI Credits | $100/人 + Credits | 設定 spend limits |
-| GitHub Copilot | AI Credits 計量計費 | $19-39/人 + Credits | 設定 Budget Controls |
-| GitHub Actions | 按分鐘計費 | $50-100 | 使用 self-hosted runner |
-| 安全掃描工具 | 按專案/人計費 | $100-300 | 選擇整合方案 |
-| 雲端資源 | 按使用量計費 | $100-500 | Spot Instance + 自動擴縮 |
+| 項目            | 費用模型            | 月估成本（小型團隊） | 優化建議                 |
+| --------------- | ------------------- | -------------------- | ------------------------ |
+| Claude API      | 按 Token 計費       | $200-500             | 最佳化 Prompt 長度       |
+| Claude Code Pro | 訂閱 + AI Credits   | $100/人 + Credits    | 設定 spend limits        |
+| GitHub Copilot  | AI Credits 計量計費 | $19-39/人 + Credits  | 設定 Budget Controls     |
+| GitHub Actions  | 按分鐘計費          | $50-100              | 使用 self-hosted runner  |
+| 安全掃描工具    | 按專案/人計費       | $100-300             | 選擇整合方案             |
+| 雲端資源        | 按使用量計費        | $100-500             | Spot Instance + 自動擴縮 |
 
 #### AI Credits 管理策略
 
 2026 年的 AI 開發工具普遍採用 **AI Credits 計量計費**。以下為成本控制最佳實踐：
 
-| 策略 | 說明 | 預期節省 |
-|------|------|---------|
-| **Budget Controls** | 在 enterprise/org/user 層級設定消費上限 | 防止超支 |
-| **Model Selection** | 簡單任務用較便宜模型（Haiku/Flash），複雜任務用 Opus/Sonnet | 30-50% |
-| **Prompt 精簡** | 使用 CLAUDE.md 避免重複交代背景，減少 context token | 20-30% |
-| **快取策略** | Claude API Prompt Caching 避免重複運算 | 40-60% |
-| **任務批次化** | 合併多個小任務為一次大任務，減少 session overhead | 15-25% |
-| **Off-peak 排程** | 將 AutoResearch 排程在離峰時段（如凌晨） | 視定價而定 |
+| 策略                | 說明                                                        | 預期節省   |
+| ------------------- | ----------------------------------------------------------- | ---------- |
+| **Budget Controls** | 在 enterprise/org/user 層級設定消費上限                     | 防止超支   |
+| **Model Selection** | 簡單任務用較便宜模型（Haiku/Flash），複雜任務用 Opus/Sonnet | 30-50%     |
+| **Prompt 精簡**     | 使用 CLAUDE.md 避免重複交代背景，減少 context token         | 20-30%     |
+| **快取策略**        | Claude API Prompt Caching 避免重複運算                      | 40-60%     |
+| **任務批次化**      | 合併多個小任務為一次大任務，減少 session overhead           | 15-25%     |
+| **Off-peak 排程**   | 將 AutoResearch 排程在離峰時段（如凌晨）                    | 視定價而定 |
 
 ```yaml
 # 成本監控告警設定
@@ -5683,7 +5740,7 @@ budget:
   notify:
     - channel: slack:#engineering-costs
     - email: engineering-lead@company.com
-  overage_action: throttle  # throttle | block | alert-only
+  overage_action: throttle # throttle | block | alert-only
 ```
 
 > **💡 企業導入建議**：建議設定 **多層預算上限**——Enterprise（整體上限）→ Organization（部門上限）→ User（個人上限）。在 AutoResearch 的 `program.md` 中加入「成本意識」指令：優先使用簡單策略，避免過度複雜的 AI 呼叫。追蹤每次安全修補的成本，計算 ROI（手動修補成本 vs. AI 修補成本）。
@@ -5692,13 +5749,13 @@ budget:
 
 #### AI Agent 權限分級模型
 
-| 等級 | 信任程度 | 可執行操作 | 適用場景 |
-|------|---------|-----------|---------|
-| **Level 0** | 唯讀 | 讀取程式碼、產出分析報告 | 安全審計、架構分析 |
-| **Level 1** | 受限寫入 | 修改測試檔案、文件 | 測試生成、文件更新 |
-| **Level 2** | 標準開發 | 修改原始碼、建立 PR | 日常開發、Bug 修補 |
-| **Level 3** | 進階操作 | 修改 CI/CD、安裝依賴 | 基礎設施變更 |
-| **Level 4** | 完全自主 | 部署、資料庫 migration | 不建議（需人工審核） |
+| 等級        | 信任程度 | 可執行操作               | 適用場景             |
+| ----------- | -------- | ------------------------ | -------------------- |
+| **Level 0** | 唯讀     | 讀取程式碼、產出分析報告 | 安全審計、架構分析   |
+| **Level 1** | 受限寫入 | 修改測試檔案、文件       | 測試生成、文件更新   |
+| **Level 2** | 標準開發 | 修改原始碼、建立 PR      | 日常開發、Bug 修補   |
+| **Level 3** | 進階操作 | 修改 CI/CD、安裝依賴     | 基礎設施變更         |
+| **Level 4** | 完全自主 | 部署、資料庫 migration   | 不建議（需人工審核） |
 
 #### Agent 操作護欄設計
 
@@ -5764,6 +5821,7 @@ graph LR
 **問題**：AI Agent 直接修改生產環境程式碼，無人工審核。
 
 **後果**：
+
 - AI 生成的程式碼可能包含邏輯錯誤
 - 安全漏洞直接進入生產環境
 - 無法追蹤問題根因
@@ -5815,7 +5873,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: autoresearch --optimize
-      - run: deploy.sh  # 直接部署！沒有測試！
+      - run: deploy.sh # 直接部署！沒有測試！
 ```
 
 ```yaml
@@ -5843,24 +5901,31 @@ jobs:
 
 ```markdown
 # ❌ 錯誤的 program.md
+
 ## 目標
+
 讓程式碼變得更好
 
 ## 策略
+
 盡量優化
 ```
 
 ```markdown
 # ✅ 正確的 program.md
+
 ## 目標
+
 降低 GET /api/v1/orders 的 P99 延遲從 2000ms 至 200ms 以下
 
 ## 策略（依優先順序）
+
 1. 修復 N+1 Query（使用 JOIN）
 2. 加入 Redis 快取（TTL: 60s）
 3. 加入資料庫連線池
 
 ## 評估標準
+
 METRIC:p99_latency_ms 低於 200 才 KEEP
 ```
 
@@ -5886,7 +5951,7 @@ agent_permissions:
   can_install_any_package: false
   allowed_operations:
     - read_source_code
-    - modify_source_code  # 限定範圍內
+    - modify_source_code # 限定範圍內
     - run_tests
     - run_linter
 ```
@@ -5920,23 +5985,23 @@ def install_ai_suggested_packages(packages: list[str]):
 
 ### 14.3 Anti-Patterns 總覽表
 
-| # | Anti-Pattern | 風險等級 | 正確做法 |
-|---|-------------|---------|---------|
-| 1 | AI 直接修改 Production | **致命** | 透過 PR + Code Review |
-| 2 | 無 Rollback 機制 | **致命** | 完整快照 + 回滾腳本 |
-| 3 | 無測試直接部署 | **致命** | 必經測試 + 安全閘門 |
-| 4 | program.md 過於寬泛 | **高** | 明確目標 + 量化指標 |
-| 5 | AI Agent 權限過大 | **高** | 最小權限原則 |
-| 6 | 忽略 LLM 幻覺 | **高** | 白名單 + 驗證 |
-| 7 | 同時優化多面向 | **中** | 單一面向聚焦 |
-| 8 | 無 API 用量監控 | **中** | 設定預算上限 + 告警 |
-| 9 | program.md 未版控 | **中** | Git 管理 + Code Review |
-| 10 | 忽略 Drift 偵測 | **中** | 定期檢查 + 更新策略 |
-| 11 | Agent 無操作稽核 | **高** | 啟用 Audit Log + SIEM 整合 |
-| 12 | Agent Fleet 無資源隔離 | **高** | 各 Sub-agent 使用獨立 Branch/Worktree |
-| 13 | 信任 Agent 產出不驗證 | **高** | 安全掃描閘門 + 人工審核 |
-| 14 | AI Credits 無預算控制 | **中** | 設定多層 Budget Controls |
-| 15 | Agent 共享 Context 過大 | **中** | 使用 Subagent 隔離 + CLAUDE.md 精簡 |
+| #   | Anti-Pattern            | 風險等級 | 正確做法                              |
+| --- | ----------------------- | -------- | ------------------------------------- |
+| 1   | AI 直接修改 Production  | **致命** | 透過 PR + Code Review                 |
+| 2   | 無 Rollback 機制        | **致命** | 完整快照 + 回滾腳本                   |
+| 3   | 無測試直接部署          | **致命** | 必經測試 + 安全閘門                   |
+| 4   | program.md 過於寬泛     | **高**   | 明確目標 + 量化指標                   |
+| 5   | AI Agent 權限過大       | **高**   | 最小權限原則                          |
+| 6   | 忽略 LLM 幻覺           | **高**   | 白名單 + 驗證                         |
+| 7   | 同時優化多面向          | **中**   | 單一面向聚焦                          |
+| 8   | 無 API 用量監控         | **中**   | 設定預算上限 + 告警                   |
+| 9   | program.md 未版控       | **中**   | Git 管理 + Code Review                |
+| 10  | 忽略 Drift 偵測         | **中**   | 定期檢查 + 更新策略                   |
+| 11  | Agent 無操作稽核        | **高**   | 啟用 Audit Log + SIEM 整合            |
+| 12  | Agent Fleet 無資源隔離  | **高**   | 各 Sub-agent 使用獨立 Branch/Worktree |
+| 13  | 信任 Agent 產出不驗證   | **高**   | 安全掃描閘門 + 人工審核               |
+| 14  | AI Credits 無預算控制   | **中**   | 設定多層 Budget Controls              |
+| 15  | Agent 共享 Context 過大 | **中**   | 使用 Subagent 隔離 + CLAUDE.md 精簡   |
 
 > **💡 企業導入建議**：建議在團隊 Wiki 中維護「AutoResearch Anti-Patterns 清單」，新進成員 Onboarding 時必須閱讀。每次遇到問題都應回顧並更新此清單。
 
@@ -5948,7 +6013,7 @@ def install_ai_suggested_packages(packages: list[str]):
 
 ```yaml
 # docker-compose.yml
-version: '3.9'
+version: "3.9"
 
 services:
   # AutoResearch Agent
@@ -6259,57 +6324,57 @@ autoresearch-ssdlc/
 
 ## 附錄 D：術語表（Glossary）
 
-| 術語 | 英文 | 說明 |
-|------|------|------|
-| AutoResearch | AutoResearch | Karpathy 提出的 AI 自主研究框架，讓 Agent 在固定時間預算內自主修改、測試、評估程式碼 |
-| SSDLC | Secure Software Development Lifecycle | 安全軟體開發生命週期，在 SDLC 各階段嵌入安全實踐 |
-| val_bpb | Validation Bits Per Byte | AutoResearch 的核心評估指標，越低越好，vocab-size 無關 |
-| Claude Code | Claude Code | Anthropic 的 Agentic 編碼工具，支援 Terminal、VS Code、Desktop、Web 等多介面 |
-| CLAUDE.md | CLAUDE.md | Claude Code 的持久化指令檔案，每次會話自動載入 |
-| MCP | Model Context Protocol | 讓 AI 工具連接外部資料來源和服務的協定 |
-| Skills | Agent Skills | 可重複使用的 AI 任務定義，遵循開放標準 |
-| Hooks | Hooks | Claude Code 在特定事件觸發時自動執行的腳本 |
-| Subagents | Subagents | 在獨立 Context 中運行的子代理人 |
-| Worktree | Git Worktree | Git 工作樹，讓多個會話在獨立目錄中平行工作 |
-| Cloud Agent | Copilot Cloud Agent | GitHub Copilot 的雲端代理人，可自主完成複雜任務 |
-| Agentic Memory | Agentic Memory | GitHub Copilot 的儲存庫級別持久記憶系統 |
-| Agent SDK | Claude Code Agent SDK | 用於建構生產級 AI Agent 的 Python/TypeScript SDK |
-| Routines | Claude Code Routines | 雲端排程任務系統，支援 cron、event trigger、API 觸發 |
-| Channels | Claude Code Channels | 事件推送頻道，讓外部系統將事件推入 Claude Code session |
-| Remote Control | Remote Control | 從手機或其他裝置遠端控制 Claude Code session |
-| Plugins | Claude Code Plugins | 可安裝的擴充功能包，類似 VS Code extensions |
-| Ultraplan | Ultraplan | Claude Code 的雲端大規模任務規劃功能 |
-| Ultrareview | Ultrareview | Claude Code 的多 Agent 平行 Code Review 功能 |
-| Auto Mode | Auto Mode | Claude Code 自動模式，不中斷執行直到任務完成 |
-| Sandbox | Sandbox | Claude Code 的隔離執行環境 |
-| Copilot CLI | GitHub Copilot CLI | 獨立的命令列 AI Agent，支援 autopilot、fleet、research |
-| Copilot App | GitHub Copilot App | GitHub Copilot 桌面應用程式 |
-| Copilot SDK | GitHub Copilot SDK | Node.js/Python/.NET SDK，用於嵌入 Copilot 能力 |
-| Copilot Spaces | Copilot Spaces | 組織和分享 AI Context 的功能 |
-| `/fleet` | Fleet | Copilot CLI 的平行子任務分派功能 |
-| `/research` | Research | Copilot CLI 的深度研究模式 |
-| Chronicle | Chronicle | Copilot CLI 的可搜尋 session 歷史紀錄 |
-| AI Credits | AI Credits | GitHub 的 AI 服務計量計費單位 |
-| Budget Controls | Budget Controls | AI Credits 消費上限設定 |
-| Agentic Workflows | GitHub Agentic Workflows | 讓 AI Agent 自主管理 CI/CD 流程的功能 |
-| Copilot Plugins | Copilot Plugins | Copilot 的擴充套件生態系 |
-| SAST | Static Application Security Testing | 靜態應用安全測試 |
-| DAST | Dynamic Application Security Testing | 動態應用安全測試 |
-| SCA | Software Composition Analysis | 軟體成分分析 |
-| SARIF | Static Analysis Results Interchange Format | 靜態分析結果交換格式 |
-| STRIDE | Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege | 威脅建模方法論 |
-| OWASP | Open Web Application Security Project | 開放網頁應用安全專案 |
-| CWE | Common Weakness Enumeration | 常見弱點列舉 |
-| CVE | Common Vulnerabilities and Exposures | 常見漏洞和暴露 |
-| CVSS | Common Vulnerability Scoring System | 常見漏洞評分系統 |
-| Time Budget | Time Budget | AutoResearch 的固定執行時間限制 |
-| Keep/Revert | Keep/Revert | AutoResearch 的核心決策機制：改善則保留，否則回滾 |
-| program.md | program.md | AutoResearch 的 AI 指令策略文件 |
-| Plan Mode | Plan Mode | Claude Code 的唯讀分析模式 |
-| Extended Thinking | Extended Thinking | Claude 的延伸推理功能，提供更深入的問題分析 |
-| OpenTelemetry | OpenTelemetry | 開放的 Observability 標準，用於追蹤 Agent 操作 |
-| PAT | Personal Access Token | GitHub 個人存取令牌 |
-| mTLS | Mutual TLS | 雙向 TLS 認證 |
+| 術語              | 英文                                                                                                | 說明                                                                                 |
+| ----------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| AutoResearch      | AutoResearch                                                                                        | Karpathy 提出的 AI 自主研究框架，讓 Agent 在固定時間預算內自主修改、測試、評估程式碼 |
+| SSDLC             | Secure Software Development Lifecycle                                                               | 安全軟體開發生命週期，在 SDLC 各階段嵌入安全實踐                                     |
+| val_bpb           | Validation Bits Per Byte                                                                            | AutoResearch 的核心評估指標，越低越好，vocab-size 無關                               |
+| Claude Code       | Claude Code                                                                                         | Anthropic 的 Agentic 編碼工具，支援 Terminal、VS Code、Desktop、Web 等多介面         |
+| CLAUDE.md         | CLAUDE.md                                                                                           | Claude Code 的持久化指令檔案，每次會話自動載入                                       |
+| MCP               | Model Context Protocol                                                                              | 讓 AI 工具連接外部資料來源和服務的協定                                               |
+| Skills            | Agent Skills                                                                                        | 可重複使用的 AI 任務定義，遵循開放標準                                               |
+| Hooks             | Hooks                                                                                               | Claude Code 在特定事件觸發時自動執行的腳本                                           |
+| Subagents         | Subagents                                                                                           | 在獨立 Context 中運行的子代理人                                                      |
+| Worktree          | Git Worktree                                                                                        | Git 工作樹，讓多個會話在獨立目錄中平行工作                                           |
+| Cloud Agent       | Copilot Cloud Agent                                                                                 | GitHub Copilot 的雲端代理人，可自主完成複雜任務                                      |
+| Agentic Memory    | Agentic Memory                                                                                      | GitHub Copilot 的儲存庫級別持久記憶系統                                              |
+| Agent SDK         | Claude Code Agent SDK                                                                               | 用於建構生產級 AI Agent 的 Python/TypeScript SDK                                     |
+| Routines          | Claude Code Routines                                                                                | 雲端排程任務系統，支援 cron、event trigger、API 觸發                                 |
+| Channels          | Claude Code Channels                                                                                | 事件推送頻道，讓外部系統將事件推入 Claude Code session                               |
+| Remote Control    | Remote Control                                                                                      | 從手機或其他裝置遠端控制 Claude Code session                                         |
+| Plugins           | Claude Code Plugins                                                                                 | 可安裝的擴充功能包，類似 VS Code extensions                                          |
+| Ultraplan         | Ultraplan                                                                                           | Claude Code 的雲端大規模任務規劃功能                                                 |
+| Ultrareview       | Ultrareview                                                                                         | Claude Code 的多 Agent 平行 Code Review 功能                                         |
+| Auto Mode         | Auto Mode                                                                                           | Claude Code 自動模式，不中斷執行直到任務完成                                         |
+| Sandbox           | Sandbox                                                                                             | Claude Code 的隔離執行環境                                                           |
+| Copilot CLI       | GitHub Copilot CLI                                                                                  | 獨立的命令列 AI Agent，支援 autopilot、fleet、research                               |
+| Copilot App       | GitHub Copilot App                                                                                  | GitHub Copilot 桌面應用程式                                                          |
+| Copilot SDK       | GitHub Copilot SDK                                                                                  | Node.js/Python/.NET SDK，用於嵌入 Copilot 能力                                       |
+| Copilot Spaces    | Copilot Spaces                                                                                      | 組織和分享 AI Context 的功能                                                         |
+| `/fleet`          | Fleet                                                                                               | Copilot CLI 的平行子任務分派功能                                                     |
+| `/research`       | Research                                                                                            | Copilot CLI 的深度研究模式                                                           |
+| Chronicle         | Chronicle                                                                                           | Copilot CLI 的可搜尋 session 歷史紀錄                                                |
+| AI Credits        | AI Credits                                                                                          | GitHub 的 AI 服務計量計費單位                                                        |
+| Budget Controls   | Budget Controls                                                                                     | AI Credits 消費上限設定                                                              |
+| Agentic Workflows | GitHub Agentic Workflows                                                                            | 讓 AI Agent 自主管理 CI/CD 流程的功能                                                |
+| Copilot Plugins   | Copilot Plugins                                                                                     | Copilot 的擴充套件生態系                                                             |
+| SAST              | Static Application Security Testing                                                                 | 靜態應用安全測試                                                                     |
+| DAST              | Dynamic Application Security Testing                                                                | 動態應用安全測試                                                                     |
+| SCA               | Software Composition Analysis                                                                       | 軟體成分分析                                                                         |
+| SARIF             | Static Analysis Results Interchange Format                                                          | 靜態分析結果交換格式                                                                 |
+| STRIDE            | Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege | 威脅建模方法論                                                                       |
+| OWASP             | Open Web Application Security Project                                                               | 開放網頁應用安全專案                                                                 |
+| CWE               | Common Weakness Enumeration                                                                         | 常見弱點列舉                                                                         |
+| CVE               | Common Vulnerabilities and Exposures                                                                | 常見漏洞和暴露                                                                       |
+| CVSS              | Common Vulnerability Scoring System                                                                 | 常見漏洞評分系統                                                                     |
+| Time Budget       | Time Budget                                                                                         | AutoResearch 的固定執行時間限制                                                      |
+| Keep/Revert       | Keep/Revert                                                                                         | AutoResearch 的核心決策機制：改善則保留，否則回滾                                    |
+| program.md        | program.md                                                                                          | AutoResearch 的 AI 指令策略文件                                                      |
+| Plan Mode         | Plan Mode                                                                                           | Claude Code 的唯讀分析模式                                                           |
+| Extended Thinking | Extended Thinking                                                                                   | Claude 的延伸推理功能，提供更深入的問題分析                                          |
+| OpenTelemetry     | OpenTelemetry                                                                                       | 開放的 Observability 標準，用於追蹤 Agent 操作                                       |
+| PAT               | Personal Access Token                                                                               | GitHub 個人存取令牌                                                                  |
+| mTLS              | Mutual TLS                                                                                          | 雙向 TLS 認證                                                                        |
 
 ---
 
@@ -6317,59 +6382,58 @@ autoresearch-ssdlc/
 
 ### 官方文件
 
-| 資源 | 連結 | 說明 |
-|------|------|------|
-| AutoResearch GitHub | [github.com/karpathy/autoresearch](https://github.com/karpathy/autoresearch) | 原始碼、README、program.md |
-| Claude Code 文件 | [code.claude.com/docs](https://code.claude.com/docs/en/overview) | 完整安裝指南、功能說明、最佳實踐 |
-| Claude Code Quickstart | [code.claude.com/docs/en/quickstart](https://code.claude.com/docs/en/quickstart) | 快速入門教學 |
-| Claude Code Best Practices | [code.claude.com/docs/en/best-practices](https://code.claude.com/docs/en/best-practices) | 最佳實踐與效率技巧 |
-| Claude Code Common Workflows | [code.claude.com/docs/en/common-workflows](https://code.claude.com/docs/en/common-workflows) | 常見工作流程 |
-| GitHub Copilot 文件 | [docs.github.com/en/copilot](https://docs.github.com/en/copilot) | 完整功能說明與設定指南 |
-| GitHub Copilot Features | [docs.github.com/en/copilot/about-github-copilot/github-copilot-features](https://docs.github.com/en/copilot/about-github-copilot/github-copilot-features) | 功能總覽 |
-| Agent Skills 標準 | [github.com/agentskills/agentskills](https://github.com/agentskills/agentskills) | 開放標準規格 |
-| Copilot Agentic Memory | [docs.github.com/en/copilot/concepts/agents/copilot-memory](https://docs.github.com/en/copilot/concepts/agents/copilot-memory) | 記憶系統說明 |
-| Copilot Agent Skills | [docs.github.com/en/copilot/concepts/agents/about-agent-skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) | Skills 說明 |
+| 資源                         | 連結                                                                                                                                                       | 說明                             |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| AutoResearch GitHub          | [github.com/karpathy/autoresearch](https://github.com/karpathy/autoresearch)                                                                               | 原始碼、README、program.md       |
+| Claude Code 文件             | [code.claude.com/docs](https://code.claude.com/docs/en/overview)                                                                                           | 完整安裝指南、功能說明、最佳實踐 |
+| Claude Code Quickstart       | [code.claude.com/docs/en/quickstart](https://code.claude.com/docs/en/quickstart)                                                                           | 快速入門教學                     |
+| Claude Code Best Practices   | [code.claude.com/docs/en/best-practices](https://code.claude.com/docs/en/best-practices)                                                                   | 最佳實踐與效率技巧               |
+| Claude Code Common Workflows | [code.claude.com/docs/en/common-workflows](https://code.claude.com/docs/en/common-workflows)                                                               | 常見工作流程                     |
+| GitHub Copilot 文件          | [docs.github.com/en/copilot](https://docs.github.com/en/copilot)                                                                                           | 完整功能說明與設定指南           |
+| GitHub Copilot Features      | [docs.github.com/en/copilot/about-github-copilot/github-copilot-features](https://docs.github.com/en/copilot/about-github-copilot/github-copilot-features) | 功能總覽                         |
+| Agent Skills 標準            | [github.com/agentskills/agentskills](https://github.com/agentskills/agentskills)                                                                           | 開放標準規格                     |
+| Copilot Agentic Memory       | [docs.github.com/en/copilot/concepts/agents/copilot-memory](https://docs.github.com/en/copilot/concepts/agents/copilot-memory)                             | 記憶系統說明                     |
+| Copilot Agent Skills         | [docs.github.com/en/copilot/concepts/agents/about-agent-skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills)                     | Skills 說明                      |
 
 ### 安全標準與框架
 
-| 資源 | 連結 | 說明 |
-|------|------|------|
+| 資源         | 連結                                                                    | 說明                 |
+| ------------ | ----------------------------------------------------------------------- | -------------------- |
 | OWASP Top 10 | [owasp.org/www-project-top-ten](https://owasp.org/www-project-top-ten/) | Web 應用安全十大風險 |
-| OWASP SAMM | [owaspsamm.org](https://owaspsamm.org/) | 軟體保證成熟度模型 |
-| NIST SSDF | [csrc.nist.gov/Projects/ssdf](https://csrc.nist.gov/Projects/ssdf) | 安全軟體開發框架 |
-| CWE | [cwe.mitre.org](https://cwe.mitre.org/) | 常見弱點列舉資料庫 |
-| STRIDE | Microsoft Threat Modeling | 威脅建模方法論 |
+| OWASP SAMM   | [owaspsamm.org](https://owaspsamm.org/)                                 | 軟體保證成熟度模型   |
+| NIST SSDF    | [csrc.nist.gov/Projects/ssdf](https://csrc.nist.gov/Projects/ssdf)      | 安全軟體開發框架     |
+| CWE          | [cwe.mitre.org](https://cwe.mitre.org/)                                 | 常見弱點列舉資料庫   |
+| STRIDE       | Microsoft Threat Modeling                                               | 威脅建模方法論       |
 
 ### 工具與平台
 
-| 工具 | 連結 | 用途 |
-|------|------|------|
-| uv | [docs.astral.sh/uv](https://docs.astral.sh/uv/) | Python 專案管理器（AutoResearch 使用） |
-| Semgrep | [semgrep.dev](https://semgrep.dev/) | 靜態分析（SAST） |
-| Snyk | [snyk.io](https://snyk.io/) | 軟體成分分析（SCA） |
-| Trivy | [trivy.dev](https://trivy.dev/) | 容器安全掃描 |
-| GitLeaks | [gitleaks.io](https://gitleaks.io/) | Secret Scanning |
-| pip-audit | [pypi.org/project/pip-audit](https://pypi.org/project/pip-audit/) | Python 依賴安全審計 |
+| 工具      | 連結                                                              | 用途                                   |
+| --------- | ----------------------------------------------------------------- | -------------------------------------- |
+| uv        | [docs.astral.sh/uv](https://docs.astral.sh/uv/)                   | Python 專案管理器（AutoResearch 使用） |
+| Semgrep   | [semgrep.dev](https://semgrep.dev/)                               | 靜態分析（SAST）                       |
+| Snyk      | [snyk.io](https://snyk.io/)                                       | 軟體成分分析（SCA）                    |
+| Trivy     | [trivy.dev](https://trivy.dev/)                                   | 容器安全掃描                           |
+| GitLeaks  | [gitleaks.io](https://gitleaks.io/)                               | Secret Scanning                        |
+| pip-audit | [pypi.org/project/pip-audit](https://pypi.org/project/pip-audit/) | Python 依賴安全審計                    |
 
 ### 延伸閱讀
 
-| 主題 | 資源 | 說明 |
-|------|------|------|
-| AutoResearch 背景 | [Karpathy Tweet](https://x.com/karpathy/status/2029701092347630069) | 專案動機與設計理念 |
-| AutoResearch 進展 | [Karpathy Tweet](https://x.com/karpathy/status/2031135152349524125) | 最新進展與經驗分享 |
-| nanochat | [github.com/karpathy/nanochat](https://github.com/karpathy/nanochat) | AutoResearch 的父專案 |
-| Claude Code Agent SDK | [code.claude.com/docs/en/agent-sdk](https://code.claude.com/docs/en/agent-sdk) | 建立自定義 Agent 的 SDK |
-| Claude Code Plugins | [code.claude.com/docs/en/plugins](https://code.claude.com/docs/en/plugins) | Plugin 開發指南 |
-| Claude Code Routines | [code.claude.com/docs/en/routines](https://code.claude.com/docs/en/routines) | 排程任務系統 |
-| Claude Code GitHub Actions | [code.claude.com/docs/en/github-actions](https://code.claude.com/docs/en/github-actions) | CI/CD 整合指南 |
-| Claude Code Desktop | [code.claude.com/docs/en/desktop](https://code.claude.com/docs/en/desktop) | Desktop App 功能說明 |
-| GitHub Copilot CLI | [docs.github.com/en/copilot/copilot-cli](https://docs.github.com/en/copilot/copilot-cli) | CLI Agent 完整文件 |
-| Copilot Cloud Agent | [docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent](https://docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent) | Cloud Agent 使用指南 |
-| Copilot Agentic Workflows | [docs.github.com/en/copilot/concepts/agents](https://docs.github.com/en/copilot/concepts/agents) | Agentic 功能概覽 |
-| Copilot SDK | [docs.github.com/en/copilot/copilot-sdk](https://docs.github.com/en/copilot/copilot-sdk) | SDK 開發指南 |
-| Awesome Copilot | [github.com/github/awesome-copilot](https://github.com/github/awesome-copilot) | 社群精選 Copilot 資源 |
+| 主題                       | 資源                                                                                                                                                             | 說明                    |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| AutoResearch 背景          | [Karpathy Tweet](https://x.com/karpathy/status/2029701092347630069)                                                                                              | 專案動機與設計理念      |
+| AutoResearch 進展          | [Karpathy Tweet](https://x.com/karpathy/status/2031135152349524125)                                                                                              | 最新進展與經驗分享      |
+| nanochat                   | [github.com/karpathy/nanochat](https://github.com/karpathy/nanochat)                                                                                             | AutoResearch 的父專案   |
+| Claude Code Agent SDK      | [code.claude.com/docs/en/agent-sdk](https://code.claude.com/docs/en/agent-sdk)                                                                                   | 建立自定義 Agent 的 SDK |
+| Claude Code Plugins        | [code.claude.com/docs/en/plugins](https://code.claude.com/docs/en/plugins)                                                                                       | Plugin 開發指南         |
+| Claude Code Routines       | [code.claude.com/docs/en/routines](https://code.claude.com/docs/en/routines)                                                                                     | 排程任務系統            |
+| Claude Code GitHub Actions | [code.claude.com/docs/en/github-actions](https://code.claude.com/docs/en/github-actions)                                                                         | CI/CD 整合指南          |
+| Claude Code Desktop        | [code.claude.com/docs/en/desktop](https://code.claude.com/docs/en/desktop)                                                                                       | Desktop App 功能說明    |
+| GitHub Copilot CLI         | [docs.github.com/en/copilot/copilot-cli](https://docs.github.com/en/copilot/copilot-cli)                                                                         | CLI Agent 完整文件      |
+| Copilot Cloud Agent        | [docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent](https://docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent) | Cloud Agent 使用指南    |
+| Copilot Agentic Workflows  | [docs.github.com/en/copilot/concepts/agents](https://docs.github.com/en/copilot/concepts/agents)                                                                 | Agentic 功能概覽        |
+| Copilot SDK                | [docs.github.com/en/copilot/copilot-sdk](https://docs.github.com/en/copilot/copilot-sdk)                                                                         | SDK 開發指南            |
+| Awesome Copilot            | [github.com/github/awesome-copilot](https://github.com/github/awesome-copilot)                                                                                   | 社群精選 Copilot 資源   |
 
 ---
 
-*文件結束 — AutoResearch 驅動 SSDLC（安全軟體開發生命週期）教學手冊 v3.0*
-
+_文件結束 — AutoResearch 驅動 SSDLC（安全軟體開發生命週期）教學手冊 v3.0_

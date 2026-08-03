@@ -1,6 +1,6 @@
 ---
-description: '當本機上下文不足時，請使用 Context7 取得權威的外部文件和 API 參考。'
-applyTo: '**'
+description: "當本機上下文不足時，請使用 Context7 取得權威的外部文件和 API 參考。"
+applyTo: "**"
 ---
 
 # Context7-aware development 情境感知開發
@@ -64,22 +64,25 @@ Skip Context7 for:
 
 ### 工具工作流程
 
-1) **如果使用者提供了庫 ID**，直接使用它。
-  - 有效形式：`/owner/repo` 或 `/owner/repo/version`（用於固定版本）。
+1. **如果使用者提供了庫 ID**，直接使用它。
 
-2) 否則，使用以下方式 **解析庫 ID**：
-  - 工具：`resolve-library-id`
-  - 輸入：
-	  - `libraryName`：庫/框架名稱（例如，"next.js"、"supabase"、"prisma"）
-	  - `query`：使用者的任務（用於排名匹配項）
+- 有效形式：`/owner/repo` 或 `/owner/repo/version`（用於固定版本）。
 
-3) **使用以下方式獲取相關文檔**：
-  - 工具：`query-docs`
-  - 輸入：
-	  - `libraryId`: 已解析（或使用者提供）的庫 ID
-	  - `query`: 你正在回答的具體任務/問題
+2. 否則，使用以下方式 **解析庫 ID**：
 
-4) 僅在文檔檢索完成後：**根據這些文檔撰寫程式碼/步驟**。
+- 工具：`resolve-library-id`
+- 輸入：
+  - `libraryName`：庫/框架名稱（例如，"next.js"、"supabase"、"prisma"）
+  - `query`：使用者的任務（用於排名匹配項）
+
+3. **使用以下方式獲取相關文檔**：
+
+- 工具：`query-docs`
+- 輸入：
+  - `libraryId`: 已解析（或使用者提供）的庫 ID
+  - `query`: 你正在回答的具體任務/問題
+
+4. 僅在文檔檢索完成後：**根據這些文檔撰寫程式碼/步驟**。
 
 ### 效率限制
 

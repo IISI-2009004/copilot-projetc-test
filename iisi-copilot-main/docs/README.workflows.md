@@ -32,5 +32,5 @@
 - Respond to slash commands in issues and PRs 在問題和 PR 中回复斜杠命令
 - Orchestrate multi-step repository automation 協調多步驟儲存庫自動化
 
-| Name 姓名 | Description 描述 | Triggers  觸發器 |
-| ---- | ----------- | -------- |
+| Name 姓名 | Description 描述 | Triggers 觸發器 |
+| --------- | ---------------- | --------------- |

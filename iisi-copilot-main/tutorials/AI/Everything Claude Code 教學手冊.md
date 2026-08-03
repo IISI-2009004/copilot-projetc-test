@@ -121,14 +121,14 @@ Everything Claude Code（ECC）是一個開源的 **Agent Harness Operating Syst
 
 ECC **不只是一組配置檔**，而是一套完整的系統，包含：
 
-| 元件 | 數量（v2.0.0） | 說明 |
-|------|-----------------|------|
-| Agents（代理） | 67 個 | 專業化子代理，處理特定任務 |
-| Skills（技能） | 277 個 | 可重用的工作流程定義 |
-| Commands（指令） | 92 個 | Legacy 斜線指令（逐步遷移至 Skills） |
-| Hooks（鉤子） | 8 種事件類型 | 自動觸發的工具事件回應 |
-| Rules（規則） | 34 條 | 12+ 語言生態系的永久遵循準則 |
-| MCP Servers | 14 個 | 外部服務整合配置（僅 1 個預設啟用） |
+| 元件             | 數量（v2.0.0） | 說明                                 |
+| ---------------- | -------------- | ------------------------------------ |
+| Agents（代理）   | 67 個          | 專業化子代理，處理特定任務           |
+| Skills（技能）   | 277 個         | 可重用的工作流程定義                 |
+| Commands（指令） | 92 個          | Legacy 斜線指令（逐步遷移至 Skills） |
+| Hooks（鉤子）    | 8 種事件類型   | 自動觸發的工具事件回應               |
+| Rules（規則）    | 34 條          | 12+ 語言生態系的永久遵循準則         |
+| MCP Servers      | 14 個          | 外部服務整合配置（僅 1 個預設啟用）  |
 
 **核心定位**：
 
@@ -141,15 +141,15 @@ ECC **不只是一組配置檔**，而是一套完整的系統，包含：
 
 ### 1.2 與傳統 Prompt Engineering 差異
 
-| 面向 | 傳統 Prompt Engineering | ECC（Harness Engineering） |
-|------|------------------------|---------------------------|
-| 核心單位 | 單一 Prompt | Agent + Skills + Hooks + Rules |
-| 上下文管理 | 手動管理 | 自動壓縮 + 記憶持久化 |
-| 學習能力 | 無 | Instinct-based 持續學習 |
-| 任務拆分 | 人工拆分 | 子代理自動委派 |
-| 安全性 | 無內建機制 | AgentShield 靜態分析 + Secret Detection |
-| 品質控管 | 靠人工檢查 | 自動 TDD + Code Review + Linter |
-| 可擴展性 | 低 | 模組化 Skills + Plugin 體系 |
+| 面向       | 傳統 Prompt Engineering | ECC（Harness Engineering）              |
+| ---------- | ----------------------- | --------------------------------------- |
+| 核心單位   | 單一 Prompt             | Agent + Skills + Hooks + Rules          |
+| 上下文管理 | 手動管理                | 自動壓縮 + 記憶持久化                   |
+| 學習能力   | 無                      | Instinct-based 持續學習                 |
+| 任務拆分   | 人工拆分                | 子代理自動委派                          |
+| 安全性     | 無內建機制              | AgentShield 靜態分析 + Secret Detection |
+| 品質控管   | 靠人工檢查              | 自動 TDD + Code Review + Linter         |
+| 可擴展性   | 低                      | 模組化 Skills + Plugin 體系             |
 
 ### 1.3 Context Engineering 與 Harness Engineering
 
@@ -277,17 +277,17 @@ graph LR
 
 ECC 自 2025 年 9 月起持續快速迭代，以下為主要里程碑：
 
-| 版本 | 日期 | 重要特性 |
-|------|------|---------|
-| v1.2.0 | 2026-02 | Python/Django + Java Spring Boot Skills；Continuous Learning v2（Instinct 系統）；Session 管理 |
-| v1.3.0 | 2026-02 | 完整 OpenCode 整合（12 agents、24 commands、16 skills）；3 個 native custom tools |
-| v1.4.0 | 2026-02 | 互動式安裝精靈；PM2 與 multi-agent 編排（6 新指令）；多語言 Rules 架構重構 |
-| v1.6.0 | 2026-02 | Codex CLI 支援；AgentShield 整合（1282 tests、102 rules）；GitHub Marketplace（ECC Tools） |
-| v1.7.0 | 2026-02 | Codex App + CLI 雙支援；`frontend-slides` Skill；5 個商業/內容 Skills |
-| v1.8.0 | 2026-03 | 正式定位為 Harness Performance System；Hook 可靠性大幅翻修；NanoClaw v2；997 內部測試通過 |
-| v1.9.0 | 2026-03 | Manifest-driven 選擇性安裝；6 新 Agents（TypeScript、Java、Kotlin、PyTorch）；12 語言生態系 |
-| v2.0.0-rc.1 | 2026-04 | Dashboard GUI；Operator 工作流擴展；ECC 2.0 Alpha（Rust 控制平面）；66 agents、268 skills |
-| v2.0.0 | 2026-06 | **Agent Harness Operating System** 正式畢業；277 skills；Hermes operator；`orch-*` 編排器族；Worktree-lifecycle service；ECC Discord 社群成立 |
+| 版本        | 日期    | 重要特性                                                                                                                                      |
+| ----------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| v1.2.0      | 2026-02 | Python/Django + Java Spring Boot Skills；Continuous Learning v2（Instinct 系統）；Session 管理                                                |
+| v1.3.0      | 2026-02 | 完整 OpenCode 整合（12 agents、24 commands、16 skills）；3 個 native custom tools                                                             |
+| v1.4.0      | 2026-02 | 互動式安裝精靈；PM2 與 multi-agent 編排（6 新指令）；多語言 Rules 架構重構                                                                    |
+| v1.6.0      | 2026-02 | Codex CLI 支援；AgentShield 整合（1282 tests、102 rules）；GitHub Marketplace（ECC Tools）                                                    |
+| v1.7.0      | 2026-02 | Codex App + CLI 雙支援；`frontend-slides` Skill；5 個商業/內容 Skills                                                                         |
+| v1.8.0      | 2026-03 | 正式定位為 Harness Performance System；Hook 可靠性大幅翻修；NanoClaw v2；997 內部測試通過                                                     |
+| v1.9.0      | 2026-03 | Manifest-driven 選擇性安裝；6 新 Agents（TypeScript、Java、Kotlin、PyTorch）；12 語言生態系                                                   |
+| v2.0.0-rc.1 | 2026-04 | Dashboard GUI；Operator 工作流擴展；ECC 2.0 Alpha（Rust 控制平面）；66 agents、268 skills                                                     |
+| v2.0.0      | 2026-06 | **Agent Harness Operating System** 正式畢業；277 skills；Hermes operator；`orch-*` 編排器族；Worktree-lifecycle service；ECC Discord 社群成立 |
 
 > 💡 完整變更記錄請參閱 [CHANGELOG.md](https://github.com/affaan-m/ECC/blob/main/CHANGELOG.md) 及 [Releases](https://github.com/affaan-m/ECC/releases)。
 
@@ -310,6 +310,7 @@ model: opus
 ---
 
 You are a senior code reviewer. Review the provided code for:
+
 1. Code quality and maintainability
 2. Security vulnerabilities (OWASP Top 10)
 3. Performance issues
@@ -318,38 +319,38 @@ You are a senior code reviewer. Review the provided code for:
 
 #### 2.1.2 主要 Agent 分類
 
-| 類別 | Agent 名稱 | 職責 |
-|------|-----------|------|
-| **規劃** | `planner` | 功能實作規劃、任務拆解 |
-| **架構** | `architect` | 系統設計決策 |
-| **品質** | `code-reviewer` | 程式碼品質審查 |
-| **安全** | `security-reviewer` | OWASP Top 10 弱點分析 |
-| **測試** | `tdd-guide` | TDD 驅動開發引導 |
-| **E2E** | `e2e-runner` | Playwright E2E 測試 |
-| **建構** | `build-error-resolver` | 建構錯誤自動修復 |
-| **重構** | `refactor-cleaner` | 無用程式碼清除 |
-| **文件** | `doc-updater` | 文件同步更新 |
-| **文件查閱** | `docs-lookup` | 文件 / API 查閱 |
-| **Java** | `java-reviewer` | Java/Spring Boot 專門審查 |
-| **Java 建構** | `java-build-resolver` | Maven/Gradle 建構錯誤 |
-| **TypeScript** | `typescript-reviewer` | TypeScript/JavaScript 審查 |
-| **Python** | `python-reviewer` | Python 程式碼審查 |
-| **Go** | `go-reviewer` | Go 程式碼審查 |
-| **Go 建構** | `go-build-resolver` | Go 建構錯誤修復 |
-| **Kotlin** | `kotlin-reviewer` | Kotlin/Android/KMP 審查 |
-| **Kotlin 建構** | `kotlin-build-resolver` | Kotlin/Gradle 建構錯誤 |
-| **Rust** | `rust-reviewer` | Rust 程式碼審查 |
-| **Rust 建構** | `rust-build-resolver` | Rust 建構錯誤修復 |
-| **C++** | `cpp-reviewer` | C++ 程式碼審查 |
-| **C++ 建構** | `cpp-build-resolver` | C++ 建構錯誤修復 |
-| **F#** | `fsharp-reviewer` | F# 函數式程式碼審查 |
-| **HarmonyOS** | `harmonyos-app-resolver` | HarmonyOS/ArkTS 應用開發 |
-| **PyTorch** | `pytorch-build-resolver` | PyTorch/CUDA 訓練錯誤 |
-| **ML** | `mle-reviewer` | 生產 ML Pipeline、評估、監控 |
-| **DB** | `database-reviewer` | 資料庫查詢審查 |
-| **自動化** | `loop-operator` | 自主迴圈執行 |
-| **調校** | `harness-optimizer` | Harness 配置調校 |
-| **溝通** | `chief-of-staff` | 通訊分流與草稿 |
+| 類別            | Agent 名稱               | 職責                         |
+| --------------- | ------------------------ | ---------------------------- |
+| **規劃**        | `planner`                | 功能實作規劃、任務拆解       |
+| **架構**        | `architect`              | 系統設計決策                 |
+| **品質**        | `code-reviewer`          | 程式碼品質審查               |
+| **安全**        | `security-reviewer`      | OWASP Top 10 弱點分析        |
+| **測試**        | `tdd-guide`              | TDD 驅動開發引導             |
+| **E2E**         | `e2e-runner`             | Playwright E2E 測試          |
+| **建構**        | `build-error-resolver`   | 建構錯誤自動修復             |
+| **重構**        | `refactor-cleaner`       | 無用程式碼清除               |
+| **文件**        | `doc-updater`            | 文件同步更新                 |
+| **文件查閱**    | `docs-lookup`            | 文件 / API 查閱              |
+| **Java**        | `java-reviewer`          | Java/Spring Boot 專門審查    |
+| **Java 建構**   | `java-build-resolver`    | Maven/Gradle 建構錯誤        |
+| **TypeScript**  | `typescript-reviewer`    | TypeScript/JavaScript 審查   |
+| **Python**      | `python-reviewer`        | Python 程式碼審查            |
+| **Go**          | `go-reviewer`            | Go 程式碼審查                |
+| **Go 建構**     | `go-build-resolver`      | Go 建構錯誤修復              |
+| **Kotlin**      | `kotlin-reviewer`        | Kotlin/Android/KMP 審查      |
+| **Kotlin 建構** | `kotlin-build-resolver`  | Kotlin/Gradle 建構錯誤       |
+| **Rust**        | `rust-reviewer`          | Rust 程式碼審查              |
+| **Rust 建構**   | `rust-build-resolver`    | Rust 建構錯誤修復            |
+| **C++**         | `cpp-reviewer`           | C++ 程式碼審查               |
+| **C++ 建構**    | `cpp-build-resolver`     | C++ 建構錯誤修復             |
+| **F#**          | `fsharp-reviewer`        | F# 函數式程式碼審查          |
+| **HarmonyOS**   | `harmonyos-app-resolver` | HarmonyOS/ArkTS 應用開發     |
+| **PyTorch**     | `pytorch-build-resolver` | PyTorch/CUDA 訓練錯誤        |
+| **ML**          | `mle-reviewer`           | 生產 ML Pipeline、評估、監控 |
+| **DB**          | `database-reviewer`      | 資料庫查詢審查               |
+| **自動化**      | `loop-operator`          | 自主迴圈執行                 |
+| **調校**        | `harness-optimizer`      | Harness 配置調校             |
+| **溝通**        | `chief-of-staff`         | 通訊分流與草稿               |
 
 #### 2.1.3 子代理（Sub-agent）設計模式
 
@@ -492,51 +493,53 @@ class UserControllerTest {
 
 #### 2.3.1 主要指令（Slash Commands）
 
-| 指令 | 功能 | 對應 Agent |
-|------|------|-----------|
-| `/plan "需求描述"` | 建立實作計劃 | planner |
-| `/tdd` | 啟動 TDD 工作流 | tdd-guide |
-| `/code-review` | 程式碼審查 | code-reviewer |
-| `/build-fix` | 修復建構錯誤 | build-error-resolver |
-| `/e2e` | 產生 E2E 測試 | e2e-runner |
-| `/security-scan` | 安全掃描 | security-reviewer |
-| `/refactor-clean` | 移除無用程式碼 | refactor-cleaner |
-| `/update-docs` | 更新文件 | doc-updater |
-| `/learn` | 從 Session 中萃取模式 | — |
-| `/compact` | 手動壓縮上下文 | — |
-| `/clear` | 清除上下文（免費重置） | — |
-| `/cost` | 檢查 Token 花費 | — |
-| `/model sonnet` | 切換模型（日常） | — |
-| `/model opus` | 切換模型（深度推理） | — |
-| `/harness-audit` | 稽核 Harness 可靠度 | — |
-| `/loop-start` | 啟動自主迴圈 | loop-operator |
-| `/quality-gate` | 品質閘門檢查 | — |
-| `/model-route` | 依複雜度路由模型 | — |
-| `/multi-plan` | 多 Agent 任務分解 | — |
-| `/multi-execute` | 多 Agent 協作執行 | — |
+| 指令               | 功能                   | 對應 Agent           |
+| ------------------ | ---------------------- | -------------------- |
+| `/plan "需求描述"` | 建立實作計劃           | planner              |
+| `/tdd`             | 啟動 TDD 工作流        | tdd-guide            |
+| `/code-review`     | 程式碼審查             | code-reviewer        |
+| `/build-fix`       | 修復建構錯誤           | build-error-resolver |
+| `/e2e`             | 產生 E2E 測試          | e2e-runner           |
+| `/security-scan`   | 安全掃描               | security-reviewer    |
+| `/refactor-clean`  | 移除無用程式碼         | refactor-cleaner     |
+| `/update-docs`     | 更新文件               | doc-updater          |
+| `/learn`           | 從 Session 中萃取模式  | —                    |
+| `/compact`         | 手動壓縮上下文         | —                    |
+| `/clear`           | 清除上下文（免費重置） | —                    |
+| `/cost`            | 檢查 Token 花費        | —                    |
+| `/model sonnet`    | 切換模型（日常）       | —                    |
+| `/model opus`      | 切換模型（深度推理）   | —                    |
+| `/harness-audit`   | 稽核 Harness 可靠度    | —                    |
+| `/loop-start`      | 啟動自主迴圈           | loop-operator        |
+| `/quality-gate`    | 品質閘門檢查           | —                    |
+| `/model-route`     | 依複雜度路由模型       | —                    |
+| `/multi-plan`      | 多 Agent 任務分解      | —                    |
+| `/multi-execute`   | 多 Agent 協作執行      | —                    |
 
 #### 2.3.2 Hooks 機制
 
 Hooks 在特定工具事件發生時自動觸發，無需手動介入。
 
-| Hook 事件 | 觸發時機 | 典型用途 |
-|-----------|---------|---------|
+| Hook 事件      | 觸發時機     | 典型用途                 |
+| -------------- | ------------ | ------------------------ |
 | `SessionStart` | Session 開始 | 載入上次上下文、設定環境 |
-| `SessionEnd` | Session 結束 | 儲存狀態、萃取學習 |
-| `PreToolUse` | 工具執行前 | 安全檢查、路徑驗證 |
-| `PostToolUse` | 工具執行後 | 自動格式化、TypeCheck |
-| `PreCompact` | 壓縮前 | 儲存關鍵狀態 |
-| `Stop` | Agent 停止時 | Session 摘要、模式萃取 |
+| `SessionEnd`   | Session 結束 | 儲存狀態、萃取學習       |
+| `PreToolUse`   | 工具執行前   | 安全檢查、路徑驗證       |
+| `PostToolUse`  | 工具執行後   | 自動格式化、TypeCheck    |
+| `PreCompact`   | 壓縮前       | 儲存關鍵狀態             |
+| `Stop`         | Agent 停止時 | Session 摘要、模式萃取   |
 
 **Hooks 範例 — 檔案編輯後自動檢查 console.log**：
 
 ```json
 {
   "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\\\.(ts|tsx|js|jsx)$\"",
-  "hooks": [{
-    "type": "command",
-    "command": "#!/bin/bash\ngrep -n 'console\\.log' \"$file_path\" && echo '[Hook] Remove console.log' >&2"
-  }]
+  "hooks": [
+    {
+      "type": "command",
+      "command": "#!/bin/bash\ngrep -n 'console\\.log' \"$file_path\" && echo '[Hook] Remove console.log' >&2"
+    }
+  ]
 }
 ```
 
@@ -622,6 +625,7 @@ graph TD
 ```
 
 > 💡 **Best Practice**：在以下時機執行 `/compact`：
+>
 > - 研究/探索完成後，開始實作前
 > - 完成一個里程碑後，開始下一個前
 > - Debug 完成後，繼續功能開發前
@@ -635,11 +639,11 @@ ECC 提供**動態系統提示注入**（Dynamic System Prompt Injection）機�
 
 #### 2.6.1 可用上下文模式
 
-| 上下文 | 檔案 | 適用場景 |
-|--------|------|---------|
-| **Development** | `contexts/dev.md` | 日常功能開發、實作程式碼 |
-| **Code Review** | `contexts/review.md` | 程式碼審查模式，聚焦品質與安全 |
-| **Research** | `contexts/research.md` | 研究探索模式，側重資料收集與分析 |
+| 上下文          | 檔案                   | 適用場景                         |
+| --------------- | ---------------------- | -------------------------------- |
+| **Development** | `contexts/dev.md`      | 日常功能開發、實作程式碼         |
+| **Code Review** | `contexts/review.md`   | 程式碼審查模式，聚焦品質與安全   |
+| **Research**    | `contexts/research.md` | 研究探索模式，側重資料收集與分析 |
 
 #### 2.6.2 使用方式
 
@@ -673,17 +677,17 @@ ECC 提供 14 個預配置的 MCP（Model Context Protocol）Server 整合，擴
 
 #### 2.7.1 預配置 MCP Servers
 
-| MCP Server | 功能說明 |
-|------------|---------|
-| **GitHub** | GitHub API 整合（Issue、PR、Repo 操作） |
-| **Supabase** | 資料庫管理與即時訂閱 |
-| **Context7** | Up-to-date 函式庫與框架文件查閱 |
-| **Exa** | 神經搜尋引擎（Web、程式碼、公司資訊） |
-| **Playwright** | 瀏覽器自動化與 E2E 測試 |
-| **Sequential Thinking** | 複雜推理的逐步思考 |
-| **Memory** | 持久記憶儲存 |
-| **Vercel** | Vercel 部署管理 |
-| **Railway** | Railway 平台部署 |
+| MCP Server              | 功能說明                                |
+| ----------------------- | --------------------------------------- |
+| **GitHub**              | GitHub API 整合（Issue、PR、Repo 操作） |
+| **Supabase**            | 資料庫管理與即時訂閱                    |
+| **Context7**            | Up-to-date 函式庫與框架文件查閱         |
+| **Exa**                 | 神經搜尋引擎（Web、程式碼、公司資訊）   |
+| **Playwright**          | 瀏覽器自動化與 E2E 測試                 |
+| **Sequential Thinking** | 複雜推理的逐步思考                      |
+| **Memory**              | 持久記憶儲存                            |
+| **Vercel**              | Vercel 部署管理                         |
+| **Railway**             | Railway 平台部署                        |
 
 #### 2.7.2 MCP 配置管理
 
@@ -707,12 +711,12 @@ export ECC_DISABLED_MCPS="supabase,railway,vercel"
 
 ### 3.1 前置需求
 
-| 需求 | 版本 | 說明 |
-|------|------|------|
-| Claude Code CLI | v2.1.0+ | `claude --version` 檢查 |
-| Node.js | 18+ | 用於 Hook scripts |
-| npm / pnpm / yarn / bun | 任一 | 套件管理器 |
-| Git | 2.x+ | 版本控制 |
+| 需求                    | 版本    | 說明                    |
+| ----------------------- | ------- | ----------------------- |
+| Claude Code CLI         | v2.1.0+ | `claude --version` 檢查 |
+| Node.js                 | 18+     | 用於 Hook scripts       |
+| npm / pnpm / yarn / bun | 任一    | 套件管理器              |
+| Git                     | 2.x+    | 版本控制                |
 
 ### 3.2 Plugin 安裝（推薦）
 
@@ -720,11 +724,11 @@ export ECC_DISABLED_MCPS="supabase,railway,vercel"
 
 #### ECC 三個公開標識符
 
-| 標識符 | 用途 | 值 |
-|--------|------|-----|
-| GitHub 原始碼倉庫 | Clone、Star、PR | `affaan-m/ECC` |
-| Claude Marketplace / Plugin | 安裝指令 | `ecc@ecc` |
-| npm 套件 | OpenCode 整合 | `ecc-universal` |
+| 標識符                      | 用途            | 值              |
+| --------------------------- | --------------- | --------------- |
+| GitHub 原始碼倉庫           | Clone、Star、PR | `affaan-m/ECC`  |
+| Claude Marketplace / Plugin | 安裝指令        | `ecc@ecc`       |
+| npm 套件                    | OpenCode 整合   | `ecc-universal` |
 
 > 💡 三者名稱不同是有意設計。Anthropic marketplace 安裝以 canonical plugin identifier 為鍵，ECC 使用 `ecc@ecc` 保持命名簡短。npm 套件維持 `ecc-universal` 以確保向後相容。
 
@@ -885,13 +889,13 @@ npx ecc-install typescript
 
 Cursor 支援項目：
 
-| 元件 | 數量 | 說明 |
-|------|------|------|
-| Hook Events | 15 | sessionStart、beforeShellExecution、afterFileEdit 等 |
-| Hook Scripts | 16 | 透過 DRY Adapter 模式共用 Claude Code 的 scripts |
-| Rules | 34 | 9 common (alwaysApply) + 25 language-specific |
-| Agents | 共用 | 透過根目錄 AGENTS.md |
-| Skills | 共用 + 專屬 | AGENTS.md + .cursor/skills/ |
+| 元件         | 數量        | 說明                                                 |
+| ------------ | ----------- | ---------------------------------------------------- |
+| Hook Events  | 15          | sessionStart、beforeShellExecution、afterFileEdit 等 |
+| Hook Scripts | 16          | 透過 DRY Adapter 模式共用 Claude Code 的 scripts     |
+| Rules        | 34          | 9 common (alwaysApply) + 25 language-specific        |
+| Agents       | 共用        | 透過根目錄 AGENTS.md                                 |
+| Skills       | 共用 + 專屬 | AGENTS.md + .cursor/skills/                          |
 
 #### OpenAI Codex
 
@@ -943,13 +947,13 @@ Antigravity 整合包含工作流程、Skills 和扁平化 Rules，位於 `.agen
 
 #### 其他 IDE 支援
 
-| IDE / 工具 | 目錄 | 說明 |
-|------------|------|------|
-| **CodeBuddy (Tencent)** | `.codebuddy/` | 騰訊 CodeBuddy 適配安裝腳本 |
-| **Kiro** | `.kiro/` | Kiro IDE 安裝支援 |
-| **Trae** | `.trae/` | Trae IDE 整合（工作流、Skills、Rules） |
-| **Qwen** | `.qwen/` | Qwen CLI 安裝支援 |
-| **Non-native harnesses** | — | 手動回退路徑，適用 Grok 等介面。參閱 [Manual Adaptation Guide](https://github.com/affaan-m/ECC/blob/main/docs/MANUAL-ADAPTATION-GUIDE.md) |
+| IDE / 工具               | 目錄          | 說明                                                                                                                                      |
+| ------------------------ | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **CodeBuddy (Tencent)**  | `.codebuddy/` | 騰訊 CodeBuddy 適配安裝腳本                                                                                                               |
+| **Kiro**                 | `.kiro/`      | Kiro IDE 安裝支援                                                                                                                         |
+| **Trae**                 | `.trae/`      | Trae IDE 整合（工作流、Skills、Rules）                                                                                                    |
+| **Qwen**                 | `.qwen/`      | Qwen CLI 安裝支援                                                                                                                         |
+| **Non-native harnesses** | —             | 手動回退路徑，適用 Grok 等介面。參閱 [Manual Adaptation Guide](https://github.com/affaan-m/ECC/blob/main/docs/MANUAL-ADAPTATION-GUIDE.md) |
 
 #### GitHub Copilot（VS Code）
 
@@ -967,18 +971,19 @@ ECC 透過 Copilot Chat 原生的 instruction 與 prompt 檔案系統提供 GitH
 ```
 
 **使用方式**：
+
 1. 開啟 VS Code 的 Copilot Chat 面板
 2. 點擊附件/迴紋針圖示，選擇「Prompt...」
 3. 選取想執行的 prompt（如 `plan`、`tdd`、`security-review`）
 
-| 功能 | 支援方式 |
-|------|---------|
-| 編碼標準 | 永遠載入（copilot-instructions.md） |
-| 安全檢查 | 永遠載入 + security-review prompt |
-| TDD | 永遠載入 + tdd prompt |
-| 實作規劃 | plan prompt |
-| Hooks / 自動化 | ❌ 不支援（Copilot 無 Hook 系統） |
-| Agents / 委派 | ❌ 不支援（Copilot 無 Subagent API） |
+| 功能           | 支援方式                             |
+| -------------- | ------------------------------------ |
+| 編碼標準       | 永遠載入（copilot-instructions.md）  |
+| 安全檢查       | 永遠載入 + security-review prompt    |
+| TDD            | 永遠載入 + tdd prompt                |
+| 實作規劃       | plan prompt                          |
+| Hooks / 自動化 | ❌ 不支援（Copilot 無 Hook 系統）    |
+| Agents / 委派  | ❌ 不支援（Copilot 無 Subagent API） |
 
 > 💡 GitHub Copilot 不具備 Hook 與 Subagent 功能，因此 ECC 的自動化鉤子和 Agent 委派在此環境不可用。但 instruction 和 prompt 層仍能將完整的 ECC 編碼哲學帶入每次 Copilot Chat。
 
@@ -1038,11 +1043,11 @@ export ECC_DISABLED_MCPS="supabase,railway,vercel"
 }
 ```
 
-| 設定項 | 預設值 | 推薦值 | 節省效果 |
-|--------|--------|--------|---------|
-| `model` | opus | sonnet | ~60% 成本降低 |
-| `MAX_THINKING_TOKENS` | 31,999 | 10,000 | ~70% hidden thinking 成本降低 |
-| `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | 95 | 50 | 提早壓縮，長 Session 品質更好 |
+| 設定項                            | 預設值 | 推薦值 | 節省效果                      |
+| --------------------------------- | ------ | ------ | ----------------------------- |
+| `model`                           | opus   | sonnet | ~60% 成本降低                 |
+| `MAX_THINKING_TOKENS`             | 31,999 | 10,000 | ~70% hidden thinking 成本降低 |
+| `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | 95     | 50     | 提早壓縮，長 Session 品質更好 |
 
 ### 3.7 Dashboard GUI
 
@@ -1057,6 +1062,7 @@ python3 ./ecc_dashboard.py
 ```
 
 功能：
+
 - 分頁介面：Agents、Skills、Commands、Rules、Settings
 - 深色/淺色主題切換
 - 字型自訂（字體家族 & 大小）
@@ -1068,14 +1074,14 @@ python3 ./ecc_dashboard.py
 
 ECC Plugin 自動偵測你偏好的套件管理器（npm、pnpm、yarn、bun），偵測優先順序：
 
-| 優先序 | 來源 | 說明 |
-|--------|------|------|
-| 1 | 環境變數 `CLAUDE_PACKAGE_MANAGER` | 最高優先 |
-| 2 | 專案配置 `.claude/package-manager.json` | 專案層級 |
-| 3 | `package.json` 的 `packageManager` 欄位 | npm 標準 |
-| 4 | Lock file 偵測 | package-lock.json / yarn.lock / pnpm-lock.yaml / bun.lockb |
-| 5 | 全域配置 `~/.claude/package-manager.json` | 使用者層級 |
-| 6 | Fallback | 第一個可用的套件管理器 |
+| 優先序 | 來源                                      | 說明                                                       |
+| ------ | ----------------------------------------- | ---------------------------------------------------------- |
+| 1      | 環境變數 `CLAUDE_PACKAGE_MANAGER`         | 最高優先                                                   |
+| 2      | 專案配置 `.claude/package-manager.json`   | 專案層級                                                   |
+| 3      | `package.json` 的 `packageManager` 欄位   | npm 標準                                                   |
+| 4      | Lock file 偵測                            | package-lock.json / yarn.lock / pnpm-lock.yaml / bun.lockb |
+| 5      | 全域配置 `~/.claude/package-manager.json` | 使用者層級                                                 |
+| 6      | Fallback                                  | 第一個可用的套件管理器                                     |
 
 **設定方式**：
 
@@ -1112,13 +1118,13 @@ ecc repair
 
 **常見復原情境**：
 
-| 情境 | 解決步驟 |
-|------|---------|
-| 本地 Claude 配置被清除 | `ecc doctor` → `ecc repair` |
-| Plugin 無法載入 | 重新 `/plugin install ecc@ecc` |
-| Rules 遺失 | 重跑 `./install.sh --profile full` |
-| hooks 衝突 | 確認未在 `plugin.json` 中重複宣告 hooks |
-| MCP 配置遺失 | 從 `mcp-configs/mcp-servers.json` 重新複製 |
+| 情境                   | 解決步驟                                   |
+| ---------------------- | ------------------------------------------ |
+| 本地 Claude 配置被清除 | `ecc doctor` → `ecc repair`                |
+| Plugin 無法載入        | 重新 `/plugin install ecc@ecc`             |
+| Rules 遺失             | 重跑 `./install.sh --profile full`         |
+| hooks 衝突             | 確認未在 `plugin.json` 中重複宣告 hooks    |
+| MCP 配置遺失           | 從 `mcp-configs/mcp-servers.json` 重新複製 |
 
 > ⚠️ **注意**：帳號或 Marketplace 存取問題（如 ECC Tools 付費方案）需單獨處理，與本地配置修復無關。
 
@@ -1130,16 +1136,16 @@ ecc repair
 
 典型企業級 Web Application 技術棧：
 
-| 層級 | 技術選擇 |
-|------|---------|
-| 前端 | Vue 3 + TypeScript + Tailwind CSS |
-| 後端 | Spring Boot (Java) |
-| 架構 | Clean Architecture + Microservices |
-| 資料庫 | PostgreSQL / Oracle / DB2 |
-| 快取 | Redis |
-| 訊息佇列 | Kafka / RabbitMQ |
-| CI/CD | GitHub Actions / GitLab CI |
-| 容器化 | Docker + Kubernetes |
+| 層級     | 技術選擇                           |
+| -------- | ---------------------------------- |
+| 前端     | Vue 3 + TypeScript + Tailwind CSS  |
+| 後端     | Spring Boot (Java)                 |
+| 架構     | Clean Architecture + Microservices |
+| 資料庫   | PostgreSQL / Oracle / DB2          |
+| 快取     | Redis                              |
+| 訊息佇列 | Kafka / RabbitMQ                   |
+| CI/CD    | GitHub Actions / GitLab CI         |
+| 容器化   | Docker + Kubernetes                |
 
 ### 4.2 ECC Agent 分工架構
 
@@ -1147,29 +1153,29 @@ ecc repair
 graph TB
     subgraph "ECC Agent Teams"
         direction TB
-        
+
         subgraph "Planning Layer"
             Planner["📋 planner<br/>任務拆解與規劃"]
             Architect["🏗️ architect<br/>架構設計決策"]
         end
-        
+
         subgraph "Backend Team"
             JavaReviewer["☕ java-reviewer<br/>Java/Spring Boot 審查"]
             JavaBuild["🔧 java-build-resolver<br/>Maven/Gradle 問題"]
             DBReviewer["🗄️ database-reviewer<br/>SQL/ORM 審查"]
         end
-        
+
         subgraph "Frontend Team"
             TSReviewer["📘 typescript-reviewer<br/>TypeScript/Vue 審查"]
         end
-        
+
         subgraph "Quality & Security"
             TDDGuide["🧪 tdd-guide<br/>TDD 流程引導"]
             CodeReviewer["🔍 code-reviewer<br/>通用品質審查"]
             SecurityReviewer["🔐 security-reviewer<br/>安全弱點分析"]
             E2ERunner["🎭 e2e-runner<br/>Playwright E2E"]
         end
-        
+
         subgraph "Operations"
             DocUpdater["📝 doc-updater<br/>文件同步"]
             LoopOperator["🔄 loop-operator<br/>自主迴圈執行"]
@@ -1190,13 +1196,13 @@ graph TB
 
 v2.0.0 將原本單一 `planner` 和 `loop-operator` 拆分為 **Orchestrator 家族**（`orch-*`），提供企業級的多 Agent 執行控制：
 
-| Orchestrator | 職責 | 典型使用情境 |
-|---|---|---|
-| `orch-planner` | 需求分析 → 任務拆解 → DAG 生成 | 新功能開發的起始點 |
-| `orch-fanout` | 平行分派子任務給多個 Worker Agent | 前後端同步開發 |
-| `orch-reduce` | 收集 Worker 結果 → 合併 → 衝突解決 | 多 Agent 任務合流 |
-| `orch-gate` | 品質門檻檢查、安全掃描、覆蓋率驗證 | CI/CD 節點 |
-| `orch-retry` | 失敗偵測 → 自動重試（含 backoff）→ 降級 | 不穩定 MCP、外部 API |
+| Orchestrator   | 職責                                    | 典型使用情境         |
+| -------------- | --------------------------------------- | -------------------- |
+| `orch-planner` | 需求分析 → 任務拆解 → DAG 生成          | 新功能開發的起始點   |
+| `orch-fanout`  | 平行分派子任務給多個 Worker Agent       | 前後端同步開發       |
+| `orch-reduce`  | 收集 Worker 結果 → 合併 → 衝突解決      | 多 Agent 任務合流    |
+| `orch-gate`    | 品質門檻檢查、安全掃描、覆蓋率驗證      | CI/CD 節點           |
+| `orch-retry`   | 失敗偵測 → 自動重試（含 backoff）→ 降級 | 不穩定 MCP、外部 API |
 
 ```mermaid
 graph LR
@@ -1226,24 +1232,24 @@ graph TB
         Tailwind["Tailwind CSS"]
         Pinia["Pinia Store"]
     end
-    
+
     subgraph "API Gateway"
         GW["API Gateway<br/>(Rate Limit, Auth)"]
     end
-    
+
     subgraph "Backend Microservices (Spring Boot)"
         AuthSvc["Auth Service<br/>OAuth / JWT"]
         UserSvc["User Service<br/>CRUD"]
         BizSvc["Business Service<br/>Core Logic"]
         NotifySvc["Notification Service<br/>Email/SMS"]
     end
-    
+
     subgraph "Data Layer"
         PG["PostgreSQL"]
         Redis["Redis Cache"]
         Kafka["Kafka<br/>Event Bus"]
     end
-    
+
     subgraph "ECC Agent Overlay"
         ECC_Plan["🤖 ECC /plan<br/>需求 → 任務拆解"]
         ECC_TDD["🤖 ECC /tdd<br/>TDD 開發"]
@@ -1251,7 +1257,7 @@ graph TB
         ECC_Security["🤖 ECC /security-scan<br/>安全掃描"]
         ECC_E2E["🤖 ECC /e2e<br/>E2E 測試"]
     end
-    
+
     Vue --> GW
     GW --> AuthSvc
     GW --> UserSvc
@@ -1262,7 +1268,7 @@ graph TB
     BizSvc --> PG
     BizSvc --> Redis
     BizSvc --> Kafka
-    
+
     ECC_Plan -.->|"規劃"| AuthSvc
     ECC_TDD -.->|"TDD"| UserSvc
     ECC_Review -.->|"審查"| BizSvc
@@ -1285,7 +1291,7 @@ sequenceDiagram
     PM->>ECC: "新增用戶管理模組"
     ECC->>Arch: 委派架構設計
     Arch-->>ECC: API 設計 + DB Schema
-    
+
     par 後端開發
         ECC->>QA: 後端 TDD (Spring Boot)
         QA->>QA: Controller Test → Service Test → Repository Test
@@ -1296,7 +1302,7 @@ sequenceDiagram
         QA->>FE: 委派 TypeScript Review
         FE-->>QA: 審查結果 + 建議
     end
-    
+
     ECC->>Sec: 全模組安全掃描
     Sec-->>ECC: OWASP 報告
     ECC-->>PM: 完整交付報告
@@ -1330,6 +1336,7 @@ graph LR
 ```
 
 **Agent 行為**：
+
 1. `planner` agent 分析需求
 2. 拆解為具體實作步驟
 3. 識別技術風險與依賴
@@ -1341,28 +1348,33 @@ graph LR
 ## Implementation Plan: OAuth2 + JWT Authentication
 
 ### Phase 1: Infrastructure
+
 - [ ] Add Spring Security + OAuth2 Client dependencies
 - [ ] Configure application.yml for Google/GitHub OAuth
 - [ ] Create JWT utility class
 
 ### Phase 2: Backend
+
 - [ ] Implement OAuth2LoginSuccessHandler
 - [ ] Create UserService with OAuth user mapping
 - [ ] Implement JWT token generation/validation
 - [ ] Create AuthController endpoints
 
 ### Phase 3: Frontend
+
 - [ ] Create LoginPage.vue with OAuth buttons
 - [ ] Implement auth store (Pinia)
 - [ ] Add route guards for protected pages
 - [ ] Handle token refresh
 
 ### Phase 4: Testing
+
 - [ ] Unit tests for JWT utility
 - [ ] Integration tests for OAuth flow
 - [ ] E2E tests for login/logout
 
 ### Risks
+
 - OAuth callback URL configuration per environment
 - Token refresh race conditions
 ```
@@ -1375,6 +1387,7 @@ graph LR
 ```
 
 **Agent 行為**：`architect` agent 產出：
+
 - API 端點設計
 - 資料模型（Entity / DTO / VO）
 - 序列圖（認證流程）
@@ -1460,24 +1473,26 @@ public class AuthServiceImpl implements AuthService {
 **E2E 測試範例**：
 
 ```typescript
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Authentication Flow', () => {
-  test('should redirect to Google OAuth and complete login', async ({ page }) => {
-    await page.goto('/login');
+test.describe("Authentication Flow", () => {
+  test("should redirect to Google OAuth and complete login", async ({
+    page,
+  }) => {
+    await page.goto("/login");
     await page.click('[data-testid="google-login-btn"]');
 
     // Mock OAuth callback
-    await page.waitForURL('**/oauth2/callback**');
+    await page.waitForURL("**/oauth2/callback**");
 
     // Verify redirect to dashboard
-    await expect(page).toHaveURL('/dashboard');
+    await expect(page).toHaveURL("/dashboard");
     await expect(page.locator('[data-testid="user-avatar"]')).toBeVisible();
   });
 
-  test('should show error on failed authentication', async ({ page }) => {
-    await page.goto('/login?error=access_denied');
-    await expect(page.locator('.error-message')).toContainText('登入失敗');
+  test("should show error on failed authentication", async ({ page }) => {
+    await page.goto("/login?error=access_denied");
+    await expect(page.locator(".error-message")).toContainText("登入失敗");
   });
 });
 ```
@@ -1489,6 +1504,7 @@ test.describe('Authentication Flow', () => {
 ```
 
 **Agent 行為**（code-reviewer + 語言專用 reviewer）：
+
 - 程式碼品質與可維護性
 - 安全弱點（OWASP Top 10）
 - 效能問題
@@ -1536,11 +1552,11 @@ graph LR
 
 **驗證類型**：
 
-| 類型 | 指令 | 說明 |
-|------|------|------|
-| Checkpoint 驗證 | `/checkpoint` → `/verify` | 儲存狀態後執行一次性驗證 |
-| 持續驗證 | `verification-loop` skill | 每次程式碼變更自動執行 build → test → lint → typecheck → security |
-| 評估驅動開發 | `eval-harness` skill | 定義評估標準，以 pass@k 指標衡量品質 |
+| 類型            | 指令                      | 說明                                                              |
+| --------------- | ------------------------- | ----------------------------------------------------------------- |
+| Checkpoint 驗證 | `/checkpoint` → `/verify` | 儲存狀態後執行一次性驗證                                          |
+| 持續驗證        | `verification-loop` skill | 每次程式碼變更自動執行 build → test → lint → typecheck → security |
+| 評估驅動開發    | `eval-harness` skill      | 定義評估標準，以 pass@k 指標衡量品質                              |
 
 **Eval Harness 評估指標**：
 
@@ -1571,16 +1587,16 @@ graph TD
 
 **可用的 TDD Skills**：
 
-| Skill | 框架 |
-|-------|------|
-| `tdd-workflow` | 通用 TDD 方法論 |
-| `springboot-tdd` | Spring Boot 專用 |
-| `django-tdd` | Django 專用 |
-| `laravel-tdd` | Laravel 專用 |
-| `golang-testing` | Go 測試 + TDD |
-| `python-testing` | pytest 測試 |
-| `cpp-testing` | GoogleTest + CMake |
-| `perl-testing` | Test2::V0 |
+| Skill            | 框架               |
+| ---------------- | ------------------ |
+| `tdd-workflow`   | 通用 TDD 方法論    |
+| `springboot-tdd` | Spring Boot 專用   |
+| `django-tdd`     | Django 專用        |
+| `laravel-tdd`    | Laravel 專用       |
+| `golang-testing` | Go 測試 + TDD      |
+| `python-testing` | pytest 測試        |
+| `cpp-testing`    | GoogleTest + CMake |
+| `perl-testing`   | Test2::V0          |
 
 ### 6.2 自動 Code Review
 
@@ -1619,13 +1635,13 @@ npx ecc-agentshield init
 
 **掃描範圍**：
 
-| 類別 | 規則數 | 說明 |
-|------|--------|------|
-| Secrets Detection | 14 patterns | API Key、Token、Password |
-| Permission Auditing | — | 工具權限檢查 |
-| Hook Injection Analysis | — | Hook 注入風險 |
-| MCP Server Risk Profiling | — | MCP 服務風險評估 |
-| Agent Config Review | — | Agent 配置審查 |
+| 類別                      | 規則數      | 說明                     |
+| ------------------------- | ----------- | ------------------------ |
+| Secrets Detection         | 14 patterns | API Key、Token、Password |
+| Permission Auditing       | —           | 工具權限檢查             |
+| Hook Injection Analysis   | —           | Hook 注入風險            |
+| MCP Server Risk Profiling | —           | MCP 服務風險評估         |
+| Agent Config Review       | —           | Agent 配置審查           |
 
 **`--opus` 模式**：三個 Claude Opus agent 進行紅藍對抗 —
 
@@ -1665,7 +1681,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Run Tests
         run: npm test -- --coverage
@@ -1722,13 +1738,13 @@ graph TD
 
 **評估框架核心概念**：
 
-| 概念 | 說明 |
-|------|------|
-| **Checkpoint Eval** | 在特定節點保存狀態並執行一次性驗證 |
-| **Continuous Eval** | 持續評估每次變更，即時回饋 |
+| 概念                 | 說明                                    |
+| -------------------- | --------------------------------------- |
+| **Checkpoint Eval**  | 在特定節點保存狀態並執行一次性驗證      |
+| **Continuous Eval**  | 持續評估每次變更，即時回饋              |
 | **Automated Grader** | 程式化判定（測試通過/失敗、覆蓋率門檻） |
-| **Model Grader** | LLM 判定（程式碼品質、架構合理性） |
-| **Pass@k** | k 次嘗試中至少一次通過的機率指標 |
+| **Model Grader**     | LLM 判定（程式碼品質、架構合理性）      |
+| **Pass@k**           | k 次嘗試中至少一次通過的機率指標        |
 
 #### 6.6.3 Learn-Eval（學習評估）
 
@@ -1754,22 +1770,22 @@ graph TB
         B["Pre-commit Hooks<br/>Secret Detection"]
         C["TDD Security Tests<br/>springboot-security skill"]
     end
-    
+
     subgraph "審查階段"
         D["security-reviewer Agent<br/>OWASP Top 10 分析"]
         E["AgentShield Scan<br/>配置弱點掃描"]
     end
-    
+
     subgraph "部署階段"
         F["CI Security Gate<br/>Exit Code 2 = Block"]
         G["Dependency Scan<br/>CVE 檢查"]
     end
-    
+
     subgraph "運行階段"
         H["Monitoring & Alerts"]
         I["Incident Response"]
     end
-    
+
     A --> B --> C --> D --> E --> F --> G --> H --> I
 ```
 
@@ -1777,29 +1793,29 @@ graph TB
 
 ECC 在 SSDLC 各階段提供自動化安全檢查：
 
-| 階段 | ECC 工具 | 自動化行為 |
-|------|---------|-----------|
-| 編碼 | `security.md` rule | 強制安全編碼準則 |
-| Hook | `beforeSubmitPrompt` | 偵測 prompt 中的機密（sk-、ghp_、AKIA） |
-| Hook | `beforeTabFileRead` | 阻止讀取 .env、.key、.pem 檔案 |
-| 審查 | `security-reviewer` agent | OWASP Top 10 弱點分析 |
-| 掃描 | `/security-scan` | AgentShield 深度掃描 |
-| CI | AgentShield GitHub Action | 自動阻斷含重大弱點的 PR |
+| 階段 | ECC 工具                  | 自動化行為                              |
+| ---- | ------------------------- | --------------------------------------- |
+| 編碼 | `security.md` rule        | 強制安全編碼準則                        |
+| Hook | `beforeSubmitPrompt`      | 偵測 prompt 中的機密（sk-、ghp_、AKIA） |
+| Hook | `beforeTabFileRead`       | 阻止讀取 .env、.key、.pem 檔案          |
+| 審查 | `security-reviewer` agent | OWASP Top 10 弱點分析                   |
+| 掃描 | `/security-scan`          | AgentShield 深度掃描                    |
+| CI   | AgentShield GitHub Action | 自動阻斷含重大弱點的 PR                 |
 
 ### 7.3 OWASP Top 10 防護
 
-| OWASP 風險 | ECC 防護措施 |
-|------------|-------------|
-| A01 Broken Access Control | security-reviewer 檢查授權邏輯 |
-| A02 Cryptographic Failures | Rules 強制安全加密實踐 |
-| A03 Injection | Agent 檢查參數化查詢、輸入驗證 |
-| A04 Insecure Design | architect agent 安全架構設計 |
-| A05 Security Misconfiguration | AgentShield 配置掃描 |
-| A06 Vulnerable Components | dependency scan + CVE 檢查 |
-| A07 Authentication Failures | springboot-security skill 最佳實踐 |
-| A08 Software Integrity | Hook 驗證、CI build gates |
-| A09 Security Logging | Rules 強制安全日誌 |
-| A10 Server-Side Request Forgery | security-reviewer 檢查 SSRF 模式 |
+| OWASP 風險                      | ECC 防護措施                       |
+| ------------------------------- | ---------------------------------- |
+| A01 Broken Access Control       | security-reviewer 檢查授權邏輯     |
+| A02 Cryptographic Failures      | Rules 強制安全加密實踐             |
+| A03 Injection                   | Agent 檢查參數化查詢、輸入驗證     |
+| A04 Insecure Design             | architect agent 安全架構設計       |
+| A05 Security Misconfiguration   | AgentShield 配置掃描               |
+| A06 Vulnerable Components       | dependency scan + CVE 檢查         |
+| A07 Authentication Failures     | springboot-security skill 最佳實踐 |
+| A08 Software Integrity          | Hook 驗證、CI build gates          |
+| A09 Security Logging            | Rules 強制安全日誌                 |
+| A10 Server-Side Request Forgery | security-reviewer 檢查 SSRF 模式   |
 
 ### 7.4 Secret Detection
 
@@ -1835,12 +1851,12 @@ GateGuard 是 ECC v1.10.0 引入的安全閘門機制（來自社群貢獻 [PR #
 
 #### 7.5.2 GateGuard 與 AgentShield 的差異
 
-| 面向 | GateGuard | AgentShield |
-|------|-----------|-------------|
-| 執行時機 | 即時（Hook 觸發） | 按需掃描 |
-| 檢查範圍 | 單一工具操作 | 整體配置與程式碼 |
-| 效能影響 | 低（輕量 Hook） | 中～高（深度分析） |
-| 定位 | 運行時防護 | 審計與合規 |
+| 面向     | GateGuard         | AgentShield        |
+| -------- | ----------------- | ------------------ |
+| 執行時機 | 即時（Hook 觸發） | 按需掃描           |
+| 檢查範圍 | 單一工具操作      | 整體配置與程式碼   |
+| 效能影響 | 低（輕量 Hook）   | 中～高（深度分析） |
+| 定位     | 運行時防護        | 審計與合規         |
 
 ```mermaid
 graph LR
@@ -1876,13 +1892,13 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: "21"
+          distribution: "temurin"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Build Backend
         run: mvn clean verify -B
@@ -2042,13 +2058,13 @@ node scripts/ecc.js repair           # 修復（通常可恢復）
 
 ### 9.3 相容性與故障排除
 
-| 問題 | 解決方案 |
-|------|---------|
-| Duplicate hooks file | 不要在 plugin.json 宣告 hooks 欄位 |
+| 問題                           | 解決方案                                |
+| ------------------------------ | --------------------------------------- |
+| Duplicate hooks file           | 不要在 plugin.json 宣告 hooks 欄位      |
 | ${CLAUDE_PLUGIN_ROOT} 解析失敗 | 使用 installer 安裝 hooks，不要手動複製 |
-| multi-* 指令無法運行 | 安裝 ccg-workflow：`npx ccg-workflow` |
-| MCP 衝突 | 設定 `ECC_DISABLED_MCPS` 排除重複 |
-| Windows 路徑問題 | 配置目錄是 `%USERPROFILE%\.claude` |
+| multi-* 指令無法運行           | 安裝 ccg-workflow：`npx ccg-workflow`   |
+| MCP 衝突                       | 設定 `ECC_DISABLED_MCPS` 排除重複       |
+| Windows 路徑問題               | 配置目錄是 `%USERPROFILE%\.claude`      |
 
 ---
 
@@ -2056,14 +2072,14 @@ node scripts/ecc.js repair           # 修復（通常可恢復）
 
 ### 10.1 避免上下文污染
 
-| 策略 | 指令 / 機制 | 說明 |
-|------|------------|------|
-| 任務間清除 | `/clear` | 免費、即時重置。不相關任務間使用 |
-| 邏輯斷點壓縮 | `/compact` | 研究完→實作前、里程碑完→下一個前 |
-| 自動壓縮調整 | `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=50` | 提早壓縮，長 Session 品質更好 |
-| MCP 精簡 | `disabledMcpServers` | 每專案 < 10 MCPs、< 80 tools |
-| 子代理委派 | Agent delegation | 獨立上下文，不污染主對話 |
-| Session 邊界 | SessionStart/Stop Hooks | 自動載入/儲存上下文 |
+| 策略         | 指令 / 機制                          | 說明                             |
+| ------------ | ------------------------------------ | -------------------------------- |
+| 任務間清除   | `/clear`                             | 免費、即時重置。不相關任務間使用 |
+| 邏輯斷點壓縮 | `/compact`                           | 研究完→實作前、里程碑完→下一個前 |
+| 自動壓縮調整 | `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=50` | 提早壓縮，長 Session 品質更好    |
+| MCP 精簡     | `disabledMcpServers`                 | 每專案 < 10 MCPs、< 80 tools     |
+| 子代理委派   | Agent delegation                     | 獨立上下文，不污染主對話         |
+| Session 邊界 | SessionStart/Stop Hooks              | 自動載入/儲存上下文              |
 
 ### 10.2 Agent 設計原則
 
@@ -2082,15 +2098,15 @@ node scripts/ecc.js repair           # 修復（通常可恢復）
 
 ### 10.4 Token 最佳化
 
-| 指令 / 設定 | 用途 | 成本影響 |
-|------|------|---------|
-| `/model sonnet` | 日常任務預設 | ~60% 節省 |
-| `/model opus` | 深度架構推理 | 高成本 |
-| `/clear` | 不相關任務間 | 免費 |
-| `/compact` | 邏輯斷點 | 低成本 |
-| `/cost` | 監控花費 | — |
-| `CLAUDE_CODE_SUBAGENT_MODEL=haiku` | 子代理用 haiku | 大幅節省 |
-| `ECC_CONTEXT_MONITOR_COST_WARNINGS=off` | 抑制 API 費率估算彈窗（訂閱制用戶適用） | 減少干擾 |
+| 指令 / 設定                             | 用途                                    | 成本影響  |
+| --------------------------------------- | --------------------------------------- | --------- |
+| `/model sonnet`                         | 日常任務預設                            | ~60% 節省 |
+| `/model opus`                           | 深度架構推理                            | 高成本    |
+| `/clear`                                | 不相關任務間                            | 免費      |
+| `/compact`                              | 邏輯斷點                                | 低成本    |
+| `/cost`                                 | 監控花費                                | —         |
+| `CLAUDE_CODE_SUBAGENT_MODEL=haiku`      | 子代理用 haiku                          | 大幅節省  |
+| `ECC_CONTEXT_MONITOR_COST_WARNINGS=off` | 抑制 API 費率估算彈窗（訂閱制用戶適用） | 減少干擾  |
 
 > 💡 **訂閱用戶提示**：如果你使用 Claude Max/Team 訂閱而非 API 計費，設定 `ECC_CONTEXT_MONITOR_COST_WARNINGS=off` 可關閉不適用的費率估算提醒，但仍保留上下文範圍與 Token 用量警告。
 
@@ -2115,6 +2131,7 @@ cd ../feature-ui && claude
 ```
 
 **優勢**：
+
 - 每個 Worktree 有獨立的上下文窗口，互不污染
 - 適合多人協作或一人多功能並行開發
 - 合併時使用標準 Git merge 流程
@@ -2136,13 +2153,13 @@ graph TD
 
 #### 10.5.3 何時擴展為多實例
 
-| 場景 | 推薦方式 | 原因 |
-|------|---------|------|
-| 單一功能實作 | 單一 Session | 上下文一致 |
-| 多模組獨立開發 | Git Worktrees | 互不干擾 |
-| 前後端並行 | `/multi-plan` + `/multi-execute` | Agent Teams 協作 |
-| 大規模重構 | Cascade 方法 | 逐層分解複雜度 |
-| CI/CD 平行測試 | GitHub Actions matrix | 機器資源充足 |
+| 場景           | 推薦方式                         | 原因             |
+| -------------- | -------------------------------- | ---------------- |
+| 單一功能實作   | 單一 Session                     | 上下文一致       |
+| 多模組獨立開發 | Git Worktrees                    | 互不干擾         |
+| 前後端並行     | `/multi-plan` + `/multi-execute` | Agent Teams 協作 |
+| 大規模重構     | Cascade 方法                     | 逐層分解複雜度   |
+| CI/CD 平行測試 | GitHub Actions matrix            | 機器資源充足     |
 
 > 💡 **Best Practice**：優先使用 subagent 委派（最省 Token）。只在任務真正需要並行處理時才升級到 Git Worktrees 或 Agent Teams。
 
@@ -2155,6 +2172,7 @@ graph TD
 **原因**：需求描述過於模糊或專業術語不一致
 
 **解決**：
+
 1. 使用 `/plan` 先讓 planner 分析需求
 2. 提供明確的範例和 edge case
 3. 使用 `search-first` skill 讓 Agent 先研究再回答
@@ -2164,6 +2182,7 @@ graph TD
 **原因**：上下文資訊相互矛盾或已過期
 
 **解決**：
+
 1. `/compact` 壓縮過時資訊
 2. `/clear` 完全重置（在不相關任務間）
 3. 調整 `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=50` 提早壓縮
@@ -2172,6 +2191,7 @@ graph TD
 ### Q3：Token 爆掉 / 達到日限
 
 **解決**：
+
 ```json
 {
   "model": "sonnet",
@@ -2184,6 +2204,7 @@ graph TD
 ```
 
 額外措施：
+
 - 保持 < 10 MCPs、< 80 tools 啟用
 - 使用 `/clear` 在不相關任務間
 - 使用 `/cost` 定期監控
@@ -2191,6 +2212,7 @@ graph TD
 ### Q4：指令失效
 
 **檢查清單**：
+
 1. `claude --version` 確認 ≥ v2.1.0
 2. `/plugin list ecc@ecc` 確認 Plugin 已安裝
 3. 確認 rules 已手動安裝
@@ -2200,6 +2222,7 @@ graph TD
 ### Q5：Hooks 不運作 / "Duplicate hooks file" 錯誤
 
 **解決**：
+
 1. **不要**在 `.claude-plugin/plugin.json` 中加入 `"hooks"` 欄位
 2. Claude Code v2.1+ 會自動載入 `hooks/hooks.json`
 3. 如果手動安裝，使用 installer 而非直接複製
@@ -2207,6 +2230,7 @@ graph TD
 ### Q6：能否只使用部分元件？
 
 **可以**。ECC 是模組化的：
+
 - 只複製需要的 agents、skills、rules
 - 使用選擇性安裝：`./install.sh typescript`
 - v1.9.0+ 支援 manifest-driven 選擇性安裝
@@ -2215,19 +2239,19 @@ graph TD
 
 **是**。ECC v2.0.0 同時支援 11 種 Harness：
 
-| 工具 | 安裝指令 |
-|------|---------|
-| Cursor | `./install.sh --target cursor typescript` |
-| Codex | `bash scripts/sync-ecc-to-codex.sh` |
-| OpenCode | `npm install ecc-universal` |
+| 工具           | 安裝指令                                            |
+| -------------- | --------------------------------------------------- |
+| Cursor         | `./install.sh --target cursor typescript`           |
+| Codex          | `bash scripts/sync-ecc-to-codex.sh`                 |
+| OpenCode       | `npm install ecc-universal`                         |
 | GitHub Copilot | 自動（`.github/copilot-instructions.md` + prompts） |
-| Zed | `./install.sh --profile minimal --target zed` |
-| Antigravity | `./install.sh --target antigravity typescript` |
-| Gemini | `./install.sh --target gemini --profile full` |
-| CodeBuddy | 參閱 `.codebuddy/` 目錄的安裝腳本 |
-| Kiro | 參閱 `.kiro/` 目錄的安裝配置 |
-| Trae | 參閱 `.trae/` 目錄的整合配置 |
-| Qwen | 參閱 `.qwen/` 目錄的安裝配置 |
+| Zed            | `./install.sh --profile minimal --target zed`       |
+| Antigravity    | `./install.sh --target antigravity typescript`      |
+| Gemini         | `./install.sh --target gemini --profile full`       |
+| CodeBuddy      | 參閱 `.codebuddy/` 目錄的安裝腳本                   |
+| Kiro           | 參閱 `.kiro/` 目錄的安裝配置                        |
+| Trae           | 參閱 `.trae/` 目錄的整合配置                        |
+| Qwen           | 參閱 `.qwen/` 目錄的安裝配置                        |
 
 ### Q8：是否支援自訂 API 端點或模型閘道？
 
@@ -2292,18 +2316,19 @@ claude
 
 #### 跨工具功能對照
 
-| 功能 | Claude Code | Cursor | Codex | OpenCode | GitHub Copilot | Zed |
-|------|-------------|--------|-------|----------|----------------|-----|
-| Agents | 67 | 共享 (AGENTS.md) | 共享 (AGENTS.md) | 12 | ❌ | 共享 |
-| Commands | 92 (legacy shim) | 共享 | 指令式 | 31 | ❌ | ❌ |
-| Skills | 277 | 共享 + 專屬 | 10 (native) | 37 | ❌ | ❌ |
-| Hook Events | 8 types | 15 types | 無 | 11 types | ❌ | ❌ |
-| Rules | 34 | 34 (YAML) | 指令式 | 13 | ✅ (instructions) | ✅ |
-| MCP Servers | 14 (1 default) | 共享 | 7 (TOML) | 完整 | ❌ | ❌ |
-| Custom Tools | Via hooks | Via hooks | N/A | 6 native | ❌ | ❌ |
-| Orchestrators | 5 (orch-*) | ❌ | ❌ | ❌ | ❌ | ❌ |
+| 功能          | Claude Code      | Cursor           | Codex            | OpenCode | GitHub Copilot    | Zed  |
+| ------------- | ---------------- | ---------------- | ---------------- | -------- | ----------------- | ---- |
+| Agents        | 67               | 共享 (AGENTS.md) | 共享 (AGENTS.md) | 12       | ❌                | 共享 |
+| Commands      | 92 (legacy shim) | 共享             | 指令式           | 31       | ❌                | ❌   |
+| Skills        | 277              | 共享 + 專屬      | 10 (native)      | 37       | ❌                | ❌   |
+| Hook Events   | 8 types          | 15 types         | 無               | 11 types | ❌                | ❌   |
+| Rules         | 34               | 34 (YAML)        | 指令式           | 13       | ✅ (instructions) | ✅   |
+| MCP Servers   | 14 (1 default)   | 共享             | 7 (TOML)         | 完整     | ❌                | ❌   |
+| Custom Tools  | Via hooks        | Via hooks        | N/A              | 6 native | ❌                | ❌   |
+| Orchestrators | 5 (orch-*)       | ❌               | ❌               | ❌       | ❌                | ❌   |
 
 **關鍵架構決策**：
+
 - `AGENTS.md` 是根目錄的通用跨工具檔案（四個工具都讀取）
 - DRY adapter 模式讓 Cursor 重用 Claude Code 的 hook scripts
 - SKILL.md 格式（YAML frontmatter）跨 Claude Code、Codex、OpenCode
@@ -2323,6 +2348,7 @@ model: sonnet
 You are a senior API designer specializing in RESTful services.
 
 ## Your Standards:
+
 1. Follow OpenAPI 3.0 specification
 2. Use kebab-case for URL paths
 3. Use camelCase for JSON properties
@@ -2333,6 +2359,7 @@ You are a senior API designer specializing in RESTful services.
 7. Rate limiting headers: X-RateLimit-Limit, X-RateLimit-Remaining
 
 ## Output:
+
 - OpenAPI YAML specification
 - Postman collection (optional)
 - API documentation in Markdown
@@ -2368,12 +2395,12 @@ ecc2 worktree     # Worktree-lifecycle 管理
 
 v2.0.0 新增的 Worktree-Lifecycle Service 為長時間執行的 Agent Session 提供隔離的 Git 工作樹：
 
-| 功能 | 說明 |
-|------|------|
-| Auto-create | 新 session 自動建立 `worktrees/<session-id>/` |
-| Merge-back | Session 完成後自動合回 main（可設為 PR） |
-| GC Policy | 遵循 `ECC_SESSION_RETENTION_DAYS` 自動清除 |
-| Conflict Resolution | `orch-reduce` 整合的 merge 衝突處理 |
+| 功能                | 說明                                          |
+| ------------------- | --------------------------------------------- |
+| Auto-create         | 新 session 自動建立 `worktrees/<session-id>/` |
+| Merge-back          | Session 完成後自動合回 main（可設為 PR）      |
+| GC Policy           | 遵循 `ECC_SESSION_RETENTION_DAYS` 自動清除    |
+| Conflict Resolution | `orch-reduce` 整合的 merge 衝突處理           |
 
 > ⚠️ Worktree 功能需要 Git 2.20+。ECC 會在 session 啟動時自動檢查版本相容性。
 
@@ -2383,15 +2410,15 @@ NanoClaw v2 是 ECC v1.8.0 引入的輕量級 Agent 運行時，提供進階的�
 
 #### 12.5.1 核心功能
 
-| 功能 | 說明 |
-|------|------|
-| **Model Routing** | 根據任務複雜度自動路由模型（haiku → sonnet → opus） |
-| **Skill Hot-Load** | 動態載入和卸載 Skills，無需重啟 Session |
-| **Session Branch** | 在 Session 中建立分支，嘗試不同方法 |
-| **Session Search** | 搜尋歷史 Session 內容 |
-| **Session Export** | 匯出 Session 為結構化格式 |
-| **Session Compact** | 策略性壓縮 Session 上下文 |
-| **Session Metrics** | 即時 Token 使用量和成本追蹤 |
+| 功能                | 說明                                                |
+| ------------------- | --------------------------------------------------- |
+| **Model Routing**   | 根據任務複雜度自動路由模型（haiku → sonnet → opus） |
+| **Skill Hot-Load**  | 動態載入和卸載 Skills，無需重啟 Session             |
+| **Session Branch**  | 在 Session 中建立分支，嘗試不同方法                 |
+| **Session Search**  | 搜尋歷史 Session 內容                               |
+| **Session Export**  | 匯出 Session 為結構化格式                           |
+| **Session Compact** | 策略性壓縮 Session 上下文                           |
+| **Session Metrics** | 即時 Token 使用量和成本追蹤                         |
 
 #### 12.5.2 模型路由策略
 
@@ -2430,10 +2457,10 @@ graph LR
 
 **角色分工**：
 
-| 角色 | 職責 | 模型建議 |
-|------|------|---------|
-| **Generator** | 產生程式碼、架構方案、API 設計 | sonnet（快速迭代） |
-| **Evaluator** | 評估品質、找出缺陷、提供改進建議 | opus（嚴格判定） |
+| 角色          | 職責                             | 模型建議           |
+| ------------- | -------------------------------- | ------------------ |
+| **Generator** | 產生程式碼、架構方案、API 設計   | sonnet（快速迭代） |
+| **Evaluator** | 評估品質、找出缺陷、提供改進建議 | opus（嚴格判定）   |
 
 #### 12.6.2 應用場景
 
@@ -2520,14 +2547,14 @@ graph TB
 
 **Adapter 職責**：
 
-| Adapter | 轉譯目標 | 特殊處理 |
-|---------|----------|---------|
-| `.claude/` | settings.json · commands/ · CLAUDE.md | 完整功能（canonical） |
-| `.cursor/` | rules/ (YAML) · skills/ · hooks/ | DRY Adapter 模式共用 scripts |
-| `.codex/` | AGENTS.md · instructions · TOML MCP | Multi-Agent stable, marketplace experimental |
-| `.github/` | copilot-instructions.md · prompts/*.prompt.md | 僅 Rules + Prompts（無 Hook/Agent） |
-| `.zed/` | settings/ · commands/ · agents/ | 扁平化 Rules |
-| `.opencode/` | agents/ · hooks/ · extensions/ | npm `ecc-universal` 安裝 |
+| Adapter      | 轉譯目標                                      | 特殊處理                                     |
+| ------------ | --------------------------------------------- | -------------------------------------------- |
+| `.claude/`   | settings.json · commands/ · CLAUDE.md         | 完整功能（canonical）                        |
+| `.cursor/`   | rules/ (YAML) · skills/ · hooks/              | DRY Adapter 模式共用 scripts                 |
+| `.codex/`    | AGENTS.md · instructions · TOML MCP           | Multi-Agent stable, marketplace experimental |
+| `.github/`   | copilot-instructions.md · prompts/*.prompt.md | 僅 Rules + Prompts（無 Hook/Agent）          |
+| `.zed/`      | settings/ · commands/ · agents/               | 扁平化 Rules                                 |
+| `.opencode/` | agents/ · hooks/ · extensions/                | npm `ecc-universal` 安裝                     |
 
 > 💡 **DRY 原則**：當你修改 `scripts/hooks/pre-commit-security.sh` 時，所有支援 Hook 的 Harness 都會自動獲得更新，無需在每個 adapter 目錄重複維護。
 
@@ -2537,55 +2564,55 @@ graph TB
 
 ### A. 常用指令 Cheat Sheet
 
-| 類別 | 指令 | 說明 |
-|------|------|------|
-| **規劃** | `/ecc:plan "需求"` | 建立實作計劃 |
-| **開發** | `/tdd` | TDD 開發流程 |
-| **審查** | `/code-review` | 程式碼審查 |
-| **建構** | `/build-fix` | 修復建構錯誤 |
-| **測試** | `/e2e` | E2E 測試產生 |
-| **測試** | `/test-coverage` | 測試覆蓋率分析 |
-| **安全** | `/security-scan` | AgentShield 掃描 |
-| **重構** | `/refactor-clean` | 清除無用程式碼 |
-| **文件** | `/update-docs` | 更新文件 |
-| **文件** | `/update-codemaps` | 更新 Codemaps |
-| **學習** | `/learn` | 萃取模式 |
-| **學習** | `/learn-eval` | 萃取並評估模式 |
-| **驗證** | `/checkpoint` | 儲存驗證狀態 |
-| **驗證** | `/verify` | 執行驗證迴圈 |
-| **驗證** | `/eval` | 根據標準評估 |
-| **Instincts** | `/instinct-status` | 查看已學習 |
-| **Instincts** | `/instinct-import` | 匯入 Instincts |
-| **Instincts** | `/instinct-export` | 匯出 Instincts |
-| **Instincts** | `/evolve` | 聚類為 Skills |
-| **Instincts** | `/prune` | 清除過期（30 天 TTL） |
-| **Instincts** | `/promote` | 將專案 Instincts 提升至全域 |
-| **Instincts** | `/projects` | 列出已知專案與統計 |
-| **Skills** | `/skill-create` | 從 Git History 產生 Skills |
-| **Skills** | `/skill-stocktake` | 審查 Skills 與 Commands 品質 |
-| **模型** | `/model sonnet` | 切換至 Sonnet（日常） |
-| **模型** | `/model opus` | 切換至 Opus（深度推理） |
-| **模型** | `/model-route` | 依複雜度路由模型 |
-| **上下文** | `/clear` | 清除（免費重置） |
-| **上下文** | `/compact` | 壓縮（邏輯斷點） |
-| **成本** | `/cost` | 檢查 Token 花費 |
-| **多 Agent** | `/multi-plan` | 多 Agent 任務分解 |
-| **多 Agent** | `/multi-execute` | 多 Agent 協作執行 |
-| **多 Agent** | `/multi-backend` | 後端多服務編排 |
-| **多 Agent** | `/multi-frontend` | 前端多服務編排 |
-| **多 Agent** | `/multi-workflow` | 通用多服務工作流 |
-| **編排** | `/orchestrate` | 多 Agent 協調 |
-| **PM2** | `/pm2` | PM2 服務生命週期管理 |
-| **稽核** | `/harness-audit` | Harness 狀態稽核 |
-| **品質** | `/quality-gate` | 品質閘門檢查 |
-| **迴圈** | `/loop-start` | 啟動自主迴圈 |
-| **迴圈** | `/loop-status` | 檢查迴圈狀態 |
-| **Session** | `/sessions` | Session 歷史管理 |
-| **設定** | `/setup-pm` | 設定套件管理器 |
-| **Go** | `/go-review` | Go 程式碼審查 |
-| **Go** | `/go-test` | Go TDD 工作流 |
-| **Go** | `/go-build` | 修復 Go 建構錯誤 |
-| **Python** | `/python-review` | Python 程式碼審查 |
+| 類別          | 指令               | 說明                         |
+| ------------- | ------------------ | ---------------------------- |
+| **規劃**      | `/ecc:plan "需求"` | 建立實作計劃                 |
+| **開發**      | `/tdd`             | TDD 開發流程                 |
+| **審查**      | `/code-review`     | 程式碼審查                   |
+| **建構**      | `/build-fix`       | 修復建構錯誤                 |
+| **測試**      | `/e2e`             | E2E 測試產生                 |
+| **測試**      | `/test-coverage`   | 測試覆蓋率分析               |
+| **安全**      | `/security-scan`   | AgentShield 掃描             |
+| **重構**      | `/refactor-clean`  | 清除無用程式碼               |
+| **文件**      | `/update-docs`     | 更新文件                     |
+| **文件**      | `/update-codemaps` | 更新 Codemaps                |
+| **學習**      | `/learn`           | 萃取模式                     |
+| **學習**      | `/learn-eval`      | 萃取並評估模式               |
+| **驗證**      | `/checkpoint`      | 儲存驗證狀態                 |
+| **驗證**      | `/verify`          | 執行驗證迴圈                 |
+| **驗證**      | `/eval`            | 根據標準評估                 |
+| **Instincts** | `/instinct-status` | 查看已學習                   |
+| **Instincts** | `/instinct-import` | 匯入 Instincts               |
+| **Instincts** | `/instinct-export` | 匯出 Instincts               |
+| **Instincts** | `/evolve`          | 聚類為 Skills                |
+| **Instincts** | `/prune`           | 清除過期（30 天 TTL）        |
+| **Instincts** | `/promote`         | 將專案 Instincts 提升至全域  |
+| **Instincts** | `/projects`        | 列出已知專案與統計           |
+| **Skills**    | `/skill-create`    | 從 Git History 產生 Skills   |
+| **Skills**    | `/skill-stocktake` | 審查 Skills 與 Commands 品質 |
+| **模型**      | `/model sonnet`    | 切換至 Sonnet（日常）        |
+| **模型**      | `/model opus`      | 切換至 Opus（深度推理）      |
+| **模型**      | `/model-route`     | 依複雜度路由模型             |
+| **上下文**    | `/clear`           | 清除（免費重置）             |
+| **上下文**    | `/compact`         | 壓縮（邏輯斷點）             |
+| **成本**      | `/cost`            | 檢查 Token 花費              |
+| **多 Agent**  | `/multi-plan`      | 多 Agent 任務分解            |
+| **多 Agent**  | `/multi-execute`   | 多 Agent 協作執行            |
+| **多 Agent**  | `/multi-backend`   | 後端多服務編排               |
+| **多 Agent**  | `/multi-frontend`  | 前端多服務編排               |
+| **多 Agent**  | `/multi-workflow`  | 通用多服務工作流             |
+| **編排**      | `/orchestrate`     | 多 Agent 協調                |
+| **PM2**       | `/pm2`             | PM2 服務生命週期管理         |
+| **稽核**      | `/harness-audit`   | Harness 狀態稽核             |
+| **品質**      | `/quality-gate`    | 品質閘門檢查                 |
+| **迴圈**      | `/loop-start`      | 啟動自主迴圈                 |
+| **迴圈**      | `/loop-status`     | 檢查迴圈狀態                 |
+| **Session**   | `/sessions`        | Session 歷史管理             |
+| **設定**      | `/setup-pm`        | 設定套件管理器               |
+| **Go**        | `/go-review`       | Go 程式碼審查                |
+| **Go**        | `/go-test`         | Go TDD 工作流                |
+| **Go**        | `/go-build`        | 修復 Go 建構錯誤             |
+| **Python**    | `/python-review`   | Python 程式碼審查            |
 
 ### B. Skills 範例模板
 
@@ -2599,20 +2626,25 @@ tags: [java, spring-boot, custom]
 # My Custom Skill
 
 ## Purpose
+
 Explain what this skill accomplishes.
 
 ## Prerequisites
+
 - List requirements
 
 ## Steps
 
 ### Step 1: Analysis
+
 Describe what to analyze first.
 
 ### Step 2: Implementation
+
 Provide implementation patterns.
 
 ### Step 3: Verification
+
 Explain how to verify correctness.
 
 ## Examples
@@ -2622,15 +2654,17 @@ Explain how to verify correctness.
 ```
 
 ## Best Practices
+
 - List best practices
 
 ## Common Pitfalls
+
 - List common mistakes to avoid
 ````
 
 ### C. Agent 設計模板
 
-````markdown
+```markdown
 ---
 name: my-custom-agent
 description: Brief description of this agent's role
@@ -2641,32 +2675,36 @@ model: sonnet
 You are a [role description].
 
 ## Responsibilities
+
 1. First responsibility
 2. Second responsibility
 3. Third responsibility
 
 ## Constraints
+
 - What you should NOT do
 - Scope limitations
 
 ## Output Format
+
 Describe expected output format.
 
 ## Decision Framework
+
 1. When to escalate to human
 2. When to delegate to other agents
 3. Quality criteria for your work
-````
+```
 
 ### D. 跨工具功能對照表
 
-| 功能 | Claude Code | Cursor | Codex App+CLI | OpenCode |
-|------|-------------|--------|---------------|----------|
-| **Config Format** | settings.json | hooks.json + rules/ | config.toml | opencode.json |
-| **Context File** | CLAUDE.md + AGENTS.md | AGENTS.md | AGENTS.md | AGENTS.md |
-| **Secret Detection** | Hook-based | beforeSubmitPrompt | Sandbox-based | Hook-based |
-| **Auto-Format** | PostToolUse hook | afterFileEdit hook | N/A | file.edited hook |
-| **Installation** | Plugin | `--target cursor` | sync script | npm plugin |
+| 功能                 | Claude Code           | Cursor              | Codex App+CLI | OpenCode         |
+| -------------------- | --------------------- | ------------------- | ------------- | ---------------- |
+| **Config Format**    | settings.json         | hooks.json + rules/ | config.toml   | opencode.json    |
+| **Context File**     | CLAUDE.md + AGENTS.md | AGENTS.md           | AGENTS.md     | AGENTS.md        |
+| **Secret Detection** | Hook-based            | beforeSubmitPrompt  | Sandbox-based | Hook-based       |
+| **Auto-Format**      | PostToolUse hook      | afterFileEdit hook  | N/A           | file.edited hook |
+| **Installation**     | Plugin                | `--target cursor`   | sync script   | npm plugin       |
 
 ### E. 檢查清單（Checklist）
 
@@ -2716,15 +2754,15 @@ Describe expected output format.
 
 #### F.1 官方生態系工具
 
-| 工具 | 說明 | 連結 |
-|------|------|------|
-| **ECC Plugin** | Claude Code 主 Plugin | [GitHub](https://github.com/affaan-m/ECC) |
-| **AgentShield** | 安全稽核掃描器（1282 tests、102 rules） | [GitHub](https://github.com/affaan-m/agentshield) ∣ [npm](https://www.npmjs.com/package/ecc-agentshield) |
-| **Skill Creator** | 從 Git History 產生 Skills 的 GitHub App | [GitHub App](https://github.com/apps/skill-creator) ∣ [ecc.tools](https://ecc.tools) |
-| **ECC Tools** | GitHub Marketplace App（Free / Pro / Enterprise） | [Marketplace](https://github.com/marketplace/ecc-tools) |
-| **ecc-universal** | OpenCode Plugin（npm 套件） | [npm](https://www.npmjs.com/package/ecc-universal) |
-| **Dashboard GUI** | 桌面儀表板（Tkinter） | `npm run dashboard` 或 `python3 ecc_dashboard.py` |
-| **ECC 2.0 Control-Pane** | Rust 控制平面（v2.0.0 穩定版） | `ecc2/` 目錄 |
+| 工具                     | 說明                                              | 連結                                                                                                     |
+| ------------------------ | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **ECC Plugin**           | Claude Code 主 Plugin                             | [GitHub](https://github.com/affaan-m/ECC)                                                                |
+| **AgentShield**          | 安全稽核掃描器（1282 tests、102 rules）           | [GitHub](https://github.com/affaan-m/agentshield) ∣ [npm](https://www.npmjs.com/package/ecc-agentshield) |
+| **Skill Creator**        | 從 Git History 產生 Skills 的 GitHub App          | [GitHub App](https://github.com/apps/skill-creator) ∣ [ecc.tools](https://ecc.tools)                     |
+| **ECC Tools**            | GitHub Marketplace App（Free / Pro / Enterprise） | [Marketplace](https://github.com/marketplace/ecc-tools)                                                  |
+| **ecc-universal**        | OpenCode Plugin（npm 套件）                       | [npm](https://www.npmjs.com/package/ecc-universal)                                                       |
+| **Dashboard GUI**        | 桌面儀表板（Tkinter）                             | `npm run dashboard` 或 `python3 ecc_dashboard.py`                                                        |
+| **ECC 2.0 Control-Pane** | Rust 控制平面（v2.0.0 穩定版）                    | `ecc2/` 目錄                                                                                             |
 
 #### F.2 ECC Discord 社群
 
@@ -2738,8 +2776,8 @@ ECC v2.0.0 推出官方 Discord 社群（<https://discord.gg/36yGMHGFbR>），�
 
 #### F.3 社群專案
 
-| 專案 | 說明 |
-|------|------|
+| 專案                                     | 說明                                                                                                              |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | [EVC](https://github.com/SaigonXIII/evc) | 行銷 Agent 工作空間 — 42 個指令，用於內容營運、品牌治理和多通路發布。[視覺概覽](https://saigonxiii.github.io/evc) |
 
 > 💡 用 ECC 建構了什麼？歡迎開 PR 加入此清單。
@@ -2758,42 +2796,42 @@ ECC v2.0.0 推出官方 Discord 社群（<https://discord.gg/36yGMHGFbR>），�
 
 #### F.5 官方指南連結
 
-| 指南 | 內容 | 連結 |
-|------|------|------|
-| **Shorthand Guide** | 安裝、基礎、設計哲學。**入門首選** | [Twitter Thread](https://x.com/affaanmustafa/status/2012378465664745795) |
-| **Longform Guide** | Token 最佳化、記憶持久化、Eval、平行化 | [Twitter Thread](https://x.com/affaanmustafa/status/2014040193557471352) |
-| **Security Guide** | 攻擊向量、沙箱、消毒、CVE、AgentShield | [GitHub](https://github.com/affaan-m/ECC/blob/main/the-security-guide.md) ∣ [Thread](https://x.com/affaanmustafa/status/2033263813387223421) |
-| **Token Optimization Guide** | 推薦設定與工作流技巧 | [GitHub](https://github.com/affaan-m/ECC/blob/main/docs/token-optimization.md) |
-| **Troubleshooting Guide** | ECC 復原與排障指南 | [GitHub](https://github.com/affaan-m/ECC/blob/main/TROUBLESHOOTING.md) |
+| 指南                         | 內容                                   | 連結                                                                                                                                         |
+| ---------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Shorthand Guide**          | 安裝、基礎、設計哲學。**入門首選**     | [Twitter Thread](https://x.com/affaanmustafa/status/2012378465664745795)                                                                     |
+| **Longform Guide**           | Token 最佳化、記憶持久化、Eval、平行化 | [Twitter Thread](https://x.com/affaanmustafa/status/2014040193557471352)                                                                     |
+| **Security Guide**           | 攻擊向量、沙箱、消毒、CVE、AgentShield | [GitHub](https://github.com/affaan-m/ECC/blob/main/the-security-guide.md) ∣ [Thread](https://x.com/affaanmustafa/status/2033263813387223421) |
+| **Token Optimization Guide** | 推薦設定與工作流技巧                   | [GitHub](https://github.com/affaan-m/ECC/blob/main/docs/token-optimization.md)                                                               |
+| **Troubleshooting Guide**    | ECC 復原與排障指南                     | [GitHub](https://github.com/affaan-m/ECC/blob/main/TROUBLESHOOTING.md)                                                                       |
 
 #### F.6 多語言文件
 
 ECC 提供多種語言的 README 翻譯：
 
-| 語言 | 連結 |
-|------|------|
-| English | [README.md](https://github.com/affaan-m/ECC/blob/main/README.md) |
-| 繁體中文 | [docs/zh-TW/README.md](https://github.com/affaan-m/ECC/blob/main/docs/zh-TW/README.md) |
-| 简体中文 | [README.zh-CN.md](https://github.com/affaan-m/ECC/blob/main/README.zh-CN.md) |
-| 日本語 | [docs/ja-JP/README.md](https://github.com/affaan-m/ECC/blob/main/docs/ja-JP/README.md) |
-| 한국어 | [docs/ko-KR/README.md](https://github.com/affaan-m/ECC/blob/main/docs/ko-KR/README.md) |
+| 語言               | 連結                                                                                   |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| English            | [README.md](https://github.com/affaan-m/ECC/blob/main/README.md)                       |
+| 繁體中文           | [docs/zh-TW/README.md](https://github.com/affaan-m/ECC/blob/main/docs/zh-TW/README.md) |
+| 简体中文           | [README.zh-CN.md](https://github.com/affaan-m/ECC/blob/main/README.zh-CN.md)           |
+| 日本語             | [docs/ja-JP/README.md](https://github.com/affaan-m/ECC/blob/main/docs/ja-JP/README.md) |
+| 한국어             | [docs/ko-KR/README.md](https://github.com/affaan-m/ECC/blob/main/docs/ko-KR/README.md) |
 | Português (Brasil) | [docs/pt-BR/README.md](https://github.com/affaan-m/ECC/blob/main/docs/pt-BR/README.md) |
-| Türkçe | [docs/tr/README.md](https://github.com/affaan-m/ECC/blob/main/docs/tr/README.md) |
+| Türkçe             | [docs/tr/README.md](https://github.com/affaan-m/ECC/blob/main/docs/tr/README.md)       |
 
 ### G. 版本變更摘要
 
-| 版本 | 日期 | Agent 數 | Skill 數 | Command 數 | 測試數 | 重大特性 |
-|------|------|---------|---------|-----------|--------|---------|
-| v1.2.0 | 2026-02 | — | — | — | — | Python/Django + Spring Boot；CL v2 |
-| v1.3.0 | 2026-02 | 12 (OC) | 16 (OC) | 24 (OC) | — | OpenCode 整合 |
-| v1.4.0 | 2026-02 | — | — | +6 | — | 互動安裝精靈；PM2；多語言 Rules |
-| v1.6.0 | 2026-02 | — | +7 | — | 978 | Codex CLI；AgentShield；Marketplace |
-| v1.7.0 | 2026-02 | — | +6 | — | 992 | Codex App + CLI；前端投影片 |
-| v1.8.0 | 2026-03 | — | — | +5 | 997 | Harness Performance System；NanoClaw v2 |
-| v1.9.0 | 2026-03 | +6 | +12 | — | 1000+ | 選擇性安裝；12 語言生態系 |
-| v1.10.0 | 2026-04 | 47 | 181 | 79 | 1000+ | Dashboard GUI；Operator 工作流；ECC 2.0 Alpha |
-| v2.0.0-rc.1 | 2026-05 | 58 | 234 | 85 | 1000+ | orch-* 家族；Worktree-lifecycle；Copilot adapter |
-| v2.0.0 | 2026-06 | 67 | 277 | 92 (shim) | 1000+ | **穩定版**：Hermes Operator Story；Control-Pane Substrate；Cross-Harness 11 平台；ECC Discord 社群 |
+| 版本        | 日期    | Agent 數 | Skill 數 | Command 數 | 測試數 | 重大特性                                                                                           |
+| ----------- | ------- | -------- | -------- | ---------- | ------ | -------------------------------------------------------------------------------------------------- |
+| v1.2.0      | 2026-02 | —        | —        | —          | —      | Python/Django + Spring Boot；CL v2                                                                 |
+| v1.3.0      | 2026-02 | 12 (OC)  | 16 (OC)  | 24 (OC)    | —      | OpenCode 整合                                                                                      |
+| v1.4.0      | 2026-02 | —        | —        | +6         | —      | 互動安裝精靈；PM2；多語言 Rules                                                                    |
+| v1.6.0      | 2026-02 | —        | +7       | —          | 978    | Codex CLI；AgentShield；Marketplace                                                                |
+| v1.7.0      | 2026-02 | —        | +6       | —          | 992    | Codex App + CLI；前端投影片                                                                        |
+| v1.8.0      | 2026-03 | —        | —        | +5         | 997    | Harness Performance System；NanoClaw v2                                                            |
+| v1.9.0      | 2026-03 | +6       | +12      | —          | 1000+  | 選擇性安裝；12 語言生態系                                                                          |
+| v1.10.0     | 2026-04 | 47       | 181      | 79         | 1000+  | Dashboard GUI；Operator 工作流；ECC 2.0 Alpha                                                      |
+| v2.0.0-rc.1 | 2026-05 | 58       | 234      | 85         | 1000+  | orch-* 家族；Worktree-lifecycle；Copilot adapter                                                   |
+| v2.0.0      | 2026-06 | 67       | 277      | 92 (shim)  | 1000+  | **穩定版**：Hermes Operator Story；Control-Pane Substrate；Cross-Harness 11 平台；ECC Discord 社群 |
 
 > 完整記錄：[CHANGELOG.md](https://github.com/affaan-m/ECC/blob/main/CHANGELOG.md) ∣ [Releases](https://github.com/affaan-m/ECC/releases)
 
@@ -2806,4 +2844,3 @@ ECC 提供多種語言的 README 翻譯：
 > **社群**：224K+ Stars、289+ Contributors。歡迎貢獻 Skills、Agents、Hooks 或 Rules。詳見 [CONTRIBUTING.md](https://github.com/affaan-m/ECC/blob/main/CONTRIBUTING.md)。加入 [ECC Discord](https://discord.gg/ecc) 社群討論。
 
 > **追蹤作者**：[@affaanmustafa](https://x.com/affaanmustafa)（X / Twitter）
-

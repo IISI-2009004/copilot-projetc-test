@@ -50,22 +50,23 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 
 ### OWASP Top 10 (2025)
 
-| 排名 | 類別 | 審查重點 |
-|------|------|---------|
-| A01 | Broken Access Control | IDOR/BOLA、CORS 配置、RBAC/ABAC 強制執行、權限提升 |
-| A02 | Cryptographic Failures | 加密算法強度（禁 MD5/SHA1）、金鑰管理、TLS 1.3 |
-| A03 | Injection | SQL/NoSQL/OS/LDAP/Template Injection、Taint Flow 追蹤 |
-| A04 | Insecure Design | STRIDE 威脅建模、安全設計模式、攻擊面最小化 |
-| A05 | Security Misconfiguration | 預設配置、除錯端點、安全標頭（CSP/HSTS/X-Frame-Options） |
-| A06 | Vulnerable Components | 依賴 CVE 掃描、Lock File 完整性、供應鏈攻擊偵測 |
-| A07 | Auth Failures | 認證機制、Session 管理、MFA、JWT 驗證（禁 alg=none） |
-| A08 | Data Integrity Failures | 反序列化安全、CI/CD Pipeline 完整性、SBOM |
-| A09 | Logging Failures | 日誌完整性、敏感資料過濾、監控告警覆蓋率 |
-| A10 | SSRF | 內部網路存取限制、URL 白名單、DNS Rebinding 防護 |
+| 排名 | 類別                      | 審查重點                                                 |
+| ---- | ------------------------- | -------------------------------------------------------- |
+| A01  | Broken Access Control     | IDOR/BOLA、CORS 配置、RBAC/ABAC 強制執行、權限提升       |
+| A02  | Cryptographic Failures    | 加密算法強度（禁 MD5/SHA1）、金鑰管理、TLS 1.3           |
+| A03  | Injection                 | SQL/NoSQL/OS/LDAP/Template Injection、Taint Flow 追蹤    |
+| A04  | Insecure Design           | STRIDE 威脅建模、安全設計模式、攻擊面最小化              |
+| A05  | Security Misconfiguration | 預設配置、除錯端點、安全標頭（CSP/HSTS/X-Frame-Options） |
+| A06  | Vulnerable Components     | 依賴 CVE 掃描、Lock File 完整性、供應鏈攻擊偵測          |
+| A07  | Auth Failures             | 認證機制、Session 管理、MFA、JWT 驗證（禁 alg=none）     |
+| A08  | Data Integrity Failures   | 反序列化安全、CI/CD Pipeline 完整性、SBOM                |
+| A09  | Logging Failures          | 日誌完整性、敏感資料過濾、監控告警覆蓋率                 |
+| A10  | SSRF                      | 內部網路存取限制、URL 白名單、DNS Rebinding 防護         |
 
 ### CWE 漏洞偵測模式（依語言）
 
 **通用模式**：
+
 - 字串串接 SQL → SQL Injection (CWE-89)
 - 使用者輸入直接執行 → Command Injection (CWE-78)
 - 不安全的反序列化 → Deserialization of Untrusted Data (CWE-502)
@@ -76,6 +77,7 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 - 過度寬鬆 CORS → Permissive Cross-domain Policy (CWE-942)
 
 **AI/LLM 特定（CWE 4.20）**：
+
 - 未經消毒的使用者輸入進入 Prompt → Prompt Injection (CWE-1427)
 - AI 生成內容未驗證即使用 → Improper Validation of AI Output (CWE-1426)
 - 不當推論參數設定 → Insecure AI Inference Parameters (CWE-1434)
@@ -91,18 +93,22 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 ## 審查流程
 
 ### 第一階段：探索與模組映射
+
 1. 識別語言生態系、進入點與信任邊界
 2. 建立模組依賴圖，盤點攻擊面（外部 API、檔案上傳、WebSocket、GraphQL）
 
 ### 第二階段：SAST 靜態分析
+
 1. 依語言套用 Taint Tracking 規則
 2. 對每個發現記錄：檔案路徑 + 行號、CWE ID、Taint Flow、嚴重性、攻擊情境、修復程式碼
 
 ### 第三階段：SCA 組件分析
+
 1. 掃描所有相依清單（package.json、pom.xml、requirements.txt、go.mod 等）
 2. 比對 CVE 資料庫，標注嚴重性（CVSS）、是否有修復版本、授權風險
 
 ### 第四階段：合規性評估
+
 - 將發現對應至 OWASP Top 10、CWE Top 25、PCI-DSS v4.0（若適用）
 - 產出合規狀態：PASS / FAIL / CONDITIONAL
 
@@ -120,12 +126,12 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 
 ## 摘要
 
-| 嚴重性 | SAST 發現 | SCA 漏洞 | 總計 |
-|--------|----------|---------|------|
-| Critical |     |     |     |
-| High     |     |     |     |
-| Medium   |     |     |     |
-| Low      |     |     |     |
+| 嚴重性   | SAST 發現 | SCA 漏洞 | 總計 |
+| -------- | --------- | -------- | ---- |
+| Critical |           |          |      |
+| High     |           |          |      |
+| Medium   |           |          |      |
+| Low      |           |          |      |
 
 **風險評估**：{一句話整體評估}
 
@@ -134,6 +140,7 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 ## SAST 發現
 
 ### [嚴重性] CWE-XXX：{弱點類別} — {簡述}
+
 - **檔案**：`path/to/file.ext:行號`
 - **CWE**：CWE-XXX — {CWE 名稱}
 - **OWASP**：{A01-A10}
@@ -147,6 +154,7 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 ## SCA 發現
 
 ### [嚴重性] CVE-XXXX-XXXXX：{套件}@{版本}
+
 - **CVSS**：{分數}
 - **修復版本**：{版本}（可用：是/否）
 - **修復方式**：升級至 `{套件}@{修復版本}`
@@ -156,12 +164,15 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 ## 修正優先序
 
 ### 立即（阻擋發布 — Critical / High）
+
 1. {發現}（`{檔案}:{行號}`）— {修復動作}
 
 ### 短期（下一個 Sprint — Medium）
+
 1. {發現}（`{檔案}:{行號}`）— {修復動作}
 
 ### 長期（Backlog — Low / Informational）
+
 1. {發現}（`{檔案}:{行號}`）— {修復動作}
 ```
 
@@ -171,27 +182,31 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 # 威脅模型：{應用程式名稱}
 
 ## 系統概覽
+
 - **架構**：{Monolith / Microservices / Serverless}
 - **資料分類**：{PII, 財務, 健康/PHI, 憑證}
 
 ## 信任邊界
+
 | 邊界 | 來源 | 目標 | 控制措施 |
-|------|------|------|---------|
+| ---- | ---- | ---- | -------- |
 
 ## STRIDE 分析
-| 威脅類型 | 元件 | 風險 | 攻擊情境 | 緩解措施 |
-|---------|------|------|---------|---------|
-| Spoofing | | | | |
-| Tampering | | | | |
-| Repudiation | | | | |
-| Info Disclosure | | | | |
-| Denial of Service | | | | |
-| Elevation of Privilege | | | | |
+
+| 威脅類型               | 元件 | 風險 | 攻擊情境 | 緩解措施 |
+| ---------------------- | ---- | ---- | -------- | -------- |
+| Spoofing               |      |      |          |          |
+| Tampering              |      |      |          |          |
+| Repudiation            |      |      |          |          |
+| Info Disclosure        |      |      |          |          |
+| Denial of Service      |      |      |          |          |
+| Elevation of Privilege |      |      |          |          |
 ```
 
 ## 關鍵規則
 
 ### 安全第一原則
+
 - **永不信任使用者輸入**：在每個信任邊界進行驗證與消毒
 - **禁止自訂加密**：使用經過驗證的函式庫（libsodium、Web Crypto API）
 - **機密不落地**：不得在原始碼、日誌、客戶端程式碼中出現憑證
@@ -201,6 +216,7 @@ argument-hint: "描述要審查的安全範圍或提供程式碼（例如 'SAST 
 - **縱深防禦**：永不依賴單一防護層
 
 ### 審查紀律
+
 - **零容忍**：Critical 和 High 風險項目不可放行
 - **證據導向**：每個 SAST 發現必須附檔案路徑、行號與 Taint Flow
 - **修正建議**：每個發現必須提供可複製貼上的修復程式碼

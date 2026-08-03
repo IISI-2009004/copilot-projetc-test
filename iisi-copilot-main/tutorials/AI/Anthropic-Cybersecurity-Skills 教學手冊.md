@@ -5,14 +5,16 @@ title = 'Anthropic Cybersecurity Skills 教學手冊'
 tags = ['教學', 'AI開發']
 categories = ['教學']
 +++
+
 # Anthropic Cybersecurity Skills 教學手冊
 
 > **版本**：v1.0（依據官方 repo v1.3.0 / main 分支，2026-07 查詢版本整理）
 > **適用對象**：Cybersecurity Architect、DevSecOps 架構師、AI Agent 架構師、Secure SDLC 顧問、資深後端／前端工程師、逆向工程／Framework 升級團隊
 > **內容定位**：本手冊聚焦於開源專案 **Anthropic Cybersecurity Skills**（`github.com/mukul975/Anthropic-Cybersecurity-Skills`）——目前最大的開源 AI Agent 網路安全技能庫——的設計理念、系統架構、六大框架整合、安裝設定、實戰應用（Web 開發／逆向工程／Framework 升級）、第三方技能安全審查，並延伸至企業級 DevSecOps 導入建議。
 > **重要聲明（請務必詳讀）**：
-> 1. **本專案為獨立社群專案，並非 Anthropic PBC 官方產品或官方維護的資產**（README 原文：*"⚠️ Community Project — This is an independent, community-created project. Not affiliated with Anthropic PBC."*）。專案作者為 Mahipal Jangra（GitHub：`mukul975`），採 Apache-2.0 授權。手冊中所有「Anthropic」字樣皆指技能庫命名慣例（呼應 Claude / Agent Skills 生態），不代表官方背書。
-> 2. **本技能庫包含攻擊性與雙用途（dual-use）技術**（例如紅隊 C2、釣魚模擬、滲透利用），官方明確聲明：*「僅限經授權且合法之用途」*（Authorized & lawful use only）。僅可對「你擁有或已取得書面授權測試」的系統使用這些技能，並須遵守所有適用法規與交戰規則（Rules of Engagement）。使用者需自行承擔使用後果，詳見專案 `SECURITY.md` 與 `CODE_OF_CONDUCT.md`。企業導入前務必先完成法務／資安治理審查（詳見第 11、17 章）。
+>
+> 1. **本專案為獨立社群專案，並非 Anthropic PBC 官方產品或官方維護的資產**（README 原文：_"⚠️ Community Project — This is an independent, community-created project. Not affiliated with Anthropic PBC."_）。專案作者為 Mahipal Jangra（GitHub：`mukul975`），採 Apache-2.0 授權。手冊中所有「Anthropic」字樣皆指技能庫命名慣例（呼應 Claude / Agent Skills 生態），不代表官方背書。
+> 2. **本技能庫包含攻擊性與雙用途（dual-use）技術**（例如紅隊 C2、釣魚模擬、滲透利用），官方明確聲明：_「僅限經授權且合法之用途」_（Authorized & lawful use only）。僅可對「你擁有或已取得書面授權測試」的系統使用這些技能，並須遵守所有適用法規與交戰規則（Rules of Engagement）。使用者需自行承擔使用後果，詳見專案 `SECURITY.md` 與 `CODE_OF_CONDUCT.md`。企業導入前務必先完成法務／資安治理審查（詳見第 11、17 章）。
 > 3. 本文第 1～10、12～16 章之技術描述（Skill 數量、框架版本、YAML frontmatter 欄位、安裝指令、相容平台）基於官方 README、`ATTACK_COVERAGE.md`、repo 目錄結構逐項核對整理，**非逐字翻譯**；GitHub 社群數據（Star／Fork 數、Skill 總數）反映查詢當下時間點，會持續變動，實際導入前請以官方 repo 當下版本為準。第 8、9、10、17、19、20 章之企業應用情境屬「企業實務延伸」內容，是顧問觀點下的建議做法，並非官方功能宣稱，文中會標註。
 
 ---
@@ -23,15 +25,15 @@ Anthropic Cybersecurity Skills 解決的問題很直接：市面上的資安工�
 
 依角色整理建議閱讀路徑：
 
-| 角色 | 建議優先閱讀章節 |
-|---|---|
-| 新進工程師／第一次接觸 | 第 1、2、6、7 章 |
-| AI Agent 開發團隊（Claude Code／Copilot） | 第 4、6、12、13、14 章 |
-| Web/Legacy 開發與升級團隊 | 第 8、9、10 章 |
-| 安全架構師／資安主管／合規負責人 | 第 5、11、17 章，以及本頁「重要聲明」 |
-| DevSecOps／CI Pipeline 維運者 | 第 11、17、18 章 |
-| 企業導入決策者 | 第 1、17、20、附錄 C |
-| Troubleshooting／客服支援 | 第 21、22 章 |
+| 角色                                      | 建議優先閱讀章節                      |
+| ----------------------------------------- | ------------------------------------- |
+| 新進工程師／第一次接觸                    | 第 1、2、6、7 章                      |
+| AI Agent 開發團隊（Claude Code／Copilot） | 第 4、6、12、13、14 章                |
+| Web/Legacy 開發與升級團隊                 | 第 8、9、10 章                        |
+| 安全架構師／資安主管／合規負責人          | 第 5、11、17 章，以及本頁「重要聲明」 |
+| DevSecOps／CI Pipeline 維運者             | 第 11、17、18 章                      |
+| 企業導入決策者                            | 第 1、17、20、附錄 C                  |
+| Troubleshooting／客服支援                 | 第 21、22 章                          |
 
 ---
 
@@ -180,10 +182,10 @@ Anthropic Cybersecurity Skills 解決的問題很直接：市面上的資安工�
 
 ### 1.4 版本沿革與 Roadmap
 
-| 版本 | 時間 | 規模 | 重點 |
-|---|---|---|---|
-| v1.0.0 | 2026-03-11 | 734 個技能／26 個領域 | MITRE ATT&CK + NIST CSF 2.0 映射、附帶 ATT&CK Navigator layer |
-| main／v1.3.0（查詢當下最新） | 持續更新 | 817 個技能／29 個領域／6 框架 | 新增 MITRE ATLAS、D3FEND、NIST AI RMF、MITRE F3（Fight Fraud）映射；`.claude-plugin` 外掛化安裝方式 |
+| 版本                         | 時間       | 規模                          | 重點                                                                                                |
+| ---------------------------- | ---------- | ----------------------------- | --------------------------------------------------------------------------------------------------- |
+| v1.0.0                       | 2026-03-11 | 734 個技能／26 個領域         | MITRE ATT&CK + NIST CSF 2.0 映射、附帶 ATT&CK Navigator layer                                       |
+| main／v1.3.0（查詢當下最新） | 持續更新   | 817 個技能／29 個領域／6 框架 | 新增 MITRE ATLAS、D3FEND、NIST AI RMF、MITRE F3（Fight Fraud）映射；`.claude-plugin` 外掛化安裝方式 |
 
 > 依官方 Releases 頁面，v1.0.0 後的成長（734→817 個技能、26→29 個領域、2→6 個框架）全部發生在 `main` 分支的持續迭代中，尚未正式打上新的 Release Tag。企業導入前建議先確認 `Releases` 頁面是否已有更新的正式 Tag，或直接鎖定 commit hash 以確保可重現性。
 
@@ -252,10 +254,10 @@ graph TB
 
 這是本專案在效能設計上最關鍵的一環。官方 README 明確給出成本數字：
 
-| 階段 | 內容 | 平均 Token 成本 |
-|---|---|---|
-| 索引掃描 | 單一技能的 YAML frontmatter | 約 30 tokens |
-| 完整載入 | 單一技能的完整 Workflow | 500～2,000 tokens |
+| 階段               | 內容                                                 | 平均 Token 成本              |
+| ------------------ | ---------------------------------------------------- | ---------------------------- |
+| 索引掃描           | 單一技能的 YAML frontmatter                          | 約 30 tokens                 |
+| 完整載入           | 單一技能的完整 Workflow                              | 500～2,000 tokens            |
 | 深度參考（選擇性） | `references/standards.md`／`references/workflows.md` | 依內容量而定，僅在需要時載入 |
 
 因為 frontmatter 掃描成本極低，Agent 可以在**單一輪次內掃描全部 817 個技能**而不會塞爆 Context Window——這正是「Progressive Disclosure（漸進式揭露）」的核心精神：先廣後深，只在真正需要時才付出高成本的深度載入。
@@ -410,18 +412,18 @@ license: Apache-2.0
 ---
 ```
 
-| 欄位 | 說明 | 命名規則 |
-|---|---|---|
-| `name` | Skill 唯一識別碼 | kebab-case，1～64 字元 |
-| `description` | 供 Agent 語意比對用的關鍵字豐富描述 | 建議包含觸發情境的核心動詞與名詞 |
-| `domain` / `subdomain` | 領域／子領域分類 | 對應第 7 章的 29 個領域 |
-| `tags` | 搜尋標籤 | 陣列，供 frontmatter 掃描比對 |
-| `atlas_techniques` | MITRE ATLAS 技術 ID | 例如 `AML.T0047` |
-| `d3fend_techniques` | MITRE D3FEND 技術 ID | 例如 `D3-MA`（Memory Analysis）、`D3-PSMD` |
-| `nist_ai_rmf` | NIST AI RMF 子類別 | 例如 `MEASURE-2.6` |
-| `nist_csf` | NIST CSF 2.0 類別 | 例如 `DE.CM-01`（偵測／持續監控）、`RS.AN-03`（應變／分析） |
-| `version` | Skill 版本號 | Semantic-like 字串 |
-| `author` / `license` | 貢獻者與授權 | 專案整體採 Apache-2.0 |
+| 欄位                   | 說明                                | 命名規則                                                    |
+| ---------------------- | ----------------------------------- | ----------------------------------------------------------- |
+| `name`                 | Skill 唯一識別碼                    | kebab-case，1～64 字元                                      |
+| `description`          | 供 Agent 語意比對用的關鍵字豐富描述 | 建議包含觸發情境的核心動詞與名詞                            |
+| `domain` / `subdomain` | 領域／子領域分類                    | 對應第 7 章的 29 個領域                                     |
+| `tags`                 | 搜尋標籤                            | 陣列，供 frontmatter 掃描比對                               |
+| `atlas_techniques`     | MITRE ATLAS 技術 ID                 | 例如 `AML.T0047`                                            |
+| `d3fend_techniques`    | MITRE D3FEND 技術 ID                | 例如 `D3-MA`（Memory Analysis）、`D3-PSMD`                  |
+| `nist_ai_rmf`          | NIST AI RMF 子類別                  | 例如 `MEASURE-2.6`                                          |
+| `nist_csf`             | NIST CSF 2.0 類別                   | 例如 `DE.CM-01`（偵測／持續監控）、`RS.AN-03`（應變／分析） |
+| `version`              | Skill 版本號                        | Semantic-like 字串                                          |
+| `author` / `license`   | 貢獻者與授權                        | 專案整體採 Apache-2.0                                       |
 
 > **重要細節**：MITRE ATT&CK 的技術映射**並未直接放在 frontmatter**，而是記錄在該技能的 `references/standards.md` 檔案中，並隨每次 Release 附上完整的 ATT&CK Navigator layer（JSON 格式，可直接匯入官方 ATT&CK Navigator 工具視覺化）。這是與 ATLAS／D3FEND／AI RMF／CSF（直接寫在 frontmatter）不同的設計，撰寫自訂技能或做工具整合時務必注意這個差異。
 
@@ -441,15 +443,15 @@ graph TD
     F --> G["## Output Format<br/>輸出格式"]
 ```
 
-| 段落 | 目的 | 撰寫重點 |
-|---|---|---|
-| When to Use | 讓 Agent 判斷「現在該不該用這個技能」 | 具體描述觸發情境，避免過度抽象 |
-| Prerequisites | 避免 Agent 在缺乏權限／工具的情況下貿然執行 | 列出所需工具版本、存取層級、環境變數 |
-| Workflow | 核心的逐步操作指南（官方要求「編號步驟＋真實指令」） | 包含實際可執行的指令與關鍵決策分歧點 |
-| Key Concepts | 以表格整理該技能涉及的關鍵術語／概念 | 方便 Agent 快速比對專有名詞 |
-| Tools & Systems | 列出會用到的工具、平台、系統 | 例如 Volatility3、Sigma、Splunk 等 |
-| Common Scenarios | 列舉常見的實際應用情境 | 幫助 Agent 判斷細部觸發條件 |
-| Output Format | 定義該技能應產出的結構化輸出格式 | 確保多個技能鏈接時輸出格式一致 |
+| 段落             | 目的                                                 | 撰寫重點                             |
+| ---------------- | ---------------------------------------------------- | ------------------------------------ |
+| When to Use      | 讓 Agent 判斷「現在該不該用這個技能」                | 具體描述觸發情境，避免過度抽象       |
+| Prerequisites    | 避免 Agent 在缺乏權限／工具的情況下貿然執行          | 列出所需工具版本、存取層級、環境變數 |
+| Workflow         | 核心的逐步操作指南（官方要求「編號步驟＋真實指令」） | 包含實際可執行的指令與關鍵決策分歧點 |
+| Key Concepts     | 以表格整理該技能涉及的關鍵術語／概念                 | 方便 Agent 快速比對專有名詞          |
+| Tools & Systems  | 列出會用到的工具、平台、系統                         | 例如 Volatility3、Sigma、Splunk 等   |
+| Common Scenarios | 列舉常見的實際應用情境                               | 幫助 Agent 判斷細部觸發條件          |
+| Output Format    | 定義該技能應產出的結構化輸出格式                     | 確保多個技能鏈接時輸出格式一致       |
 
 > 部分已上線的技能（例如第 2.3 節範例 `performing-memory-forensics-with-volatility3`）採用的是更精簡的四段式版本（When to Use／Prerequisites／Workflow／**Verification**）——`Verification`（如何確認技能已正確執行）雖未列在 `CONTRIBUTING.md` 的建議清單中，但在鑑識／應變類技能中頗為常見，可視為社群在官方範本基礎上依領域需求自行擴充的慣例欄位。
 
@@ -474,13 +476,13 @@ Anthropic Cybersecurity Skills 選擇完全遵循此標準的關鍵理由：
 
 agentskills.io 標準的核心約束對應到本專案的實作即為第 3.3 節的 YAML frontmatter 欄位規範與第 3.4 節的 Markdown Body 段落結構慣例。企業在評估是否遵循此標準撰寫「自訂技能」時，建議檢核以下相容性重點：
 
-| 相容性檢核項 | 說明 |
-|---|---|
-| Frontmatter 必要欄位 | `name`、`description` 為最低要求，其餘欄位依需求擴充 |
-| 命名規則 | kebab-case、長度限制（1～64 字元），避免特殊符號 |
-| 版本標示 | 建議每個技能都附上 `version` 欄位，方便追蹤變更與相容性 |
-| Reference 檔案慣例 | `references/` 目錄放深度技術文件，`scripts/` 放輔助腳本，`assets/` 放範本/模板 |
-| License 標示 | 每個技能／整體 repo 應明確標示授權條款 |
+| 相容性檢核項         | 說明                                                                           |
+| -------------------- | ------------------------------------------------------------------------------ |
+| Frontmatter 必要欄位 | `name`、`description` 為最低要求，其餘欄位依需求擴充                           |
+| 命名規則             | kebab-case、長度限制（1～64 字元），避免特殊符號                               |
+| 版本標示             | 建議每個技能都附上 `version` 欄位，方便追蹤變更與相容性                        |
+| Reference 檔案慣例   | `references/` 目錄放深度技術文件，`scripts/` 放輔助腳本，`assets/` 放範本/模板 |
+| License 標示         | 每個技能／整體 repo 應明確標示授權條款                                         |
 
 ### 4.3 撰寫 Skill 的最佳實務
 
@@ -494,14 +496,14 @@ agentskills.io 標準的核心約束對應到本專案的實作即為第 3.3 節
 
 **官方 `CONTRIBUTING.md` 定義的 24 種標準 Subdomain**（撰寫技能時應從中挑選最貼切者）：
 
-| 分類 | Subdomain 列舉值 |
-|---|---|
-| 攻防與滲透 | `web-application-security`、`network-security`、`penetration-testing`、`red-teaming` |
-| 鑑識與分析 | `digital-forensics`、`malware-analysis`、`threat-intelligence`、`threat-hunting` |
+| 分類         | Subdomain 列舉值                                                                                                                   |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 攻防與滲透   | `web-application-security`、`network-security`、`penetration-testing`、`red-teaming`                                               |
+| 鑑識與分析   | `digital-forensics`、`malware-analysis`、`threat-intelligence`、`threat-hunting`                                                   |
 | 基礎設施安全 | `cloud-security`、`container-security`、`identity-access-management`、`cryptography`、`zero-trust-architecture`、`ot-ics-security` |
-| 治理與維運 | `vulnerability-management`、`compliance-governance`、`devsecops`、`soc-operations`、`incident-response` |
-| 應用與端點 | `api-security`、`mobile-security`、`endpoint-security` |
-| 專項防禦 | `phishing-defense`、`ransomware-defense` |
+| 治理與維運   | `vulnerability-management`、`compliance-governance`、`devsecops`、`soc-operations`、`incident-response`                            |
+| 應用與端點   | `api-security`、`mobile-security`、`endpoint-security`                                                                             |
+| 專項防禦     | `phishing-defense`、`ransomware-defense`                                                                                           |
 
 > **落差誠實揭露**：`CONTRIBUTING.md` 目前列舉的 24 個 subdomain，與第 7 章 README 所述的「29 個 security domains」（例如 `Supply Chain Security`、`Deception Technology`、`Hardware & Firmware Security`、`AI Security`）**並非完全一致**——後面幾個較新加入的領域尚未反映在貢獻指南的 subdomain 列舉中。這代表社群文件之間存在更新時間差，企業若要新增自訂技能，建議優先參考 `skills/` 目錄下實際已存在的 `subdomain` 值，而非僅依賴 `CONTRIBUTING.md` 的靜態列表。
 
@@ -516,21 +518,21 @@ agentskills.io 標準的核心約束對應到本專案的實作即為第 3.3 節
 
 這是本專案最核心的差異化價值——**目前沒有其他開源技能庫能將每個技能對齊全部六大主流安全與合規框架**。官方 README 提供的總覽：
 
-| 框架 | 版本 | 涵蓋範圍 | 用途 |
-|---|---|---|---|
-| MITRE ATT&CK | v19.1 | 15 個 Enterprise Tactics、286 個 Techniques（754/754 個相關技能已映射） | 對手行為與 TTP（戰術、技術、程序） |
-| NIST CSF 2.0 | 2.0 | 6 個 Function、22 個 Category | 組織整體資安態勢 |
-| MITRE ATLAS | v5.4 | 16 個 Tactics、84 個 Techniques | AI／ML 系統對抗性威脅 |
-| MITRE D3FEND | v1.3 | 7 個 Category、267 個 Techniques | 防禦性反制技術 |
-| NIST AI RMF | 1.0 | 4 個 Function、72 個 Subcategory | AI 風險管理 |
-| MITRE F3（Fight Fraud Framework） | v1.1（2026-04-09 發布） | 8 個 Tactics、123 個 Techniques、94 個詐欺相關技能 | 網路型金融詐欺 TTP |
+| 框架                              | 版本                    | 涵蓋範圍                                                                | 用途                               |
+| --------------------------------- | ----------------------- | ----------------------------------------------------------------------- | ---------------------------------- |
+| MITRE ATT&CK                      | v19.1                   | 15 個 Enterprise Tactics、286 個 Techniques（754/754 個相關技能已映射） | 對手行為與 TTP（戰術、技術、程序） |
+| NIST CSF 2.0                      | 2.0                     | 6 個 Function、22 個 Category                                           | 組織整體資安態勢                   |
+| MITRE ATLAS                       | v5.4                    | 16 個 Tactics、84 個 Techniques                                         | AI／ML 系統對抗性威脅              |
+| MITRE D3FEND                      | v1.3                    | 7 個 Category、267 個 Techniques                                        | 防禦性反制技術                     |
+| NIST AI RMF                       | 1.0                     | 4 個 Function、72 個 Subcategory                                        | AI 風險管理                        |
+| MITRE F3（Fight Fraud Framework） | v1.1（2026-04-09 發布） | 8 個 Tactics、123 個 Techniques、94 個詐欺相關技能                      | 網路型金融詐欺 TTP                 |
 
 > 一個技能同時對齊六個框架的實例（官方 README 範例）：
 
-| Skill | ATT&CK | CSF 2.0 | ATLAS | D3FEND | AI RMF | F3 |
-|---|---|---|---|---|---|---|
-| `analyzing-network-traffic-of-malware` | T1071 | DE.CM | AML.T0047 | D3-NTA | MEASURE-2.6 | — |
-| `detecting-business-email-compromise` | T1566 | DE.AE | — | — | — | F1005.006（monetization） |
+| Skill                                  | ATT&CK | CSF 2.0 | ATLAS     | D3FEND | AI RMF      | F3                        |
+| -------------------------------------- | ------ | ------- | --------- | ------ | ----------- | ------------------------- |
+| `analyzing-network-traffic-of-malware` | T1071  | DE.CM   | AML.T0047 | D3-NTA | MEASURE-2.6 | —                         |
+| `detecting-business-email-compromise`  | T1566  | DE.AE   | —         | —      | —           | F1005.006（monetization） |
 
 六大框架彼此的定位關係，可用 Mindmap 呈現：
 
@@ -560,23 +562,23 @@ mindmap
 
 全部 754 個相關技能已使用官方 `mitreattack-python` 函式庫驗證映射，涵蓋 15 個 Enterprise Tactic（外加 ICS 與 Mobile 技術），且**零過期或已撤回的技術 ID**。v19.1 版本的一項重大結構調整——原本的 Defense Evasion 被拆分為 **Stealth** 與 **Defense Impairment** 兩個獨立 Tactic——本專案已同步反映：
 
-| Tactic | ID | 對應技能數 |
-|---|---|---|
-| Reconnaissance | TA0043 | 103 |
-| Resource Development | TA0042 | 22 |
-| Initial Access | TA0001 | 467 |
-| Execution | TA0002 | 350 |
-| Persistence | TA0003 | 444 |
-| Privilege Escalation | TA0004 | 464 |
-| Stealth（原 Defense Evasion 拆分） | TA0005 | 442 |
-| Defense Impairment（原 Defense Evasion 拆分） | TA0112 | 92 |
-| Credential Access | TA0006 | 202 |
-| Discovery | TA0007 | 237 |
-| Lateral Movement | TA0008 | 68 |
-| Collection | TA0009 | 172 |
-| Command and Control | TA0011 | 123 |
-| Exfiltration | TA0010 | 82 |
-| Impact | TA0040 | 50 |
+| Tactic                                        | ID     | 對應技能數 |
+| --------------------------------------------- | ------ | ---------- |
+| Reconnaissance                                | TA0043 | 103        |
+| Resource Development                          | TA0042 | 22         |
+| Initial Access                                | TA0001 | 467        |
+| Execution                                     | TA0002 | 350        |
+| Persistence                                   | TA0003 | 444        |
+| Privilege Escalation                          | TA0004 | 464        |
+| Stealth（原 Defense Evasion 拆分）            | TA0005 | 442        |
+| Defense Impairment（原 Defense Evasion 拆分） | TA0112 | 92         |
+| Credential Access                             | TA0006 | 202        |
+| Discovery                                     | TA0007 | 237        |
+| Lateral Movement                              | TA0008 | 68         |
+| Collection                                    | TA0009 | 172        |
+| Command and Control                           | TA0011 | 123        |
+| Exfiltration                                  | TA0010 | 82         |
+| Impact                                        | TA0040 | 50         |
 
 > 注意：上表為「技能與 Tactic 的對應數」，同一個技能可能同時對應多個 Tactic，因此加總會超過 817 個技能總數，這屬於正常現象。
 
@@ -586,14 +588,14 @@ mindmap
 
 NIST CSF 2.0 是 2024 年發布的新版網路安全框架，相較 1.1 版新增了 **Govern（治理）** Function，本專案的映射對齊全部 **6 個 Function、22 個 Category**：
 
-| Function | 說明 |
-|---|---|
-| Govern (GV) | 治理與風險策略（CSF 2.0 新增） |
-| Identify (ID) | 資產與風險識別 |
-| Protect (PR) | 防護控制措施 |
-| Detect (DE) | 偵測異常與事件 |
-| Respond (RS) | 事件應變 |
-| Recover (RC) | 復原與韌性 |
+| Function      | 說明                           |
+| ------------- | ------------------------------ |
+| Govern (GV)   | 治理與風險策略（CSF 2.0 新增） |
+| Identify (ID) | 資產與風險識別                 |
+| Protect (PR)  | 防護控制措施                   |
+| Detect (DE)   | 偵測異常與事件                 |
+| Respond (RS)  | 事件應變                       |
+| Recover (RC)  | 復原與韌性                     |
 
 技能的 `nist_csf` frontmatter 欄位通常填入更細的 Category 層級（例如 `DE.CM-01`、`RS.AN-03`），方便企業做合規報告時直接對照現行的 CSF 2.0 自評表。
 
@@ -603,16 +605,16 @@ ATLAS（Adversarial Threat Landscape for Artificial-Intelligence Systems）是 M
 
 repo 實際套用的關鍵 ATLAS 技術範例（依 `ATTACK_COVERAGE.md`）：
 
-| 技術 ID | 名稱 | 所屬 ATT&CK-style Tactic |
-|---|---|---|
-| `AML.T0051` | LLM Prompt Injection | Execution |
-| `AML.T0054` | LLM Jailbreak | Privilege Escalation |
-| `AML.T0088` | Generate Deepfakes | AI Attack Staging |
-| `AML.T0010` | AI Supply Chain Compromise | Initial Access |
-| `AML.T0020` | Poison Training Data | Resource Development |
-| `AML.T0070` | RAG Poisoning | Persistence |
-| `AML.T0080` | AI Agent Context Poisoning | Persistence |
-| `AML.T0056` | Extract LLM System Prompt | Exfiltration |
+| 技術 ID     | 名稱                       | 所屬 ATT&CK-style Tactic |
+| ----------- | -------------------------- | ------------------------ |
+| `AML.T0051` | LLM Prompt Injection       | Execution                |
+| `AML.T0054` | LLM Jailbreak              | Privilege Escalation     |
+| `AML.T0088` | Generate Deepfakes         | AI Attack Staging        |
+| `AML.T0010` | AI Supply Chain Compromise | Initial Access           |
+| `AML.T0020` | Poison Training Data       | Resource Development     |
+| `AML.T0070` | RAG Poisoning              | Persistence              |
+| `AML.T0080` | AI Agent Context Poisoning | Persistence              |
+| `AML.T0056` | Extract LLM System Prompt  | Exfiltration             |
 
 ### 5.5 MITRE D3FEND v1.3（防禦技術）
 
@@ -622,12 +624,12 @@ D3FEND 是 ATT&CK 的「防禦鏡像」——ATT&CK 描述攻擊者怎麼做，D
 
 NIST AI Risk Management Framework 1.0（正式編號 AI 100-1）涵蓋 **4 個 Function（Govern／Map／Measure／Manage）、72 個 Subcategory**，主要用於管理 AI 系統本身的風險（而非傳統 IT 系統）。依 `ATTACK_COVERAGE.md` 統計，共有 **85 個技能**掛載 `nist_ai_rmf` 映射，實際套用的 Subcategory 涵蓋：
 
-| Function | 實際套用的 Subcategory | 說明 |
-|---|---|---|
-| GOVERN | `GOVERN-1.1`、`GOVERN-6.1`、`GOVERN-6.2` | 組織對 AI 風險的問責制度（GOVERN-6.1/6.2 需依賴負責任部署政策） |
-| MAP | `MAP-5.1`、`MAP-5.2`、`MAP-1.6` | AI 風險識別與情境化 |
-| MEASURE | `MEASURE-2.5`、`MEASURE-2.7`、`MEASURE-2.8`、`MEASURE-2.11` | AI 風險分析與評估 |
-| MANAGE | `MANAGE-2.4`、`MANAGE-3.1` | AI 風險回應與復原 |
+| Function | 實際套用的 Subcategory                                      | 說明                                                            |
+| -------- | ----------------------------------------------------------- | --------------------------------------------------------------- |
+| GOVERN   | `GOVERN-1.1`、`GOVERN-6.1`、`GOVERN-6.2`                    | 組織對 AI 風險的問責制度（GOVERN-6.1/6.2 需依賴負責任部署政策） |
+| MAP      | `MAP-5.1`、`MAP-5.2`、`MAP-1.6`                             | AI 風險識別與情境化                                             |
+| MEASURE  | `MEASURE-2.5`、`MEASURE-2.7`、`MEASURE-2.8`、`MEASURE-2.11` | AI 風險分析與評估                                               |
+| MANAGE   | `MANAGE-2.4`、`MANAGE-3.1`                                  | AI 風險回應與復原                                               |
 
 ### 5.7 MITRE F3（Fight Fraud Framework）v1.1
 
@@ -637,16 +639,16 @@ F3 的定位是「ATT&CK 相容的網路型金融詐欺 TTP 目錄」。依官�
 
 > **重要修正**：F3 v1.1 並非只有「Positioning／Monetization」兩個 Tactic，而是共 **8 個 Tactic**——其中 6 個是「沿用 ATT&CK 既有 Tactic，但在詐欺情境下重新定義」，只有 2 個是「F3 全新專屬」：
 
-| Tactic | ID | 來源 |
-|---|---|---|
-| reconnaissance | TA0043 | ATT&CK（重新定義） |
-| resource-development | TA0042 | ATT&CK（重新定義） |
-| initial-access | TA0001 | ATT&CK（重新定義） |
-| stealth | TA0005 | ATT&CK（重新定義） |
-| **positioning** | **FA0001** | **F3 全新（取得存取後收集／操縱資料以準備詐欺：合成身分佈建、帳戶預熱、受益人設定、SIM 卡交換預佈局、銀行 Session 劫持）** |
-| execution | TA0002 | ATT&CK（重新定義） |
-| **monetization** | **FA0002** | **F3 全新（將竊取的資產轉換為可用資金：人頭帳戶洗錢層、APP 詐欺、加密貨幣出金、信用卡套現、退款／拒付濫用）** |
-| defense-impairment | TA0112 | ATT&CK（重新定義） |
+| Tactic               | ID         | 來源                                                                                                                       |
+| -------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+| reconnaissance       | TA0043     | ATT&CK（重新定義）                                                                                                         |
+| resource-development | TA0042     | ATT&CK（重新定義）                                                                                                         |
+| initial-access       | TA0001     | ATT&CK（重新定義）                                                                                                         |
+| stealth              | TA0005     | ATT&CK（重新定義）                                                                                                         |
+| **positioning**      | **FA0001** | **F3 全新（取得存取後收集／操縱資料以準備詐欺：合成身分佈建、帳戶預熱、受益人設定、SIM 卡交換預佈局、銀行 Session 劫持）** |
+| execution            | TA0002     | ATT&CK（重新定義）                                                                                                         |
+| **monetization**     | **FA0002** | **F3 全新（將竊取的資產轉換為可用資金：人頭帳戶洗錢層、APP 詐欺、加密貨幣出金、信用卡套現、退款／拒付濫用）**              |
+| defense-impairment   | TA0112     | ATT&CK（重新定義）                                                                                                         |
 
 技術 ID 命名規則：`F1XXX` 為 F3 新引入的詐欺專屬技術（例如 `F1005.003` Account Manipulation: Add Beneficiary、`F1025.003` Electronic Funds Transfer: Wire Transfer、`F1018` Convert to Cryptocurrency）；`T1XXX` 為直接沿用於 F3 目錄內的 ATT&CK 技術（例如 `T1566` Phishing、`T1586` Compromise Accounts、`T1557` Adversary-in-the-Middle）。每一個 ID 都是 F3 v1.1 STIX Bundle 內的真實活躍技術，不存在 `TBD` 佔位符。
 
@@ -654,19 +656,19 @@ F3 的定位是「ATT&CK 相容的網路型金融詐欺 TTP 目錄」。依官�
 
 ```yaml
 mitre_f3:
-  version: '1.1'
+  version: "1.1"
   tactics:
     - positioning
     - monetization
   techniques:
     - id: F1005.003
-      name: 'Account Manipulation: Add Beneficiary'
+      name: "Account Manipulation: Add Beneficiary"
       tactic: positioning
-      source: f3          # F 開頭 = F3 專屬
+      source: f3 # F 開頭 = F3 專屬
     - id: T1586
       name: Compromise Accounts
       tactic: resource-development
-      source: attack      # T 開頭 = 沿用 ATT&CK
+      source: attack # T 開頭 = 沿用 ATT&CK
 ```
 
 撰寫規則：`id` 必須為真實的 F3 v1.1 技術 ID；`name` 必須與 F3 目錄中的官方名稱一致；`tactic` 必須是該技術實際列於目錄中的 Tactic；`source` 為 `f3`（F1XXX ID）或 `attack`（T1XXX ID）。
@@ -780,12 +782,12 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 依官方 README「Compatible platforms」段落整理：
 
-| 分類 | 平台 |
-|---|---|
+| 分類                          | 平台                                                                                                                                                                   |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | AI Code Assistant（IDE 內嵌） | Claude Code（Anthropic）、GitHub Copilot（Microsoft）、Cursor、Windsurf、Cline、Aider、Continue、Roo Code、Amazon Q Developer、Tabnine、Sourcegraph Cody、JetBrains AI |
-| CLI Agent | OpenAI Codex CLI、Gemini CLI（Google） |
-| 自主型 Agent | Devin、Replit Agent、SWE-agent、OpenHands |
-| Agent Framework／SDK | LangChain、CrewAI、AutoGen、Semantic Kernel、Haystack、Vercel AI SDK、任何 MCP 相容 Agent |
+| CLI Agent                     | OpenAI Codex CLI、Gemini CLI（Google）                                                                                                                                 |
+| 自主型 Agent                  | Devin、Replit Agent、SWE-agent、OpenHands                                                                                                                              |
+| Agent Framework／SDK          | LangChain、CrewAI、AutoGen、Semantic Kernel、Haystack、Vercel AI SDK、任何 MCP 相容 Agent                                                                              |
 
 > 官方定位：「所有支援 agentskills.io 標準的平台皆可零設定載入這些技能」（All platforms that support the agentskills.io standard can load these skills with zero configuration）。
 
@@ -800,37 +802,37 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 依官方 README「What's inside — 29 security domains」段落整理（依技能數由高到低排序）：
 
-| 領域 | 技能數 | 涵蓋重點 |
-|---|---|---|
-| Cloud Security | 66 | AWS／Azure／GCP 硬化、CSPM、雲端攻擊模擬、雲端鑑識 |
-| Threat Hunting | 58 | 假設驅動獵捕、LOTL 偵測、EVTX 獵捕、艦隊級獵捕 |
-| Threat Intelligence | 52 | STIX/TAXII、MISP、OpenCTI、情資源整合、行為者側寫 |
-| Network Security | 43 | IDS/IPS、防火牆規則、VLAN 分段、流量分析 |
-| Web Application Security | 42 | OWASP Top 10、SQLi、XSS、SSRF、反序列化 |
-| Digital Forensics | 41 | 磁碟映像、記憶體鑑識、Hayabusa／KAPE／Plaso 時間軸 |
-| Malware Analysis | 39 | 靜態／動態分析、逆向工程、沙箱 |
-| Identity & Access Management | 37 | Entra ID／ROADtools、裝置代碼釣魚、PAM、零信任身分 |
-| SOC Operations | 35 | Playbook、升級流程、Graph-log 偵測、桌上演練 |
-| Red Teaming | 33 | ADCS／Certipy、BloodHound CE、Sliver／Havoc C2、NTLM Relay |
-| Container Security | 33 | K8s RBAC、映像掃描、Falco、容器逃逸 |
-| Security Operations | 28 | SIEM 關聯、日誌分析、警報分診 |
-| OT/ICS Security | 28 | Modbus、DNP3、IEC 62443、歷史站防護、SCADA |
-| API Security | 28 | GraphQL、REST、OWASP API Top 10、WAF 繞過 |
-| Incident Response | 26 | 入侵圍堵、勒索軟體應變、IR Playbook |
-| Vulnerability Management | 25 | Nessus、掃描工作流程、修補優先順序、CVSS |
-| Penetration Testing | 21 | 網路／Web／雲端／行動、NetExec 橫向移動 |
-| DevSecOps | 18 | CI/CD 安全、Trivy IaC/映像掃描、程式碼簽署 |
-| Zero Trust Architecture | 17 | BeyondCorp、CISA 成熟度模型、微分段 |
-| Endpoint Security | 17 | EDR、LOTL 偵測、無檔案惡意程式、持久化獵捕 |
-| Cryptography | 16 | TLS、Ed25519、後量子遷移、金鑰管理 |
-| Phishing Defense | 15 | 郵件驗證、BEC 偵測、釣魚事件應變 |
-| AI Security | 14 | LLM 紅隊測試（garak／PyRIT）、Prompt Injection、MCP／Agentic 安全、Guardrail |
-| Mobile Security | 13 | Android／iOS 分析、行動滲透測試、MDM 鑑識 |
-| Ransomware Defense | 13 | 前兆偵測、應變、復原、加密分析 |
-| Compliance & Governance | 9 | NIST 800-30／RMF、CMMC、HIPAA、TPRM、CIS Benchmark |
-| Supply Chain Security | 8 | SBOM、依賴混淆、惡意套件分診、SLSA／Sigstore |
-| Deception Technology | 6 | 蜜罐令牌、Canarytoken、入侵偵測 |
-| Hardware & Firmware Security | 4 | CHIPSEC／UEFI 稽核、Secure Boot 繞過、TPM Attestation、Bootkit 獵捕 |
+| 領域                         | 技能數 | 涵蓋重點                                                                     |
+| ---------------------------- | ------ | ---------------------------------------------------------------------------- |
+| Cloud Security               | 66     | AWS／Azure／GCP 硬化、CSPM、雲端攻擊模擬、雲端鑑識                           |
+| Threat Hunting               | 58     | 假設驅動獵捕、LOTL 偵測、EVTX 獵捕、艦隊級獵捕                               |
+| Threat Intelligence          | 52     | STIX/TAXII、MISP、OpenCTI、情資源整合、行為者側寫                            |
+| Network Security             | 43     | IDS/IPS、防火牆規則、VLAN 分段、流量分析                                     |
+| Web Application Security     | 42     | OWASP Top 10、SQLi、XSS、SSRF、反序列化                                      |
+| Digital Forensics            | 41     | 磁碟映像、記憶體鑑識、Hayabusa／KAPE／Plaso 時間軸                           |
+| Malware Analysis             | 39     | 靜態／動態分析、逆向工程、沙箱                                               |
+| Identity & Access Management | 37     | Entra ID／ROADtools、裝置代碼釣魚、PAM、零信任身分                           |
+| SOC Operations               | 35     | Playbook、升級流程、Graph-log 偵測、桌上演練                                 |
+| Red Teaming                  | 33     | ADCS／Certipy、BloodHound CE、Sliver／Havoc C2、NTLM Relay                   |
+| Container Security           | 33     | K8s RBAC、映像掃描、Falco、容器逃逸                                          |
+| Security Operations          | 28     | SIEM 關聯、日誌分析、警報分診                                                |
+| OT/ICS Security              | 28     | Modbus、DNP3、IEC 62443、歷史站防護、SCADA                                   |
+| API Security                 | 28     | GraphQL、REST、OWASP API Top 10、WAF 繞過                                    |
+| Incident Response            | 26     | 入侵圍堵、勒索軟體應變、IR Playbook                                          |
+| Vulnerability Management     | 25     | Nessus、掃描工作流程、修補優先順序、CVSS                                     |
+| Penetration Testing          | 21     | 網路／Web／雲端／行動、NetExec 橫向移動                                      |
+| DevSecOps                    | 18     | CI/CD 安全、Trivy IaC/映像掃描、程式碼簽署                                   |
+| Zero Trust Architecture      | 17     | BeyondCorp、CISA 成熟度模型、微分段                                          |
+| Endpoint Security            | 17     | EDR、LOTL 偵測、無檔案惡意程式、持久化獵捕                                   |
+| Cryptography                 | 16     | TLS、Ed25519、後量子遷移、金鑰管理                                           |
+| Phishing Defense             | 15     | 郵件驗證、BEC 偵測、釣魚事件應變                                             |
+| AI Security                  | 14     | LLM 紅隊測試（garak／PyRIT）、Prompt Injection、MCP／Agentic 安全、Guardrail |
+| Mobile Security              | 13     | Android／iOS 分析、行動滲透測試、MDM 鑑識                                    |
+| Ransomware Defense           | 13     | 前兆偵測、應變、復原、加密分析                                               |
+| Compliance & Governance      | 9      | NIST 800-30／RMF、CMMC、HIPAA、TPRM、CIS Benchmark                           |
+| Supply Chain Security        | 8      | SBOM、依賴混淆、惡意套件分診、SLSA／Sigstore                                 |
+| Deception Technology         | 6      | 蜜罐令牌、Canarytoken、入侵偵測                                              |
+| Hardware & Firmware Security | 4      | CHIPSEC／UEFI 稽核、Secure Boot 繞過、TPM Attestation、Bootkit 獵捕          |
 
 > 總計 29 個領域、817 個技能（各領域技能數加總會因技能可能跨領域標記而略有出入）。
 
@@ -894,12 +896,12 @@ flowchart LR
 
 前端安全考量多半落在 API Security（CORS 設定、Token 儲存方式）與部分 Web Application Security 技能（例如 XSS 防護、CSP 設定）。實務作法：在 Vue／React／Angular 專案的 CI Pipeline 中，讓 AI Agent 於 Pull Request 階段自動比對前端程式碼是否符合技能庫內描述的「安全 Token 儲存」「CSP 白名單設定」等最佳實務，並產出對照表：
 
-| 前端安全項目 | 對應技能領域 | 常見檢查點 |
-|---|---|---|
-| Token 儲存 | API Security | 避免將 JWT 存於 `localStorage`，建議 HttpOnly Cookie |
-| XSS 防護 | Web Application Security | 輸出編碼、CSP 設定 |
-| CORS 設定 | API Security | 避免過寬鬆的 `Access-Control-Allow-Origin: *` |
-| 第三方套件依賴 | Supply Chain Security | npm 套件混淆攻擊、惡意套件偵測 |
+| 前端安全項目   | 對應技能領域             | 常見檢查點                                           |
+| -------------- | ------------------------ | ---------------------------------------------------- |
+| Token 儲存     | API Security             | 避免將 JWT 存於 `localStorage`，建議 HttpOnly Cookie |
+| XSS 防護       | Web Application Security | 輸出編碼、CSP 設定                                   |
+| CORS 設定      | API Security             | 避免過寬鬆的 `Access-Control-Allow-Origin: *`        |
+| 第三方套件依賴 | Supply Chain Security    | npm 套件混淆攻擊、惡意套件偵測                       |
 
 ### 8.3 Clean Architecture／DDD／Microservices 情境
 
@@ -989,12 +991,12 @@ flowchart LR
 
 ### 10.2 主流框架升級案例
 
-| 升級情境 | 主要風險 | 建議套用技能領域 |
-|---|---|---|
+| 升級情境              | 主要風險                                          | 建議套用技能領域                                   |
+| --------------------- | ------------------------------------------------- | -------------------------------------------------- |
 | Spring Boot 2.x → 3.x | Jakarta EE Namespace 變更導致的 Security 設定遺漏 | Web Application Security、Vulnerability Management |
-| Java 8 → 21 | 舊版 JCE／TLS 設定不相容、序列化行為變更 | Cryptography、Web Application Security |
-| Vue 2 → Vue 3 | 第三方套件相容性造成的暫時性依賴混用 | Supply Chain Security |
-| Node.js LTS 升級 | npm 依賴鏈中的已知漏洞套件 | Supply Chain Security |
+| Java 8 → 21           | 舊版 JCE／TLS 設定不相容、序列化行為變更          | Cryptography、Web Application Security             |
+| Vue 2 → Vue 3         | 第三方套件相容性造成的暫時性依賴混用              | Supply Chain Security                              |
+| Node.js LTS 升級      | npm 依賴鏈中的已知漏洞套件                        | Supply Chain Security                              |
 
 > **實務案例**：某企業在 Spring Boot 2 升級至 3 的專案中，要求 AI Agent 在產生升級後的程式碼變更 PR 時，同步附上「升級前後依賴套件 CVE 比對報告」，該報告即是套用 Supply Chain Security 領域技能的 Workflow 產出，作為 Release Gate 的必要條件之一。
 > **注意事項**：Framework 升級本身不是資安活動，AI Agent 產出的「升級後仍安全」結論，仍需搭配傳統的 SAST／DAST 掃描與人工驗收測試交叉確認，避免過度依賴單一技能庫的分析結果。
@@ -1188,17 +1190,17 @@ flowchart LR
     H -->|"SOC Operations / Threat Hunting"| I["Maintenance"]
 ```
 
-| SSDLC 階段 | 對應技能領域 | 說明 |
-|---|---|---|
-| 需求分析 | Compliance & Governance | 確認法規／合規需求（例如 PCI-DSS、HIPAA） |
-| Threat Modeling | AI Security、Web Application Security | 依系統類型挑選對應的威脅建模方法論 |
-| Coding | Web Application Security、API Security | AI Coding Agent 即時安全建議 |
-| Code Review | Web Application Security | 弱點模式檢查 |
-| Security Scan | Vulnerability Management、Supply Chain Security | 依賴掃描、CVSS 優先排序 |
-| Refactor | Digital Forensics（分析方法論延伸） | 大規模程式碼變更後的完整性驗證 |
-| Testing | Penetration Testing（適度、限定範圍） | 授權範圍內的滲透測試 |
-| Deploy | DevSecOps | CI/CD 安全閘門 |
-| Maintenance | SOC Operations、Threat Hunting | 上線後的持續監控與威脅獵捕 |
+| SSDLC 階段      | 對應技能領域                                    | 說明                                      |
+| --------------- | ----------------------------------------------- | ----------------------------------------- |
+| 需求分析        | Compliance & Governance                         | 確認法規／合規需求（例如 PCI-DSS、HIPAA） |
+| Threat Modeling | AI Security、Web Application Security           | 依系統類型挑選對應的威脅建模方法論        |
+| Coding          | Web Application Security、API Security          | AI Coding Agent 即時安全建議              |
+| Code Review     | Web Application Security                        | 弱點模式檢查                              |
+| Security Scan   | Vulnerability Management、Supply Chain Security | 依賴掃描、CVSS 優先排序                   |
+| Refactor        | Digital Forensics（分析方法論延伸）             | 大規模程式碼變更後的完整性驗證            |
+| Testing         | Penetration Testing（適度、限定範圍）           | 授權範圍內的滲透測試                      |
+| Deploy          | DevSecOps                                       | CI/CD 安全閘門                            |
+| Maintenance     | SOC Operations、Threat Hunting                  | 上線後的持續監控與威脅獵捕                |
 
 ### 15.2 Skill 生命週期狀態機
 
@@ -1415,16 +1417,16 @@ flowchart TD
 
 ## 第 19 章 與其他工具比較
 
-| 工具 | 定位 | 與本技能庫的關係 |
-|---|---|---|
-| Claude Code | AI Coding Agent（終端機） | 最直接支援本技能庫的平台之一，可透過 Plugin Marketplace 安裝 |
-| GitHub Copilot | AI Coding Agent（IDE 內嵌／雲端 Agent） | 透過 Repository Instructions／Agent Skills 機制整合 |
-| Cursor | AI 原生 IDE | 官方列為相容平台之一 |
-| OpenAI Codex CLI | CLI 型 Coding Agent | 官方列為相容平台之一 |
-| Gemini CLI | CLI 型 Coding Agent | 官方列為相容平台之一 |
-| OpenHands | 自主型 Coding Agent | 官方列為相容平台之一 |
-| Goose | 開源自主型 Agent | 未於官方相容清單明確列出，但因遵循 MCP／通用 Agent 架構，理論上可透過相容層整合 |
-| OpenCode | 開源 AI Coding Agent | 未於官方相容清單明確列出，屬同一生態系的開源替代方案，實際整合需視其技能載入機制而定 |
+| 工具             | 定位                                    | 與本技能庫的關係                                                                     |
+| ---------------- | --------------------------------------- | ------------------------------------------------------------------------------------ |
+| Claude Code      | AI Coding Agent（終端機）               | 最直接支援本技能庫的平台之一，可透過 Plugin Marketplace 安裝                         |
+| GitHub Copilot   | AI Coding Agent（IDE 內嵌／雲端 Agent） | 透過 Repository Instructions／Agent Skills 機制整合                                  |
+| Cursor           | AI 原生 IDE                             | 官方列為相容平台之一                                                                 |
+| OpenAI Codex CLI | CLI 型 Coding Agent                     | 官方列為相容平台之一                                                                 |
+| Gemini CLI       | CLI 型 Coding Agent                     | 官方列為相容平台之一                                                                 |
+| OpenHands        | 自主型 Coding Agent                     | 官方列為相容平台之一                                                                 |
+| Goose            | 開源自主型 Agent                        | 未於官方相容清單明確列出，但因遵循 MCP／通用 Agent 架構，理論上可透過相容層整合      |
+| OpenCode         | 開源 AI Coding Agent                    | 未於官方相容清單明確列出，屬同一生態系的開源替代方案，實際整合需視其技能載入機制而定 |
 
 > **比較重點**：本技能庫與上述工具是「互補關係」而非「競爭關係」——它不是另一個 AI Coding Agent，而是可以被這些 Agent 載入使用的**知識資產層**。企業選型時真正該比較的是「哪個 AI Coding Agent 平台」，而非「要不要用這個技能庫」；只要平台支援 agentskills.io 標準或具備類似的 Skill／Instructions 機制，理論上都能受益於本技能庫。
 
@@ -1595,20 +1597,20 @@ journey
 
 ## 附錄 B：速查表與術語表
 
-| 術語 | 說明 |
-|---|---|
-| Agent Skill | 依 agentskills.io 標準封裝的結構化 AI Agent 能力單元 |
+| 術語                   | 說明                                                                  |
+| ---------------------- | --------------------------------------------------------------------- |
+| Agent Skill            | 依 agentskills.io 標準封裝的結構化 AI Agent 能力單元                  |
 | Progressive Disclosure | 漸進式揭露：先以低成本的 Frontmatter 掃描篩選，再深度載入完整技能內容 |
-| Frontmatter | 技能檔案開頭的 YAML 中繼資料區塊 |
-| MITRE ATT&CK | 對手戰術、技術與程序（TTP）知識庫 |
-| MITRE ATLAS | 針對 AI/ML 系統的對抗性威脅框架 |
-| MITRE D3FEND | 防禦性反制技術知識庫，可視為 ATT&CK 的防禦鏡像 |
-| NIST CSF 2.0 | 美國 NIST 發布的網路安全框架 2.0 版，新增 Govern 治理功能 |
-| NIST AI RMF | 美國 NIST 發布的 AI 風險管理框架 |
-| MITRE F3 | Fight Fraud Framework，2026 年發布的網路型金融詐欺 TTP 框架 |
-| SkillSpector | NVIDIA 開源的 AI Agent Skill 安全掃描工具（可另參考本系列教學手冊） |
-| MCP | Model Context Protocol，AI Agent 呼叫外部工具與資料來源的標準化協定 |
-| SSDLC | Secure Software Development Life Cycle，安全軟體開發生命週期 |
+| Frontmatter            | 技能檔案開頭的 YAML 中繼資料區塊                                      |
+| MITRE ATT&CK           | 對手戰術、技術與程序（TTP）知識庫                                     |
+| MITRE ATLAS            | 針對 AI/ML 系統的對抗性威脅框架                                       |
+| MITRE D3FEND           | 防禦性反制技術知識庫，可視為 ATT&CK 的防禦鏡像                        |
+| NIST CSF 2.0           | 美國 NIST 發布的網路安全框架 2.0 版，新增 Govern 治理功能             |
+| NIST AI RMF            | 美國 NIST 發布的 AI 風險管理框架                                      |
+| MITRE F3               | Fight Fraud Framework，2026 年發布的網路型金融詐欺 TTP 框架           |
+| SkillSpector           | NVIDIA 開源的 AI Agent Skill 安全掃描工具（可另參考本系列教學手冊）   |
+| MCP                    | Model Context Protocol，AI Agent 呼叫外部工具與資料來源的標準化協定   |
+| SSDLC                  | Secure Software Development Life Cycle，安全軟體開發生命週期          |
 
 **常用指令速查**
 
@@ -1647,7 +1649,3 @@ git checkout <指定的-commit-hash>
 - 治理／合規負責人：第 11、17 章 → 建立內部治理制度
 
 **未來 Roadmap 觀察**：MITRE F3 的加入顯示專案持續朝金融領域深化；技能總數與領域數持續成長（26→29 個領域）顯示社群動能活躍；`.claude-plugin` 的加入顯示專案正朝更緊密的 Agent 平台整合方向發展。建議企業指派專人持續追蹤官方 Repository 的 Releases 與 Discussions，以掌握第一手的版本演進資訊。
-
-
-
-

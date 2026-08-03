@@ -1,9 +1,9 @@
 ---
-description: 'bash、sh、zsh 和其他 shell 的 shell 腳本最佳實務和約定'
-applyTo: '**/*.sh'
+description: "bash、sh、zsh 和其他 shell 的 shell 腳本最佳實務和約定"
+applyTo: "**/*.sh"
 ---
 
-# Shell Scripting Guidelines  腳本編寫指南
+# Shell Scripting Guidelines 腳本編寫指南
 
 編寫簡潔、安全、易於維護的 shell 腳本（適用於 bash、sh、zsh 和其他 shell）的說明。
 
@@ -97,13 +97,13 @@ main() {
         echo "Error: failed to create temporary directory" >&2
         exit 1
     fi
-    
+
     echo "============================================================================"
     echo "Script Execution Started"
     echo "============================================================================"
-    
+
     # Main logic here
-    
+
     echo "============================================================================"
     echo "Script Execution Completed"
     echo "============================================================================"
