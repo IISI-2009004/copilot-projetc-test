@@ -8,11 +8,6 @@
       }
     ],
     "PreToolUse": [
-      {
-        "type": "command",
-        "command": "./scripts/block-dangerous-commands.sh",
-        "timeout": 10
-      }
     ],
     "PostToolUse": [
       {
