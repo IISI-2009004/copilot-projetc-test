@@ -92,7 +92,7 @@
 
 ## 模組 B：reading（負責人 Carol，分支 `feature/reading-record`，**依賴模組 C 的 `CurrentUser` 完成**）
 
-- [ ] **B1** `ReadingRecord` Entity + `ReadingRecordRepository`  
+- [x] **B1** `ReadingRecord` Entity + `ReadingRecordRepository`（Issue #11）  
   - 欄位：userId(FK → user.id, NOT NULL), bookId(FK, **nullable**), source(ENUM: OWNED/BORROWED_FRIEND/BORROWED_LIBRARY), externalTitle(**nullable**), externalAuthor(**nullable**), readDate, durationMinutes(≥1), progressPercent(0-100), createdAt  
   - DB CHECK 約束：`(source='OWNED' AND bookId IS NOT NULL AND externalTitle IS NULL) OR (source<>'OWNED' AND bookId IS NULL AND externalTitle IS NOT NULL)`  
   - 自訂查詢：`findByUserIdAndBookId`（分頁，僅 OWNED，限同一用戶）、`findByUserIdAndSource`（分頁，借閱記錄，限同一用戶）、`findByUserIdAndReadDateBetween`（日曆用，不分來源，限同一用戶）、`findByIdAndUserId`（單筆查詢，隔離存取）

@@ -1,3 +1,49 @@
+# Implementation Notes — 閱讀記錄模組 B1（模組 B：Backend）
+
+> 產出者：後端 PG（Backend Developer Agent）
+> 日期：2026-08-03
+> 分支：`feature/B1-reading-record-entity`（off `develop`）
+> 對應 Issue：#11（模組 B：reading 建立）
+
+---
+
+## 背景
+
+依 `docs/design/design.md` §3 ReadingRecord / §9 與 `docs/design/tasks.md` 模組 B（B1），
+將原本僅具 getter 骨架的 `ReadingRecord`（`startDate`/`endDate`/`updatedAt`，無 JPA 註解）
+改為正式 JPA Entity，並將 `ReadingRecordRepository` 由空介面改為繼承
+`JpaRepository<ReadingRecord, Long>`，補上四個自訂查詢方法。
+
+## 決策紀錄
+
+- **欄位改為 design.md 定義的 `readDate`/`durationMinutes`/`progressPercent`/`externalAuthor`**：
+  取代舊骨架的 `startDate`/`endDate`，並移除 `updatedAt`（design.md 3. ReadingRecord 表格僅列
+  `createdAt`；欄位是否可變更屬 B2 `ReadingService` 範疇，本次僅處理 B1 Entity/Repository）。
+- **DB CHECK 約束沿用 `Book.java` 的 `@Check` 慣例**：以 Hibernate `@Check` 註解實作
+  `reading_source_book_external_mutex`，對應 tasks.md B1 的互斥規則
+  `(source='OWNED' AND bookId IS NOT NULL AND externalTitle IS NULL) OR (source<>'OWNED' AND bookId IS NULL AND externalTitle IS NOT NULL)`；
+  Service 層（B2 範疇）將再做一次驗證，DB CHECK 作為最後防線。
+- **`findByUserIdAndBookId` 天然僅回傳 OWNED 記錄**：因 `bookId` 僅在 `source=OWNED` 時有值，
+  不需額外加上 `AndSourceOwned` 條件即可滿足 tasks.md「僅 OWNED」的需求。
+- **所有查詢方法皆以 `userId` 過濾**：延續 design.md §9 多用戶資料隔離原則，
+  與 `BookRepository.findByIdAndUserId` 的既有慣例一致。
+
+## 驗證
+
+- `mvn -o compile`：通過。
+- `mvn -o test`：既有 56 項測試（book/user 模組）全數通過，reading 模組尚無專屬測試
+  （B1 僅涉及 Entity/Repository 骨架強化，Service/Controller 邏輯仍為 B2 起後續範疇的
+  `UnsupportedOperationException` 骨架，未受影響）。
+
+## 已知技術債 / 待辦
+
+- B1 尚未補充 `ReadingRecordRepositoryTest`（Repository 層整合測試），建議於 B5（測試任務）
+  一併處理，或由 Test Generator Agent 後續補齊。
+- `ReadingService`/`ReadingController` 仍為骨架（拋出 `UnsupportedOperationException`），
+  對應 tasks.md B2 起續辦事項。
+
+---
+
 # Implementation Notes — 使用者管理模組（模組 C：Backend）
 
 > 產出者：後端 PG "Bob"（Backend Developer Agent）
