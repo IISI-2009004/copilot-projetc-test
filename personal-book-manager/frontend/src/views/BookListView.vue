@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { Search, Grid, List } from '@element-plus/icons-vue'
+import { Search, Grid, List, Plus } from '@element-plus/icons-vue'
 import BookCard from '@/components/BookCard.vue'
 import BookListItem from '@/components/BookListItem.vue'
 import BookDetailPanel from '@/components/BookDetailPanel.vue'
+import BookCreateDialog from '@/components/BookCreateDialog.vue'
 import { mockBooks } from '@/mocks/mockData'
 import type { Book } from '@/types/book'
+import type { BookResponse } from '@/types/bookApi'
 
 type ViewMode = 'card' | 'list'
 
@@ -16,6 +18,28 @@ const keyword = ref('')
 const viewMode = ref<ViewMode>((localStorage.getItem('book-list-view-mode') as ViewMode) || 'card')
 /** 目前點選的書籍（參考 Eagle 點選項目後於右側顯示詳細資訊面板）。 */
 const selectedBook = ref<Book | null>(null)
+
+/** 「新增書本」對話框開關（PG2：呼叫真實後端 POST /api/books）。 */
+const createDialogVisible = ref(false)
+/** 本次瀏覽期間透過 API 新增成功的書本（重新整理頁面後即消失，待 GET /api/books 完成後改為呼叫真實清單 API）。 */
+const createdBooks = ref<Book[]>([])
+
+function toDisplayBook(book: BookResponse): Book {
+  return {
+    id: book.id,
+    title: book.title,
+    author: book.author,
+    category: undefined,
+    tags: [],
+    status: 'unread',
+    isbn: book.isbn ?? undefined,
+    addedAt: book.createdAt,
+  }
+}
+
+function handleCreated(book: BookResponse) {
+  createdBooks.value = [toDisplayBook(book), ...createdBooks.value]
+}
 
 function setViewMode(mode: ViewMode) {
   viewMode.value = mode
@@ -36,7 +60,7 @@ const pageTitle = computed(() => {
 
 /** 篩選邏輯純前端 mock 實作，待後端 GET /api/books?keyword=&category=&filter= 完成後改為呼叫真實 API。 */
 const filteredBooks = computed(() => {
-  let books = mockBooks
+  let books = [...createdBooks.value, ...mockBooks]
   if (route.query.filter === 'uncategorized') {
     books = books.filter((book) => !book.category)
   } else if (route.query.filter === 'untagged') {
@@ -73,6 +97,7 @@ watch([() => route.query.filter, () => route.query.category], () => {
           clearable
           class="book-list-view__search"
         />
+        <el-button type="primary" :icon="Plus" @click="createDialogVisible = true">新增</el-button>
         <el-radio-group :model-value="viewMode" class="book-list-view__switch" @update:model-value="setViewMode">
           <el-radio-button value="card">
             <el-icon><Grid /></el-icon>
@@ -107,6 +132,8 @@ watch([() => route.query.filter, () => route.query.category], () => {
     <Teleport to="#detail-panel-outlet">
       <BookDetailPanel v-if="selectedBook" :book="selectedBook" @close="selectedBook = null" />
     </Teleport>
+
+    <BookCreateDialog v-model="createDialogVisible" @created="handleCreated" />
   </div>
 </template>
 

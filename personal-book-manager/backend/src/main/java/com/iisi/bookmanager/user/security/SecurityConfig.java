@@ -1,6 +1,7 @@
 package com.iisi.bookmanager.user.security;
 
 import com.iisi.bookmanager.user.service.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,12 +19,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * <p>設計原則：/api/auth/** 設為 permitAll()，其餘路徑一律 authenticated()；
  * 停用 CSRF（純 REST API，狀態改由 JWT 攜帶，不依賴傳統的 session 機制）；
  * 停用預設表單登入/HTTP Basic；Session 設為 STATELESS（每次請求皆以 JWT 重新驗證）。
+ *
+ * <p><b>開發階段暫時免登入機制</b>：{@code dev} profile 啟用
+ * {@code security.dev-no-auth=true} 時，額外掛載 {@link DevNoAuthFilter}，
+ * 讓前端在尚未完成登入頁面/JWT 串接前，仍可呼叫需登入的 API（如 {@code POST /api/books}）
+ * 進行開發驗證；正式環境不應開啟此設定（詳見 {@link DevNoAuthFilter} 的技術債務註記）。
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+
+    /**
+     * 是否啟用 {@link DevNoAuthFilter}（開發階段暫時免登入機制）。
+     *
+     * <p>預設僅在 {@code dev} profile 啟用（見 application.yml 對應設定），正式環境
+     * （prod）不應設定此屬性為 true，避免所有請求皆以固定測試 userId 通過驗證。
+     */
+    @Value("${security.dev-no-auth:false}")
+    private boolean devNoAuthEnabled;
 
     /**
      * 建構子注入。
@@ -79,6 +94,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        if (devNoAuthEnabled) {
+            http.addFilterAfter(new DevNoAuthFilter(), JwtAuthenticationFilter.class);
+        }
         return http.build();
     }
 }
