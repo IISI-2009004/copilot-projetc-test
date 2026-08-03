@@ -1,0 +1,3 @@
+# 測試環境覆寫：強制停用 DevNoAuthFilter（見 SecurityConfig / DevNoAuthFilter）。
+security:
+  dev-no-auth: false

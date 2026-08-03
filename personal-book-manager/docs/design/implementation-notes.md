@@ -1,3 +1,49 @@
+# Implementation Notes — 閱讀記錄模組 B1（模組 B：Backend）
+
+> 產出者：後端 PG（Backend Developer Agent）
+> 日期：2026-08-03
+> 分支：`feature/B1-reading-record-entity`（off `develop`）
+> 對應 Issue：#11（模組 B：reading 建立）
+
+---
+
+## 背景
+
+依 `docs/design/design.md` §3 ReadingRecord / §9 與 `docs/design/tasks.md` 模組 B（B1），
+將原本僅具 getter 骨架的 `ReadingRecord`（`startDate`/`endDate`/`updatedAt`，無 JPA 註解）
+改為正式 JPA Entity，並將 `ReadingRecordRepository` 由空介面改為繼承
+`JpaRepository<ReadingRecord, Long>`，補上四個自訂查詢方法。
+
+## 決策紀錄
+
+- **欄位改為 design.md 定義的 `readDate`/`durationMinutes`/`progressPercent`/`externalAuthor`**：
+  取代舊骨架的 `startDate`/`endDate`，並移除 `updatedAt`（design.md 3. ReadingRecord 表格僅列
+  `createdAt`；欄位是否可變更屬 B2 `ReadingService` 範疇，本次僅處理 B1 Entity/Repository）。
+- **DB CHECK 約束沿用 `Book.java` 的 `@Check` 慣例**：以 Hibernate `@Check` 註解實作
+  `reading_source_book_external_mutex`，對應 tasks.md B1 的互斥規則
+  `(source='OWNED' AND bookId IS NOT NULL AND externalTitle IS NULL) OR (source<>'OWNED' AND bookId IS NULL AND externalTitle IS NOT NULL)`；
+  Service 層（B2 範疇）將再做一次驗證，DB CHECK 作為最後防線。
+- **`findByUserIdAndBookId` 天然僅回傳 OWNED 記錄**：因 `bookId` 僅在 `source=OWNED` 時有值，
+  不需額外加上 `AndSourceOwned` 條件即可滿足 tasks.md「僅 OWNED」的需求。
+- **所有查詢方法皆以 `userId` 過濾**：延續 design.md §9 多用戶資料隔離原則，
+  與 `BookRepository.findByIdAndUserId` 的既有慣例一致。
+
+## 驗證
+
+- `mvn -o compile`：通過。
+- `mvn -o test`：既有 56 項測試（book/user 模組）全數通過，reading 模組尚無專屬測試
+  （B1 僅涉及 Entity/Repository 骨架強化，Service/Controller 邏輯仍為 B2 起後續範疇的
+  `UnsupportedOperationException` 骨架，未受影響）。
+
+## 已知技術債 / 待辦
+
+- B1 尚未補充 `ReadingRecordRepositoryTest`（Repository 層整合測試），建議於 B5（測試任務）
+  一併處理，或由 Test Generator Agent 後續補齊。
+- `ReadingService`/`ReadingController` 仍為骨架（拋出 `UnsupportedOperationException`），
+  對應 tasks.md B2 起續辦事項。
+
+---
+
 # Implementation Notes — 使用者管理模組（模組 C：Backend）
 
 > 產出者：後端 PG "Bob"（Backend Developer Agent）
@@ -244,11 +290,15 @@ API 完成後，新增 `src/services/` API 呼叫層，移除 `mockData.ts` 依�
   `DevNoAuthFilter`（僅於 `SecurityConfig` 依 `security.dev-no-auth` 設定啟用），
   於 `JwtAuthenticationFilter` 之後執行，若 `SecurityContext` 仍無認證資訊，
   自動帶入固定測試 `userId=1`；若請求本身攜帶合法 JWT，仍以真實 userId 為準（不覆蓋）。
-  **此設定刻意不放在 `application-dev.yml`**（會影響以 `dev` profile 執行的既有 401
-  自動化測試，如 `UserControllerTest`），改新增 `application-local.yml`，需以
-  `SPRING_PROFILES_ACTIVE=dev,local` 疊加啟用，僅供本機手動測試。
-  **技術債務**：待前端完成登入頁面後應移除 `DevNoAuthFilter` 與 `application-local.yml`，
-  改要求所有需登入端點皆攜帶合法 JWT。
+  **設定方式（已修正）**：`security.dev-no-auth: true` 直接預設開啟於
+  `src/main/resources/application-dev.yml`，故僅需以預設 `dev` profile 啟動後端即可（不需
+  額外疊加 `local` profile）。為避免影響既有 401 自動化測試（如 `UserControllerTest`），
+  於 `src/test/resources/application-dev.yml`（profile-specific 測試資源，Maven Surefire
+  classpath 優先於 main classpath 覆寫同名 profile 設定）明確覆寫為
+  `security.dev-no-auth: false`，測試仍要求合法 JWT。已移除先前的 `application-local.yml`
+  多 profile 方案。
+  **技術債務**：待前端完成登入頁面後應移除 `DevNoAuthFilter` 及相關
+  `security.dev-no-auth` 設定，改要求所有需登入端點皆攜帶合法 JWT。
 - **前端新增書本原生 `fetch` 而非 axios**：避免新增非必要相依套件；新增
   `src/utils/http.ts` 封裝，統一以 `/api` 為前綴，由 `vite.config.ts` 新增的
   `server.proxy` 轉發至 `http://localhost:8080`（開發時 frontend/backend 分開啟動，
@@ -261,7 +311,7 @@ API 完成後，新增 `src/services/` API 呼叫層，移除 `mockData.ts` 依�
 
 - `updateBook`/`deleteBook`/`searchBooks`/`existsBook`（`BookServiceImpl`/`BookController`）
   仍為 `UnsupportedOperationException` 骨架，屬於後續 PG 任務範圍。
-- `DevNoAuthFilter`／`application-local.yml`／`security.dev-no-auth` 為暫時性技術債，
+- `DevNoAuthFilter`／`security.dev-no-auth`（`application-dev.yml`）為暫時性技術債，
   待前端登入流程完成後應移除（見上方決策紀錄）。
 - 前端 `BookListView.vue` 尚未呼叫 `GET /api/books`，新增書本僅暫存於當前瀏覽階段。
 - `Category` 模組尚非真正 JPA Entity，`categoryId` 僅為欄位骨架，前端新增表單暫未提供
