@@ -39,28 +39,32 @@
 
 ## 模組 A：book（負責人 Bob，分支 `feature/book-management`，**依賴模組 C 的 `CurrentUser` 完成**）
 
-- [ ] **A1** `Book` Entity + `BookRepository`  
+- [x] **A1** `Book` Entity + `BookRepository`  
   - 欄位：userId(FK → user.id, NOT NULL), isbn(**nullable**), url(**nullable**), sourcePlatform(**nullable**), title, author, bookType(ENUM: PHYSICAL_BOOK/PHYSICAL_DOUJINSHI/EBOOK/WEB_NOVEL/BLOG_POST/ONLINE_FANFIC), categoryId(FK), purchaseUrl(**nullable**), authorUrl(**nullable**), coverImageUrl(**nullable**), coverImageSource(ENUM: UPLOADED/EXTERNAL_URL, **nullable**), deleted, createdAt, updatedAt  
   - DB CHECK 約束：實體/電子書類 `url IS NULL`；線上內容類 `isbn IS NULL AND url IS NOT NULL`；封面欄位一致性 `(coverImageUrl IS NULL) = (coverImageSource IS NULL)`  
   - 自訂查詢：`findByUserIdAndIsbnAndBookTypeAndDeletedFalse`（ISBN 去重，限同一用戶）、`findByUserIdAndUrlAndDeletedFalse`（URL 去重，限同一用戶）、`findByIdAndUserId`（單筆查詢，隔離存取）、`findAllByUserIdAndDeletedFalse`（含 keyword/tag/category/bookType 過濾，限同一用戶）
+  - ✅ PG2（2026-08-03）：已完成 JPA 轉換與 DB CHECK 約束；`findAllByUserIdAndDeletedFalse` 屬於 `searchBooks` 範圍，尚未實作。
 
-- [ ] **A2** `BookService`（核心業務邏輯）  
+- [x] **A2** `BookService`（核心業務邏輯）— ⚠️ 僅完成 `createBook`，其餘方法維持骨架  
   - 每個 public 方法第一個參數皆為 `Long userId`（由 Controller 透過 `CurrentUser.id()` 取得後傳入）  
   - `createBook(userId, ...)`：依 `BookType.requiresIsbnDedup()` 決定是否執行 ISBN+bookType 去重（`PHYSICAL_BOOK`/`PHYSICAL_DOUJINSHI`，僅當 isbn 有值，範圍限同一 `userId`）；`bookType.isOnline()` 時執行 URL 去重（`DuplicateUrlException`，範圍限同一 `userId`）；`EBOOK` 不做任何去重；新書自動綁定 `userId`  
-  - `updateBook(userId, bookId, ...)`：先以 `findByIdAndUserId` 確認書本存在且屬於自己，否則 404；ISBN/URL 變更時比照上述規則重新檢查；`categoryId` 不存在或不屬於自己回 400（CategoryNotFoundException）  
-  - `deleteBook(userId, bookId)`：先確認書本屬於自己，僅軟刪除（`deleted = true`）、移除 Book_Tag 映射；**不觸碰**任何 `ReadingRecord`，也不呼叫/發布任何跨模組事件（reading 的閱讀記錄為獨立歷史資料，不隨書本刪除而變動）  
-  - `searchBooks(userId, ...)`：分頁搜尋（keyword、tag、category、bookType 可選，範圍限同一 `userId`）  
-  - 實作 `BookQueryPort.existsBook(bookId, userId)`：查詢限同一 `userId` 且未刪除
+  - ✅ PG2（2026-08-03）：`createBook` 已完成並通過單元測試（`BookServiceImplTest`）。
+  - `updateBook(userId, bookId, ...)`：先以 `findByIdAndUserId` 確認書本存在且屬於自己，否則 404；ISBN/URL 變更時比照上述規則重新檢查；`categoryId` 不存在或不屬於自己回 400（CategoryNotFoundException）— ⏳ 尚未實作（維持 `UnsupportedOperationException`）
+  - `deleteBook(userId, bookId)`：先確認書本屬於自己，僅軟刪除（`deleted = true`）、移除 Book_Tag 映射；**不觸碰**任何 `ReadingRecord`，也不呼叫/發布任何跨模組事件（reading 的閱讀記錄為獨立歷史資料，不隨書本刪除而變動）— ⏳ 尚未實作
+  - `searchBooks(userId, ...)`：分頁搜尋（keyword、tag、category、bookType 可選，範圍限同一 `userId`）— ⏳ 尚未實作
+  - 實作 `BookQueryPort.existsBook(bookId, userId)`：查詢限同一 `userId` 且未刪除 — ⏳ 尚未實作
 
-- [ ] **A6** `ValidBookType` 自訂 Bean Validation（class-level）  
+- [x] **A6** `ValidBookType` 自訂 Bean Validation（class-level）  
   - 驗證 `BookRequest` 互斥規則：`bookType.isPhysicalOrEbook()` ⇒ `url` 必為 null，`isbn` 選填（若有值需符合 10/13 碼格式）；`bookType.isOnline()` ⇒ `isbn` 必為 null，`url` 必填且僅接受 `http`/`https` scheme  
   - 驗證失敗回 400，錯誤訊息清楚指出違反互斥規則（不洩漏內部細節）
+  - ✅ PG2（2026-08-03）：`ValidBookTypeValidator` 已完成並通過 `BookControllerTest` 驗證。
 
-- [ ] **A3** `BookController` + Bean Validation  
+- [x] **A3** `BookController` + Bean Validation — ⚠️ 僅完成 `createBook` 端點，其餘端點維持骨架  
   - 每個端點方法第一步呼叫 `CurrentUser.id()` 取得目前登入者 `userId`，傳入對應 Service 方法  
   - `BookRequest`（@NotBlank title/author、@NotNull bookType、`@ValidBookType` class-level 驗證、purchaseUrl/authorUrl/coverImageUrl 皆 @Pattern 限 `http`/`https`；**不含** `userId` 欄位，禁止由前端指定）  
   - `BookResponse`（id, isbn, url, sourcePlatform, title, author, bookType, categoryId, purchaseUrl, authorUrl, coverImageUrl, coverImageSource, tags, createdAt）  
   - 全域 `GlobalExceptionHandler`（404/409/400 統一 ErrorResponse 格式，含 CategoryInUseException/DuplicateUrlException→409、InvalidImageFileException/ImageTooLargeException→400）
+  - ✅ PG2（2026-08-03）：`POST /api/books` 已完成，回傳 201 + BookResponse；`updateBook`/`deleteBook`/`searchBooks` 端點簽章維持骨架（`UnsupportedOperationException`）。
 
 - [ ] **A7** `CoverStorageService`（介面）+ `LocalDiskCoverStorageService`（本機磁碟實作）  
   - `store(bookId, MultipartFile)`：驗證檔案 magic bytes（僅接受 image/jpeg, image/png, image/webp, image/gif，不信任副檔名/Content-Type）；驗證大小 ≤ 5MB；以 UUID 產生檔名寫入 `./data/covers/`；回傳可對外存取 URL  
