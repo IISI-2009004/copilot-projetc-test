@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人圖書管理系統</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>📚 個人圖書管理系統</h1>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+
+        <!-- 搜尋列 -->
+        <div class="search-bar">
+            <input type="text" id="search-keyword" placeholder="搜尋書名、作者…" />
+            <select id="search-type">
+                <option value="">全部類型</option>
+                <option value="PHYSICAL_BOOK">實體書</option>
+                <option value="PHYSICAL_DOUJINSHI">實體同人誌</option>
+                <option value="EBOOK">電子書</option>
+                <option value="WEB_NOVEL">網路小說</option>
+                <option value="BLOG_POST">Blog 文章</option>
+                <option value="ONLINE_FANFIC">線上同人創作</option>
+            </select>
+            <button onclick="searchBooks()">搜尋</button>
+        </div>
+
+        <!-- Tag 篩選列 -->
+        <div class="tag-filter" id="tag-filter">
+            <span class="tag" onclick="toggleTag(this)" data-tag="奇幻">奇幻</span>
+            <span class="tag" onclick="toggleTag(this)" data-tag="科幻">科幻</span>
+            <span class="tag" onclick="toggleTag(this)" data-tag="推理">推理</span>
+            <span class="tag" onclick="toggleTag(this)" data-tag="言情">言情</span>
+            <span class="tag" onclick="toggleTag(this)" data-tag="輕小說">輕小說</span>
+            <span class="tag" onclick="toggleTag(this)" data-tag="技術">技術</span>
+            <span class="tag" onclick="toggleTag(this)" data-tag="歷史">歷史</span>
+        </div>
+
+        <!-- 書本列表 -->
+        <div class="book-list" id="book-list">
+
+            <div class="book-card">
+                <div class="category-badge">奇幻小說</div>
+                <div class="book-card__title">魔戒</div>
+                <div class="book-card__author">J.R.R. 托爾金</div>
+                <div class="tag-list">
+                    <span class="tag">奇幻</span>
+                    <span class="tag">冒險</span>
+                    <span class="tag">史詩</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="category-badge">科幻小說</div>
+                <div class="book-card__title">基地</div>
+                <div class="book-card__author">艾薩克·艾西莫夫</div>
+                <div class="tag-list">
+                    <span class="tag">科幻</span>
+                    <span class="tag">太空歌劇</span>
+                    <span class="tag">政治</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="category-badge">技術書籍</div>
+                <div class="book-card__title">Clean Code</div>
+                <div class="book-card__author">Robert C. Martin</div>
+                <div class="tag-list">
+                    <span class="tag tag--secondary">技術</span>
+                    <span class="tag tag--secondary">程式設計</span>
+                    <span class="tag tag--secondary">最佳實踐</span>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <div class="category-badge">推理小說</div>
+                <div class="book-card__title">東方快車謀殺案</div>
+                <div class="book-card__author">阿嘉莎·克莉絲蒂</div>
+                <div class="tag-list">
+                    <span class="tag tag--warning">推理</span>
+                    <span class="tag tag--warning">懸疑</span>
+                    <span class="tag tag--warning">古典</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script>
+    /**
+     * 切換 tag 篩選器的啟用狀態
+     * @param {HTMLElement} el - 被點擊的 tag 元素
+     */
+    function toggleTag(el) {
+        el.classList.toggle('tag--active');
+    }
+
+    /**
+     * 觸發書本搜尋
+     */
+    function searchBooks() {
+        const keyword = document.getElementById('search-keyword').value.trim();
+        const type = document.getElementById('search-type').value;
+        const activeTags = Array.from(
+            document.querySelectorAll('.tag-filter .tag--active')
+        ).map(t => t.dataset.tag);
+
+        console.log('搜尋條件:', { keyword, type, tags: activeTags });
+        // TODO: 呼叫 GET /api/books?keyword=...&bookType=...&tags=... 並更新書本列表
+    }
+</script>
+
+</body>
+</html>

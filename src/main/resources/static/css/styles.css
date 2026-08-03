@@ -1,0 +1,184 @@
+/* =============================================
+   個人圖書管理系統 - 前端樣式
+   Personal Book Manager - Frontend Styles
+   ============================================= */
+
+/* ---- Reset & Base ---- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ---- Layout ---- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+header {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 16px 0;
+    margin-bottom: 24px;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+main {
+    padding-bottom: 40px;
+}
+
+/* ---- Book Card ---- */
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.book-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 16px;
+}
+
+.book-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.book-card__author {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+/* ---- Tag Labels ---- */
+/*
+ * Tag 標籤樣式：方形（無圓角）
+ * Tag labels: square (no rounded corners)
+ *
+ * border-radius: 0 確保標籤為方形，不套用圓角效果
+ */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: #e8f4fd;
+    color: #1a73e8;
+    border: 1px solid #b3d7f7;
+    border-radius: 0; /* 方形標籤：不使用圓角 */
+    white-space: nowrap;
+    line-height: 1.5;
+}
+
+.tag--secondary {
+    background-color: #f0f0f0;
+    color: #555;
+    border-color: #ccc;
+    border-radius: 0; /* 方形標籤：不使用圓角 */
+}
+
+.tag--success {
+    background-color: #e6f4ea;
+    color: #1e8449;
+    border-color: #a9dfbf;
+    border-radius: 0; /* 方形標籤：不使用圓角 */
+}
+
+.tag--warning {
+    background-color: #fef9e7;
+    color: #b7770d;
+    border-color: #f9e79f;
+    border-radius: 0; /* 方形標籤：不使用圓角 */
+}
+
+/* ---- Category Badge ---- */
+.category-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+    border: 1px solid #ce93d8;
+    border-radius: 0; /* 方形標籤：不使用圓角 */
+    margin-bottom: 8px;
+}
+
+/* ---- Search Form ---- */
+.search-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-bar input,
+.search-bar select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 0; /* 方形輸入框 */
+    font-size: 0.875rem;
+    flex: 1;
+    min-width: 160px;
+}
+
+.search-bar button {
+    padding: 8px 16px;
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 0; /* 方形按鈕 */
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.search-bar button:hover {
+    background-color: #1a252f;
+}
+
+/* ---- Tag Filter ---- */
+.tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.tag-filter .tag {
+    cursor: pointer;
+    user-select: none;
+}
+
+.tag-filter .tag:hover {
+    background-color: #c2e0f7;
+}
+
+.tag-filter .tag--active {
+    background-color: #1a73e8;
+    color: #fff;
+    border-color: #1a73e8;
+    border-radius: 0; /* 方形標籤：不使用圓角 */
+}
