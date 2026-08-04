@@ -6,31 +6,31 @@
 
 ## 模組 C：user（負責人 Dave，分支 `feature/user-management`，**其他模組依賴此模組先完成**）
 
-- [ ] **C1** `User` Entity + `UserRepository`  
+- [x] **C1** `User` Entity + `UserRepository`  
   - 欄位：username(VARCHAR(30) UNIQUE NOT NULL), passwordHash(VARCHAR(60) NOT NULL), createdAt  
   - 自訂查詢：`existsByUsernameIgnoreCase`、`findByUsernameIgnoreCase`
 
-- [ ] **C2** `UserService`（註冊/登入核心邏輯）  
+- [x] **C2** `UserService`（註冊/登入核心邏輯）  
   - `register(username, rawPassword)`：檢查 `existsByUsernameIgnoreCase` → 存在拋 `DuplicateUsernameException`（409）；否則以 `BCryptPasswordEncoder`（cost ≥ 10）雜湊密碼後儲存  
   - `login(username, rawPassword)`：查無帳號或密碼比對失敗，一律拋同一種 `InvalidCredentialsException`（401），訊息不區分原因（避免帳號列舉）；成功則委由 `JwtTokenProvider` 簽發 JWT  
   - `getCurrentUser(userId)`：供 `GET /api/users/me` 使用，404 用不到（JWT 有效即代表用戶存在）
 
-- [ ] **C3** `JwtTokenProvider`（簽發/驗證 JWT）  
+- [x] **C3** `JwtTokenProvider`（簽發/驗證 JWT）  
   - `generateToken(userId, username)`：HS256 簽章，claim 含 `sub`(userId)、`username`、`iat`、`exp`（預設 24 小時）；密鑰自 `jwt.secret` 環境變數/設定檔讀取，禁止硬編碼  
   - `validateToken(token)` / `getUserId(token)`：驗證簽章與過期時間，失敗回傳 empty/拋例外供 Filter 統一轉換為 401
 
-- [ ] **C4** `JwtAuthenticationFilter` + `SecurityConfig`  
+- [x] **C4** `JwtAuthenticationFilter` + `SecurityConfig`  
   - `JwtAuthenticationFilter`（`OncePerRequestFilter`）：解析 `Authorization: Bearer <token>`，驗證通過後將 `userId` 寫入 `SecurityContextHolder`；驗證失敗回 401（不透露具體失敗原因）  
   - `SecurityConfig`：`/api/auth/**` 設為 `permitAll()`，其餘路徑 `authenticated()`；停用 CSRF（純 REST + Bearer Token，無 Cookie session）；停用預設表單登入/HTTP Basic  
   - `CurrentUser`（工具類別）：靜態方法 `CurrentUser.id()`，供 book/reading 模組的 Controller/Service 取得目前登入者 `userId`，不需依賴 `user` 模組其他任何類別
 
-- [ ] **C5** `AuthController` + `UserController` + Bean Validation  
+- [x] **C5** `AuthController` + `UserController` + Bean Validation  
   - `RegisterRequest`（@NotBlank, @Pattern `^[a-zA-Z0-9_-]{3,30}$` username；@NotBlank, @Size(min=8) password）  
   - `LoginRequest`（username, password）、`LoginResponse`（token, tokenType, expiresIn）、`UserResponse`（id, username, createdAt，**不含**密碼欄位）  
   - 端點：`POST /api/auth/register`、`POST /api/auth/login`、`GET /api/users/me`  
   - `GlobalExceptionHandler` 新增 `DuplicateUsernameException`→409、`InvalidCredentialsException`→401
 
-- [ ] **C6** UserService / AuthController / JwtTokenProvider 單元測試 ≥ 80%  
+- [x] **C6** UserService / AuthController / JwtTokenProvider 單元測試 ≥ 80%  
   - 必含：註冊成功（201）、username 重複（409）、username 格式錯誤（400）、password 過短（400）、登入成功回傳有效 JWT、帳號不存在登入失敗（401，且訊息與密碼錯誤時相同）、密碼錯誤登入失敗（401）、密碼確實以 bcrypt 雜湊儲存（不等於明文）、`GET /api/users/me` 未帶 JWT（401）、JWT 過期（401）、JWT 簽章竄改（401）  
   - Mockito mock Repository；AssertJ 斷言  
   - 測試命名：`should_預期行為_When_條件`
@@ -72,15 +72,19 @@
   - `DELETE /api/books/{id}/cover`：先確認書本屬於目前登入者；若 `coverImageSource=UPLOADED` 則呼叫 `delete()` 移除實體檔案；無論來源皆清空 `coverImageUrl`/`coverImageSource`  
   - `PUT /api/books/{id}` 內若帶入 `coverImageUrl`（且非透過上傳端點），視為「貼上圖片網址」流程：設定 `coverImageSource=EXTERNAL_URL`；若原本為 `UPLOADED`，須先呼叫 `delete()` 清除舊上傳檔避免孤兒檔案
 
-- [ ] **A4** `TagService` / `CategoryService`（自訂 Tag 與分類目錄的 CRUD，皆帶 `userId` 隔離）  
-  - Tag：建立、列表、刪除（皆限同一 `userId`；刪除時一併移除 Book_Tag 映射）；書本加/移除 Tag；`name` 加上 `UNIQUE(userId, name)` 約束  
-  - Category：建立、列表、刪除（皆限同一 `userId`；若仍有書本歸類則拋 `CategoryInUseException` → 409，不自動級聯刪書）；`name` 加上 `UNIQUE(userId, name)` 約束
+- [ ] **A4** `TagService` / `CategoryService`（Tag／Category 為各自獨立資料表，皆帶 `userId` 隔離與 `color` 欄位）  
+  - Tag：建立、列表、更新（改名/改色）、刪除（皆限同一 `userId`；刪除時一併移除 Book_Tag 映射）；書本加/移除 Tag；`name` 加上 `UNIQUE(userId, name)` 約束；`color` 選填，格式 `#RRGGBB`  
+  - Category：樹狀階層（`parentId` 自我參照，Adjacency List），建立/更新（含搬移 parentId）/列表（回傳巢狀樹狀結構）/刪除（皆限同一 `userId`）；`name` 加上 `UNIQUE(userId, parentId, name)` 約束（同層唯一）；`color` 選填；`sortOrder` 供同層排序  
+    - 建立/搬移時檢查階層深度上限（最多 3 層），超過拋 `CategoryDepthExceededException`（400）  
+    - 搬移 `parentId` 時需沿父鏈往上追溯偵測循環參照，偵測到拋 `InvalidCategoryParentException`（400）  
+    - 刪除時若仍有子分類或書本歸類於此分類，拋 `CategoryInUseException`（409），不自動級聯刪除
 
 - [ ] **A5** BookService / Controller / TagService / CategoryService 單元測試 ≥ 80%  
   - 每個 public 方法 ≥ 3 個案例（Happy / Boundary / Error）  
   - 新增案例：更新書本 ISBN 重複（409，限同一用戶）、categoryId 不存在（400）、分類刪除時仍有書本歸類（409）、刪除書本後其既有閱讀記錄仍可查詢（驗證 deleteBook 未觸及 ReadingRecord）、六種 bookType 各自新增 Happy Path、線上內容類 URL 重複（409，限同一用戶）、線上內容類誤帶 isbn（400）、實體類誤帶 url（400）、EBOOK 重複 isbn 不觸發 409（驗證不去重）、同人誌無 isbn 新增成功且不觸發去重、purchaseUrl/authorUrl 非 http/https 格式（400）  
   - 新增封面相關測試（A7/A8）：合法圖片上傳成功（200）、偽裝副檔名的非圖片檔案上傳失敗（400，驗證以 magic bytes 而非副檔名判斷）、超過 5MB 檔案上傳失敗（400）、取代封面時舊檔案被刪除（Mockito verify storage.delete 被呼叫）、貼上外部圖片網址設定成功且不觸發任何下載行為（verify 無 HTTP client 呼叫）、刪除封面後欄位清空且對應刪除實體檔案（僅 UPLOADED 時）  
-  - 新增多用戶隔離測試：使用者 A 無法查詢/更新/刪除使用者 B 的書本（回 404）、兩位用戶各自新增相同 ISBN 的書本皆成功（不誤判為重複）、TagName/CategoryName 不同用戶可重複、同一用戶內重複則 409  
+  - 新增分類階層測試：建立子分類成功並可於 GET 樹狀回應中看到巢狀 children、超過 3 層深度建立失敗（400）、搬移分類形成循環參照失敗（400）、分類刪除時仍有子分類失敗（409）、分類刪除時仍有書本歸類失敗（409）、Tag/Category `color` 格式錯誤（400，非 `#RRGGBB`）、Tag/Category 未帶 `color` 時允許為 null  
+  - 新增多用戶隔離測試：使用者 A 無法查詢/更新/刪除使用者 B 的書本（回 404）、兩位用戶各自新增相同 ISBN 的書本皆成功（不誤判為重複）、TagName/CategoryName 不同用戶可重複、同一用戶內同層重複則 409  
   - Mockito mock Repository / CoverStorageService；AssertJ 斷言  
   - 測試命名：`should_預期行為_When_條件`
 
@@ -88,7 +92,7 @@
 
 ## 模組 B：reading（負責人 Carol，分支 `feature/reading-record`，**依賴模組 C 的 `CurrentUser` 完成**）
 
-- [ ] **B1** `ReadingRecord` Entity + `ReadingRecordRepository`  
+- [x] **B1** `ReadingRecord` Entity + `ReadingRecordRepository`（Issue #11）  
   - 欄位：userId(FK → user.id, NOT NULL), bookId(FK, **nullable**), source(ENUM: OWNED/BORROWED_FRIEND/BORROWED_LIBRARY), externalTitle(**nullable**), externalAuthor(**nullable**), readDate, durationMinutes(≥1), progressPercent(0-100), createdAt  
   - DB CHECK 約束：`(source='OWNED' AND bookId IS NOT NULL AND externalTitle IS NULL) OR (source<>'OWNED' AND bookId IS NULL AND externalTitle IS NOT NULL)`  
   - 自訂查詢：`findByUserIdAndBookId`（分頁，僅 OWNED，限同一用戶）、`findByUserIdAndSource`（分頁，借閱記錄，限同一用戶）、`findByUserIdAndReadDateBetween`（日曆用，不分來源，限同一用戶）、`findByIdAndUserId`（單筆查詢，隔離存取）
@@ -145,6 +149,19 @@ public final class CurrentUser {
 // book/reading 的 Controller 一律呼叫 CurrentUser.id() 取得 userId 並傳入 Service 方法，
 // 不得直接注入 user 模組的 UserRepository/UserService（維持模組邊界的單向依賴原則）
 ```
+
+---
+
+## 模組 D：frontend（負責人：前端 PG，分支 `feature/PG1-project-scaffold`，**mock 資料先行，待後端 API 完成後串接**）
+
+- [x] **D1** 引入 Element Plus（`element-plus` + `@element-plus/icons-vue`），於 `main.ts` 全域註冊
+- [x] **D2** `MainLayout.vue`（Header：標題 + `AppMenu` + `UserInfoWidget`；Main：`RouterView`）
+- [x] **D3** `AppMenu.vue` 頂部導覽選單（首頁／藏書管理／閱讀記錄，`el-menu` + `router` 模式自動切換路由）
+- [x] **D4** `UserInfoWidget.vue` 使用者資訊下拉選單（顯示使用者名稱、登出）+ `stores/user.ts`（Pinia，`currentUser`/`logout()`）
+- [x] **D5** `HomeView.vue` 首頁儀表板（藏書總數／累計閱讀時長／已完成書籍／本月閱讀時長統計卡片，對應 US-R05 統計資料形狀）
+- [x] **D6** `BookListView.vue`／`ReadingView.vue` 佔位頁（`el-empty` 開發中提示），供 Menu 連結導向
+- [ ] **D7**（待後端 API 完成）新增 `src/services/` API 呼叫層，移除 `src/mocks/mockData.ts` 假資料依賴，
+      改接 `POST /api/auth/login`、`GET /api/users/me`、`GET /api/reading/stats` 等真實端點
 
 ---
 
