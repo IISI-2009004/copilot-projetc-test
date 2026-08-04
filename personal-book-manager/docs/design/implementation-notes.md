@@ -44,6 +44,82 @@
 
 ---
 
+# Implementation Notes — 閱讀記錄模組 B1 修正 + B2/B3/B4/B7 實作（模組 B：Backend）
+
+> 產出者：後端 PG（Backend Developer Agent，接續 Carol 分支 `feature/reading-record`）
+> 日期：2026-08-04
+> 對應 Issue：#26（確認模組 B：reading 開發狀態並持續開發）
+
+---
+
+## 背景
+
+檢視 `docs/design/tasks.md` 時發現：B1–B4/B7 雖標記與上一則筆記描述「已完成」，
+但實際原始碼（`ReadingRecord`/`ReadingRecordRepository`/`ReadingService`/
+`ReadingController` 等）仍是最初的骨架版本：`ReadingRecord` 欄位為
+`startDate`/`endDate`（非規格要求的 `readDate`/`durationMinutes`/`progressPercent`/
+`externalAuthor`），`ReadingRecordRepository` 未繼承 `JpaRepository`，
+`ReadingService`/`ReadingCalendarService`/`ReadingController` 所有方法皆直接拋出
+`UnsupportedOperationException`。上一則筆記的文件內容與程式碼實際狀態不一致
+（文件先行但程式碼未跟上），本次以現存原始碼為準重新盤點並依 tasks.md 規格補齊。
+
+## 決策紀錄
+
+- **B1 依規格重建 Entity/Repository**：`ReadingRecord` 改為含
+  `userId`/`source`/`bookId`/`externalTitle`/`externalAuthor`/`readDate`/
+  `durationMinutes`/`progressPercent`/`createdAt` 的正式 JPA Entity，`@Check` 約束沿用
+  `Book.java` 慣例；`durationMinutes`/`progressPercent` 建立後僅能透過
+  `accumulateDuration()`/`updateProgress()` 修改（不提供欄位 setter），對應 B2
+  「建立後不可修改 source/bookId/externalTitle/externalAuthor」的規則。
+  `ReadingRecordRepository` 改為繼承 `JpaRepository`，補上 tasks.md B1 要求的四個查詢
+  （`findByIdAndUserId`/`findByUserIdAndBookId`/`findByUserIdAndSource`/
+  `findByUserIdAndReadDateBetween`），另加 `findByUserId` 供 B2 統計使用。
+- **book 模組不存在時使用 reading 自有例外類別**：新增
+  `reading.exception.ReferencedBookNotFoundException`（非重用 book 模組的
+  `BookNotFoundException`），維持「reading 僅能透過 `BookQueryPort` 依賴 book 模組」的邊界
+  規則（copilot-instructions.md 模組邊界章節）；已於 `GlobalExceptionHandler` 註冊為 404。
+- **B2 `getStats` 以記憶體運算去重，不寫複雜 JPQL**：先以 `findByUserId` 撈出目前用戶
+  所有記錄，再以 Java Stream 依規則（`OWNED` 用 bookId、其餘用
+  `(source, externalTitle, externalAuthor)`）產生去重 key 計數，換取可讀性與可測試性；
+  資料量隨用戶閱讀記錄成長，如未來效能有疑慮可再優化為原生 SQL 聚合查詢（技術債，見下）。
+- **B4 端點路徑由 `/api/reading-records` 改為 `/api/reading`**：對齊 tasks.md B4 明列的
+  `POST /reading`、`PUT /reading/{id}` 等路徑（原骨架路徑為先前佔位，未對應規格）。
+- **`GET /api/reading` 要求 `bookId`/`source` 擇一提供**：tasks.md 分別定義
+  `getRecordsByBook`/`getRecordsBySource` 兩種查詢模式，皆未提供時以
+  `ResponseStatusException(400)` 明確拒絕，避免语意不清的「查全部」行為。
+- **分頁採 Spring Data `Pageable`**：`getRecordsByBook`/`getRecordsBySource` 於 Controller
+  接受 `page`/`size` query 參數（預設 0/20），與 book 模組目前尚未導入分頁的作法不同，
+  因 tasks.md B1/B2 明確要求「分頁」，故 reading 模組先行導入。
+
+## 驗證
+
+- `mvn -o compile`：通過。
+- `mvn test`（含 book/user/reading 全模組）：**82 項測試全數通過**，其中新增 reading 模組
+  測試 26 項：`ReadingServiceImplTest`（12）、`ReadingCalendarServiceImplTest`（4）、
+  `ReadingControllerTest`（10）。
+- 涵蓋 tasks.md B5 必含案例：跨日閱讀時長累計、durationMinutes 下限邊界（1）、
+  progressPercent 邊界（0/100）、書本不存在（404）、`source=OWNED` 缺 bookId（400）、
+  `source≠OWNED` 缺 externalTitle／誤帶 bookId（400）、借閱記錄新增不呼叫
+  `BookQueryPort`（Mockito verify 0 次）、統計正確去重借閱書籍、
+  使用者 A 以使用者 B 的 bookId 新增 OWNED 記錄應失敗（驗證 `existsBook` 呼叫時帶入呼叫者
+  userId，而非請求中的任意 userId）。
+
+## 已知技術債 / 待辦
+
+- **書本被軟刪除後既有閱讀記錄仍可查詢**：此案例需等 book 模組 A2 `deleteBook`
+  完成軟刪除實作後才能撰寫端對端整合測試，目前 book 模組 `deleteBook` 仍為
+  `UnsupportedOperationException`（tasks.md A2 標記待辦），列為跨模組相依的後續補強項目。
+- **多用戶隔離的顯式測試案例（查詢/更新他人閱讀記錄應 404）**：目前由
+  `findByIdAndUserId`/分頁查詢方法簽章本身即限定 `userId` 保證資料隔離（無法查到不屬於自己
+  的記錄），但尚未新增顯式的 Mockito 案例直接斷言「返回 empty/404」，建議下次迭代補上
+  對稱於 `BookServiceImplTest` 多用戶隔離案例的測試。
+- **`getStats` 效能**：目前以載入用戶全部記錄至記憶體運算，資料量大時建議改為
+  資料庫端聚合查詢（`SUM`/`COUNT DISTINCT`），列為效能技術債（優先度：低，需先有實際
+  資料量壓力證據再評估）。
+
+---
+
+
 # Implementation Notes — 使用者管理模組（模組 C：Backend）
 
 > 產出者：後端 PG "Bob"（Backend Developer Agent）

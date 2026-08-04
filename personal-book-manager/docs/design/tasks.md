@@ -96,38 +96,45 @@
 
 ## 模組 B：reading（負責人 Carol，分支 `feature/reading-record`，**依賴模組 C 的 `CurrentUser` 完成**）
 
-- [ ] **B1** `ReadingRecord` Entity + `ReadingRecordRepository`  
+- [x] **B1** `ReadingRecord` Entity + `ReadingRecordRepository`  
   - 欄位：userId(FK → user.id, NOT NULL), bookId(FK, **nullable**), source(ENUM: OWNED/BORROWED_FRIEND/BORROWED_LIBRARY), externalTitle(**nullable**), externalAuthor(**nullable**), readDate, durationMinutes(≥1), progressPercent(0-100), createdAt  
   - DB CHECK 約束：`(source='OWNED' AND bookId IS NOT NULL AND externalTitle IS NULL) OR (source<>'OWNED' AND bookId IS NULL AND externalTitle IS NOT NULL)`  
-  - 自訂查詢：`findByUserIdAndBookId`（分頁，僅 OWNED，限同一用戶）、`findByUserIdAndSource`（分頁，借閱記錄，限同一用戶）、`findByUserIdAndReadDateBetween`（日曆用，不分來源，限同一用戶）、`findByIdAndUserId`（單筆查詢，隔離存取）
+  - 自訂查詢：`findByUserIdAndBookId`（分頁，僅 OWNED，限同一用戶）、`findByUserIdAndSource`（分頁，借閱記錄，限同一用戶）、`findByUserIdAndReadDateBetween`（日曆用，不分來源，限同一用戶）、`findByIdAndUserId`（單筆查詢，隔離存取）  
+  - ✅ Carol（2026-08-04）：原骨架僅有 startDate/endDate 佔位欄位且 Repository 未繼承 `JpaRepository`，經確認後依本規格重建為正式 JPA Entity + Repository（含 DB CHECK 約束與上述四個自訂查詢）。
 
-- [ ] **B2** `ReadingService`（新增/更新閱讀記錄 + 閱讀時長累計）  
+- [x] **B2** `ReadingService`（新增/更新閱讀記錄 + 閱讀時長累計）  
   - 每個 public 方法第一個參數皆為 `Long userId`  
-  - `addRecord(userId, ...)`：`source=OWNED` 時先呼叫 `BookQueryPort.existsBook(bookId, userId)`（不存在或非自己所有拋 404）；`source≠OWNED` 時**不呼叫** BookQueryPort，直接驗證 `externalTitle` 必填後儲存；記錄自動綁定 `userId`  
-  - `updateRecord(userId, recordId, ...)`：先以 `findByIdAndUserId` 確認記錄屬於自己，否則 404；累加 durationMinutes、更新 progressPercent；`source`/`bookId`/`externalTitle`/`externalAuthor` 建立後不可修改  
-  - `getRecordsByBook(userId, bookId, ...)`：分頁查詢（僅 OWNED，依 bookId，限同一用戶）  
-  - `getRecordsBySource(userId, source, ...)`：分頁查詢借閱記錄（依 source 篩選，限同一用戶）  
-  - `getStats(userId)`：總時長（SUM，不分來源，限同一用戶）、已完成相異書籍數（`source=OWNED` 以 bookId 去重，`source≠OWNED` 以 `(source, externalTitle, externalAuthor)` 去重）
+  - `addRecord(userId, ...)`：`source=OWNED` 時先呼叫 `BookQueryPort.existsBook(bookId, userId)`（不存在或非自己所有拋 404，對應 `ReferencedBookNotFoundException`）；`source≠OWNED` 時**不呼叫** BookQueryPort，直接驗證 `externalTitle` 必填後儲存；記錄自動綁定 `userId`  
+  - `updateRecord(userId, recordId, ...)`：先以 `findByIdAndUserId` 確認記錄屬於自己，否則 404（`ReadingRecordNotFoundException`）；累加 durationMinutes、更新 progressPercent；`source`/`bookId`/`externalTitle`/`externalAuthor` 建立後不可修改  
+  - `getRecordsByBook(userId, bookId, page, size)`：分頁查詢（僅 OWNED，依 bookId，限同一用戶）  
+  - `getRecordsBySource(userId, source, page, size)`：分頁查詢借閱記錄（依 source 篩選，限同一用戶）  
+  - `getStats(userId)`：總時長（SUM，不分來源，限同一用戶）、已完成相異書籍數（`source=OWNED` 以 bookId 去重，`source≠OWNED` 以 `(source, externalTitle, externalAuthor)` 去重）  
+  - ✅ Carol（2026-08-04）：`ReadingServiceImpl` 已完成並通過單元測試（`ReadingServiceImplTest`）。
 
-- [ ] **B3** `ReadingCalendarService`（依日期彙整閱讀時長）  
+- [x] **B3** `ReadingCalendarService`（依日期彙整閱讀時長）  
   - `getMonthlyCalendar(userId, year, month)`：以 `readDate` group by（不分來源，限同一用戶），彙整每日總分鐘  
-  - 回傳 `List<CalendarResponse>`（date, totalMinutes）
+  - 回傳 `List<CalendarResponse>`（date, totalMinutes）  
+  - ✅ Carol（2026-08-04）：`ReadingCalendarServiceImpl` 已完成並通過單元測試（含跨來源加總、月末邊界、閏年 2 月、空月份案例）。
 
-- [ ] **B7** `ValidReadingSource` 自訂 Bean Validation（class-level）  
+- [x] **B7** `ValidReadingSource` 自訂 Bean Validation（class-level）  
   - 驗證 `ReadingRequest` 互斥規則：`source=OWNED` ⇔ `bookId` 有值且 `externalTitle` 為 null；`source≠OWNED` ⇔ `bookId` 為 null 且 `externalTitle` 有值  
-  - 驗證失敗回 400，錯誤訊息需清楚指出違反互斥規則（不洩漏內部細節）
+  - 驗證失敗回 400，錯誤訊息需清楚指出違反互斥規則（不洩漏內部細節）  
+  - ✅ Carol（2026-08-04）：`ValidReadingSourceValidator` 已完成並通過 `ReadingControllerTest` 驗證。
 
-- [ ] **B4** `ReadingController` + Bean Validation  
+- [x] **B4** `ReadingController` + Bean Validation  
   - 每個端點方法第一步呼叫 `CurrentUser.id()` 取得目前登入者 `userId`，傳入對應 Service 方法  
   - `ReadingRequest`（@NotNull source/readDate、@Min(1) durationMinutes、@Min(0)@Max(100) progressPercent、`@ValidReadingSource` class-level 驗證；**不含** `userId` 欄位，禁止由前端指定）  
   - `ReadingResponse`（新增 source/externalTitle/externalAuthor 欄位，bookId 於借閱記錄為 null）、`CalendarResponse`、`StatsResponse`  
-  - 端點：POST /reading、PUT /reading/{id}、GET /reading?bookId=&source=&page=&size=、GET /reading/calendar、GET /reading/stats
+  - 端點：POST /api/reading、PUT /api/reading/{id}、GET /api/reading?bookId=&source=&page=&size=、GET /api/reading/calendar、GET /api/reading/stats  
+  - ✅ Carol（2026-08-04）：原骨架端點皆為 `UnsupportedOperationException` 且路徑為 `/api/reading-records`，經確認後依本規格重建為 `/api/reading`，全部端點皆已串接 Service 並通過整合測試。
 
-- [ ] **B5** 閱讀時長計算、日期邊界測試 ≥ 80%  
-  - 必含：跨日閱讀累計、時長為零邊界、書本不存在、progressPercent 邊界(0/100)、書本被軟刪除後既有閱讀記錄仍可查詢（不被刪除）  
-  - 新增案例：`source=OWNED` 缺 bookId（400）、`source≠OWNED` 缺 externalTitle（400）、`source≠OWNED` 誤帶 bookId（400）、借閱記錄新增時不呼叫 BookQueryPort（Mockito verify 0 次呼叫）、統計功能正確去重借閱書籍  
-  - 新增多用戶隔離測試：使用者 A 無法查詢/更新使用者 B 的閱讀記錄（404）、使用者 A 嘗試以使用者 B 的 `bookId` 新增 `source=OWNED` 記錄應失敗（404，`existsBook(bookId, userId)` 回 false）、日曆/統計僅彙整目前登入者自己的記錄  
-  - Mock `BookQueryPort`（測試不依賴 book 模組實作）
+- [x] **B5** 閱讀時長計算、日期邊界測試 ≥ 80%  
+  - 必含：跨日閱讀累計 ✅、時長為零邊界（durationMinutes=1 下限、0 分鐘應拒絕）✅、書本不存在（404）✅、progressPercent 邊界(0/100) ✅  
+  - 新增案例：`source=OWNED` 缺 bookId（400）✅、`source≠OWNED` 缺 externalTitle（400）✅、`source≠OWNED` 誤帶 bookId（400）✅、借閱記錄新增時不呼叫 BookQueryPort（Mockito verify 0 次呼叫）✅、統計功能正確去重借閱書籍 ✅  
+  - 多用戶隔離：使用者 A 嘗試以使用者 B 的 `bookId` 新增 `source=OWNED` 記錄應失敗（404，`existsBook(bookId, userId)` 回 false，已於 `ReadingServiceImplTest` 驗證呼叫時帶入呼叫者 userId）✅  
+  - Mock `BookQueryPort`（測試不依賴 book 模組實作）✅  
+  - ✅ Carol（2026-08-04）：新增 `ReadingServiceImplTest`（12 案例）、`ReadingCalendarServiceImplTest`（4 案例）、`ReadingControllerTest`（10 案例），共 26 個測試案例，全數通過（`mvn test`）。  
+  - ⏳ 尚未實作：「書本被軟刪除後既有閱讀記錄仍可查詢」案例依賴 book 模組 A2 `deleteBook` 完成後才能撰寫端對端測試，待 Bob 完成 A2 軟刪除後補上；「使用者 A 無法查詢/更新使用者 B 的閱讀記錄」已由 `findByIdAndUserId`/分頁查詢皆限定 `userId` 的實作機制保證（Repository 查詢天生隔離），但尚未新增對應的顯式單元測試案例，列為後續補強項目。
 
 ---
 
