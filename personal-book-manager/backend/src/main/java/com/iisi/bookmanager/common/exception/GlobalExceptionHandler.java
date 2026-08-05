@@ -8,6 +8,7 @@ import com.iisi.bookmanager.book.exception.DuplicateUrlException;
 import com.iisi.bookmanager.book.exception.ImageTooLargeException;
 import com.iisi.bookmanager.book.exception.InvalidImageFileException;
 import com.iisi.bookmanager.reading.exception.ReadingRecordNotFoundException;
+import com.iisi.bookmanager.reading.exception.ReferencedBookNotFoundException;
 import com.iisi.bookmanager.user.exception.DuplicateUsernameException;
 import com.iisi.bookmanager.user.exception.InvalidCredentialsException;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ReadingRecordNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleReadingRecordNotFound(ReadingRecordNotFoundException ex,
                                                                        WebRequest request) {
+        return build(HttpStatus.NOT_FOUND, ex, request);
+    }
+
+    @ExceptionHandler(ReferencedBookNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleReferencedBookNotFound(ReferencedBookNotFoundException ex,
+                                                                        WebRequest request) {
         return build(HttpStatus.NOT_FOUND, ex, request);
     }
 
