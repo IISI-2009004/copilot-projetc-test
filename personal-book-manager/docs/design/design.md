@@ -74,14 +74,17 @@ src/main/java/com/iisi/bookmanager/
 │   ├── service/       BookService.java, TagService.java, CategoryService.java
 │   ├── repository/    BookRepository.java, TagRepository.java, CategoryRepository.java
 │   ├── domain/        Book.java, BookType.java (ENUM), CoverImageSource.java (ENUM), Tag.java, Category.java
-│   ├── dto/           BookRequest.java, BookResponse.java, CoverResponse.java
+│   │                  （Tag／Category 為各自獨立的 Entity/資料表；Category 額外持有 parentId 自我參照）
+│   ├── dto/           BookRequest.java, BookResponse.java, CoverResponse.java,
+│   │                  TagRequest.java, TagResponse.java, CategoryRequest.java, CategoryResponse.java
 │   ├── validation/    ValidBookType.java（自訂 class-level 驗證註解 + Validator，isbn/url 互斥）
 │   ├── storage/       CoverStorageService.java（介面）, LocalDiskCoverStorageService.java（實作）
 │   ├── port/          BookQueryPort.java          ← 對外介面
 │   └── exception/     BookNotFoundException.java, DuplicateIsbnException.java,
 │                      DuplicateUrlException.java, CategoryInUseException.java,
-│                      CategoryNotFoundException.java, InvalidImageFileException.java,
-│                      ImageTooLargeException.java
+│                      CategoryNotFoundException.java, CategoryDepthExceededException.java,
+│                      InvalidCategoryParentException.java, TagNotFoundException.java,
+│                      InvalidImageFileException.java, ImageTooLargeException.java
 ├── reading/
 │   ├── controller/    ReadingController.java
 │   ├── service/       ReadingService.java, ReadingCalendarService.java
@@ -159,13 +162,49 @@ src/main/java/com/iisi/bookmanager/
 | id | Long (PK) | Tag 主鍵 |
 | userId | Long (FK → user.id, NOT NULL) | Tag 擁有者 |
 | name | VARCHAR(50) | Tag 名稱（`UNIQUE(userId, name)`，同一用戶內唯一，不同用戶可重複命名）|
+| color | VARCHAR(7) (**nullable**) | 顯示顏色（`#RRGGBB` 格式，供前端標籤色塊使用）；null 時前端以預設色票（依 id 循環）呈現 |
 
-### Category
+### Book_Tag
 | 欄位 | 型別 | 說明 |
 |------|------|------|
-| id | Long (PK) | 主鍵 |
+| bookId | Long (FK → book.id, NOT NULL) | 複合主鍵一部分 |
+| tagId | Long (FK → tag.id, NOT NULL) | 複合主鍵一部分 |
+
+> `(bookId, tagId)` 為複合主鍵；刪除 Tag 時級聯刪除對應的 `Book_Tag` 列（不影響 `Book` 本身）。
+
+### Category（樹狀階層，Adjacency List 模式）
+
+> 決策紀錄：[`ADR-0007`](../architecture/adr/0007-tag-category-separate-tables-with-hierarchy.md)（Tag／Category 分離為獨立資料表，Category 恢復樹狀階層並支援使用者自訂顏色）
+
+| 欄位 | 型別 | 說明 |
+|------|------|------|
+| id | Long (PK, auto) | 主鍵 |
 | userId | Long (FK → user.id, NOT NULL) | 分類擁有者 |
-| name | VARCHAR(100) | 分類名稱（`UNIQUE(userId, name)`，同一用戶內唯一）|
+| parentId | Long (FK → category.id, **nullable**) | 父分類 ID；null 表示頂層分類（無母分類）|
+| name | VARCHAR(100) NOT NULL | 分類名稱（`UNIQUE(userId, parentId, name)`：同一使用者、同一層級下名稱唯一；不同層級或不同使用者可重複，例如「前端」可同時是頂層分類、也可是「技術」底下的子分類）|
+| color | VARCHAR(7) (**nullable**) | 顯示顏色（`#RRGGBB` 格式）；null 時前端以預設色票呈現 |
+| sortOrder | INT DEFAULT 0 | 同層排序（供使用者拖曳排序，數值小者在前）|
+| createdAt | TIMESTAMP | 建立時間 |
+
+> **階層深度限制**：為避免無窮遞迴與前端渲染效能問題，限制最多 **3 層**（頂層 → 子分類 → 孫分類）。
+> 由 Service 層於 `createCategory`/`updateCategory`（變更 `parentId`）時計算目標深度，超過上限拋
+> `CategoryDepthExceededException`（400）。
+>
+> **循環參照防護**：變更 `parentId` 時（分類搬移），Service 層需沿 `parentId` 向上追溯至根節點，
+> 若追溯過程中遇到自己的 `id`，代表會形成循環（例如把「技術」搬到自己的子分類「前端」底下），
+> 拋 `InvalidCategoryParentException`（400）拒絕操作。
+>
+> **刪除規則**：刪除分類時，若該分類仍有**子分類**或**書本歸類於此分類**，拋 `CategoryInUseException`（409），
+> 不自動級聯刪除子分類或書本（避免使用者誤刪整棵子樹）；前端需先引導使用者清空子分類/書本後才能刪除，
+> 或提供「批次搬移子分類到上一層再刪除」的操作（前端功能，後端僅需標準的搬移 API `PUT /api/categories/{id}`
+> 變更 `parentId` 即可支援）。
+>
+> **查詢方式**：`CategoryRepository.findAllByUserId(userId)` 一次取回該使用者所有分類（含 `parentId`），
+> 由 Service 層在記憶體中組成樹狀結構回傳（資料量小，不需遞迴 SQL／CTE），對應 `CategoryResponse`
+> 的巢狀 `children` 欄位。
+>
+> **一書一分類**：`Book.categoryId` 僅能指向**任一層級**的分類節點（頂層或子分類皆可直接掛書，
+> 不強制書本只能掛在葉節點），與 Tag 可多選不同。
 
 ### ReadingRecord
 
@@ -248,19 +287,34 @@ Service 會將 `coverImageSource` 設為 `EXTERNAL_URL`；**不適用**於檔案
 
 | Method | Path | 說明 |
 |--------|------|------|
-| POST | `/api/tags` | 建立 Tag |
+| POST | `/api/tags` | 建立 Tag（`name` 必填、`color` 選填 `#RRGGBB`）|
 | GET | `/api/tags` | 取得所有 Tag |
-| DELETE | `/api/tags/{id}` | 刪除 Tag |
+| PUT | `/api/tags/{id}` | 更新 Tag（可改名或改色，僅限自己的 Tag）|
+| DELETE | `/api/tags/{id}` | 刪除 Tag（一併移除 `Book_Tag` 映射）|
 | POST | `/api/books/{bookId}/tags/{tagId}` | 書本加 Tag |
 | DELETE | `/api/books/{bookId}/tags/{tagId}` | 書本移除 Tag |
 
-### 分類管理（base: `/api/categories`，**需登入**）
+**TagRequest 欄位**：`name`（@NotBlank, @Size(max=50)）、`color`（選填，@Pattern `^#[0-9A-Fa-f]{6}$`）。
+
+**TagResponse 欄位**：`id, name, color`。
+
+### 分類管理（base: `/api/categories`，**需登入**，樹狀階層）
 
 | Method | Path | 說明 |
 |--------|------|------|
-| POST | `/api/categories` | 建立分類 |
-| GET | `/api/categories` | 取得所有分類（僅自己）|
-| DELETE | `/api/categories/{id}` | 刪除分類（僅自己的分類；409 若仍有書本歸類於此分類）|
+| POST | `/api/categories` | 建立分類（`name` 必填、`parentId` 選填、`color` 選填）；`parentId` 不存在或不屬於自己回 400 |
+| GET | `/api/categories` | 取得分類樹（僅自己；回傳巢狀 `children` 結構，由 Service 於記憶體組樹）|
+| PUT | `/api/categories/{id}` | 更新分類（可改名、改色、搬移 `parentId`）；搬移時檢查深度上限與循環參照，違反回 400 |
+| DELETE | `/api/categories/{id}` | 刪除分類（僅自己的分類；409 若仍有子分類或書本歸類於此分類）|
+
+**CategoryRequest 欄位**：`name`（@NotBlank, @Size(max=100)）、`parentId`（選填，Long）、`color`（選填，@Pattern `^#[0-9A-Fa-f]{6}$`）。
+
+**CategoryResponse 欄位**：`id, name, color, parentId, sortOrder, children`（`children` 為遞迴的 `CategoryResponse` 陣列，供前端直接渲染樹狀元件，無需自行組樹）。
+
+> `Tag` 與 `Category` 現為**各自獨立的資料表**（`tag`、`category`），皆帶 `userId` 隔離與 `color` 欄位；
+> 差異僅在於 `Category` 多了 `parentId`/`sortOrder` 以支援樹狀階層，`Tag` 維持扁平清單（多對多）。
+> 兩者的「新增/改名/改色」互動皆可在前端以相同的 inline 輸入 UI 呈現，僅 Category 額外支援拖曳調整
+> 父子關係與排序。
 
 ### 閱讀記錄（base: `/api/reading`，**需登入**）
 

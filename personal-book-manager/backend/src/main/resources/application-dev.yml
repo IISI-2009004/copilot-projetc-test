@@ -1,0 +1,19 @@
+# 開發環境設定：H2 in-memory 資料庫（需求文件 NFR：開發環境 H2）
+spring:
+  datasource:
+    url: jdbc:h2:mem:bookmanager;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+# 開發階段暫時免登入機制（見 SecurityConfig / DevNoAuthFilter）：
+# 前端尚未完成登入頁面/JWT 串接前，未帶 Authorization 標頭的請求一律以固定測試 userId=1 通過驗證。
+# 自動化測試（*Test.java）於 src/test/resources/application-dev.yml 明確覆寫為 false，不受影響。
+security:
+  dev-no-auth: true

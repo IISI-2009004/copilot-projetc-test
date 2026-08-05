@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: personal-book-manager
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+# JWT 設定：本機開發用的預設密鑰僅供 dev profile 使用，正式環境（prod）
+# 一律以環境變數 JWT_SECRET 覆寫，禁止硬編碼於原始碼中（design.md 5c）
+jwt:
+  secret: ${JWT_SECRET:dev-only-please-override-in-production-env}
+  expiration-seconds: 86400
+
+# 封面圖片本機儲存路徑（design.md 5b，MVP：LocalDiskCoverStorageService）
+cover-storage:
+  local-path: ./data/covers
+  max-file-size-mb: 5
+
+logging:
+  level:
+    root: INFO
+    com.iisi.bookmanager: DEBUG

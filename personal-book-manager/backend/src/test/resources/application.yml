@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+
+# 測試環境專用 JWT 密鑰（僅供單元測試/context load 使用，非正式環境設定）
+jwt:
+  secret: test-only-jwt-secret-key-for-unit-tests-not-for-production-use
+  expiration-seconds: 86400
