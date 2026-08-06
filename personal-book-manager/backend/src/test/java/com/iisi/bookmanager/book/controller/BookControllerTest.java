@@ -3,7 +3,9 @@ package com.iisi.bookmanager.book.controller;
 import com.iisi.bookmanager.book.domain.BookType;
 import com.iisi.bookmanager.book.dto.BookResponse;
 import com.iisi.bookmanager.book.exception.DuplicateIsbnException;
+import com.iisi.bookmanager.book.exception.DuplicateUrlException;
 import com.iisi.bookmanager.book.service.BookService;
+import com.iisi.bookmanager.common.exception.ErrorResponse;
 import com.iisi.bookmanager.user.security.SecurityConfig;
 import com.iisi.bookmanager.user.service.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -146,6 +149,135 @@ class BookControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(100))
                 .andExpect(jsonPath("$.title").value("title"));
+    }
+
+    @Test
+    @DisplayName("當 Service 拋出 DuplicateUrlException 時，POST /api/books 應回傳 409")
+    void should_Return409_When_DuplicateUrl() throws Exception {
+        // Arrange
+        mockAuthenticatedAs(1L);
+        when(bookService.createBook(anyLong(), any())).thenThrow(new DuplicateUrlException("重複 URL"));
+        String body = objectMapper.writeValueAsString(
+                new BookRequestFixture(null, "https://example.com/novel/1", "某平台", "title", "author",
+                        "WEB_NOVEL", null, null, null));
+
+        // Act & Assert
+        mockMvc.perform(post("/api/books")
+                        .header(AUTH_HEADER, AUTH_SCHEME + " " + VALID_TOKEN)
+                        .contentType("application/json")
+                        .content(body))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @DisplayName("當 author 為空白時，POST /api/books 應回傳 400")
+    void should_Return400_When_AuthorBlank() throws Exception {
+        // Arrange
+        mockAuthenticatedAs(1L);
+        String body = objectMapper.writeValueAsString(
+                new BookRequestFixture("9780000000001", null, null, "title", "", "PHYSICAL_BOOK", null, null, null));
+
+        // Act & Assert
+        mockMvc.perform(post("/api/books")
+                        .header(AUTH_HEADER, AUTH_SCHEME + " " + VALID_TOKEN)
+                        .contentType("application/json")
+                        .content(body))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("當 ISBN 格式不合法（非 10 或 13 位數字）時，POST /api/books 應回傳 400")
+    void should_Return400_When_IsbnFormatInvalid() throws Exception {
+        // Arrange
+        mockAuthenticatedAs(1L);
+        String body = objectMapper.writeValueAsString(
+                new BookRequestFixture("978-invalid", null, null, "title", "author",
+                        "PHYSICAL_BOOK", null, null, null));
+
+        // Act & Assert
+        mockMvc.perform(post("/api/books")
+                        .header(AUTH_HEADER, AUTH_SCHEME + " " + VALID_TOKEN)
+                        .contentType("application/json")
+                        .content(body))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("當 url 使用 javascript: scheme 時，POST /api/books 應回傳 400")
+    void should_Return400_When_UrlHasJavascriptScheme() throws Exception {
+        // Arrange
+        mockAuthenticatedAs(1L);
+        String body = objectMapper.writeValueAsString(
+                new BookRequestFixture(null, "javascript:alert(1)", "某平台", "title", "author",
+                        "WEB_NOVEL", null, null, null));
+
+        // Act & Assert
+        mockMvc.perform(post("/api/books")
+                        .header(AUTH_HEADER, AUTH_SCHEME + " " + VALID_TOKEN)
+                        .contentType("application/json")
+                        .content(body))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("當線上內容類型缺少 url 時，POST /api/books 應回傳 400（ValidBookType 互斥規則）")
+    void should_Return400_When_OnlineTypeWithoutUrl() throws Exception {
+        // Arrange
+        mockAuthenticatedAs(1L);
+        String body = objectMapper.writeValueAsString(
+                new BookRequestFixture(null, null, null, "title", "author",
+                        "WEB_NOVEL", null, null, null));
+
+        // Act & Assert
+        mockMvc.perform(post("/api/books")
+                        .header(AUTH_HEADER, AUTH_SCHEME + " " + VALID_TOKEN)
+                        .contentType("application/json")
+                        .content(body))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("當線上內容類型誤填 isbn 時，POST /api/books 應回傳 400（ValidBookType 互斥規則）")
+    void should_Return400_When_OnlineTypeWithIsbn() throws Exception {
+        // Arrange
+        mockAuthenticatedAs(1L);
+        String body = objectMapper.writeValueAsString(
+                new BookRequestFixture("9780000000001", "https://example.com/novel", null, "title", "author",
+                        "WEB_NOVEL", null, null, null));
+
+        // Act & Assert
+        mockMvc.perform(post("/api/books")
+                        .header(AUTH_HEADER, AUTH_SCHEME + " " + VALID_TOKEN)
+                        .contentType("application/json")
+                        .content(body))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("當 Service 拋出 DuplicateIsbnException 時，ErrorResponse 不應洩漏堆疊細節")
+    void should_ReturnErrorResponseWithoutStackTrace_When_DuplicateIsbnException() throws Exception {
+        // Arrange
+        mockAuthenticatedAs(1L);
+        when(bookService.createBook(anyLong(), any())).thenThrow(new DuplicateIsbnException("重複 ISBN"));
+        String body = objectMapper.writeValueAsString(
+                new BookRequestFixture("9780000000001", null, null, "title", "author",
+                        "PHYSICAL_BOOK", null, null, null));
+
+        // Act
+        String responseBody = mockMvc.perform(post("/api/books")
+                        .header(AUTH_HEADER, AUTH_SCHEME + " " + VALID_TOKEN)
+                        .contentType("application/json")
+                        .content(body))
+                .andExpect(status().isConflict())
+                .andReturn().getResponse().getContentAsString();
+
+        // Assert: ErrorResponse 結構正確，且不含堆疊關鍵字
+        ErrorResponse errorResponse = objectMapper.readValue(responseBody, ErrorResponse.class);
+        assertThat(errorResponse.status()).isEqualTo(409);
+        assertThat(errorResponse.message()).isNotBlank();
+        assertThat(responseBody).doesNotContain("at com.iisi");
+        assertThat(responseBody).doesNotContain("stackTrace");
+        assertThat(responseBody).doesNotContain("cause");
     }
 
     /**
