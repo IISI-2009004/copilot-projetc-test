@@ -176,6 +176,173 @@ class BookServiceImplTest {
     // Helpers
     // ------------------------------------------------------------
 
+    @Test
+    @DisplayName("當 WEB_NOVEL 類型的 URL 在同一用戶下已存在時，createBook 應該拋出 DuplicateUrlException")
+    void should_ThrowDuplicateUrlException_When_WebNovelUrlAlreadyExists() {
+        // Arrange
+        bookService = newService();
+        BookRequest request = new BookRequest(null, "https://novel.example.com/story/1", "某平台", "title", "author",
+                BookType.WEB_NOVEL, null, null, null);
+        Book existing = buildBook(10L, 10L, null, "https://novel.example.com/story/1", BookType.WEB_NOVEL,
+                Instant.now(), Instant.now());
+        when(bookRepository.findByUserIdAndUrlAndDeletedFalse(10L, "https://novel.example.com/story/1"))
+                .thenReturn(Optional.of(existing));
+
+        // Act & Assert
+        assertThatThrownBy(() -> bookService.createBook(10L, request))
+                .isInstanceOf(DuplicateUrlException.class);
+        verify(bookRepository, never()).save(any(Book.class));
+    }
+
+    @Test
+    @DisplayName("當 ONLINE_FANFIC 類型的 URL 在同一用戶下已存在時，createBook 應該拋出 DuplicateUrlException")
+    void should_ThrowDuplicateUrlException_When_OnlineFanficUrlAlreadyExists() {
+        // Arrange
+        bookService = newService();
+        BookRequest request = new BookRequest(null, "https://ao3.org/works/12345", "AO3", "title", "author",
+                BookType.ONLINE_FANFIC, null, null, null);
+        Book existing = buildBook(11L, 10L, null, "https://ao3.org/works/12345", BookType.ONLINE_FANFIC,
+                Instant.now(), Instant.now());
+        when(bookRepository.findByUserIdAndUrlAndDeletedFalse(10L, "https://ao3.org/works/12345"))
+                .thenReturn(Optional.of(existing));
+
+        // Act & Assert
+        assertThatThrownBy(() -> bookService.createBook(10L, request))
+                .isInstanceOf(DuplicateUrlException.class);
+        verify(bookRepository, never()).save(any(Book.class));
+    }
+
+    @Test
+    @DisplayName("當相同 ISBN 但不同 bookType 時，createBook 不應視為重複，應成功儲存")
+    void should_CreateBook_When_SameIsbnButDifferentBookType() {
+        // Arrange
+        bookService = newService();
+        BookRequest request = new BookRequest("9780000000004", null, null, "title", "author",
+                BookType.PHYSICAL_BOOK, null, null, null);
+        // 查詢 (userId, isbn, PHYSICAL_BOOK) 時無結果（即使 EBOOK 有相同 ISBN）
+        when(bookRepository.findByUserIdAndIsbnAndBookTypeAndDeletedFalse(70L, "9780000000004", BookType.PHYSICAL_BOOK))
+                .thenReturn(Optional.empty());
+        Book saved = buildBook(12L, 70L, "9780000000004", null, BookType.PHYSICAL_BOOK,
+                Instant.now(), Instant.now());
+        when(bookRepository.save(any(Book.class))).thenReturn(saved);
+
+        // Act
+        BookResponse response = bookService.createBook(70L, request);
+
+        // Assert
+        verify(bookRepository).findByUserIdAndIsbnAndBookTypeAndDeletedFalse(70L, "9780000000004", BookType.PHYSICAL_BOOK);
+        assertThat(response.id()).isEqualTo(12L);
+    }
+
+    @Test
+    @DisplayName("當相同 ISBN 但不同 userId 時，createBook 不應視為重複，應成功儲存")
+    void should_CreateBook_When_SameIsbnButDifferentUserId() {
+        // Arrange
+        bookService = newService();
+        BookRequest request = new BookRequest("9780000000005", null, null, "title", "author",
+                BookType.PHYSICAL_BOOK, null, null, null);
+        // userId=80 的查詢無結果（userId=70 有相同 ISBN 不影響）
+        when(bookRepository.findByUserIdAndIsbnAndBookTypeAndDeletedFalse(80L, "9780000000005", BookType.PHYSICAL_BOOK))
+                .thenReturn(Optional.empty());
+        Book saved = buildBook(13L, 80L, "9780000000005", null, BookType.PHYSICAL_BOOK,
+                Instant.now(), Instant.now());
+        when(bookRepository.save(any(Book.class))).thenReturn(saved);
+
+        // Act
+        BookResponse response = bookService.createBook(80L, request);
+
+        // Assert
+        assertThat(response.id()).isEqualTo(13L);
+    }
+
+    @Test
+    @DisplayName("當相同 URL 但不同 userId 時，createBook 不應視為重複，應成功儲存")
+    void should_CreateBook_When_SameUrlButDifferentUserId() {
+        // Arrange
+        bookService = newService();
+        BookRequest request = new BookRequest(null, "https://example.com/blog/shared", "Blog", "title", "author",
+                BookType.BLOG_POST, null, null, null);
+        // userId=90 的查詢無結果（其他 userId 有相同 URL 不影響）
+        when(bookRepository.findByUserIdAndUrlAndDeletedFalse(90L, "https://example.com/blog/shared"))
+                .thenReturn(Optional.empty());
+        Book saved = buildBook(14L, 90L, null, "https://example.com/blog/shared", BookType.BLOG_POST,
+                Instant.now(), Instant.now());
+        when(bookRepository.save(any(Book.class))).thenReturn(saved);
+
+        // Act
+        BookResponse response = bookService.createBook(90L, request);
+
+        // Assert
+        assertThat(response.id()).isEqualTo(14L);
+    }
+
+    @Test
+    @DisplayName("當 categoryId/purchaseUrl/authorUrl 均為 null 時，createBook 仍應成功建立書本")
+    void should_CreateBook_When_OptionalFieldsAreNull() {
+        // Arrange
+        bookService = newService();
+        BookRequest request = new BookRequest("9780000000006", null, null, "最簡單的書", "作者",
+                BookType.PHYSICAL_BOOK, null, null, null);
+        when(bookRepository.findByUserIdAndIsbnAndBookTypeAndDeletedFalse(100L, "9780000000006", BookType.PHYSICAL_BOOK))
+                .thenReturn(Optional.empty());
+        Book saved = buildBook(15L, 100L, "9780000000006", null, BookType.PHYSICAL_BOOK,
+                Instant.now(), Instant.now());
+        when(bookRepository.save(any(Book.class))).thenReturn(saved);
+
+        // Act
+        BookResponse response = bookService.createBook(100L, request);
+
+        // Assert
+        ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+        verify(bookRepository).save(captor.capture());
+        assertThat(captor.getValue().getCategoryId()).isNull();
+        assertThat(captor.getValue().getPurchaseUrl()).isNull();
+        assertThat(captor.getValue().getAuthorUrl()).isNull();
+        assertThat(response.id()).isEqualTo(15L);
+    }
+
+    @Test
+    @DisplayName("當 deleted=true 的舊書本具有相同 ISBN 時，createBook 不應視為重複，應成功儲存")
+    void should_CreateBook_When_ExistingBookWithSameIsbnIsDeleted() {
+        // Arrange
+        bookService = newService();
+        BookRequest request = new BookRequest("9780000000007", null, null, "復活的書", "作者",
+                BookType.PHYSICAL_BOOK, null, null, null);
+        // findByUserIdAndIsbnAndBookTypeAndDeletedFalse 不回傳 deleted=true 的書（語意上已過濾）
+        when(bookRepository.findByUserIdAndIsbnAndBookTypeAndDeletedFalse(110L, "9780000000007", BookType.PHYSICAL_BOOK))
+                .thenReturn(Optional.empty());
+        Book saved = buildBook(16L, 110L, "9780000000007", null, BookType.PHYSICAL_BOOK,
+                Instant.now(), Instant.now());
+        when(bookRepository.save(any(Book.class))).thenReturn(saved);
+
+        // Act
+        BookResponse response = bookService.createBook(110L, request);
+
+        // Assert
+        assertThat(response.id()).isEqualTo(16L);
+    }
+
+    @Test
+    @DisplayName("當 deleted=true 的舊書本具有相同 URL 時，createBook 不應視為重複，應成功儲存")
+    void should_CreateBook_When_ExistingBookWithSameUrlIsDeleted() {
+        // Arrange
+        bookService = newService();
+        BookRequest request = new BookRequest(null, "https://example.com/old-post", "Blog", "再次分享", "作者",
+                BookType.BLOG_POST, null, null, null);
+        // findByUserIdAndUrlAndDeletedFalse 不回傳 deleted=true 的書
+        when(bookRepository.findByUserIdAndUrlAndDeletedFalse(110L, "https://example.com/old-post"))
+                .thenReturn(Optional.empty());
+        Book saved = buildBook(17L, 110L, null, "https://example.com/old-post", BookType.BLOG_POST,
+                Instant.now(), Instant.now());
+        when(bookRepository.save(any(Book.class))).thenReturn(saved);
+
+        // Act
+        BookResponse response = bookService.createBook(110L, request);
+
+        // Assert
+        assertThat(response.id()).isEqualTo(17L);
+    }
+
     /**
      * 透過反射建立含 id/createdAt/updatedAt 的 {@link Book}（這三個欄位分別由
      * JPA {@code @GeneratedValue}／{@code @PrePersist} 填入，測試情境下需手動注入
